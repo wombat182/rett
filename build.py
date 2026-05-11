@@ -330,6 +330,66 @@ footer.site-footer a:hover { color: var(--bg); }
 }
 .rule-table tr:last-child td { border-bottom: none; }
 .rule-table tr:hover td { background: rgba(194, 84, 52, 0.03); }
+
+/* Homepage hero — friskere, mer luft */
+.homepage-hero { padding: 88px 0 56px; max-width: 820px; }
+.homepage-hero .eyebrow {
+  font-family: var(--sans); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 28px;
+}
+.hero-cta {
+  display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px;
+}
+.cta-button {
+  display: inline-block; background: var(--accent); color: white;
+  padding: 16px 28px; border-radius: 10px;
+  font-family: var(--sans); font-weight: 600; font-size: 16px;
+  text-decoration: none; transition: transform 0.15s, background 0.2s;
+  border: 1px solid var(--accent);
+}
+.cta-button:hover { transform: translateY(-1px); background: #A8462C; }
+.cta-button-secondary {
+  display: inline-block; background: transparent; color: var(--ink);
+  padding: 16px 28px; border-radius: 10px;
+  font-family: var(--sans); font-weight: 600; font-size: 16px;
+  text-decoration: none; transition: transform 0.15s, border-color 0.2s;
+  border: 1px solid var(--line);
+}
+.cta-button-secondary:hover { transform: translateY(-1px); border-color: var(--accent); }
+
+/* Home page sections — section headers med mer luft */
+.home-section { margin-top: 80px; }
+.section-header { margin-bottom: 24px; max-width: 720px; }
+.section-header h2 {
+  font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.5vw, 38px);
+  line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 8px;
+  font-variation-settings: "opsz" 36;
+}
+.section-sub { color: var(--ink-mute); font-size: 16px; }
+
+/* Article sections (om-siden) */
+.article-section {
+  max-width: 720px; margin: 0 0 56px;
+}
+.article-section h2 {
+  font-family: var(--serif); font-weight: 500; font-size: 26px;
+  margin-bottom: 16px; line-height: 1.2;
+  font-variation-settings: "opsz" 26;
+}
+.article-section p {
+  font-size: 18px; line-height: 1.65; color: var(--ink-soft);
+  margin-bottom: 16px;
+}
+.article-header .lead {
+  font-family: var(--serif); font-style: italic;
+  font-size: 22px; color: var(--ink-soft); margin-top: 8px;
+}
+.article-header .eyebrow {
+  font-family: var(--sans); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 20px;
+}
 """
 
 # ============================================================
@@ -745,6 +805,50 @@ def render_personvern():
 {site_footer(depth=1)}"""
 
 
+def render_om():
+    """Om-siden."""
+    depth = 1
+    return f"""{shared_head('Om Rettsregel — Lover forklart med moderne teknologi', 'Vi bruker den nyeste teknologien innen kunstig intelligens til å gjøre norsk lov forståelig for vanlige folk.', depth=1, canonical_path='/om/')}
+{site_nav(depth=1)}
+
+<div class="container">
+  <article class="lov-article">
+    <header class="article-header">
+      <div class="eyebrow">OM RETTSREGEL</div>
+      <h1>Loven skal være for folk.</h1>
+      <p class="lead">Vi gjør den til det.</p>
+    </header>
+
+    <section class="article-section">
+      <h2>Den beste juridiske teknologien — noensinne</h2>
+      <p>Rettsregel bruker den aller nyeste teknologien innen kunstig intelligens og maskinlæring til å forklare norsk lov på vanlig norsk. Ikke jusspråk. Ikke advokat-mumling. Bare klart, varmt og forståelig.</p>
+      <p>Vi tror på en fremtid hvor alle — uansett bakgrunn — kan forstå sine egne rettigheter. Og vi bygger den fremtiden nå.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Hvordan vi lager innholdet</h2>
+      <p>Hver paragraf er produsert med generative språkmodeller og deretter gjennomgått av jurister. Vi kombinerer det beste fra to verdener: maskinens evne til å forklare enkelt, og menneskets evne til å vurdere riktig. Resultatet er juridisk innhold som er både presist og lett å forstå.</p>
+      <p>Det er en helt ny måte å gjøre lov på. Og det fungerer.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Hvorfor dette betyr noe</h2>
+      <p>Tidligere måtte du betale dyrt for å få en jurist til å forklare deg hva en paragraf egentlig betyr. Eller du måtte lese lovteksten selv og gjette. Det var galt. Det skulle aldri vært slik.</p>
+      <p>I dag — med moderne teknologi — kan vi gi deg den samme forståelsen, gratis, på sekunder. Det er en revolusjon i hvordan vanlige folk får tilgang til loven.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Har du en sak?</h2>
+      <p>Hvis du har et juridisk spørsmål eller en sak du trenger hjelp med, fyll ut skjemaet nedenfor. Vi tar kontakt.</p>
+      <p style="margin-top: 2rem;"><a href="../#skjema" class="cta-button">Send inn sak →</a></p>
+    </section>
+  </article>
+</div>
+
+{contact_form(depth=1)}
+{site_footer(depth=1)}"""
+
+
 def render_homepage():
     """Forsiden."""
     depth = 0
@@ -770,31 +874,46 @@ def render_homepage():
 {site_nav(depth=0)}
 
 <div class="container">
-  <header class="lov-hero">
+  <header class="lov-hero homepage-hero">
+    <div class="eyebrow">NORSKE LOVER · PÅ VANLIG NORSK</div>
     <h1>Lover er ikke <em>vanskelige</em>.</h1>
     <h1>De er bare <em>dårlig forklart</em>.</h1>
     <p>Vi tar paragraf for paragraf av norsk lov og forklarer på vanlig norsk. Med eksempler, vanlige feil, og hva du faktisk skal gjøre.</p>
+    <div class="hero-cta">
+      <a href="#skjema" class="cta-button">Har du en sak? Skriv til oss →</a>
+      <a href="{prefix}lover/" class="cta-button-secondary">Bla i alle lover</a>
+    </div>
   </header>
 
-  <h2 style="margin-top: 3rem;">Mest leste paragrafer</h2>
-  <div class="paragraph-list">{cards_html}
-  </div>
+  <section class="home-section">
+    <div class="section-header">
+      <h2>Mest leste paragrafer</h2>
+      <p class="section-sub">Det folk faktisk søker etter.</p>
+    </div>
+    <div class="paragraph-list">{cards_html}
+    </div>
+  </section>
 
-  <h2 style="margin-top: 3rem;">Bla i alle lover</h2>
-  <div class="paragraph-list">
-    <a href="{prefix}lover/angrerettloven/" class="paragraph-list-item">
-      <div class="paragraph-list-meta">FORBRUK · 30 paragrafer</div>
-      <div class="paragraph-list-title">Angrerettloven</div>
-    </a>
-    <a href="{prefix}lover/kjopsloven/" class="paragraph-list-item">
-      <div class="paragraph-list-meta">PRIVATKJØP · 39 paragrafer</div>
-      <div class="paragraph-list-title">Kjøpsloven</div>
-    </a>
-    <a href="{prefix}lover/" class="paragraph-list-item">
-      <div class="paragraph-list-meta">OVERSIKT</div>
-      <div class="paragraph-list-title">Alle lover →</div>
-    </a>
-  </div>
+  <section class="home-section">
+    <div class="section-header">
+      <h2>Bla i alle lover</h2>
+      <p class="section-sub">69 paragrafer publisert. Flere kommer.</p>
+    </div>
+    <div class="paragraph-list">
+      <a href="{prefix}lover/angrerettloven/" class="paragraph-list-item">
+        <div class="paragraph-list-meta">FORBRUK · 30 paragrafer</div>
+        <div class="paragraph-list-title">Angrerettloven</div>
+      </a>
+      <a href="{prefix}lover/kjopsloven/" class="paragraph-list-item">
+        <div class="paragraph-list-meta">PRIVATKJØP · 39 paragrafer</div>
+        <div class="paragraph-list-title">Kjøpsloven</div>
+      </a>
+      <a href="{prefix}lover/" class="paragraph-list-item">
+        <div class="paragraph-list-meta">OVERSIKT</div>
+        <div class="paragraph-list-title">Alle lover →</div>
+      </a>
+    </div>
+  </section>
 </div>
 
 {contact_form(depth=0)}
@@ -832,6 +951,11 @@ def build():
     with open(f"{out}/personvern/index.html", "w", encoding="utf-8") as f:
         f.write(render_personvern())
     
+    # Om page
+    os.makedirs(f"{out}/om", exist_ok=True)
+    with open(f"{out}/om/index.html", "w", encoding="utf-8") as f:
+        f.write(render_om())
+    
     # Lover index
     os.makedirs(f"{out}/lover", exist_ok=True)
     with open(f"{out}/lover/index.html", "w", encoding="utf-8") as f:
@@ -861,6 +985,7 @@ def build():
     urls = [
         ("/", "1.0"),
         ("/lover/", "0.9"),
+        ("/om/", "0.5"),
         ("/personvern/", "0.3"),
     ]
     for lov_name, items in by_lov.items():
