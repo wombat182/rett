@@ -2089,4 +2089,452 @@ PARAGRAPHS = [
             {"lov": "kjopsloven", "paragraf": "70", "tittel": "Plikt til å begrense tap", "available": False},
         ],
     },
+    {
+        "number": "41",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Når en tredjeperson har rettigheter i varen",
+        "description": "Har noen andre eiendomsrett, panterett eller annen rett i varen du har kjøpt? Det er en rettsmangel — og du har samme krav som ved andre mangler.",
+        "kort_svar": "Hvis det viser seg at noen andre har rettigheter i varen — for eksempel pant, eiendomsrett eller en patentrett som rammer din bruk — er det en «rettsmangel». Du har samme krav som ved andre mangler. Reklamasjon må gjøres innen rimelig tid, men toårsfristen gjelder ikke. Du har alltid krav på erstatning for tap du ikke kunne forutse.",
+        "paragraftekst": """(1) Har tredjemann eiendomsrett, panterett eller annen rett i tingen (rettsmangel), gjelder reglene om mangler tilsvarende dersom det ikke følger av avtalen at kjøperen skal overta tingen med den begrensning tredjemanns rett medfører. Toårsfristen for reklamasjon i § 32 (2) gjelder likevel ikke.
+
+(2) Kjøperen kan i alle høve kreve erstatning for tap som følge av rettsmangel som forelå ved kjøpet og som han verken kjente eller burde ha kjent til.
+
+(3) Gjør tredjemann krav på å ha rett i tingen og dette bestrides, gjelder reglene i første og andre ledd tilsvarende når kravet ikke er klart ugrunnet.
+
+(4) For tredjemannskrav som bygger på immaterialrett gjelder reglene i første ledd tilsvarende.""",
+        "hva_betyr_html": """<p>Du har kjøpt en vare og tror den er fri og din. Så viser det seg at noen andre har et krav i varen. Det er en «rettsmangel» — ikke en feil ved tingen selv, men en juridisk byrde du ikke visste om.</p>
+<p><strong>Tre typiske eksempler:</strong></p>
+<ul>
+<li><strong>Pant:</strong> Bilen du kjøpte har et pant tinglyst fra forrige eier — banken har sikkerhet i bilen</li>
+<li><strong>Eiendomsrett:</strong> Den du kjøpte av, var ikke egentlig eier — han hadde lånt eller stjålet varen</li>
+<li><strong>Immaterielle rettigheter:</strong> Produktet bryter et patent eller varemerke som en tredjepart eier (fjerde ledd)</li>
+</ul>
+<p><strong>Hovedregel</strong> (første ledd): Samme krav som ved andre mangler — retting, omlevering, prisavslag, heving, erstatning. Unntak: hvis dere har avtalt at du skal overta tingen med den begrensningen tredjemanns rett medfører (typisk: du visste om pantet og betalte mindre).</p>
+<p><strong>Ingen toårsfrist:</strong> Den absolutte toårsfristen i § 32 (2) gjelder ikke for rettsmangler. Logikken: en rettsmangel kan ligge skjult i tiår uten å bli synlig.</p>
+<p><strong>Du har alltid rett til erstatning</strong> (andre ledd) for tap fra rettsmangel som var der ved kjøpet, og som du ikke kjente til eller burde kjent til. Dette er sterkere enn vanlig erstatning — du trenger ikke vise selgerens uaktsomhet.</p>
+<p><strong>Omstridt krav</strong> (tredje ledd): Hvis tredjepart hevder å ha rett, og det bestrides, gjelder reglene «når kravet ikke er klart ugrunnet». Du må altså ikke vente på endelig dom — det holder at kravet er reelt.</p>
+<p><strong>Immaterialrett</strong> (fjerde ledd): Patent, varemerke, opphavsrett — samme regler gjelder.</p>""",
+        "eksempler": [
+            {"navn": "Petter", "tekst": "Petter kjøper en brukt bil for 95 000 kr fra Lars. Tre måneder senere får han brev fra banken: bilen har et tinglyst pant på 40 000 kr fra Lars sin tid som eier. Pantet er fortsatt aktivt fordi Lars ikke har innfridd gjelden. Dette er en rettsmangel etter § 41. Petter kan kreve at Lars rydder opp i pantet, prisavslag tilsvarende verdiforringelsen, heving hvis pantet er vesentlig, eller erstatning. Toårsfristen i § 32 gjelder ikke."},
+            {"navn": "Anne", "tekst": "Anne kjøper et brukt kamera fra Tom for 18 000 kr. Tre uker senere kommer politiet og sier kameraet er stjålet — eieren krever det tilbake. Tom hadde ingen eiendomsrett å overføre. Det er en rettsmangel etter § 41 (1). Hun mister kameraet og kan kreve full erstatning fra Tom etter § 41 (2): pengene tilbake pluss eventuelt direkte tap."},
+            {"navn": "Marius", "tekst": "Marius driver en liten elektronikkbutikk og importerer en spesialprodukt fra Asia. Han selger noen før han får krav fra en patentinnehaver: produktet bryter et europeisk patent. Etter § 41 (4) er det en rettsmangel — selv om varen i seg selv er feilfri. Marius kan kreve omlevering, prisavslag, heving, eller erstatning fra sin leverandør."},
+        ],
+        "vanlige_feil": [
+            "Forveksler rettsmangel med vanlig mangel — fristene er ulike",
+            "Tror toårsfristen gjelder også for rettsmangler — den gjør ikke",
+            "Som kjøper: glemmer å sjekke om bilen har pant før kjøp — det kan du selv unngå",
+            "Som selger: glemmer å informere om eksisterende heftelser",
+        ],
+        "hva_bor_du_html": """<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Sjekk pantsetting før du kjøper bil eller annet stort — det går å gjøre i Brønnøysundregistrene/Statens vegvesen</li>
+<li>Forsikre deg om eierforhold — vis ID, sjekk vognkort, be om dokumentasjon</li>
+<li>Reklamer raskt når rettsmangelen oppdages</li>
+<li>Krev både retting og erstatning hvis aktuelt</li>
+</ul>
+<p><strong>Som selger:</strong></p>
+<ul>
+<li>Vær åpen om alle heftelser</li>
+<li>Rydd opp i pant før salg</li>
+<li>Hvis du selger med kjente begrensninger, skriv det tydelig i avtalen</li>
+</ul>""",
+        "dumme_sporsmal": [
+            {"q": "Hva er forskjellen på rettsmangel og vanlig mangel?", "a": "Vanlig mangel = noe galt med tingen selv. Rettsmangel = noe galt med rettighetene til tingen. Reglene er like, men frister og bevisbyrde varierer noe."},
+            {"q": "Trenger jeg å sjekke pant på alt jeg kjøper?", "a": "For dyre ting som bil, båt, snøscooter — ja, klart. For mindre kjøp er det normalt ikke verdt det."},
+        ],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "30", "tittel": "Krav ved mangel", "available": True},
+            {"lov": "kjopsloven", "paragraf": "32", "tittel": "Reklamasjonsfrister", "available": True},
+            {"lov": "kjopsloven", "paragraf": "40", "tittel": "Erstatning ved mangel", "available": True},
+        ],
+    },
+    {
+        "number": "42",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Din rett til å holde tilbake betaling",
+        "description": "Når selgeren har gjort kontraktbrudd, kan du holde tilbake så mye av betalingen at det dekker kravet ditt — som press for å få ordnet saken.",
+        "kort_svar": "Hvis selgeren har gjort et kontraktbrudd — forsinkelse eller mangel — kan du holde tilbake så mye av betalingen at det sikrer at du får dekket kravet ditt. Det er det viktigste pressmiddelet du har. Du må bare holde tilbake et rimelig beløp — ikke hele kjøpesummen for en småfeil.",
+        "paragraftekst": "Har kjøperen krav som følger av selgerens kontraktbrudd, kan kjøperen holde tilbake så mye av kjøpesummen som vil sikre at han får kravet dekket.",
+        "hva_betyr_html": """<p>Hvis du fortsatt skylder penger til selgeren — typisk på faktura — og selgeren har misligholdt på en eller annen måte, kan du la være å betale hele beløpet. Du holder tilbake nok til å dekke kravet ditt.</p>
+<p><strong>To forutsetninger:</strong></p>
+<ul>
+<li><strong>Du må ha et krav:</strong> Forsinkelse, mangel, erstatningskrav — noe konkret du kan vise til.</li>
+<li><strong>Beløpet må stå i forhold til kravet:</strong> Hvis du har et krav på 5 000 kr, kan du ikke holde tilbake 50 000 kr. Du må holde tilbake et beløp som er rimelig sammenliknet med kravet, men gjerne med en margin.</li>
+</ul>
+<p><strong>Hvorfor er dette så viktig?</strong> Tilbakeholdsrett er det praktiske pressmiddelet i kjøpsretten. Når penger fortsatt er hos deg, har selgeren incitament til å løse saken. Når pengene er borte, må du jakte på dem.</p>
+<p><strong>Du må kommunisere:</strong> Hold tilbake skriftlig, og fortell selgeren hvorfor. Skjult tilbakeholdelse ser ut som mislighold fra din side.</p>
+<h3>Sammenligning: Hvor mye kan du holde tilbake?</h3>
+<table class="rule-table">
+<thead><tr><th>Kravets størrelse</th><th>Anbefalt tilbakeholdelse</th></tr></thead>
+<tbody>
+<tr><td>800 kr småfeil</td><td>1 000-2 000 kr (margin)</td></tr>
+<tr><td>8 000 kr reparasjon</td><td>10 000-12 000 kr</td></tr>
+<tr><td>Hele varen ubrukelig</td><td>Hele restbetalingen</td></tr>
+<tr><td>Ukjent omfang ennå</td><td>Et rimelig anslag</td></tr>
+</tbody>
+</table>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars har bestilt et badekar for 24 000 kr. Han har betalt 12 000 kr i forskudd. Resten skal betales ved levering. Badekaret kommer, men det er en mangel — overflaten har en stor flekk som krever profesjonell polering for 4 000 kr. Lars kan holde tilbake et beløp som dekker kravet. Han skriver: «Jeg holder tilbake 5 000 kr av sluttbetalingen til mangelen er ordnet. Resten betaler jeg i dag.» Det er rimelig — tilstrekkelig til å dekke kostnaden med en liten margin."},
+            {"navn": "Eva", "tekst": "Eva har bestilt nye dører for 45 000 kr, med 15 000 kr betalt i forskudd. Dørene skulle leveres 1. mai, det er 1. juli og fortsatt ingen levering. Eva må leie midlertidig løsning for 8 000 kr. Når dørene endelig leveres, kan Eva holde tilbake 8 000 kr i restbetalingen for å sikre erstatningskravet."},
+            {"navn": "Tom", "tekst": "Tom har kjøpt en oppvaskmaskin for 9 500 kr. Det er en småfeil som koster 800 kr å rette. Tom har betalt 5 000 kr, og skylder 4 500 kr. Han bestemmer seg for å ikke betale noe. Det er trolig urimelig. Holder han tilbake 4 500 kr for en 800 kr feil, kan selgeren si at Tom misligholder selv. Da risikerer Tom forsinkelsesrente og andre konsekvenser."},
+        ],
+        "vanlige_feil": [
+            "Holder tilbake hele beløpet for små feil — kan bli ansett som mislighold",
+            "Holder tilbake i taushet — fortell selgeren hvorfor",
+            "Holder tilbake uten å ha et konkret krav",
+            "Glemmer å vise dokumentasjon på kravet",
+        ],
+        "hva_bor_du_html": """<p><strong>Når du holder tilbake:</strong></p>
+<ol>
+<li>Vurder kravet ditt: hva har du krav på i kroner?</li>
+<li>Sett et rimelig beløp med margin — 25-50% over selve kravet</li>
+<li>Send skriftlig beskjed til selgeren med begrunnelse</li>
+<li>Betal det du faktisk skylder — ikke hold tilbake mer enn nødvendig</li>
+<li>Frigjør pengene når selgeren har ordnet saken</li>
+</ol>
+<p><strong>Mal:</strong></p>
+<p><em>«Jeg viser til [vare/avtale]. På grunn av [forsinkelse / mangel] som jeg har reklamert på [dato], holder jeg tilbake [beløp] kr av kjøpesummen i medhold av kjøpsloven § 42. Det resterende beløpet på [X kr] betaler jeg [dato]. Det tilbakeholdte beløpet frigjøres når [konkret betingelse].»</em></p>""",
+        "dumme_sporsmal": [
+            {"q": "Kan jeg holde tilbake hvis jeg allerede har betalt?", "a": "Nei — det er da heller «krav om tilbakebetaling» du må reise. Tilbakeholdsrett forutsetter at det fortsatt er penger hos deg."},
+            {"q": "Hva med kortbetaling som allerede er trukket?", "a": "Pengene er hos selgeren. Da må du heller reise krav om tilbakeføring eller krav på kjøpsloven andre regler."},
+        ],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "10", "tittel": "Selgerens motsvarende tilbakeholdsrett", "available": True},
+            {"lov": "kjopsloven", "paragraf": "22", "tittel": "Krav ved forsinkelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "30", "tittel": "Krav ved mangel", "available": True},
+        ],
+    },
+    {
+        "number": "43",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Mangel ved bare en del av varen",
+        "description": "Hvis bare en del av leveransen har feil, gjelder mangelreglene for den delen. Hev hele kjøpet bare hvis bruddet er vesentlig for det hele.",
+        "kort_svar": "Hvis bare en del av varen har mangel, gjelder mangelsreglene for den delen. Du kan heve hele kjøpet bare hvis kontraktbruddet er vesentlig for hele leveransen. Hvis selgeren har antatt levering ferdig selv om det mangler noe, behandles dette som en mangel.",
+        "paragraftekst": """(1) Gjelder selgerens kontraktbrudd bare en del av det solgte, får reglene i kapitlet her anvendelse på denne del. Kjøperen kan heve kjøpet i sin helhet når kontraktbruddet er vesentlig for hele kjøpet.
+
+(2) Må selgeren etter forholdene antas å ha avsluttet sin levering enda ikke alt er levert, får reglene om mangler anvendelse.""",
+        "hva_betyr_html": """<p>Du har bestilt 100 stoler. 80 er perfekte, 20 har feil. Hva nå?</p>
+<p><strong>Mangelsreglene gjelder den delen som er gal</strong> (første ledd): De 20 stolene utløser krav — retting, omlevering, prisavslag for de stolene, heving for de stolene, erstatning.</p>
+<p><strong>Heving av hele kjøpet:</strong> Du kan bare heve hele kjøpet hvis mangelen i 20 stoler gjør at hele bestillingen er meningsløs. Trenger du alle 100 til et arrangement og 80 ikke er nok — kan det være vesentlig. Trenger du dem til hver sin bruk — sannsynligvis ikke.</p>
+<p><strong>Avsluttet levering</strong> (andre ledd): Hvis selgeren har antatt at han er ferdig med å levere, men det mangler ting — for eksempel manglet 5 stoler, men selgeren har avsluttet — behandles det som mangel. Du har de samme kravene.</p>""",
+        "eksempler": [
+            {"navn": "Ingrid", "tekst": "Ingrid har bestilt 50 kontorstoler. 45 leveres perfekte, 5 har skader. Reklamasjon viser at de fem skal omleveres. Ingrid har krav på omlevering for de fem etter § 43 (1). Hun kan ikke heve hele leveransen — de 45 perfekte stolene er fortsatt brukbare. Hvis hun hadde bestilt stolene til et bestemt arrangement der hun trenger alle 50 samme dag, og selgeren ikke får omlevert i tide, kan formålet med hele kjøpet være vesentlig forfeilet — og hun kan heve alt."},
+            {"navn": "Marius", "tekst": "Marius har bestilt et nytt kjøkken — skap, benkeplate, vask, oppvaskmaskin. Skap og benkeplate kommer perfekt. Vasken er feil farge, og oppvaskmaskinen mangler hjul. Marius kan kreve retting eller omlevering for de delene som er gale. Han kan ikke heve hele kjøpet — skapene fungerer. Han kan ha krav på et lite prisavslag eller erstatning hvis det medfører ulempe."},
+        ],
+        "vanlige_feil": [
+            "Krever heving av hele bestillingen for små del-mangler",
+            "Glemmer at man kan ha krav på forskjellige reaksjoner for ulike deler",
+            "Tror «alt eller ingenting» — det er nyansert i loven",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Spesifiser nøyaktig hvilke deler som har mangel</li>
+<li>Krev tilsvarende — retting, omlevering — for hver del</li>
+<li>Vurder om mangelen påvirker bruken av resten</li>
+<li>Heving av alt krever vesentlig betydning for hele</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "30", "tittel": "Krav ved mangel", "available": True},
+            {"lov": "kjopsloven", "paragraf": "39", "tittel": "Heving ved mangel", "available": True},
+            {"lov": "kjopsloven", "paragraf": "44", "tittel": "Levering etter hvert", "available": True},
+        ],
+    },
+    {
+        "number": "44",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Levering i flere omganger",
+        "description": "Skal varen leveres i flere omganger? Du kan heve den enkelte leveringen — og noen ganger fremtidige eller tidligere leveringer som henger sammen.",
+        "kort_svar": "Hvis varen skal leveres i flere omganger og det er kontraktbrudd ved en av dem, kan du heve akkurat den leveringen etter de vanlige reglene. Du kan også heve fremtidige leveringer hvis bruddet gir grunn til å tro at det vil bli problemer igjen. Og du kan heve tidligere og senere leveringer som ikke gir mening hver for seg — for eksempel en serie som henger sammen.",
+        "paragraftekst": """(1) Skal selgeren levere etter hvert og er det kontraktbrudd ved en enkelt dellevering, kan kjøperen heve for denne levering etter reglene om heving.
+
+(2) Gir kontraktbruddet kjøperen god grunn til å rekne med at det vil inntre kontraktbrudd som vil gi hevingsrett ved seinere leveringer, kan han på dette grunnlag heve for slike leveringer dersom det skjer innen rimelig tid.
+
+(3) Dersom kjøperen hever for en enkelt levering, kan han samtidig heve kjøpet for tidligere eller seinere leveringer som på grunn av sammenhengen mellom leveringene ikke vil kunne brukes til formål som partene forutsatte på avtaletiden.""",
+        "hva_betyr_html": """<p>Mange avtaler innebærer levering over tid — abonnement, månedlige leveranser, et større oppdrag som leveres i puljer. Loven har egne regler for dette.</p>
+<p><strong>Heving av én levering</strong> (første ledd): Hvis en enkelt leveranse er for sen eller har vesentlig mangel, kan du heve akkurat den. Du beholder resten av avtalen.</p>
+<p><strong>Heve fremtidige leveringer</strong> (andre ledd): Hvis bruddet gir deg «god grunn» til å tro at det vil bli problemer også senere, kan du si nei takk til fremtidige leveringer. Du må handle «innen rimelig tid». Eksempel: leverandøren leverer tre måneder for sent i januar, igjen i februar, og du ser ikke bedring — du kan si: «Jeg trekker meg fra avtalen, jeg vil ikke ha mer.»</p>
+<p><strong>Tidligere og senere leveringer som henger sammen</strong> (tredje ledd): Hvis du hever for én levering, kan du også heve tidligere eller senere leveringer som ikke gir mening uten den. Eksempel: en serie bøker der bind 3 mangler — du kan heve hele serien hvis det ikke gir mening med bare 1, 2, 4 og 5.</p>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars driver et lite snekkerverksted og har avtale om månedlig levering av eik. Tredjegangslevering kommer en måned for sent, fjerdegangslevering er av dårlig kvalitet. Femtegangslevering ser ut til å bli sen igjen. Lars kan etter § 44 (2) heve for fremtidige leveringer — bruddene gir grunn til å tro at problemer fortsetter. Han varsler skriftlig og finner ny leverandør."},
+            {"navn": "Eva", "tekst": "Eva har bestilt en samlerserie på 10 bind. Bind 1-5 er perfekte. Bind 6 har trykkfeil og er ubrukelig. Etter retteforsøk leveres ikke en feilfri bind 6. Eva kan heve for bind 6 etter § 44 (1). Hun kan også heve hele serien etter § 44 (3) hvis den ikke gir mening uten bind 6 — det er et samlerverk hvor sammenhengen er viktig."},
+        ],
+        "vanlige_feil": [
+            "Hever hele avtalen for én dårlig levering uten å vurdere § 44",
+            "Venter for lenge med å heve fremtidige leveringer — du må handle innen rimelig tid",
+            "Glemmer at «henger sammen»-regelen krever at sammenhengen var forutsatt fra start",
+        ],
+        "hva_bor_du_html": """<p>Ved problemer i abonnement eller seriekontrakter:</p>
+<ul>
+<li>Reklamer på den enkelte leveransen</li>
+<li>Hvis mønster: send skriftlig melding om at du trekker deg fra fremtidige leveringer</li>
+<li>Krev erstatning for konkrete merkostnader</li>
+<li>Hvis serien henger sammen: vurder om hele kjøpet bør heves</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "25", "tittel": "Heving ved forsinkelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "39", "tittel": "Heving ved mangel", "available": True},
+            {"lov": "kjopsloven", "paragraf": "43", "tittel": "Mangel ved del av varen", "available": True},
+        ],
+    },
+    {
+        "number": "45",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Pris når avtalen er stille",
+        "description": "Hvis ingen pris er avtalt, skal du betale gjengs pris — det vanlige nivået for slik vare. Hvis det ikke finnes gjengs pris, må prisen være rimelig.",
+        "kort_svar": "Hvis du har inngått et kjøp uten å avtale pris, skal du betale «gjengs pris» — det normale prisnivået på avtaletidspunktet for tilsvarende vare. Hvis det ikke finnes en gjengs pris, skal prisen være rimelig ut fra varens art og kvalitet. Urimelige priser binder ikke.",
+        "paragraftekst": "Er kjøp inngått uten at prisen følger av avtalen, skal kjøperen betale gjengs pris på avtaletiden for samme slags ting solgt under tilsvarende forhold, for så vidt prisen ikke er urimelig. Er det ingen slik gjengs pris, må kjøperen betale det som er rimelig under omsyn til tingens art og godhet og tilhøva ellers.",
+        "hva_betyr_html": """<p>Det er overraskende vanlig å handle uten å avtale eksakt pris — særlig mellom bedrifter med løpende kundeforhold, eller når man bestiller spesialarbeid. Loven svarer på hva som skjer da.</p>
+<p><strong>To regler:</strong></p>
+<ul>
+<li><strong>Gjengs pris:</strong> Hvis varen omsettes regelmessig og det finnes et normalt prisnivå, gjelder det. Eksempel: standardvirke fra en grossist har en gjengs pris. Tilsvarende kunder, tilsvarende forhold.</li>
+<li><strong>Rimelig pris:</strong> Hvis det ikke finnes gjengs pris — særlig for unike eller spesialiserte varer — skal prisen være «rimelig» ut fra varens art og godhet. Det er en bredere vurdering: kvalitet, vanskelighetsgrad, marked.</li>
+</ul>
+<p><strong>Urimelige priser binder ikke:</strong> Selv om det finnes en «gjengs pris», binder den ikke hvis den er urimelig. Vurderingen tar hensyn til kjøper og kontekst.</p>""",
+        "eksempler": [
+            {"navn": "Kari", "tekst": "Kari driver en liten serveringsbedrift og kjøper trekull fra samme leverandør hver måned. Denne gangen glemmer de å nevne pris. Leverandøren leverer som vanlig og fakturerer 280 kr per sekk — markedsprisen. Etter § 45 betaler Kari «gjengs pris». 280 kr er det normale — Kari kan ikke insistere på en lavere pris hun selv ønsket. Hadde leverandøren plutselig fakturert 500 kr per sekk — som ville være langt over markedet — kunne Kari ha vist til urimelighetsregelen."},
+            {"navn": "Marius", "tekst": "Marius bestiller en spesiallaget benk fra en snekker. De avtaler ikke pris — Marius regner med at det blir greit. Når benken er ferdig, fakturerer snekkeren 35 000 kr. Det finnes ingen «gjengs pris» for unike benker. Etter § 45 må prisen være «rimelig» ut fra arbeidet — materialer, tidsbruk, kvalitet. Hvis snekkeren har brukt 60 timer og høykvalitetsmaterialer, kan 35 000 kr være rimelig. Er det 20 timer og standardmaterialer, kan det være urimelig."},
+        ],
+        "vanlige_feil": [
+            "Glemmer å avtale pris og blir overrasket av fakturaen",
+            "Tror «gjengs pris» alltid er den laveste — det er normalprisen, ikke billigst",
+            "Som kjøper: krever en lavere pris uten hjemmel",
+            "Som selger: prøver å ta urimelig høy pris fordi det ikke er avtalt",
+        ],
+        "hva_bor_du_html": """<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Avtal pris før kjøpet — alltid</li>
+<li>Be om tilbud eller estimat skriftlig</li>
+<li>Hvis du får faktura du synes er urimelig: be om underlag og sammenlikning</li>
+</ul>
+<p><strong>Som selger:</strong></p>
+<ul>
+<li>Hvis du leverer uten pris, hold deg til markedet</li>
+<li>Send tilbud før arbeid begynner — det reduserer konflikter</li>
+<li>Dokumenter tidsbruk og materialkostnader for unike varer</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "3", "tittel": "Avtale går foran loven", "available": True},
+            {"lov": "kjopsloven", "paragraf": "46", "tittel": "Pris etter mengde", "available": True},
+            {"lov": "kjopsloven", "paragraf": "47", "tittel": "Bundet av regning", "available": True},
+        ],
+    },
+    {
+        "number": "46",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Pris etter mengde, mål eller vekt",
+        "description": "Ved pris etter mengde, mål eller vekt teller det som er der når risikoen går over på deg — ikke det som var i utgangspunktet.",
+        "kort_svar": "Hvis prisen avhenger av mengde, mål eller vekt — for eksempel kornleveranser eller drivstoff — er det mengden ved tidspunktet da risikoen gikk over på deg som teller. Hvis prisen er etter vekt, trekkes vekten av emballasjen først.",
+        "paragraftekst": """(1) Skal kjøpesummen fastsettes etter tall, mål eller vekt, legges til grunn mengden på det tidspunkt da risikoen for tingen går over på kjøperen.
+
+(2) Er prisen fastsatt etter vekt, trekkes først vekten av innpakningen fra.""",
+        "hva_betyr_html": """<p>For varer som måles eller veies — korn, drivstoff, sand, frukt — er prisen ofte «X kr per kg» eller «Y kr per liter». Hva som faktisk måles, og når, kan ha stor økonomisk betydning.</p>
+<p><strong>Tidspunkt</strong> (første ledd): Det som teller, er mengden idet risikoen går over på deg (jf. § 13). Ikke det selgeren hadde i utgangspunktet, og ikke det som er igjen når du er ferdig med å bruke det.</p>
+<p>Eksempel: Selger har 1 050 kg korn på lager. Han laster 1 020 kg på din vogn ved overtakelse. Under transport ryker noe pga vær — du har 990 kg når du kommer hjem. Risikoen gikk over ved overtakelse (1 020 kg). Du betaler for 1 020 kg, ikke for 1 050 (selgers utgangspunkt) eller 990 (det du faktisk har hjemme).</p>
+<p><strong>Vekt minus emballasje</strong> (andre ledd): Hvis prisen er etter vekt, trekkes innpakningen fra. Du skal ikke betale for kassen som inneholder kornet.</p>""",
+        "eksempler": [
+            {"navn": "Ola", "tekst": "Ola bestiller havre til 4,20 kr per kg fra en grossist. Han henter selv. Lasten veies ved overtakelse: 980 kg netto (etter at vekten av sekkene er trukket fra). Ola betaler for 980 kg × 4,20 kr = 4 116 kr. Hvis sekkene veide 25 kg, har grossisten regnet riktig — § 46 (2) krever at emballasjevekten trekkes fra."},
+            {"navn": "Eva", "tekst": "Eva får levert 3 200 liter fyringsolje. Måleren ved overtakelse viser 3 195 liter. Underveis til tanken hennes lekker det ut 8 liter — i tanken hennes er det 3 187. Etter § 46 betaler Eva for 3 195 liter — det som var levert ved risikoens overgang. De 8 liter som forsvant senere, er hennes problem."},
+        ],
+        "vanlige_feil": [
+            "Krever prisreduksjon for det som forsvant etter overtakelse — du har risikoen",
+            "Glemmer at emballasje skal trekkes fra",
+            "Som selger: tar betalt for utgangsvekt, ikke faktisk levert mengde",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Veie/måle ved overtakelse — det er det avgjørende tidspunktet</li>
+<li>Skriftlig dokumentasjon av nettoinnhold</li>
+<li>Sjekk fakturaen mot målepunkt og avtale</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "13", "tittel": "Når går risikoen over", "available": True},
+            {"lov": "kjopsloven", "paragraf": "45", "tittel": "Pris når avtalen er stille", "available": True},
+        ],
+    },
+    {
+        "number": "47",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Når faktura blir bindende",
+        "description": "Får du regning du ikke har avtalt prisen for, er du bundet av den hvis du ikke sier ifra innen rimelig tid. Unntak: hvis lavere pris er avtalt eller fakturaen er urimelig.",
+        "kort_svar": "Hvis du får en faktura eller regning og ikke sier ifra innen rimelig tid, er du bundet av prisen som står der. Unntak: hvis dere har avtalt en lavere pris, eller hvis fakturaen er urimelig. Det betyr at du må reagere raskt på fakturaer du er uenig i.",
+        "paragraftekst": "Har kjøperen fått rekning eller nota, er han bundet av den pris som er oppført, om han ikke innen rimelig tid sier fra at han ikke godtar den. Dette gjelder ikke når lavere pris følger av avtale eller den oppførte pris er urimelig.",
+        "hva_betyr_html": """<p>En faktura er ikke bare et betalingskrav — det er også et tilbud om pris. Hvis du tier, sier du i praksis ja.</p>
+<p><strong>Hovedregel:</strong> Hvis du får regning og ikke sier ifra innen rimelig tid, gjelder prisen som er oppført. Tausheten din binder.</p>
+<p><strong>To unntak:</strong></p>
+<ul>
+<li><strong>Lavere pris er avtalt:</strong> Hvis dere har avtalt en konkret pris og fakturaen er høyere, gjelder avtalen — ikke fakturaen. Du kan kreve at fakturaen rettes.</li>
+<li><strong>Urimelig pris:</strong> Selv om dere ikke har avtalt pris, kan ikke selgeren bare sette hva han vil. Hvis fakturaen er urimelig — langt over markedet eller det rimelige — er du ikke bundet.</li>
+</ul>
+<p>«Rimelig tid» for å protestere avhenger av sammenhengen. Som privatperson eller småbedrift: 1-2 uker er normalt trygt. Forretningsforhold med løpende fakturering kan kreve raskere reaksjon.</p>
+<p><strong>Hvorfor er dette så viktig?</strong> Mange tror at de kan bare la fakturaen ligge og diskutere senere. Det stemmer ikke. Tausheten gjør deg bundet.</p>""",
+        "eksempler": [
+            {"navn": "Petter", "tekst": "Petter har leid en håndverker til mindre arbeid. De avtalte ikke konkret pris. Petter får regning på 12 500 kr — han syns det er mye for det som ble gjort. Hvis Petter ikke protesterer, gjelder fakturaen etter § 47. Han må reagere innen rimelig tid: send en skriftlig melding der han bestrider prisen, gjerne med begrunnelse om hva han mener er rimelig. Han kan ha krav på at prisen settes ned hvis 12 500 er over «rimelig» nivå."},
+            {"navn": "Sara", "tekst": "Sara har avtalt med en leverandør at vareleveransen koster 18 000 kr. Fakturaen kommer på 22 500 kr. Avtalen gjelder etter § 47 — Sara er ikke bundet av fakturaprisen. Hun skriver til leverandøren: «Avtalen var 18 000 kr. Jeg ber om kreditnota for 4 500 kr og betaler 18 000 kr.»"},
+        ],
+        "vanlige_feil": [
+            "Lar fakturaer ligge og tror du kan diskutere senere",
+            "Bestrider muntlig uten å ha skriftlig bevis",
+            "Glemmer å reagere raskt — fristen tikker",
+            "Tror urimelighet er lett å vise — det krever ofte sammenliknende dokumentasjon",
+        ],
+        "hva_bor_du_html": """<p>Når du får en faktura du er uenig i:</p>
+<ol>
+<li>Reager raskt — innen 1-2 uker</li>
+<li>Skriftlig protest — e-post eller brev</li>
+<li>Begrunn: avtalt pris, urimelig pris, eller annet</li>
+<li>Hold tilbake den omstridte delen, betal det du faktisk skylder</li>
+<li>Be om kreditnota og spesifikasjon</li>
+</ol>
+<p><strong>Mal:</strong></p>
+<p><em>«Jeg viser til faktura [nr] av [dato] på [beløp]. Jeg godtar ikke fakturabeløpet. Begrunnelse: [avtalt pris var X / fakturabeløpet er urimelig fordi Y]. Jeg ber om kreditnota og ny faktura på korrekt beløp [Z kr]. Jeg betaler det jeg faktisk skylder ved utløp av ordinær frist.»</em></p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "3", "tittel": "Avtale går foran loven", "available": True},
+            {"lov": "kjopsloven", "paragraf": "45", "tittel": "Pris når avtalen er stille", "available": True},
+        ],
+    },
+    {
+        "number": "48",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Hvor skal du betale?",
+        "description": "Du skal betale på selgerens forretningssted. Skjer betaling ved overlevering av varen eller dokument, betaler du der overlevering skjer.",
+        "kort_svar": "Hovedregelen er at du skal betale på selgerens forretningssted. Hvis betaling skjer mot overlevering av vare eller dokument, betaler du der overleveringen skjer. Betalingsplikten omfatter også å akseptere veksel eller stille bankgaranti hvis det er avtalt. Hvis selgeren flytter etter avtalen er inngått, må han dekke ekstra kostnader fra flyttingen.",
+        "paragraftekst": """(1) Kjøpesummen skal betales på selgerens forretningssted (i tilfelle bosted jf § 83). Dersom betaling skal skje mot overlevering av tingen eller dokument, skal det gjøres på det sted overleveringen skjer.
+
+(2) Plikten til å betale kjøpesummen omfatter også plikt etter avtalen til å akseptere veksel, stille remburs, bankgaranti eller annen sikkerhet samt å treffe andre tiltak for å få betalt kjøpesummen.
+
+(3) Selgeren svarer for økte kostnader i forbindelse med betalingen som skyldes at han har flyttet sitt forretningssted etter at kjøpet ble inngått.""",
+        "hva_betyr_html": """<p>Loven gir tre regler om betalingssted og -metode:</p>
+<p><strong>Hvor:</strong> Som hovedregel betaler du der selgeren har sitt forretningssted (eller bosted hvis privatperson). I praksis i dag betyr det at du sender penger til selgerens konto — det er en form for betaling «på selgerens forretningssted».</p>
+<p>Hvis betaling skjer mot overlevering — typisk vare-mot-penger i butikk eller ved henting — betaler du der overleveringen skjer.</p>
+<p><strong>Hva:</strong> Betalingsplikten er ikke bare å overføre penger. Hvis dere har avtalt bankgaranti, remburs eller annen sikkerhet, må du sørge for det også. Dette gjelder særlig i bedriftshandel og internasjonal handel.</p>
+<p><strong>Selgerens flytting:</strong> Hvis selgeren flytter etter at kjøpet er inngått og det fører til ekstra kostnader for deg (gebyrer, lengre transport for kontant betaling), må selgeren dekke det.</p>
+<p>I praksis er denne paragrafen mest relevant for B2B-handel og internasjonal handel. Mellom privatpersoner skjer mesteparten via Vipps eller bankoverføring.</p>""",
+        "eksempler": [
+            {"navn": "Anne", "tekst": "Anne kjøper en gammel kommode fra Tom for 8 500 kr. Hun avtaler å hente — og betale — samtidig. Hun møter opp, sjekker kommoden, og betaler via Vipps mens hun står der. Dette er betaling «der overleveringen skjer» etter § 48 første ledd. Det vanlige privatscenario."},
+            {"navn": "Tom", "tekst": "Tom driver et lite import-firma og kjøper varer fra en tysk leverandør. Avtalen krever at Tom stiller bankgaranti før varene sendes. Tom har betalingsplikt utvidet etter § 48 (2) — han må ikke bare overføre penger, men også sørge for at bankgarantien er på plass. Ellers misligholder han."},
+        ],
+        "vanlige_feil": [
+            "Tror betaling er gjort når du sender Vipps — den må også komme fram",
+            "Glemmer at bankoverføringer kan ta dager",
+            "Som B2B-kjøper: tror veksel/remburs er valgfritt når det er avtalt",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Bekreft betaling — Vipps-bekreftelse, kontoutskrift, kvittering</li>
+<li>Vær oppmerksom på tidsforskjell ved internasjonal handel</li>
+<li>Ha sikkerhetsmarginer ved store kjøp — start betalingen i god tid før overlevering</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "10", "tittel": "Selgerens tilbakeholdsrett", "available": True},
+            {"lov": "kjopsloven", "paragraf": "49", "tittel": "Når skal du betale", "available": True},
+        ],
+    },
+    {
+        "number": "49",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Når skal du betale?",
+        "description": "Står betalingstid ikke i avtalen, betaler du når selgeren krever det — men ikke før varen er levert eller stilt til din rådighet.",
+        "kort_svar": "Hvis ikke betalingstidspunkt er avtalt, skal du betale når selgeren krever det — men ikke før varen er levert eller stilt til din rådighet. Du har normalt rett til å undersøke varen før betaling, men kan ikke utsette betalingen med mer enn 30 dager på den måten. Ved bruk av konnossement i transport kan betaling kreves uten at du har sett varen.",
+        "paragraftekst": """(1) Følger ikke betalingstiden av avtalen, skal kjøperen betale når selgeren krever det, men ikke før tingen blir overlevert kjøperen eller stilt til hans rådighet i samsvar med avtalen og loven.
+
+(2) Før kjøperen betaler har han likevel rett til å få undersøke tingen på vanlig måte, når dette ikke er uforenlig med den avtalte framgangsmåte for levering og betaling av kjøpesummen. Kjøperen kan ikke som følge av en slik undersøkelse utsette betalingen med mer enn 30 dager, med mindre selgeren uttrykkelig har godkjent dette.
+
+(3) Dersom det brukes konnossement ved transporten av tingen til bestemmelsesstedet, eller transporten til kjøperen for øvrig skjer på slike vilkår at selgeren ikke kan rå over tingen etter betalingen, kan betaling kreves mot konnossement, fraktbrev eller annet bevis for at tingen blir transportert på slike vilkår. Dette gjelder selv om tingen ikke er kommet fram eller kjøperen ikke har hatt høve til å undersøke den.""",
+        "hva_betyr_html": """<p>Tre regler om betalingstidspunkt:</p>
+<p><strong>Hovedregel</strong> (første ledd): Hvis ingenting er avtalt om når du skal betale, er det enkelt:</p>
+<ul>
+<li>Selgeren må kreve betaling — du har ikke plikt til å betale på eget initiativ</li>
+<li>Du skal ikke betale før varen er levert eller stilt til din rådighet</li>
+</ul>
+<p>Med andre ord: penger mot vare. Du betaler ikke før du har varen eller kan disponere over den.</p>
+<p><strong>Rett til å undersøke</strong> (andre ledd): Før du betaler har du rett til å sjekke varen på normal måte — åpne kassen, slå på maskinen, sjekke fakta. Men denne undersøkelsen kan ikke brukes til å utsette betalingen mer enn 30 dager.</p>
+<p>Unntak: hvis det er avtalt en bestemt fremgangsmåte for betaling som ikke gir rom for forundersøkelse (for eksempel oppkrav eller forskuddsbetaling).</p>
+<p><strong>Konnossement</strong> (tredje ledd): Ved internasjonal sjøhandel og enkelte andre transportformer brukes konnossement — et transportdokument som gir disposisjonsrett over varen. Når slik dokumentbasert handel skjer, kan selgeren kreve betaling mot konnossement uten at du har sett selve varen. Logikken: dokumentet gir deg rett til å disponere over varen, og uten betaling får selgeren tilbake disposisjonsretten.</p>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars har bestilt en symaskin fra en privatperson for 6 500 kr. De har ikke avtalt når Lars skal betale. Selgeren leverer maskinen. Etter § 49 må Lars betale når selgeren krever det — typisk samme dag eller dagene etter levering. Han kan be om å sjekke maskinen først, men kan ikke trekke ut betalingen."},
+            {"navn": "Eva", "tekst": "Eva har kjøpt en brukt motor for 28 000 kr. Hun ber selgeren om å sjekke at den faktisk virker før hun betaler. Selgeren godtar — Eva tar med en mekanikervenn og tester. Det er § 49 (2) i praksis. Eva har rett til «undersøkelse på vanlig måte». Men hun kan ikke dra det ut i ukevis — 30 dager er øvre grense, og ofte er rimelig tid mye kortere."},
+            {"navn": "Tom", "tekst": "Tom driver et lite firma og importerer korn fra utlandet med skipstransport. Avtalen bruker konnossement — det er normalt i sjøhandel. Etter § 49 (3) kan selgeren kreve betaling mot konnossement, ikke mot vare i hånden. Tom betaler basert på dokumentene som gir ham rett til å hente kornet i havn. Han kan ikke holde tilbake penger til kornet er fysisk hjemme."},
+        ],
+        "vanlige_feil": [
+            "Tror du må betale med en gang kjøpet er inngått — du må vente til levering eller selgerens krav",
+            "Trekker ut undersøkelsen for å utsette betalingen — det er begrenset til 30 dager",
+            "Som selger: glemmer å kreve betaling og blir surprised at penger ikke kommer",
+            "Forveksler konnossementsregler med vanlig hentekjøp",
+        ],
+        "hva_bor_du_html": """<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Avtal alltid betalingstid skriftlig — det er enklere</li>
+<li>Undersøk varen før betaling hvis du kan</li>
+<li>Hvis du vil ha kreditt (betal senere), avtal det tydelig</li>
+</ul>
+<p><strong>Som selger:</strong></p>
+<ul>
+<li>Krev betaling skriftlig så snart varen er levert</li>
+<li>Send faktura med klar forfallsdato</li>
+<li>Vurder forsinkelsesrente (§ 71) hvis betalingen drar ut</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "10", "tittel": "Selgerens tilbakeholdsrett", "available": True},
+            {"lov": "kjopsloven", "paragraf": "48", "tittel": "Hvor du skal betale", "available": True},
+        ],
+    },
+    {
+        "number": "50",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Du må medvirke til kjøpet",
+        "description": "Du må gjøre din del — gi info selgeren trenger, og hente eller motta varen. Hvis du ikke gjør det, er du i kontraktbrudd.",
+        "kort_svar": "Du har to plikter som kjøper: medvirke der det er rimelig at selgeren trenger din hjelp for å levere, og overta varen — enten ved å hente eller motta den. Glemmer eller nekter du, er du i kontraktbrudd og selgeren kan kreve oppfyllelse, heving og erstatning.",
+        "paragraftekst": "Kjøperen skal (a) yte slik medvirkning som det er rimelig å vente av ham for at selgeren skal kunne oppfylle kjøpet, og (b) overta tingen ved å hente eller motta den.",
+        "hva_betyr_html": """<p>Kjøpsloven legger ikke bare plikter på selgeren. Du som kjøper må også gjøre din del. Loven nevner to plikter:</p>
+<p><strong>Medvirkning</strong> (bokstav a): Du må gjøre det som er rimelig å forvente av deg for at selgeren kan levere. Eksempler:</p>
+<ul>
+<li>Gi nødvendig informasjon (mål, spesifikasjoner, leveringsadresse)</li>
+<li>Stille på avtalt sted til avtalt tid</li>
+<li>Sørge for nødvendige tillatelser eller forberedelser</li>
+<li>Bekrefte spesifikasjoner når selgeren ber om det</li>
+</ul>
+<p>Vurderingen er hva som er rimelig. Du må ikke gjøre selgerens jobb, men du må ikke heller stille deg passiv mens han trenger din respons.</p>
+<p><strong>Overtakelse</strong> (bokstav b): Du må enten hente eller motta varen. Du kan ikke bare la den stå hos selgeren eller nekte å åpne for budet.</p>
+<p><strong>Konsekvenser hvis du svikter:</strong> Du er i kontraktbrudd. Selgeren kan kreve oppfyllelse, heve, kreve erstatning og holde tilbake levering. Risikoen kan også gå over på deg (§ 13 andre ledd).</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius bestiller spesialtilpassede dører for 65 000 kr. Selgeren ber om mål og fargevalg. Marius svarer ikke i to uker. Levering blir forsinket. Marius er i medvirkningsbrudd etter § 50 (a). Forsinkelsen er hans skyld — selgeren kan kreve erstatning for konkrete tap og fortsatt kreve betaling når dørene er klare."},
+            {"navn": "Ingrid", "tekst": "Ingrid har kjøpt en brukt kjøkkenmaskin fra Tom for 4 200 kr. Avtalt henting onsdag. Ingrid kommer ikke og svarer ikke på meldinger. Tom har risikoen for varen kun frem til avtalt henting. Etter onsdag går risikoen over på Ingrid (§ 13). Tom kan kreve betaling, eventuelt heve eller selge maskinen til en annen og kreve erstatning hvis han ikke får ut samme pris."},
+        ],
+        "vanlige_feil": [
+            "Tror selgeren skal «ordne alt» — du har egne plikter",
+            "Glemmer at forsinkelse fra din side flytter risiko og kostnader",
+            "Som selger: gir ikke beskjed om at du venter på info fra kjøperen — dokumenter det",
+        ],
+        "hva_bor_du_html": """<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Svar raskt på henvendelser fra selgeren</li>
+<li>Møt opp i tide</li>
+<li>Gi nødvendig informasjon tydelig og skriftlig</li>
+<li>Hvis du må utsette, varsle selgeren</li>
+</ul>
+<p><strong>Som selger:</strong></p>
+<ul>
+<li>Be skriftlig om informasjon du trenger</li>
+<li>Dokumenter at du har bedt</li>
+<li>Sett rimelig frist for kjøperens svar</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "13", "tittel": "Risikoens overgang ved manglende medvirkning", "available": True},
+        ],
+    },
 ]

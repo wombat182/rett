@@ -55,10 +55,11 @@ body::before {
 
 nav.site-nav { padding: 32px 0; display: flex; justify-content: space-between; align-items: center; }
 .logo {
-  font-family: var(--serif); font-weight: 500; font-size: 26px; letter-spacing: -0.015em;
-  color: var(--ink); text-decoration: none; font-variation-settings: "opsz" 36;
+  font-family: var(--serif); font-weight: 400; font-size: 32px; letter-spacing: -0.025em;
+  color: var(--ink); text-decoration: none; font-variation-settings: "opsz" 48;
+  line-height: 1;
 }
-.logo span { color: var(--accent); }
+.logo span { color: var(--accent); font-style: italic; }
 .nav-links { display: flex; gap: 36px; list-style: none; }
 .nav-links a { color: var(--ink-soft); text-decoration: none; font-size: 15px; font-weight: 500; transition: color 0.2s; }
 .nav-links a:hover { color: var(--accent); }
@@ -81,9 +82,9 @@ nav.site-nav { padding: 32px 0; display: flex; justify-content: space-between; a
 }
 .article-title {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(32px, 4vw, 48px);
-  line-height: 1.1; letter-spacing: -0.018em; margin-bottom: 24px;
-  font-variation-settings: "opsz" 48;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.12; letter-spacing: -0.015em; margin-bottom: 24px;
+  font-variation-settings: "opsz" 40;
 }
 .article-title .paragraf-num { color: var(--accent); font-style: italic; }
 .article-description {
@@ -351,11 +352,11 @@ footer.site-footer a:hover { color: var(--bg); }
 .homepage-hero h1 {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(44px, 6vw, 76px);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
   margin-bottom: 0;
-  font-variation-settings: "opsz" 72;
+  font-variation-settings: "opsz" 60;
 }
 .homepage-hero h1 + h1 { margin-bottom: 32px; }
 .homepage-hero h1 em {
@@ -444,10 +445,10 @@ footer.site-footer a:hover { color: var(--bg); }
 .om-header h1 {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(48px, 6vw, 76px);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
-  font-variation-settings: "opsz" 72;
+  font-size: clamp(38px, 5vw, 60px);
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  font-variation-settings: "opsz" 60;
 }
 .om-header h1 em {
   font-style: italic;
@@ -989,7 +990,7 @@ def render_homepage():
   <section class="home-section">
     <div class="section-header">
       <h2>Bla i alle lover</h2>
-      <p class="section-sub">69 paragrafer publisert. Flere kommer.</p>
+      <p class="section-sub">79 paragrafer publisert. Flere kommer.</p>
     </div>
     <div class="paragraph-list">
       <a href="{prefix}lover/angrerettloven/" class="paragraph-list-item">
@@ -997,7 +998,7 @@ def render_homepage():
         <div class="paragraph-list-title">Angrerettloven</div>
       </a>
       <a href="{prefix}lover/kjopsloven/" class="paragraph-list-item">
-        <div class="paragraph-list-meta">PRIVATKJØP · 39 paragrafer</div>
+        <div class="paragraph-list-meta">PRIVATKJØP · 49 paragrafer</div>
         <div class="paragraph-list-title">Kjøpsloven</div>
       </a>
       <a href="{prefix}lover/" class="paragraph-list-item">
