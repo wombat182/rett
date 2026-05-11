@@ -2537,4 +2537,483 @@ PARAGRAPHS = [
             {"lov": "kjopsloven", "paragraf": "13", "tittel": "Risikoens overgang ved manglende medvirkning", "available": True},
         ],
     },
+    {
+        "number": "51",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Hva selgeren kan kreve hvis du ikke holder din del",
+        "description": "Hvis du som kjøper ikke betaler eller medvirker, kan selgeren kreve oppfyllelse, heve, kreve erstatning, holde tilbake varen og kreve forsinkelsesrente.",
+        "kort_svar": "Hvis du som kjøper ikke betaler eller misligholder dine plikter, har selgeren fem verktøy: kreve oppfyllelse (betaling/medvirkning), heve kjøpet, kreve erstatning, holde tilbake varen, og kreve forsinkelsesrente. Han kan kombinere kravene — erstatning faller ikke bort selv om han krever noe annet.",
+        "paragraftekst": """(1) Dersom kjøperen ikke betaler eller oppfyller sine øvrige plikter etter avtalen eller loven, og dette ikke beror på selgeren eller forhold på hans side, kan selgeren kreve oppfyllelse, heving og erstatning etter bestemmelsene i kapitlet her. Han kan også holde tilbake ytelse etter § 10 samt kreve rente etter § 71.
+
+(2) Oppfyller ikke kjøperen sin plikt til å overta tingen, og beror dette ikke på selgeren eller forhold på hans side, gjelder isteden reglene i §§ 55, 57 (2) og 58.
+
+(3) Selgerens rett til erstatning og rente faller ikke bort ved at han gjør gjeldende andre krav eller ved at disse ikke kan gjøres gjeldende.""",
+        "hva_betyr_html": """<p>Dette er motstykket til § 22 (kjøperens krav ved selgerens kontraktbrudd). Når det er du som ikke holder din del, har selgeren parallelle verktøy:</p>
+<p><strong>1. Kreve oppfyllelse</strong> (§ 52, § 53): Han kan fastholde kjøpet og kreve at du betaler eller medvirker.</p>
+<p><strong>2. Heve kjøpet</strong> (§§ 54, 55): Hvis bruddet er vesentlig, eller du ikke leverer innen tilleggsfrist.</p>
+<p><strong>3. Kreve erstatning</strong> (§ 57): Få dekket konkrete tap.</p>
+<p><strong>4. Holde tilbake varen</strong> (§ 10): Ikke gi fra seg varen før du betaler.</p>
+<p><strong>5. Forsinkelsesrente</strong> (§ 71): Etter forsinkelsesrenteloven.</p>
+<p><strong>Spesialregler ved manglende overtakelse</strong> (andre ledd): Hvis problemet bare er at du ikke overtar varen (ikke betaler eller annet), gjelder bare et utvalg av reglene — §§ 55, 57 (2) og 58.</p>
+<p><strong>Erstatning står ved makt</strong> (tredje ledd): Selgeren mister ikke erstatningskravet ved å gjøre gjeldende andre krav. Han kan kreve betaling og erstatning for forsinkelsen. Han kan heve og kreve erstatning for tap.</p>""",
+        "eksempler": [
+            {"navn": "Ola", "tekst": "Ola har kjøpt utstyr for 35 000 kr på faktura med 30 dagers betalingsfrist. Forfall passerer — Ola betaler ikke. Selgeren kan kreve betaling (§ 52), kreve forsinkelsesrente (§ 71), holde tilbake fremtidige leveranser (§ 10), heve kjøpet hvis bruddet er vesentlig eller tilleggsfristen utløper (§ 54), og kreve erstatning for konkrete tap (§ 57). I praksis sender selgeren først purring, så inkassovarsel, så inkasso — alt mens forsinkelsesrenten løper."},
+            {"navn": "Anne", "tekst": "Anne har kjøpt møbler for 28 000 kr. Hun har betalt, men dukker ikke opp for å hente etter avtale. Selgeren har lager-kostnader på 1 500 kr per uke. Etter § 51 (2) gjelder spesialregler for overtakelsesbrudd: selgeren kan heve hvis han har «særlig interesse i å bli av med tingen» (§ 55), kreve erstatning for lagerkostnader (§ 57 (2)), og må varsle Anne om eventuelle hindringer (§ 58)."},
+        ],
+        "vanlige_feil": [
+            "Som kjøper: tror manglende betaling bare er «litt sent» — det er kontraktbrudd",
+            "Som selger: glemmer at erstatningsretten ikke faller bort ved heving",
+            "Som selger: krever heving uten å ha satt tilleggsfrist",
+            "Glemmer forsinkelsesrente — den løper automatisk fra forfall",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger ved kjøpers mislighold:</strong></p>
+<ul>
+<li>Send purring raskt etter forfall</li>
+<li>Beregn forsinkelsesrente fra forfallsdato</li>
+<li>Sett tilleggsfrist hvis du vurderer heving (§ 54)</li>
+<li>Dokumenter tap som kan kreves erstattet</li>
+<li>Vurder inkasso for ubetalte krav</li>
+</ul>
+<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Betal i tide, eller varsle om problemer</li>
+<li>Hvis du har innsigelser: skriftlig protest, ikke bare unngå betaling</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "50", "tittel": "Kjøperens plikter", "available": True},
+            {"lov": "kjopsloven", "paragraf": "52", "tittel": "Rett til oppfyllelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "54", "tittel": "Heving når kjøperen ikke betaler", "available": True},
+            {"lov": "kjopsloven", "paragraf": "57", "tittel": "Erstatning ved kjøperens mislighold", "available": True},
+            {"lov": "kjopsloven", "paragraf": "71", "tittel": "Forsinkelsesrente", "available": False},
+        ],
+    },
+    {
+        "number": "52",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Selgerens rett til å kreve betaling og avbestilling",
+        "description": "Selgeren kan fastholde kjøpet og kreve betaling — men ikke hvis betaling er hindret av forhold utenfor din kontroll. Avbestiller du tilvirkningskjøp, har selgeren begrenset rett til å fortsette.",
+        "kort_svar": "Selgeren kan kreve at du betaler. Unntak: hvis betaling er hindret av noe utenfor din kontroll — for eksempel betalingsformidlingsstans. Hvis du avbestiller en spesialtilvirket vare, kan selgeren ikke bare fortsette arbeidet og kreve betaling for alt — bortsett fra hvis avbrudd ville medføre betydelig ulempe.",
+        "paragraftekst": """(1) Selgeren kan fastholde kjøpet og kreve at kjøperen betaler kjøpesummen. Dette gjelder likevel ikke så lenge betalingen hindres av stans i samferdselen eller betalingsformidlingen eller annet forhold utenfor kjøperens kontroll og som han ikke kan overvinne.
+
+(2) Avbestiller kjøperen ting som skal tilvirkes særskilt for ham, kan selgeren ikke fastholde kjøpet ved å fortsette tilvirkingen, gjøre andre forberedelser til leveringen samt kreve betaling, med mindre avbrudd ville føre med seg betydelig ulempe for ham eller risiko for at han ikke får erstattet tap som avbestillingen medfører. Kan selgeren ikke fastholde kjøpet, utmåles erstatning for tap som følge av avbestillingen i samsvar med reglene i kapittel X.
+
+(3) Er tingen ennå ikke levert, taper selgeren sin rett til å kreve oppfyllelse om han venter urimelig lenge med å fremme kravet.""",
+        "hva_betyr_html": """<p>To hovedsituasjoner:</p>
+<p><strong>Vanlig betalingskrav</strong> (første ledd): Hovedregelen er at selgeren kan kreve betaling. Unntak: hvis du er hindret av forhold utenfor din kontroll — typisk:</p>
+<ul>
+<li>Betalingssystemer er nede</li>
+<li>Strømbrudd, IT-stans</li>
+<li>Andre uforutsette hindringer du ikke kan overvinne</li>
+</ul>
+<p>Vanlig «jeg har ikke råd» er ikke en gyldig hindring.</p>
+<p><strong>Avbestilling av tilvirkningskjøp</strong> (andre ledd): Hvis du har bestilt noe som skal lages spesielt for deg (jf. § 2), og du avbestiller — kan selgeren ikke bare ignorere det, fortsette arbeidet, og kreve full betaling. Han må stoppe.</p>
+<p><strong>Unntak:</strong> Hvis det å stoppe ville medføre «betydelig ulempe» eller risiko for at selgeren ikke får dekket sine tap. Da kan han fullføre. Eksempel: arbeidet er nesten ferdig, materialer er kjøpt og kan ikke returneres.</p>
+<p>Hvis selgeren ikke kan fortsette og kreve betaling, har han uansett rett til erstatning for tap avbestillingen påførte ham — etter kapittel X (§§ 67-70).</p>
+<p><strong>Selgeren må fremme kravet i tide</strong> (tredje ledd): Hvis varen ikke er levert ennå, taper selgeren retten til å kreve oppfyllelse hvis han venter urimelig lenge.</p>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars driver et lite firma og har bestilt utstyr for 80 000 kr. Forfall passerer. Lars sier «jeg har strammere økonomi nå». Etter § 52 (1) er det ikke en gyldig hindring. Selgeren kan kreve betaling — pluss forsinkelsesrente etter § 71. «Vanskelig økonomi» er ikke en hindring utenfor kontroll. Hvis Lars derimot kunne vise at banksystemet hans var nede en uke — det ville være en relevant hindring, men bare for den uken."},
+            {"navn": "Anne", "tekst": "Anne har bestilt et spesialkjøkken for 320 000 kr. Etter en måned ombestemmer hun seg og avbestiller. Snekkeren har brukt 40 timer, kjøpt materialer for 80 000 kr, men kan ikke selge dem til andre. Etter § 52 (2) kan snekkeren ikke fortsette og kreve full betaling — det er en avbestilling. Men han har krav på erstatning for tapet: utlegg på materialer + tapt fortjeneste. Anne kan ikke bare gå fra avtalen kostnadsfritt."},
+        ],
+        "vanlige_feil": [
+            "Som kjøper: tror du kan avbestille spesialarbeid uten kostnad — det kan du sjelden",
+            "Som selger: fortsetter spesialtilvirkning etter avbestilling og krever full pris — det aksepteres ikke",
+            "Som selger: glemmer at man kan miste oppfyllelseskravet ved å vente",
+        ],
+        "hva_bor_du_html": """<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Hvis du må avbestille spesialarbeid: gjør det skriftlig så raskt som mulig</li>
+<li>Forhandle om erstatningen</li>
+<li>Vær forberedt på å betale for utført arbeid + materialer + tapt fortjeneste</li>
+</ul>
+<p><strong>Som selger:</strong></p>
+<ul>
+<li>Ved avbestilling: vurder om du kan stoppe — det er som regel hovedregelen</li>
+<li>Dokumenter alle utlegg og timer</li>
+<li>Send erstatningskrav skriftlig med spesifikasjon</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "2", "tittel": "Tilvirkningskjøp", "available": True},
+            {"lov": "kjopsloven", "paragraf": "26", "tittel": "Heving av tilvirkningskjøp", "available": True},
+            {"lov": "kjopsloven", "paragraf": "51", "tittel": "Selgerens krav generelt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "54", "tittel": "Heving når kjøperen ikke betaler", "available": True},
+        ],
+    },
+    {
+        "number": "53",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Selgerens rett til å kreve medvirkning",
+        "description": "Selgeren kan kreve at du gjør din del — så lenge det ikke er umulig eller urimelig kostbart for deg. Samme regler som motstykket for kjøperen.",
+        "kort_svar": "Hvis du ikke gir nødvendig informasjon eller på annen måte ikke medvirker som du skal, kan selgeren kreve at du gjør det. Det gjelder med samme begrensninger som for kjøperens krav om oppfyllelse: ikke hvis det er umulig, og ikke hvis det vil koste deg urimelig mye sammenliknet med selgerens interesse.",
+        "paragraftekst": "Om selgerens rett til å kreve oppfyllelse av kjøperens plikt til å medvirke til kjøpet gjelder § 23 tilsvarende.",
+        "hva_betyr_html": """<p>Loven gir selgeren samme rett som du har til å kreve oppfyllelse — bare speilvendt. Hvis du etter § 50 må medvirke, og du ikke gjør det, kan selgeren kreve det.</p>
+<p><strong>Begrensningene fra § 23 gjelder også her:</strong></p>
+<ul>
+<li>Selgeren kan ikke kreve medvirkning hvis det er umulig (du har ikke informasjonen, du er syk)</li>
+<li>Selgeren kan ikke kreve medvirkning hvis det vil koste deg urimelig mye i forhold til selgerens interesse</li>
+<li>Hvis hindringen er kortvarig, gjelder kravet igjen når den er borte</li>
+<li>Selgeren mister retten hvis han venter urimelig lenge med å fremme kravet</li>
+</ul>
+<p>I praksis er medvirkning ofte enkle ting — gi informasjon, åpne døren, signere et papir — som det sjelden er hindringer mot.</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius har bestilt en spesialtilpasset hylle for 18 000 kr. Snekkeren ber om endelige mål. Marius svarer ikke i tre uker — han er bare opptatt. Snekkeren kan kreve oppfyllelse av medvirkningsplikten etter § 53. Han kan også, i siste instans, sette tilleggsfrist og deretter heve etter § 55."},
+            {"navn": "Eva", "tekst": "Eva har bestilt et spesialdesignet skap, men selgeren ber om mål Eva ikke har — hun trenger en kyndig venn til å måle for henne. Det tar tid. Hvis det er en reell hindring Eva ikke kan overvinne raskt, kan selgeren ikke umiddelbart kreve oppfyllelse etter § 53. Men hvis Eva venter unødvendig lenge med å skaffe målene, kommer hun i kontraktbrudd."},
+        ],
+        "vanlige_feil": [
+            "Glemmer at selgerens rett til medvirkning har samme grenser som kjøperens",
+            "Som selger: krever umiddelbar handling uten å gi rom for praktiske hindringer",
+            "Som kjøper: tror selgeren ikke kan kreve noe — han kan kreve oppfyllelse",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger:</strong></p>
+<ul>
+<li>Send skriftlig forespørsel om medvirkning med rimelig frist</li>
+<li>Dokumenter at du har bedt</li>
+<li>Hvis ingen respons: send påminnelse, sett tilleggsfrist for heving (§ 55)</li>
+</ul>
+<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Hvis du blir bedt om noe: svar raskt, eller forklar hvorfor du må vente</li>
+<li>Ikke bare la forespørsler ligge</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "23", "tittel": "Kjøperens rett til oppfyllelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "50", "tittel": "Kjøperens plikt til medvirkning", "available": True},
+            {"lov": "kjopsloven", "paragraf": "51", "tittel": "Selgerens krav ved kjøperens mislighold", "available": True},
+        ],
+    },
+    {
+        "number": "54",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Selgeren hever når du ikke betaler",
+        "description": "Selgeren kan heve hvis du ikke betaler — enten ved vesentlig kontraktbrudd, eller når du ikke betaler innen tilleggsfristen. Er varen overtatt, kreves særlige forbehold.",
+        "kort_svar": "Selgeren kan heve kjøpet hvis du ikke betaler og bruddet er vesentlig, eller hvis du ikke betaler innen en rimelig tilleggsfrist han har satt. Mens tilleggsfristen løper kan han ikke heve — med mindre du sier rett ut at du ikke vil betale. Hvis du allerede har overtatt varen, kan selgeren bare heve hvis han har tatt forbehold om det eller du avviser varen.",
+        "paragraftekst": """(1) Selgeren kan heve kjøpet på grunn av forsinket betaling dersom kjøperens kontraktbrudd er vesentlig.
+
+(2) Kjøpet kan også heves dersom kjøperen ikke betaler kjøpesummen innen en rimelig tilleggsfrist som selgeren har fastsatt for oppfyllelse.
+
+(3) Mens tilleggsfristen løper kan selgeren ikke heve, med mindre kjøperen har sagt at han ikke vil oppfylle innen fristen.
+
+(4) Er tingen allerede overtatt av kjøperen, kan selgeren bare heve dersom han har tatt forbehold om det eller kjøperen avviser tingen.""",
+        "hva_betyr_html": """<p>Speilbildet av § 25 — selgeren kan heve på samme måte som kjøperen, bare den andre veien.</p>
+<p><strong>Vesentlig brudd</strong> (første ledd): Hvis forsinket betaling utgjør vesentlig kontraktbrudd, kan selgeren heve direkte. «Vesentlig» avhenger av:</p>
+<ul>
+<li>Hvor lenge betalingen har vært forsinket</li>
+<li>Beløpets størrelse i forhold til kjøpet</li>
+<li>Om kjøperen viser betalingsvilje</li>
+<li>Konsekvenser for selgeren</li>
+</ul>
+<p><strong>Tilleggsfrist</strong> (andre ledd): Selgeren kan sette en rimelig tilleggsfrist. Hvis du ikke betaler innen den, kan han heve.</p>
+<p><strong>Vent ut fristen</strong> (tredje ledd): Mens tilleggsfristen løper, kan selgeren ikke heve — med mindre du sier rett ut at du ikke vil betale.</p>
+<p><strong>Vare allerede overtatt</strong> (fjerde ledd): Spesialregel. Hvis du har overtatt varen, kan selgeren ikke uten videre heve. To unntak:</p>
+<ul>
+<li>Han har tatt forbehold (typisk: salgspant, eiendomsforbehold)</li>
+<li>Du avviser varen (sender den tilbake)</li>
+</ul>
+<p>Logikken: når varen er hos deg og du har den i bruk, blir heving mer komplisert. Selgeren må ha tatt grep på forhånd eller stå overfor en aktiv avvisning.</p>""",
+        "eksempler": [
+            {"navn": "Eva", "tekst": "Eva driver et lite firma og kjøper utstyr for 65 000 kr på faktura. Forfall passerer. Eva svarer ikke på purringer. Selgeren skriver tilleggsfrist: «Du har 14 dager til å betale, ellers hever vi kjøpet og krever varen tilbake.» Eva betaler fortsatt ikke. Selgeren kan nå heve etter § 54 (2). Han krever varen tilbake og kan også kreve erstatning for tap (§ 57). Hvis varen allerede er solgt videre eller installert hos Eva, blir heving vanskelig (jf. § 54 (4)) — med mindre selgeren har tatt salgspant."},
+            {"navn": "Tom", "tekst": "Tom selger en spesialmaskin for 280 000 kr til en bedrift, med betaling over 12 måneder. Han tar salgspant — formelt eierforbehold til betalingen er gjennomført. Når bedriften ikke betaler, kan Tom heve etter § 54 og bruke salgspantet til å ta varen tilbake. Han har tatt forbehold som krevd av § 54 (4)."},
+        ],
+        "vanlige_feil": [
+            "Som selger: krever heving uten å ha satt tilleggsfrist — kan ramme deg",
+            "Setter altfor kort tilleggsfrist — den må være rimelig",
+            "Som selger: glemmer salgspant ved betalingsutsettelse — gjør heving vanskelig",
+            "Som kjøper: tror at sen betaling automatisk fører til at selgeren tar varen — som regel ikke uten forbehold",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger:</strong></p>
+<ul>
+<li>Bruk salgspant ved kredittsalg</li>
+<li>Send tydelig tilleggsfrist skriftlig</li>
+<li>Vent ut fristen før heving</li>
+<li>Vurder andre verktøy: forsinkelsesrente, inkasso</li>
+</ul>
+<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Betal i tide — eller forhandle åpent om utsettelse</li>
+<li>Hvis du har innsigelser: skriftlig protest, ikke bare unngå betaling</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "25", "tittel": "Kjøperens heving ved forsinkelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "51", "tittel": "Selgerens krav ved mislighold", "available": True},
+            {"lov": "kjopsloven", "paragraf": "59", "tittel": "Selgerens frist for å heve", "available": True},
+        ],
+    },
+    {
+        "number": "55",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Selgeren hever når du ikke medvirker",
+        "description": "Hvis du ikke medvirker eller overtar varen, kan selgeren heve hvis bruddet er vesentlig — eller etter tilleggsfrist. Han må ha særlig interesse hvis problemet er overtakelse.",
+        "kort_svar": "Hvis du ikke medvirker som du skal, kan selgeren heve når bruddet er vesentlig. Hvis problemet bare er at du ikke overtar varen, må selgeren også ha «særlig interesse» i å bli av med den. Tilleggsfrist gjelder her som ellers. Mens tilleggsfristen løper kan selgeren ikke heve — med mindre du sier at du ikke vil oppfylle.",
+        "paragraftekst": """(1) Selgeren kan heve kjøpet når kjøperen ikke medvirker til kjøpet, dersom kontraktbruddet er vesentlig. Selgeren kan på samme vilkår heve kjøpet når kjøperen ikke overtar tingen etter § 50 bokstav (b) og selgeren har en særlig interesse i å bli av med den.
+
+(2) Kjøpet kan også heves når kjøperen innen en rimelig tilleggsfrist som selgeren har fastsatt for oppfyllelse, (a) ikke medvirker til kjøpet, eller (b) ikke overtar tingen i tilfelle hvor selgeren har en særlig interesse i å bli av med den.
+
+(3) Mens tilleggsfristen løper kan selgeren ikke heve, med mindre kjøperen har sagt at han ikke vil oppfylle innen fristen.""",
+        "hva_betyr_html": """<p>Når du svikter pliktene fra § 50, kan selgeren heve — men reglene er litt nyanserte.</p>
+<p><strong>Vesentlig brudd i medvirkning</strong> (første ledd, første setning): Hvis du ikke gir nødvendig informasjon, ikke stiller på avtalte tidspunkter, eller på annen måte stopper opp prosessen — og dette er vesentlig — kan selgeren heve.</p>
+<p><strong>Manglende overtakelse</strong> (første ledd, andre setning): Hvis det bare er overtakelsen som mangler — du henter ikke, mottar ikke — er det ikke nok at bruddet er vesentlig. Selgeren må også ha «særlig interesse i å bli av med tingen». Hvorfor? Hvis selgeren ikke har noe ekstra ulempe med å holde varen, har han ikke spesielt behov for å heve. Han kan bare vente.</p>
+<p>«Særlig interesse» kan være:</p>
+<ul>
+<li>Han trenger lagerplassen</li>
+<li>Det koster ham penger å holde varen</li>
+<li>Varen forringes om den ikke kommer i bruk</li>
+</ul>
+<p><strong>Tilleggsfrist</strong> (andre ledd): Som ved andre kontraktbrudd. Sett en rimelig frist, og hvis kjøperen ikke gjør jobben innen den, kan selgeren heve.</p>
+<p><strong>Mens fristen løper</strong> (tredje ledd): Selgeren må vente — med mindre du sier rett ut at du ikke kommer til å oppfylle.</p>
+<h3>Sammenligning: Når kan selgeren heve?</h3>
+<table class="rule-table">
+<thead><tr><th>Situasjon</th><th>Heving mulig?</th></tr></thead>
+<tbody>
+<tr><td>Du betaler ikke (vesentlig)</td><td>Ja (§ 54)</td></tr>
+<tr><td>Du betaler ikke innen tilleggsfrist</td><td>Ja (§ 54)</td></tr>
+<tr><td>Du gir ikke informasjon, blokkerer prosessen</td><td>Ja, hvis vesentlig (§ 55)</td></tr>
+<tr><td>Du henter ikke, men selger har ikke behov for varen</td><td>Nei direkte (vent eller selg)</td></tr>
+<tr><td>Du henter ikke, selger har «særlig interesse»</td><td>Ja (§ 55)</td></tr>
+</tbody>
+</table>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius har bestilt et spesialtilpasset kjøkken. Snekkeren ber om mål. Marius svarer ikke. Snekkeren purrer flere ganger over to måneder. Ingen respons. Manglende medvirkning er vesentlig — uten mål kan snekkeren ikke jobbe. Han kan heve etter § 55 (1), eller sette en endelig tilleggsfrist etter (2). Han kan kreve erstatning for tap."},
+            {"navn": "Eva", "tekst": "Eva har kjøpt en kommode fra Tom for 12 000 kr. Hun har betalt, men dukker ikke opp for å hente. Tom har god plass og trenger ikke kommoden vekk. Etter § 55 (1) kan Tom ikke heve direkte — han har ikke «særlig interesse» i å bli av med den. Han må enten vente og kreve at Eva henter, eller selge til andre med eventuell erstatning fra Eva. Hvis Tom derimot trenger lagerplassen umiddelbart, eller kommoden vil bli ødelagt der den står, kan han ha «særlig interesse» — og kan da sette tilleggsfrist og heve."},
+        ],
+        "vanlige_feil": [
+            "Som selger: hever for manglende henting uten å ha særlig interesse — kan ikke",
+            "Som selger: glemmer å sette tilleggsfrist — gir kjøperen argument",
+            "Som kjøper: tror du kan unnlate medvirkning uten konsekvens",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger:</strong></p>
+<ul>
+<li>Dokumenter bruddet skriftlig</li>
+<li>Vurder om du har «særlig interesse» — eller om du bare må vente</li>
+<li>Send tilleggsfrist før heving</li>
+<li>Kreve erstatning for konkrete tap</li>
+</ul>
+<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Hvis du må utsette: varsle og avtal</li>
+<li>Hvis du ikke vil ha varen: be om avbestilling/heving formelt</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "50", "tittel": "Kjøperens plikter", "available": True},
+            {"lov": "kjopsloven", "paragraf": "54", "tittel": "Heving når kjøperen ikke betaler", "available": True},
+            {"lov": "kjopsloven", "paragraf": "57", "tittel": "Erstatning ved kjøperens mislighold", "available": True},
+        ],
+    },
+    {
+        "number": "56",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Levering i flere omganger ved kjøperens mislighold",
+        "description": "Hvis du misligholder en delbetaling, kan selgeren heve for den. Tror han problemet vil fortsette, kan han også heve fremtidige leveringer.",
+        "kort_svar": "Når levering skjer i flere omganger og du misligholder for en av dem — for eksempel ikke betaler eller medvirker for én leveranse — kan selgeren heve for den. Hvis bruddet gir god grunn til å frykte at det vil skje igjen, kan selgeren også heve for fremtidige leveringer. Det er motstykket til § 44.",
+        "paragraftekst": """(1) Skal selgeren levere etter hvert og kjøperen betale eller medvirke i tilsvarende poster, og det er kontraktbrudd fra kjøperens side ved en enkelt levering, kan selgeren heve for denne levering etter reglene i §§ 54 og 55.
+
+(2) Gir kontraktbruddet selgeren god grunn til å rekne med at det vil inntre kontraktbrudd som vil gi hevingsrett ved seinere leveringer, kan han på dette grunnlag heve for disse leveringer dersom det skjer innen rimelig tid.""",
+        "hva_betyr_html": """<p>Speilbilde av § 44 — bare når det er kjøperen som misligholder. Når avtalen innebærer flere leveringer og du svikter på én av dem:</p>
+<p><strong>Heve for én levering</strong> (første ledd): Selgeren kan heve akkurat den leveringen etter reglene i §§ 54 (manglende betaling) eller 55 (manglende medvirkning/overtakelse).</p>
+<p><strong>Heve fremtidige leveringer</strong> (andre ledd): Hvis bruddet gir «god grunn» til å frykte at det vil skje igjen, kan selgeren også heve for fremtidige leveringer. Han må handle innen rimelig tid.</p>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars driver et lite catering-firma og har avtale om månedlig levering av kjøtt fra en leverandør, faktura på 30 dager. Tre måneder på rad betaler Lars først etter purring. På fjerde måned er han to måneder forsinket. Leverandøren kan etter § 56 (1) heve for denne måneden. Etter (2) kan han også heve for fremtidige leveringer hvis mønsteret tilsier at det fortsetter. Han varsler skriftlig."},
+            {"navn": "Tom", "tekst": "Tom har avtale om kvartalsvis levering av kontormateriell. To kvartaler på rad henter han ikke i tide, og selgeren har særlig interesse i å bli av med varene (lagerplass). Selgeren kan heve for både den enkelte og fremtidige leveringer."},
+        ],
+        "vanlige_feil": [
+            "Som selger: tror enkelt tilfelle gir rett til å heve for hele avtalen — ikke uten «god grunn» til å vente brudd",
+            "Som kjøper: gjentar mislighold uten å forstå at det undergraver hele avtalen",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger:</strong></p>
+<ul>
+<li>Reager på enkeltbrudd raskt</li>
+<li>Hvis mønster: skriftlig melding om at fremtidige leveringer kanselleres</li>
+<li>Krev erstatning for konkrete tap</li>
+</ul>
+<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Hvis du har problemer: snakk åpent med selgeren — bedre enn å spille tom</li>
+<li>Reforhandle eller avbestille formelt</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "44", "tittel": "Levering etter hvert (kjøperens side)", "available": True},
+            {"lov": "kjopsloven", "paragraf": "54", "tittel": "Heving ved manglende betaling", "available": True},
+            {"lov": "kjopsloven", "paragraf": "55", "tittel": "Heving ved manglende medvirkning", "available": True},
+        ],
+    },
+    {
+        "number": "57",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Erstatning ved kjøperens mislighold",
+        "description": "Selgeren kan kreve erstatning når du ikke betaler eller medvirker. Kontrollansvar gjelder — du må vise reell hindring utenfor din kontroll.",
+        "kort_svar": "Selgeren kan kreve erstatning for tapet din betalingsforsinkelse eller manglende medvirkning har påført ham. Du slipper bare hvis du kan vise at det skyldtes en hindring utenfor din kontroll — som stans i betalingsformidlingen eller liknende ekstraordinære forhold. Vanlige økonomiske problemer holder ikke.",
+        "paragraftekst": """(1) Selgeren kan kreve erstatning for det tap han lider som følge av forsinkelse med betalingen fra kjøperens side. Dette gjelder likevel ikke så langt kjøperen godtgjør at forsinkelsen skyldes stans i samferdselen eller betalingsformidlingen eller annen hindring utenfor kjøperens kontroll og som han ikke med rimelighet kunne ventes å ha tatt i betraktning på avtaletiden eller å unngå eller overvinne følgene av. Reglene ellers i § 27 (2) og (3) gjelder tilsvarende.
+
+(2) Selgeren kan kreve erstatning etter reglene i § 27 for det tap han lider som følge av at (a) kjøperen ikke medvirker ved oppfyllelsen av kjøpet, eller (b) kjøperen ikke i rett tid overtar tingen etter § 50 bokstav (b), i tilfelle hvor selgeren har en særlig interesse i å bli av med tingen.""",
+        "hva_betyr_html": """<p>Motstykket til § 27. Når du er den som misligholder, kan selgeren kreve erstatning — med samme strenge kontrollansvar.</p>
+<p><strong>Betalingsforsinkelse</strong> (første ledd): Selgeren kan kreve erstatning. Du slipper bare hvis du kan dokumentere en hindring utenfor din kontroll:</p>
+<ul>
+<li>Stans i samferdselen</li>
+<li>Stans i betalingsformidlingen (banksystemer nede)</li>
+<li>Annen ekstraordinær hindring du ikke kunne forutse eller unngå</li>
+</ul>
+<p><strong>Vanlige økonomiske problemer er IKKE en gyldig hindring.</strong> Du har risikoen for din egen økonomi.</p>
+<p><strong>Manglende medvirkning eller overtakelse</strong> (andre ledd): Selgeren kan kreve erstatning etter samme regler som § 27 — kontrollansvar med strenge krav til hindringen.</p>
+<p><strong>Indirekte tap:</strong> Reglene fra § 67 (2) gjelder — indirekte tap krever sterkere grunnlag. I praksis nesten alltid forsinkelsesrente + direkte tap som ekstra fraktkostnader, ekstra lagring.</p>""",
+        "eksempler": [
+            {"navn": "Anne", "tekst": "Anne har kjøpt utstyr for 45 000 kr på faktura med 30 dagers betalingsfrist. Forfall passerer. Selgeren må ta opp dyrere kassekreditt for å dekke likviditet — 2 200 kr i ekstra rentekostnader. Selgeren kan kreve disse 2 200 kr som erstatning etter § 57 (1) — i tillegg til ordinær forsinkelsesrente etter § 71. Anne kan ikke vise noen hindring utenfor sin kontroll."},
+            {"navn": "Tom", "tekst": "Tom har kjøpt møbler for 32 000 kr. Han betaler ikke, henter ikke. Selgeren har spesiell interesse i å bli av med møblene (de tar mye lagerplass) og må leie midlertidig lagring for 4 500 kr. Selgeren kan kreve dette etter § 57 (2). I tillegg kan han heve (§ 55) og selge møblene til andre — eventuelt med erstatning for prisforskjellen (§ 68)."},
+        ],
+        "vanlige_feil": [
+            "Som kjøper: tror «vanskelig likviditet» er en gyldig hindring — det er det ikke",
+            "Som selger: glemmer å dokumentere konkret tap",
+            "Glemmer at forsinkelsesrente kommer i tillegg",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger:</strong></p>
+<ul>
+<li>Dokumenter alle ekstra kostnader</li>
+<li>Forsinkelsesrente løper automatisk fra forfall</li>
+<li>Krev erstatning skriftlig med spesifikasjon</li>
+</ul>
+<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Hvis du har problemer: meld fra åpent, prøv å forhandle</li>
+<li>Vær realistisk om din egen risiko</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "27", "tittel": "Erstatning ved forsinkelse fra selgeren", "available": True},
+            {"lov": "kjopsloven", "paragraf": "51", "tittel": "Selgerens krav ved mislighold", "available": True},
+        ],
+    },
+    {
+        "number": "58",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Kjøperens plikt til å varsle om hindring",
+        "description": "Hvis du blir hindret fra å oppfylle, må du varsle selgeren raskt. Får han ikke beskjed, kan han kreve erstattet tap som kunne vært unngått.",
+        "kort_svar": "Hvis du som kjøper blir hindret fra å oppfylle dine plikter, må du varsle selgeren om hindringen og hvordan den påvirker oppfyllelsen. Får selgeren ikke beskjed innen rimelig tid etter at du fikk eller burde fått kjennskap til problemet, kan han kreve erstattet tap han kunne ha unngått ved tidlig varsel.",
+        "paragraftekst": "Hindres kjøperen i å oppfylle kjøpet til rett tid, skal han gi selgeren melding om hindringen og dens virkning på muligheten for å oppfylle. Får selgeren ikke slik melding innen rimelig tid etter at kjøperen fikk eller burde ha fått kjennskap til hindringen, kan selgeren kreve erstattet tap som kunne vært unngått om han hadde fått meldingen i tide.",
+        "hva_betyr_html": """<p>Speilbilde av § 28. Du har varslingsplikt på samme måte som selgeren — så snart du skjønner at du blir hindret fra å gjøre din del, må du si fra.</p>
+<p><strong>Plikten:</strong> Si fra om hindringen og hva den betyr for din mulighet til å oppfylle. Du må ikke vente til frist passerer.</p>
+<p><strong>Konsekvensen:</strong> Hvis du ikke varsler i tide, kan selgeren kreve erstattet det tap han kunne ha unngått hvis du hadde varslet. Eksempel: hadde du varslet om betalingsproblemene tidlig, kunne selgeren ha stoppet produksjon, redusert lager, eller funnet ny kjøper.</p>
+<p>Dette gjelder uavhengig av om du har gyldig hindring eller ikke (§ 57). Selv hvis du har en god unnskyldning for selve forsinkelsen, kan du bli erstatningsansvarlig for manglende varsel.</p>""",
+        "eksempler": [
+            {"navn": "Eva", "tekst": "Eva har bestilt utstyr for 80 000 kr, betaling avtalt 1. mars. Allerede 1. februar vet hun at hun ikke kommer til å klare betalingen — likviditet skranter. Hun sier ingenting. Først 5. mars sier hun at hun ikke kan betale. Mellom 1. februar og 5. mars har selgeren bestilt inn varer, holdt lager klart, planlagt på basis av betaling. Hadde Eva varslet 1. februar, kunne han stoppet det meste av kostnadene. Etter § 58 kan selgeren kreve erstattet det tap han kunne ha unngått — typisk lager- og forberedelseskostnader."},
+            {"navn": "Lars", "tekst": "Lars har bestilt en spesialmaskin. Han mister jobben og kan ikke betale. Han sier fra umiddelbart. Selgeren kan stoppe produksjonen og selge maskinen til en annen kunde. Lars har oppfylt sin plikt etter § 58. Selgeren har fortsatt krav på erstatning for det tapet han faktisk lider — men ikke for tap som er unngått ved Lars sitt tidlige varsel."},
+        ],
+        "vanlige_feil": [
+            "Holder problemer skjult og håper det ordner seg — det fordyrer alt",
+            "Tror at hvis du har gyldig grunn (sykdom, ulykke), trenger du ikke varsle — du må varsle uansett",
+            "Som selger: glemmer at separat ansvar for varselbrudd gir egen erstatning",
+        ],
+        "hva_bor_du_html": """<p>Når du innser at du ikke kan oppfylle:</p>
+<ol>
+<li>Varsle umiddelbart — skriftlig</li>
+<li>Forklar hindringen og forventet konsekvens</li>
+<li>Foreslå løsninger — forhandle om ny tidsplan, dele opp betalingen</li>
+<li>Dokumenter når du sendte meldingen</li>
+</ol>
+<p><strong>Mal:</strong></p>
+<p><em>«Jeg ser at jeg vil få problemer med [betaling / overtakelse / informasjon] etter avtalen vår. Bakgrunnen er [konkret]. Forventet virkning: [forsinkelse / behov for annet]. Jeg foreslår [konkret løsning]. La oss snakke om dette.»</em></p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "28", "tittel": "Selgerens opplysningsplikt om hindring", "available": True},
+            {"lov": "kjopsloven", "paragraf": "50", "tittel": "Kjøperens plikter", "available": True},
+            {"lov": "kjopsloven", "paragraf": "57", "tittel": "Erstatning ved kjøperens mislighold", "available": True},
+        ],
+    },
+    {
+        "number": "59",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Selgerens frist for å heve etter betaling",
+        "description": "Hvis du har betalt, kan selgeren bare heve hvis han gir melding raskt — før han vet om betalingen ved forsinkelse, eller innen rimelig tid ved andre brudd.",
+        "kort_svar": "Hvis du har betalt kjøpesummen, kan selgeren ikke heve uten å gi deg beskjed raskt. Ved forsinket betaling må beskjeden komme før selgeren vet at du har betalt. Ved andre kontraktbrudd må beskjeden komme innen rimelig tid etter at selgeren ble klar over bruddet — eller etter at tilleggsfristen for medvirkning er utløpt.",
+        "paragraftekst": "Er kjøpesummen betalt, kan selgeren ikke heve kjøpet med mindre han gir kjøperen melding om det: (a) ved forsinkelse, før han fikk vite om oppfyllelsen fra kjøperens side, eller (b) ved annet kontraktbrudd, innen rimelig tid etter at han fikk eller burde ha fått kjennskap til kontraktbruddet, eller etter at rimelig tilleggsfrist som følger av § 55 (2) er gått ut.",
+        "hva_betyr_html": """<p>Når penger først har skiftet hender, blir det vanskeligere for selgeren å bare heve. Loven krever rask handling og klar melding.</p>
+<p><strong>To situasjoner:</strong></p>
+<p><strong>Forsinket betaling</strong> (bokstav a): Hvis du har betalt for sent, kan selgeren bare heve hvis hevingsmeldingen kom før han visste at du hadde betalt. Med andre ord: når selgeren først har akseptert betalingen i hånden, kan han ikke senere si «jeg hever likevel». Han måtte ha vært tidlig ute.</p>
+<p><strong>Andre brudd</strong> (bokstav b): Hvis du har betalt, men det er andre kontraktbrudd (manglende medvirkning, manglende overtakelse), kan selgeren heve hvis han gir melding innen rimelig tid etter at han ble klar over bruddet — eller etter at tilleggsfristen i § 55 (2) er utløpt.</p>
+<p>Logikken: Penger på kontoen skaper ny tillit. Selgeren kan ikke «lure» deg ved å akseptere betaling og deretter heve uten rask handling.</p>""",
+        "eksempler": [
+            {"navn": "Tom", "tekst": "Tom har kjøpt en sykkel for 28 000 kr. Han betaler en uke for sent. Selgeren mottar pengene og lar dem stå på konto i to uker, så sier han «vi hever — du betalte for sent». Det går ikke etter § 59 bokstav a. Selgeren visste at Tom hadde betalt. Hadde han ville heve, måtte meldingen kommet før betalingen ble registrert. Etter at betalingen er gått igjennom, er hevingsretten tapt for selve forsinkelsen."},
+            {"navn": "Anne", "tekst": "Anne har kjøpt møbler for 40 000 kr og betalt. Hun henter ikke. Selgeren har særlig interesse i å bli av med møblene og setter tilleggsfrist på 14 dager (§ 55 (2)). Fristen utløper. Selgeren sender hevingsmelding innen rimelig tid. Etter § 59 bokstav b er det greit — selgeren har gitt melding rett etter at tilleggsfristen gikk ut."},
+        ],
+        "vanlige_feil": [
+            "Som selger: aksepterer betaling og prøver å heve senere — for sent",
+            "Som selger: venter for lenge etter brudd med å sende melding — kan miste retten",
+            "Som kjøper: tror at betaling stenger for heving uansett — det stemmer ved forsinkelsesgrunn, ikke ved andre brudd",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger:</strong></p>
+<ul>
+<li>Hvis du vil heve for forsinket betaling: gjør det FØR du aksepterer betalingen</li>
+<li>Hvis du vil heve for andre brudd: send melding raskt — innen dager</li>
+<li>Dokumenter datoer</li>
+</ul>
+<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Hvis du betaler sent: be om bekreftelse på at handelen står</li>
+<li>Hvis selgeren prøver å heve etter at du har betalt: vis til § 59</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "29", "tittel": "Kjøperens frist for å heve", "available": True},
+            {"lov": "kjopsloven", "paragraf": "54", "tittel": "Heving ved manglende betaling", "available": True},
+            {"lov": "kjopsloven", "paragraf": "55", "tittel": "Heving ved manglende medvirkning", "available": True},
+        ],
+    },
+    {
+        "number": "60",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Hvis du ikke spesifiserer varen",
+        "description": "Hvis du skal bestemme form, mål eller egenskaper og ikke gjør det i tide, kan selgeren spesifisere for deg etter det han antar er din interesse.",
+        "kort_svar": "Hvis du skal bestemme detaljer ved varen — form, mål, farge, andre egenskaper — og ikke gjør det innen avtalt tid eller etter selgerens påminnelse, kan selgeren selv velge ut fra det han antar er din interesse. Han må først si fra om hvilke spesifikasjoner han vil bruke og gi deg rimelig frist til å endre.",
+        "paragraftekst": """(1) Skal kjøperen bestemme tingens form, mål eller andre egenskaper og han ikke gjør det til avtalt tid eller innen rimelig tid etter å ha fått oppfordring fra selgeren, kan selgeren selv gjøre det i samsvar med hva han må anta er kjøperens interesse. Dette hindrer ikke selgeren i å gjøre gjeldende andre krav som han har.
+
+(2) Selgeren må opplyse kjøperen om de spesifikasjoner han vil bruke og gi kjøperen en rimelig frist til å endre spesifikasjonene. Gjør ikke kjøperen dette i tide etter å ha fått selgerens melding, blir selgerens spesifikasjoner bindende.""",
+        "hva_betyr_html": """<p>Denne paragrafen løser et praktisk problem. Mange tilvirkningskjøp krever at du bestemmer detaljer — farge, størrelse, modell. Hvis du ikke bestemmer deg, henger hele leveransen.</p>
+<p><strong>Selgeren kan velge for deg</strong> (første ledd): Hvis du ikke bestemmer innen avtalt tid, eller innen rimelig tid etter selgerens påminnelse, kan selgeren velge selv. Han må velge ut fra det han må anta er din interesse — ikke det som er enklest eller dyrest for ham.</p>
+<p>Han kan også gjøre andre krav gjeldende — typisk erstatning for forsinkelsen din.</p>
+<p><strong>Plikt til å varsle</strong> (andre ledd): Selgeren kan ikke bare velge i taushet. Han må:</p>
+<ul>
+<li>Si fra hvilke spesifikasjoner han har tenkt å bruke</li>
+<li>Gi deg en rimelig frist til å endre</li>
+</ul>
+<p>Hvis du ikke svarer innen fristen, blir hans spesifikasjoner bindende. Du har dermed mistet sjansen til å klage senere — du er bundet av det selgeren valgte.</p>""",
+        "eksempler": [
+            {"navn": "Ingrid", "tekst": "Ingrid har bestilt et spesialdesignet skap. Hun skal velge farge før produksjon. Selgeren ber om valg, men Ingrid svarer ikke i tre uker. Selgeren skriver: «Hvis jeg ikke får farge innen 7 dager, vil jeg bruke standard hvit.» Ingrid svarer ikke. Selgeren bruker hvit. Etter § 60 er Ingrid bundet av valget — hun kan ikke senere klage på fargen."},
+            {"navn": "Lars", "tekst": "Lars har bestilt en hylle. Han skal sende mål. Han gjør ikke det. Selgeren sender forslag basert på et standardmål — som han antar er Lars sin interesse — og gir Lars 5 dager til å endre. Lars svarer ikke. Hyllen blir laget på standardmål. Lars må akseptere — eller betale ekstra hvis han vil ha endring."},
+        ],
+        "vanlige_feil": [
+            "Tror manglende beslutning bare betyr forsinkelse — selgeren kan også velge for deg",
+            "Som selger: velger uten å varsle først — kan rammes om kjøperen klager senere",
+            "Glemmer at selgeren også kan kreve erstatning i tillegg til å bare gå videre",
+        ],
+        "hva_bor_du_html": """<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Bestem deg raskt når selgeren ber</li>
+<li>Hvis du trenger tid, varsle og avtal ny frist</li>
+<li>Hvis selgeren sender forslag, svar — ellers blir det bindende</li>
+</ul>
+<p><strong>Som selger:</strong></p>
+<ul>
+<li>Be om spesifikasjoner skriftlig</li>
+<li>Hvis ingen respons: send forslag med tidsfrist</li>
+<li>Velg det du oppriktig tror er kjøperens interesse — ikke bare det enkleste</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "2", "tittel": "Tilvirkningskjøp", "available": True},
+            {"lov": "kjopsloven", "paragraf": "50", "tittel": "Kjøperens plikter", "available": True},
+            {"lov": "kjopsloven", "paragraf": "55", "tittel": "Heving ved manglende medvirkning", "available": True},
+        ],
+    },
 ]
