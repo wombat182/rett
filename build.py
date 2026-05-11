@@ -990,7 +990,7 @@ def render_homepage():
   <section class="home-section">
     <div class="section-header">
       <h2>Bla i alle lover</h2>
-      <p class="section-sub">89 paragrafer publisert. Flere kommer.</p>
+      <p class="section-sub">112 paragrafer publisert. Flere kommer.</p>
     </div>
     <div class="paragraph-list">
       <a href="{prefix}lover/angrerettloven/" class="paragraph-list-item">
@@ -998,7 +998,7 @@ def render_homepage():
         <div class="paragraph-list-title">Angrerettloven</div>
       </a>
       <a href="{prefix}lover/kjopsloven/" class="paragraph-list-item">
-        <div class="paragraph-list-meta">PRIVATKJØP · 59 paragrafer</div>
+        <div class="paragraph-list-meta">PRIVATKJØP · 82 paragrafer</div>
         <div class="paragraph-list-title">Kjøpsloven</div>
       </a>
       <a href="{prefix}lover/" class="paragraph-list-item">

@@ -3016,4 +3016,1064 @@ PARAGRAPHS = [
             {"lov": "kjopsloven", "paragraf": "55", "tittel": "Heving ved manglende medvirkning", "available": True},
         ],
     },
+    {
+        "number": "61",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Når man kan stoppe oppfyllelsen ved forventet kontraktbrudd",
+        "description": "Hvis det blir klart at den andre parten ikke kommer til å holde sin del, kan du stoppe din egen oppfyllelse — men du må varsle umiddelbart.",
+        "kort_svar": "Hvis det etter kjøpet blir klart at den andre parten ikke kommer til å holde sin del — på grunn av handlemåte, kredittsvikt eller manglende evne — kan du stoppe din egen oppfyllelse. Selgeren kan også hindre at varen kommer fram til kjøperen. Men du må varsle umiddelbart, og du må fortsette hvis motparten stiller betryggende sikkerhet.",
+        "paragraftekst": """(1) Dersom det etter kjøpet framgår av en parts handlemåte eller av en alvorlig svikt i hans kredittverdighet eller evne til å oppfylle at han ikke kommer til å oppfylle en vesentlig del av sine plikter, kan den annen part innstille sin oppfyllelse og holde sin ytelse tilbake.
+
+(2) Har selgeren allerede sendt tingen og viser det seg forhold på kjøperens side som nevnt i første ledd, kan han hindre at tingen blir overgitt til kjøperen eller hans bo. Dette gjelder selv om kjøperen eller boet har mottatt transportdokument.
+
+(3) Den part som innstiller oppfyllelsen eller hindrer at tingen blir overgitt, må straks varsle den annen part. Blir varsel ikke gitt, kan den annen part kreve erstattet tap som kunne vært unngått om han var blitt varslet.
+
+(4) Part som har innstilt sin oppfyllelse eller hindret at tingen blir overgitt, må fortsette oppfyllelsen dersom den annen part stiller betryggende sikkerhet for sin oppfyllelse.""",
+        "hva_betyr_html": """<p>Loven gir deg en mulighet til å beskytte deg når motpartens problemer blir åpenbare — uten å vente på selve bruddet.</p>
+<p><strong>Når kan du stoppe?</strong> (første ledd) Tre situasjoner:</p>
+<ul>
+<li><strong>Handlemåte:</strong> Motparten har handlet på en måte som viser at han ikke kommer til å oppfylle (slutter å svare, varsler det, oppfører seg som om avtalen er død)</li>
+<li><strong>Kredittsvikt:</strong> Det er alvorlig svikt i motpartens kredittverdighet (konkursvarsel, mange ubetalte fakturaer)</li>
+<li><strong>Manglende evne:</strong> Det er klart at motparten ikke har midler eller kapasitet til å oppfylle</li>
+</ul>
+<p>Vilkåret er at det vil ramme en <em>vesentlig del</em> av forpliktelsene. Mistanke holder ikke — det må være tydelig.</p>
+<p><strong>Hva kan du gjøre?</strong> Innstille din egen oppfyllelse. Hvis du er selger og ikke har sendt varen — ikke send den. Hvis du er kjøper og ikke har betalt — ikke betal.</p>
+<p><strong>Vare i transport</strong> (andre ledd): Selgeren kan stoppe varen underveis selv om kjøperen har mottatt transportdokument. Dette er en betydelig rett — i praksis kalles det «stansningsrett» og er viktig særlig ved kjøperens insolvens.</p>
+<p><strong>Varslingsplikt</strong> (tredje ledd): Du må varsle straks. Hvis du stopper i taushet, kan motparten kreve erstatning for tap han kunne ha unngått ved tidlig varsel.</p>
+<p><strong>Sikkerhet redder avtalen</strong> (fjerde ledd): Hvis motparten stiller betryggende sikkerhet (bankgaranti, depositum), må du fortsette. Du kan ikke holde tilbake bare fordi du er nervøs — du må fortsette når sikkerheten er på plass.</p>""",
+        "eksempler": [
+            {"navn": "Eva", "tekst": "Eva driver en grossistvirksomhet og selger til et firma som plutselig får flere mediahits om økonomiske problemer — purringer, ubetalte fakturaer hos andre. Hun har en bestilling klar til avsendelse på 280 000 kr. Etter § 61 kan Eva innstille leveringen. Hun varsler firmaet skriftlig: «Jeg stopper leveringen på grunn av alvorlig svikt i deres kredittverdighet. Hvis dere stiller bankgaranti, vil jeg fortsette.» Hvis firmaet stiller bankgaranti, må Eva levere. Hvis ikke, kan hun deretter heve etter § 62."},
+            {"navn": "Tom", "tekst": "Tom har solgt en spesialmaskin for 450 000 kr. Han har sendt den med transportør, og kjøperen har mottatt fraktbrevet. Underveis får Tom vite at kjøperens bedrift har levert oppbudsbegjæring. Etter § 61 (2) kan Tom hindre at maskinen blir overgitt — selv om kjøperen har transportdokumentet. Tom kontakter transportøren og krever maskinen returnert eller plassert hos en tredjepart. Han varsler kjøperen samme dag."},
+            {"navn": "Marius", "tekst": "Marius leverer kjøtt til en kafé en gang per uke. Kaféen har vært treg med betalingen i tre måneder. Marius bestemmer seg for å bare slutte å levere, sier ingenting. Etter § 61 (3) brytes varslingsplikten. Selv om Marius har rett til å stoppe, kan kaféen kreve erstatning for det tapet de hadde av at de ikke fikk vite det i tide — for eksempel at de ikke fant alternativ leverandør tidligere."},
+        ],
+        "vanlige_feil": [
+            "Stopper i taushet uten å varsle motparten",
+            "Stopper på løs mistanke uten reell svikt",
+            "Som selger: glemmer stansningsretten ved transit-vare",
+            "Krever tilbake varer uten å stille betryggende sikkerhet selv",
+        ],
+        "hva_bor_du_html": """<p>Når du vurderer å stoppe:</p>
+<ol>
+<li>Dokumenter grunnlaget: hvilke konkrete tegn viser at motparten ikke vil oppfylle?</li>
+<li>Stopp oppfyllelsen — ikke send, ikke betal</li>
+<li>Varsle umiddelbart skriftlig — forklar hva du stopper og hvorfor</li>
+<li>Tilby sikkerhet som vei ut: «Hvis dere stiller [bankgaranti/depositum], fortsetter jeg»</li>
+<li>Vurder heving (§ 62) hvis det ikke ordnes raskt</li>
+<li>Krev erstatning for konkrete tap</li>
+</ol>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "10", "tittel": "Selgerens tilbakeholdsrett", "available": True},
+            {"lov": "kjopsloven", "paragraf": "42", "tittel": "Kjøperens tilbakeholdsrett", "available": True},
+            {"lov": "kjopsloven", "paragraf": "62", "tittel": "Heving ved forventet kontraktbrudd", "available": True},
+            {"lov": "kjopsloven", "paragraf": "63", "tittel": "Insolvensbehandling", "available": True},
+        ],
+    },
+    {
+        "number": "62",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Heving før tiden for oppfyllelse",
+        "description": "Hvis det er klart at motparten kommer til å gjøre vesentlig kontraktbrudd, kan du heve avtalen før den egentlige fristen — men sikkerhet kan avverge heving.",
+        "kort_svar": "Hvis det før tiden for oppfyllelse blir klart at motparten kommer til å gjøre et kontraktbrudd som vil gi deg hevingsrett, kan du heve avtalen allerede nå. Du må gi motparten beskjed når det er tid, slik at han kan stille sikkerhet og avverge hevingen. Hvis sikkerhet stilles, må du fortsette.",
+        "paragraftekst": """(1) Er det før tiden for oppfyllelse klart at det vil inntre kontraktbrudd som vil gi en part hevingsrett, kan han heve kjøpet allerede før tiden for oppfyllelse. Hevingen kan avverges dersom den annen part straks stiller betryggende sikkerhet for at kjøpet vil bli oppfylt.
+
+(2) Når tiden tillater det, skal den part som akter å heve, varsle den annen part så denne får høve til å skaffe sikkerhet for å unngå heving.""",
+        "hva_betyr_html": """<p>Du må ikke alltid vente på at det skal gå galt. Loven gir deg en mulighet til å trekke deg ut når det er åpenbart at det kommer til å skje.</p>
+<p><strong>Vilkåret er strengt:</strong> Det må være <em>klart</em> at det vil inntreffe kontraktbrudd, og bruddet må være alvorlig nok til å gi hevingsrett (vesentlig kontraktbrudd). Mistanke holder ikke. Eksempler:</p>
+<ul>
+<li>Selgeren har gått konkurs og kan åpenbart ikke levere</li>
+<li>Kjøperen har sagt rett ut at han ikke kommer til å betale</li>
+<li>En leverandør har lagt ned produksjonen av varen</li>
+<li>Tegn så tydelige at en fornuftig person ser at bruddet kommer</li>
+</ul>
+<p><strong>Sikkerhet redder avtalen</strong> (første ledd): Hvis motparten stiller «betryggende sikkerhet» raskt — bankgaranti, depositum, annen sikker dekning — kan ikke du heve. Han har gitt deg trygghet for at det skal bli som avtalt.</p>
+<p><strong>Varslingsplikt før heving</strong> (andre ledd): Når tiden tillater det, må du varsle motparten før du hever — så han kan stille sikkerhet og avverge hevingen. Du må ikke bare overraskelses-heve hvis du kunne gitt sjansen.</p>
+<h3>Sammenligning: Innstille vs. heve før tiden?</h3>
+<table class="rule-table">
+<thead><tr><th>Situasjon</th><th>Innstille (§ 61)</th><th>Heve før tid (§ 62)</th></tr></thead>
+<tbody>
+<tr><td>Mistanke om problemer</td><td>Mulig</td><td>Nei — for tidlig</td></tr>
+<tr><td>Klar svikt i kreditt</td><td>Ja</td><td>Vurder, må være klart at bruddet kommer</td></tr>
+<tr><td>Motpart har varslet at han ikke kan</td><td>Ja</td><td>Ja</td></tr>
+<tr><td>Konkurs eller oppbud</td><td>Ja</td><td>Ja</td></tr>
+<tr><td>Sikkerhet stilles</td><td>Må fortsette</td><td>Heving avverges</td></tr>
+</tbody>
+</table>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars har bestilt utstyr for 180 000 kr fra et firma. Levering avtalt om 4 uker. Etter 1 uke leser han at firmaet har begjært oppbud — det er åpenbart at de ikke kommer til å levere. Lars kan etter § 62 heve umiddelbart, selv om leveringsdatoen er om 3 uker. Han trenger ikke vente på det formelle bruddet. Han varsler først — gir firmaet sjansen til å stille sikkerhet — og hever deretter."},
+            {"navn": "Eva", "tekst": "Eva har solgt utstyr til et firma som er i økonomiske vanskeligheter. Hun varsler at hun vil heve. Firmaet stiller umiddelbart bankgaranti for 100 % av kjøpesummen. Etter § 62 må Eva avstå fra heving. Sikkerheten er betryggende. Firmaet har gitt henne trygghet for at hun får pengene sine. Avtalen står."},
+        ],
+        "vanlige_feil": [
+            "Hever på mistanke i stedet for klar bevisning",
+            "Glemmer å varsle først så motparten får sjanse",
+            "Avviser sikkerhet uten å vurdere om den er betryggende",
+            "Tror «sikkerhet» må være kontant — bankgaranti kan også være nok",
+        ],
+        "hva_bor_du_html": """<p>Når du vurderer heving før tiden:</p>
+<ol>
+<li>Vurder beviskravet: Er det <em>klart</em> at bruddet kommer?</li>
+<li>Vurder vesentlighet: Vil bruddet være så stort at hevingsrett oppstår?</li>
+<li>Varsle motparten skriftlig — gi sjansen til å stille sikkerhet</li>
+<li>Sett rimelig frist for sikkerhet — typisk noen dager</li>
+<li>Hev etter at fristen er ute hvis ingen sikkerhet</li>
+<li>Dokumenter alt for eventuell tvist senere</li>
+</ol>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "25", "tittel": "Heving ved forsinkelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "54", "tittel": "Selgerens heving", "available": True},
+            {"lov": "kjopsloven", "paragraf": "61", "tittel": "Innstille oppfyllelse ved forventet brudd", "available": True},
+            {"lov": "kjopsloven", "paragraf": "63", "tittel": "Insolvensbehandling", "available": True},
+        ],
+    },
+    {
+        "number": "63",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Hva skjer ved konkurs",
+        "description": "Hvis en av partene går konkurs eller blir tatt under annen insolvensbehandling, gjelder ikke kjøpsloven alene — dekningsloven kapittel 7 styrer.",
+        "kort_svar": "Hvis selgeren eller kjøperen blir tatt under insolvensbehandling (konkurs, gjeldsforhandling), gjelder reglene i dekningsloven kapittel 7 — ikke kjøpsloven alene. Det er en spesiell verden med egne regler om hvilke krav som har prioritet, hvem som får hva, og hvordan boet kan tre inn i avtalen eller ikke.",
+        "paragraftekst": "Kommer en av partene under insolvensbehandling, gjelder bestemmelsene i dekningsloven kapittel 7.",
+        "hva_betyr_html": """<p>Når noen går konkurs, skifter situasjonen helt. Det er ikke lenger bare en handel mellom to parter — det er et bo, en bostyrer, kreditorer som krangler om penger. Norsk lov har et eget regelsett for det: dekningsloven.</p>
+<p>Når kjøpsloven sier at «bestemmelsene i dekningsloven kapittel 7 gjelder», betyr det at:</p>
+<ul>
+<li><strong>Boet bestemmer:</strong> Hvis selgeren går konkurs etter å ha tatt imot betaling men før levering, kan bostyret bestemme om boet vil tre inn i avtalen og levere — eller om de avviser. Det samme gjelder hvis kjøperen går konkurs.</li>
+<li><strong>Prioritet av krav:</strong> Hvis du er kjøper og har betalt forskudd til en selger som går konkurs, må du melde krav i boet — og du står normalt langt bak i køen. Du får sjelden alt tilbake.</li>
+<li><strong>Stansningsrett:</strong> Som selger har du visse muligheter til å stoppe varer på vei til en konkursrammet kjøper (jf. § 61).</li>
+<li><strong>Salgspant:</strong> Hvis du har tatt salgspant, har du en mye sterkere posisjon enn alminnelig kreditor. Du kan ofte hente varen tilbake.</li>
+</ul>
+<p>I praksis betyr dette: ved konkurs trenger du nesten alltid advokathjelp eller god kjennskap til dekningsloven. Kjøpsloven gir deg bare et utgangspunkt.</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius har betalt 80 000 kr i forskudd for et spesialkjøkken. Tre uker senere går snekkeren konkurs uten å ha begynt arbeidet. Marius må melde krav i boet etter dekningsloven. Som alminnelig kreditor får han sannsynligvis lite — gjerne under 10 % av kravet. Mesteparten av forskuddet er tapt. Lærdom: vær forsiktig med store forskudd til usikre selgere. Bruk gjerne escrow-løsninger eller del opp betalingen."},
+            {"navn": "Eva", "tekst": "Eva har solgt varer for 320 000 kr på faktura. Kjøperen får problemer og begjær oppbud før betaling. Eva har levert. Eva må melde krav. Hadde hun tatt salgspant, kunne hun hentet varene tilbake. Uten salgspant står hun bakerst i køen. Dette er en grunn til at salgspant er så vanlig i bedriftshandel."},
+        ],
+        "vanlige_feil": [
+            "Som kjøper: gir store forskudd uten sikring",
+            "Som selger: gir kreditt uten salgspant",
+            "Tror kjøpsloven løser konkurssituasjoner — det gjør den ikke",
+            "Venter for lenge med å melde krav i bo",
+        ],
+        "hva_bor_du_html": """<p>Ved tegn på motpartens insolvens:</p>
+<ul>
+<li>Bruk § 61 (innstille) og § 62 (heve før tid) raskt</li>
+<li>Ta kontakt med advokat</li>
+<li>Meld krav i bo så snart konkurs er åpnet</li>
+</ul>
+<p>Forebyggende:</p>
+<ul>
+<li>Salgspant ved kredittsalg</li>
+<li>Mindre forskudd, eller escrow</li>
+<li>Sjekk motpartens kredittstatus før store handler</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "61", "tittel": "Innstille oppfyllelse ved forventet brudd", "available": True},
+            {"lov": "kjopsloven", "paragraf": "62", "tittel": "Heving før tiden", "available": True},
+        ],
+    },
+    {
+        "number": "64",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Hva skjer når kjøpet heves",
+        "description": "Ved heving faller pliktene bort, og det dere har levert eller betalt kan kreves tilbake. Avtalevilkår om hemmeligheter og tvisteløsning står ved makt.",
+        "kort_svar": "Når kjøpet heves, faller begges plikt til å oppfylle bort. Det dere har gitt fra dere kan kreves tilbake — du gir tilbake varen, selgeren gir tilbake pengene. Du kan holde tilbake det du har mottatt til motparten gjør sitt. Avtalevilkår om hemmeligheter, tvisteløsning og partenes rettigheter etter hevingen står ved makt.",
+        "paragraftekst": """(1) Når kjøpet heves faller partenes plikt til å oppfylle kjøpet bort.
+
+(2) Er kjøpet helt eller delvis oppfylt fra noen av sidene, kan det mottatte kreves tilbakeført. En part kan likevel holde tilbake det han har mottatt inntil den annen gir tilbake det han har fått. Tilsvarende gjelder når parten har krav på erstatning eller rente og betryggende sikkerhet ikke blir stilt.
+
+(3) Skal selgeren omlevere, kan kjøperen holde tilbake det han har mottatt, inntil omlevering skjer.
+
+(4) Hevingen har ingen betydning for avtalevilkår om forretningshemmeligheter, om løsning av tvister eller om partenes rettigheter og plikter som følge av hevingen.""",
+        "hva_betyr_html": """<p>Heving er ikke bare «avtalen er over». Det er en aktiv prosess der dere må rydde opp.</p>
+<p><strong>Pliktene faller</strong> (første ledd): Du må ikke lenger betale, selgeren må ikke lenger levere. Det er punktum for fremtidige forpliktelser.</p>
+<p><strong>Tilbakelevering</strong> (andre ledd): Det som er gitt fra hver side skal tilbake. Du gir varen tilbake; selgeren gir pengene tilbake. Hver part kan holde tilbake det de har til motparten gir tilbake sitt — det er bytte mot bytte. Hvis du har krav på erstatning eller rente, kan du også holde tilbake til betryggende sikkerhet stilles.</p>
+<p><strong>Omlevering</strong> (tredje ledd): Hvis selgeren skal omlevere (ny vare i stedet for heving), kan du holde tilbake varen du har til ny er kommet. Du sitter ikke uten beskyttelse mens du venter.</p>
+<p><strong>Hva overlever</strong> (fjerde ledd): Visse avtalevilkår står fortsatt:</p>
+<ul>
+<li><strong>Forretningshemmeligheter:</strong> Taushetsavtaler du har skrevet under på, lever videre. Heving gir ikke fri til å publisere selgerens prislister.</li>
+<li><strong>Tvisteløsning:</strong> Voldgift- eller verneting-klausuler. Selv om kjøpet er rivd opp, gjelder regelen om hvor en tvist skal løses.</li>
+<li><strong>Rettigheter etter hevingen:</strong> Krav om erstatning, rente, tilbakebetaling — det er nettopp disse som skal håndteres.</li>
+</ul>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars har kjøpt en bil for 145 000 kr. Etter en måned hever han på grunn av skjulte feil. Selgeren er enig. Lars må gi tilbake bilen. Selgeren må gi tilbake 145 000 kr. Lars kan holde bilen til pengene er på konto. Selgeren kan holde tilbake pengene til bilen er overlevert. I praksis møtes de og bytter — bil og pengeoverføring samtidig. Hvis Lars har lagt ut 5 000 kr på reparasjon han skulle få dekket, kan han holde tilbake bilen til betryggende sikkerhet er stilt for dette ekstrakravet."},
+            {"navn": "Eva", "tekst": "Eva har kjøpt en symaskin med mangel. Selgeren tilbyr omlevering — han kommer med en ny om to uker. Etter § 64 (3) kan Eva holde på den defekte maskinen til omlevering skjer. Hun trenger ikke gi fra seg noe før hun får ny."},
+        ],
+        "vanlige_feil": [
+            "Gir tilbake varen før selgeren har betalt — risikabelt",
+            "Selgeren betaler tilbake før kjøperen har levert varen — risikabelt",
+            "Glemmer at taushetsavtaler overlever heving",
+            "Tror voldgiftsklausuler ikke gjelder lenger — de gjør det",
+        ],
+        "hva_bor_du_html": """<p>Ved heving:</p>
+<ol>
+<li>Bekreft hevingen skriftlig med dato</li>
+<li>Avtal praktisk gjennomføring av tilbakebytte</li>
+<li>Møtes for samtidig bytte — eller bruk escrow</li>
+<li>Hold tilbake det du har til motpart gjør sitt</li>
+<li>Fakturer erstatning og rente separat</li>
+<li>Husk på resterende avtalevilkår</li>
+</ol>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "25", "tittel": "Heving ved forsinkelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "39", "tittel": "Heving ved mangel", "available": True},
+            {"lov": "kjopsloven", "paragraf": "65", "tittel": "Avkasting og rente ved tilbakeføring", "available": True},
+            {"lov": "kjopsloven", "paragraf": "66", "tittel": "Tap av hevingsrett", "available": True},
+        ],
+    },
+    {
+        "number": "65",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Avkasting og rente ved tilbakeføring",
+        "description": "Ved heving må kjøperen godskrive selgeren avkasting og nytte han har hatt av varen. Selgeren må betale rente på kjøpesummen som tilbakeføres.",
+        "kort_svar": "Når kjøpet heves, skal du som kjøper godskrive selgeren det utbyttet varen har gitt (frukt, avkasting, leieinntekt) og betale rimelig vederlag for vesentlig nytte du har hatt. Selgeren må betale forsinkelsesrente fra den dagen han mottok kjøpesummen til han betaler tilbake.",
+        "paragraftekst": """(1) Heves kjøpet, skal kjøperen godskrive selgeren avkasting som han har hatt av tingen og gi rimelig vederlag for vesentlig nytte han ellers har hatt av den.
+
+(2) Dersom selgeren skal betale kjøpesummen tilbake, plikter han å betale rente etter § 71 fra den dag han mottok betalingen.""",
+        "hva_betyr_html": """<p>Heving handler om å gjenopprette balansen, ikke å gi noen et gratis tilskudd. Det måles økonomisk.</p>
+<p><strong>Du må gi tilbake mer enn bare varen</strong> (første ledd):</p>
+<ul>
+<li><strong>Avkasting:</strong> Hvis varen har gitt utbytte — leieinntekt på utleid utstyr, frukt fra et tre, kontantutbytte fra aksjer — skal det godskrives selgeren</li>
+<li><strong>Vesentlig nytte:</strong> Hvis du har hatt vesentlig bruk og nytte av varen, skal du betale rimelig vederlag for det</li>
+</ul>
+<p>Tanken er at du ikke skal sitte igjen med gratis bruk. Du har hatt nytte; det er rimelig at det kompenseres.</p>
+<p>Småbruksverdier (du har brukt sykkelen 2 ganger) regnes som regel ikke — det skal være <em>vesentlig</em>.</p>
+<p><strong>Selgeren må betale rente på pengene dine</strong> (andre ledd): Fra den dagen selgeren mottok betalingen, løper rente etter § 71 (forsinkelsesrenten). Det er for at selgeren ikke skal nyte godt av at han har sittet på pengene dine i mens.</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius har kjøpt en traktor for 220 000 kr. Etter åtte måneder hever han på grunn av en alvorlig mangel. I løpet av åtte måneder har han brukt traktoren i sitt arbeid — beregnet rimelig nytteverdi: 35 000 kr. Etter § 65 (1) skal Marius godskrive selgeren 35 000 kr for nytten. Praktisk: han får 220 000 - 35 000 = 185 000 kr i tilbakebetaling. Selgeren har på sin side betalt rente på 220 000 kr fra dagen han mottok betalingen. Den renten kommer Marius til gode (§ 65 (2)). Til slutt er det netto-beregningen som teller."},
+            {"navn": "Eva", "tekst": "Eva kjøpte en hytte for 1 200 000 kr og leide den ut. Hun fikk inn 80 000 kr i leie. Etter et år hever hun på grunn av skjulte vannskader (avhendingslova, ikke kjøpsloven — men prinsippet er likt). Hun må godskrive selgeren de 80 000 kr i leieinntekt. Selgeren må betale tilbake kjøpesummen + rente fra dagen han mottok."},
+        ],
+        "vanlige_feil": [
+            "Tror du kan beholde nytten av varen uten å betale for den",
+            "Som selger: glemmer at du skylder forsinkelsesrente",
+            "Beregner nytte for høyt eller lavt — bør være rimelig",
+            "Forveksler nytte med kostnader",
+        ],
+        "hva_bor_du_html": """<p>Ved oppgjør etter heving:</p>
+<ul>
+<li>Beregn nytteverdien rimelig (markedsleie, sammenliknbar bruk)</li>
+<li>Beregn rente fra betalingsdato til tilbakebetaling</li>
+<li>Sett opp regneark med begge poster</li>
+<li>Bli enige skriftlig</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "64", "tittel": "Virkninger av heving", "available": True},
+            {"lov": "kjopsloven", "paragraf": "66", "tittel": "Tap av hevingsrett", "available": True},
+            {"lov": "kjopsloven", "paragraf": "71", "tittel": "Forsinkelsesrente", "available": True},
+        ],
+    },
+    {
+        "number": "66",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Når du kan miste retten til å heve eller kreve omlevering",
+        "description": "Du kan heve eller kreve omlevering bare hvis du kan gi varen tilbake i vesentlig samme stand. Unntak gjelder for normal undersøkelse, videresalg og bruk før mangelen ble oppdaget.",
+        "kort_svar": "Du kan heve kjøpet eller kreve omlevering bare hvis du kan levere varen tilbake i vesentlig samme stand og mengde som du fikk den. Men du beholder retten i tre tilfeller: hvis endringen ikke skyldes deg, hvis varen ble redusert ved undersøkelse, eller hvis du har solgt eller brukt den i god tro før du oppdaget mangelen. Du beholder også retten hvis du erstatter verdireduksjonen.",
+        "paragraftekst": """(1) Kjøperen kan heve kjøpet eller kreve omlevering bare dersom han leverer tingen tilbake i vesentlig samme stand og mengde som han mottok den. Han taper likevel ikke retten til å heve eller kreve omlevering dersom (a) årsaken til at det er umulig å tilbakelevere tingen i vesentlig samme stand og mengde, er tingens egen beskaffenhet eller annet forhold som ikke beror på kjøperen; (b) tingen helt eller delvis er gått til grunne eller forringet som følge av handling som trengs for å undersøke om tingen har mangel; eller (c) tingen helt eller delvis er solgt videre i vanlig omsetning eller er forbrukt eller forandret av kjøperen under forutsatt bruk før han oppdaget eller burde ha oppdaget den mangel som er årsak til avvisingen.
+
+(2) Kjøperen taper heller ikke retten til å heve kjøpet eller kreve omlevering dersom han ved tilbakeleveringen erstatter den verdireduksjon tingen har hatt.""",
+        "hva_betyr_html": """<p>For å heve eller kreve omlevering må du kunne gi tilbake. Hovedregelen er at varen skal være i «vesentlig samme stand og mengde» — ikke perfekt, men i tilnærmet samme tilstand.</p>
+<p><strong>Tre situasjoner der du beholder retten selv om varen er endret</strong> (første ledd):</p>
+<p><strong>(a) Ikke din skyld:</strong> Varen forringes av seg selv eller av forhold du ikke kan kontrollere. Eksempel: blomster visnet, mat har gått ut på dato, ting har naturlig slitasje.</p>
+<p><strong>(b) Endring som følge av undersøkelse:</strong> Du måtte åpne, montere, teste — og det er det som ga skaden. Du straffes ikke for å ha sjekket varen.</p>
+<p><strong>(c) Solgt videre eller brukt i god tro:</strong> Du har solgt videre, forbrukt eller endret varen før du oppdaget eller burde oppdaget mangelen, og det var som forutsatt bruk. Eksempel: du driver butikk, kjøper inn varer og selger noen videre — så oppdager du at hele leveransen har mangel.</p>
+<p><strong>Erstatte verdireduksjonen</strong> (andre ledd): Selv om ingen av unntakene passer, beholder du hevingsretten hvis du erstatter den verdireduksjonen varen har fått. Du gir tilbake varen + penger for det den har mistet i verdi.</p>""",
+        "eksempler": [
+            {"navn": "Tom", "tekst": "Tom har kjøpt en motorsykkel for 95 000 kr. Etter to måneder med normal bruk oppdager han en alvorlig skjult mangel. Sykkelen har naturlig slitasje for to måneders bruk. Etter § 66 (1) (a) eller (c) beholder Tom hevingsretten. Slitasjen skyldes normal forutsatt bruk før han oppdaget mangelen. Han kan heve — men må kanskje godskrive nytten han hadde (§ 65)."},
+            {"navn": "Ingrid", "tekst": "Ingrid driver en liten butikk og har kjøpt inn 100 vesker for 60 000 kr. Hun har solgt 30 før hun oppdager produksjonsfeil ved de resterende. Etter § 66 (1) (c) beholder hun hevingsretten for hele kjøpet. De 30 hun har solgt, ble solgt i god tro før hun oppdaget feilen. Hun kan heve hele kjøpet og kreve hele kjøpesummen tilbake (eventuelt med justering for det hun har fått inn fra de 30)."},
+            {"navn": "Eva", "tekst": "Eva kjøper en møbelpakke. For å sjekke kvaliteten må hun montere flere deler. Det viser seg å være en alvorlig mangel. Hun klarer ikke å demontere alt perfekt. Etter § 66 (1) (b) beholder hun hevingsretten. Endringen skyldes undersøkelse — det er ikke hennes skyld at hun måtte sette ting sammen for å se feilen."},
+            {"navn": "Marius", "tekst": "Marius har kjøpt et antikt møbel for 80 000 kr. I løpet av tiden hos ham har det blitt litt slitt — verdireduksjon på 8 000 kr. Han vil heve. Etter § 66 (2) kan Marius heve hvis han erstatter de 8 000 kr ved tilbakeleveringen. Han gir møbelet + 8 000 kr; selgeren gir 80 000 kr tilbake."},
+        ],
+        "vanlige_feil": [
+            "Tror du mister hevingsretten med en gang varen er litt slitt — det er nyansert",
+            "Som selger: avslår heving fordi varen ikke er nøyaktig som ny — sjekk om unntakene gjelder",
+            "Glemmer at man kan beholde retten ved å betale verdireduksjon",
+        ],
+        "hva_bor_du_html": """<p>Når du vurderer heving og varen er endret:</p>
+<ol>
+<li>Spør deg selv: er endringen din skyld?</li>
+<li>Hvis ja: tilby å erstatte verdireduksjonen</li>
+<li>Hvis nei: vis til unntakene i § 66 (1)</li>
+<li>Dokumenter varens tilstand ved heving</li>
+</ol>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "34", "tittel": "Krav på retting og omlevering", "available": True},
+            {"lov": "kjopsloven", "paragraf": "39", "tittel": "Heving ved mangel", "available": True},
+            {"lov": "kjopsloven", "paragraf": "64", "tittel": "Virkninger av heving", "available": True},
+        ],
+    },
+    {
+        "number": "67",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Hvor mye kan du kreve i erstatning?",
+        "description": "Erstatning skal svare til det tapet du faktisk er påført — men bare det som med rimelighet kunne forutses. Indirekte tap har egne regler.",
+        "kort_svar": "Erstatningen skal dekke det faktiske tapet — utlegg, prisforskjell og tapt fortjeneste — som motparten har påført deg ved kontraktbruddet. Men bare det som rimelig kunne forutses. Indirekte tap (driftsavbrudd, tap fra mistede kontrakter) har egne regler og krever sterkere grunnlag. Vanlige tiltak for å kompensere mangelen regnes som direkte tap.",
+        "paragraftekst": """(1) Erstatning for kontraktbrudd fra en parts side skal svare til det tap, herunder utlegg, prisforskjell og tapt fortjeneste, som den annen part er påført ved kontraktbruddet. Dette gjelder likevel bare tap som en med rimelighet kunne ha forutsett som en mulig følge av kontraktbruddet.
+
+(2) Som indirekte tap reknes:
+(a) tap som følge av minsket eller bortfalt produksjon eller omsetning (driftsavbrudd)
+(b) tap som følge av at tingen ikke kan nyttiggjøres som forutsatt (avsavn)
+(c) tapt fortjeneste som følge av at en kontrakt med tredjemann faller bort eller ikke blir riktig oppfylt, men bare for så vidt kjøperen uten rimelig grunn lar være å foreta dekningskjøp eller treffe andre tiltak for å unngå eller minske tapet
+(d) tap som følge av skade på annet enn salgstingen selv og gjenstander som den brukes til framstilling av eller som har nær og direkte sammenheng med dens forutsatte bruk.
+
+(3) Reglene i andre ledd gjelder ikke (a) kostnader ved vanlige tiltak som kompenserer at salgstingen er forsinket eller har mangler, (b) kostnader ved tiltak som begrenser annet tap enn det som andre ledd omfatter, eller (c) erstatning utbetalt til en forbrukerkjøper etter reglene i forbrukerkjøpsloven § 34.""",
+        "hva_betyr_html": """<p>Erstatningen skal dekke det reelle tapet — ikke straffe motparten og ikke gi gevinst. Loven gir tre nivåer:</p>
+<p><strong>Hovedregel</strong> (første ledd): Du får dekket alt tap — utlegg, prisforskjell, tapt fortjeneste. Men bare det som «med rimelighet kunne forutses». Eksempel: Hvis du driver en isbutikk og en kjøledisk svikter, er det forutsigbart at isen smelter. Men hvis du driver en hi-tech-bedrift og en spesialmaskin svikter med uvanlig store konsekvenser — det kan være vanskeligere å vise forutsigbarhet.</p>
+<p><strong>Indirekte tap defineres</strong> (andre ledd): Fire kategorier:</p>
+<ul>
+<li>(a) Driftsavbrudd: Produksjon eller omsetning faller bort</li>
+<li>(b) Avsavn: Du kan ikke bruke varen som forutsatt</li>
+<li>(c) Tapt fortjeneste fra tredjemann: Du mister kontrakter med dine egne kunder — men bare hvis du uten rimelig grunn ikke gjorde dekningskjøp eller andre tiltak</li>
+<li>(d) Følgeskader: Skade på andre ting (ikke selve varen)</li>
+</ul>
+<p>Indirekte tap dekkes IKKE av hovedansvaret (kontrollansvaret i §§ 27 og 40). For å få det dekket må du vise <em>uaktsomhet</em> eller <em>garanti</em> — strengere krav.</p>
+<p><strong>Hva som IKKE er indirekte tap</strong> (tredje ledd):</p>
+<ul>
+<li>Kostnader for vanlige kompenserende tiltak (leie maskin mens du venter, dekningskjøp)</li>
+<li>Kostnader for tiltak som begrenser annet tap (typiske skadedempende tiltak)</li>
+<li>Erstatning videreført fra forbrukerkjøp (§ 34 i forbrukerkjøpsloven)</li>
+</ul>
+<p>Dette er <em>direkte</em> tap, og dekkes under hovedansvaret.</p>
+<h3>Sammenligning: Direkte vs. indirekte tap</h3>
+<table class="rule-table">
+<thead><tr><th>Eksempel</th><th>Kategori</th></tr></thead>
+<tbody>
+<tr><td>Prisforskjell ved dekningskjøp</td><td>Direkte</td></tr>
+<tr><td>Ekstra fraktkostnader</td><td>Direkte</td></tr>
+<tr><td>Leie av erstatningsmaskin</td><td>Direkte (vanlig tiltak)</td></tr>
+<tr><td>Lagerleie pga forsinket levering</td><td>Direkte</td></tr>
+<tr><td>Tapt produksjon mens du venter</td><td>Indirekte (driftsavbrudd)</td></tr>
+<tr><td>Tap pga kontrakt med tredjepart faller</td><td>Indirekte</td></tr>
+<tr><td>Skade på andre ting (bygning, inventar)</td><td>Indirekte</td></tr>
+<tr><td>«Avsavn» — ikke kunne bruke varen</td><td>Indirekte</td></tr>
+</tbody>
+</table>""",
+        "eksempler": [
+            {"navn": "Tom", "tekst": "Tom driver et lite produksjonsfirma. En maskin han har kjøpt svikter — produksjon står stille i to uker. Tapt fortjeneste: 65 000 kr. Dette er driftsavbrudd (indirekte tap, § 67 (2) (a)). Tom kan IKKE få det dekket bare på kontrollansvar (§ 40). Han må vise enten selgerens uaktsomhet eller at selgeren hadde tilsikrede egenskaper. Hvis maskinen var markedsført med spesifikk pålitelighet, kan tilsikrede egenskaper passe. Ellers er det vanskelig."},
+            {"navn": "Eva", "tekst": "Eva har samme situasjon, men i stedet for å la produksjonen stå, leier hun en tilsvarende maskin for 22 000 kr i to uker. Leiekostnaden på 22 000 kr er IKKE indirekte tap — det er en vanlig tiltak som kompenserer mangelen (§ 67 (3) (a)). Det dekkes som direkte tap under hovedansvaret. Eva får dette uten å måtte vise uaktsomhet. Lærdom: praktiske tiltak for å komme videre er ofte dekket. Det å sitte og vente er ofte ikke."},
+        ],
+        "vanlige_feil": [
+            "Krever indirekte tap uten å vise uaktsomhet eller tilsikrede egenskaper",
+            "Glemmer å foreta dekningskjøp og krever full tapt fortjeneste — kan rammes av § 70",
+            "Tar med ergrelse og stress — vanskelig å dokumentere økonomisk",
+            "Som selger: tror du slipper alle indirekte tap — du må vise at det ikke er uaktsomhet",
+        ],
+        "hva_bor_du_html": """<p><strong>Som skadelidt:</strong></p>
+<ul>
+<li>Dokumenter alt med kvitteringer og regnestykker</li>
+<li>Gjør dekningstiltak — det viser at du har forsøkt å begrense tap</li>
+<li>Skill direkte og indirekte tap i kravet ditt</li>
+<li>For indirekte tap: bygg argumentasjon om uaktsomhet eller tilsikrede egenskaper</li>
+</ul>
+<p><strong>Som ansvarlig:</strong></p>
+<ul>
+<li>Vurder hva som faktisk er direkte vs. indirekte</li>
+<li>Tilby å dekke direkte tap raskt — sparer rentekostnader</li>
+<li>Bestrid indirekte tap der det er rimelig</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "27", "tittel": "Erstatning ved forsinkelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "40", "tittel": "Erstatning ved mangel", "available": True},
+            {"lov": "kjopsloven", "paragraf": "68", "tittel": "Prisforskjell ved dekning", "available": True},
+            {"lov": "kjopsloven", "paragraf": "70", "tittel": "Plikt til å begrense tap", "available": True},
+        ],
+    },
+    {
+        "number": "68",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Prisforskjell ved dekningstransaksjon",
+        "description": "Hever du og foretar dekningskjøp i tide og forsvarlig — eller selgeren dekningssalg — beregnes erstatningen som forskjellen mellom avtalt pris og dekningspris.",
+        "kort_svar": "Hvis du hever kjøpet og raskt foretar dekningskjøp (kjøper tilsvarende et annet sted) — eller selgeren foretar dekningssalg etter heving — beregnes prisforskjellen som grunnlag for erstatning. Du får dekket differansen mellom det dere avtalte og det dekningskjøpet faktisk kostet. Dette må skje på forsvarlig måte og innen rimelig tid.",
+        "paragraftekst": "Dersom kjøpet heves og kjøperen foretar dekningskjøp eller selgeren dekningssalg på forsvarlig måte og innen rimelig tid etter hevingen, legges kjøpesummen og prisen etter dekningstransaksjonen til grunn når prisforskjell skal reknes ut.",
+        "hva_betyr_html": """<p>Når en handel ryker, må du som regel skaffe deg det du trengte — eller bli kvitt varen — et annet sted. Loven legger den nye prisen til grunn for erstatningsberegningen.</p>
+<p><strong>Kjøperen — dekningskjøp:</strong> Du har bestilt en vare for X kr, hever på grunn av forsinkelse eller mangel, og må kjøpe tilsvarende et annet sted for Y kr. Hvis Y &gt; X, har du tapt mellomlegget. Det er erstatning.</p>
+<p><strong>Selgeren — dekningssalg:</strong> Du har solgt for X kr, men kjøperen aksepterer ikke (heving fra din side eller heving som du står for). Du må selge til en annen for Y kr. Hvis Y &lt; X, har du tapt mellomlegget.</p>
+<p><strong>Vilkår:</strong> To krav må være oppfylt:</p>
+<ul>
+<li><strong>Forsvarlig måte:</strong> Du må ikke bare ta det første og dyreste tilbudet. Du skal opptre rasjonelt, sammenligne, gjøre et reelt forsøk på rimelig pris.</li>
+<li><strong>Innen rimelig tid:</strong> Du må handle raskt etter hevingen. Hvis du venter for lenge, og prisene har endret seg dramatisk, kan du miste retten til å bruke dekningspris.</li>
+</ul>""",
+        "eksempler": [
+            {"navn": "Ola", "tekst": "Ola hadde bestilt reservedeler for 18 000 kr fra en leverandør. Han hever på grunn av forsinkelse. Han trenger delene nå — finner dem hos en annen leverandør for 22 500 kr. Han kjøper. Etter § 68 kan Ola kreve 4 500 kr som direkte tap. Det er prisforskjellen ved en forsvarlig dekningstransaksjon innen rimelig tid. Hvis Ola hadde ventet i to måneder med å gjøre dekningskjøpet, og prisene i mellomtiden steg til 28 000 kr — kunne selgeren motsette seg at hele differansen skal dekkes. Da gjelder kanskje § 69 (gjengs pris på hevingstidspunktet) i stedet."},
+            {"navn": "Sara", "tekst": "Sara har solgt en gravemaskin for 380 000 kr. Kjøperen misligholder, og Sara hever. Hun selger maskinen til en annen for 340 000 kr to uker senere — markedet hadde svekket seg litt. Etter § 68 kan Sara kreve 40 000 kr i erstatning fra den opprinnelige kjøperen."},
+        ],
+        "vanlige_feil": [
+            "Venter for lenge med dekningstransaksjon — markedet endrer seg, du mister erstatning",
+            "Velger det billigste/raskeste uten å sammenligne — ikke «forsvarlig måte»",
+            "Som kjøper: velger en luksusversjon ved dekningskjøp — du skal dekke samme behov, ikke oppgradere",
+            "Glemmer å dokumentere prisforskjell og at transaksjonen var forsvarlig",
+        ],
+        "hva_bor_du_html": """<p>Når du hever og må gjøre dekningstransaksjon:</p>
+<ol>
+<li>Handle raskt etter heving — typisk innen dager eller uker</li>
+<li>Sammenlign flere tilbud — vis at du gjorde et forsvarlig valg</li>
+<li>Dokumenter alt: tilbud, valg, pris, dato</li>
+<li>Kreve prisforskjellen som erstatning — med dokumentasjon</li>
+</ol>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "67", "tittel": "Omfanget av erstatning", "available": True},
+            {"lov": "kjopsloven", "paragraf": "69", "tittel": "Prisforskjell uten dekningstransaksjon", "available": True},
+            {"lov": "kjopsloven", "paragraf": "70", "tittel": "Plikt til å begrense tap", "available": True},
+        ],
+    },
+    {
+        "number": "69",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Prisforskjell uten dekningstransaksjon",
+        "description": "Hvis du hever uten å gjøre dekningskjøp, og det finnes gjengs pris for varen, beregnes erstatningen ut fra forskjellen mellom avtalt pris og gjengs pris på hevingstidspunktet.",
+        "kort_svar": "Hvis du hever uten å gjøre dekningskjøp (eller dekningssalg), og det finnes en gjengs pris for varen, beregnes erstatningen ut fra forskjellen mellom avtalt pris og gjengs pris på hevingstidspunktet. Hvis kjøpet heves etter at varen er overtatt, brukes gjengs pris ved overtakelsen i stedet.",
+        "paragraftekst": """(1) Er kjøpet hevet uten at det foretas dekning som nevnt i § 68, og er det gjengs pris for tingen, legges kjøpesummen og den gjengse pris på hevingstiden til grunn når prisforskjell skal reknes ut. Blir kjøpet hevet etter at tingen er overtatt, skal isteden gjengs pris ved overtakelsen legges til grunn.
+
+(2) Som gjengs pris anses prisen på leveringsstedet for ting av samme slag eller, om det ikke gjelder noen gjengs pris der, på et annet sted som med rimelighet kan likestilles med dette, likevel slik at omsyn tas til forskjell i transportkostnader.""",
+        "hva_betyr_html": """<p>Noen ganger gjør ingen part en dekningstransaksjon — kanskje varen var spesiell, eller behovet falt bort. Da må erstatningen likevel beregnes — og loven sier: bruk markedsprisen.</p>
+<p><strong>Hvis varen ikke er overtatt</strong> (første ledd, første setning): Prisforskjellen beregnes som differansen mellom det dere avtalte og gjengs pris (markedspris) på hevingstidspunktet.</p>
+<p><strong>Hvis varen var overtatt før heving</strong> (samme ledd, andre setning): Da brukes gjengs pris ved overtakelsen i stedet. Logikken: det er da risikoen var hos kjøperen, og prisen på det tidspunktet er det relevante referansepunktet.</p>
+<p><strong>Hva er «gjengs pris»</strong> (andre ledd): Markedsprisen på leveringsstedet for varer av samme slag. Hvis det ikke finnes der, bruker man et sammenliknbart sted — med tilpasning for transportkostnader.</p>
+<p>I praksis brukes denne paragrafen sjelden — partene foretar oftest dekningstransaksjoner og bruker § 68. Men når dekning ikke skjer, gir § 69 et fall-back.</p>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars har bestilt en spesifikk type betongelementer for 240 000 kr. Han hever på grunn av forsinkelse — og bygger om planen sin slik at han trenger noe annet helt. Han gjør ikke dekningskjøp. Markedsprisen for tilsvarende betongelementer er steget til 265 000 kr på hevingstidspunktet. Etter § 69 har Lars krav på 25 000 kr i erstatning — prisforskjellen mot gjengs pris."},
+            {"navn": "Marius", "tekst": "Marius har kjøpt varer og overtatt dem. To uker senere hever han på grunn av en mangel. Han gjør ikke dekningskjøp. Etter § 69 (1) andre setning brukes gjengs pris ved overtakelsen — ikke på hevingstidspunktet. Dette gjelder fordi Marius hadde risikoen fra overtakelsen, og det er denne markedstilstanden som er relevant."},
+        ],
+        "vanlige_feil": [
+            "Beregner erstatning ut fra dagens markedspris, ikke pris på hevingstidspunktet",
+            "Glemmer å justere for transportkostnader",
+            "Tror erstatning er null hvis man ikke har gjort dekningskjøp — man kan fortsatt få markedsbasert erstatning",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Dokumenter markedsprisen på hevingstidspunktet (eller overtakelsestidspunktet) med flere kilder</li>
+<li>Hvis prisene har endret seg dramatisk, vurder om dekningstransaksjon er bedre vei</li>
+<li>Husk på § 70 — plikten til å begrense tap</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "45", "tittel": "Pris når avtalen er stille", "available": True},
+            {"lov": "kjopsloven", "paragraf": "67", "tittel": "Omfanget av erstatning", "available": True},
+            {"lov": "kjopsloven", "paragraf": "68", "tittel": "Prisforskjell ved dekningstransaksjon", "available": True},
+        ],
+    },
+    {
+        "number": "70",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Plikt til å begrense eget tap",
+        "description": "Du må gjøre rimelige tiltak for å begrense ditt eget tap når motparten har gjort kontraktbrudd. Hvis du ikke gjør det, må du bære den delen av tapet selv.",
+        "kort_svar": "Hvis motparten har gjort kontraktbrudd, må du gjøre rimelige tiltak for å begrense tapet ditt. Sitter du bare i ro mens tapet vokser, må du bære den delen av tapet selv. I tillegg kan erstatningen settes ned hvis den er urimelig høy sammenliknet med tap som normalt oppstår i liknende tilfeller.",
+        "paragraftekst": """(1) Den part som påroper kontraktbrudd fra den annens side, skal ved rimelige tiltak begrense sitt tap. Forsømmer han dette, må han selv bære den tilsvarende del av tapet.
+
+(2) Erstatning kan settes ned dersom den vil virke urimelig for den ansvarlige part ut fra tapets størrelse i forhold til det tap som vanligvis oppstår i liknende tilfelle, og tilhøva ellers.""",
+        "hva_betyr_html": """<p>Du kan ikke bare la tapet vokse fritt og deretter sende regningen. Loven krever at du tar grep.</p>
+<p><strong>Tapsbegrensning</strong> (første ledd): Hvis motparten har misligholdt, må du gjøre rimelige tiltak for å begrense skaden. Eksempler:</p>
+<ul>
+<li>Foreta dekningskjøp/dekningssalg</li>
+<li>Leie midlertidig erstatning</li>
+<li>Selge varen til andre hvis kjøperen ikke vil ha den</li>
+<li>Stoppe arbeid eller ressursbruk knyttet til avtalen</li>
+</ul>
+<p>Hvis du forsømmer dette, må du selv bære den delen av tapet du kunne ha unngått.</p>
+<p><strong>Lemping av ansvar</strong> (andre ledd): Selv om du har gjort alt riktig, kan erstatningen settes ned hvis den blir urimelig høy. Vurderingen er om tapet er uvanlig stort sammenliknet med det vanlige i liknende tilfeller. Dette er en sikkerhetsventil — et utslippspunkt der ansvaret blir overdimensjonert.</p>""",
+        "eksempler": [
+            {"navn": "Tom", "tekst": "Tom driver et lite verksted. En leverandør leverer ikke deler i tide. Tom har en kunde som venter, men i stedet for å foreta dekningskjøp lar han kunden gå. Tapt fortjeneste: 35 000 kr. Hvis Tom kunne ha foretatt dekningskjøp for 8 000 kr og dermed beholdt kunden, har han forsømt tapsbegrensningsplikten. Han kan ikke kreve 35 000 kr — han kan kreve det som ville vært tapet etter rimelig tiltak (8 000 kr i merkostnad ved dekningskjøp)."},
+            {"navn": "Sara", "tekst": "Sara har en spesiell virksomhet der en liten forsinkelse fra leverandøren får ekstremt store konsekvenser — millionerstatninger til hennes egne kunder. Etter § 70 (2) kan ansvaret lempes hvis det er klart at tapet er urimelig stort sammenliknet med det «vanlige» i liknende tilfeller. Selgeren kunne ikke forventes å vite om Saras spesielle eksponering. Vurderingen er konkret."},
+        ],
+        "vanlige_feil": [
+            "Sitter passivt og lar tapet vokse — du straffes for det",
+            "Tror motparten må dekke alt uansett — du har plikt selv",
+            "Som ansvarlig: forsøker ikke å påberope § 70 når motparten har vært treg",
+            "Forveksler «rimelige tiltak» med «alle tenkelige tiltak»",
+        ],
+        "hva_bor_du_html": """<p>Når motparten har gjort kontraktbrudd:</p>
+<ol>
+<li>Tenk umiddelbart på begrensning: hva kan jeg gjøre for å redusere tapet?</li>
+<li>Dokumenter tiltakene — hvilke alternativer du vurderte, hva du valgte og hvorfor</li>
+<li>Gjør dekningstransaksjoner raskt</li>
+<li>Vær realistisk om «rimelig» — du må ikke gjøre umulige eller veldig dyre tiltak</li>
+<li>Hold motparten informert</li>
+</ol>
+<p><strong>Som ansvarlig:</strong></p>
+<ul>
+<li>Påberop § 70 hvis motparten har vært passiv</li>
+<li>Påberop § 70 (2) hvis erstatningen er urimelig høy</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "27", "tittel": "Erstatning ved forsinkelse", "available": True},
+            {"lov": "kjopsloven", "paragraf": "40", "tittel": "Erstatning ved mangel", "available": True},
+            {"lov": "kjopsloven", "paragraf": "67", "tittel": "Omfanget av erstatning", "available": True},
+            {"lov": "kjopsloven", "paragraf": "68", "tittel": "Prisforskjell ved dekning", "available": True},
+        ],
+    },
+    {
+        "number": "71",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Forsinkelsesrente",
+        "description": "Hvis kjøpesummen eller andre beløp ikke betales i tide, skal det betales rente etter forsinkelsesrenteloven. Renten løper automatisk fra forfall.",
+        "kort_svar": "Hvis kjøpesummen eller andre utestående beløp ikke betales i tide, skal det betales forsinkelsesrente etter forsinkelsesrenteloven. Renten løper automatisk fra forfallsdatoen — selgeren trenger ikke gjøre noe spesielt for å aktivere den. Forsinkelsesrentesatsen fastsettes av Finansdepartementet to ganger i året.",
+        "paragraftekst": "Betales ikke kjøpesummen eller annet utestående beløp i tide, skal skyldneren svare rente etter lov 17 desember 1976 nr. 100 om renter ved forsinket betaling m m.",
+        "hva_betyr_html": """<p>Forsinkelsesrenten er den enkleste og mest effektive sanksjonen mot sen betaling. Den løper automatisk — du trenger ikke purre eller varsle for at renten skal aktiveres.</p>
+<p><strong>Når starter renten?</strong> Fra forfallsdatoen i avtalen eller fakturaen. Hvis ingen forfallsdato er avtalt, regnes 30 dager fra første purring eller faktura — men det er detaljer i forsinkelsesrenteloven.</p>
+<p><strong>Hvor høy er renten?</strong> Forsinkelsesrentesatsen fastsettes av Finansdepartementet to ganger per år (1. januar og 1. juli) og er typisk styringsrenten + 8 prosentpoeng. Den er bevisst høyere enn vanlig bankrente — for å presse skyldnere til å betale i tide.</p>
+<p><strong>Gjelder for alle utestående beløp:</strong> Ikke bare hovedstolen. Også erstatningskrav, prisavslag som er bekreftet, og andre beløp som skulle vært betalt.</p>
+<p>Du kan også kreve faktisk tap i tillegg, etter §§ 27, 40 og 57. Forsinkelsesrenten dekker den vanlige forrentningen — har du hatt ekstra kostnader utover det, kan du kreve dem som erstatning.</p>
+<p>Mellom næringsdrivende kan det også kreves standardisert kompensasjon for inndrivelseskostnader (forsinkelsesrenteloven § 3 a — typisk 410 kr per krav i 2026, men sjekk gjeldende sats).</p>""",
+        "eksempler": [
+            {"navn": "Eva", "tekst": "Eva har kjøpt utstyr for 95 000 kr på faktura med forfall 1. mars. Hun betaler først 1. juni — tre måneder for sent. Forsinkelsesrentesatsen i perioden er 12,5 % årlig. Forsinkelsesrente: 95 000 × 0,125 × (90/365) ≈ 2 928 kr. Eva må betale 95 000 + 2 928 = 97 928 kr. Hvis hun er næringsdrivende, kan selgeren også kreve standardisert kompensasjon for inndrivelseskostnader i tillegg."},
+            {"navn": "Marius", "tekst": "Marius har hevet et kjøp og venter på at selgeren skal betale tilbake 65 000 kr. Selgeren drar det ut i fire måneder. Marius kan kreve forsinkelsesrente på hele beløpet for hele perioden — fra dagen selgeren mottok betalingen, etter § 65 (2)."},
+        ],
+        "vanlige_feil": [
+            "Tror du må sende purring for at renten skal løpe — den løper automatisk fra forfall",
+            "Glemmer å kreve renten — selgere «gir bort» ofte tusenvis i året fordi de ikke krever det",
+            "Beregner feil rentesats — bruk gjeldende sats fra Finansdepartementet",
+            "Tror renten dekker alle dine tap — du har også rett til erstatning utover",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger / kreditor:</strong></p>
+<ul>
+<li>Inkluder forsinkelsesrente på purringer</li>
+<li>Kreve standardisert inndrivelseskostnad ved bedriftshandel</li>
+<li>Beregn rente til riktig sats</li>
+<li>Hold dokumentasjon på forfallsdato</li>
+</ul>
+<p><strong>Som kjøper / skyldner:</strong></p>
+<ul>
+<li>Betal i tide — renten er dyr</li>
+<li>Hvis du ikke kan betale, varsle og forhandle om utsettelse skriftlig</li>
+<li>Sjekk fakturaer for korrekt renteberegning</li>
+</ul>""",
+        "dumme_sporsmal": [
+            {"q": "Hva er forsinkelsesrenten akkurat nå?", "a": "Den endres to ganger i året. Du finner siste sats hos Finansdepartementet eller på regjeringen.no. Den er typisk høy — over 10 % årlig."},
+            {"q": "Kan jeg kreve mer enn forsinkelsesrenten?", "a": "Ja — hvis du har konkrete tap utover det renten dekker. Det kommer som erstatning etter §§ 27, 40 eller 57."},
+        ],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "49", "tittel": "Når skal du betale", "available": True},
+            {"lov": "kjopsloven", "paragraf": "51", "tittel": "Selgerens krav ved mislighold", "available": True},
+            {"lov": "kjopsloven", "paragraf": "57", "tittel": "Erstatning ved kjøperens mislighold", "available": True},
+            {"lov": "kjopsloven", "paragraf": "65", "tittel": "Rente ved tilbakeføring", "available": True},
+        ],
+    },
+    {
+        "number": "72",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Selgerens plikt til å passe på varen",
+        "description": "Hvis du ikke henter eller tar imot varen, må selgeren passe på den for din regning — så lenge han har den eller kan ta vare på den.",
+        "kort_svar": "Hvis du som kjøper ikke henter eller tar imot varen i tide, må selgeren likevel passe på den — for din regning. Det betyr at han ikke kan bare kaste den eller la den stå ute i regn. Han må ta rimelig omsorg, og du må senere dekke kostnadene.",
+        "paragraftekst": "Dersom kjøperen ikke henter eller tar imot tingen i rett tid eller forhold ellers på hans side har medført at den ikke er overgitt til ham, skal selgeren for kjøperens rekning dra slik omsorg for tingen som er rimelig etter tilhøva, såframt han har tingen i sin varetekt eller for øvrig kan ta vare på den.",
+        "hva_betyr_html": """<p>Selv om du som kjøper svikter, kan ikke selgeren bare slippe varen ut av hendene. Loven krever at han fortsatt opptrer ansvarlig.</p>
+<p><strong>Plikten:</strong> Hvis varen ikke kan overgis til deg — fordi du ikke henter, ikke mottar, eller forholdene på din side hindrer overlevering — må selgeren ta «rimelig omsorg» så lenge han har varen.</p>
+<p><strong>For din regning:</strong> Det er ikke selgerens kostnad — det er din. Han kan kreve dekket utgifter til lagring, vedlikehold, transport til lager osv. (jf. § 75).</p>
+<p><strong>«Rimelig etter tilhøva»:</strong> Standarden er hva som er fornuftig i situasjonen. En billig vare trenger ikke samme oppfølging som en verdifull. En lett ødeleggelig vare må behandles mer aktsomt enn en hardfør.</p>
+<p><strong>Når kommer dette inn?</strong> Når du er i mora — du skulle ha hentet, men gjør det ikke. Eller du har sagt at du ikke vil ha varen. Da går risikoen over på deg (§ 13), men selgeren har fortsatt et ansvar for å ikke la den gå tapt.</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius har kjøpt et kjøleskap fra Tom for 6 500 kr. Avtalt henting søndag. Marius dukker ikke opp og svarer ikke på meldinger. Tom kan ikke bare kaste kjøleskapet. Etter § 72 må han ta rimelig omsorg — for Marius sin regning. Han kan flytte det inn i bod, dekke til med presenning, kanskje leie lagerplass. Tom kan senere kreve dekket lagring og kostnader (§ 75). Hvis Marius ikke kommer, kan Tom etter hvert selge kjøleskapet (§ 76) og avregne kostnadene."},
+            {"navn": "Anne", "tekst": "Anne har bestilt en stor maskin for 280 000 kr. Den leveres på avtalt dag, men hun har glemt det. Maskinen står ute i regnet. Anne kommer en uke senere — maskinen er rustet og uvirksom. Etter § 72 hadde selgeren plikt til omsorg. Hvis han bare lot maskinen stå ute uten å varsle eller flytte den, har han brutt omsorgsplikten — og kan stå ansvarlig for skaden, selv om risikoen i utgangspunktet var hos Anne (§ 13)."},
+        ],
+        "vanlige_feil": [
+            "Som selger: lar varen stå uten å gjøre noe — bryter omsorgsplikten",
+            "Som kjøper: tror selgeren kan kaste varen hvis du ikke kommer — han kan ikke",
+            "Glemmer at omsorgsplikten følger med kostnader som kjøperen betaler",
+        ],
+        "hva_bor_du_html": """<p><strong>Som selger:</strong></p>
+<ul>
+<li>Hvis kjøperen ikke møter opp: dokumenter med bilder, tid, sted</li>
+<li>Sett varen et trygt sted</li>
+<li>Send varsel skriftlig til kjøperen</li>
+<li>Følg opp med inkasso eller salg etter rimelig tid</li>
+<li>Hold kvitteringer på alle kostnader</li>
+</ul>
+<p><strong>Som kjøper:</strong></p>
+<ul>
+<li>Hvis du blir forsinket: varsle umiddelbart</li>
+<li>Forstå at lagring og omsorg koster — som blir din regning</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "50", "tittel": "Kjøperens plikt til å hente", "available": True},
+            {"lov": "kjopsloven", "paragraf": "73", "tittel": "Kjøperens plikt til omsorg", "available": True},
+            {"lov": "kjopsloven", "paragraf": "74", "tittel": "Forvaring hos tredjemann", "available": True},
+            {"lov": "kjopsloven", "paragraf": "75", "tittel": "Erstatning for omsorgskostnader", "available": True},
+        ],
+    },
+    {
+        "number": "73",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Kjøperens plikt til å passe på varen",
+        "description": "Vil du avvise en vare du har overtatt eller fått levert? Du har plikt til å passe på den for selgerens regning til den blir hentet.",
+        "kort_svar": "Hvis du vil avvise en vare du har overtatt — eller en vare som er sendt til deg — har du plikt til å passe på den for selgerens regning. Du kan ikke bare kaste eller ignorere den. Unntak: hvis du må betale selv for å ta vare på den, og selv kan ta seg av den selv på bestemmelsesstedet.",
+        "paragraftekst": """(1) Vil kjøperen avvise en ting som han har overtatt, skal han for selgerens rekning dra slik omsorg for den som er rimelig etter tilhøva.
+
+(2) Vil kjøperen avvise en ting som er sendt til ham og stilt til hans rådighet på bestemmelsesstedet, skal han ta vare på den for selgerens rekning, såframt han kan gjøre dette uten å betale kjøpesummen eller pådra seg urimelig kostnad eller ulempe. Dette gjelder likevel ikke dersom selgeren eller noen på hans vegne kan ta seg av tingen på bestemmelsesstedet.""",
+        "hva_betyr_html": """<p>Når du avviser en vare, betyr ikke det at du kan kaste den eller late som den ikke finnes. Loven krever en aktiv omsorgsplikt — speilbildet av § 72.</p>
+<p><strong>Vare du har overtatt</strong> (første ledd): Du har akseptert leveringen, men vil nå avvise (typisk på grunn av mangel eller heving). Du må passe på varen rimelig — for selgerens regning. Du kan kreve dekket utgifter.</p>
+<p><strong>Vare sendt til deg</strong> (andre ledd): Pakken er kommet, ligger hos deg. Du vil avvise. Du må ta vare på den — men bare hvis du kan gjøre det uten:</p>
+<ul>
+<li>Å måtte betale kjøpesummen (for å få utlevert pakke fra Posten f.eks.)</li>
+<li>Å pådra deg urimelig kostnad eller ulempe</li>
+</ul>
+<p>Hvis selgeren eller noen på hans vegne kan ta seg av varen på bestemmelsesstedet (lokalt lager, agent), faller plikten din.</p>
+<p>Eksempler på praktiske situasjoner:</p>
+<ul>
+<li>En vare er feil — du klager og vil heve. Du må passe på den til selgeren henter.</li>
+<li>En spesialvare sendes til deg, du oppdager mangel før du betaler. Du må ta vare på den hvis du kan, til avklaring.</li>
+<li>En pakke kommer som du ikke har bestilt. Du må forholde deg fornuftig — kontakte avsender, oppbevare den rimelig.</li>
+</ul>""",
+        "eksempler": [
+            {"navn": "Sara", "tekst": "Sara har overtatt en sofa for 28 000 kr. Hun oppdager dagen etter en stor flekk og bestemmer seg for å avvise og heve. Etter § 73 må Sara passe på sofaen — for selgerens regning — til den blir hentet. Hun kan ikke bare sette den ute i regnet. Hun setter den i et tørt rom, varsler selgeren, og venter på henting. Eventuelle kostnader (flytting, lagring) kan hun kreve dekket."},
+            {"navn": "Tom", "tekst": "Tom har bestilt utstyr fra Tyskland. Pakken kommer, men da han åpner den, ser han at det er feil produkt. Han vil avvise. Etter § 73 (2) må Tom ta vare på pakken hvis han kan — uten å pådra seg urimelig kostnad. Han kontakter selgeren, oppbevarer pakken trygt, og venter på instruksjoner. Han trenger ikke betale ekstra for å forsvarlig oppbevare den. Hvis selgeren har en agent eller lager i Norge som kan hente, kan Tom heller bli kvitt den der."},
+        ],
+        "vanlige_feil": [
+            "Tror at avvisning = fri til å gjøre hva som helst med varen",
+            "Som kjøper: krever at selgeren henter umiddelbart, uten å sørge for omsorg i mellomtiden",
+            "Pådrar urimelige kostnader og krever dekket — du må handle «rimelig»",
+        ],
+        "hva_bor_du_html": """<p>Når du avviser:</p>
+<ol>
+<li>Varsle selgeren skriftlig med en gang</li>
+<li>Oppbevar varen forsvarlig — tørt, trygt, uten skadelige forhold</li>
+<li>Dokumenter tilstand med bilder ved avvisning</li>
+<li>Avtal henting eller retur</li>
+<li>Hold kvitteringer på eventuelle omsorgskostnader</li>
+</ol>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "72", "tittel": "Selgerens omsorgsplikt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "74", "tittel": "Forvaring hos tredjemann", "available": True},
+            {"lov": "kjopsloven", "paragraf": "75", "tittel": "Erstatning for omsorgskostnader", "available": True},
+        ],
+    },
+    {
+        "number": "74",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Lagre varen hos en tredjepart",
+        "description": "Når du har omsorgsplikt for varen, kan du la en tredjepart oppbevare den — på den andres regning — så lenge kostnadene er forsvarlige.",
+        "kort_svar": "Hvis du har omsorgsplikt for varen (enten som selger som ikke fikk levert, eller som kjøper som avviser), kan du la en tredjepart oppbevare varen — for motpartens regning. Vilkåret er at kostnadene ikke er uforsvarlige. Når tredjeparten har overtatt og er forsvarlig valgt, er du fri for videre ansvar.",
+        "paragraftekst": "En part som plikter å dra omsorg for tingen, kan la tredjemann forvare den for den annen parts rekning, såframt kostnadene ikke er uforsvarlige. Parten er fri for ansvar når forvareren er forsvarlig valgt og har mottatt tingen.",
+        "hva_betyr_html": """<p>Du må ikke selv stå med varen i fanget. Du kan delegere lagringen til noen som passer på den profesjonelt — typisk et lager-firma.</p>
+<p><strong>To vilkår:</strong></p>
+<ul>
+<li><strong>Forsvarlige kostnader:</strong> Du kan ikke leie det dyreste alternativet og sende regningen. Velg et fornuftig lager til markedsmessige priser.</li>
+<li><strong>Forsvarlig valg av tredjepart:</strong> Velg en seriøs aktør — etablert lagerselskap, en kjent forvarer. Ikke noen lyssky kompis.</li>
+</ul>
+<p><strong>Effekten:</strong> Når tredjeparten har overtatt varen, er du fri for ansvar. Hvis noe skjer hos forvareren, er det forvarerens ansvar (han har et eget forhold til den som eier varen).</p>
+<p>I praksis: dette er en avlastningsmulighet for den som har omsorgsplikt. Du driver ikke et lager — du betaler noen som gjør det.</p>""",
+        "eksempler": [
+            {"navn": "Eva", "tekst": "Eva har solgt en stor industrimaskin. Kjøperen henter ikke. Maskinen står i veien hos Eva — hun trenger plassen. Eva kan etter § 74 leie lagerplass hos et profesjonelt lager — for kjøperens regning. Hun kontakter et anerkjent lagerselskap, får tilbud, og velger et til rimelig pris. Når maskinen er hos lageret, er Eva fri for videre omsorgsansvar — så lenge hun har valgt forsvarlig. Kjøperen må senere dekke lagerkostnadene."},
+            {"navn": "Marius", "tekst": "Marius har avvist et stort vareparti han mottok feilaktig. Han har ikke plass selv. Han leier midlertidig lagerplass for 4 500 kr i måneden hos et lokalt firma. Etter § 74 er det greit. Han er fri for ansvar når varepartiet er hos en forsvarlig valgt forvarer. Selgeren må dekke kostnadene."},
+        ],
+        "vanlige_feil": [
+            "Velger det dyreste alternativet — kan rammes av «uforsvarlige kostnader»",
+            "Velger en useriøs aktør — kan rammes av «forsvarlig valg»-kravet",
+            "Tror du fritar deg selv ved bare å si «varen er hos noen andre» — du må faktisk overlevere",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Få flere tilbud før du velger lager</li>
+<li>Velg en seriøs aktør — sjekk omdømme</li>
+<li>Dokumenter overleveringen med skriftlig avtale</li>
+<li>Hold kvitteringer for kostnader</li>
+<li>Varsle motparten om hvor varen er</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "72", "tittel": "Selgerens omsorgsplikt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "73", "tittel": "Kjøperens omsorgsplikt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "75", "tittel": "Erstatning for omsorgskostnader", "available": True},
+        ],
+    },
+    {
+        "number": "75",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Dekning av kostnader for omsorg",
+        "description": "Den som passer på varen for motpartens regning har krav på dekket forsvarlige kostnader — og kan holde varen tilbake til kostnadene er dekket eller sikkerhet er stilt.",
+        "kort_svar": "Hvis du passer på varen for motpartens regning, har du krav på å få dekket forsvarlige kostnader. Du kan holde varen tilbake til kostnadene er dekket — eller til betryggende sikkerhet er stilt. Du har altså en sterk posisjon: gi ikke fra deg varen før du har fått det du skal ha.",
+        "paragraftekst": "Den som drar omsorg for tingen for motpartens rekning, har rett til dekning av forsvarlige kostnader til dette. Han kan holde tingen tilbake inntil kostnadene dekkes eller betryggende sikkerhet stilles.",
+        "hva_betyr_html": """<p>Når du har båret kostnader for omsorg, skal du ikke stå igjen med regningen. Loven gir deg to verktøy:</p>
+<p><strong>Dekning av kostnader:</strong> Du har rett til å få dekket «forsvarlige» kostnader. Det vil si rimelige, dokumenterte utgifter. Du kan ikke spørre dobbel pris og kreve det dekket.</p>
+<p>Eksempler på dekningsbare kostnader:</p>
+<ul>
+<li>Lagerleie</li>
+<li>Transport til lager</li>
+<li>Forsikring i perioden</li>
+<li>Strøm til kjøling der det er nødvendig</li>
+<li>Vedlikehold</li>
+</ul>
+<p><strong>Tilbakeholdsrett:</strong> Du kan holde varen tilbake til motparten betaler — eller stiller betryggende sikkerhet. Du leverer ikke før du har fått penger eller sikkerhet.</p>
+<p>Dette er en sterk rett. Tenk: hvis kjøperen som ikke har hentet plutselig kommer og vil ha varen, kan selgeren si: «Først 12 000 kr i lagerkostnader, så får du varen.»</p>""",
+        "eksempler": [
+            {"navn": "Tom", "tekst": "Tom har solgt et kjøleskap som kjøperen aldri hentet. Det har stått hos Tom i fire måneder — han har dekket lagerleie hos et minilager for 2 400 kr. Når kjøperen endelig dukker opp, kan Tom etter § 75 kreve 2 400 kr før han leverer ut kjøleskapet. Han har tilbakeholdsrett. Hvis kjøperen nekter, kan Tom etter hvert selge kjøleskapet etter § 76 og avregne kostnadene."},
+            {"navn": "Eva", "tekst": "Eva har avvist et vareparti og leid lager for 18 000 kr over tre måneder. Selgeren krever varepartiet tilbake. Eva kan etter § 75 kreve at selgeren betaler 18 000 kr — eller stiller bankgaranti — før hun gir fra seg varene. Hennes tilbakeholdsrett er et reelt forhandlingskort."},
+        ],
+        "vanlige_feil": [
+            "Som selger: gir tilbake varen før kostnader er dekket — du har mistet forhandlingskortet",
+            "Krever urimelig høye kostnader — du må vise at de var «forsvarlige»",
+            "Glemmer å dokumentere kostnadene",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Hold kvitteringer på alle omsorgskostnader</li>
+<li>Beregn kostnaden løpende — ikke vent til slutt</li>
+<li>Send krav skriftlig med spesifikasjon</li>
+<li>Bruk tilbakeholdsretten før du leverer ut</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "72", "tittel": "Selgerens omsorgsplikt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "73", "tittel": "Kjøperens omsorgsplikt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "74", "tittel": "Forvaring hos tredjemann", "available": True},
+            {"lov": "kjopsloven", "paragraf": "76", "tittel": "Salg av varen ved manglende henting", "available": True},
+        ],
+    },
+    {
+        "number": "76",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Salg av varen for motpartens regning",
+        "description": "Hvis du har omsorgsplikt og motparten ikke henter, kan du selge varen — særlig hvis den er bedervelig eller koster for mye å lagre.",
+        "kort_svar": "Hvis du har omsorgsplikt for varen, kan du selge den — for motpartens regning — i tre tilfeller: hvis du ikke kan ta vare på den uten vesentlig kostnad, hvis motparten venter urimelig lenge, eller hvis varen står i fare for å bli ødelagt. Salg skal skje forsvarlig, og motparten skal varsles på forhånd hvis mulig.",
+        "paragraftekst": """(1) En part som plikter å dra omsorg for tingen, har rett til å selge den dersom han ikke uten vesentlig kostnad kan ta vare på den, eller den annen part venter urimelig lenge med å overta den eller betale kjøpesummen eller kostnadene med oppbevaringen.
+
+(2) Dersom tingen er utsatt for raskt å bli ødelagt eller forringet, eller det vil være uforholdsmessig kostbart å ta vare på den, skal den så vidt mulig selges.
+
+(3) Salg skal skje på forsvarlig måte. Når det er mulig, skal den annen part gis rimelig varsel om at tingen vil bli solgt.""",
+        "hva_betyr_html": """<p>Omsorgsplikten varer ikke evig. Hvis kjøperen aldri henter eller selgeren aldri tar tilbake, kan du selge varen og avregne det med motparten.</p>
+<p><strong>Tre situasjoner du kan selge</strong> (første ledd):</p>
+<ul>
+<li><strong>Vesentlig kostnad å lagre:</strong> Hvis det blir dyrt over tid</li>
+<li><strong>Urimelig lang venting:</strong> Motparten henter ikke / betaler ikke / dekker ikke kostnader</li>
+<li>Som regel kombinert: hvis det drar ut og blir dyrt</li>
+</ul>
+<p><strong>Du skal selge</strong> (andre ledd): I to tilfeller har du en plikt til å selge:</p>
+<ul>
+<li>Varen kan bli raskt ødelagt (mat, blomster, ferskvarer)</li>
+<li>Det er uforholdsmessig kostbart å ta vare på</li>
+</ul>
+<p>Logikken: bedre å redde noe enn å la alt gå tapt.</p>
+<p><strong>Salget må skje forsvarlig</strong> (tredje ledd):</p>
+<ul>
+<li>Markedsmessig pris</li>
+<li>Vanlig salgskanal</li>
+<li>Ikke «kjøp av venner» eller dumping</li>
+<li>Motparten skal varsles på forhånd hvis mulig, så han kan handle eller stoppe salget</li>
+</ul>""",
+        "eksempler": [
+            {"navn": "Anne", "tekst": "Anne mottok en feilforsendelse av ferskt fisk på 45 000 kr. Hun har avvist, men selgeren har ikke hentet etter to dager. Fisken må snart kastes. Etter § 76 (2) skal Anne selge — det er en plikt. Hun kontakter en lokal fiskemarked, får et tilbud, varsler selgeren skriftlig (men det haster), og selger til markedspris. Inntekten godskrives selgeren etter § 78, fratrukket hennes kostnader (transport, telefon, eventuelt tap)."},
+            {"navn": "Tom", "tekst": "Tom har solgt et kjøleskap som kjøperen aldri hentet. Det er gått fem måneder. Tom har lagerkostnader på 1 200 kr per måned. Han har varslet kjøperen flere ganger uten respons. Etter § 76 (1) kan Tom selge. Han varsler kjøperen skriftlig: «Hvis kjøleskapet ikke hentes innen 30 dager, vil det bli solgt for kjøperens regning.» Etter fristen kan han selge — typisk på Finn.no — til markedspris."},
+        ],
+        "vanlige_feil": [
+            "Selger uten å varsle motparten — kan ramme deg",
+            "Selger til drastisk underpris — er ikke «forsvarlig»",
+            "Venter for lenge med å selge bedervelige varer",
+            "Glemmer regnskap og godskriving av utbytte (§ 78)",
+        ],
+        "hva_bor_du_html": """<p>Når du vurderer å selge:</p>
+<ol>
+<li>Dokumenter situasjonen: hvor lenge har varen stått, hvilke kostnader har du</li>
+<li>Varsle motparten skriftlig med rimelig frist — typisk 14-30 dager</li>
+<li>Få markedsmessig pris — sammenlikn med liknende salg</li>
+<li>Bruk vanlig salgskanal: Finn.no, auksjonshus, etablert salgskanal</li>
+<li>Hold dokumentasjon på pris, måte, dato</li>
+<li>Avregn etter § 78 — gi motparten regnskap og overskudd</li>
+</ol>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "72", "tittel": "Selgerens omsorgsplikt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "75", "tittel": "Dekning av kostnader", "available": True},
+            {"lov": "kjopsloven", "paragraf": "77", "tittel": "Annen disposisjon enn salg", "available": True},
+            {"lov": "kjopsloven", "paragraf": "78", "tittel": "Regnskap og godskriving", "available": True},
+        ],
+    },
+    {
+        "number": "77",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Andre måter å bli kvitt varen",
+        "description": "Hvis varen ikke kan selges — eller salget ikke vil dekke kostnadene — kan du kvitte deg med den på forsvarlig måte. Varsle motparten hvis mulig.",
+        "kort_svar": "Hvis du har rett til å selge varen etter § 76 — men den ikke kan selges, eller salgsinntektene ikke ville dekke salgskostnadene — kan du kvitte deg med den på en forsvarlig måte (kaste, gi bort, levere til gjenvinning). Motparten skal varsles på forhånd hvis mulig.",
+        "paragraftekst": "Har en part rett til å selge tingen etter § 76, men kan den ikke selges eller er det klart at salgsutbyttet ikke ville dekke salgskostnadene, kan parten rå over den på forsvarlig måte. Den annen part skal så vidt mulig gis varsel.",
+        "hva_betyr_html": """<p>Noen varer er rett og slett ikke verdt å selge. Det kan være søppel, det kan være noe ingen vil ha. Loven sier: da kan du bli kvitt det på en forsvarlig måte.</p>
+<p><strong>Vilkår:</strong> Du må ha rett etter § 76 — altså omsorgsplikt og en av situasjonene som tillater salg.</p>
+<p><strong>Hva betyr «ikke kan selges»:</strong> Det finnes ikke marked, ingen vil kjøpe.</p>
+<p><strong>Hva betyr «ikke vil dekke kostnadene»:</strong> Du ville sittet igjen med tap selv etter salget. Da er det ingen vits.</p>
+<p><strong>«Forsvarlig måte»:</strong> Vanlig kassering, gjenvinning, donasjon — det som naturlig passer for varen. Du kan ikke for eksempel dumpe miljøfarlig avfall illegalt.</p>
+<p><strong>Varsel:</strong> Motparten skal varsles på forhånd, hvis mulig, før du kvitter deg med varen. Det gir ham sjansen til å hente det selv.</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius har omsorgsplikt for et vareparti av tekstiler som ble vannskadet hos ham. Han har varslet selgeren, som ikke responderer. Markedsverdien av varepartiet er nær null — det er bare gode for filler. Etter § 77 kan Marius levere det til gjenvinning eller donasjon. Han varsler selgeren skriftlig først: «Hvis varepartiet ikke hentes innen 14 dager, vil det bli kassert for din regning.» Etter fristen kvitter han seg med det — på en forsvarlig måte — og dokumenterer hva som ble gjort."},
+            {"navn": "Eva", "tekst": "Eva har et avvist parti elektronisk utstyr som er gått ut på dato. Det er ikke salgbart. Hun kontakter en spesialvirksomhet for gjenvinning av elektronikk og betaler 1 500 kr for å bli kvitt det forsvarlig. Etter § 77 er det greit. Kostnaden kan kreves dekket av motparten, og selve handlingen er forsvarlig (lovlig avhending av elektronisk avfall)."},
+        ],
+        "vanlige_feil": [
+            "Kaster ulovlig — ikke «forsvarlig» om det bryter avfallsregler",
+            "Glemmer å varsle motparten først",
+            "Tror du må selge selv om det åpenbart ikke lønner seg",
+        ],
+        "hva_bor_du_html": """<ol>
+<li>Vurder først salg etter § 76</li>
+<li>Hvis salg ikke går: dokumenter hvorfor (manglende interesse, prisanslag som ikke dekker kostnader)</li>
+<li>Varsle motparten skriftlig med frist</li>
+<li>Kvitte deg forsvarlig — følg lover om gjenvinning, miljø, donasjon</li>
+<li>Hold dokumentasjon på hvordan du ble kvitt varen</li>
+</ol>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "72", "tittel": "Selgerens omsorgsplikt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "76", "tittel": "Salg av varen", "available": True},
+            {"lov": "kjopsloven", "paragraf": "78", "tittel": "Regnskap og godskriving", "available": True},
+        ],
+    },
+    {
+        "number": "78",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Regnskap og overskudd ved salg",
+        "description": "Når du har solgt varen for motpartens regning, skal du gi regnskap over kostnadene og godskrive motparten det du har solgt for. Overskuddet tilhører motparten.",
+        "kort_svar": "Hvis du har solgt varen for motpartens regning, skal du godskrive ham inntekten fra salget og gi regnskap over dine kostnader. Hvis salgssummen er større enn kostnadene, tilfaller overskuddet motparten. Det betyr at salget ikke er en gevinst for deg — det er bare en måte å avvikle situasjonen.",
+        "paragraftekst": "Omsorgsparten skal godskrive den annen part det som er innvunnet ved salg eller på annen måte samt gi ham regnskap over sine kostnader. Overskott tilfaller den annen part.",
+        "hva_betyr_html": """<p>Når du har vært nødt til å ta omsorg, betale lagring, og kanskje selge — er du ikke i pluss. Du skal kun bli holdt skadesløs, ikke tjene penger.</p>
+<p><strong>Tre handlinger når salget er gjennomført:</strong></p>
+<ol>
+<li><strong>Godskrive salgssummen:</strong> Det du fikk for varen, regnes på motpartens konto.</li>
+<li><strong>Gi regnskap over kostnader:</strong> Du legger frem alle utgifter du har hatt — lagring, transport, salgskostnader, varsel-utgifter, eventuelt tap på reparasjon.</li>
+<li><strong>Overskudd tilfaller motparten:</strong> Hvis salgssummen er høyere enn kostnadene, går det «i pluss» til motparten. Han skylder ikke deg noe, han har til gode.</li>
+</ol>
+<p><strong>Hvis salget ikke dekker kostnadene:</strong> Da skylder motparten deg det manglende — det kreves som vanlig gjeld. Forsinkelsesrenter, inkasso osv.</p>""",
+        "eksempler": [
+            {"navn": "Tom", "tekst": "Tom har solgt kjøleskapet kjøperen aldri hentet — for 4 200 kr på Finn.no. Hans kostnader: lagring 4 800 kr, varsel og porto 200 kr, salgskostnad 100 kr. Sum kostnader: 5 100 kr. Salgssum (4 200) - kostnader (5 100) = -900 kr. Tom har et krav på 900 kr mot kjøperen — i tillegg til den opprinnelige kjøpesummen kjøperen ikke betalte. Tom sender regnskap med spesifikasjon og krever beløpet."},
+            {"navn": "Eva", "tekst": "Eva har solgt et avvist vareparti for 25 000 kr. Hennes kostnader var 8 000 kr. Etter § 78 må Eva godskrive selgeren det netto: 25 000 - 8 000 = 17 000 kr. Hun overfører dette til selgeren med regnskap. Hun kan ikke beholde overskuddet selv — selv om det føles «rimelig» siden hun gjorde jobben med å selge."},
+        ],
+        "vanlige_feil": [
+            "Beholder hele salgssummen — ikke lovlig",
+            "Sender ikke regnskap — motparten må kunne sjekke",
+            "Krever urimelige eller udokumenterte kostnader",
+            "Glemmer at overskudd tilhører motparten",
+        ],
+        "hva_bor_du_html": """<p>Etter salg / annen avvikling:</p>
+<ol>
+<li>Lag detaljert regnskap: salgssum / verdi, kostnader post for post, netto resultat</li>
+<li>Send regnskap skriftlig til motparten</li>
+<li>Overfør overskudd hvis aktuelt</li>
+<li>Krev manglende beløp hvis kostnader &gt; salg</li>
+</ol>
+<p><strong>Mal for regnskap:</strong></p>
+<p><em>«Regnskap for varen [beskrivelse]:<br>
+Salgssum: [X] kr<br>
+Lagerkostnader: [Y] kr (kvittering vedlagt)<br>
+Transportkostnader: [Z] kr (kvittering vedlagt)<br>
+Varselkostnader: [W] kr<br>
+Sum kostnader: [sum] kr<br>
+Netto: [netto] kr<br>
+[Overskudd overført / Manglende beløp kreves]»</em></p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "75", "tittel": "Dekning av kostnader", "available": True},
+            {"lov": "kjopsloven", "paragraf": "76", "tittel": "Salg av varen", "available": True},
+            {"lov": "kjopsloven", "paragraf": "77", "tittel": "Annen disposisjon enn salg", "available": True},
+        ],
+    },
+    {
+        "number": "79",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Hvem får utbyttet av varen?",
+        "description": "Utbytte fra varen før avtalt leveringstid tilfaller selgeren. Etter avtalt leveringstid tilfaller det kjøperen — så lenge det var forutsigbart når utbyttet ville komme.",
+        "kort_svar": "Avkastingen — utbyttet, frukten, inntekten — som varen gir før avtalt leveringstid tilfaller selgeren. Det som kommer etter leveringstidspunktet tilfaller kjøperen. Unntak: hvis det var grunn til å tro at utbyttet ville komme på et annet tidspunkt enn det faktisk kom.",
+        "paragraftekst": "Avkasting som tingen gir før den avtalte leveringstid, tilfaller selgeren, når det ikke var grunn til å rekne med at den ville falle seinere. Avkasting som tingen gir deretter, tilfaller kjøperen, når det ikke var grunn til å rekne med at den ville falle tidligere.",
+        "hva_betyr_html": """<p>Når du kjøper noe som «produserer» — leieinntekt på utleid eiendom, melk fra ku, frukter fra tre, kontantutbytte — er spørsmålet: hvem skal ha inntekten i tiden rundt kjøpet?</p>
+<p><strong>Hovedprinsipp:</strong> Leveringstidspunktet er skillelinjen.</p>
+<ul>
+<li><strong>Før leveringstid:</strong> Selgeren har varen og dens utbytte</li>
+<li><strong>Etter leveringstid:</strong> Kjøperen har varen og dens utbytte</li>
+</ul>
+<p><strong>Unntak (rimelighet):</strong> Hvis det var grunn til å tro at utbyttet ville komme på et bestemt tidspunkt — for eksempel høstavkasting normalt i september — gjelder den naturlige planleggingen, ikke bare datoen.</p>
+<p>Eksempel: Du kjøper et eplehagebruk med levering 1. september. Eplene modnes typisk september-oktober. Selv om noen epler kommer «før» 1. september (sent august), tilfaller alt høstingen kjøperen — det var «grunn til å rekne med» at høstingen kom på den tiden.</p>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars kjøper en utleid garasje med leveringsdato 1. mai. Leien betales månedlig den 5. Selgeren har mottatt aprilens leie. Mailens leie betales etter levering. Etter § 79: aprilens leie tilfaller selgeren (før leveringstid). Mailens leie tilfaller Lars (etter levering)."},
+            {"navn": "Eva", "tekst": "Eva kjøper et fruktbruk med levering 1. august. Sommerbær (rips, solbær) er allerede høstet i juli. Det høstes ikke noe nytt på det aktuelle bruket før september. Etter § 79: sommerbærene tilfaller selgeren. Septemberhøsten tilfaller Eva."},
+        ],
+        "vanlige_feil": [
+            "Glemmer å avtale konkret om utbytte ved overgangsavtaler",
+            "Forveksler «betaling skjer» med «utbytte produseres»",
+            "Som kjøper: tror du har krav på alt fra dagen avtalen ble inngått",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Avtal eksplisitt om utbytte i kontrakten, særlig ved store kjøp (eiendom, virksomhet)</li>
+<li>Sett tydelig leveringsdato — det er skillelinjen</li>
+<li>Vurder hva som typisk faller når — sesong, leiekontrakter, utbyttedager</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "13", "tittel": "Når går risikoen over", "available": True},
+            {"lov": "kjopsloven", "paragraf": "80", "tittel": "Aksjer", "available": True},
+            {"lov": "kjopsloven", "paragraf": "81", "tittel": "Rentebærende fordringer", "available": True},
+        ],
+    },
+    {
+        "number": "80",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Kjøp av aksjer",
+        "description": "Når du kjøper en aksje, omfatter kjøpet utbytte som ikke var forfalt før kjøpet — og retten til å tegne nye aksjer hvis den ikke var brukt.",
+        "kort_svar": "Når du kjøper en aksje, får du med deg utbytte som ennå ikke var forfalt (ikke utbetalt) før kjøpet. Det samme gjelder retten til å tegne nye aksjer hvis den retten ikke kunne brukes før kjøpet. Med andre ord: aksjens «ventende» rettigheter følger med — det som allerede er utbetalt, blir hos selgeren.",
+        "paragraftekst": "Kjøp av aksje omfatter det utbytte som ikke var forfalt før kjøpet. Det samme gjelder rett til å tegne nye aksjer når retten ikke kunne nyttes før kjøpet.",
+        "hva_betyr_html": """<p>Aksjer har spesielle «avkastinger» — utbytte og emisjonsrettigheter. Loven svarer på hvem som får disse når aksjen skifter eier.</p>
+<p><strong>Utbytte:</strong> Når et selskap deler ut overskudd til aksjonærene, har dette tre tidspunkter:</p>
+<ul>
+<li>Vedtakstidspunkt: Generalforsamlingen vedtar utbyttet</li>
+<li>Avgjørelsesdato: Hvilke aksjonærer som har rett (record date)</li>
+<li>Forfallsdato: Når pengene faktisk betales ut</li>
+</ul>
+<p>Loven sier: hvis utbyttet ikke var <em>forfalt</em> før kjøpet, går det med på kjøpet. Det vil si: du som ny eier får det. Hvis det allerede var utbetalt, blir det selvfølgelig hos selgeren.</p>
+<p>I praksis i moderne aksjehandel skjer dette gjennom oppgjørssystemer som tar høyde for dette automatisk. Men prinsippet i kjøpsloven står ved makt for tilfeller som ikke følger standard handelsregler.</p>
+<p><strong>Tegningsretter:</strong> Hvis selskapet utstedet nye aksjer (emisjon) og eksisterende aksjonærer har rett til å tegne — denne retten følger med aksjen så lenge den ikke var «brukt» (utløpt eller realisert) før kjøpet.</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius kjøper 1000 aksjer i et selskap 1. juni. Generalforsamlingen 15. mai har vedtatt 12 kr i utbytte, med forfall 1. juli. Etter § 80 går utbyttet med på kjøpet — det var ikke forfalt før Marius kjøpte. Marius får 12 000 kr i utbytte 1. juli. Hvis Marius hadde kjøpt etter 1. juli, ville utbyttet vært forfalt og blitt hos selgeren — Marius ville da fått aksjen «ex utbytte»."},
+            {"navn": "Sara", "tekst": "Sara kjøper aksjer i et lite selskap. Selskapet planlegger en emisjon der eksisterende aksjonærer kan tegne flere aksjer. Tegningsperioden er 1.-30. august. Hvis Sara kjøper 15. juli, før tegningsperioden, følger tegningsretten med. Hvis hun kjøper 5. september, etter at tegningsperioden er over og retten «brukt opp», får hun ikke noe ekstra."},
+        ],
+        "vanlige_feil": [
+            "Forveksler vedtaksdato og forfallsdato — det er forfall som er avgjørende",
+            "Tror tegningsrett alltid følger med uavhengig av tidspunkt — den må ikke være brukt opp",
+            "Glemmer at moderne aksjehandel ofte tar høyde for dette automatisk gjennom børsens regler",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Sjekk utbyttedatoer før kjøp av aksjer hvis tidspunktet er nær</li>
+<li>Avklar hva som følger med ved private aksjekjøp (utenfor børs)</li>
+<li>Forstå «ex date» — dagen aksjen begynner å handle uten retten til utbytte</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "79", "tittel": "Avkasting av varen generelt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "81", "tittel": "Rentebærende fordringer", "available": True},
+        ],
+    },
+    {
+        "number": "81",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Kjøp av rentebærende fordring",
+        "description": "Når du kjøper en rentebærende fordring, får du med renten som har påløpt men ikke forfalt. Du må betale verdien av renten som tillegg — unntatt for usikre fordringer.",
+        "kort_svar": "Når du kjøper en rentebærende fordring (et lån, en obligasjon), får du med deg renten som har påløpt men ikke forfalt på leveringstidspunktet. Du må betale verdien av denne renten som tillegg til kjøpesummen — med mindre fordringen er solgt som «usikker» (det er tvil om at den i det hele tatt vil bli betalt).",
+        "paragraftekst": "Kjøp av rentebærende fordring omfatter de renter som er påløpt, men ikke forfalt ved den avtalte leveringstid. Motverdien av slike renter skal betales som tillegg til kjøpesummen når ikke fordringen er solgt som usikker.",
+        "hva_betyr_html": """<p>En rentebærende fordring — et lån, en obligasjon — produserer renter løpende. Når fordringen selges, oppstår spørsmålet: hvem skal ha rentene som har bygget seg opp men ikke er utbetalt enda?</p>
+<p><strong>Hovedregel:</strong> Renter som er <em>påløpt</em> (har bygget seg opp) men ikke <em>forfalt</em> (ikke utbetalt enda) på leveringstidspunktet, går med på kjøpet. Du som ny eier får disse rentene når de senere forfaller.</p>
+<p><strong>Du må kompensere selgeren:</strong> Du betaler verdien av disse rentene som tillegg til kjøpesummen. Det er ikke noe du får gratis — du forhåndsbetaler for de rentene som vil komme.</p>
+<p>Logikken: Selgeren skal ha den delen av rentene som er «tjent opp» i hans periode. Du skal ha det som tjenes opp etter at fordringen er din. Siden rentene betales i klumper på forfallsdatoer, må det justeres ved overdragelse.</p>
+<p><strong>Unntak — usikker fordring:</strong> Hvis fordringen er solgt som «usikker» — det er tvil om at den i det hele tatt vil bli betalt — gjelder ikke denne kompensasjonen. Da har du tatt risikoen for hele fordringen, og verdien av påløpte renter er allerede priset inn.</p>""",
+        "eksempler": [
+            {"navn": "Petter", "tekst": "Petter kjøper et obligasjonslån på 500 000 kr som gir 4 % rente, med forfall hver 1. januar. Han kjøper 1. juli. Påløpt rente fra 1. januar til 1. juli (6 måneder): 500 000 × 0,04 × 0,5 = 10 000 kr. Etter § 81 skal Petter betale 500 000 kr (selve lånebeløpet) + 10 000 kr (påløpt rente som tillegg). Total: 510 000 kr. Når rentene forfaller 1. januar året etter, får Petter hele rentebetalingen på 20 000 kr — derav 10 000 kr som «betaling tilbake» for det han forhåndsbetalte."},
+            {"navn": "Anne", "tekst": "Anne kjøper en privat fordring på 200 000 kr fra en debitor som har dårlig betalingshistorikk. Hun kjøper for 80 000 kr (med stor rabatt fordi det er usikkert om hun får inn pengene). Det er påløpt 5 000 kr i ubetalt rente. Etter § 81-unntaket trenger Anne ikke betale ekstra for renten. Fordringen er solgt som usikker. Hvis hun klarer å inndrive, får hun både hovedstol og rente — men det er hennes risiko."},
+        ],
+        "vanlige_feil": [
+            "Glemmer å justere for påløpt rente ved overdragelse av lån/obligasjoner",
+            "Forveksler påløpt og forfalt rente",
+            "Som kjøper av usikker fordring: tror du må betale ekstra for renter — du må ikke",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Beregn påløpt rente ved overdragelse</li>
+<li>Avtal eksplisitt om det er «vanlig» eller «usikker» fordring</li>
+<li>Sett tydelig leveringsdato — det er målepunktet</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "79", "tittel": "Avkasting av varen generelt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "80", "tittel": "Aksjer", "available": True},
+        ],
+    },
+    {
+        "number": "82",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Når melding er sendt i tide",
+        "description": "Sender du en melding etter loven på forsvarlig måte, gjelder den som gitt i tide — selv om den blir forsinket eller går tapt underveis.",
+        "kort_svar": "Hvis du sender en melding etter loven (reklamasjon, krav, varsel) på en forsvarlig måte, gjelder den som sendt i tide — selv om den blir forsinket, kommer feil fram eller går tapt i transport. Risikoen for at meldingen kommer fram, ligger hos mottakeren, ikke avsenderen.",
+        "paragraftekst": "Dersom en part gir melding i samsvar med loven og avsender den på en måte som er forsvarlig etter forholdene, og ikke annet framgår, kan avsenderen gjøre gjeldende at meldingen er gitt i tide selv om det oppstår forsinkelse eller feil under framsendingen eller meldingen ikke når fram til den annen part.",
+        "hva_betyr_html": """<p>Tenk på alle frister i kjøpsloven — reklamasjon, varsler, hevingsmeldinger, krav. Disse må sendes innen rimelig tid. Men hva hvis posten roter det til, eller e-posten havner i søppel?</p>
+<p><strong>Loven gir avsender beskyttelse:</strong> Hvis du har sendt meldingen på forsvarlig måte og innen fristen, regnes den som gitt i tide — selv om den:</p>
+<ul>
+<li>Blir forsinket underveis</li>
+<li>Kommer fram med feil</li>
+<li>Aldri kommer fram</li>
+</ul>
+<p><strong>Forutsetninger:</strong></p>
+<ul>
+<li>Du har sendt i samsvar med loven (riktig type melding, riktig innhold)</li>
+<li>Du har sendt på forsvarlig måte — vanlig kanal, rimelig sikkerhet for fremkomst</li>
+<li>Det fremgår ikke noe annet (typisk: ingen avtaleklausul om at meldingen må mottas)</li>
+</ul>
+<p><strong>Praktisk konsekvens:</strong> Risikoen for sendingen ligger hos mottakeren. Hvis han ikke får meldingen, må han håndtere det som om han hadde fått den.</p>
+<p><strong>«Forsvarlig måte» i 2026:</strong> E-post er som regel forsvarlig. SMS for mindre saker. Brev med posten for formell kommunikasjon. Anbefalt brev for kritiske meldinger gir mest sikkerhet.</p>""",
+        "eksempler": [
+            {"navn": "Eva", "tekst": "Eva har kjøpt en symaskin og oppdager mangel innen reklamasjonsfristen. Hun sender e-post til selgeren 5. juni. Selgeren ser aldri e-posten — den havner i søppel-mappen og slettes etter 30 dager. Etter § 82 har Eva likevel reklamert i tide. E-post er forsvarlig kanal, og innholdet samsvarer med loven. Selv om selgeren ikke har sett meldingen, regnes reklamasjonen som gitt 5. juni. Lærdom: Eva bør likevel følge opp hvis hun ikke får svar — for praktisk fremdrift, ikke for å sikre fristen."},
+            {"navn": "Tom", "tekst": "Tom sender et hevingsbrev med vanlig brev. Brevet forsvinner i posten — selger får det aldri. Etter § 82 har Tom hevet i tide. Men her er det viktig at Tom kan dokumentere at han sendte. Vanlig brev er mer risikabelt enn rekommandert. Tom bør ha kvittering på utsendt brev, ta foto av konvolutten og innholdet, eller sende i tillegg en e-post. Forsvarlig sendelse + dokumentasjon på avsendelse = beskyttelse etter § 82."},
+        ],
+        "vanlige_feil": [
+            "Stoler på at «jeg sendte e-post» uten å dokumentere",
+            "Bruker uvanlige kanaler — Snapchat, kommentar i sosiale medier",
+            "Tror at hvis selger ikke svarer, ble meldingen aldri sendt — § 82 sier nei",
+        ],
+        "hva_bor_du_html": """<p>Når du sender viktige meldinger:</p>
+<ol>
+<li>Velg forsvarlig kanal: e-post, brev, rekommandert brev, SMS</li>
+<li>Dokumenter avsendelsen: skjermbilde, kvittering, postkvittering</li>
+<li>Bekreft mottak hvis mulig — be om respons</li>
+<li>For kritiske meldinger: bruk flere kanaler — både e-post og brev, eller rekommandert</li>
+</ol>
+<p><strong>Mal for trygg sendelse:</strong></p>
+<p><em>E-post med bekreftelse: «Bekreft mottak av denne meldingen.» Hvis ingen respons innen 3 dager: følg opp med brev eller rekommandert brev.</em></p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "28", "tittel": "Selgerens opplysningsplikt", "available": True},
+            {"lov": "kjopsloven", "paragraf": "32", "tittel": "Reklamasjonsfrister", "available": True},
+            {"lov": "kjopsloven", "paragraf": "58", "tittel": "Kjøperens opplysningsplikt", "available": True},
+        ],
+    },
+    {
+        "number": "83",
+        "lov": "kjopsloven",
+        "lov_display": "Kjøpsloven",
+        "title": "Hvilket forretningssted som teller",
+        "description": "Har en part flere forretningssteder, gjelder det som har nærmest tilknytning til kjøpet. Uten forretningssted gjelder bosted.",
+        "kort_svar": "Hvis en part har flere forretningssteder, er det stedet med nærmest tilknytning til kjøpet som teller — vurdert ut fra det partene forutsatte da kjøpet ble inngått. Hvis en part ikke har forretningssted med tilknytning til kjøpet, brukes bostedet i stedet.",
+        "paragraftekst": """(1) Når en parts forretningssted har betydning og han har mer enn ett forretningssted, legges det forretningssted til grunn som har den nærmeste tilknytning til kjøpet, hensett til slike forhold som partene forutsatte på den tid da kjøpet ble inngått.
+
+(2) Dersom en part ikke har forretningssted med tilknytning til kjøpet, legges isteden hans bosted til grunn.""",
+        "hva_betyr_html": """<p>Mange firmaer har flere kontorer eller lagre. Når kjøpsloven viser til «forretningssted» (for eksempel der varen skal hentes, eller hvor du skal betale), er spørsmålet: hvilket av flere mulige?</p>
+<p><strong>Hovedregel:</strong> Det stedet som har nærmest tilknytning til den konkrete handelen. Vurderingen baseres på hva partene forutsatte da avtalen ble inngått.</p>
+<p>Indikatorer på tilknytning:</p>
+<ul>
+<li>Hvilket sted ble avtalen inngått fra?</li>
+<li>Hvilket sted skal varen leveres fra?</li>
+<li>Hvilket sted er kunden i kontakt med?</li>
+<li>Hvilket sted utstedte fakturaen?</li>
+</ul>
+<p><strong>Privatpersoner:</strong> Hvis en part ikke har et forretningssted (vanlig privatperson), gjelder bostedet hans.</p>
+<p>I praksis er denne paragrafen mest relevant for firmaer med flere lokasjoner — for eksempel hvor varer kan hentes etter § 6, eller hvor betaling skal skje etter § 48.</p>""",
+        "eksempler": [
+            {"navn": "Anne", "tekst": "Anne handler med et firma som har hovedkontor i Oslo og lager i Drammen. Avtalen ble forhandlet med selgeren i Oslo, men varene står på lageret i Drammen og det fremgår av avtalen at hentning skal skje der. Etter § 83 er det Drammen som er det relevante forretningsstedet for henteformål (§ 6). For betaling kan det være Oslo, hvor administrasjonen ligger — avhenger av hva som er forutsatt."},
+            {"navn": "Marius", "tekst": "Marius er privatperson og selger ting på Finn.no fra hjemmet i Trondheim. Han har ikke forretningssted. Etter § 83 (2) gjelder Marius sitt bosted i Trondheim. Det er der hentning skal skje (§ 6), og det er der betaling formelt skal gjøres (§ 48) — selv om i praksis skjer betaling via Vipps."},
+        ],
+        "vanlige_feil": [
+            "Tror «forretningssted» alltid er hovedkontoret — det er det relevante stedet for kjøpet",
+            "Forveksler «forretningssted» og «registrert adresse» — det er ikke alltid samme",
+            "Glemmer at privatpersoner får sitt bosted lagt til grunn",
+        ],
+        "hva_bor_du_html": """<ul>
+<li>Avtal eksplisitt hvor henting og betaling skal skje</li>
+<li>Sjekk firmaets struktur før store kjøp</li>
+<li>Husk at lovens regler bare gjelder hvis ikke annet er avtalt</li>
+</ul>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "kjopsloven", "paragraf": "6", "tittel": "Hentekjøp", "available": True},
+            {"lov": "kjopsloven", "paragraf": "48", "tittel": "Hvor du skal betale", "available": True},
+        ],
+    },
 ]
