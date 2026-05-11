@@ -1027,6 +1027,8 @@ def paragraf_sort_key(p):
 
 def build():
     out = "/home/claude/site/dist"
+    # Bygg fortsatt til dist/ i Claudes workdir — men zip-leveransen pakker flat
+    # slik at filene havner direkte i rota av Martins rett-mappe.
     if os.path.exists(out):
         shutil.rmtree(out)
     os.makedirs(out)
