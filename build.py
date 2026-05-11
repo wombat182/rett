@@ -331,64 +331,160 @@ footer.site-footer a:hover { color: var(--bg); }
 .rule-table tr:last-child td { border-bottom: none; }
 .rule-table tr:hover td { background: rgba(194, 84, 52, 0.03); }
 
-/* Homepage hero — friskere, mer luft */
-.homepage-hero { padding: 88px 0 56px; max-width: 820px; }
+/* ============================================================
+   HOMEPAGE — strammere, vakrere, mer luft
+   ============================================================ */
+
+.homepage-hero {
+  padding: 120px 0 80px;
+  max-width: 880px;
+}
 .homepage-hero .eyebrow {
-  font-family: var(--sans); font-size: 12px; font-weight: 600;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 28px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 36px;
+}
+.homepage-hero h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(54px, 7.5vw, 96px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: 0;
+  font-variation-settings: "opsz" 72;
+}
+.homepage-hero h1 + h1 { margin-bottom: 32px; }
+.homepage-hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+.homepage-hero p {
+  font-size: 21px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  max-width: 620px;
+  margin-bottom: 0;
 }
 .hero-cta {
-  display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 48px;
 }
 .cta-button {
-  display: inline-block; background: var(--accent); color: white;
-  padding: 16px 28px; border-radius: 10px;
-  font-family: var(--sans); font-weight: 600; font-size: 16px;
-  text-decoration: none; transition: transform 0.15s, background 0.2s;
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 18px 32px;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
   border: 1px solid var(--accent);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
 }
-.cta-button:hover { transform: translateY(-1px); background: #A8462C; }
+.cta-button:hover {
+  transform: translateY(-1px);
+  background: #A8462C;
+  box-shadow: 0 6px 20px rgba(194, 84, 52, 0.25);
+}
 .cta-button-secondary {
-  display: inline-block; background: transparent; color: var(--ink);
-  padding: 16px 28px; border-radius: 10px;
-  font-family: var(--sans); font-weight: 600; font-size: 16px;
-  text-decoration: none; transition: transform 0.15s, border-color 0.2s;
+  display: inline-block;
+  background: transparent;
+  color: var(--ink);
+  padding: 18px 32px;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: transform 0.15s, border-color 0.2s, background 0.2s;
   border: 1px solid var(--line);
 }
-.cta-button-secondary:hover { transform: translateY(-1px); border-color: var(--accent); }
+.cta-button-secondary:hover {
+  transform: translateY(-1px);
+  border-color: var(--ink);
+  background: rgba(0,0,0,0.02);
+}
 
-/* Home page sections — section headers med mer luft */
-.home-section { margin-top: 80px; }
-.section-header { margin-bottom: 24px; max-width: 720px; }
+.home-section { margin-top: 112px; }
+.section-header { margin-bottom: 32px; max-width: 720px; }
 .section-header h2 {
-  font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.5vw, 38px);
-  line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 8px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
   font-variation-settings: "opsz" 36;
 }
-.section-sub { color: var(--ink-mute); font-size: 16px; }
+.section-sub {
+  color: var(--ink-mute);
+  font-size: 17px;
+  font-family: var(--serif);
+  font-style: italic;
+}
 
-/* Article sections (om-siden) */
-.article-section {
-  max-width: 720px; margin: 0 0 56px;
+/* ============================================================
+   OM-SIDEN — minimalistisk, vakker
+   ============================================================ */
+
+.om-article {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 80px 0 40px;
 }
-.article-section h2 {
-  font-family: var(--serif); font-weight: 500; font-size: 26px;
-  margin-bottom: 16px; line-height: 1.2;
-  font-variation-settings: "opsz" 26;
+.om-header { margin-bottom: 72px; }
+.om-header h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(48px, 6vw, 76px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 72;
 }
-.article-section p {
-  font-size: 18px; line-height: 1.65; color: var(--ink-soft);
-  margin-bottom: 16px;
+.om-header h1 em {
+  font-style: italic;
+  color: var(--accent);
 }
-.article-header .lead {
-  font-family: var(--serif); font-style: italic;
-  font-size: 22px; color: var(--ink-soft); margin-top: 8px;
+.om-section {
+  margin-bottom: 56px;
 }
-.article-header .eyebrow {
-  font-family: var(--sans); font-size: 12px; font-weight: 600;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 20px;
+.om-section h2 {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.om-section p {
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 18px;
+  font-variation-settings: "opsz" 22;
+}
+.om-lead {
+  font-size: 26px !important;
+  line-height: 1.45 !important;
+  color: var(--ink) !important;
+  font-weight: 500;
+  margin-bottom: 24px !important;
+}
+.om-cta {
+  margin-top: 80px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+  text-align: left;
 }
 """
 
@@ -477,7 +573,7 @@ def site_footer(depth=0):
 
 def contact_form(depth=0):
     prefix = "../" * depth
-    return f"""<section class="cta-section">
+    return f"""<section class="cta-section" id="skjema">
   <div class="container">
     <div class="cta-grid">
       <div class="cta-intro">
@@ -808,39 +904,32 @@ def render_personvern():
 def render_om():
     """Om-siden."""
     depth = 1
-    return f"""{shared_head('Om Rettsregel — Lover forklart med moderne teknologi', 'Vi bruker den nyeste teknologien innen kunstig intelligens til å gjøre norsk lov forståelig for vanlige folk.', depth=1, canonical_path='/om/')}
+    return f"""{shared_head('Om Rettsregel', 'Norske lover, forklart for folk. Slik bygger vi Rettsregel.', depth=1, canonical_path='/om/')}
 {site_nav(depth=1)}
 
 <div class="container">
-  <article class="lov-article">
-    <header class="article-header">
-      <div class="eyebrow">OM RETTSREGEL</div>
-      <h1>Loven skal være for folk.</h1>
-      <p class="lead">Vi gjør den til det.</p>
+  <article class="om-article">
+    <header class="om-header">
+      <h1>Norske lover,<br><em>forklart for folk.</em></h1>
     </header>
 
-    <section class="article-section">
-      <h2>Den beste juridiske teknologien — noensinne</h2>
-      <p>Rettsregel bruker den aller nyeste teknologien innen kunstig intelligens og maskinlæring til å forklare norsk lov på vanlig norsk. Ikke jusspråk. Ikke advokat-mumling. Bare klart, varmt og forståelig.</p>
-      <p>Vi tror på en fremtid hvor alle — uansett bakgrunn — kan forstå sine egne rettigheter. Og vi bygger den fremtiden nå.</p>
+    <section class="om-section">
+      <p class="om-lead">Loven angår alle. Men den er skrevet for jurister.</p>
+      <p>Rettsregel tar en paragraf om gangen og oversetter den til vanlig norsk. Med eksempler du kjenner deg igjen i. Vanlige feil folk gjør. Og hva du faktisk skal gjøre hvis du står i det.</p>
     </section>
 
-    <section class="article-section">
-      <h2>Hvordan vi lager innholdet</h2>
-      <p>Hver paragraf er produsert med generative språkmodeller og deretter gjennomgått av jurister. Vi kombinerer det beste fra to verdener: maskinens evne til å forklare enkelt, og menneskets evne til å vurdere riktig. Resultatet er juridisk innhold som er både presist og lett å forstå.</p>
-      <p>Det er en helt ny måte å gjøre lov på. Og det fungerer.</p>
+    <section class="om-section">
+      <h2>Hvordan</h2>
+      <p>Vi bruker moderne språkmodeller til å skrive første utkast, og jurister til å gjennomgå. Det gir oss to ting på en gang: omfang og presisjon. En enkeltperson kunne ikke skrevet en hel lov. En maskin kunne ikke gjort det riktig. Sammen kan vi.</p>
     </section>
 
-    <section class="article-section">
-      <h2>Hvorfor dette betyr noe</h2>
-      <p>Tidligere måtte du betale dyrt for å få en jurist til å forklare deg hva en paragraf egentlig betyr. Eller du måtte lese lovteksten selv og gjette. Det var galt. Det skulle aldri vært slik.</p>
-      <p>I dag — med moderne teknologi — kan vi gi deg den samme forståelsen, gratis, på sekunder. Det er en revolusjon i hvordan vanlige folk får tilgang til loven.</p>
+    <section class="om-section">
+      <h2>Hvorfor</h2>
+      <p>Fordi det er feil at du må betale for å forstå reglene du allerede må forholde deg til.</p>
     </section>
 
-    <section class="article-section">
-      <h2>Har du en sak?</h2>
-      <p>Hvis du har et juridisk spørsmål eller en sak du trenger hjelp med, fyll ut skjemaet nedenfor. Vi tar kontakt.</p>
-      <p style="margin-top: 2rem;"><a href="../#skjema" class="cta-button">Send inn sak →</a></p>
+    <section class="om-section om-cta">
+      <a href="../#skjema" class="cta-button">Har du en sak? Skriv til oss →</a>
     </section>
   </article>
 </div>
