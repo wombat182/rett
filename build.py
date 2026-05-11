@@ -862,7 +862,7 @@ def render_personvern():
 
   <article class="article-body">
     <h2>Hvem står bak Rettsregel?</h2>
-    <p>Rettsregel drives av <strong>Wombat AS</strong> (org.nr [ORG.NR — fyll inn]). Vi er behandlingsansvarlig for personopplysninger du sender inn på siden.</p>
+    <p>Rettsregel drives av <strong>Walrus AS</strong> (org.nr [ORG.NR — fyll inn]). Vi er behandlingsansvarlig for personopplysninger du sender inn på siden.</p>
     <p>Du når oss på <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a>.</p>
 
     <h2>Hvilke opplysninger samler vi inn?</h2>
@@ -922,7 +922,7 @@ def render_om():
 
     <section class="om-section">
       <h2>Hvordan</h2>
-      <p>Vi bruker de nyeste store språkmodellene til å skrive første utkast — den samme teknologien som driver ChatGPT og Claude — og jurister til å gjennomgå. Det gir oss to ting på en gang: omfang og presisjon. En enkeltperson kunne ikke skrevet en hel lov. En maskin kunne ikke gjort det riktig. Sammen kan vi.</p>
+      <p>Vi bruker avansert språkteknologi bygget på deep learning og store språkmodeller til å skrive første utkast, og jurister til å gjennomgå. Det gir oss to ting på en gang: omfang og presisjon. En enkeltperson kunne ikke skrevet en hel lov. En maskin alene kunne ikke gjort det riktig. Sammen kan vi.</p>
     </section>
 
     <section class="om-section">
