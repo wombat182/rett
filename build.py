@@ -457,16 +457,18 @@ footer.site-footer a:hover { color: var(--bg); }
   margin-bottom: 56px;
 }
 .om-section h2 {
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-style: italic;
+  font-size: 28px;
+  letter-spacing: -0.01em;
   color: var(--accent);
   margin-bottom: 20px;
+  font-variation-settings: "opsz" 28;
 }
 .om-section p {
   font-family: var(--serif);
+  font-weight: 400;
   font-size: 21px;
   line-height: 1.6;
   color: var(--ink);
@@ -477,7 +479,7 @@ footer.site-footer a:hover { color: var(--bg); }
   font-size: 26px !important;
   line-height: 1.45 !important;
   color: var(--ink) !important;
-  font-weight: 500;
+  font-style: italic;
   margin-bottom: 24px !important;
 }
 .om-cta {
@@ -920,12 +922,13 @@ def render_om():
 
     <section class="om-section">
       <h2>Hvordan</h2>
-      <p>Vi bruker moderne språkmodeller til å skrive første utkast, og jurister til å gjennomgå. Det gir oss to ting på en gang: omfang og presisjon. En enkeltperson kunne ikke skrevet en hel lov. En maskin kunne ikke gjort det riktig. Sammen kan vi.</p>
+      <p>Vi bruker de nyeste store språkmodellene til å skrive første utkast — den samme teknologien som driver ChatGPT og Claude — og jurister til å gjennomgå. Det gir oss to ting på en gang: omfang og presisjon. En enkeltperson kunne ikke skrevet en hel lov. En maskin kunne ikke gjort det riktig. Sammen kan vi.</p>
     </section>
 
     <section class="om-section">
       <h2>Hvorfor</h2>
-      <p>Fordi det er feil at du må betale for å forstå reglene du allerede må forholde deg til.</p>
+      <p>Tenk fra bunnen: hvorfor må noen betale for å forstå reglene de allerede må forholde seg til? Det finnes ikke en god grunn. Bare en gammel grunn.</p>
+      <p>Teknologien finnes nå til å gjøre det annerledes. Så vi gjør det.</p>
     </section>
 
     <section class="om-section om-cta">
