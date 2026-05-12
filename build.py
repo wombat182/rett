@@ -493,6 +493,109 @@ footer.site-footer a:hover { color: var(--bg); }
   border-top: 1px solid var(--line);
   text-align: left;
 }
+
+/* ============================================================
+   Chat widget
+   ============================================================ */
+.chat-toggle {
+  position: fixed; bottom: 24px; right: 24px; z-index: 1000;
+  background: var(--accent); color: white;
+  border: none; border-radius: 999px;
+  padding: 14px 22px; font-family: var(--sans);
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; box-shadow: 0 4px 16px rgba(31,26,20,0.18);
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.chat-toggle:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(31,26,20,0.22); }
+.chat-toggle:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+.chat-toggle .chat-toggle-icon { font-size: 18px; line-height: 1; }
+.chat-toggle.open { display: none; }
+
+.chat-panel {
+  position: fixed; bottom: 24px; right: 24px; z-index: 1001;
+  width: 380px; max-width: calc(100vw - 32px);
+  height: 560px; max-height: calc(100vh - 48px);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(31,26,20,0.22);
+  display: none; flex-direction: column; overflow: hidden;
+}
+.chat-panel.open { display: flex; }
+
+.chat-header {
+  background: var(--ink); color: var(--bg);
+  padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+}
+.chat-header-title { font-family: var(--serif); font-size: 18px; font-weight: 500; }
+.chat-header-sub { font-size: 12px; color: rgba(250,246,238,0.65); margin-top: 2px; }
+.chat-close {
+  background: transparent; color: var(--bg); border: none;
+  font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 10px;
+  border-radius: 6px;
+}
+.chat-close:hover { background: rgba(250,246,238,0.1); }
+
+.chat-disclaimer {
+  background: rgba(194,84,52,0.08);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 16px; font-size: 12px; color: var(--ink-soft);
+  font-family: var(--sans); line-height: 1.45;
+}
+
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 12px;
+  font-family: var(--sans); font-size: 14px;
+}
+.chat-message {
+  padding: 10px 14px; border-radius: 12px;
+  max-width: 88%; line-height: 1.5;
+  word-wrap: break-word;
+}
+.chat-message.user {
+  background: var(--accent); color: white;
+  align-self: flex-end; border-bottom-right-radius: 4px;
+}
+.chat-message.bot {
+  background: white; color: var(--ink);
+  align-self: flex-start; border: 1px solid var(--line);
+  border-bottom-left-radius: 4px;
+}
+.chat-message a {
+  color: var(--accent); text-decoration: underline;
+}
+.chat-message.user a { color: white; }
+.chat-message.bot.loading { font-style: italic; color: var(--ink-soft); }
+
+.chat-input-bar {
+  border-top: 1px solid var(--line);
+  padding: 12px 14px; display: flex; gap: 8px;
+  background: white;
+}
+.chat-input {
+  flex: 1; font-family: var(--sans); font-size: 14px;
+  padding: 10px 12px; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--bg); color: var(--ink);
+}
+.chat-input:focus { outline: none; border-color: var(--accent); }
+.chat-send {
+  background: var(--accent); color: white; border: none;
+  border-radius: 8px; padding: 10px 16px;
+  font-family: var(--sans); font-weight: 600; font-size: 14px;
+  cursor: pointer;
+}
+.chat-send:hover { background: #A8451F; }
+.chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 480px) {
+  .chat-panel {
+    width: calc(100vw - 16px); height: calc(100vh - 80px);
+    bottom: 70px; right: 8px;
+  }
+  .chat-toggle { bottom: 16px; right: 16px; padding: 12px 18px; font-size: 14px; }
+}
 """
 
 # ============================================================
@@ -544,6 +647,121 @@ def site_nav(depth=0):
 </nav>
 </div>"""
 
+def chat_widget():
+    """Returns HTML + JS for the chat widget. Inserted before </body> on every page."""
+    return """<!-- Rettsregel chat widget -->
+<button id="chat-toggle" class="chat-toggle" aria-label="Åpne assistent">
+  <span class="chat-toggle-icon">💬</span>
+  <span>Spør oss</span>
+</button>
+<div id="chat-panel" class="chat-panel" role="dialog" aria-labelledby="chat-title">
+  <div class="chat-header">
+    <div>
+      <div id="chat-title" class="chat-header-title">Rettsregel-assistent</div>
+      <div class="chat-header-sub">Finner riktig paragraf for problemet ditt</div>
+    </div>
+    <button id="chat-close" class="chat-close" aria-label="Lukk">×</button>
+  </div>
+  <div class="chat-disclaimer">
+    Jeg er en AI-assistent som hjelper deg finne riktig paragraf. Jeg er ikke advokat og kan gjøre feil. For konkret rådgivning, kontakt advokat eller send inn saken din.
+  </div>
+  <div id="chat-messages" class="chat-messages">
+    <div class="chat-message bot">Hei! Beskriv problemet ditt med egne ord — for eksempel «jeg kjøpte en sykkel som knaker etter to uker» — så finner jeg riktig paragraf for deg.</div>
+  </div>
+  <form id="chat-form" class="chat-input-bar">
+    <input type="text" id="chat-input" class="chat-input" placeholder="Beskriv problemet ditt..." maxlength="1000" autocomplete="off">
+    <button type="submit" id="chat-send" class="chat-send">Send</button>
+  </form>
+</div>
+<script>
+(function() {
+  var WORKER_URL = "https://rettsregel-bot.brys4ypd5x.workers.dev";
+  var toggle = document.getElementById('chat-toggle');
+  var panel = document.getElementById('chat-panel');
+  var closeBtn = document.getElementById('chat-close');
+  var messages = document.getElementById('chat-messages');
+  var form = document.getElementById('chat-form');
+  var input = document.getElementById('chat-input');
+  var sendBtn = document.getElementById('chat-send');
+  var history = [];
+
+  function openPanel() {
+    panel.classList.add('open');
+    toggle.classList.add('open');
+    setTimeout(function(){ input.focus(); }, 100);
+  }
+  function closePanel() {
+    panel.classList.remove('open');
+    toggle.classList.remove('open');
+  }
+  toggle.addEventListener('click', openPanel);
+  closeBtn.addEventListener('click', closePanel);
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function linkify(s) {
+    return s.replace(/(https?:\\/\\/[^\\s<]+)/g, function(url) {
+      return '<a href="' + url + '">' + url + '</a>';
+    });
+  }
+  function addMessage(role, content) {
+    var div = document.createElement('div');
+    div.className = 'chat-message ' + role;
+    div.innerHTML = linkify(escapeHtml(content));
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+  function addLoading() {
+    var div = document.createElement('div');
+    div.className = 'chat-message bot loading';
+    div.id = 'chat-loading';
+    div.textContent = 'Tenker...';
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+  function removeLoading() {
+    var el = document.getElementById('chat-loading');
+    if (el) el.remove();
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text) return;
+    addMessage('user', text);
+    input.value = '';
+    sendBtn.disabled = true;
+    addLoading();
+
+    fetch(WORKER_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: text, history: history})
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      removeLoading();
+      sendBtn.disabled = false;
+      if (data.error) {
+        addMessage('bot', data.error);
+      } else {
+        addMessage('bot', data.reply);
+        history.push({role: 'user', content: text});
+        history.push({role: 'assistant', content: data.reply});
+        if (history.length > 12) history = history.slice(-12);
+      }
+    })
+    .catch(function() {
+      removeLoading();
+      sendBtn.disabled = false;
+      addMessage('bot', 'Noe gikk galt. Sjekk nettforbindelsen og prøv igjen.');
+    });
+  });
+})();
+</script>"""
+
 def site_footer(depth=0):
     prefix = "../" * depth
     return f"""<footer class="site-footer">
@@ -575,6 +793,7 @@ def site_footer(depth=0):
     </div>
   </div>
 </footer>
+{chat_widget()}
 </body>
 </html>"""
 
@@ -1122,8 +1341,25 @@ Sitemap: {SITE_URL}/sitemap.xml
     with open(f"{out}/CNAME", "w", encoding="utf-8") as f:
         f.write("rettsregel.no\n")
     
+    # paragraphs-index.json — kompakt indeks for chatbot
+    # Inneholder bare metadata som boten trenger for å klassifisere problemer
+    index = []
+    for p in PARAGRAPHS:
+        index.append({
+            "number": p["number"],
+            "lov": p["lov"],
+            "lov_display": p["lov_display"],
+            "title": p["title"],
+            "description": p.get("description", ""),
+            "kort_svar": p.get("kort_svar", ""),
+            "kategori": p.get("kategori", ""),
+            "underkategori": p.get("underkategori", ""),
+        })
+    with open(f"{out}/paragraphs-index.json", "w", encoding="utf-8") as f:
+        json.dump(index, f, ensure_ascii=False, indent=None, separators=(",", ":"))
+    
     print(f"Built {len(PARAGRAPHS)} paragraph pages + homepage + lov index + lover index + personvern")
-    print(f"Plus: sitemap.xml ({len(urls)} URLs), robots.txt, CNAME")
+    print(f"Plus: sitemap.xml ({len(urls)} URLs), robots.txt, CNAME, paragraphs-index.json")
     print(f"Output: {out}")
 
 if __name__ == "__main__":
