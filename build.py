@@ -1508,6 +1508,40 @@ def render_homepage():
       <div class="paragraph-list-title">{s['title']}</div>
     </a>"""
 
+    # Lov-oversikt — dynamisk basert på antall paragrafer per lov
+    LOV_KATEGORI = {
+        "angrerettloven": "FORBRUK",
+        "kjopsloven": "PRIVATKJØP",
+        "forbrukerkjopsloven": "FORBRUK",
+        "husleieloven": "BOLIG",
+        "avhendingslova": "BOLIG",
+        "haandverkertjenesteloven": "TJENESTER",
+        "naboloven": "BOLIG",
+        "arbeidsmiljoloven": "ARBEID",
+        "ferieloven": "ARBEID",
+        "inkassoloven": "GJELD",
+        "ekteskapsloven": "FAMILIE",
+        "sameieloven": "FAMILIE",
+        "husstandsfellesskapsloven": "FAMILIE",
+    }
+    by_lov_count = {}
+    by_lov_display = {}
+    for p in PARAGRAPHS:
+        lov = p["lov"]
+        by_lov_count[lov] = by_lov_count.get(lov, 0) + 1
+        by_lov_display[lov] = p["lov_display"]
+    # Sortér lover etter størrelse (flest paragrafer først)
+    sorted_lover = sorted(by_lov_count.items(), key=lambda x: -x[1])
+    lov_cards = ""
+    for lov, antall in sorted_lover:
+        kategori = LOV_KATEGORI.get(lov, "")
+        meta = f"{kategori} · {antall} paragrafer" if kategori else f"{antall} paragrafer"
+        lov_cards += f"""
+      <a href="{prefix}lover/{lov}/" class="paragraph-list-item">
+        <div class="paragraph-list-meta">{meta}</div>
+        <div class="paragraph-list-title">{by_lov_display[lov]}</div>
+      </a>"""
+
     return f"""{shared_head('Rettsregel — Norske lover på vanlig norsk', 'Lover er ikke vanskelige. De er bare dårlig forklart. Bla i norske lover, paragraf for paragraf.', depth=0, canonical_path='/')}
 {site_nav(depth=0)}
 
@@ -1547,25 +1581,9 @@ def render_homepage():
   <section class="home-section">
     <div class="section-header">
       <h2>Bla i alle lover</h2>
-      <p class="section-sub">201 paragrafer publisert. Flere kommer.</p>
+      <p class="section-sub">{len(PARAGRAPHS)} paragrafer publisert. Flere kommer.</p>
     </div>
-    <div class="paragraph-list">
-      <a href="{prefix}lover/angrerettloven/" class="paragraph-list-item">
-        <div class="paragraph-list-meta">FORBRUK · 30 paragrafer</div>
-        <div class="paragraph-list-title">Angrerettloven</div>
-      </a>
-      <a href="{prefix}lover/kjopsloven/" class="paragraph-list-item">
-        <div class="paragraph-list-meta">PRIVATKJØP · 82 paragrafer</div>
-        <div class="paragraph-list-title">Kjøpsloven</div>
-      </a>
-      <a href="{prefix}lover/husleieloven/" class="paragraph-list-item">
-        <div class="paragraph-list-meta">BOLIG · 89 paragrafer</div>
-        <div class="paragraph-list-title">Husleieloven</div>
-      </a>
-      <a href="{prefix}lover/avhendingslova/" class="paragraph-list-item">
-        <div class="paragraph-list-meta">BOLIG · 5 paragrafer</div>
-        <div class="paragraph-list-title">Avhendingslova</div>
-      </a>
+    <div class="paragraph-list">{lov_cards}
       <a href="{prefix}lover/" class="paragraph-list-item">
         <div class="paragraph-list-meta">OVERSIKT</div>
         <div class="paragraph-list-title">Alle lover →</div>
