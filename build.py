@@ -569,6 +569,27 @@ footer.site-footer a:hover { color: var(--bg); }
 .chat-message.user a { color: white; }
 .chat-message.bot.loading { font-style: italic; color: var(--ink-soft); }
 
+.chat-ctas {
+  margin-top: 12px;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.chat-cta {
+  display: inline-block; padding: 8px 14px;
+  border-radius: 8px; font-size: 13px; font-weight: 600;
+  text-decoration: none; font-family: var(--sans);
+  transition: background 0.15s, transform 0.1s;
+  cursor: pointer; border: none;
+}
+.chat-cta:hover { transform: translateY(-1px); }
+.chat-cta-secondary {
+  background: rgba(31,26,20,0.06); color: var(--ink);
+}
+.chat-cta-secondary:hover { background: rgba(31,26,20,0.12); }
+.chat-cta-primary {
+  background: var(--accent); color: white;
+}
+.chat-cta-primary:hover { background: #A8451F; }
+
 .chat-input-bar {
   border-top: 1px solid var(--line);
   padding: 12px 14px; display: flex; gap: 8px;
@@ -663,7 +684,7 @@ def chat_widget():
     <button id="chat-close" class="chat-close" aria-label="Lukk">×</button>
   </div>
   <div class="chat-disclaimer">
-    Jeg er en AI-assistent som hjelper deg finne riktig paragraf. Jeg er ikke advokat og kan gjøre feil. For konkret rådgivning, kontakt advokat eller send inn saken din.
+    AI-assistent. Generell informasjon — kan gjøre feil.
   </div>
   <div id="chat-messages" class="chat-messages">
     <div class="chat-message bot">Hei! Beskriv problemet ditt med egne ord — for eksempel «jeg kjøpte en sykkel som knaker etter to uker» — så finner jeg riktig paragraf for deg.</div>
@@ -700,19 +721,46 @@ def chat_widget():
   function escapeHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function linkify(s) {
-    return s.replace(/(https?:\\/\\/[^\\s<]+)/g, function(url) {
-      return '<a href="' + url + '">' + url + '</a>';
-    });
+
+  function extractAndStripUrl(text) {
+    // Henter ut paragraf-URL fra slutten av svaret, fjerner "Les hele..."-linjen
+    var match = text.match(/(https:\\/\\/rettsregel\\.no\\/lover\\/[^\\s]+?\\/)/);
+    if (!match) return { text: text, url: null };
+    var url = match[1];
+    // Fjern hele linjen "Les hele forklaringen på: URL" eller bare URLen
+    var cleaned = text
+      .replace(/\\s*Les hele forklaringen på:?\\s*https:\\/\\/rettsregel\\.no\\/lover\\/[^\\s]+\\/?\\s*$/i, '')
+      .replace(/\\s*https:\\/\\/rettsregel\\.no\\/lover\\/[^\\s]+\\/?\\s*$/i, '')
+      .trim();
+    return { text: cleaned, url: url };
   }
-  function addMessage(role, content) {
+
+  function addUserMessage(content) {
     var div = document.createElement('div');
-    div.className = 'chat-message ' + role;
-    div.innerHTML = linkify(escapeHtml(content));
+    div.className = 'chat-message user';
+    div.textContent = content;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
-    return div;
   }
+
+  function addBotMessage(rawContent) {
+    var parsed = extractAndStripUrl(rawContent);
+    var div = document.createElement('div');
+    div.className = 'chat-message bot';
+    div.innerHTML = escapeHtml(parsed.text).replace(/\\n/g, '<br>');
+
+    if (parsed.url) {
+      var ctas = document.createElement('div');
+      ctas.className = 'chat-ctas';
+      ctas.innerHTML =
+        '<a href="' + parsed.url + '" class="chat-cta chat-cta-secondary">Les hele paragrafen</a>' +
+        '<a href="' + parsed.url + '#skjema" class="chat-cta chat-cta-primary">Send inn saken</a>';
+      div.appendChild(ctas);
+    }
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
   function addLoading() {
     var div = document.createElement('div');
     div.className = 'chat-message bot loading';
@@ -730,7 +778,7 @@ def chat_widget():
     e.preventDefault();
     var text = input.value.trim();
     if (!text) return;
-    addMessage('user', text);
+    addUserMessage(text);
     input.value = '';
     sendBtn.disabled = true;
     addLoading();
@@ -745,9 +793,9 @@ def chat_widget():
       removeLoading();
       sendBtn.disabled = false;
       if (data.error) {
-        addMessage('bot', data.error);
+        addBotMessage(data.error);
       } else {
-        addMessage('bot', data.reply);
+        addBotMessage(data.reply);
         history.push({role: 'user', content: text});
         history.push({role: 'assistant', content: data.reply});
         if (history.length > 12) history = history.slice(-12);
@@ -756,7 +804,7 @@ def chat_widget():
     .catch(function() {
       removeLoading();
       sendBtn.disabled = false;
-      addMessage('bot', 'Noe gikk galt. Sjekk nettforbindelsen og prøv igjen.');
+      addBotMessage('Noe gikk galt. Sjekk nettforbindelsen og prøv igjen.');
     });
   });
 })();
