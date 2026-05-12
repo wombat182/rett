@@ -761,6 +761,7 @@ def site_nav(depth=0):
 <nav class="site-nav">
   <a href="{prefix}" class="logo">Retts<span>regel</span></a>
   <ul class="nav-links">
+    <li><a href="{prefix}sporsmal/">Vanlige spørsmål</a></li>
     <li><a href="{prefix}lover/">Alle lover</a></li>
     <li><a href="{prefix}om/">Om</a></li>
     <li><a href="{prefix}#skjema">Send inn sak</a></li>
@@ -1486,6 +1487,23 @@ def render_homepage():
       <div class="paragraph-list-title">{tittel}</div>
     </a>"""
 
+    # Spørsmål-artikler — vis opptil 6 på hjemmesiden
+    KAT_LABEL = {
+        "bolig": "BOLIG",
+        "forbruk": "FORBRUK",
+        "arbeid": "ARBEID",
+        "familie": "FAMILIE",
+        "gjeld": "GJELD",
+    }
+    sporsmal_cards = ""
+    for s in SPORSMAL[:6]:
+        kat = KAT_LABEL.get(s.get("kategori", ""), s.get("kategori", "").upper())
+        sporsmal_cards += f"""
+    <a href="{prefix}sporsmal/{s['slug']}/" class="paragraph-list-item">
+      <div class="paragraph-list-meta">SPØRSMÅL · {kat}</div>
+      <div class="paragraph-list-title">{s['title']}</div>
+    </a>"""
+
     return f"""{shared_head('Rettsregel — Norske lover på vanlig norsk', 'Lover er ikke vanskelige. De er bare dårlig forklart. Bla i norske lover, paragraf for paragraf.', depth=0, canonical_path='/')}
 {site_nav(depth=0)}
 
@@ -1500,6 +1518,18 @@ def render_homepage():
       <a href="{prefix}lover/" class="cta-button-secondary">Bla i alle lover</a>
     </div>
   </header>
+
+  <section class="home-section">
+    <div class="section-header">
+      <h2>Vanlige spørsmål</h2>
+      <p class="section-sub">Konkrete svar på problemene folk faktisk møter.</p>
+    </div>
+    <div class="paragraph-list">{sporsmal_cards}
+    </div>
+    <div style="margin-top:24px;">
+      <a href="{prefix}sporsmal/" class="cta-button-secondary">Se alle spørsmål →</a>
+    </div>
+  </section>
 
   <section class="home-section">
     <div class="section-header">
