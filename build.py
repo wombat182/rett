@@ -567,28 +567,31 @@ footer.site-footer a:hover { color: var(--bg); }
   color: var(--accent); text-decoration: underline;
 }
 .chat-message.user a { color: white; }
+.chat-message a.chat-cta { text-decoration: none; }
 .chat-message.bot.loading { font-style: italic; color: var(--ink-soft); }
 
 .chat-ctas {
   margin-top: 12px;
-  display: flex; gap: 8px; flex-wrap: wrap;
+  display: flex !important; gap: 8px; flex-wrap: wrap;
 }
 .chat-cta {
   display: inline-block; padding: 8px 14px;
   border-radius: 8px; font-size: 13px; font-weight: 600;
-  text-decoration: none; font-family: var(--sans);
+  text-decoration: none !important;
+  font-family: var(--sans);
   transition: background 0.15s, transform 0.1s;
   cursor: pointer; border: none;
+  line-height: 1.3;
 }
 .chat-cta:hover { transform: translateY(-1px); }
-.chat-cta-secondary {
+.chat-message .chat-cta-secondary {
   background: rgba(31,26,20,0.06); color: var(--ink);
 }
-.chat-cta-secondary:hover { background: rgba(31,26,20,0.12); }
-.chat-cta-primary {
+.chat-message .chat-cta-secondary:hover { background: rgba(31,26,20,0.12); }
+.chat-message .chat-cta-primary {
   background: var(--accent); color: white;
 }
-.chat-cta-primary:hover { background: #A8451F; }
+.chat-message .chat-cta-primary:hover { background: #A8451F; }
 
 .chat-input-bar {
   border-top: 1px solid var(--line);
@@ -671,15 +674,15 @@ def site_nav(depth=0):
 def chat_widget():
     """Returns HTML + JS for the chat widget. Inserted before </body> on every page."""
     return """<!-- Rettsregel chat widget -->
-<button id="chat-toggle" class="chat-toggle" aria-label="Åpne assistent">
+<button id="chat-toggle" class="chat-toggle" aria-label="Åpne Roy">
   <span class="chat-toggle-icon">💬</span>
-  <span>Spør oss</span>
+  <span>Spør Roy</span>
 </button>
 <div id="chat-panel" class="chat-panel" role="dialog" aria-labelledby="chat-title">
   <div class="chat-header">
     <div>
-      <div id="chat-title" class="chat-header-title">Rettsregel-assistent</div>
-      <div class="chat-header-sub">Finner riktig paragraf for problemet ditt</div>
+      <div id="chat-title" class="chat-header-title">Roy</div>
+      <div class="chat-header-sub">Forklarer loven på vanlig norsk</div>
     </div>
     <button id="chat-close" class="chat-close" aria-label="Lukk">×</button>
   </div>
@@ -687,10 +690,10 @@ def chat_widget():
     AI-assistent. Generell informasjon — kan gjøre feil.
   </div>
   <div id="chat-messages" class="chat-messages">
-    <div class="chat-message bot">Hei! Beskriv problemet ditt med egne ord — for eksempel «jeg kjøpte en sykkel som knaker etter to uker» — så finner jeg riktig paragraf for deg.</div>
+    <div class="chat-message bot">Hei, jeg er Roy. Beskriv problemet ditt med dine egne ord — så finner jeg riktig paragraf og forklarer hva som gjelder.</div>
   </div>
   <form id="chat-form" class="chat-input-bar">
-    <input type="text" id="chat-input" class="chat-input" placeholder="Beskriv problemet ditt..." maxlength="1000" autocomplete="off">
+    <input type="text" id="chat-input" class="chat-input" placeholder="Skriv som du tenker..." maxlength="1000" autocomplete="off">
     <button type="submit" id="chat-send" class="chat-send">Send</button>
   </form>
 </div>
@@ -1398,10 +1401,8 @@ Sitemap: {SITE_URL}/sitemap.xml
             "lov": p["lov"],
             "lov_display": p["lov_display"],
             "title": p["title"],
-            "description": p.get("description", ""),
             "kort_svar": p.get("kort_svar", ""),
             "kategori": p.get("kategori", ""),
-            "underkategori": p.get("underkategori", ""),
         })
     with open(f"{out}/paragraphs-index.json", "w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, indent=None, separators=(",", ":"))
