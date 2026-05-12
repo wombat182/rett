@@ -76,18 +76,33 @@ body::before {
   content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.35;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-.container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+main.page { max-width: 1100px; margin: 0 auto; padding: 0 32px; min-height: calc(100vh - 200px); }
+@media (max-width: 720px) {
+  .container { padding: 0 20px; }
+  main.page { padding: 0 20px; }
+}
 .narrow { max-width: 740px; margin: 0 auto; padding: 0 32px; }
 
-nav.site-nav { padding: 32px 0; display: flex; justify-content: space-between; align-items: center; }
+nav.site-nav { padding: 28px 0; display: flex; justify-content: space-between; align-items: center; }
 .logo {
-  font-family: var(--serif); font-weight: 400; font-size: 32px; letter-spacing: -0.025em;
-  color: var(--ink); text-decoration: none; font-variation-settings: "opsz" 48;
+  display: inline-flex; align-items: baseline; gap: 10px;
+  text-decoration: none; line-height: 1;
+}
+.logo .mark {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 28px; color: var(--accent);
+  font-variation-settings: "opsz" 36;
   line-height: 1;
 }
-.logo span { color: var(--accent); font-style: italic; }
-.nav-links { display: flex; gap: 36px; list-style: none; }
-.nav-links a { color: var(--ink-soft); text-decoration: none; font-size: 15px; font-weight: 500; transition: color 0.2s; }
+.logo .wordmark {
+  font-family: var(--serif); font-weight: 500;
+  font-size: 22px; letter-spacing: -0.01em;
+  color: var(--ink); font-variation-settings: "opsz" 36;
+  line-height: 1;
+}
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; letter-spacing: 0.005em; }
 .nav-links a:hover { color: var(--accent); }
 
 /* Breadcrumbs */
@@ -1240,7 +1255,7 @@ def site_nav(depth=0):
     prefix = "../" * depth
     return f"""<div class="container">
 <nav class="site-nav">
-  <a href="{prefix}" class="logo">Retts<span>regel</span></a>
+  <a href="{prefix}" class="logo"><span class="mark">§</span><span class="wordmark">Rettsregel</span></a>
   <ul class="nav-links">
     <li><a href="{prefix}sporsmal/">Vanlige spørsmål</a></li>
     <li><a href="{prefix}lover/">Alle lover</a></li>
