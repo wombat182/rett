@@ -44,12 +44,24 @@ CSS = """
 :root {
   --bg: #FAF6EE;
   --bg-alt: #F2EBDD;
+  --bg-card: #FFFCF6;
   --ink: #1F1A14;
   --ink-soft: #5A4F40;
   --ink-mute: #8A7F70;
   --accent: #C25434;
+  --accent-deep: #A8451F;
   --accent-soft: #E8B5A3;
   --line: rgba(31, 26, 20, 0.12);
+  --line-strong: rgba(31, 26, 20, 0.22);
+  --shadow-sm: 0 1px 3px rgba(31, 26, 20, 0.06), 0 1px 2px rgba(31, 26, 20, 0.04);
+  --shadow-md: 0 4px 12px rgba(31, 26, 20, 0.08), 0 2px 4px rgba(31, 26, 20, 0.04);
+  --shadow-lg: 0 12px 32px rgba(31, 26, 20, 0.10), 0 4px 8px rgba(31, 26, 20, 0.04);
+  --kat-bolig: #4F6F5E;
+  --kat-forbruk: #C25434;
+  --kat-arbeid: #6B5B95;
+  --kat-familie: #B8654A;
+  --kat-gjeld: #7A6E5D;
+  --kat-tjenester: #4E6E80;
   --serif: 'Newsreader', Georgia, serif;
   --sans: 'Manrope', system-ui, sans-serif;
 }
@@ -505,94 +517,590 @@ footer.site-footer a:hover { color: var(--bg); }
 }
 
 /* ============================================================
-   Spørsmål-sider (/sporsmal/[slug]/)
+   Spørsmål-sider — editorial newsroom design
    ============================================================ */
-.sporsmal-hero {
-  padding: 56px 0 24px; max-width: 780px;
+
+/* Hero — store editorial titler med kicker */
+.sp-hero {
+  max-width: 880px; padding: 64px 0 32px;
+  position: relative;
 }
-.sporsmal-hero .breadcrumb {
-  font-family: var(--sans); font-size: 14px; color: var(--ink-soft);
-  margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em;
+.sp-hero .kicker {
+  font-family: var(--sans); font-size: 13px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600;
+  margin-bottom: 24px; display: inline-block;
+  padding-bottom: 6px; border-bottom: 2px solid var(--accent);
 }
-.sporsmal-hero .breadcrumb a { color: var(--ink-soft); }
-.sporsmal-hero h1 {
+.sp-hero .breadcrumb {
+  font-family: var(--sans); font-size: 13px;
+  color: var(--ink-mute); margin-bottom: 24px;
+  letter-spacing: 0.04em;
+}
+.sp-hero .breadcrumb a {
+  color: var(--ink-mute); text-decoration: none;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s, color 0.2s;
+}
+.sp-hero .breadcrumb a:hover {
+  color: var(--accent); border-bottom-color: var(--accent);
+}
+.sp-hero h1 {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(34px, 5vw, 52px); line-height: 1.12;
-  letter-spacing: -0.015em; margin-bottom: 0;
-  font-variation-settings: "opsz" 60;
-}
-.sporsmal-kort-svar {
-  background: white; border-left: 4px solid var(--accent);
-  padding: 24px 28px; margin: 24px 0 40px;
-  border-radius: 0 12px 12px 0;
-  font-family: var(--sans); font-size: 18px;
-  line-height: 1.55; color: var(--ink);
-  max-width: 780px;
-}
-.sporsmal-body {
-  max-width: 780px; font-family: var(--sans);
-}
-.sporsmal-body h2 {
-  font-family: var(--serif); font-weight: 500;
-  font-size: 28px; margin: 48px 0 16px;
-  letter-spacing: -0.01em; line-height: 1.25;
-}
-.sporsmal-body h2:first-child { margin-top: 0; }
-.sporsmal-body p { font-size: 17px; line-height: 1.65; margin-bottom: 16px; color: var(--ink); }
-.sporsmal-body ol, .sporsmal-body ul {
-  font-size: 17px; line-height: 1.65; margin: 8px 0 24px 24px; color: var(--ink);
-}
-.sporsmal-body ol li, .sporsmal-body ul li { margin-bottom: 12px; }
-.sporsmal-body ol li strong { color: var(--accent); }
-.sporsmal-body a { color: var(--accent); }
-.sporsmal-related {
-  margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--line);
-  max-width: 780px;
-}
-.sporsmal-related h3 {
-  font-family: var(--serif); font-size: 22px; font-weight: 500;
-  margin-bottom: 16px;
-}
-.sporsmal-related ul { list-style: none; padding: 0; margin: 0; }
-.sporsmal-related li {
-  padding: 14px 0; border-bottom: 1px solid var(--line);
-  font-family: var(--sans); font-size: 16px;
-}
-.sporsmal-related li:last-child { border-bottom: none; }
-.sporsmal-related a { color: var(--ink); font-weight: 500; }
-.sporsmal-related a:hover { color: var(--accent); }
-.sporsmal-related .pending {
-  color: var(--ink-soft); font-style: italic; font-weight: 400;
-}
-.sporsmal-related .pending::after {
-  content: " — kommer snart"; font-size: 13px; color: var(--accent-soft);
-  font-style: italic;
+  font-size: clamp(38px, 5.5vw, 64px); line-height: 1.05;
+  letter-spacing: -0.025em; color: var(--ink);
+  font-variation-settings: "opsz" 72;
+  margin: 0;
 }
 
-/* Spørsmål-hub */
-.sporsmal-list {
-  display: grid; gap: 12px; margin: 32px 0 80px;
-  max-width: 860px;
+/* Kort svar — fremhevet boks med drop quote feel */
+.sp-tldr {
+  background: var(--bg-card);
+  border-left: 4px solid var(--accent);
+  padding: 32px 36px;
+  margin: 40px 0 56px;
+  max-width: 760px;
+  box-shadow: var(--shadow-sm);
+  border-radius: 0 8px 8px 0;
+  position: relative;
 }
-.sporsmal-list-item {
-  background: white; border: 1px solid var(--line); border-radius: 12px;
-  padding: 22px 26px; text-decoration: none; color: inherit; display: block;
-  transition: transform 0.2s, border-color 0.2s;
+.sp-tldr::before {
+  content: "KORT SVAR";
+  position: absolute;
+  top: -10px; left: 28px;
+  background: var(--bg);
+  padding: 0 10px;
+  font-family: var(--sans); font-size: 11px;
+  font-weight: 700; letter-spacing: 0.15em;
+  color: var(--accent);
 }
-.sporsmal-list-item:hover {
-  transform: translateY(-1px); border-color: var(--accent);
+.sp-tldr p {
+  font-family: var(--sans);
+  font-size: 19px; line-height: 1.55;
+  color: var(--ink); margin: 0;
 }
-.sporsmal-list-item h3 {
-  font-family: var(--serif); font-size: 21px; font-weight: 500;
-  margin-bottom: 8px; line-height: 1.3;
+
+/* Body — editorial typografi */
+.sp-body {
+  max-width: 720px;
+  font-family: var(--sans);
 }
-.sporsmal-list-item p {
-  font-family: var(--sans); color: var(--ink-soft);
-  font-size: 15px; line-height: 1.5; margin: 0;
+.sp-body > h2 {
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(26px, 3vw, 34px); line-height: 1.2;
+  letter-spacing: -0.015em; color: var(--ink);
+  margin: 64px 0 20px;
+  padding-top: 12px;
+  position: relative;
 }
-.sporsmal-list-item .meta {
-  font-family: var(--sans); font-size: 12px; color: var(--ink-soft);
-  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
+.sp-body > h2:first-child { margin-top: 0; padding-top: 0; }
+.sp-body > h2::before {
+  content: ""; position: absolute; top: 0; left: 0;
+  width: 48px; height: 2px; background: var(--accent);
+}
+.sp-body > h2:first-child::before { display: none; }
+.sp-body p {
+  font-size: 17.5px; line-height: 1.7;
+  margin-bottom: 18px; color: var(--ink);
+}
+.sp-body p:first-of-type::first-letter {
+  /* Subtil dropcap for første avsnitt */
+  font-family: var(--serif);
+  font-size: 1em; font-weight: 500;
+}
+.sp-body a {
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  transition: border-color 0.15s;
+}
+.sp-body a:hover { border-bottom-color: var(--accent); }
+.sp-body strong { font-weight: 600; color: var(--ink); }
+
+/* Ordnede lister som visuell timeline (steg) */
+.sp-body ol {
+  list-style: none; counter-reset: step;
+  margin: 28px 0 36px; padding: 0;
+}
+.sp-body ol > li {
+  counter-increment: step;
+  position: relative;
+  padding: 20px 0 20px 64px;
+  border-bottom: 1px solid var(--line);
+  font-size: 17px; line-height: 1.65;
+}
+.sp-body ol > li:last-child { border-bottom: none; }
+.sp-body ol > li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 18px;
+  width: 44px; height: 44px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 18px; font-weight: 500;
+  color: var(--accent);
+}
+.sp-body ol > li strong {
+  display: block; margin-bottom: 4px;
+  color: var(--ink); font-weight: 600;
+  font-size: 17px;
+}
+
+/* Uordnede lister — "vanlige feil"-stil */
+.sp-body > h2:has(+ ul) + ul,
+.sp-body ul {
+  list-style: none; padding: 0;
+  margin: 20px 0 36px;
+}
+.sp-body ul > li {
+  position: relative; padding: 14px 0 14px 32px;
+  border-bottom: 1px dashed var(--line);
+  font-size: 16.5px; line-height: 1.6; color: var(--ink-soft);
+}
+.sp-body ul > li:last-child { border-bottom: none; }
+.sp-body ul > li::before {
+  content: ""; position: absolute; left: 4px; top: 24px;
+  width: 14px; height: 1.5px; background: var(--accent);
+}
+
+/* Sitatblokker */
+.sp-body blockquote {
+  border-left: 3px solid var(--accent-soft);
+  margin: 24px 0; padding: 4px 0 4px 24px;
+  font-family: var(--serif); font-style: italic;
+  font-size: 19px; color: var(--ink-soft); line-height: 1.5;
+}
+
+/* Tabeller */
+.sp-body table, .rule-table {
+  width: 100%; max-width: 720px;
+  border-collapse: collapse; margin: 28px 0 36px;
+  font-family: var(--sans); font-size: 15px;
+}
+.sp-body table th, .rule-table th {
+  text-align: left; padding: 14px 16px;
+  font-weight: 600; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-soft); background: var(--bg-alt);
+  border-bottom: 2px solid var(--line-strong);
+}
+.sp-body table td, .rule-table td {
+  padding: 14px 16px; border-bottom: 1px solid var(--line);
+  vertical-align: top; line-height: 1.5;
+}
+
+/* Relevante paragrafer — som "Les videre" på et magasin */
+.sp-related {
+  max-width: 880px;
+  margin: 72px 0 0;
+  padding: 40px 0 0;
+  border-top: 1px solid var(--line-strong);
+}
+.sp-related .label {
+  font-family: var(--sans); font-size: 12px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+  margin-bottom: 16px;
+}
+.sp-related h3 {
+  font-family: var(--serif); font-size: 28px; font-weight: 500;
+  margin-bottom: 28px; letter-spacing: -0.01em;
+}
+.sp-related ul { list-style: none; padding: 0; margin: 0; }
+.sp-related li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex; gap: 24px; align-items: baseline;
+}
+.sp-related li:last-child { border-bottom: none; }
+.sp-related .ref {
+  font-family: var(--serif); font-size: 17px;
+  font-weight: 500; flex-shrink: 0; min-width: 200px;
+}
+.sp-related .ref a {
+  color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  padding-bottom: 1px; transition: border-color 0.2s;
+}
+.sp-related .ref a:hover { border-bottom-color: var(--accent); }
+.sp-related .desc { color: var(--ink-soft); font-size: 16px; line-height: 1.5; }
+.sp-related .pending .ref {
+  color: var(--ink-mute); font-style: italic;
+}
+.sp-related .pending .ref::after {
+  content: " · kommer snart"; font-size: 12px;
+  color: var(--accent-soft); font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   Spørsmål-hub (/sporsmal/) — editorial magasin-stil
+   ============================================================ */
+.sphub-hero {
+  max-width: 880px; padding: 64px 0 24px;
+}
+.sphub-hero .kicker {
+  font-family: var(--sans); font-size: 13px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+  margin-bottom: 20px; display: block;
+}
+.sphub-hero h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(46px, 6.5vw, 78px); line-height: 1.0;
+  letter-spacing: -0.03em; margin: 0 0 20px;
+  font-variation-settings: "opsz" 80;
+}
+.sphub-hero h1 em {
+  font-style: italic; color: var(--accent);
+}
+.sphub-hero .lead {
+  font-family: var(--sans); font-size: 19px;
+  line-height: 1.55; color: var(--ink-soft);
+  max-width: 620px; margin: 0;
+}
+.sphub-meta {
+  font-family: var(--sans); font-size: 13px;
+  color: var(--ink-mute); letter-spacing: 0.05em;
+  margin-top: 24px;
+}
+.sphub-meta strong { color: var(--accent); font-weight: 600; }
+
+/* Kategori-seksjon med farget gradient-strek */
+.sphub-section {
+  margin: 72px 0 0;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+.sphub-section:first-of-type { border-top: none; padding-top: 0; }
+.sphub-section-head {
+  display: flex; align-items: baseline; gap: 20px;
+  margin-bottom: 32px; flex-wrap: wrap;
+}
+.sphub-section-kat {
+  font-family: var(--sans); font-size: 12px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 700; padding: 4px 12px;
+  border-radius: 999px; color: white;
+}
+.sphub-section h2 {
+  font-family: var(--serif); font-size: clamp(30px, 3.5vw, 42px);
+  font-weight: 500; letter-spacing: -0.02em; line-height: 1.1;
+  margin: 0; color: var(--ink);
+}
+.sphub-section-count {
+  font-family: var(--sans); font-size: 14px;
+  color: var(--ink-mute); margin-left: auto;
+}
+
+/* Asymmetrisk grid for spørsmål-kort */
+.sphub-grid {
+  display: grid; gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  max-width: 1100px;
+}
+.sphub-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 32px 32px;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative; overflow: hidden;
+}
+.sphub-card::before {
+  content: ""; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--kat-color, var(--accent));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sphub-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--kat-color, var(--accent));
+}
+.sphub-card:hover::before { transform: scaleX(1); }
+.sphub-card .kat-tag {
+  font-family: var(--sans); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  font-weight: 700; color: var(--kat-color, var(--accent));
+  margin-bottom: 14px;
+}
+.sphub-card h3 {
+  font-family: var(--serif); font-size: 22px;
+  font-weight: 500; line-height: 1.25; letter-spacing: -0.01em;
+  margin-bottom: 12px; color: var(--ink);
+}
+.sphub-card p {
+  font-family: var(--sans); font-size: 15px;
+  line-height: 1.55; color: var(--ink-soft);
+  margin: 0; flex-grow: 1;
+}
+.sphub-card .read-more {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 20px; font-family: var(--sans);
+  font-size: 13px; font-weight: 600;
+  color: var(--kat-color, var(--accent));
+  letter-spacing: 0.02em;
+}
+.sphub-card .read-more::after {
+  content: "→"; transition: transform 0.2s;
+}
+.sphub-card:hover .read-more::after { transform: translateX(4px); }
+
+/* Featured kort (første i hver kategori) — større */
+.sphub-grid .sphub-card.featured {
+  grid-column: 1 / -1;
+  padding: 40px 44px;
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-alt) 100%);
+}
+.sphub-grid .sphub-card.featured h3 {
+  font-size: clamp(28px, 3vw, 36px);
+  margin-bottom: 16px;
+}
+.sphub-grid .sphub-card.featured p {
+  font-size: 17px; max-width: 580px;
+}
+
+/* Kategori-farger som CSS-vars per kort */
+.kat-bolig { --kat-color: var(--kat-bolig); }
+.kat-forbruk { --kat-color: var(--kat-forbruk); }
+.kat-arbeid { --kat-color: var(--kat-arbeid); }
+.kat-familie { --kat-color: var(--kat-familie); }
+.kat-gjeld { --kat-color: var(--kat-gjeld); }
+.kat-tjenester { --kat-color: var(--kat-tjenester); }
+
+/* Section-kicker har sin egen farge */
+.sphub-section.kat-bolig .sphub-section-kat { background: var(--kat-bolig); }
+.sphub-section.kat-forbruk .sphub-section-kat { background: var(--kat-forbruk); }
+.sphub-section.kat-arbeid .sphub-section-kat { background: var(--kat-arbeid); }
+.sphub-section.kat-familie .sphub-section-kat { background: var(--kat-familie); }
+.sphub-section.kat-gjeld .sphub-section-kat { background: var(--kat-gjeld); }
+.sphub-section.kat-tjenester .sphub-section-kat { background: var(--kat-tjenester); }
+
+/* ============================================================
+   Alle lover-side — visuelt katalogformat
+   ============================================================ */
+.lover-hero {
+  max-width: 880px; padding: 64px 0 24px;
+}
+.lover-hero .kicker {
+  font-family: var(--sans); font-size: 13px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+  margin-bottom: 20px; display: block;
+}
+.lover-hero h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(46px, 6.5vw, 78px); line-height: 1.0;
+  letter-spacing: -0.03em; margin: 0 0 20px;
+  font-variation-settings: "opsz" 80;
+}
+.lover-hero h1 em {
+  font-style: italic; color: var(--accent);
+}
+.lover-hero .lead {
+  font-family: var(--sans); font-size: 19px;
+  line-height: 1.55; color: var(--ink-soft);
+  max-width: 620px;
+}
+.lover-stats {
+  display: flex; gap: 48px; margin: 36px 0 0;
+  font-family: var(--sans);
+}
+.lover-stat {
+  display: flex; flex-direction: column;
+}
+.lover-stat .num {
+  font-family: var(--serif); font-size: 44px;
+  font-weight: 500; line-height: 1; color: var(--accent);
+  letter-spacing: -0.02em;
+}
+.lover-stat .lbl {
+  font-size: 12px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-mute);
+  margin-top: 6px;
+}
+
+/* Kategori-grupperinger */
+.lover-section {
+  margin: 72px 0 0;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+.lover-section:first-of-type { border-top: none; padding-top: 0; }
+.lover-section-head {
+  margin-bottom: 28px;
+  display: flex; align-items: baseline; gap: 16px;
+}
+.lover-section h2 {
+  font-family: var(--serif); font-size: clamp(28px, 3vw, 38px);
+  font-weight: 500; letter-spacing: -0.02em;
+  margin: 0; color: var(--ink);
+}
+.lover-section .ant {
+  font-family: var(--sans); font-size: 13px;
+  color: var(--ink-mute); letter-spacing: 0.05em;
+}
+
+/* Lov-kort som editorial registerkort */
+.lov-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  max-width: 1100px;
+}
+.lov-kort {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 32px;
+  text-decoration: none; color: inherit;
+  display: flex; align-items: center; gap: 24px;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  position: relative; overflow: hidden;
+}
+.lov-kort:hover {
+  transform: translateY(-2px); box-shadow: var(--shadow-md);
+  border-color: var(--accent);
+}
+.lov-kort .lov-num {
+  font-family: var(--serif); font-size: 40px;
+  font-weight: 500; line-height: 1; color: var(--accent);
+  letter-spacing: -0.02em; flex-shrink: 0;
+  font-variation-settings: "opsz" 60;
+}
+.lov-kort .lov-num-lbl {
+  font-family: var(--sans); font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-mute); margin-top: 2px;
+}
+.lov-kort .lov-meta { flex-shrink: 0; }
+.lov-kort .lov-info { flex-grow: 1; }
+.lov-kort .lov-info h3 {
+  font-family: var(--serif); font-size: 24px;
+  font-weight: 500; letter-spacing: -0.01em;
+  margin: 0 0 4px; color: var(--ink); line-height: 1.2;
+}
+.lov-kort .lov-info p {
+  font-family: var(--sans); font-size: 14px;
+  color: var(--ink-soft); margin: 0; line-height: 1.4;
+}
+.lov-kort .lov-arrow {
+  font-family: var(--serif); font-size: 24px;
+  color: var(--accent); flex-shrink: 0;
+  opacity: 0.6; transition: opacity 0.2s, transform 0.2s;
+}
+.lov-kort:hover .lov-arrow {
+  opacity: 1; transform: translateX(4px);
+}
+
+/* ============================================================
+   Hjemmeside — redesigned editorial layout
+   ============================================================ */
+.home-hero-v2 {
+  padding: 72px 0 48px;
+  max-width: 1100px;
+  position: relative;
+}
+.home-hero-v2 .stamp {
+  position: absolute; top: 80px; right: 20px;
+  font-family: var(--serif); font-size: 11px;
+  letter-spacing: 0.3em; color: var(--ink-mute);
+  transform: rotate(8deg);
+  border: 1px solid var(--ink-mute);
+  padding: 6px 14px; border-radius: 4px;
+  opacity: 0.6;
+}
+.home-hero-v2 .kicker {
+  font-family: var(--sans); font-size: 13px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+  margin-bottom: 24px; display: inline-block;
+  padding-bottom: 6px; border-bottom: 2px solid var(--accent);
+}
+.home-hero-v2 h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(56px, 8vw, 108px); line-height: 0.95;
+  letter-spacing: -0.035em; margin: 0;
+  font-variation-settings: "opsz" 96;
+  max-width: 980px;
+}
+.home-hero-v2 h1 em {
+  font-style: italic; color: var(--accent);
+}
+.home-hero-v2 .lead {
+  font-family: var(--sans); font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.5; color: var(--ink-soft);
+  margin: 32px 0 0; max-width: 620px;
+}
+.home-hero-v2 .cta-row {
+  display: flex; gap: 16px; margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+/* Stats-band under hero */
+.home-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px; padding: 48px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 80px;
+}
+.home-stat .num {
+  font-family: var(--serif); font-size: 52px;
+  font-weight: 500; line-height: 1; color: var(--accent);
+  letter-spacing: -0.02em; font-variation-settings: "opsz" 72;
+}
+.home-stat .lbl {
+  font-family: var(--sans); font-size: 13px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-soft); margin-top: 10px;
+}
+
+/* Section headers */
+.home-section-v2 {
+  margin: 80px 0;
+}
+.home-section-head-v2 {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
+  padding-bottom: 20px; border-bottom: 1px solid var(--line-strong);
+}
+.home-section-head-v2 .left .kicker {
+  font-family: var(--sans); font-size: 12px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+  margin-bottom: 8px;
+}
+.home-section-head-v2 h2 {
+  font-family: var(--serif); font-size: clamp(32px, 4vw, 48px);
+  font-weight: 500; letter-spacing: -0.02em; line-height: 1.1;
+  margin: 0; color: var(--ink);
+}
+.home-section-head-v2 .right a {
+  font-family: var(--sans); font-size: 14px;
+  color: var(--accent); font-weight: 600;
+  text-decoration: none; display: inline-flex; gap: 6px;
+  border-bottom: 1px solid transparent; padding-bottom: 2px;
+  transition: border-color 0.2s;
+}
+.home-section-head-v2 .right a:hover { border-bottom-color: var(--accent); }
+
+/* Editorial featured-grid for spørsmål på hjemmesiden */
+.home-featured-q {
+  display: grid; gap: 20px;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+.home-featured-q > a:first-child {
+  grid-row: 1 / span 2; padding: 36px 40px;
+}
+.home-featured-q > a:first-child h3 {
+  font-size: clamp(26px, 3vw, 34px);
+}
+@media (max-width: 900px) {
+  .home-featured-q { grid-template-columns: 1fr; }
+  .home-featured-q > a:first-child { grid-row: auto; }
 }
 
 /* ============================================================
@@ -1178,39 +1686,116 @@ def render_lov_index(lov_name, lov_display, paragraphs):
 {site_footer(depth=2)}"""
 
 def render_lover_index():
-    """Overview page listing all laws."""
-    depth = 1  # /lover/index.html
+    """Overview page listing all laws — editorial catalog design."""
+    depth = 1
     prefix = "../" * depth
-    return f"""{shared_head('Alle lover — Rettsregel', 'Bla i alle norske lover forklart på vanlig språk. Skatt, arv, bolig, forbruk og mer.', depth=1, canonical_path='/lover/')}
+
+    # Lov-metadata
+    LOV_INFO = {
+        "angrerettloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Angrerett ved netthandel og kjøp utenfor butikk"},
+        "kjopsloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Kjøp og salg mellom privatpersoner og bedrifter"},
+        "forbrukerkjopsloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Forbrukerkjøp fra næringsdrivende"},
+        "husleieloven": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Leie av bolig og lokale — rettigheter og plikter"},
+        "avhendingslova": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Kjøp og salg av bolig, hytte og tomt"},
+        "naboloven": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Naboforhold og urimelige ulemper"},
+        "haandverkertjenesteloven": {"kat": "tjenester", "kat_label": "Tjenester", "desc": "Håndverkertjenester og reklamasjon"},
+        "arbeidsmiljoloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Arbeidsforhold, lønn og oppsigelse"},
+        "ferieloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Ferierettigheter og feriepenger"},
+        "inkassoloven": {"kat": "gjeld", "kat_label": "Gjeld og penger", "desc": "Inkasso og inndriving av krav"},
+        "ekteskapsloven": {"kat": "familie", "kat_label": "Familie", "desc": "Ekteskap, skilsmisse og felles eiendom"},
+        "sameieloven": {"kat": "familie", "kat_label": "Familie", "desc": "Sameie og felles eierskap"},
+        "husstandsfellesskapsloven": {"kat": "familie", "kat_label": "Familie", "desc": "Samboerskap og felles husstand"},
+    }
+
+    # Grupper lover etter kategori
+    by_lov_count = {}
+    by_lov_display = {}
+    for p in PARAGRAPHS:
+        lov = p["lov"]
+        by_lov_count[lov] = by_lov_count.get(lov, 0) + 1
+        by_lov_display[lov] = p["lov_display"]
+
+    # Gruppér etter kategori
+    by_kat = {}
+    for lov, antall in by_lov_count.items():
+        info = LOV_INFO.get(lov, {"kat": "annet", "kat_label": "Annet", "desc": ""})
+        by_kat.setdefault(info["kat"], []).append({
+            "lov": lov,
+            "display": by_lov_display[lov],
+            "antall": antall,
+            "desc": info["desc"],
+            "kat_label": info["kat_label"],
+        })
+
+    # Sorter lover i hver kategori (flest paragrafer først)
+    for kat in by_kat:
+        by_kat[kat].sort(key=lambda x: -x["antall"])
+
+    kat_meta = {
+        "bolig": {"display": "Bolig og leie", "klasse": "kat-bolig"},
+        "forbruk": {"display": "Forbruk og kjøp", "klasse": "kat-forbruk"},
+        "arbeid": {"display": "Arbeid og lønn", "klasse": "kat-arbeid"},
+        "familie": {"display": "Familie og samliv", "klasse": "kat-familie"},
+        "gjeld": {"display": "Gjeld og penger", "klasse": "kat-gjeld"},
+        "tjenester": {"display": "Tjenester", "klasse": "kat-tjenester"},
+        "annet": {"display": "Annet", "klasse": ""},
+    }
+
+    sections = []
+    for kat in ["bolig", "forbruk", "arbeid", "familie", "tjenester", "gjeld", "annet"]:
+        if kat not in by_kat:
+            continue
+        meta = kat_meta[kat]
+        total_p = sum(l["antall"] for l in by_kat[kat])
+        cards = []
+        for l in by_kat[kat]:
+            cards.append(f"""
+    <a href="{prefix}lover/{l['lov']}/" class="lov-kort">
+      <div class="lov-meta">
+        <div class="lov-num">{l['antall']}</div>
+        <div class="lov-num-lbl">paragrafer</div>
+      </div>
+      <div class="lov-info">
+        <h3>{l['display']}</h3>
+        <p>{l['desc']}</p>
+      </div>
+      <div class="lov-arrow">→</div>
+    </a>""")
+        sections.append(f"""
+<section class="lover-section">
+  <div class="lover-section-head">
+    <h2>{meta['display']}</h2>
+    <span class="ant">{total_p} paragrafer · {len(by_kat[kat])} {'lov' if len(by_kat[kat]) == 1 else 'lover'}</span>
+  </div>
+  <div class="lov-grid">{chr(10).join(cards)}
+  </div>
+</section>""")
+
+    total_lover = len(by_lov_count)
+    total_paragrafer = len(PARAGRAPHS)
+
+    return f"""{shared_head('Alle lover — Rettsregel', 'Bla i alle norske lover forklart på vanlig språk. Bolig, forbruk, arbeid, familie og mer.', depth=1, canonical_path='/lover/')}
 {site_nav(depth=1)}
 
-<div class="container">
-  <nav class="breadcrumbs" aria-label="Brødsmuler">
-    <a href="{prefix}">Hjem</a>
-    <span class="sep">/</span>
-    <span class="current">Alle lover</span>
-  </nav>
-
-  <header class="lov-hero">
-    <h1>Alle <em>lover</em></h1>
-    <p>Vi tar paragraf for paragraf av norsk lov og forklarer på vanlig norsk. Her er lovene vi har dekket så langt.</p>
+<main class="page">
+  <header class="lover-hero">
+    <span class="kicker">Alle lover</span>
+    <h1>Norsk lov, <em>forklart</em>.</h1>
+    <p class="lead">Vi tar paragraf for paragraf og oversetter til vanlig norsk. Her er lovene vi har dekket så langt.</p>
+    <div class="lover-stats">
+      <div class="lover-stat">
+        <span class="num">{total_paragrafer}</span>
+        <span class="lbl">Paragrafer</span>
+      </div>
+      <div class="lover-stat">
+        <span class="num">{total_lover}</span>
+        <span class="lbl">Lover</span>
+      </div>
+    </div>
   </header>
 
-  <div class="paragraph-list">
-    <a href="{prefix}lover/angrerettloven/" class="paragraph-list-item">
-      <div class="paragraph-list-meta">FORBRUK</div>
-      <div class="paragraph-list-title">Angrerettloven</div>
-    </a>
-    <a href="{prefix}lover/kjopsloven/" class="paragraph-list-item">
-      <div class="paragraph-list-meta">PRIVATKJØP &amp; NÆRING</div>
-      <div class="paragraph-list-title">Kjøpsloven</div>
-    </a>
-    <a href="{prefix}lover/husleieloven/" class="paragraph-list-item">
-      <div class="paragraph-list-meta">BOLIG</div>
-      <div class="paragraph-list-title">Husleieloven</div>
-    </a>
-  </div>
-</div>
+  {chr(10).join(sections)}
+</main>
 
 {contact_form(depth=1)}
 {site_footer(depth=1)}"""
@@ -1359,22 +1944,35 @@ def render_sporsmal_page(s):
         display_name = LOV_DISPLAY.get(lov, lov.capitalize())
         if paragraph_exists(lov, nr):
             related_items.append(
-                f'<li><a href="/lover/{lov}/{nr}/">{display_name} § {nr}</a> — {beskr}</li>'
+                f'<li><span class="ref"><a href="/lover/{lov}/{nr}/">{display_name} § {nr}</a></span><span class="desc">{beskr}</span></li>'
             )
         else:
             related_items.append(
-                f'<li><span class="pending">{display_name} § {nr}</span> — {beskr}</li>'
+                f'<li class="pending"><span class="ref">{display_name} § {nr}</span><span class="desc">{beskr}</span></li>'
             )
 
     related_html = ""
     if related_items:
         related_html = f"""
-<section class="sporsmal-related">
+<section class="sp-related">
+  <div class="label">Les videre</div>
   <h3>Relevante paragrafer</h3>
   <ul>
     {chr(10).join(related_items)}
   </ul>
 </section>"""
+
+    # Kategori-tag basert på kategorien
+    kategori = s.get("kategori", "")
+    KAT_LABEL = {
+        "bolig": "BOLIG OG LEIE",
+        "forbruk": "FORBRUK OG KJØP",
+        "arbeid": "ARBEID OG LØNN",
+        "familie": "FAMILIE OG SAMLIV",
+        "gjeld": "GJELD OG PENGER",
+        "tjenester": "TJENESTER",
+    }
+    kat_label = KAT_LABEL.get(kategori, kategori.upper())
 
     head = shared_head(s["title"], s.get("description", ""), depth=2)
 
@@ -1383,17 +1981,18 @@ def render_sporsmal_page(s):
 {head}
 <body>
 {site_nav(depth=2)}
-<main class="page">
-  <article class="sporsmal-hero">
-    <div class="breadcrumb"><a href="/sporsmal/">Spørsmål</a></div>
+<main class="page kat-{kategori}">
+  <article class="sp-hero">
+    <div class="kicker">{kat_label}</div>
+    <div class="breadcrumb"><a href="../">Vanlige spørsmål</a></div>
     <h1>{s['title']}</h1>
   </article>
 
-  <div class="sporsmal-kort-svar">
-    {s['kort_svar']}
+  <div class="sp-tldr">
+    <p>{s['kort_svar']}</p>
   </div>
 
-  <article class="sporsmal-body">
+  <article class="sp-body">
     {body_html}
   </article>
 
@@ -1414,34 +2013,50 @@ def render_sporsmal_hub():
     for s in SPORSMAL:
         by_kat.setdefault(s.get("kategori", "annet"), []).append(s)
 
-    kat_display = {
-        "bolig": "Bolig og leie",
-        "forbruk": "Forbruk og kjøp",
-        "arbeid": "Arbeid og lønn",
-        "familie": "Familie og samboerskap",
-        "annet": "Annet",
+    kat_meta = {
+        "bolig": {"display": "Bolig og leie", "label": "BOLIG", "klasse": "kat-bolig"},
+        "forbruk": {"display": "Forbruk og kjøp", "label": "FORBRUK", "klasse": "kat-forbruk"},
+        "arbeid": {"display": "Arbeid og lønn", "label": "ARBEID", "klasse": "kat-arbeid"},
+        "familie": {"display": "Familie og samliv", "label": "FAMILIE", "klasse": "kat-familie"},
+        "gjeld": {"display": "Gjeld og penger", "label": "GJELD", "klasse": "kat-gjeld"},
+        "tjenester": {"display": "Tjenester og håndverk", "label": "TJENESTER", "klasse": "kat-tjenester"},
+        "annet": {"display": "Annet", "label": "ANNET", "klasse": ""},
     }
 
     sections = []
-    for kat in ["bolig", "forbruk", "arbeid", "familie", "annet"]:
+    for kat in ["bolig", "forbruk", "arbeid", "familie", "gjeld", "tjenester", "annet"]:
         if kat not in by_kat:
             continue
-        items_html = "\n".join([
-            f"""<a href="/sporsmal/{s['slug']}/" class="sporsmal-list-item">
-                  <div class="meta">{kat_display.get(kat, kat).upper()}</div>
-                  <h3>{s['title']}</h3>
-                  <p>{s.get('description', '')}</p>
-                </a>"""
-            for s in by_kat[kat]
-        ])
+        items = by_kat[kat]
+        meta = kat_meta.get(kat, kat_meta["annet"])
+        antall = len(items)
+        antall_tekst = f"{antall} spørsmål" if antall != 1 else "1 spørsmål"
+
+        # Første kort er featured, resten er vanlige
+        cards_html = []
+        for i, s in enumerate(items):
+            featured_class = " featured" if i == 0 and len(items) > 2 else ""
+            cards_html.append(f"""
+    <a href="/sporsmal/{s['slug']}/" class="sphub-card {meta['klasse']}{featured_class}">
+      <div class="kat-tag">{meta['label']}</div>
+      <h3>{s['title']}</h3>
+      <p>{s.get('description', '')}</p>
+      <span class="read-more">Les svaret</span>
+    </a>""")
+
         sections.append(f"""
-<section style="margin-top:48px;">
-  <h2 style="font-family:var(--serif); font-weight:500; font-size:28px; margin-bottom:8px;">{kat_display.get(kat, kat)}</h2>
-  <div class="sporsmal-list">
-    {items_html}
+<section class="sphub-section {meta['klasse']}">
+  <div class="sphub-section-head">
+    <span class="sphub-section-kat">{meta['label']}</span>
+    <h2>{meta['display']}</h2>
+    <span class="sphub-section-count">{antall_tekst}</span>
+  </div>
+  <div class="sphub-grid">
+    {chr(10).join(cards_html)}
   </div>
 </section>""")
 
+    total = len(SPORSMAL)
     head = shared_head(
         "Vanlige spørsmål — Rettsregel",
         "Konkrete svar på de vanligste juridiske spørsmålene nordmenn har: depositum, bilkjøp, naboer, arbeid, gjeld.",
@@ -1454,12 +2069,11 @@ def render_sporsmal_hub():
 <body>
 {site_nav(depth=1)}
 <main class="page">
-  <header class="sporsmal-hero">
-    <div class="breadcrumb"><a href="/">Forsiden</a></div>
-    <h1>Vanlige spørsmål</h1>
-    <p style="font-family:var(--sans); font-size:18px; color:var(--ink-soft); max-width:680px; margin-top:16px; line-height:1.6;">
-      Konkrete svar på problemene folk faktisk møter. Hvert spørsmål peker videre til den relevante paragrafen.
-    </p>
+  <header class="sphub-hero">
+    <span class="kicker">Vanlige spørsmål</span>
+    <h1>Når noe har skjedd — <em>hva nå?</em></h1>
+    <p class="lead">Konkrete svar på problemene folk faktisk møter. Skrevet på vanlig norsk, med stegene du kan ta i dag.</p>
+    <div class="sphub-meta"><strong>{total}</strong> spørsmål · oppdatert regelmessig</div>
   </header>
 
   {chr(10).join(sections)}
@@ -1476,19 +2090,21 @@ def render_homepage():
     prefix = ""
     # Featured paragrafer — håndplukket etter nytteverdi på tvers av lover
     featured = [
-        ("angrerettloven", "16", "FORBRUK · ANGRERETT", "Den viktigste knappen på nett"),
-        ("kjopsloven", "32", "PRIVATKJØP · REKLAMASJON", "Reklamasjonsfristene"),
-        ("kjopsloven", "19", "PRIVATKJØP · FINN.NO", "Solgt «som den er» — hva betyr det?"),
-        ("kjopsloven", "39", "PRIVATKJØP · HEVING", "Heving ved mangel"),
-        ("angrerettloven", "20", "FORBRUK · ANGRERETT", "Slik bruker du angreretten"),
-        ("kjopsloven", "17", "PRIVATKJØP · MANGEL", "Når har varen en mangel?"),
+        ("angrerettloven", "16", "forbruk", "FORBRUK · ANGRERETT", "Den viktigste knappen på nett", "Når du kan angre — og når du ikke kan."),
+        ("kjopsloven", "32", "forbruk", "PRIVATKJØP · REKLAMASJON", "Reklamasjonsfristene", "To år, fem år, eller noe annet? Her er hva som gjelder."),
+        ("kjopsloven", "19", "forbruk", "PRIVATKJØP · FINN.NO", "Solgt «som den er» — hva betyr det?", "Selger slipper ikke alt ansvar — uansett hva kontrakten sier."),
+        ("kjopsloven", "39", "forbruk", "PRIVATKJØP · HEVING", "Heving ved mangel", "Når kan du gå fra hele kjøpet — og få pengene tilbake?"),
+        ("angrerettloven", "20", "forbruk", "FORBRUK · ANGRERETT", "Slik bruker du angreretten", "Korte steg: meld fra, returner, få pengene tilbake."),
+        ("kjopsloven", "17", "forbruk", "PRIVATKJØP · MANGEL", "Når har varen en mangel?", "Forskjellen mellom slitasje og reell feil."),
     ]
     cards_html = ""
-    for lov, paragraf, kategori, tittel in featured:
+    for lov, paragraf, kat, kategori, tittel, beskr in featured:
         cards_html += f"""
-    <a href="{prefix}lover/{lov}/{paragraf}/" class="paragraph-list-item">
-      <div class="paragraph-list-meta">§ {paragraf} · {kategori}</div>
-      <div class="paragraph-list-title">{tittel}</div>
+    <a href="{prefix}lover/{lov}/{paragraf}/" class="sphub-card kat-{kat}">
+      <div class="kat-tag">§ {paragraf} · {kategori}</div>
+      <h3>{tittel}</h3>
+      <p>{beskr}</p>
+      <span class="read-more">Les paragrafen</span>
     </a>"""
 
     # Spørsmål-artikler — vis opptil 6 på hjemmesiden
@@ -1501,28 +2117,37 @@ def render_homepage():
     }
     sporsmal_cards = ""
     for s in SPORSMAL[:6]:
-        kat = KAT_LABEL.get(s.get("kategori", ""), s.get("kategori", "").upper())
+        kat = s.get("kategori", "")
+        kat_label = KAT_LABEL.get(kat, kat.upper())
         sporsmal_cards += f"""
-    <a href="{prefix}sporsmal/{s['slug']}/" class="paragraph-list-item">
-      <div class="paragraph-list-meta">SPØRSMÅL · {kat}</div>
-      <div class="paragraph-list-title">{s['title']}</div>
+    <a href="{prefix}sporsmal/{s['slug']}/" class="sphub-card kat-{kat}">
+      <div class="kat-tag">SPØRSMÅL · {kat_label}</div>
+      <h3>{s['title']}</h3>
+      <p>{s.get('description', '')}</p>
+      <span class="read-more">Les svaret</span>
     </a>"""
 
     # Lov-oversikt — dynamisk basert på antall paragrafer per lov
     LOV_KATEGORI = {
-        "angrerettloven": "FORBRUK",
-        "kjopsloven": "PRIVATKJØP",
-        "forbrukerkjopsloven": "FORBRUK",
-        "husleieloven": "BOLIG",
-        "avhendingslova": "BOLIG",
-        "haandverkertjenesteloven": "TJENESTER",
-        "naboloven": "BOLIG",
-        "arbeidsmiljoloven": "ARBEID",
-        "ferieloven": "ARBEID",
-        "inkassoloven": "GJELD",
-        "ekteskapsloven": "FAMILIE",
-        "sameieloven": "FAMILIE",
-        "husstandsfellesskapsloven": "FAMILIE",
+        "angrerettloven": ("forbruk", "Forbruk og kjøp"),
+        "kjopsloven": ("forbruk", "Forbruk og kjøp"),
+        "forbrukerkjopsloven": ("forbruk", "Forbruk og kjøp"),
+        "husleieloven": ("bolig", "Bolig og leie"),
+        "avhendingslova": ("bolig", "Bolig og leie"),
+        "naboloven": ("bolig", "Bolig og leie"),
+        "haandverkertjenesteloven": ("tjenester", "Tjenester"),
+        "arbeidsmiljoloven": ("arbeid", "Arbeid og lønn"),
+        "ferieloven": ("arbeid", "Arbeid og lønn"),
+        "inkassoloven": ("gjeld", "Gjeld og penger"),
+        "ekteskapsloven": ("familie", "Familie"),
+        "sameieloven": ("familie", "Familie"),
+        "husstandsfellesskapsloven": ("familie", "Familie"),
+    }
+    LOV_DESC_HOME = {
+        "angrerettloven": "Angrerett ved netthandel og kjøp utenfor butikk",
+        "kjopsloven": "Kjøp og salg mellom privatpersoner og bedrifter",
+        "husleieloven": "Leie av bolig — rettigheter og plikter",
+        "avhendingslova": "Kjøp og salg av bolig, hytte og tomt",
     }
     by_lov_count = {}
     by_lov_display = {}
@@ -1530,67 +2155,97 @@ def render_homepage():
         lov = p["lov"]
         by_lov_count[lov] = by_lov_count.get(lov, 0) + 1
         by_lov_display[lov] = p["lov_display"]
-    # Sortér lover etter størrelse (flest paragrafer først)
     sorted_lover = sorted(by_lov_count.items(), key=lambda x: -x[1])
     lov_cards = ""
     for lov, antall in sorted_lover:
-        kategori = LOV_KATEGORI.get(lov, "")
-        meta = f"{kategori} · {antall} paragrafer" if kategori else f"{antall} paragrafer"
+        kat, kat_lbl = LOV_KATEGORI.get(lov, ("", ""))
+        desc = LOV_DESC_HOME.get(lov, kat_lbl)
         lov_cards += f"""
-      <a href="{prefix}lover/{lov}/" class="paragraph-list-item">
-        <div class="paragraph-list-meta">{meta}</div>
-        <div class="paragraph-list-title">{by_lov_display[lov]}</div>
+      <a href="{prefix}lover/{lov}/" class="lov-kort">
+        <div class="lov-meta">
+          <div class="lov-num">{antall}</div>
+          <div class="lov-num-lbl">paragrafer</div>
+        </div>
+        <div class="lov-info">
+          <h3>{by_lov_display[lov]}</h3>
+          <p>{desc}</p>
+        </div>
+        <div class="lov-arrow">→</div>
       </a>"""
 
     return f"""{shared_head('Rettsregel — Norske lover på vanlig norsk', 'Lover er ikke vanskelige. De er bare dårlig forklart. Bla i norske lover, paragraf for paragraf.', depth=0, canonical_path='/')}
 {site_nav(depth=0)}
 
-<div class="container">
-  <header class="lov-hero homepage-hero">
-    <div class="eyebrow">NORSKE LOVER · PÅ VANLIG NORSK</div>
-    <h1>Lover er ikke <em>vanskelige</em>.</h1>
-    <h1>De er bare <em>dårlig forklart</em>.</h1>
-    <p>Vi tar paragraf for paragraf av norsk lov og forklarer på vanlig norsk. Med eksempler, vanlige feil, og hva du faktisk skal gjøre.</p>
-    <div class="hero-cta">
+<main class="page">
+  <header class="home-hero-v2">
+    <div class="stamp">RETTSREGEL · MMXXVI</div>
+    <span class="kicker">Norske lover · på vanlig norsk</span>
+    <h1>Lover er ikke <em>vanskelige</em>.<br>De er bare <em>dårlig forklart</em>.</h1>
+    <p class="lead">Vi tar paragraf for paragraf og oversetter til vanlig norsk. Med eksempler, vanlige feil, og hva du faktisk skal gjøre når det skjer noe.</p>
+    <div class="cta-row">
       <a href="#skjema" class="cta-button">Har du en sak? Skriv til oss →</a>
-      <a href="{prefix}lover/" class="cta-button-secondary">Bla i alle lover</a>
+      <a href="{prefix}sporsmal/" class="cta-button-secondary">Bla i vanlige spørsmål</a>
     </div>
   </header>
 
-  <section class="home-section">
-    <div class="section-header">
-      <h2>Vanlige spørsmål</h2>
-      <p class="section-sub">Konkrete svar på problemene folk faktisk møter.</p>
+  <div class="home-stats">
+    <div class="home-stat">
+      <div class="num">{len(PARAGRAPHS)}</div>
+      <div class="lbl">Paragrafer forklart</div>
     </div>
-    <div class="paragraph-list">{sporsmal_cards}
+    <div class="home-stat">
+      <div class="num">{len(by_lov_count)}</div>
+      <div class="lbl">Lover dekket</div>
     </div>
-    <div style="margin-top:24px;">
-      <a href="{prefix}sporsmal/" class="cta-button-secondary">Se alle spørsmål →</a>
+    <div class="home-stat">
+      <div class="num">{len(SPORSMAL)}</div>
+      <div class="lbl">Vanlige spørsmål</div>
+    </div>
+    <div class="home-stat">
+      <div class="num">Roy</div>
+      <div class="lbl">Hjelper deg finne svaret</div>
+    </div>
+  </div>
+
+  <section class="home-section-v2">
+    <div class="home-section-head-v2">
+      <div class="left">
+        <div class="kicker">Vanlige spørsmål</div>
+        <h2>Når noe har skjedd — hva nå?</h2>
+      </div>
+      <div class="right">
+        <a href="{prefix}sporsmal/">Se alle spørsmål →</a>
+      </div>
+    </div>
+    <div class="sphub-grid">{sporsmal_cards}
     </div>
   </section>
 
-  <section class="home-section">
-    <div class="section-header">
-      <h2>Mest leste paragrafer</h2>
-      <p class="section-sub">Det folk faktisk søker etter.</p>
+  <section class="home-section-v2">
+    <div class="home-section-head-v2">
+      <div class="left">
+        <div class="kicker">Utvalgte paragrafer</div>
+        <h2>Det folk faktisk søker</h2>
+      </div>
     </div>
-    <div class="paragraph-list">{cards_html}
+    <div class="sphub-grid">{cards_html}
     </div>
   </section>
 
-  <section class="home-section">
-    <div class="section-header">
-      <h2>Bla i alle lover</h2>
-      <p class="section-sub">{len(PARAGRAPHS)} paragrafer publisert. Flere kommer.</p>
+  <section class="home-section-v2">
+    <div class="home-section-head-v2">
+      <div class="left">
+        <div class="kicker">Lovsamling</div>
+        <h2>Bla i alle lover</h2>
+      </div>
+      <div class="right">
+        <a href="{prefix}lover/">Se alle →</a>
+      </div>
     </div>
-    <div class="paragraph-list">{lov_cards}
-      <a href="{prefix}lover/" class="paragraph-list-item">
-        <div class="paragraph-list-meta">OVERSIKT</div>
-        <div class="paragraph-list-title">Alle lover →</div>
-      </a>
+    <div class="lov-grid">{lov_cards}
     </div>
   </section>
-</div>
+</main>
 
 {contact_form(depth=0)}
 {site_footer(depth=0)}"""
