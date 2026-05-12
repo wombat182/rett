@@ -26,6 +26,12 @@ except ImportError:
 
 PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN
 
+# Spørsmål-artikler (lever på /sporsmal/[slug]/)
+try:
+    from sporsmal_data import SPORSMAL
+except ImportError:
+    SPORSMAL = []
+
 # ============================================================
 # SHARED CSS (same look as homepage)
 # ============================================================
@@ -492,6 +498,97 @@ footer.site-footer a:hover { color: var(--bg); }
   padding-top: 48px;
   border-top: 1px solid var(--line);
   text-align: left;
+}
+
+/* ============================================================
+   Spørsmål-sider (/sporsmal/[slug]/)
+   ============================================================ */
+.sporsmal-hero {
+  padding: 56px 0 24px; max-width: 780px;
+}
+.sporsmal-hero .breadcrumb {
+  font-family: var(--sans); font-size: 14px; color: var(--ink-soft);
+  margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.sporsmal-hero .breadcrumb a { color: var(--ink-soft); }
+.sporsmal-hero h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(34px, 5vw, 52px); line-height: 1.12;
+  letter-spacing: -0.015em; margin-bottom: 0;
+  font-variation-settings: "opsz" 60;
+}
+.sporsmal-kort-svar {
+  background: white; border-left: 4px solid var(--accent);
+  padding: 24px 28px; margin: 24px 0 40px;
+  border-radius: 0 12px 12px 0;
+  font-family: var(--sans); font-size: 18px;
+  line-height: 1.55; color: var(--ink);
+  max-width: 780px;
+}
+.sporsmal-body {
+  max-width: 780px; font-family: var(--sans);
+}
+.sporsmal-body h2 {
+  font-family: var(--serif); font-weight: 500;
+  font-size: 28px; margin: 48px 0 16px;
+  letter-spacing: -0.01em; line-height: 1.25;
+}
+.sporsmal-body h2:first-child { margin-top: 0; }
+.sporsmal-body p { font-size: 17px; line-height: 1.65; margin-bottom: 16px; color: var(--ink); }
+.sporsmal-body ol, .sporsmal-body ul {
+  font-size: 17px; line-height: 1.65; margin: 8px 0 24px 24px; color: var(--ink);
+}
+.sporsmal-body ol li, .sporsmal-body ul li { margin-bottom: 12px; }
+.sporsmal-body ol li strong { color: var(--accent); }
+.sporsmal-body a { color: var(--accent); }
+.sporsmal-related {
+  margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--line);
+  max-width: 780px;
+}
+.sporsmal-related h3 {
+  font-family: var(--serif); font-size: 22px; font-weight: 500;
+  margin-bottom: 16px;
+}
+.sporsmal-related ul { list-style: none; padding: 0; margin: 0; }
+.sporsmal-related li {
+  padding: 14px 0; border-bottom: 1px solid var(--line);
+  font-family: var(--sans); font-size: 16px;
+}
+.sporsmal-related li:last-child { border-bottom: none; }
+.sporsmal-related a { color: var(--ink); font-weight: 500; }
+.sporsmal-related a:hover { color: var(--accent); }
+.sporsmal-related .pending {
+  color: var(--ink-soft); font-style: italic; font-weight: 400;
+}
+.sporsmal-related .pending::after {
+  content: " — kommer snart"; font-size: 13px; color: var(--accent-soft);
+  font-style: italic;
+}
+
+/* Spørsmål-hub */
+.sporsmal-list {
+  display: grid; gap: 12px; margin: 32px 0 80px;
+  max-width: 860px;
+}
+.sporsmal-list-item {
+  background: white; border: 1px solid var(--line); border-radius: 12px;
+  padding: 22px 26px; text-decoration: none; color: inherit; display: block;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.sporsmal-list-item:hover {
+  transform: translateY(-1px); border-color: var(--accent);
+}
+.sporsmal-list-item h3 {
+  font-family: var(--serif); font-size: 21px; font-weight: 500;
+  margin-bottom: 8px; line-height: 1.3;
+}
+.sporsmal-list-item p {
+  font-family: var(--sans); color: var(--ink-soft);
+  font-size: 15px; line-height: 1.5; margin: 0;
+}
+.sporsmal-list-item .meta {
+  font-family: var(--sans); font-size: 12px; color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
 }
 
 /* ============================================================
@@ -1221,6 +1318,153 @@ def render_om():
 {site_footer(depth=1)}"""
 
 
+def paragraph_exists(lov, nummer):
+    """Sjekker om en paragraf finnes i PARAGRAPHS-listen."""
+    return any(p["lov"] == lov and p["number"] == nummer for p in PARAGRAPHS)
+
+
+def render_sporsmal_page(s):
+    """Render en enkelt spørsmål-artikkel."""
+    import markdown as md
+
+    # Mapping fra URL-slug til ordentlig norsk visningsnavn
+    LOV_DISPLAY = {
+        "angrerettloven": "Angrerettloven",
+        "kjopsloven": "Kjøpsloven",
+        "husleieloven": "Husleieloven",
+        "naboloven": "Naboloven",
+        "haandverkertjenesteloven": "Håndverkertjenesteloven",
+        "forbrukerkjopsloven": "Forbrukerkjøpsloven",
+        "plan-og-bygningsloven": "Plan- og bygningsloven",
+        "husstandsfellesskapsloven": "Husstandsfellesskapsloven",
+        "sameieloven": "Sameieloven",
+        "arbeidsmiljoloven": "Arbeidsmiljøloven",
+        "ferieloven": "Ferieloven",
+        "inkassoloven": "Inkassoloven",
+    }
+
+    body_html = md.markdown(s["body_md"], extensions=["extra"])
+
+    # Bygg "Relevante paragrafer"-seksjon — sjekk om hver finnes
+    related_items = []
+    for rel in s.get("related_paragrafer", []):
+        lov = rel["lov"]
+        nr = rel["nummer"]
+        beskr = rel.get("beskrivelse", "")
+        display_name = LOV_DISPLAY.get(lov, lov.capitalize())
+        if paragraph_exists(lov, nr):
+            related_items.append(
+                f'<li><a href="/lover/{lov}/{nr}/">{display_name} § {nr}</a> — {beskr}</li>'
+            )
+        else:
+            related_items.append(
+                f'<li><span class="pending">{display_name} § {nr}</span> — {beskr}</li>'
+            )
+
+    related_html = ""
+    if related_items:
+        related_html = f"""
+<section class="sporsmal-related">
+  <h3>Relevante paragrafer</h3>
+  <ul>
+    {chr(10).join(related_items)}
+  </ul>
+</section>"""
+
+    head = shared_head(s["title"], s.get("description", ""), depth=2)
+
+    return f"""<!DOCTYPE html>
+<html lang="nb">
+{head}
+<body>
+{site_nav(depth=2)}
+<main class="page">
+  <article class="sporsmal-hero">
+    <div class="breadcrumb"><a href="/sporsmal/">Spørsmål</a></div>
+    <h1>{s['title']}</h1>
+  </article>
+
+  <div class="sporsmal-kort-svar">
+    {s['kort_svar']}
+  </div>
+
+  <article class="sporsmal-body">
+    {body_html}
+  </article>
+
+  {related_html}
+
+{contact_form(depth=2)}
+
+</main>
+{site_footer(depth=2)}
+</body>
+</html>"""
+
+
+def render_sporsmal_hub():
+    """Render hub-side på /sporsmal/index.html — liste over alle spørsmål."""
+    # Grupper etter kategori
+    by_kat = {}
+    for s in SPORSMAL:
+        by_kat.setdefault(s.get("kategori", "annet"), []).append(s)
+
+    kat_display = {
+        "bolig": "Bolig og leie",
+        "forbruk": "Forbruk og kjøp",
+        "arbeid": "Arbeid og lønn",
+        "familie": "Familie og samboerskap",
+        "annet": "Annet",
+    }
+
+    sections = []
+    for kat in ["bolig", "forbruk", "arbeid", "familie", "annet"]:
+        if kat not in by_kat:
+            continue
+        items_html = "\n".join([
+            f"""<a href="/sporsmal/{s['slug']}/" class="sporsmal-list-item">
+                  <div class="meta">{kat_display.get(kat, kat).upper()}</div>
+                  <h3>{s['title']}</h3>
+                  <p>{s.get('description', '')}</p>
+                </a>"""
+            for s in by_kat[kat]
+        ])
+        sections.append(f"""
+<section style="margin-top:48px;">
+  <h2 style="font-family:var(--serif); font-weight:500; font-size:28px; margin-bottom:8px;">{kat_display.get(kat, kat)}</h2>
+  <div class="sporsmal-list">
+    {items_html}
+  </div>
+</section>""")
+
+    head = shared_head(
+        "Vanlige spørsmål — Rettsregel",
+        "Konkrete svar på de vanligste juridiske spørsmålene nordmenn har: depositum, bilkjøp, naboer, arbeid, gjeld.",
+        depth=1,
+    )
+
+    return f"""<!DOCTYPE html>
+<html lang="nb">
+{head}
+<body>
+{site_nav(depth=1)}
+<main class="page">
+  <header class="sporsmal-hero">
+    <div class="breadcrumb"><a href="/">Forsiden</a></div>
+    <h1>Vanlige spørsmål</h1>
+    <p style="font-family:var(--sans); font-size:18px; color:var(--ink-soft); max-width:680px; margin-top:16px; line-height:1.6;">
+      Konkrete svar på problemene folk faktisk møter. Hvert spørsmål peker videre til den relevante paragrafen.
+    </p>
+  </header>
+
+  {chr(10).join(sections)}
+
+</main>
+{site_footer(depth=1)}
+</body>
+</html>"""
+
+
 def render_homepage():
     """Forsiden."""
     depth = 0
@@ -1358,6 +1602,16 @@ def build():
             with open(f"{out}/lover/{lov_name}/{p['number']}/index.html", "w", encoding="utf-8") as f:
                 f.write(render_paragraph_page(p))
     
+    # Spørsmål-artikler
+    if SPORSMAL:
+        os.makedirs(f"{out}/sporsmal", exist_ok=True)
+        with open(f"{out}/sporsmal/index.html", "w", encoding="utf-8") as f:
+            f.write(render_sporsmal_hub())
+        for s in SPORSMAL:
+            os.makedirs(f"{out}/sporsmal/{s['slug']}", exist_ok=True)
+            with open(f"{out}/sporsmal/{s['slug']}/index.html", "w", encoding="utf-8") as f:
+                f.write(render_sporsmal_page(s))
+    
     # Sitemap.xml
     today = "2026-05-11"
     urls = [
@@ -1371,6 +1625,11 @@ def build():
         urls.append((f"/lover/{lov_url}/", "0.8"))
         for p in items:
             urls.append((f"/lover/{lov_url}/{p['number']}/", "0.7"))
+    
+    if SPORSMAL:
+        urls.append(("/sporsmal/", "0.9"))
+        for s in SPORSMAL:
+            urls.append((f"/sporsmal/{s['slug']}/", "0.8"))
     
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for path, priority in urls:
@@ -1407,7 +1666,7 @@ Sitemap: {SITE_URL}/sitemap.xml
     with open(f"{out}/paragraphs-index.json", "w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, indent=None, separators=(",", ":"))
     
-    print(f"Built {len(PARAGRAPHS)} paragraph pages + homepage + lov index + lover index + personvern")
+    print(f"Built {len(PARAGRAPHS)} paragraph pages + {len(SPORSMAL)} sporsmal-artikler + homepage + lov index + lover index + personvern + om")
     print(f"Plus: sitemap.xml ({len(urls)} URLs), robots.txt, CNAME, paragraphs-index.json")
     print(f"Output: {out}")
 
