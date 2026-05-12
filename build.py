@@ -23,8 +23,12 @@ try:
     from paragraphs_husleieloven import PARAGRAPHS as _P_HUSLEIELOVEN
 except ImportError:
     _P_HUSLEIELOVEN = []
+try:
+    from paragraphs_avhendingslova import PARAGRAPHS as _P_AVHENDINGSLOVA
+except ImportError:
+    _P_AVHENDINGSLOVA = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -1557,6 +1561,10 @@ def render_homepage():
       <a href="{prefix}lover/husleieloven/" class="paragraph-list-item">
         <div class="paragraph-list-meta">BOLIG · 89 paragrafer</div>
         <div class="paragraph-list-title">Husleieloven</div>
+      </a>
+      <a href="{prefix}lover/avhendingslova/" class="paragraph-list-item">
+        <div class="paragraph-list-meta">BOLIG · 5 paragrafer</div>
+        <div class="paragraph-list-title">Avhendingslova</div>
       </a>
       <a href="{prefix}lover/" class="paragraph-list-item">
         <div class="paragraph-list-meta">OVERSIKT</div>
