@@ -19,8 +19,12 @@ try:
     from paragraphs_kjopsloven import PARAGRAPHS as _P_KJOPSLOVEN
 except ImportError:
     _P_KJOPSLOVEN = []
+try:
+    from paragraphs_husleieloven import PARAGRAPHS as _P_HUSLEIELOVEN
+except ImportError:
+    _P_HUSLEIELOVEN = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN
 
 # ============================================================
 # SHARED CSS (same look as homepage)
@@ -688,6 +692,7 @@ def render_paragraph_page(p):
         lov_display_map = {
             "angrerettloven": "Angrerettloven",
             "kjopsloven": "Kjøpsloven",
+            "husleieloven": "Husleieloven",
             "forbrukerkjopsloven": "Forbrukerkjøpsloven",
             "avhendingslova": "Avhendingslova",
             "bustadoppforingslova": "Bustadoppføringslova",
@@ -827,6 +832,10 @@ def render_lover_index():
     <a href="{prefix}lover/kjopsloven/" class="paragraph-list-item">
       <div class="paragraph-list-meta">PRIVATKJØP &amp; NÆRING</div>
       <div class="paragraph-list-title">Kjøpsloven</div>
+    </a>
+    <a href="{prefix}lover/husleieloven/" class="paragraph-list-item">
+      <div class="paragraph-list-meta">BOLIG</div>
+      <div class="paragraph-list-title">Husleieloven</div>
     </a>
   </div>
 </div>
@@ -990,7 +999,7 @@ def render_homepage():
   <section class="home-section">
     <div class="section-header">
       <h2>Bla i alle lover</h2>
-      <p class="section-sub">112 paragrafer publisert. Flere kommer.</p>
+      <p class="section-sub">201 paragrafer publisert. Flere kommer.</p>
     </div>
     <div class="paragraph-list">
       <a href="{prefix}lover/angrerettloven/" class="paragraph-list-item">
@@ -1000,6 +1009,10 @@ def render_homepage():
       <a href="{prefix}lover/kjopsloven/" class="paragraph-list-item">
         <div class="paragraph-list-meta">PRIVATKJØP · 82 paragrafer</div>
         <div class="paragraph-list-title">Kjøpsloven</div>
+      </a>
+      <a href="{prefix}lover/husleieloven/" class="paragraph-list-item">
+        <div class="paragraph-list-meta">BOLIG · 89 paragrafer</div>
+        <div class="paragraph-list-title">Husleieloven</div>
       </a>
       <a href="{prefix}lover/" class="paragraph-list-item">
         <div class="paragraph-list-meta">OVERSIKT</div>
