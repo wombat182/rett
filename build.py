@@ -378,6 +378,122 @@ footer.site-footer a:hover { color: var(--bg); }
 .rule-table tr:hover td { background: rgba(194, 84, 52, 0.03); }
 
 /* ============================================================
+   TJENESTER — hub og kalkulator
+   ============================================================ */
+.tjenester-hero { padding: 48px 0 56px; }
+.tjenester-hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.12; letter-spacing: -0.015em; margin-bottom: 20px; }
+.tjenester-hero p { font-size: 18px; color: var(--ink-soft); max-width: 620px; line-height: 1.55; }
+.tjenester-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin: 40px 0 64px; }
+.tjeneste-kort {
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 32px; text-decoration: none; color: var(--ink);
+  box-shadow: var(--shadow-sm); transition: box-shadow 0.2s, transform 0.2s;
+  display: flex; flex-direction: column; gap: 12px; position: relative;
+}
+.tjeneste-kort:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.tjeneste-kort.snart { opacity: 0.6; cursor: default; pointer-events: none; }
+.tjeneste-kort-ikon { font-size: 28px; margin-bottom: 4px; }
+.tjeneste-kort h3 { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.2; }
+.tjeneste-kort p { font-size: 15px; color: var(--ink-soft); line-height: 1.5; flex: 1; }
+.tjeneste-kort-pil { font-size: 14px; color: var(--accent); font-weight: 600; margin-top: 8px; }
+.snart-badge {
+  position: absolute; top: 20px; right: 20px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  background: var(--bg-alt); color: var(--ink-mute); padding: 4px 10px; border-radius: 20px;
+}
+
+/* Kalkulator */
+.kalkulator-intro { margin-bottom: 40px; }
+.kalkulator {
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 20px; padding: 40px; box-shadow: var(--shadow-md);
+  margin-bottom: 32px;
+}
+@media (max-width: 600px) { .kalkulator { padding: 24px 20px; } }
+.kalkulator-tittel { font-family: var(--serif); font-size: 20px; font-weight: 500; margin-bottom: 28px; color: var(--ink); }
+.kalkulator-sporsmal { margin-bottom: 28px; }
+.kalkulator-sporsmal legend {
+  font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 12px;
+  display: block; line-height: 1.4;
+}
+.kalkulator-sporsmal .hint { font-size: 13px; color: var(--ink-mute); font-weight: 400; display: block; margin-top: 3px; }
+.kalkulator-valg { display: flex; flex-direction: column; gap: 8px; }
+.kalkulator-valg label {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border: 1.5px solid var(--line);
+  border-radius: 10px; cursor: pointer; font-size: 15px;
+  transition: border-color 0.15s, background 0.15s; line-height: 1.35;
+  background: var(--bg);
+}
+.kalkulator-valg label:hover { border-color: var(--accent-soft); }
+.kalkulator-valg input[type=radio] { accent-color: var(--accent); width: 18px; height: 18px; flex-shrink: 0; }
+.kalkulator-valg input[type=radio]:checked + span { color: var(--accent); font-weight: 600; }
+.kalkulator-valg label:has(input:checked) { border-color: var(--accent); background: rgba(177,74,42,0.04); }
+.kalkulator-divider { border: none; border-top: 1px solid var(--line); margin: 4px 0 28px; }
+.kalkulator-knapp {
+  background: var(--accent); color: white; border: none; border-radius: 12px;
+  font-family: var(--sans); font-size: 16px; font-weight: 600; cursor: pointer;
+  padding: 16px 32px; width: 100%; transition: background 0.2s;
+  letter-spacing: 0.01em;
+}
+.kalkulator-knapp:hover { background: var(--accent-deep); }
+
+/* Resultat */
+.kalkulator-resultat {
+  background: var(--bg-card); border: 2px solid var(--accent);
+  border-radius: 20px; padding: 40px; margin-bottom: 32px;
+  animation: fadeInUp 0.3s ease;
+}
+@media (max-width: 600px) { .kalkulator-resultat { padding: 24px 20px; } }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.resultat-badge {
+  display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; padding: 5px 12px; border-radius: 20px; margin-bottom: 16px;
+}
+.resultat-badge.as { background: #e8f0f4; color: #2d5970; }
+.resultat-badge.enk { background: #f0f4e8; color: #3d5a2d; }
+.resultat-badge.begge { background: #f4f0e8; color: #5a4a2d; }
+.resultat-tittel { font-family: var(--serif); font-size: clamp(22px, 3vw, 30px); font-weight: 400; margin-bottom: 20px; line-height: 1.15; }
+.resultat-grunner { margin: 0 0 28px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.resultat-grunner li { display: flex; gap: 10px; font-size: 15px; line-height: 1.45; }
+.resultat-grunner li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+.resultat-tabell-wrapper { overflow-x: auto; margin: 28px 0; }
+.resultat-tabell {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+  border: 1px solid var(--line);
+}
+.resultat-tabell th {
+  padding: 10px 14px; text-align: left; font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em; background: var(--bg-alt);
+  border-bottom: 2px solid var(--line);
+}
+.resultat-tabell td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.resultat-tabell tr:last-child td { border-bottom: none; }
+.resultat-tabell td:first-child { color: var(--ink-mute); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.col-anbefalt { background: rgba(177,74,42,0.03); }
+.col-anbefalt th, .col-anbefalt td { color: var(--accent); font-weight: 600; }
+.resultat-notat { font-size: 13px; color: var(--ink-mute); margin-top: 16px; line-height: 1.5; }
+
+/* CTA-boks */
+.tjeneste-cta-boks {
+  background: var(--bg-alt); border-radius: 16px; padding: 36px;
+  margin: 32px 0 56px; display: flex; flex-direction: column; gap: 16px;
+}
+.tjeneste-cta-boks h3 { font-family: var(--serif); font-size: 22px; font-weight: 400; }
+.tjeneste-cta-boks p { font-size: 15px; color: var(--ink-soft); line-height: 1.5; max-width: 560px; }
+.btn-aksjon {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: white; text-decoration: none;
+  font-weight: 600; font-size: 15px; padding: 14px 24px;
+  border-radius: 10px; transition: background 0.2s; width: fit-content;
+}
+.btn-aksjon:hover { background: var(--accent-deep); }
+.tjeneste-cta-pris { font-size: 13px; color: var(--ink-mute); }
+
+/* ============================================================
    HOMEPAGE — strammere, vakrere, mer luft
    ============================================================ */
 
@@ -1329,6 +1445,7 @@ def site_nav(depth=0):
   <ul class="nav-links">
     <li><a href="{prefix}sporsmal/">Vanlige spørsmål</a></li>
     <li><a href="{prefix}lover/">Alle lover</a></li>
+    <li><a href="{prefix}tjenester/">Tjenester</a></li>
     <li><a href="{prefix}om/">Om</a></li>
     <li><a href="{prefix}#skjema">Send inn sak</a></li>
   </ul>
@@ -2402,6 +2519,326 @@ def paragraf_sort_key(p):
     return (0, 0, '')
 
 
+def render_tjenester_hub():
+    return f"""{shared_head(
+        'Juridiske verktøy og tjenester | Rettsregel',
+        'Gratis kalkulatorer og verktøy som hjelper deg å ta juridisk riktige valg. ENK eller AS, kontraktsvalg og mer.',
+        depth=1, canonical_path='/tjenester/'
+    )}
+<body>
+{site_nav(depth=1)}
+<main class="page">
+  <div class="container">
+    <div class="tjenester-hero">
+      <div class="article-eyebrow">Tjenester</div>
+      <h1>Juridiske verktøy — gratis å bruke</h1>
+      <p>Svar på spørsmålene, og få en klar anbefaling. Trenger du noe skriftlig og signert, hjelper vi med det også.</p>
+    </div>
+
+    <div class="tjenester-grid">
+      <a href="../tjenester/enk-eller-as/" class="tjeneste-kort">
+        <div class="tjeneste-kort-ikon">⚖️</div>
+        <h3>ENK eller AS?</h3>
+        <p>Svar på fem spørsmål og finn ut hvilken selskapsform som passer for deg — og hvorfor.</p>
+        <div class="tjeneste-kort-pil">Bruk verktøyet →</div>
+      </a>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kort-ikon">📄</div>
+        <h3>Kjøpekontrakt for bil</h3>
+        <p>Generer en juridisk korrekt kjøpekontrakt for privatbilsalg. Fylles ut og lastes ned.</p>
+        <div class="tjeneste-kort-pil">Kommer snart</div>
+      </div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kort-ikon">🏠</div>
+        <h3>Samboeravtale</h3>
+        <p>Enkel veiviser som lager en samboeravtale tilpasset situasjonen din.</p>
+        <div class="tjeneste-kort-pil">Kommer snart</div>
+      </div>
+    </div>
+  </div>
+</main>
+{site_footer(depth=1)}"""
+
+
+def render_enk_eller_as():
+    return f"""{shared_head(
+        'ENK eller AS? Finn ut hva som passer for deg — Rettsregel',
+        'Svar på fem spørsmål og få en klar anbefaling om du bør velge ENK eller AS. Gratis kalkulator basert på selskapsrett.',
+        depth=2, canonical_path='/tjenester/enk-eller-as/'
+    )}
+<body>
+{site_nav(depth=2)}
+<main class="page">
+  <div class="narrow">
+    <div class="breadcrumbs">
+      <a href="../../">Rettsregel</a>
+      <span class="sep">›</span>
+      <a href="../../tjenester/">Tjenester</a>
+      <span class="sep">›</span>
+      <span class="current">ENK eller AS?</span>
+    </div>
+
+    <div class="article-header">
+      <div class="article-eyebrow">Gratis verktøy</div>
+      <h1 class="article-title">Skal du velge ENK eller AS?</h1>
+      <p class="article-description">Svar på fem spørsmål — så får du en klar anbefaling og en sammenligning tilpasset deg.</p>
+    </div>
+
+    <div class="kalkulator" id="kalkulator">
+      <div class="kalkulator-tittel">Fortell oss litt om virksomheten din</div>
+
+      <fieldset class="kalkulator-sporsmal" style="border:none;padding:0">
+        <legend>Hva forventer du å tjene det første året?
+          <span class="hint">Overskudd — altså inntekter minus kostnader</span>
+        </legend>
+        <div class="kalkulator-valg">
+          <label><input type="radio" name="overskudd" value="under200k"><span>Under 200 000 kr</span></label>
+          <label><input type="radio" name="overskudd" value="200_600k"><span>200 000 – 600 000 kr</span></label>
+          <label><input type="radio" name="overskudd" value="over600k"><span>Over 600 000 kr</span></label>
+        </div>
+      </fieldset>
+
+      <hr class="kalkulator-divider">
+
+      <fieldset class="kalkulator-sporsmal" style="border:none;padding:0">
+        <legend>Planlegger du å hente penger fra investorer?</legend>
+        <div class="kalkulator-valg">
+          <label><input type="radio" name="investorer" value="ja"><span>Ja — ekstern finansiering er planen</span></label>
+          <label><input type="radio" name="investorer" value="nei"><span>Nei — jeg finansierer det selv</span></label>
+        </div>
+      </fieldset>
+
+      <hr class="kalkulator-divider">
+
+      <fieldset class="kalkulator-sporsmal" style="border:none;padding:0">
+        <legend>Kan kunder eller samarbeidspartnere holde deg personlig ansvarlig for store erstatningskrav?
+          <span class="hint">Tenk: rådgivning, bygg, helse, transport, juridiske tjenester</span>
+        </legend>
+        <div class="kalkulator-valg">
+          <label><input type="radio" name="ansvar" value="ja"><span>Ja — det er reell risiko i bransjen min</span></label>
+          <label><input type="radio" name="ansvar" value="vet_ikke"><span>Vet ikke / kanskje</span></label>
+          <label><input type="radio" name="ansvar" value="nei"><span>Nei — lav risiko</span></label>
+        </div>
+      </fieldset>
+
+      <hr class="kalkulator-divider">
+
+      <fieldset class="kalkulator-sporsmal" style="border:none;padding:0">
+        <legend>Har du 30 000 kr tilgjengelig til aksjekapital?
+          <span class="hint">Minimumskravet for å stifte AS (aksjeloven § 3-1)</span>
+        </legend>
+        <div class="kalkulator-valg">
+          <label><input type="radio" name="har30k" value="ja"><span>Ja</span></label>
+          <label><input type="radio" name="har30k" value="nei"><span>Nei — ikke akkurat nå</span></label>
+        </div>
+      </fieldset>
+
+      <hr class="kalkulator-divider">
+
+      <fieldset class="kalkulator-sporsmal" style="border:none;padding:0">
+        <legend>Hva er planen for overskuddet?</legend>
+        <div class="kalkulator-valg">
+          <label><input type="radio" name="kapital" value="ta_ut"><span>Ta ut fortløpende — dette er inntekten min</span></label>
+          <label><input type="radio" name="kapital" value="beholde"><span>La det stå i selskapet og vokse</span></label>
+          <label><input type="radio" name="kapital" value="blanding"><span>Blanding — litt av begge deler</span></label>
+        </div>
+      </fieldset>
+
+      <button class="kalkulator-knapp" onclick="beregn()">Finn ut hva du bør velge →</button>
+    </div>
+
+    <div class="kalkulator-resultat" id="resultat" style="display:none" aria-live="polite">
+      <div id="resultat-innhold"></div>
+    </div>
+
+    <div class="tjeneste-cta-boks" id="cta-boks" style="display:none">
+      <h3>Vil du ha dette skriftlig og signert?</h3>
+      <p>Vi setter opp en kort, personlig vurdering basert på situasjonen din — med konkret anbefaling, begrunnelse og en sjekkliste for oppstart. Signert av juridisk rådgiver.</p>
+      <a href="mailto:rettsregel@gmail.com?subject=Forespørsel%20om%20selskapsform-vurdering" class="btn-aksjon">
+        Send forespørsel
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <span class="tjeneste-cta-pris">990 kr · Svar innen 48 timer</span>
+    </div>
+
+    <div class="prose sp-body">
+      <h2>Hva er forskjellen på ENK og AS?</h2>
+      <p>ENK (enkeltpersonforetak) og AS (aksjeselskap) er de to vanligste selskapsformene for små bedrifter i Norge. Valget påvirker blant annet hvem som er ansvarlig hvis noe går galt, hvordan du betaler skatt, og hva som skjer hvis du vil hente investorer.</p>
+
+      <h3>Personlig ansvar</h3>
+      <p>I et ENK er du personlig ansvarlig for all gjeld og alle krav mot virksomheten. Det betyr at kreditorer kan gå etter privatøkonomien din — huset, bilen, sparepengene. I et AS er ansvaret begrenset til aksjekapitalen. Personlig formue er beskyttet, med mindre du har stilt personlig garanti.</p>
+
+      <h3>Skatt</h3>
+      <p>ENK: Overskuddet beskattes som personinntekt. Du betaler 22 % flat skatt på alminnelig inntekt, pluss 10,8 % trygdeavgift på næringsinntekt (2026-sats) og trinnskatt avhengig av inntektsnivå. AS: Selskapet betaler 22 % selskapsskatt på overskuddet. Når du tar ut penger som utbytte, betaler du i tillegg utbytteskatt — effektivt 37,84 % av utbyttet. Tar du ut lønn fra AS-et ditt, gjelder vanlige lønnsregler.</p>
+
+      <h3>Sykepenger og sosiale rettigheter</h3>
+      <p>Som selvstendig næringsdrivende i ENK får du sykepenger fra dag 17, og bare 75 % av næringsinntekten. Ansetter du deg selv i ditt eget AS og tar ut lønn, har du fulle arbeidstakerrettigheter: sykepenger fra dag 1, vanlige dagpenger ved arbeidsledighet og beregning av foreldrepenger basert på faktisk lønn.</p>
+
+      <h3>Oppstartskostnader</h3>
+      <p>ENK koster ingenting å starte (gratis registrering i Enhetsregisteret). AS koster 6 825 kr i stiftelsesgebyr til Foretaksregisteret (elektronisk innsendelse, 2026), pluss at du må sette inn minst 30 000 kr i aksjekapital.</p>
+
+      <h3>Regnskapskrav</h3>
+      <p>ENK med under 5 millioner kr i omsetning har ikke revisjonsplikt og kan bruke forenklet regnskap. AS har strengere krav: årsregnskap, styre, generalforsamling og meldeplikt til Brønnøysundregistrene. Det betyr mer administrasjon — eller en regnskapsfører.</p>
+
+      <h3>Investorer og eierskap</h3>
+      <p>ENK kan ikke selge andeler. Vil du ha en medeier eller hente ekstern kapital, må du bruke AS. Aksjer kan selges, pantsettes og overføres. Det er grunnen til at investorer alltid krever AS-struktur.</p>
+    </div>
+  </div>
+</main>
+
+<script>
+function getVal(name) {{
+  const el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : null;
+}}
+
+function beregn() {{
+  const overskudd   = getVal('overskudd');
+  const investorer  = getVal('investorer');
+  const ansvar      = getVal('ansvar');
+  const har30k      = getVal('har30k');
+  const kapital     = getVal('kapital');
+
+  const ubesvart = [overskudd, investorer, ansvar, har30k, kapital].some(v => !v);
+  if (ubesvart) {{
+    const first = document.querySelector('input[type=radio]:not(:checked)');
+    if (first) first.closest('.kalkulator-sporsmal').scrollIntoView({{behavior:'smooth', block:'center'}});
+    return;
+  }}
+
+  let type, tittel, grunner;
+
+  // --- Hard rules ---
+  if (investorer === 'ja') {{
+    type = 'as';
+    tittel = 'Du trenger et AS';
+    grunner = [
+      'For å hente penger fra investorer må selskapet ditt organiseres som aksjeselskap.',
+      'Investorer krever aksjer — de kan ikke eie andeler i et ENK.',
+      'Aksjeloven gir investorene det rettsvernet de trenger: eierskap, utbytte og mulighet for salg.'
+    ];
+  }} else if (har30k === 'nei') {{
+    type = 'enk';
+    tittel = 'Start som ENK — vurder AS om ett til to år';
+    grunner = [
+      'Du har ikke 30 000 kr til aksjekapital akkurat nå, og da er ENK det naturlige valget.',
+      'ENK er gratis å starte og enklere å drifte i en tidlig fase.',
+      'Når virksomheten er etablert kan du konvertere til AS — det er en kjent og enkel prosess.'
+    ];
+  }} else {{
+    // Score-based
+    let score = 0;
+    if (ansvar === 'ja') score += 3;
+    if (ansvar === 'vet_ikke') score += 1;
+    if (kapital === 'beholde') score += 2;
+    if (kapital === 'blanding') score += 1;
+    if (overskudd === 'over600k') score += 2;
+    else if (overskudd === '200_600k') score += 1;
+
+    if (score >= 4) {{
+      type = 'as';
+      tittel = 'Vi anbefaler AS';
+      grunner = [];
+      if (ansvar === 'ja') grunner.push('Det er reell risiko for erstatningskrav i bransjen din. AS begrenser ansvaret ditt til aksjekapitalen — privatøkonomien er beskyttet.');
+      if (kapital === 'beholde') grunner.push('Du vil bygge opp kapital i selskapet. AS gjør det enklere å reinvestere overskudd uten å ta det ut som personinntekt.');
+      if (overskudd === 'over600k') grunner.push('Med høyt overskudd gir AS deg mer fleksibilitet i hvordan du disponerer pengene, uavhengig av skattemessige hensyn.');
+      if (grunner.length === 0) grunner.push('Flere av svarene dine peker mot AS som det tryggeste valget på sikt.');
+    }} else if (score >= 2) {{
+      type = 'begge';
+      tittel = 'AS er tryggest — men ENK kan fungere';
+      grunner = [
+        'Situasjonen din er ikke entydig. Begge selskapsformer kan fungere.',
+        ansvar === 'ja' ? 'Risikoen i bransjen din taler for AS — begrenset ansvar er verdifullt.' : 'Risikoen i bransjen din er lav, noe som gjør ENK mer aktuelt.',
+        kapital === 'ta_ut' ? 'Siden du tar ut alt fortløpende, er ENK strukturelt enklere.' : 'Siden du vil beholde kapital i selskapet, gir AS deg mer fleksibilitet.'
+      ];
+    }} else {{
+      type = 'enk';
+      tittel = 'ENK er riktig for deg nå';
+      grunner = [
+        'Du er solo, risikoen er lav, og du tar ut det du tjener. Da er ENK den enkleste og billigste løsningen.',
+        'Du sparer stiftelsesgebyr (6 825 kr) og slipper årsregnskap og styrekrav.',
+        'ENK gir deg full kontroll uten ekstra administrasjon. Du kan alltid konvertere til AS senere.'
+      ];
+      if (overskudd === 'under200k') grunner.push('Med lavt overskudd i oppstartsfasen er det lurt å holde kostnadene nede.');
+    }}
+  }}
+
+  const badges = {{ as: 'AS anbefales', enk: 'ENK anbefales', begge: 'Begge kan fungere' }};
+  const badgeClass = type;
+
+  const anbefalingKol = type === 'enk' ? 1 : 2;
+
+  const tabell = `
+    <div class="resultat-tabell-wrapper">
+      <table class="resultat-tabell">
+        <thead>
+          <tr>
+            <th></th>
+            <th${{anbefalingKol===1?' class="col-anbefalt"':''}}>ENK</th>
+            <th${{anbefalingKol===2?' class="col-anbefalt"':''}}>AS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Oppstartskostnad</td>
+            <td${{anbefalingKol===1?' class="col-anbefalt"':''}}>0 kr</td>
+            <td${{anbefalingKol===2?' class="col-anbefalt"':''}}>36 825 kr<br><small style="color:var(--ink-mute);font-size:12px">6 825 gebyr + 30 000 aksjekapital</small></td>
+          </tr>
+          <tr>
+            <td>Personlig ansvar</td>
+            <td${{anbefalingKol===1?' class="col-anbefalt"':''}}>Fullt ansvar</td>
+            <td${{anbefalingKol===2?' class="col-anbefalt"':''}}>Begrenset til aksjekapitalen</td>
+          </tr>
+          <tr>
+            <td>Skatt på overskudd</td>
+            <td${{anbefalingKol===1?' class="col-anbefalt"':''}}>Personskatt<br><small style="color:var(--ink-mute);font-size:12px">22 % + 10,8 % trygdeavgift + trinnskatt</small></td>
+            <td${{anbefalingKol===2?' class="col-anbefalt"':''}}>22 % selskapsskatt<br><small style="color:var(--ink-mute);font-size:12px">+ utbytteskatt ved uttak</small></td>
+          </tr>
+          <tr>
+            <td>Sykepenger</td>
+            <td${{anbefalingKol===1?' class="col-anbefalt"':''}}>Fra dag 17 (75 %)</td>
+            <td${{anbefalingKol===2?' class="col-anbefalt"':''}}>Fra dag 1 (100 %) ved lønn</td>
+          </tr>
+          <tr>
+            <td>Investorer mulig?</td>
+            <td${{anbefalingKol===1?' class="col-anbefalt"':''}}>Nei</td>
+            <td${{anbefalingKol===2?' class="col-anbefalt"':''}}>Ja</td>
+          </tr>
+          <tr>
+            <td>Regnskapskrav</td>
+            <td${{anbefalingKol===1?' class="col-anbefalt"':''}}>Enkelt</td>
+            <td${{anbefalingKol===2?' class="col-anbefalt"':''}}>Årsregnskap, styre, GF</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="resultat-notat">Skattesatser er for inntektsåret 2026. Kalkulatoren gir strukturelle anbefalinger basert på selskapsrett.</p>
+  `;
+
+  const grunnerHTML = grunner.map(g => `<li>${{g}}</li>`).join('');
+
+  document.getElementById('resultat-innhold').innerHTML = `
+    <span class="resultat-badge ${{badgeClass}}">${{badges[type]}}</span>
+    <h2 class="resultat-tittel">${{tittel}}</h2>
+    <ul class="resultat-grunner">${{grunnerHTML}}</ul>
+    ${{tabell}}
+  `;
+
+  const resultatEl = document.getElementById('resultat');
+  resultatEl.style.display = 'block';
+  document.getElementById('cta-boks').style.display = 'flex';
+  document.getElementById('cta-boks').style.flexDirection = 'column';
+  setTimeout(() => resultatEl.scrollIntoView({{behavior:'smooth', block:'start'}}), 50);
+}}
+</script>
+
+{site_footer(depth=2)}"""
+
+
 def build():
     out = "/home/claude/site/dist"
     # Bygg fortsatt til dist/ i Claudes workdir — men zip-leveransen pakker flat
@@ -2461,6 +2898,14 @@ def build():
             os.makedirs(f"{out}/sporsmal/{s['slug']}", exist_ok=True)
             with open(f"{out}/sporsmal/{s['slug']}/index.html", "w", encoding="utf-8") as f:
                 f.write(render_sporsmal_page(s))
+
+    # Tjenester
+    os.makedirs(f"{out}/tjenester", exist_ok=True)
+    with open(f"{out}/tjenester/index.html", "w", encoding="utf-8") as f:
+        f.write(render_tjenester_hub())
+    os.makedirs(f"{out}/tjenester/enk-eller-as", exist_ok=True)
+    with open(f"{out}/tjenester/enk-eller-as/index.html", "w", encoding="utf-8") as f:
+        f.write(render_enk_eller_as())
     
     # Sitemap.xml
     today = "2026-05-11"
@@ -2480,6 +2925,9 @@ def build():
         urls.append(("/sporsmal/", "0.9"))
         for s in SPORSMAL:
             urls.append((f"/sporsmal/{s['slug']}/", "0.8"))
+
+    urls.append(("/tjenester/", "0.8"))
+    urls.append(("/tjenester/enk-eller-as/", "0.8"))
     
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for path, priority in urls:
