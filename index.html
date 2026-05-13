@@ -16,7 +16,7 @@
 <meta name="twitter:description" content="Lover er ikke vanskelige. De er bare dårlig forklart. Bla i norske lover, paragraf for paragraf.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -35,11 +35,24 @@
 <main class="page">
   <header class="home-hero-v2">
     <span class="kicker">Norske lover · på vanlig norsk</span>
-    <h1>Lover er ikke <em>vanskelige</em>.<br>De er bare <em>dårlig forklart</em>.</h1>
-    <p class="lead">Vi tar paragraf for paragraf og oversetter til vanlig norsk. Med eksempler, vanlige feil, og hva du faktisk skal gjøre når det skjer noe.</p>
-    <div class="cta-row">
-      <a href="#skjema" class="cta-button">Har du en sak? Skriv til oss →</a>
-      <a href="sporsmal/" class="cta-button-secondary">Vanlige spørsmål</a>
+    <h1>Lover er ikke vanskelige.<br>De er bare <em>dårlig forklart</em>.</h1>
+    <p class="lead">Søk i alle paragrafer og finn svar på det du lurer på.</p>
+
+    <div class="search-wrapper">
+      <div class="search-input-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" class="search-input" id="rrSearch" placeholder="Søk i paragrafer og spørsmål…" autocomplete="off">
+      </div>
+      <div class="search-tags">
+        <a class="search-tag" data-q="depositum">depositum</a>
+        <a class="search-tag" data-q="angrerett">angrerett</a>
+        <a class="search-tag" data-q="mangel">mangel</a>
+        <a class="search-tag" data-q="oppsigelse">oppsigelse</a>
+        <a class="search-tag" data-q="naboer">naboer</a>
+      </div>
+      <div class="search-results" id="rrSearchResults"></div>
     </div>
   </header>
 
@@ -54,18 +67,17 @@
     </div>
     <div class="home-stat">
       <div class="num">8</div>
-      <div class="lbl">Vanlige spørsmål</div>
+      <div class="lbl">Spørsmål</div>
     </div>
   </div>
 
   <section class="home-section-v2">
     <div class="home-section-head-v2">
       <div class="left">
-        <div class="kicker">Vanlige spørsmål</div>
-        <h2>Når noe har skjedd — hva nå?</h2>
+        <h2>Vanlige spørsmål</h2>
       </div>
       <div class="right">
-        <a href="sporsmal/">Se alle spørsmål →</a>
+        <a href="sporsmal/">Se alle →</a>
       </div>
     </div>
     <div class="sphub-grid">
@@ -111,8 +123,7 @@
   <section class="home-section-v2">
     <div class="home-section-head-v2">
       <div class="left">
-        <div class="kicker">Utvalgte paragrafer</div>
-        <h2>Det folk faktisk søker</h2>
+        <h2>Utvalgte paragrafer</h2>
       </div>
     </div>
     <div class="sphub-grid">
@@ -158,8 +169,7 @@
   <section class="home-section-v2">
     <div class="home-section-head-v2">
       <div class="left">
-        <div class="kicker">Lovsamling</div>
-        <h2>Bla i alle lover</h2>
+        <h2>Alle lover</h2>
       </div>
       <div class="right">
         <a href="lover/">Se alle →</a>
@@ -270,6 +280,77 @@ document.getElementById('kontaktskjema').addEventListener('submit', async functi
   }
 });
 </script>
+
+<script>
+(function() {
+  const input = document.getElementById('rrSearch');
+  const results = document.getElementById('rrSearchResults');
+  const tags = document.querySelectorAll('.search-tag');
+  let index = null;
+
+  // Last index én gang
+  fetch('paragraphs-index.json').then(r => r.json()).then(data => { index = data; });
+
+  function score(item, q) {
+    const Q = q.toLowerCase();
+    const title = (item.title || '').toLowerCase();
+    const lov = (item.lov_display || '').toLowerCase();
+    const number = (item.number || '').toLowerCase();
+    const ks = (item.kort_svar || '').toLowerCase();
+    let s = 0;
+    if (title.startsWith(Q)) s += 100;
+    else if (title.includes(Q)) s += 60;
+    if (lov.includes(Q)) s += 20;
+    if (number === Q) s += 200;
+    if (number.startsWith(Q)) s += 50;
+    if (ks.includes(Q)) s += 10;
+    return s;
+  }
+
+  function render(q) {
+    if (!index || !q || q.length < 2) {
+      results.classList.remove('visible');
+      results.innerHTML = '';
+      return;
+    }
+    const matches = index
+      .map(i => ({...i, _s: score(i, q)}))
+      .filter(i => i._s > 0)
+      .sort((a,b) => b._s - a._s)
+      .slice(0, 8);
+    if (matches.length === 0) {
+      results.innerHTML = '<div class="search-empty">Ingen treff for "' + q + '"</div>';
+      results.classList.add('visible');
+      return;
+    }
+    results.innerHTML = matches.map(m =>
+      '<a class="search-result" href="lover/' + m.lov + '/' + m.number + '/">' +
+        '<div class="sr-title">' + m.title + '</div>' +
+        '<div class="sr-meta"><strong>' + m.lov_display + ' § ' + m.number + '</strong></div>' +
+      '</a>'
+    ).join('');
+    results.classList.add('visible');
+  }
+
+  input.addEventListener('input', e => render(e.target.value.trim()));
+  input.addEventListener('focus', e => { if (e.target.value.trim()) render(e.target.value.trim()); });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-wrapper')) {
+      results.classList.remove('visible');
+    }
+  });
+  tags.forEach(tag => {
+    tag.addEventListener('click', e => {
+      e.preventDefault();
+      const q = tag.dataset.q;
+      input.value = q;
+      input.focus();
+      render(q);
+    });
+  });
+})();
+</script>
+
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">

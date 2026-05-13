@@ -42,34 +42,34 @@ except ImportError:
 
 CSS = """
 :root {
-  --bg: #FAF6EE;
-  --bg-alt: #F2EBDD;
-  --bg-card: #FFFCF6;
-  --ink: #1F1A14;
-  --ink-soft: #5A4F40;
+  --bg: #FBF8F1;
+  --bg-alt: #F4EFE3;
+  --bg-card: #FFFFFF;
+  --ink: #1A1612;
+  --ink-soft: #4E443A;
   --ink-mute: #8A7F70;
-  --accent: #C25434;
-  --accent-deep: #A8451F;
+  --accent: #B14A2A;
+  --accent-deep: #913B20;
   --accent-soft: #E8B5A3;
-  --line: rgba(31, 26, 20, 0.12);
-  --line-strong: rgba(31, 26, 20, 0.22);
-  --shadow-sm: 0 1px 3px rgba(31, 26, 20, 0.06), 0 1px 2px rgba(31, 26, 20, 0.04);
-  --shadow-md: 0 4px 12px rgba(31, 26, 20, 0.08), 0 2px 4px rgba(31, 26, 20, 0.04);
-  --shadow-lg: 0 12px 32px rgba(31, 26, 20, 0.10), 0 4px 8px rgba(31, 26, 20, 0.04);
+  --line: rgba(26, 22, 18, 0.10);
+  --line-strong: rgba(26, 22, 18, 0.20);
+  --shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.04);
+  --shadow-md: 0 2px 8px rgba(26, 22, 18, 0.06);
+  --shadow-lg: 0 8px 24px rgba(26, 22, 18, 0.08);
   --kat-bolig: #4F6F5E;
-  --kat-forbruk: #C25434;
+  --kat-forbruk: #B14A2A;
   --kat-arbeid: #6B5B95;
   --kat-familie: #B8654A;
   --kat-gjeld: #7A6E5D;
   --kat-tjenester: #4E6E80;
-  --serif: 'Newsreader', Georgia, serif;
+  --serif: 'EB Garamond', Garamond, Georgia, serif;
   --sans: 'Manrope', system-ui, sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
   background: var(--bg); color: var(--ink); font-family: var(--sans);
-  font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
   position: relative;
 }
 body::before {
@@ -535,36 +535,24 @@ footer.site-footer a:hover { color: var(--bg); }
    Spørsmål-sider — editorial newsroom design
    ============================================================ */
 
-/* Hero — store editorial titler med kicker */
+/* Hero */
 .sp-hero {
-  max-width: 880px; padding: 64px 0 32px;
-  position: relative;
+  max-width: 760px; padding: 56px 0 24px;
 }
 .sp-hero .kicker {
-  font-family: var(--sans); font-size: 13px;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--accent); font-weight: 600;
-  margin-bottom: 24px; display: inline-block;
-  padding-bottom: 6px; border-bottom: 2px solid var(--accent);
+  font-family: var(--sans); font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 600;
+  margin-bottom: 16px; display: block;
 }
 .sp-hero .breadcrumb {
-  font-family: var(--sans); font-size: 13px;
-  color: var(--ink-mute); margin-bottom: 24px;
-  letter-spacing: 0.04em;
-}
-.sp-hero .breadcrumb a {
-  color: var(--ink-mute); text-decoration: none;
-  border-bottom: 1px solid transparent; transition: border-color 0.2s, color 0.2s;
-}
-.sp-hero .breadcrumb a:hover {
-  color: var(--accent); border-bottom-color: var(--accent);
+  display: none;
 }
 .sp-hero h1 {
   font-family: var(--serif); font-weight: 500;
-  font-size: clamp(26px, 3vw, 40px); line-height: 1.15;
-  letter-spacing: -0.015em; color: var(--ink);
-  font-variation-settings: "opsz" 48;
-  margin: 0; max-width: 760px;
+  font-size: clamp(24px, 2.6vw, 32px); line-height: 1.2;
+  letter-spacing: -0.01em; color: var(--ink);
+  margin: 0; max-width: 720px;
 }
 
 /* Kort svar — fremhevet boks med drop quote feel */
@@ -751,19 +739,16 @@ footer.site-footer a:hover { color: var(--bg); }
    Spørsmål-hub (/sporsmal/)
    ============================================================ */
 .sphub-hero {
-  max-width: 880px; padding: 80px 0 40px;
+  max-width: 760px; padding: 72px 0 32px;
 }
 .sphub-hero .kicker {
-  font-family: var(--sans); font-size: 12px;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--accent); font-weight: 700;
-  margin-bottom: 16px; display: block;
+  display: none;
 }
 .sphub-hero h1 {
   font-family: var(--serif); font-weight: 500;
-  font-size: clamp(32px, 3.5vw, 44px); line-height: 1.1;
-  letter-spacing: -0.02em; margin: 0 0 16px;
-  font-variation-settings: "opsz" 48;
+  font-size: clamp(24px, 2.6vw, 32px); line-height: 1.2;
+  letter-spacing: -0.01em; margin: 0 0 12px;
+  color: var(--ink);
 }
 .sphub-hero h1 em {
   font-style: italic; color: var(--accent);
@@ -877,19 +862,16 @@ footer.site-footer a:hover { color: var(--bg); }
    Alle lover-side
    ============================================================ */
 .lover-hero {
-  max-width: 880px; padding: 80px 0 40px;
+  max-width: 760px; padding: 72px 0 32px;
 }
 .lover-hero .kicker {
-  font-family: var(--sans); font-size: 12px;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--accent); font-weight: 700;
-  margin-bottom: 16px; display: block;
+  display: none;
 }
 .lover-hero h1 {
   font-family: var(--serif); font-weight: 500;
-  font-size: clamp(32px, 3.5vw, 44px); line-height: 1.1;
-  letter-spacing: -0.02em; margin: 0 0 16px;
-  font-variation-settings: "opsz" 48;
+  font-size: clamp(24px, 2.6vw, 32px); line-height: 1.2;
+  letter-spacing: -0.01em; margin: 0 0 12px;
+  color: var(--ink);
 }
 .lover-hero h1 em {
   font-style: italic; color: var(--accent);
@@ -990,56 +972,144 @@ footer.site-footer a:hover { color: var(--bg); }
 }
 
 /* ============================================================
-   Hjemmeside — redesigned editorial layout
+   Hjemmeside — sentrert hero med søk
    ============================================================ */
 .home-hero-v2 {
-  padding: 80px 0 56px;
-  max-width: 1100px;
+  padding: 88px 0 48px;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
 }
 .home-hero-v2 .kicker {
   font-family: var(--sans); font-size: 12px;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--accent); font-weight: 700;
-  margin-bottom: 20px; display: block;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 600;
+  margin-bottom: 24px; display: block;
 }
 .home-hero-v2 h1 {
   font-family: var(--serif); font-weight: 500;
-  font-size: clamp(36px, 4.5vw, 60px); line-height: 1.05;
-  letter-spacing: -0.025em; margin: 0;
-  font-variation-settings: "opsz" 60;
-  max-width: 880px;
+  font-size: clamp(28px, 3vw, 36px); line-height: 1.2;
+  letter-spacing: -0.005em; margin: 0 auto;
+  color: var(--ink);
+  max-width: 640px;
 }
 .home-hero-v2 h1 em {
   font-style: italic; color: var(--accent);
   font-weight: 400;
 }
 .home-hero-v2 .lead {
-  font-family: var(--sans); font-size: 18px;
+  font-family: var(--sans); font-size: 17px;
   line-height: 1.55; color: var(--ink-soft);
-  margin: 24px 0 0; max-width: 580px;
-}
-.home-hero-v2 .cta-row {
-  display: flex; gap: 14px; margin-top: 36px;
-  flex-wrap: wrap;
+  margin: 20px auto 0; max-width: 520px;
 }
 
-/* Stats-band under hero */
+/* Søkeboks */
+.search-wrapper {
+  max-width: 580px;
+  margin: 36px auto 0;
+  position: relative;
+}
+.search-input-wrap {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.search-input {
+  width: 100%;
+  padding: 16px 20px 16px 52px;
+  font-family: var(--sans); font-size: 16px;
+  background: transparent; border: none; outline: none;
+  color: var(--ink);
+  border-radius: 12px;
+}
+.search-input::placeholder { color: var(--ink-mute); }
+.search-icon {
+  position: absolute; left: 18px; top: 50%;
+  transform: translateY(-50%);
+  width: 18px; height: 18px;
+  color: var(--ink-mute);
+  pointer-events: none;
+}
+.search-tags {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 16px;
+}
+.search-tag {
+  font-family: var(--sans); font-size: 13px;
+  padding: 6px 12px; border-radius: 999px;
+  background: var(--bg-card); border: 1px solid var(--line);
+  color: var(--ink-soft); cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.search-tag:hover {
+  border-color: var(--accent); color: var(--accent);
+}
+.search-results {
+  position: absolute; top: calc(100% + 8px);
+  left: 0; right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  max-height: 420px; overflow-y: auto;
+  z-index: 50; display: none;
+}
+.search-results.visible { display: block; }
+.search-result {
+  display: block; padding: 14px 20px;
+  text-decoration: none; color: inherit;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.15s;
+}
+.search-result:last-child { border-bottom: none; }
+.search-result:hover, .search-result.active {
+  background: var(--bg-alt);
+}
+.search-result .sr-title {
+  font-family: var(--serif); font-size: 16px;
+  font-weight: 500; color: var(--ink);
+  margin-bottom: 2px;
+}
+.search-result .sr-meta {
+  font-family: var(--sans); font-size: 12px;
+  color: var(--ink-mute); letter-spacing: 0.02em;
+}
+.search-result .sr-meta strong { color: var(--accent); font-weight: 600; }
+.search-empty {
+  padding: 20px; text-align: center;
+  color: var(--ink-mute); font-size: 14px;
+}
+
+.home-hero-v2 .cta-row {
+  display: none;
+}
+
+/* Stats-band — mindre prominent */
 .home-stats {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 24px; padding: 36px 0;
+  display: flex; justify-content: center;
+  gap: 48px; padding: 28px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  margin-bottom: 64px;
+  margin: 56px 0 56px;
+  text-align: center;
 }
 .home-stat .num {
-  font-family: var(--serif); font-size: 36px;
-  font-weight: 500; line-height: 1; color: var(--accent);
-  letter-spacing: -0.02em; font-variation-settings: "opsz" 48;
+  font-family: var(--serif); font-size: 24px;
+  font-weight: 500; line-height: 1; color: var(--ink);
+  letter-spacing: -0.01em;
 }
 .home-stat .lbl {
-  font-family: var(--sans); font-size: 12px;
+  font-family: var(--sans); font-size: 11px;
   letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-soft); margin-top: 8px;
+  color: var(--ink-mute); margin-top: 6px;
 }
 
 /* Section headers — strammere */
@@ -1048,28 +1118,24 @@ footer.site-footer a:hover { color: var(--bg); }
 }
 .home-section-head-v2 {
   display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 28px; flex-wrap: wrap; gap: 16px;
-  padding-bottom: 16px; border-bottom: 1px solid var(--line-strong);
+  margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
 }
 .home-section-head-v2 .left .kicker {
-  font-family: var(--sans); font-size: 11px;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--accent); font-weight: 700;
-  margin-bottom: 6px;
+  display: none;
 }
 .home-section-head-v2 h2 {
-  font-family: var(--serif); font-size: clamp(24px, 2.8vw, 32px);
-  font-weight: 500; letter-spacing: -0.015em; line-height: 1.15;
+  font-family: var(--serif); font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 500; letter-spacing: -0.005em; line-height: 1.2;
   margin: 0; color: var(--ink);
 }
 .home-section-head-v2 .right a {
   font-family: var(--sans); font-size: 13px;
-  color: var(--accent); font-weight: 600;
+  color: var(--accent); font-weight: 500;
   text-decoration: none; display: inline-flex; gap: 6px;
-  border-bottom: 1px solid transparent; padding-bottom: 2px;
-  transition: border-color 0.2s;
+  transition: opacity 0.2s;
 }
-.home-section-head-v2 .right a:hover { border-bottom-color: var(--accent); }
+.home-section-head-v2 .right a:hover { opacity: 0.7; }
 
 /* Editorial featured-grid for spørsmål på hjemmesiden */
 .home-featured-q {
@@ -1246,7 +1312,7 @@ def shared_head(title, description, depth=0, canonical_path=""):
 <meta name="twitter:description" content="{description}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{prefix}styles.css">
 </head>
 <body>"""
@@ -2163,11 +2229,24 @@ def render_homepage():
 <main class="page">
   <header class="home-hero-v2">
     <span class="kicker">Norske lover · på vanlig norsk</span>
-    <h1>Lover er ikke <em>vanskelige</em>.<br>De er bare <em>dårlig forklart</em>.</h1>
-    <p class="lead">Vi tar paragraf for paragraf og oversetter til vanlig norsk. Med eksempler, vanlige feil, og hva du faktisk skal gjøre når det skjer noe.</p>
-    <div class="cta-row">
-      <a href="#skjema" class="cta-button">Har du en sak? Skriv til oss →</a>
-      <a href="{prefix}sporsmal/" class="cta-button-secondary">Vanlige spørsmål</a>
+    <h1>Lover er ikke vanskelige.<br>De er bare <em>dårlig forklart</em>.</h1>
+    <p class="lead">Søk i alle paragrafer og finn svar på det du lurer på.</p>
+
+    <div class="search-wrapper">
+      <div class="search-input-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" class="search-input" id="rrSearch" placeholder="Søk i paragrafer og spørsmål…" autocomplete="off">
+      </div>
+      <div class="search-tags">
+        <a class="search-tag" data-q="depositum">depositum</a>
+        <a class="search-tag" data-q="angrerett">angrerett</a>
+        <a class="search-tag" data-q="mangel">mangel</a>
+        <a class="search-tag" data-q="oppsigelse">oppsigelse</a>
+        <a class="search-tag" data-q="naboer">naboer</a>
+      </div>
+      <div class="search-results" id="rrSearchResults"></div>
     </div>
   </header>
 
@@ -2182,18 +2261,17 @@ def render_homepage():
     </div>
     <div class="home-stat">
       <div class="num">{len(SPORSMAL)}</div>
-      <div class="lbl">Vanlige spørsmål</div>
+      <div class="lbl">Spørsmål</div>
     </div>
   </div>
 
   <section class="home-section-v2">
     <div class="home-section-head-v2">
       <div class="left">
-        <div class="kicker">Vanlige spørsmål</div>
-        <h2>Når noe har skjedd — hva nå?</h2>
+        <h2>Vanlige spørsmål</h2>
       </div>
       <div class="right">
-        <a href="{prefix}sporsmal/">Se alle spørsmål →</a>
+        <a href="{prefix}sporsmal/">Se alle →</a>
       </div>
     </div>
     <div class="sphub-grid">{sporsmal_cards}
@@ -2203,8 +2281,7 @@ def render_homepage():
   <section class="home-section-v2">
     <div class="home-section-head-v2">
       <div class="left">
-        <div class="kicker">Utvalgte paragrafer</div>
-        <h2>Det folk faktisk søker</h2>
+        <h2>Utvalgte paragrafer</h2>
       </div>
     </div>
     <div class="sphub-grid">{cards_html}
@@ -2214,8 +2291,7 @@ def render_homepage():
   <section class="home-section-v2">
     <div class="home-section-head-v2">
       <div class="left">
-        <div class="kicker">Lovsamling</div>
-        <h2>Bla i alle lover</h2>
+        <h2>Alle lover</h2>
       </div>
       <div class="right">
         <a href="{prefix}lover/">Se alle →</a>
@@ -2227,6 +2303,77 @@ def render_homepage():
 </main>
 
 {contact_form(depth=0)}
+
+<script>
+(function() {{
+  const input = document.getElementById('rrSearch');
+  const results = document.getElementById('rrSearchResults');
+  const tags = document.querySelectorAll('.search-tag');
+  let index = null;
+
+  // Last index én gang
+  fetch('paragraphs-index.json').then(r => r.json()).then(data => {{ index = data; }});
+
+  function score(item, q) {{
+    const Q = q.toLowerCase();
+    const title = (item.title || '').toLowerCase();
+    const lov = (item.lov_display || '').toLowerCase();
+    const number = (item.number || '').toLowerCase();
+    const ks = (item.kort_svar || '').toLowerCase();
+    let s = 0;
+    if (title.startsWith(Q)) s += 100;
+    else if (title.includes(Q)) s += 60;
+    if (lov.includes(Q)) s += 20;
+    if (number === Q) s += 200;
+    if (number.startsWith(Q)) s += 50;
+    if (ks.includes(Q)) s += 10;
+    return s;
+  }}
+
+  function render(q) {{
+    if (!index || !q || q.length < 2) {{
+      results.classList.remove('visible');
+      results.innerHTML = '';
+      return;
+    }}
+    const matches = index
+      .map(i => ({{...i, _s: score(i, q)}}))
+      .filter(i => i._s > 0)
+      .sort((a,b) => b._s - a._s)
+      .slice(0, 8);
+    if (matches.length === 0) {{
+      results.innerHTML = '<div class="search-empty">Ingen treff for "' + q + '"</div>';
+      results.classList.add('visible');
+      return;
+    }}
+    results.innerHTML = matches.map(m =>
+      '<a class="search-result" href="lover/' + m.lov + '/' + m.number + '/">' +
+        '<div class="sr-title">' + m.title + '</div>' +
+        '<div class="sr-meta"><strong>' + m.lov_display + ' § ' + m.number + '</strong></div>' +
+      '</a>'
+    ).join('');
+    results.classList.add('visible');
+  }}
+
+  input.addEventListener('input', e => render(e.target.value.trim()));
+  input.addEventListener('focus', e => {{ if (e.target.value.trim()) render(e.target.value.trim()); }});
+  document.addEventListener('click', e => {{
+    if (!e.target.closest('.search-wrapper')) {{
+      results.classList.remove('visible');
+    }}
+  }});
+  tags.forEach(tag => {{
+    tag.addEventListener('click', e => {{
+      e.preventDefault();
+      const q = tag.dataset.q;
+      input.value = q;
+      input.focus();
+      render(q);
+    }});
+  }});
+}})();
+</script>
+
 {site_footer(depth=0)}"""
 
 
