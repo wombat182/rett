@@ -27,8 +27,12 @@ try:
     from paragraphs_avhendingslova import PARAGRAPHS as _P_AVHENDINGSLOVA
 except ImportError:
     _P_AVHENDINGSLOVA = []
+try:
+    from paragraphs_naboloven import PARAGRAPHS as _P_NABOLOVEN
+except ImportError:
+    _P_NABOLOVEN = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
