@@ -58,7 +58,7 @@
 
   <div class="home-stats">
     <div class="home-stat">
-      <div class="num">250</div>
+      <div class="num">257</div>
       <div class="lbl">Paragrafer</div>
     </div>
     <div class="home-stat">
@@ -66,7 +66,7 @@
       <div class="lbl">Lover</div>
     </div>
     <div class="home-stat">
-      <div class="num">8</div>
+      <div class="num">35</div>
       <div class="lbl">Spørsmål</div>
     </div>
   </div>
@@ -198,6 +198,17 @@
         </div>
         <div class="lov-arrow">→</div>
       </a>
+      <a href="lover/avhendingslova/" class="lov-kort">
+        <div class="lov-meta">
+          <div class="lov-num">36</div>
+          <div class="lov-num-lbl">paragrafer</div>
+        </div>
+        <div class="lov-info">
+          <h3>Avhendingslova</h3>
+          <p>Kjøp og salg av bolig, hytte og tomt</p>
+        </div>
+        <div class="lov-arrow">→</div>
+      </a>
       <a href="lover/angrerettloven/" class="lov-kort">
         <div class="lov-meta">
           <div class="lov-num">30</div>
@@ -206,17 +217,6 @@
         <div class="lov-info">
           <h3>Angrerettloven</h3>
           <p>Angrerett ved netthandel og kjøp utenfor butikk</p>
-        </div>
-        <div class="lov-arrow">→</div>
-      </a>
-      <a href="lover/avhendingslova/" class="lov-kort">
-        <div class="lov-meta">
-          <div class="lov-num">29</div>
-          <div class="lov-num-lbl">paragrafer</div>
-        </div>
-        <div class="lov-info">
-          <h3>Avhendingslova</h3>
-          <p>Kjøp og salg av bolig, hytte og tomt</p>
         </div>
         <div class="lov-arrow">→</div>
       </a>
@@ -308,6 +308,7 @@ document.getElementById('kontaktskjema').addEventListener('submit', async functi
     const lov = (item.lov_display || '').toLowerCase();
     const number = (item.number || '').toLowerCase();
     const ks = (item.kort_svar || '').toLowerCase();
+    const desc = (item.description || '').toLowerCase();
     let s = 0;
     if (title.startsWith(Q)) s += 100;
     else if (title.includes(Q)) s += 60;
@@ -315,6 +316,7 @@ document.getElementById('kontaktskjema').addEventListener('submit', async functi
     if (number === Q) s += 200;
     if (number.startsWith(Q)) s += 50;
     if (ks.includes(Q)) s += 10;
+    if (desc.includes(Q)) s += 8;
     return s;
   }
 
@@ -334,12 +336,19 @@ document.getElementById('kontaktskjema').addEventListener('submit', async functi
       results.classList.add('visible');
       return;
     }
-    results.innerHTML = matches.map(m =>
-      '<a class="search-result" href="lover/' + m.lov + '/' + m.number + '/">' +
-        '<div class="sr-title">' + m.title + '</div>' +
-        '<div class="sr-meta"><strong>' + m.lov_display + ' § ' + m.number + '</strong></div>' +
-      '</a>'
-    ).join('');
+    results.innerHTML = matches.map(m => {
+      if (m.type === 'sporsmal') {
+        return '<a class="search-result" href="sporsmal/' + m.slug + '/">' +
+          '<div class="sr-title">' + m.title + '</div>' +
+          '<div class="sr-meta"><strong>Spørsmål</strong></div>' +
+        '</a>';
+      } else {
+        return '<a class="search-result" href="lover/' + m.lov + '/' + m.number + '/">' +
+          '<div class="sr-title">' + m.title + '</div>' +
+          '<div class="sr-meta"><strong>' + m.lov_display + ' § ' + m.number + '</strong></div>' +
+        '</a>';
+      }
+    }).join('');
     results.classList.add('visible');
   }
 

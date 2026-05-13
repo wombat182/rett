@@ -1174,4 +1174,272 @@ e. halde tilbake kjøpesummen etter § 4-15.
             {"lov": "avhendingslova", "paragraf": "4-13", "tittel": "Heving ved mangel", "available": True},
         ],
     },
+    {
+        "number": "4-9",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Kjøperens undersøkelsesplikt etter overtakelse",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Har du overtatt boligen, plikter du å undersøke den snart. Venter du for lenge med å sjekke — og dermed oppdage feil — kan det svekke klagoretten din.",
+        "kort_svar": "Etter at du har overtatt boligen, skal du undersøke den så snart du har rimelig anledning til det. Oppdager du feil — si ifra raskt. Venter du for lenge, risikerer du å miste klagoretten.",
+        "paragraftekst": "Etter at kjøparen har overteke bruken av eigedomen, skal kjøparen så snart det er rimeleg høve til det, undersøkje eigedomen slik god skikk tilseier.",
+        "hva_betyr_html": """<p>Overtakelsesdagen er ikke slutten — det er starten på din undersøkelsesplikt. Loven krever at du går gjennom boligen grundig så snart det er praktisk mulig.</p>
+<p>«Slik god skikk tilseier» betyr ikke at du trenger å rive vegger eller leie inn bygningssakkyndig med en gang. Det betyr at du gjennom normalt bruk og alminnelig oppmerksomhet skal få med deg åpenbare feil og avvik. Sjekk at alt fungerer som det skal: varmtvann, oppvarming, vinduer, dører, toaletter, kjøkkenutstyr som følger med.</p>
+<p>Poenget med regelen er sammenheng: reklamasjonsfristen i § 4-19 sier at du må klage innen rimelig tid etter at du «oppdaget eller burde ha oppdaget» feilen. Undersøkelsesplikten i § 4-9 definerer hva du «burde ha oppdaget» — ting du ville ha funnet om du hadde undersøkt skikkelig, regnes du for å kjenne til.</p>
+<p>Er du sen med undersøkelsen, forskyver du tidspunktet for «burde ha oppdaget» — ikke til din fordel. Domstolene er ikke milde mot kjøpere som venter måneder med å ta boligen i bruk og deretter klager på åpenbare feil.</p>""",
+        "eksempler": [
+            {
+                "navn": "Ola",
+                "tekst": "Ola overtar leiligheten 1. april. Han er på ferie i tre uker og bruker ikke leiligheten. 1. juni oppdager han at varmepumpen ikke virker. Selgeren hevder at dette var åpenbart og burde vært oppdaget mye tidligere. Hadde Ola undersøkt normalt i april, ville han funnet feilen da — og reklamasjonsfristen løper fra det tidspunktet han burde ha funnet den, ikke fra det tidspunktet han faktisk fant den."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange kjøpere utsetter innflyttingen og glemmer å undersøke boligen separat. Det er din risiko.",
+            "Noen tror undersøkelsesplikten bare gjelder synlige feil. Også enkle funksjonsprøver — slå på varme, test varmtvann, åpne og lukk vinduer — hører med.",
+            "Skriv ned alt du oppdager ved overtakelse i overtakelsesprotokollen. Det er ditt beste bevis for hva du visste og ikke visste.",
+        ],
+        "hva_bor_du_html": """<p>Gå gjennom boligen systematisk innen den første uken etter overtakelse — rom for rom, funksjon for funksjon. Skriv ned observasjoner. Finner du noe, reklamér skriftlig umiddelbart til selgeren, jf. § 4-19.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "3-10", "tittel": "Undersøkelsesplikt før kjøp", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-19", "tittel": "Reklamasjonsfrister", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-8", "tittel": "Kjøperens rettigheter ved mangel", "available": True},
+        ],
+    },
+    {
+        "number": "4-11",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Melding om krav på retting",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Vil du at selgeren skal rette feilen, må du si det klart og i tide. Venter du for lenge med å kreve retting, kan du miste retten til det — selv om mangelen er reell.",
+        "kort_svar": "Vil du at selgeren skal utbedre feilen, må du si det tydelig i reklamasjonen — eller innen rimelig tid etter den. Sier du bare «det er en feil her» uten å kreve retting, mister du kanskje retten til det.",
+        "paragraftekst": "Kjøparen taper kravet på retting dersom kjøparen ikkje gir seljaren melding om kravet saman med reklamasjonen etter § 4-19, eller innan rimeleg tid etter denne. Kravet kan likevel gjerast gjeldande dersom seljaren har vore grovt aktlaus, uærleg eller for øvrig handla i strid med god tru.",
+        "hva_betyr_html": """<p>Reklamasjon og rettingskrav er to litt ulike ting, og det er viktig å forstå forskjellen:</p>
+<p><strong>Reklamasjon (§ 4-19)</strong> er meldingen til selgeren om at det er en feil og at du holder dem ansvarlig. Det stopper fristen.</p>
+<p><strong>Rettingskrav</strong> er det konkrete ønsket om at selgeren skal utbedre feilen selv — ikke betale deg et prisavslag, men faktisk sende håndverkere og fikse problemet.</p>
+<p>Loven sier at rettingskravet bør komme samtidig med reklamasjonen, eller innen rimelig tid etterpå. Reklamerer du og ber om prisavslag, men aldri nevner retting, mister du retten til å kreve at selgeren utbedrer feilen.</p>
+<p>I praksis er løsningen enkel: si begge deler i samme melding. «Jeg reklamerer på fuktskaden i badet og krever at selgeren utbedrer dette for egen regning.»</p>
+<p>Unntaket gjelder her som ellers: har selgeren handlet uærlig eller grovt uaktsomt, beholder du rettingskravet uansett.</p>""",
+        "eksempler": [
+            {
+                "navn": "Lars",
+                "tekst": "Lars oppdager fukt i kjelleren og sender en epost til selgeren: «Jeg reklamerer på fuktskaden og krever prisavslag.» Tre måneder senere ombestemmer Lars seg og ønsker heller at selgeren utbedrer feilen direkte. Selgeren hevder at rettingsfristen er ute — Lars ba aldri om retting i tide. Hadde Lars skrevet «reklamerer og krever retting, alternativt prisavslag», hadde han hatt alle muligheter åpne."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange reklamerer uten å ta stilling til hva de faktisk vil ha. Vær konkret fra starten.",
+            "Noen tror at prisavslag er det eneste alternativet og spør aldri om retting. Retting kan ofte være raskere og bedre.",
+            "Skriv alltid «og/eller» — krever du retting, men selgeren ikke retter, går du videre til prisavslag etter § 4-12.",
+        ],
+        "hva_bor_du_html": """<p>I reklamasjonsmeldingen din: si tydelig både at du reklamerer, hva feilen er, og at du krever retting — alternativt prisavslag dersom retting ikke skjer innen en konkret frist. Det holder alle dører åpne.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-10", "tittel": "Retting av mangler", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-19", "tittel": "Reklamasjon", "available": True},
+        ],
+    },
+    {
+        "number": "4-15",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Tilbakeholdsrett ved mangel",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Du har oppdaget en mangel og har et krav mot selgeren. Kan du holde tilbake deler av kjøpesummen? Ja — men bare så mye som sikrer kravet ditt.",
+        "kort_svar": "Har du oppdaget en mangel og har et krav mot selgeren, kan du holde tilbake tilsvarende del av kjøpesummen. Det er din sikkerhet for at kravet blir dekket — men du kan ikke holde tilbake mer enn kravet tilsier.",
+        "paragraftekst": "Har kjøparen krav som følgje av mangelen, kan kjøparen halde tilbake så mykje av kjøpesummen som er nødvendig for å sikre at kravet vert dekt.",
+        "hva_betyr_html": """<p>Tenk deg at du overtar boligen, oppdager et alvorlig fuktproblem, og har et prisavslagskrav på 120 000 kr. Selgeren avviser kravet. Kjøpesummen er allerede betalt i sin helhet.</p>
+<p>Nå sitter du med to problemer: du har et krav, men pengene er borte til selgeren. Det er her § 4-15 kommer inn — hvis du oppdager mangelen før du har betalt fullt ut, kan du holde tilbake den delen av kjøpesummen som dekker kravet ditt.</p>
+<p>I praksis brukes dette oftest der det oppdages noe ved eller like etter overtakelse, og megleren ennå ikke har utbetalt hele kjøpesummen til selgeren. Da kan du be megleren holde tilbake et beløp tilsvarende kravet.</p>
+<p>Tre viktige presiseringer:</p>
+<p>Beløpet skal stå i rimelig forhold til kravet — du kan ikke holde tilbake 500 000 kr for en sprekk i vinduet. Tilbakeholdt beløp er en sikring, ikke et forhåndsoppgjør. Og er kravet omtvistet, bør du dokumentere grunnlaget godt.</p>
+<p>§ 4-15 er speilbildet av § 4-6 (tilbakeholdsrett ved forsinkelse). Logikken er den samme — praktisk sikring mens tvisten løses.</p>""",
+        "eksempler": [
+            {
+                "navn": "Sara",
+                "tekst": "Sara overtar leiligheten og oppdager samme dag at baderomsgulvet er råttent og må totalrenoveres. En fagkyndig anslår 95 000 kr. Megleren har ennå ikke utbetalt hele kjøpesummen til selgeren. Sara varsler megleren skriftlig og ber om at 95 000 kr holdes tilbake til kravet er avgjort. Megleren holder beløpet på klientkonto. Resten utbetales normalt."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange kjøpere vet ikke at de kan be megleren holde tilbake penger. Varsle alltid megleren skriftlig og raskt — når kjøpesummen er utbetalt, er sikringen borte.",
+            "Noen holder tilbake for mye. Er kravet ditt 80 000 kr, kan du ikke holde tilbake 400 000 kr «for sikkerhets skyld». Det kan selgeren bestride.",
+            "Tilbakeholdsretten erstatter ikke reklamasjonsplikten. Du må fortsatt reklamere skriftlig til selgeren etter § 4-19.",
+        ],
+        "hva_bor_du_html": """<p>Oppdager du en mangel ved eller rett etter overtakelse: kontakt megleren skriftlig umiddelbart og oppgi eksakt beløp og begrunnelse for tilbakeholdsretten. Send samtidig reklamasjon til selgeren. Jo raskere du handler, jo bedre — megleren kan bare holde tilbake penger som ennå ikke er utbetalt.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-6", "tittel": "Tilbakeholdsrett ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-19", "tittel": "Reklamasjon", "available": True},
+        ],
+    },
+    {
+        "number": "4-16",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Krav mot tidligere selger",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Den du kjøpte av visste ikke om feilen — men den som solgte til ham, visste. Kan du gå rett på den opprinnelige selgeren? § 4-16 gir deg den muligheten i visse tilfeller.",
+        "kort_svar": "Selgeren din visste ikke om feilen, men en tidligere eier i kjeden gjorde det. Du kan gå direkte på den tidligere selgeren — men bare i samme grad som selgeren din selv kunne ha gjort det, og bare innen visse frister.",
+        "paragraftekst": """(1) Kjøparen kan gjere krav på grunn av ein mangel gjeldande mot tidlegare seljar eller annan tidlegare avtalepart, i same grad som krav på grunn av mangelen kan gjerast gjeldande av seljaren.
+
+(2) Kjøparen må gi tidlegare seljar eller annan tidlegare avtalepart melding om kravet innan reklamasjonsfristen som gjeld for same kravet mot seljaren, og seinast innan fristen for reklamasjon som gjeld i forholdet mellom seljaren og dei tidlegare avtalepartane.""",
+        "hva_betyr_html": """<p>Boliger bytter hender. Tenk deg denne kjeden: utbygger bygger — selger til person A — person A selger til deg. Feilen var der fra utbyggeren, men person A visste ikke om det. Person A kan derfor ikke klandres av deg — men utbyggeren kan det.</p>
+<p>§ 4-16 lar deg «hoppe» over mellomleddet og gå direkte på den opprinnelige ansvarlige. Du arver i prinsippet selgerens krav mot den forrige selgeren.</p>
+<p>Det finnes to viktige begrensninger:</p>
+<p><strong>Kravets størrelse:</strong> Du kan ikke kreve mer av den tidligere selgeren enn selgeren din selv kunne ha krevet. Du arver kravet — ikke noe mer enn det.</p>
+<p><strong>Fristene:</strong> Du må varsle den tidligere selgeren innen den reklamasjonsfristen som gjelder i ditt kjøp (fem år fra din overtakelse), og dessuten innen fristen som gjelder mellom selgeren din og den tidligere selgeren. Er fristen i det opprinnelige kjøpet allerede utløpt, er muligheten borte.</p>
+<p>I praksis er dette mest aktuelt ved nybygde boliger og nyere eiendommer der feil kan spores tilbake til en konkret utbygger eller håndverker.</p>""",
+        "eksempler": [
+            {
+                "navn": "Marius",
+                "tekst": "Marius kjøper en leilighet av Eva. Eva kjøpte den fra en utbygger tre år tidligere. To år etter Marius sin overtakelse oppdages alvorlig fukt i veggen — et byggefeil som klart skyldes utbyggerens arbeider. Eva visste ingenting og er ikke ansvarlig. Men Marius kan gå direkte på utbyggeren med sitt krav, forutsatt at Evas reklamasjonsfrist mot utbyggeren ennå ikke er utløpt."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange kjøpere vet ikke at de kan gå på tidligere ledd i kjeden. Det er en undervurdert rettighet, særlig ved byggfeil.",
+            "Fristene er kritiske — og de løper i parallell. Varsle alle relevante parter skriftlig i samme omgang.",
+            "Krev å få kopi av den opprinnelige kjøpekontrakten mellom selgeren din og den forrige eieren. Den avgjør hvilke rettigheter som kan videreføres til deg.",
+        ],
+        "hva_bor_du_html": """<p>Mistenker du at feilen stammer fra et tidligere ledd — for eksempel en utbygger eller en håndverker som utførte en renovering — send reklamasjon til selgeren din og til den aktuelle tidligere parten i samme omgang. Be megleren om å hjelpe deg med å identifisere hvem som kan holdes ansvarlig.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "3-7", "tittel": "Selgerens opplysningsplikt", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-19", "tittel": "Reklamasjon", "available": True},
+        ],
+    },
+    {
+        "number": "4-17",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Rettsmangel — noen andre har rettigheter i boligen din",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Du har kjøpt boligen, men det viser seg at noen andre har pant, bruksrett eller annen rettighet i den. Det kalles en rettsmangel — og gir deg de samme rettighetene som en vanlig mangel.",
+        "kort_svar": "Har en tredjeperson pant, bruksrett eller annen rettighet i boligen du kjøpte — og du ikke visste om det — er det en rettsmangel. Du har da samme rettigheter som ved en fysisk mangel: prisavslag, erstatning, eventuelt heving.",
+        "paragraftekst": """(1) Har ein tredjeperson eigedomsrett, panterett eller annan rett i eigedomen, gjeld føresegnene om manglar tilsvarande dersom det ikkje følgjer av avtala at kjøparen skal overta eigedomen med dei avgrensingane som følgjer av tredjepersonens rett.
+
+(2) Kjøparen kan likevel alltid krevje skadebot for tap som følgje av at eigedomen tilhøyrte ein annan enn seljaren då avtala vart inngått, og kjøparen var i aktsam god tru.
+
+(3) Gjer ein tredjeperson krav på å ha rett i eigedomen og dette vert motsagt frå seljaren, gjeld føresegnene i fyrste og andre ledd tilsvarande når kravet ikkje er klårt ugrunna.""",
+        "hva_betyr_html": """<p>En eiendom kan ha «juridiske feil» som er like alvorlige som fysiske feil. Det kalles en rettsmangel — og det betyr at en utenforstående tredjeperson har en rettighet i eiendommen din som begrenser din fulle eiendomsrett.</p>
+<p>Eksempler på rettsmangler:</p>
+<ul>
+<li>En ukjent pant i eiendommen som ikke ble slettet ved salget — du arver gjelden</li>
+<li>En bruksrett — naboens rett til å kjøre over tomten, fiske i dammen, hente vann fra kilden</li>
+<li>Forkjøpsrett — noen har rett til å tre inn i kjøpet ditt og kjøpe boligen på dine vilkår</li>
+<li>Sameie — det viser seg at noen eier deler av det du trodde du kjøpte alene</li>
+</ul>
+<p>Utgangspunktet er at du som kjøper overtar eiendommen fri for slike heftelser — med mindre det er avtalt at du visste og aksepterte dem. Var det ikke avtalt, er det en rettsmangel og du har alle kravene som ved en vanlig mangel: prisavslag, erstatning, heving.</p>
+<p>Egenandelen på 10 000 kr fra § 3-1 gjelder ikke for rettsmangler — og retten til å kreve retting gjelder heller ikke, av åpenbare grunner.</p>""",
+        "eksempler": [
+            {
+                "navn": "Kari",
+                "tekst": "Kari kjøper en tomt og får tinglyst skjøtet. Seks måneder senere kontaktes hun av en advokat som sier at naboeiendommen har en uoppsigelig veikjøringsrett over den delen av tomten der Kari planla å bygge garasje. Denne rettigheten stod i grunnboken, men megleren og Kari overså den. Det er en rettsmangel. Kari har krav på prisavslag tilsvarende verdireduksjonen rettigheten medfører."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange kjøpere sjekker ikke grunnboken selv. Alt som er tinglyst er offentlig tilgjengelig på Kartverket — sjekk alltid at eiendommen er fri for ukjente heftelser.",
+            "Megleren plikter å opplyse om kjente heftelser, men er ikke ufeilbarlig. Ta en titt selv.",
+            "Pant som ikke er slettet ved salget, er selgerens ansvar å rydde opp i — ikke kjøperens. Sjekk at heftelsesattesten er ren ved overtakelse.",
+        ],
+        "hva_bor_du_html": """<p>Bestill en utskrift fra grunnboken på Kartverket.no (gratis) for eiendommen du kjøper. Se over alle tinglyste heftelser, rettigheter og pant. Er noe uklart, spør megleren om en forklaring. Kjøper du uten megler, sjekk dette selv alltid.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-18", "tittel": "Offentligrettslige rådighetsbånd", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-19", "tittel": "Reklamasjon", "available": True},
+        ],
+    },
+    {
+        "number": "4-18",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Offentligrettslige rådighetsbånd",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Eiendommen du kjøpte har offentlige restriksjoner du ikke visste om — for eksempel at du ikke kan bygge, splitte tomten eller bruke den slik du planla. Det kan være en mangel.",
+        "kort_svar": "Har eiendommen offentligrettslige restriksjoner som begrenser hva du kan gjøre med den — og som ikke var opplyst — kan det være en mangel. Det gjelder uavhengig av om det er en fysisk feil ved boligen.",
+        "paragraftekst": "Hefter det offentlegrettslege rådvaldsband eller offentlegrettslege tyngsler på eigedomen, gjeld føresegnene om manglar tilsvarande.",
+        "hva_betyr_html": """<p>Offentligrettslige rådighetsbånd er restriksjoner fra det offentlige — stat, fylke eller kommune — som begrenser hva du kan gjøre med eiendommen. Det er ikke en privat persons rettigheter (det er § 4-17), men regler og vedtak fra myndighetene.</p>
+<p>Typiske eksempler:</p>
+<ul>
+<li>Reguleringsplan som forbyr bygging — du kjøpte tomt for å bygge hytte, men tomten er regulert til LNF-område (landbruk, natur, friluftsliv)</li>
+<li>Fredning eller vernestatus — boligen er fredet, og du kan ikke endre fasaden eller gjøre inngrep</li>
+<li>Forurensning eller deponiforbud — grunnen er forurenset og regulert deretter</li>
+<li>Rekkefølgekrav — kommunen har satt krav om at infrastruktur må bygges ut før du kan bygge</li>
+<li>Konsesjonskrav som kjøperen ikke var kjent med</li>
+</ul>
+<p>Loven sier at disse restriksjonene behandles på samme måte som vanlige mangler — du har krav på prisavslag, erstatning, eventuelt heving, dersom du ikke ble opplyst. Merk at egenandelen på 10 000 kr ikke gjelder her.</p>""",
+        "eksempler": [
+            {
+                "navn": "Petter",
+                "tekst": "Petter kjøper en stor tomt og planlegger å dele den i to og selge halvparten. Etter kjøpet oppdager han at tomten er regulert som «eksisterende bebyggelse — ikke delbar» i kommuneplanen. Megleren nevnte ingenting om dette. Petter kan ikke gjennomføre planene sine. Det er et offentligrettslig rådighetsbånd han hadde krav på å bli opplyst om — og en mangel han kan kreve prisavslag for."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange sjekker ikke kommunens reguleringsplan for eiendommen de kjøper. Det er gratis og åpent for alle via kommunens kartportal.",
+            "Selgere glemmer av og til å opplyse om restriksjoner de selv tar som en selvfølge. De burde ha sagt det.",
+            "Fredete bygninger og kulturminner er særlig viktig å sjekke — Riksantikvarens databaser er åpne og gratis.",
+        ],
+        "hva_bor_du_html": """<p>Sjekk alltid reguleringsplanen og kommuneplanen for eiendommen du vurderer å kjøpe — særlig hvis du har planer om å bygge, dele eller endre bruken. Spør megleren om eiendommen har noen kjente offentlige restriksjoner. Det er gratis å spørre, dyrt å gå glipp av.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-17", "tittel": "Rettsmangel", "available": True},
+            {"lov": "avhendingslova", "paragraf": "3-2", "tittel": "Generelle krav til tilstanden", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+        ],
+    },
+    {
+        "number": "7-1",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Hva er indirekte tap",
+        "kategori": "bolig",
+        "underkategori": "erstatning",
+        "description": "Ikke alle tap du lider ved et kontraktsbrudd kan kreves erstattet på samme måte. § 7-1 skiller mellom direkte og indirekte tap — og det skillet avgjør om du får dekket det du krever.",
+        "kort_svar": "Direkte tap — det du konkret har tapt av penger — kan du kreve uten å bevise skyld hos selgeren. Indirekte tap — tapt fortjeneste, tapte forretningsmuligheter, produksjonstap — kan du bare kreve hvis selgeren er å klandre.",
+        "paragraftekst": """(1) Når ein part kan krevje skadebot, skal skadebota svare til det økonomiske tapet parten har hatt som følgje av avtalebrotet. Dette gjeld likevel berre tap som den ansvarlege med rimeleg grunn kunne ha rekna med som ei mogeleg følgje av avtalebrotet.
+
+(2) Der lova skil mellom direkte og indirekte tap, vert som indirekte tap rekna:
+a. Tap som følgje av nedsett eller bortfallen produksjon eller omsetnad.
+b. Tap som følgje av at eigedomen ikkje kan nyttast i samsvar med føresetnadene.
+c. Tapt forteneste som følgje av at ein kontrakt med ein tredjeperson fell bort eller ikkje vert rett oppfylt.
+d. Tap som følgje av skade på anna enn eigedomen sjølv.
+
+(3) Føresegna i andre ledd om kva som skal reknast som indirekte tap gjeld ikkje kostnader ved vanlege tiltak som kompenserer at eigedomen har ein mangel eller at seljaren ikkje gir frå seg skøyte eller overlet bruken til rett tid.""",
+        "hva_betyr_html": """<p>Erstatningsretten skiller mellom to kategorier tap, og det har stor praktisk betydning.</p>
+<p><strong>Direkte tap</strong> er de umiddelbare, konkrete pengeutgiftene som kontraktsbruddet har forårsaket — hotell mens badet utbedres, leie av lagerplass for møblene dine, transport, utgifter til fagkyndig. Dette kan du kreve uten å bevise at selgeren har gjort noe galt.</p>
+<p><strong>Indirekte tap</strong> er mer avledede konsekvenser:</p>
+<ul>
+<li>Du skulle leie ut boligen og tapte leieinntekter fordi den ikke var klar til avtalt tid</li>
+<li>Mangelfullt kontorlokale ga nedsatt produksjon i virksomheten din</li>
+<li>Du mistet en annen kontrakt fordi eiendommen ikke ble levert</li>
+</ul>
+<p>For indirekte tap gjelder et strengere krav: selgeren må ha opptrådt klanderverdig — det vil si at de er skyld i situasjonen.</p>
+<p>Det tredje leddet er en viktig presisering som begrenser hva som regnes som indirekte tap: normale utbedringskostnader og vanlige kompenserende tiltak er alltid direkte tap, selv om de teknisk sett handler om at du ikke kan bruke eiendommen. Hotellutgifter mens badet renoveres er direkte tap — ikke indirekte.</p>""",
+        "eksempler": [
+            {
+                "navn": "Eva",
+                "tekst": "Eva kjøper en utleieleilighet. Selgeren er tre uker forsinket. Eva mister tre uker med leieinntekter — 28 500 kr. Det er et indirekte tap (bortfalt omsetnad) og Eva kan bare kreve det hvis selgeren har opptrådt klanderverdig. Men hun kan kreve de 4 200 kr hun betalte for en inspeksjon og dokumentasjon av forsinkelsen direkte — det er et direkte tap, uavhengig av selgerens skyld."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange forveksler direkte og indirekte tap og tror all erstatning krever at selgeren er skyld. Det er feil — direkte tap kan du kreve uten å bevise skyld.",
+            "Tapte leieinntekter og næringstap er typiske indirekte tap. Disse krever skyldsbevis — og det kan være krevende å dokumentere.",
+            "Husk første ledd: tapet må ha vært påregnelig — selgeren svarer ikke for fullstendig uforutsigbare konsekvenser av kontraktsbruddet.",
+        ],
+        "hva_bor_du_html": """<p>Dokumentér alle tap løpende. Skill i kravbrevet mellom direkte tap (konkrete utgifter) og eventuelle indirekte tap (tapte inntekter). Har du indirekte tap, dokumenter selgerens skyld — det er din bevisbyrde.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-5", "tittel": "Erstatning ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-14", "tittel": "Erstatning ved mangel", "available": True},
+        ],
+    },
 ]

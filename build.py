@@ -2324,6 +2324,7 @@ def render_homepage():
     const lov = (item.lov_display || '').toLowerCase();
     const number = (item.number || '').toLowerCase();
     const ks = (item.kort_svar || '').toLowerCase();
+    const desc = (item.description || '').toLowerCase();
     let s = 0;
     if (title.startsWith(Q)) s += 100;
     else if (title.includes(Q)) s += 60;
@@ -2331,6 +2332,7 @@ def render_homepage():
     if (number === Q) s += 200;
     if (number.startsWith(Q)) s += 50;
     if (ks.includes(Q)) s += 10;
+    if (desc.includes(Q)) s += 8;
     return s;
   }}
 
@@ -2350,12 +2352,19 @@ def render_homepage():
       results.classList.add('visible');
       return;
     }}
-    results.innerHTML = matches.map(m =>
-      '<a class="search-result" href="lover/' + m.lov + '/' + m.number + '/">' +
-        '<div class="sr-title">' + m.title + '</div>' +
-        '<div class="sr-meta"><strong>' + m.lov_display + ' § ' + m.number + '</strong></div>' +
-      '</a>'
-    ).join('');
+    results.innerHTML = matches.map(m => {{
+      if (m.type === 'sporsmal') {{
+        return '<a class="search-result" href="sporsmal/' + m.slug + '/">' +
+          '<div class="sr-title">' + m.title + '</div>' +
+          '<div class="sr-meta"><strong>Spørsmål</strong></div>' +
+        '</a>';
+      }} else {{
+        return '<a class="search-result" href="lover/' + m.lov + '/' + m.number + '/">' +
+          '<div class="sr-title">' + m.title + '</div>' +
+          '<div class="sr-meta"><strong>' + m.lov_display + ' § ' + m.number + '</strong></div>' +
+        '</a>';
+      }}
+    }}).join('');
     results.classList.add('visible');
   }}
 
@@ -2492,17 +2501,27 @@ Sitemap: {SITE_URL}/sitemap.xml
     with open(f"{out}/CNAME", "w", encoding="utf-8") as f:
         f.write("rettsregel.no\n")
     
-    # paragraphs-index.json — kompakt indeks for chatbot
-    # Inneholder bare metadata som boten trenger for å klassifisere problemer
+    # paragraphs-index.json — kompakt indeks for søk og chatbot
+    # Inneholder både paragrafer og spørsmål-artikler
     index = []
     for p in PARAGRAPHS:
         index.append({
+            "type": "paragraf",
             "number": p["number"],
             "lov": p["lov"],
             "lov_display": p["lov_display"],
             "title": p["title"],
             "kort_svar": p.get("kort_svar", ""),
             "kategori": p.get("kategori", ""),
+        })
+    for s in SPORSMAL:
+        index.append({
+            "type": "sporsmal",
+            "slug": s["slug"],
+            "title": s["title"],
+            "kort_svar": s.get("kort_svar", ""),
+            "description": s.get("description", ""),
+            "kategori": s.get("kategori", ""),
         })
     with open(f"{out}/paragraphs-index.json", "w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, indent=None, separators=(",", ":"))
