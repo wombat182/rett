@@ -636,4 +636,542 @@ PARAGRAPHS = [
             {"lov": "avhendingslova", "paragraf": "3-9", "tittel": "«Som den er»-forbehold", "available": True},
         ],
     },
+    {
+        "number": "4-1",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Kjøperens rettigheter ved forsinkelse",
+        "kategori": "bolig",
+        "underkategori": "kjøp-og-salg",
+        "description": "Selgeren leverer ikke nøklene til avtalt tid. Hva kan du gjøre? § 4-1 er oversiktsparagrafen som viser alle rettighetene du har når selgeren er forsinket.",
+        "kort_svar": "Er selgeren forsinket — gir ikke fra seg nøkler eller skjøte til avtalt tid — har du fire muligheter: du kan kreve gjennomføring, heve kjøpet, kreve erstatning, eller holde tilbake kjøpesummen. Hvilken du velger, avhenger av hvor alvorlig situasjonen er.",
+        "paragraftekst": """(1) Gir ikkje seljaren frå seg skøyte eller bruken av eigedomen til rett tid, utan at dette står på kjøparen eller omstende kjøparen har vågnaden for, kan kjøparen
+a. krevje oppfylling etter § 4-2,
+b. heve etter § 4-3,
+c. krevje skadebot etter § 4-5,
+d. halde tilbake kjøpesummen etter § 4-6.
+
+(2) Med unntak av § 4-3 andre ledd gjeld føresegnene om forseinking tilsvarande så langt dei høver der seljaren ikkje i tide oppfyller andre skyldnader etter avtala.""",
+        "hva_betyr_html": """<p>Overtakelsesdagen er i kontrakten. Den er bindende. Kommer selgeren ikke til overtakelsen, eller leverer ikke nøkler og papirer som avtalt, er det et kontraktsbrudd — og du har klare rettigheter.</p>
+<p>Loven gir deg fire valgmuligheter:</p>
+<p><strong>1. Krev gjennomføring (§ 4-2)</strong> Du holder fast ved avtalen og krever at selgeren leverer. Praktisk hvis forsinkelsen er kortvarig og du fortsatt vil ha boligen — noe de aller fleste gjør.</p>
+<p><strong>2. Hev kjøpet (§ 4-3)</strong> Forsinkelsen er så alvorlig at du ikke lenger vil gjennomføre. Heving er et drastisk skritt og krever at forsinkelsen er et vesentlig kontraktsbrudd — eller at du har satt en tilleggsfrist som ikke overholdes.</p>
+<p><strong>3. Krev erstatning (§ 4-5)</strong> Forsinkelsen har påført deg kostnader — for eksempel at du måtte bo på hotell, betale dobbel husleie eller lagre møblene dine. Disse kostnadene kan du kreve dekket.</p>
+<p><strong>4. Hold tilbake kjøpesummen (§ 4-6)</strong> Har du krav mot selgeren, kan du holde tilbake tilsvarende del av kjøpesummen til kravet er avklart. En praktisk sikkerhet.</p>
+<p>Du kan kombinere disse. Krever du gjennomføring, kan du samtidig kreve erstatning for tap forsinkelsen allerede har påført deg.</p>""",
+        "eksempler": [
+            {
+                "navn": "Lars",
+                "tekst": "Lars skal overta leiligheten 15. mars. Selgeren ringer dagen før og sier at de ikke er ferdig med å flytte ut — kan de få en uke til? Lars har allerede sagt opp sin nåværende leieavtale. Han holder tilbake deler av kjøpesummen, krever selgeren oppfyller innen en ny kort frist, og sender krav om erstatning for hotellkostnader i mellomtiden."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange kjøpere aksepterer forsinkelse muntlig uten å sikre seg skriftlig. Alltid bekreft endringer skriftlig.",
+            "Noen hever kjøpet for tidlig, uten å ha satt en formell tilleggsfrist. Da kan hevingen bli ugyldig — se § 4-3.",
+            "Husk at du ikke kan holde tilbake mer av kjøpesummen enn det som dekker kravet ditt. Vilkårlig tilbakeholdelse er ikke tillatt.",
+        ],
+        "hva_bor_du_html": """<p>Blir selgeren forsinket: dokumenter alt skriftlig, noter konkrete kostnader fra dag én, og sett en klar skriftlig tilleggsfrist med beskjed om konsekvensene. Er forsinkelsen langvarig og alvorlig, kontakt en advokat eller Forbrukerrådet.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-2", "tittel": "Rett til å kreve gjennomføring", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-3", "tittel": "Heving ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-5", "tittel": "Erstatning ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-6", "tittel": "Tilbakeholdsrett", "available": True},
+        ],
+    },
+    {
+        "number": "4-2",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Retten til å kreve gjennomføring",
+        "kategori": "bolig",
+        "underkategori": "kjøp-og-salg",
+        "description": "Selgeren er forsinket, men du vil fortsatt ha boligen. Du kan holde fast ved avtalen og kreve at selgeren leverer — men det finnes grenser for denne retten.",
+        "kort_svar": "Vil du fortsatt ha boligen selv om selgeren er forsinket, kan du kreve at avtalen gjennomføres. Selgeren kan ikke bare ombestemme seg. Men er gjennomføring umulig eller urimelig kostbar for selgeren, kan det finnes unntak.",
+        "paragraftekst": """(1) Kjøparen kan halde fast ved avtala og krevje at seljaren oppfyller skyldnadene sine. Dette gjeld likevel ikkje dersom oppfyllinga er hindra av omstende som seljaren ikkje kan overvinne, eller oppfyllinga vil føre til så stor ulempe eller kostnad for seljaren at det vil stå i vesentleg mishøve til kjøparens interesse i at seljaren oppfyller.
+
+(2) Kjøparen taper retten til å krevje oppfylling dersom kjøparen ventar urimeleg lenge med å setje fram kravet.""",
+        "hva_betyr_html": """<p>En avtale er en avtale. Som kjøper kan du insistere på at selgeren gjennomfører det dere ble enige om — selgeren kan ikke bare trekke seg fordi de angrer eller har funnet en bedre kjøper.</p>
+<p>Men det finnes to unntak der selgeren kan slippe:</p>
+<p><strong>Uoverkommelig hindring:</strong> Noe er fysisk eller rettslig umulig å gjennomføre — for eksempel at boligen har brent ned. Da kan selgeren ikke gjennomføre, uansett hva dere avtalte.</p>
+<p><strong>Uforholdsmessig kostnad eller ulempe:</strong> Gjennomføring ville påføre selgeren en kostnad eller ulempe som er helt ute av proporsjoner med det du som kjøper har å vinne på det. Dette er en snever unntaksregel — domstolene er restriktive med å la selgere slippe unna avtaler de har inngått.</p>
+<p>Det andre leddet er en viktig frist: venter du for lenge med å kreve gjennomføring, taper du retten. Hva som er «urimelig lenge» avhenger av situasjonen, men reagerer du ikke innen rimelig tid etter at forsinkelsen er kjent, risikerer du å ha akseptert den stilltiende.</p>""",
+        "eksempler": [
+            {
+                "navn": "Ingrid",
+                "tekst": "Ingrid har kjøpt en enebolig og overtakelse er satt til 1. mai. Selgeren ringer 25. april og sier at de har ombestemt seg og ikke vil selge likevel — de har fått et bedre bud. Ingrid kan kreve at salget gjennomføres. Selgerens anger eller et bedre tilbud er ikke en «uoverkommelig hindring». Ingrid holder fast ved avtalen og kan gå til retten for å få den gjennomtvunget om nødvendig."
+            },
+        ],
+        "vanlige_feil": [
+            "Noen kjøpere gir stilltiende opp retten til gjennomføring ved å ikke reagere. Har du krav, si det tydelig og skriftlig.",
+            "Selgere tror av og til at «det er blitt for dyrt» er nok til å komme seg ut av avtalen. Det er det sjelden.",
+            "Retten til gjennomføring gjelder ikke ubegrenset i tid — reager raskt når forsinkelsen oppstår.",
+        ],
+        "hva_bor_du_html": """<p>Er selgeren forsinket og du vil ha boligen: send et skriftlig krav om gjennomføring umiddelbart. Sett en klar frist. Dokumenter alle kostnader du får i mellomtiden. Er selgeren uvillig, kontakt en advokat — retten til å kreve gjennomføring kan håndheves rettslig.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-1", "tittel": "Oversikt over kjøperens rettigheter ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-3", "tittel": "Heving ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-5", "tittel": "Erstatning", "available": True},
+        ],
+    },
+    {
+        "number": "4-3",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Heving ved forsinkelse fra selger",
+        "kategori": "bolig",
+        "underkategori": "kjøp-og-salg",
+        "description": "Selgeren leverer ikke og du vil ut av avtalen. Når kan du heve et boligkjøp på grunn av forsinkelse — og hva må du gjøre for at hevingen skal være gyldig?",
+        "kort_svar": "Du kan heve kjøpet hvis forsinkelsen er et vesentlig kontraktsbrudd — eller hvis selgeren ikke leverer innen en rimelig tilleggsfrist du har satt. Men du kan ikke heve på impuls. Det krever at du gjør det riktig.",
+        "paragraftekst": """(1) Kjøparen kan heve avtala dersom forseinkinga inneber eit vesentleg avtalebrot.
+
+(2) Kjøparen kan og heve dersom seljaren ikkje overlet bruken av eigedomen innan ein rimeleg tilleggsfrist som kjøparen fastset. Før tilleggsfristen er ute kan kjøparen ikkje heve, med mindre seljaren har sagt at bruken ikkje vil verte overlate til kjøparen innan fristen.
+
+(3) For at kjøparen skal kunne heve etter fyrste eller andre ledd, må eigedomen ikkje ha vorte forringa medan kjøparen har vågnaden. Heving kan likevel skje når årsaka til forringinga er ei tilfeldig hending eller andre omstende kjøparen ikkje har vågnaden for.""",
+        "hva_betyr_html": """<p>Heving er det kraftigste virkemiddelet du har — det betyr at avtalen annulleres og begge parter skal tilbakeføre det de har mottatt. Det er ikke noe du gjør bare fordi selgeren er litt sen.</p>
+<p><strong>To veier til heving:</strong></p>
+<p><strong>Vei 1 — Vesentlig kontraktsbrudd:</strong> Er forsinkelsen alvorlig nok i seg selv, kan du heve umiddelbart. «Vesentlig» er en høy terskel. En forsinkelse på noen dager er sjelden vesentlig. En forsinkelse på måneder, kombinert med store kostnader for deg, vil lettere passere grensen. Konkrete omstendigheter teller — har du sagt opp leiligheten din, betaler hotell og er på gata, stiller saken seg annerledes enn om du bor hjemme hos foreldrene og har god tid.</p>
+<p><strong>Vei 2 — Tilleggsfrist:</strong> Den sikrere veien. Du setter en skriftlig, rimelig tilleggsfrist — si tre til fire uker. Overholder ikke selgeren den fristen heller, kan du heve. Dette er den metoden loven foretrekker, fordi den gir selgeren en siste sjanse og gjør hevingen udiskutabel.</p>
+<p>Én viktig begrensning: har eiendommen blitt forringet mens du hadde risikoen — det vil si etter overtakelse — kan du normalt ikke heve. Du kan ikke bruke boligen i seks måneder og deretter heve fordi den har blitt dårligere.</p>""",
+        "eksempler": [
+            {
+                "navn": "Anne",
+                "tekst": "Anne skal overta leiligheten 1. juni. Selgeren er ikke klar — de er midt i en flomskadet kjeller og trenger mer tid. Anne har allerede avviklet leiekontrakten. Hun setter en skriftlig tilleggsfrist til 20. juni med beskjed om at hun vil heve om fristen ikke overholdes. 20. juni er fremdeles ikke alt klart. Anne hever kjøpet — gyldig og udiskutabelt."
+            },
+        ],
+        "vanlige_feil": [
+            "Å heve muntlig på telefon er ikke tilstrekkelig. Hev alltid skriftlig, med dato og begrunnelse.",
+            "Noen kjøpere setter en tilleggsfrist som er for kort — «du har tre dager». Det er ikke rimelig. To til fire uker er normalt det minste som godtas.",
+            "Husk at du ikke kan heve og samtidig bli boende i boligen. Heving betyr at alt skal tilbakeføres.",
+        ],
+        "hva_bor_du_html": """<p>Velger du å heve: gjør det skriftlig, angi tydelig at du hever og fra hvilken dato, og bevar alle dokumenter på forsinkelsen og kostnadene den har påført deg. Vurder å bruke advokat, særlig hvis selgeren bestrider hevingen — da kan det bli rettssak.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-4", "tittel": "Virkningene av heving", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-5", "tittel": "Erstatning ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-1", "tittel": "Oversikt over kjøperens rettigheter", "available": True},
+        ],
+    },
+    {
+        "number": "4-4",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Virkningene av heving",
+        "kategori": "bolig",
+        "underkategori": "kjøp-og-salg",
+        "description": "Du har hevet boligkjøpet. Hva skjer nå? § 4-4 forklarer hva begge parter plikter å gjøre — og retten til å holde tilbake til den andre siden leverer.",
+        "kort_svar": "Når du hever, faller alle forpliktelser bort — og begge parter skal gi tilbake det de har mottatt. Du får pengene tilbake, selgeren får eiendommen tilbake. Ingen av dere trenger å levere før den andre gjør det.",
+        "paragraftekst": """(1) Vert avtala heva, fell kvar parts plikt til å oppfylle bort.
+
+(2) Er avtala heilt eller delvis oppfylt, har kvar part krav på å få tilbake det som er ytt. Ein part kan likevel halde tilbake det som er motteke inntil den andre parten gir frå seg det mottekne.""",
+        "hva_betyr_html": """<p>Heving er en tilbakespoling. Målet er at begge parter skal stå der de stod før avtalen ble inngått.</p>
+<p>Det betyr i praksis:</p>
+<ul>
+<li>Du som kjøper får kjøpesummen tilbake.</li>
+<li>Selgeren får eiendommen tilbake.</li>
+<li>Ingen av partene plikter å levere sitt uten å få det andre tilbake samtidig.</li>
+</ul>
+<p>Den siste delen er viktig: du trenger ikke betale tilbake det du har mottatt, hvis den andre parten ikke leverer sin del. Det er en gjensidig sikring — ingen trenger å stå med tomme hender mens de venter på at den andre skal holde sin del.</p>
+<p>Har du som kjøper allerede overtatt boligen og betalt kjøpesummen, kan du holde boligen inntil selgeren faktisk tilbakefører pengene. Og selgeren kan nekte å betale tilbake til du har gitt fra deg nøklene og eiendommen.</p>
+<p>Heving utløser også gjerne krav om erstatning for tap hevingen har påført deg — det er regulert i § 4-5.</p>""",
+        "eksempler": [
+            {
+                "navn": "Petter",
+                "tekst": "Petter betalte 3 500 000 kr og overtok leiligheten. Han oppdager en skjult og alvorlig strukturfeil og hever kjøpet. Selgeren sier de er villige til å gi tilbake pengene, men bare hvis Petter flytter ut først. Petter kan holde seg i boligen til pengene faktisk er tilbakeført — loven gir ham den retten. En praktisk løsning er å gjøre dette simultant gjennom megler eller advokat."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange tror heving betyr at de automatisk får pengene med én gang. Prosessen tar tid, særlig hvis selgeren bestrider hevingen.",
+            "Noen kjøpere som har hevet, fortsetter å bruke boligen normalt over lang tid. Det kan svekke hevingskravet — boligen skal tilbakebys selgeren.",
+            "Husk at du kan ha krav på erstatning i tillegg til tilbakeføring av kjøpesummen. Dokumér alle tap.",
+        ],
+        "hva_bor_du_html": """<p>Hever du kjøpet: varsle selgeren skriftlig og gjør det klart at du forventer tilbakeføring. Be megleren (hvis saken gikk gjennom megler) bistå med oppgjøret. Er selgeren uvillig, kontakt en advokat — heving som bestrides må som regel løses i forliksrådet eller tingretten.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-3", "tittel": "Heving ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-13", "tittel": "Heving ved mangel", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-5", "tittel": "Erstatning", "available": True},
+        ],
+    },
+    {
+        "number": "4-5",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Erstatning ved forsinkelse fra selger",
+        "kategori": "bolig",
+        "underkategori": "kjøp-og-salg",
+        "description": "Selgerens forsinkelse har kostet deg penger — hotell, lagring, dobbel husleie. Du kan kreve erstatning. Men det finnes unntak der selgeren slipper. Her er reglene.",
+        "kort_svar": "Er du påført tap på grunn av selgerens forsinkelse, kan du kreve erstatning — selv uten at selgeren har gjort noe galt. Men selgeren slipper ansvar hvis forsinkelsen skyldes en hindring helt utenfor deres kontroll som de ikke kunne forutse.",
+        "paragraftekst": """(1) For anna enn indirekte tap som nemnt i § 7-1, kan kjøparen krevje skadebot på grunn av forseinkinga utan at det ligg føre skyld på seljarens side. Dette gjeld likevel ikkje så langt seljaren godtgjer at forseinkinga oppstod på grunn av ei hindring utanfor seljarens kontroll, og det ikkje er rimeleg å vente at seljaren kunne ha rekna med hindringa på avtaletida, eller at seljaren kunne ha overvunne eller unngått følgjene av hindringa.
+
+(2) Ligg årsaka til forseinkinga hos ein tredjeperson som seljaren har gitt i oppdrag heilt eller delvis å oppfylle avtala, er seljaren ansvarsfri berre om tredjepersonen og ville vere ansvarsfri etter føresegnene i fyrste ledd.
+
+(3) Seljaren er fri for ansvar så lenge hindringa varer. Fell hindringa bort, kan ansvar gjerast gjeldande frå då av dersom seljaren framleis plikter å oppfylle men ikkje gjer det.
+
+(4) Dersom forseinkinga eller tapet har årsak i skyld på seljarens side, kan kjøparen krevje skadebot både for direkte og indirekte tap.""",
+        "hva_betyr_html": """<p>Loven skiller mellom to typer tap:</p>
+<p><strong>Direkte tap</strong> er de umiddelbare, konkrete kostnadene forsinkelsen har påført deg — hotellutgifter, ekstra husleie, lagringsleie for møbler, reiseutgifter. Disse kan du kreve erstattet uten å måtte bevise at selgeren har gjort noe feil. Det er et strengt ansvar — selgeren svarer bare fordi forsinkelsen skjedde.</p>
+<p><strong>Indirekte tap</strong> — tap av inntekt, tapte forretningsmuligheter og lignende — kan du bare kreve erstattet hvis selgeren faktisk har opptrådt klanderverdig. Se § 7-1 for hva som regnes som indirekte tap.</p>
+<p><strong>Unntaket — force majeure:</strong> Selgeren slipper ansvar for direkte tap hvis de kan bevise tre ting: hindringen var utenfor deres kontroll, de kunne ikke ha forutsett den ved avtaleinngåelsen, og de kunne ikke ha overvunnet eller unngått følgene. Dette er en snever unntaksregel. Vanlige livshendelser som skilsmisse, pengeproblemer eller at man fant seg en ny bolig, faller ikke inn under den.</p>
+<p>Bruker selgeren en medhjelper — for eksempel et flyttebyrå eller en advokat — som svikter, er selgeren likevel ansvarlig, med mindre medhjelperens svikt også ville ha vært force majeure.</p>""",
+        "eksempler": [
+            {
+                "navn": "Kari",
+                "tekst": "Kari avviklet leieforholdet sitt i god tro og skulle overta 1. april. Selgeren dukket ikke opp og klarte ikke å bli ferdig på tre uker. Kari bodde på hotell i 18 dager til 2 100 kr per natt. Det er 37 800 kr i direkte tap. Selgeren hadde ingen force majeure-unnskyldning — de hadde bare dårlig planlagt egen utflytting. Kari har krav på 37 800 kr."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange dokumenterer ikke utgiftene løpende. Ta vare på alle kvitteringer fra dag én.",
+            "Noen tror de ikke kan kreve erstatning fordi «selgeren ikke hadde vondt i sinne». Det er irrelevant for direkte tap.",
+            "Husk at du har plikt til å begrense tapet ditt — du kan ikke velge det dyreste hotellet med spa og wine bar og sende regningen til selgeren. Velg rimelige alternativer.",
+        ],
+        "hva_bor_du_html": """<p>Dokumenter alle utgifter forsinkelsen medfører: kvitteringer, leiekontrakter, fakturaer. Send et skriftlig krav til selgeren med spesifiserte poster. Er selgeren uenig, kan saken løses i forliksrådet — kravet på erstatning for direkte tap er relativt enkelt å nå frem med.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-1", "tittel": "Oversikt over kjøperens rettigheter", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-6", "tittel": "Tilbakeholdsrett", "available": True},
+        ],
+    },
+    {
+        "number": "4-6",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Tilbakeholdsrett ved forsinkelse",
+        "kategori": "bolig",
+        "underkategori": "kjøp-og-salg",
+        "description": "Selgeren er forsinket og du har et krav mot dem. Du kan holde tilbake deler av kjøpesummen som sikkerhet — men bare så mye som dekker kravet ditt.",
+        "kort_svar": "Har selgeren forsinket seg og du har et krav mot dem, kan du holde tilbake tilsvarende del av kjøpesummen. Det er en praktisk sikkerhet — men du kan ikke holde tilbake mer enn kravet ditt tilsier.",
+        "paragraftekst": "Har kjøparen krav som følgje av forseinkinga, kan kjøparen halde tilbake så mykje av kjøpesummen som er nødvendig for å sikre at kravet vert dekt.",
+        "hva_betyr_html": """<p>Tenk på tilbakeholdsretten som et praktisk pressmiddel og en sikring på én gang. I stedet for å betale fullt og deretter håpe på å få erstatningen fra selgeren i ettertid, kan du holde tilbake en del av kjøpesummen til selgeren har oppfylt eller kravet er avgjort.</p>
+<p>Tre ting er viktig å huske:</p>
+<p><strong>Beløpet må stå i forhold til kravet.</strong> Du kan ikke holde tilbake 500 000 kr fordi selgeren er én dag forsinket og det koster deg 2 000 kr i ekstrautgifter. Tilbakeholdt beløp skal stå i rimelig forhold til det kravet du faktisk har.</p>
+<p><strong>Kravet må følge av forsinkelsen.</strong> Tilbakeholdsretten etter § 4-6 gjelder forsinkelse. For mangler gjelder § 4-15. Begrens til det som faktisk skyldes forsinkelsen.</p>
+<p><strong>Det er ikke en straff.</strong> Tilbakeholdsretten er en sikring, ikke en sanksjon. Selgeren har krav på at det tilbakeholdte beløpet utbetales når kravet er avklart og oppgjort.</p>""",
+        "eksempler": [
+            {
+                "navn": "Marius",
+                "tekst": "Marius skal overta leiligheten og har allerede betalt kjøpesummen til megleren. Selgeren er tre uker forsinket og Marius har hatt 45 000 kr i dokumenterte utgifter. Megleren holder tilbake 45 000 kr av kjøpesummen til selgeren inntil kravet er avgjort. Resten utbetales normalt."
+            },
+        ],
+        "vanlige_feil": [
+            "Noen kjøpere bruker tilbakeholdsretten som et generelt pressmiddel og holder tilbake langt mer enn kravet tilsier. Det kan selgeren bestride og vinne frem med.",
+            "I praksis skjer tilbakeholdsretten oftest gjennom megleren — informer megleren skriftlig om kravet ditt og be dem holde tilbake tilsvarende beløp.",
+            "Husk at tilbakeholdt beløp ikke er ditt — det er en sikring. Du får det ikke utbetalt til deg, bare brukt til å dekke kravet hvis det medgis.",
+        ],
+        "hva_bor_du_html": """<p>Oppstår forsinkelse og du har dokumenterte tap: varsle megleren umiddelbart og skriftlig om at du gjør tilbakeholdsrett gjeldende. Oppgi det eksakte beløpet og hva det gjelder. Jo raskere og tydeligere du handler, jo bedre er situasjonen din.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-5", "tittel": "Erstatning ved forsinkelse", "available": True},
+        ],
+    },
+    {
+        "number": "4-7",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Selgerens plikt til å varsle om hindringer",
+        "kategori": "bolig",
+        "underkategori": "kjøp-og-salg",
+        "description": "Vet selgeren at de ikke klarer å levere til avtalt tid, plikter de å si ifra — og gjøre det raskt. Lar de være, kan du kreve erstatning for tap du kunne unngått.",
+        "kort_svar": "Vet selgeren at de ikke kommer til å levere i tide, plikter de å varsle deg umiddelbart. Tier de og du lider tap som et tidlig varsel kunne ha forhindret, kan du kreve erstatning for akkurat det tapet.",
+        "paragraftekst": "Dersom seljaren vert hindra i å oppfylle avtala til rett tid, skal seljaren gi kjøparen melding om hindringa og kva slags følgjer hindringa vil få for oppfyllinga. Dersom seljaren ikkje gir kjøparen slik melding innan rimeleg tid etter at seljaren vart eller burde vorte kjent med hindringa, kan kjøparen krevje skadebot for tap som kunne vore unngått om kjøparen hadde fått melding i tide.",
+        "hva_betyr_html": """<p>Selgeren kan havne i en situasjon der de innser at overtakelse ikke lar seg gjennomføre til avtalt tid — kanskje de selv sliter med å finne ny bolig, har et pågående håndverkeroppdrag som trekker ut, eller en annen årsak. Da plikter de å si ifra til deg — ikke vente og håpe at det løser seg.</p>
+<p>Varselet skal skje innen rimelig tid etter at selgeren visste — eller burde ha visst — at det ville bli en forsinkelse. Og varselet skal si noe om hva hindringen er og hva konsekvensene blir for gjennomføringen.</p>
+<p>Poenget med regelen er at et tidlig varsel gir deg som kjøper mulighet til å tilpasse deg. Vet du tre uker i forveien at overtakelsen utsettes, kan du kanskje forlenge leiekontrakten din. Vet du ingenting før dagen selv, er det for sent — og du sitter med hotellregningen.</p>
+<p>Dersom selgeren tier og du lider tap du ville ha sluppet med et tidlig varsel, kan du kreve erstatning for det ekstra tapet. Det er et tillegg til den ordinære erstatningsretten etter § 4-5.</p>""",
+        "eksempler": [
+            {
+                "navn": "Tom",
+                "tekst": "Tom skulle overta eneboligen 15. mai. Selgeren visste allerede 1. mai at de ikke ville bli ferdige — de ventet på at håndverkerne skulle fullføre en etterarbeid. De sa ingenting. Tom hadde allerede sagt opp leieavtalen og sørget for at møblene ble hentet 14. mai. Hadde selgeren varslet 1. mai, hadde Tom kunnet beholde leieavtalen to uker til. Kostnadene til lager og nødinnkvartering disse ukene kan Tom kreve dekket som et direkte resultat av den manglende varslingen."
+            },
+        ],
+        "vanlige_feil": [
+            "Selgere tror av og til at det er bedre å tie og håpe på det beste. Det er det ikke — tidlig varsling reduserer konfliktrisikoen og begrenser erstatningsansvaret.",
+            "Kjøpere som ikke hører noe, bør selv ta kontakt i god tid før overtakelse for å bekrefte at alt er på skinner. Det er ikke din plikt, men det kan spare deg for ubehagelige overraskelser.",
+            "Et varsel skal si noe konkret — ikke bare «vi er litt usikre». Hva er hindringen, og hva betyr det for overtakelsesdatoen?",
+        ],
+        "hva_bor_du_html": """<p>Selger du og vet at du ikke rekker fristen: varsle kjøperen skriftlig umiddelbart. Jo tidligere, jo bedre — for begge parter. Kjøper du: noter kostnader som oppstår fra det tidspunktet du ellers ville ha fått varsel, da dette er grunnlaget for erstatningskravet.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-5", "tittel": "Erstatning ved forsinkelse", "available": True},
+            {"lov": "avhendingslova", "paragraf": "2-8", "tittel": "Risikoen for at meldinger kommer frem", "available": True},
+        ],
+    },
+    {
+        "number": "4-8",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Kjøperens rettigheter ved mangel — oversikt",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Har boligen en mangel? Her er oversikten over alle rettighetene du har — retting, prisavslag, heving, erstatning og tilbakeholdsrett. Hvilken passer din situasjon?",
+        "kort_svar": "Er det en mangel ved boligen, har du fem mulige krav: du kan kreve at feilen rettes, kreve prisavslag, heve kjøpet, kreve erstatning, eller holde tilbake kjøpesummen. Hvilke som er aktuelle, avhenger av hvor alvorlig mangelen er.",
+        "paragraftekst": """(1) Ligg det føre ein mangel ved eigedomen, utan at dette står på kjøparen eller omstende kjøparen har vågnaden for, kan kjøparen
+a. krevje retting etter § 4-10,
+b. krevje prisavslag etter § 4-12,
+c. heve etter § 4-13,
+d. krevje skadebot etter § 4-14,
+e. halde tilbake kjøpesummen etter § 4-15.
+
+(2) Føresegnene om manglar gjeld tilsvarande så langt dei høver for andre feil ved seljarens oppfylling.""",
+        "hva_betyr_html": """<p>§ 4-8 er oversiktsparagrafen for mangelskapittelet. Den sier ikke så mye i seg selv — den peker videre til de paragrafene som utdyper hvert krav. Men det er nyttig å se dem samlet, slik at du vet hva du har å velge mellom.</p>
+<p>Her er de fem alternativene i korte trekk:</p>
+<p><strong>Retting (§ 4-10):</strong> Selgeren utbedrer feilen for egen regning. Den første og oftest beste løsningen. Fungerer der feilen lar seg reparere og selgeren er villig og i stand til å gjøre det.</p>
+<p><strong>Prisavslag (§ 4-12):</strong> Du beholder boligen, men betaler mindre. Brukes der retting ikke er aktuelt eller ikke skjer, og feilen har en målbar verdi.</p>
+<p><strong>Heving (§ 4-13):</strong> Kjøpet annulleres. Drastisk og brukes bare der mangelen er så alvorlig at det er et vesentlig kontraktsbrudd. Ikke for småfeil.</p>
+<p><strong>Erstatning (§ 4-14):</strong> Du krever dekket det økonomiske tapet mangelen har påført deg — utover selve utbedringskostnaden. For eksempel midlertidig innkvartering mens badet repareres.</p>
+<p><strong>Tilbakeholdsrett (§ 4-15):</strong> Du holder tilbake deler av kjøpesummen som sikkerhet for kravet ditt, mens saken avklares.</p>
+<p>Du kan kombinere flere av disse. Prisavslag og erstatning kan gjerne kreves parallelt. Heving utelukker derimot prisavslag — du kan ikke heve og beholde et prisavslag.</p>""",
+        "eksempler": [
+            {
+                "navn": "Kari",
+                "tekst": "Kari oppdager et alvorlig fuktproblem i kjelleren. Utbedringen koster 180 000 kr. Hun krever retting (§ 4-10) som første skritt. Selgeren nekter. Da krever hun prisavslag på 180 000 kr (§ 4-12) og erstatning for de 12 000 kr hun måtte betale for midlertidig lagring av tingene sine mens hun fikk en fagkyndig vurdering (§ 4-14). Hun holder tilbake 192 000 kr av kjøpesummen inntil kravet er avgjort (§ 4-15)."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange kjøpere vet ikke at de kan kombinere kravene. Prisavslag og erstatning er ikke enten/eller.",
+            "Noen hopper rett til heving uten å vurdere prisavslag. Heving er krevende å gjennomføre og forutsetter et vesentlig kontraktsbrudd.",
+            "Husk at alle disse kravene forutsetter at du har reklamert i tide — se § 4-19.",
+        ],
+        "hva_bor_du_html": """<p>Oppdager du en mangel: start med § 4-19 (reklamasjon) og § 4-10 (krav om retting). Tar ikke selgeren ansvar, vurder prisavslag. Er mangelen svært alvorlig, vurder heving — gjerne med juridisk bistand.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-10", "tittel": "Retting av mangler", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-13", "tittel": "Heving ved mangel", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-19", "tittel": "Reklamasjon", "available": True},
+        ],
+    },
+    {
+        "number": "4-10",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Retting av mangler",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Selgeren tilbyr seg å rette feilen — må du godta det? Og når kan du kreve at selgeren retter? Her er reglene for hvem som bestemmer, og hva som skjer hvis retting ikke skjer.",
+        "kort_svar": "Tilbyr selgeren seg å rette feilen, må du som regel godta det — det er rimeligere enn å kreve prisavslag med en gang. Men rettingen skal skje innen rimelig tid og for selgerens regning. Gjøres den ikke, kan du kreve prisavslag eller heve.",
+        "paragraftekst": """(1) Tilbyr seljaren seg å rette ein mangel ved eigedomen, må kjøparen godta dette dersom rettinga ikkje vil føre med seg urimeleg ulempe for kjøparen, og kjøparen ikkje har særleg grunn til å motsetje seg rettinga.
+
+(2) Har seljaren ført opp hus eller anna innretning for sal, kan kjøparen krevje at seljaren rettar mangelen dersom retting kan skje utan urimeleg kostnad eller ulempe for seljaren. Det same gjeld ved forbrukarkjøp av nyoppført eigarbustad som ikkje har vore brukt som bustad i meir enn eitt år på avtaletida, dersom seljaren har gjort avtalen som ledd i næringsverksemd.
+
+(3) Rettinga skal skje innan rimeleg tid etter at kjøparen har gjort mangelen gjeldande og gjort det mogeleg for seljaren å rette. Rettinga skal skje for seljarens rekning.
+
+(4) Vert mangelen ikkje retta, kan kjøparen krevje prisavslag etter § 4-12 eller heve etter § 4-13.""",
+        "hva_betyr_html": """<p>Retting er første skritt i mangelsrekkefølgen — og begge parter har rettigheter og plikter her.</p>
+<p><strong>Selgeren tilbyr retting — må du godta det?</strong> Ja, som regel. Loven mener at selgeren bør få sjansen til å rette opp feilen sin, fremfor å måtte betale prisavslag på stedet. Men du trenger ikke godta det hvis rettingen ville medføre urimelig ulempe for deg — for eksempel at du må flytte ut av boligen i tre måneder mens jobben pågår — eller hvis du har særlig grunn til å ikke stole på at selgeren gjør det ordentlig. Det siste er en snever unntaksregel.</p>
+<p><strong>Kan du selv kreve at selgeren retter?</strong> Vanligvis ikke ved salg mellom privatpersoner — der er retting selgerens rett, ikke din. Men kjøpte du en ny bolig fra en utbygger, kan du faktisk kreve retting aktivt, så lenge det ikke koster selgeren uforholdsmessig mye.</p>
+<p><strong>Tidsfristen og regningen:</strong> Retting skal skje innen rimelig tid — ikke om seks måneder. Og den skal skje for selgerens regning. Du skal ikke legge ut og vente på refusjon.</p>
+<p>Retter ikke selgeren innen rimelig tid, åpner veien seg for prisavslag eller heving.</p>""",
+        "eksempler": [
+            {
+                "navn": "Lars",
+                "tekst": "Lars oppdager at et vindu i stuen er montert feil og trekker. Selgeren tilbyr å sende en håndverker for å fikse det innen to uker. Lars synes det er greit — ingen urimelig ulempe, og det er en rask jobb. Han godtar tilbudet. Selgeren fikser vinduet, og saken er ute av verden."
+            },
+            {
+                "navn": "Ingrid",
+                "tekst": "Ingrid oppdager råte i bjelkelaget under første etasje. Selgeren tilbyr retting, men sier at jobben tar fem til sju uker og at hele gulvet må rives. Ingrid bor i boligen. Det er åpenbart en urimelig ulempe — hun kan nekte rettingstilbudet og i stedet kreve prisavslag."
+            },
+        ],
+        "vanlige_feil": [
+            "Noen kjøpere avviser rettingstilbud uten grunn og krever prisavslag direkte. Er avvisningen ugyldig, kan det påvirke erstatningskravet negativt.",
+            "Selgere som tilbyr retting men tar fire måneder på seg, mister retten sin — kjøperen kan da gå videre til prisavslag uten å vente lenger.",
+            "Husk å bekrefte rettingstilbudet og aksepten skriftlig, og sett en tydelig frist for når jobben skal være ferdig.",
+        ],
+        "hva_bor_du_html": """<p>Mottar du et rettingstilbud: vurder om det er urimelig for deg. Er det greit, akseptér skriftlig med en klar tidsfrist. Er jobben ikke gjort innen fristen, send skriftlig varsel om at du nå vil gå videre med prisavslagskrav.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-13", "tittel": "Heving ved mangel", "available": True},
+        ],
+    },
+    {
+        "number": "4-12",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Prisavslag",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Boligen har en feil og du vil ikke heve — du vil ha penger tilbake. Prisavslag er det vanligste kravet ved boligmangler. Her er hvordan det beregnes og hva du kan forvente.",
+        "kort_svar": "Har boligen en mangel du ikke har fått rettet, kan du kreve prisavslag. Størrelsen settes vanligvis til hva det koster å utbedre feilen. Du beholder boligen — men betaler reelt sett litt mindre for den.",
+        "paragraftekst": """(1) Har eigedomen ein mangel, kan kjøparen krevje eit forholdsmessig prisavslag.
+
+(2) Med mindre noko anna vert godtgjort, skal prisavslaget fastsetjast til kostnadene ved å få mangelen retta.""",
+        "hva_betyr_html": """<p>Prisavslag er det vanligste og mest praktiske kravet ved boligmangler. I stedet for å heve kjøpet — som er dramatisk og tidkrevende — holder du boligen og krever tilbake en sum som tilsvarer verdireduksjonen mangelen representerer.</p>
+<p><strong>Hvordan beregnes prisavslaget?</strong> Utgangspunktet er utbedringskostnaden. Koster det 80 000 kr å reparere fuktskaden, er prisavslaget 80 000 kr — minus egenandelen på 10 000 kr fra § 3-1, så du ender opp med 70 000 kr.</p>
+<p>Men loven sier «forholdsmessig» prisavslag — det betyr at man i prinsippet skal se på hvor mye feilen reduserer boligens verdi relativt til kjøpesummen. I praksis er utbedringskostnaden det enkleste og mest brukte utgangspunktet, og det er også det loven setter som standard med mindre noe annet bevises.</p>
+<p>Noen ganger er utbedringskostnaden høyere enn den reelle verdireduksjonen — for eksempel hvis en feil teknisk sett koster 200 000 kr å rette, men markedsverdien på boligen bare ville gått ned med 100 000 kr. Da kan selgeren argumentere for at prisavslaget skal settes til verdireduksjonen, ikke utbedringskostnaden.</p>
+<p>Husk at du ikke kan kreve prisavslag for det samme forholdet du allerede har fått retting for. Rettingen og prisavslaget dekker samme mangel — du kan ikke doble opp.</p>""",
+        "eksempler": [
+            {
+                "navn": "Eva",
+                "tekst": "Eva oppdager at taktekking er i langt dårligere stand enn tilstandsrapporten tilsa — takstmannen har bommet. En taksteker anslår utbedringen til 95 000 kr. Eva reklamerer og krever prisavslag. Selgeren aksepterer ikke frivillig. I et eventuelt forlik eller dom vil prisavslaget trolig settes til 95 000 kr minus egenandelen — altså 85 000 kr tilbakeføres til Eva."
+            },
+            {
+                "navn": "Marius",
+                "tekst": "Marius oppdager at boden under trappa er innredet som soverom uten byggetillatelse. Kommunen krever at det rives. Rivingskostnaden er 40 000 kr. Men i tillegg mister Marius bruken av et rom han trodde han kjøpte. Her kan prisavslaget settes høyere enn bare rivingskostnaden, fordi boligens verdi er redusert ut over selve utbedringen."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange glemmer egenandelen på 10 000 kr. Netto krav er alltid utbedringskostnad minus 10 000 kr.",
+            "Noen baserer seg på egne estimater uten fagkyndig vurdering. Skriftlig pristilbud fra to håndverkere er langt bedre bevis enn egne anslag.",
+            "Prisavslag og erstatning kan kombineres — men de kan ikke overlappe. Har du fått prisavslag for utbedringskostnaden, kan du ikke også få erstatning for de samme kostnadene.",
+        ],
+        "hva_bor_du_html": """<p>Innhent skriftlige pristilbud fra autoriserte håndverkere på utbedringen av mangelen. Det er ditt sterkeste bevis for prisavslagets størrelse. Send kravet skriftlig til selgeren med dokumentasjon vedlagt. Er selgeren uenig, kan saken løses gjennom Finansklagenemnda (ved forsikringsoppgjør) eller forliksrådet.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "3-1", "tittel": "Egenandelen på 10 000 kr", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-10", "tittel": "Retting", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-13", "tittel": "Heving ved mangel", "available": True},
+        ],
+    },
+    {
+        "number": "4-13",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Heving ved mangel",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Mangelen er så alvorlig at du ikke vil beholde boligen. Når kan du heve kjøpet på grunn av en mangel — og hva kan du tape retten til heving på?",
+        "kort_svar": "Du kan heve boligkjøpet hvis mangelen er så alvorlig at det utgjør et vesentlig kontraktsbrudd. Det er en høy terskel — småfeil og vanlig slitasje gir ikke rett til heving. Venter du for lenge med å varsle om hevingen, kan du tape retten.",
+        "paragraftekst": """(1) Kjøparen kan heve avtala dersom mangelen inneber eit vesentleg avtalebrot.
+
+(2) Kjøparen taper retten til å heve dersom kjøparen ikkje gir seljaren melding om heving innan rimeleg tid etter at kjøparen vart kjent eller burde vorte kjent med mangelen, eller etter at fristen som måtte følgje av krav eller melding etter §§ 4-10 og 4-11 har gått ut. Dette gjeld likevel ikkje dersom seljaren har vore grovt aktlaus, uærleg eller for øvrig handla i strid med god tru.
+
+(3) §§ 4-3 tredje ledd og 4-4 gjeld tilsvarande.""",
+        "hva_betyr_html": """<p>Heving er det kraftigste virkemiddelet du har ved en mangel — kjøpet rulles tilbake, du gir fra deg boligen og selgeren gir tilbake pengene. Det er et drastisk skritt, og terskelen er derfor høy.</p>
+<p><strong>Hva er «vesentlig kontraktsbrudd»?</strong> Det finnes ingen fasit, men domstolene ser på:</p>
+<ul>
+<li>Størrelsen på utbedringskostnaden relativt til kjøpesummen (gjerne 5–10 % eller mer)</li>
+<li>Om mangelen gjør boligen ubrukelig eller betydelig vanskeligere å bruke</li>
+<li>Om selgeren har handlet svikaktig</li>
+<li>Om kjøperen med rimelighet kan forvente å beholde boligen gitt hva som er avdekket</li>
+</ul>
+<p>En mangel på 50 000 kr i en bolig kjøpt for 5 000 000 kr vil sjelden kvalifisere til heving. En mangel på 600 000 kr — eller strukturelle feil som gjør boligen ubeboelig — er en annen sak.</p>
+<p><strong>Tidsfristen for å varsle heving:</strong> Du må varsle om heving innen rimelig tid etter at du ble kjent med mangelen — eller etter at en rettingsfrist er utløpt uten resultat. Venter du for lenge, taper du retten til heving selv om mangelen er reell og alvorlig.</p>
+<p><strong>Unntaket:</strong> har selgeren vært grovt uaktsom, uærlig eller opptrådt i strid med god tro, beholder du retten til heving selv om du er litt sen.</p>
+<p>Virkningene av heving reguleres av § 4-4 — begge parter tilbakefører det de har mottatt.</p>""",
+        "eksempler": [
+            {
+                "navn": "Anne",
+                "tekst": "Anne kjøper en enebolig for 4 200 000 kr. Etter overtakelse avdekkes det at grunnmuren har alvorlige setningsskader som ingen hadde opplyst om, og at selgeren kjente til disse. Utbedringskostnaden anslås til 650 000 kr — over 15 % av kjøpesummen. Selgeren handlet uærlig. Anne hever kjøpet. Her er terskelen for vesentlig kontraktsbrudd klart passert."
+            },
+            {
+                "navn": "Petter",
+                "tekst": "Petter oppdager at parketten i stuen er lagt feil og må skiftes ut. Kostnad: 55 000 kr — 1,1 % av kjøpesummen på 5 000 000 kr. Petter vil heve. Det vil han ikke nå frem med — mangelen er reell, men ikke vesentlig nok. Prisavslag er riktig krav her."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange kjøpere tror at enhver mangel gir rett til heving. Det gjør det ikke — terskelen er vesentlig kontraktsbrudd.",
+            "Noen venter for lenge med å varsle om heving og taper retten. Oppdager du en mangel: vurder heving raskt og varsle skriftlig innen rimelig tid.",
+            "Heving er ikke automatisk avsluttet med et brev — er selgeren uenig, må saken løses rettslig. Det er kostbart og tar tid.",
+        ],
+        "hva_bor_du_html": """<p>Vurderer du heving: innhent fagkyndig vurdering av mangelen og utbedringskostnaden raskt. Varsle om mulig heving skriftlig innen rimelig tid etter oppdagelse. Kontakt en advokat — hevingssaker er komplekse og bør ikke håndteres alene.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-4", "tittel": "Virkningene av heving", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-19", "tittel": "Reklamasjon", "available": True},
+        ],
+    },
+    {
+        "number": "4-14",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Erstatning ved mangel",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Mangelen har kostet deg penger utover selve utbedringen — midlertidig innkvartering, tapt leie, utgifter til fagkyndig. Når kan du kreve erstatning, og hva dekkes?",
+        "kort_svar": "Mangelen har påført deg kostnader utover selve feilen — innkvartering mens badet repareres, utgifter til takstmann, tapt leieinntekt. Du kan kreve erstatning for direkte tap uten å bevise at selgeren har gjort noe galt. For indirekte tap — tapt fortjeneste og liknende — kreves det at selgeren er å klandre.",
+        "paragraftekst": """(1) For anna enn indirekte tap som nemnt i § 7-1, kan kjøparen krevje skadebot på grunn av mangelen utan at det ligg føre skyld på seljarens side. Dette gjeld likevel ikkje så langt seljaren godtgjer at årsaka til mangelen er ei hindring som nemnt i § 4-5 fyrste ledd. Føresegnene elles i § 4-5 gjeld tilsvarande.
+
+(2) Dersom mangelen eller tapet har årsak i skyld på seljarens side, eller at eigedomen allereie på avtaletida ikkje var i samsvar med garanti frå seljaren, kan kjøparen krevje skadebot både for direkte og indirekte tap.""",
+        "hva_betyr_html": """<p>Erstatning ved mangel er ikke det samme som prisavslag. Prisavslag dekker selve verdireduksjonen mangelen representerer. Erstatning dekker de ekstra tapene mangelen har påført deg.</p>
+<p><strong>Direkte tap</strong> kan du kreve erstattet uten å bevise at selgeren er skyldig:</p>
+<ul>
+<li>Utgifter til takstmann og fagkyndig vurdering av mangelen</li>
+<li>Midlertidig innkvartering mens feilen utbedres</li>
+<li>Transportutgifter i forbindelse med utbedringen</li>
+<li>Tapt leieinntekt mens boligen er ubeboelig</li>
+</ul>
+<p>Selgeren kan bare slippe unna direkte tap hvis de beviser at årsaken til mangelen var en uforutsett og uoverkommelig hindring utenfor deres kontroll — den samme force majeure-regelen som ved forsinkelse.</p>
+<p><strong>Indirekte tap</strong> — tapt forretningsfortjeneste, tap som følge av at en annen kontrakt faller bort, produksjonstap — kan du bare kreve hvis selgeren faktisk er skyldig. Se § 7-1 for hva som regnes som indirekte tap.</p>
+<p>Du kan kombinere erstatning med prisavslag, men de kan ikke overlappe. Prisavslaget dekker feilen selv. Erstatningen dekker de ekstra kostnadene rundt den.</p>""",
+        "eksempler": [
+            {
+                "navn": "Sara",
+                "tekst": "Sara kjøper en leilighet og oppdager etter overtakelse at hele badet har skjult fukt og råte. Utbedringen tar seks uker. Sara må leie midlertidig leilighet for 18 000 kr, hun betaler 8 500 kr for en fagkyndig vurdering, og hun har 1 200 kr i transportutgifter. Totalt 27 700 kr i direkte tap — dette kan Sara kreve i erstatning, i tillegg til prisavslagskravet for selve utbedringen."
+            },
+        ],
+        "vanlige_feil": [
+            "Mange kjøpere blander prisavslag og erstatning. Prisavslaget er for feilen — erstatningen er for konsekvensene rundt den.",
+            "Noen glemmer å dokumentere løpende utgifter. Ta vare på alle kvitteringer fra dag én — hotell, transport, fagkyndige.",
+            "Husk plikten til å begrense tapet ditt. Velger du luksushotel når et rimelig alternativ er tilgjengelig, risikerer du at selgeren bare dekker det rimeligste alternativet.",
+        ],
+        "hva_bor_du_html": """<p>Hold orden på alle utgifter mangelen påfører deg og ta vare på kvitteringer. Send et samlet krav til selgeren: prisavslag for mangelen pluss erstatning for de direkte ekstrautgiftene — spesifisert post for post. Det gjør saken enklere å løse.</p>""",
+        "dumme_sporsmal": [],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-13", "tittel": "Heving ved mangel", "available": True},
+        ],
+    },
+    {
+        "number": "4-19",
+        "lov": "avhendingslova",
+        "lov_display": "Avhendingslova",
+        "title": "Reklamasjon — frister for å klage",
+        "kategori": "bolig",
+        "underkategori": "mangler",
+        "description": "Oppdager du feil etter boligkjøpet, har du frister å forholde deg til. Klager du for sent, taper du retten din — uansett hvor alvorlig feilen er. Her er fristene du må kjenne.",
+        "kort_svar": "Du må klage innen rimelig tid etter at du oppdaget — eller burde ha oppdaget — feilen. Uansett har du fem år på deg fra overtakelsesdagen. Klag for sent og du taper retten, selv om selgeren er skyld i alt.",
+        "paragraftekst": """(1) Kjøparen taper retten til å gjere avtalebrotet gjeldande dersom kjøparen ikkje innan rimeleg tid etter å ha oppdaga eller burde ha oppdaga det, gir seljaren melding om at avtalebrotet vert gjort gjeldande og kva slags avtalebrot det er.
+
+(2) Reklamasjon kan likevel seinast skje 5 år etter at kjøparen har overteke bruken av eigedomen, dersom ikkje seljaren ved garanti eller avtale har teke på seg ansvar for lengre tid.
+
+(3) Seljaren kan ikkje gjere gjeldande at det er reklamert for seint dersom seljaren har vore grovt aktlaus, uærleg eller for øvrig handla i strid med god tru.
+
+(4) Retten til å gjere avtalebrotet gjeldande kan også bli tapt etter reglane om forelding i foreldingslova.""",
+        "hva_betyr_html": """<p>Reklamasjon betyr å klage — og i bolighandelen er det to frister du må forholde deg til samtidig:</p>
+<p><strong>Den relative fristen — «innen rimelig tid»:</strong> Oppdager du en feil, må du klage raskt. Hva som er «rimelig tid» er ikke fastlagt i dager, men domstolene har gjentatte ganger sagt at to til tre måneder er et utgangspunkt. Venter du et halvt år etter at du oppdaget feilen med å si ifra, risikerer du å ha tapt retten.</p>
+<p><strong>Den absolutte fristen — fem år:</strong> Uansett når du oppdager feilen, er den absolutte grensen fem år fra overtakelsesdagen. Oppdager du muggsopp i veggen fire og et halvt år etter innflytting, har du fortsatt tid til å klage — men gjør det raskt.</p>
+<p><strong>Hva reklamasjonen må inneholde:</strong> Du trenger ikke skrive et juridisk dokument. Men du må si: (1) hva feilen er, og (2) at du gjør den gjeldende som et kontraktsbrudd. «Jeg har oppdaget fukt i badet og reklamerer på dette» er tilstrekkelig som første melding. Du kan komme tilbake med mer detaljer og krav senere.</p>
+<p><strong>Unntaket for uredelig selger:</strong> Har selgeren opptrådt grovt uaktsomt, uærlig eller i strid med god tro, kan de ikke anføre at du reklamerte for sent. Dette er en sikkerhetsventil mot selgere som aktivt skjulte feil.</p>""",
+        "eksempler": [
+            {
+                "navn": "Eva",
+                "tekst": "Eva overtar leiligheten 1. mars 2023. I august 2026 — tre og et halvt år senere — oppdager hun at det er fukt bak baderomsveggflisene. En fagkyndig bekrefter at problemet har vært der lenge. Eva reklamerer skriftlig til selgeren i september 2026. Hun er innenfor femårsfristen, og siden hun reklamerer innen rimelig tid etter at hun oppdaget feilen, er reklamasjonen gyldig."
+            },
+            {
+                "navn": "Petter",
+                "tekst": "Petter merker allerede sommeren etter overtakelse at det lukter rart i kjelleren. Han tenker ikke mer på det, gjør ingenting og venter to år med å klage. En fagkyndig slår fast at fuktproblemet var synlig og merkbart lenge. Petter har trolig ventet for lenge — han «burde ha oppdaget» problemet mye tidligere og reklamert da."
+            },
+        ],
+        "vanlige_feil": [
+            "Den vanligste feilen: vente for lenge fordi man er usikker på om det er alvorlig nok. Reklamér tidlig og løst — du kan alltid presisere kravet mer senere.",
+            "Mange reklamerer muntlig per telefon. Det er ikke nok. Bruk alltid skriftlig kommunikasjon — epost er fint, men ta vare på kopien.",
+            "Noen tror at femårsfristen betyr at de har fem år på seg uansett. Det har de ikke — den relative fristen om «rimelig tid» etter oppdagelse løper parallelt.",
+        ],
+        "hva_bor_du_html": """<p>Oppdager du noe som kan være en feil: reklamér skriftlig til selgeren umiddelbart — selv en kort epost er nok til å stanse fristen. Skriv hva du har oppdaget og at du gjør det gjeldende. Be gjerne om en tilbakemelding innen en frist. Dokumentér alt med bilder og datoer.</p>
+<p>Reklamerer du for sent, taper du retten til å klage — selv om feilen er reell og alvorlig, og selv om selgeren er ansvarlig. Det er en hard regel. Domstolene gjør sjelden unntak, bortsett fra der selgeren har handlet uærlig.</p>""",
+        "dumme_sporsmal": [
+            {
+                "q": "Kan jeg klage på noe jeg visste om da jeg kjøpte?",
+                "a": "Nei. Ting du kjente til ved kjøpet — eller som stod i tilstandsrapporten — kan du ikke klage på i ettertid. Se § 3-10."
+            },
+            {
+                "q": "Hva om jeg først oppdager feilen etter fem år?",
+                "a": "Da har du som utgangspunkt tapt retten. Unntaket er der selgeren har gitt garanti for lengre tid, eller der selgeren har handlet grovt uærlig."
+            },
+            {
+                "q": "Holder det å si det muntlig til selgeren?",
+                "a": "Det er juridisk sett nok, men nesten umulig å bevise i ettertid. Bruk alltid skriftlig kommunikasjon."
+            },
+        ],
+        "related": [
+            {"lov": "avhendingslova", "paragraf": "3-10", "tittel": "Kjøperens undersøkelsesplikt", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-8", "tittel": "Oversikt over kjøperens rettigheter ved mangel", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-12", "tittel": "Prisavslag", "available": True},
+            {"lov": "avhendingslova", "paragraf": "4-13", "tittel": "Heving ved mangel", "available": True},
+        ],
+    },
 ]
