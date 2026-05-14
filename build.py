@@ -58,22 +58,23 @@ except ImportError:
 
 CSS = """
 :root {
-  --bg: #FBF8F1;
-  --bg-alt: #F4EFE3;
-  --bg-card: #FFFFFF;
-  --ink: #1A1612;
-  --ink-soft: #4E443A;
-  --ink-mute: #8A7F70;
-  --accent: #B14A2A;
-  --accent-deep: #913B20;
-  --accent-soft: #E8B5A3;
-  --line: rgba(26, 22, 18, 0.10);
-  --line-strong: rgba(26, 22, 18, 0.20);
-  --shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.04);
-  --shadow-md: 0 2px 8px rgba(26, 22, 18, 0.06);
-  --shadow-lg: 0 8px 24px rgba(26, 22, 18, 0.08);
+  --bg: #F4F1EA;
+  --bg-alt: #EDE8DF;
+  --bg-card: #FDFAF5;
+  --ink: #1C1710;
+  --ink-soft: #5C5146;
+  --ink-mute: #9B8E82;
+  --accent: #C04A26;
+  --accent-deep: #A03B1A;
+  --accent-soft: #E8C4B4;
+  --line: rgba(28, 23, 16, 0.09);
+  --line-strong: rgba(28, 23, 16, 0.18);
+  --shadow-sm: 0 1px 3px rgba(28, 23, 16, 0.05);
+  --shadow-md: 0 2px 12px rgba(28, 23, 16, 0.07);
+  --shadow-lg: 0 12px 32px rgba(28, 23, 16, 0.09);
+  --footer-bg: #EAE4DC;
   --kat-bolig: #4F6F5E;
-  --kat-forbruk: #B14A2A;
+  --kat-forbruk: #C04A26;
   --kat-arbeid: #6B5B95;
   --kat-familie: #B8654A;
   --kat-gjeld: #7A6E5D;
@@ -89,7 +90,7 @@ body {
   position: relative;
 }
 body::before {
-  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.35;
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.22;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
@@ -100,26 +101,43 @@ main.page { max-width: 1100px; margin: 0 auto; padding: 0 32px; min-height: calc
 }
 .narrow { max-width: 740px; margin: 0 auto; padding: 0 32px; }
 
-nav.site-nav { padding: 28px 0; display: flex; justify-content: space-between; align-items: center; }
+nav.site-nav {
+  padding: 44px 0 38px; display: flex;
+  justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+}
 .logo {
-  display: inline-flex; align-items: baseline; gap: 10px;
+  display: inline-flex; align-items: baseline; gap: 11px;
   text-decoration: none; line-height: 1;
 }
 .logo .mark {
   font-family: var(--serif); font-weight: 400;
-  font-size: 28px; color: var(--accent);
-  font-variation-settings: "opsz" 36;
-  line-height: 1;
+  font-size: 48px; color: var(--accent);
+  line-height: 0.82; position: relative; top: 5px;
+  transition: color 0.2s;
 }
 .logo .wordmark {
-  font-family: var(--serif); font-weight: 500;
-  font-size: 22px; letter-spacing: -0.01em;
-  color: var(--ink); font-variation-settings: "opsz" 36;
-  line-height: 1;
+  font-family: var(--serif); font-weight: 400;
+  font-size: 30px; letter-spacing: -0.03em;
+  color: var(--ink); line-height: 1;
+  transition: color 0.2s;
 }
-.nav-links { display: flex; gap: 32px; list-style: none; }
-.nav-links a { color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; letter-spacing: 0.005em; }
-.nav-links a:hover { color: var(--accent); }
+.logo:hover .mark { color: var(--accent-deep); }
+.logo:hover .wordmark { color: var(--accent); }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  color: var(--ink-mute); text-decoration: none;
+  font-size: 13.5px; font-weight: 500; transition: color 0.18s;
+  letter-spacing: 0.01em;
+}
+.nav-links a:hover { color: var(--ink); }
+@media (max-width: 720px) {
+  .nav-links { gap: 20px; }
+  .nav-links a { font-size: 13px; }
+  .logo .mark { font-size: 40px; }
+  .logo .wordmark { font-size: 24px; }
+}
 
 /* Breadcrumbs */
 .breadcrumbs {
@@ -139,9 +157,9 @@ nav.site-nav { padding: 28px 0; display: flex; justify-content: space-between; a
 }
 .article-title {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(28px, 3.4vw, 40px);
-  line-height: 1.12; letter-spacing: -0.015em; margin-bottom: 24px;
-  font-variation-settings: "opsz" 40;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.08; letter-spacing: -0.022em; margin-bottom: 28px;
+  font-variation-settings: "opsz" 48;
 }
 .article-title .paragraf-num { color: var(--accent); font-style: italic; }
 .article-description {
@@ -150,28 +168,34 @@ nav.site-nav { padding: 28px 0; display: flex; justify-content: space-between; a
 
 /* Kort svar — featured callout */
 .kort-svar {
-  background: var(--bg-alt); border-left: 4px solid var(--accent);
-  padding: 28px 32px; border-radius: 0 12px 12px 0;
-  margin: 16px 0 48px;
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  padding: 32px 36px; border-radius: 0 16px 16px 0;
+  margin: 20px 0 56px;
+  box-shadow: var(--shadow-sm);
 }
 .kort-svar .kort-svar-label {
-  font-size: 12px; font-weight: 700; color: var(--accent);
-  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 12px;
+  font-size: 11px; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 14px;
 }
 .kort-svar p {
-  font-size: 18px; line-height: 1.55; color: var(--ink); margin: 0;
+  font-family: var(--serif); font-size: 20px; line-height: 1.6;
+  color: var(--ink); margin: 0; letter-spacing: -0.005em;
+  font-variation-settings: "opsz" 22;
 }
 
 /* Article body */
 .article-body {
-  font-size: 17px; line-height: 1.7;
+  font-size: 17px; line-height: 1.75;
+  color: var(--ink-soft);
 }
 .article-body h2 {
-  font-family: var(--serif); font-weight: 500;
-  font-size: clamp(26px, 3vw, 34px);
-  line-height: 1.2; letter-spacing: -0.01em;
-  margin: 56px 0 20px;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(24px, 2.8vw, 32px);
+  line-height: 1.15; letter-spacing: -0.015em;
+  margin: 64px 0 20px;
   font-variation-settings: "opsz" 36;
+  color: var(--ink);
 }
 .article-body h2 + p, .article-body h2 + ul, .article-body h2 + ol { margin-top: 0; }
 .article-body h3 {
@@ -317,44 +341,56 @@ form.contact-form.hide { display: none; }
 .form-success h3 { font-family: var(--serif); font-size: 24px; margin-bottom: 10px; font-variation-settings: "opsz" 28; }
 .form-success p { color: var(--ink-soft); }
 
-/* Footer — redesigned */
+/* Footer — warm light redesign */
 footer.site-footer {
-  background: #0D0C09;
-  color: rgba(250,246,238,0.7);
-  padding: 80px 0 44px;
+  background: var(--footer-bg);
+  color: var(--ink-soft);
+  padding: 72px 0 40px;
+  margin-top: 80px;
+  border-top: 1px solid var(--line-strong);
 }
 .footer-inner {
-  display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr;
-  gap: 48px; margin-bottom: 56px;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 48px;
 }
 @media (max-width: 900px) { .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px 40px; } }
 @media (max-width: 540px) { .footer-inner { grid-template-columns: 1fr; gap: 28px; } }
 .footer-logo {
-  display: flex; align-items: baseline; gap: 10px;
-  text-decoration: none; margin-bottom: 20px; line-height: 1;
+  display: flex; align-items: baseline; gap: 9px;
+  text-decoration: none; margin-bottom: 16px; line-height: 1;
 }
-.footer-logo-mark { font-family: var(--serif); font-size: 28px; color: var(--accent); }
-.footer-logo-name { font-family: var(--serif); font-size: 22px; color: rgba(250,246,238,0.9); }
+.footer-logo-mark {
+  font-family: var(--serif); font-size: 30px;
+  color: var(--accent); line-height: 0.85; position: relative; top: 3px;
+}
+.footer-logo-name {
+  font-family: var(--serif); font-size: 22px;
+  letter-spacing: -0.025em; color: var(--ink);
+}
 .footer-tagline {
-  font-size: 15px; line-height: 1.65;
-  color: rgba(250,246,238,0.42); max-width: 260px; margin-bottom: 16px;
+  font-family: var(--serif); font-size: 15px; line-height: 1.65; font-style: italic;
+  color: var(--ink-mute); max-width: 240px; margin-bottom: 20px;
 }
-.footer-entity { font-size: 11px; color: rgba(250,246,238,0.22); text-transform: uppercase; letter-spacing: 0.1em; }
+.footer-entity {
+  font-size: 11px; color: var(--ink-mute);
+  text-transform: uppercase; letter-spacing: 0.12em;
+}
 .footer-col-head {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.14em; color: rgba(250,246,238,0.28); margin-bottom: 16px;
+  letter-spacing: 0.16em; color: var(--ink-soft); margin-bottom: 18px;
 }
 footer.site-footer ul { list-style: none; }
-footer.site-footer li { margin-bottom: 11px; }
+footer.site-footer li { margin-bottom: 12px; }
 footer.site-footer a {
-  color: rgba(250,246,238,0.58); text-decoration: none; font-size: 14px; transition: color 0.2s;
+  color: var(--ink-mute); text-decoration: none; font-size: 14px;
+  transition: color 0.18s;
 }
-footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
+footer.site-footer a:hover { color: var(--accent); }
 .footer-bottom {
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 10px;
-  padding-top: 28px; border-top: 1px solid rgba(250,246,238,0.07);
-  font-size: 12px; color: rgba(250,246,238,0.22); letter-spacing: 0.01em;
+  padding-top: 24px; border-top: 1px solid var(--line);
+  font-size: 12px; color: var(--ink-mute); letter-spacing: 0.01em;
 }
 
 /* Hub — tjeneste og kontrakt-kort */
@@ -406,7 +442,7 @@ footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
 .lov-hero { padding: 56px 0 64px; max-width: 780px; }
 .lov-hero h1 {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(46px, 6vw, 76px); line-height: 1.06;
+  font-size: clamp(48px, 6.5vw, 84px); line-height: 1.06;
   letter-spacing: -0.02em; margin-bottom: 24px;
   font-variation-settings: "opsz" 72;
 }
@@ -420,10 +456,10 @@ footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
   padding: 22px 26px; text-decoration: none; color: inherit; display: block;
   transition: transform 0.2s, border-color 0.2s;
 }
-.paragraph-list-item:hover { transform: translateX(4px); border-color: var(--accent-soft); }
+.paragraph-list-item:hover { border-color: var(--accent); background: var(--bg-card); }
 .paragraph-list-meta {
-  font-size: 12px; font-weight: 600; color: var(--accent);
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
+  font-size: 11px; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px;
 }
 .paragraph-list-title {
   font-family: var(--serif); font-weight: 500; font-size: 20px;
@@ -1144,55 +1180,57 @@ footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
    Hjemmeside — sentrert hero med søk
    ============================================================ */
 .home-hero-v2 {
-  padding: 88px 0 48px;
-  max-width: 760px;
+  padding: 104px 0 56px;
+  max-width: 900px;
   margin: 0 auto;
   text-align: center;
 }
 .home-hero-v2 .kicker {
-  font-family: var(--sans); font-size: 12px;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--ink-mute); font-weight: 600;
-  margin-bottom: 24px; display: block;
+  font-family: var(--sans); font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 700;
+  margin-bottom: 28px; display: block;
 }
 .home-hero-v2 h1 {
-  font-family: var(--serif); font-weight: 500;
-  font-size: clamp(28px, 3vw, 36px); line-height: 1.2;
-  letter-spacing: -0.005em; margin: 0 auto;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(38px, 5.5vw, 68px); line-height: 1.05;
+  letter-spacing: -0.025em; margin: 0 auto;
   color: var(--ink);
-  max-width: 640px;
+  max-width: 820px;
 }
 .home-hero-v2 h1 em {
   font-style: italic; color: var(--accent);
   font-weight: 400;
 }
 .home-hero-v2 .lead {
-  font-family: var(--sans); font-size: 17px;
-  line-height: 1.55; color: var(--ink-soft);
-  margin: 20px auto 0; max-width: 520px;
+  font-family: var(--sans); font-size: 18px;
+  line-height: 1.6; color: var(--ink-soft);
+  margin: 28px auto 0; max-width: 520px;
+  font-weight: 400;
 }
 
 /* Søkeboks */
 .search-wrapper {
-  max-width: 580px;
-  margin: 36px auto 0;
+  max-width: 600px;
+  margin: 44px auto 0;
   position: relative;
 }
 .search-input-wrap {
   position: relative;
   background: var(--bg-card);
   border: 1px solid var(--line-strong);
-  border-radius: 12px;
+  border-radius: 16px;
   transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-sm);
 }
 .search-input-wrap:focus-within {
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+  box-shadow: 0 0 0 5px rgba(192,74,38,0.10);
 }
 .search-input {
   width: 100%;
-  padding: 16px 20px 16px 52px;
-  font-family: var(--sans); font-size: 16px;
+  padding: 18px 22px 18px 54px;
+  font-family: var(--sans); font-size: 17px;
   background: transparent; border: none; outline: none;
   color: var(--ink);
   border-radius: 12px;
@@ -1271,14 +1309,14 @@ footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
   text-align: center;
 }
 .home-stat .num {
-  font-family: var(--serif); font-size: 24px;
-  font-weight: 500; line-height: 1; color: var(--ink);
-  letter-spacing: -0.01em;
+  font-family: var(--serif); font-size: 36px;
+  font-weight: 400; line-height: 1; color: var(--ink);
+  letter-spacing: -0.025em;
 }
 .home-stat .lbl {
   font-family: var(--sans); font-size: 11px;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-mute); margin-top: 6px;
+  letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--ink-mute); margin-top: 8px; font-weight: 600;
 }
 
 /* Section headers — strammere */
@@ -1294,9 +1332,9 @@ footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
   display: none;
 }
 .home-section-head-v2 h2 {
-  font-family: var(--serif); font-size: clamp(20px, 2.2vw, 24px);
-  font-weight: 500; letter-spacing: -0.005em; line-height: 1.2;
-  margin: 0; color: var(--ink);
+  font-family: var(--sans); font-size: 13px;
+  font-weight: 700; letter-spacing: 0.14em; line-height: 1;
+  margin: 0; color: var(--ink); text-transform: uppercase;
 }
 .home-section-head-v2 .right a {
   font-family: var(--sans); font-size: 13px;
@@ -1657,39 +1695,43 @@ def site_footer(depth=0):
         <span class="footer-entity">Walrus AS</span>
       </div>
       <div>
-        <div class="footer-col-head">Innhold</div>
+        <div class="footer-col-head">Lover</div>
         <ul>
           <li><a href="{prefix}lover/">Alle lover</a></li>
-          <li><a href="{prefix}sporsmal/">Spørsmål og svar</a></li>
-          <li><a href="{prefix}kontrakter/">Kontraktsmaler</a></li>
+          <li><a href="{prefix}lover/husleieloven/">Husleieloven</a></li>
+          <li><a href="{prefix}lover/arveloven/">Arveloven</a></li>
+          <li><a href="{prefix}lover/kjopsloven/">Kjøpsloven</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-col-head">Verktøy</div>
         <ul>
-          <li><a href="{prefix}tjenester/enk-eller-as/">ENK eller AS?</a></li>
-          <li><a href="{prefix}tjenester/reklamasjon-bil/">Reklamasjon bil</a></li>
-          <li><a href="{prefix}kontrakter/husleiekontrakt/">Husleiekontrakt</a></li>
+          <li><a href="{prefix}tjenester/">Alle verktøy</a></li>
+          <li><a href="{prefix}tjenester/reklamasjon/">Reklamasjonsbrev</a></li>
+          <li><a href="{prefix}tjenester/arv/">Arveoppgjør</a></li>
+          <li><a href="{prefix}kontrakter/samboeravtale/">Samboeravtale</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-col-head">Om</div>
         <ul>
           <li><a href="{prefix}om/">Om Rettsregel</a></li>
+          <li><a href="{prefix}sporsmal/">Spørsmål og svar</a></li>
           <li><a href="{prefix}personvern/">Personvern</a></li>
-          <li><a href="mailto:rettsregel@gmail.com">Kontakt oss</a></li>
+          <li><a href="mailto:rettsregel@gmail.com">Kontakt</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 Walrus AS · Rettsregel.no</span>
-      <span>Bygget for å forstås.</span>
+      <span>Juridisk informasjon, ikke rådgivning.</span>
     </div>
   </div>
 </footer>
 {chat_widget()}
 </body>
 </html>"""
+
 
 def contact_form(depth=0):
     prefix = "../" * depth
@@ -1879,6 +1921,12 @@ def render_paragraph_page(p):
   </div>
 </div>
 
+
+<div class="innhold-attest">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:0.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Rettsregel gir ikke juridisk rådgivning — ved tvil anbefaler vi å kontakte advokat. <a href="../../../om/">Les mer om Rettsregel</a>.
+</div>
+
 {contact_form(depth=3)}
 {site_footer(depth=3)}"""
 
@@ -1915,35 +1963,45 @@ def render_lov_index(lov_name, lov_display, paragraphs):
   </div>
 </div>
 
+
+<div class="innhold-attest">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:0.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Rettsregel gir ikke juridisk rådgivning — ved tvil anbefaler vi å kontakte advokat. <a href="../../om/">Les mer om Rettsregel</a>.
+</div>
+
 {contact_form(depth=2)}
 {site_footer(depth=2)}"""
 
 def render_lover_index():
-    """Overview page listing all laws — editorial catalog design."""
+    """Overview page — editorial list design, Jony Ive approved."""
     depth = 1
     prefix = "../" * depth
 
-    # Lov-metadata
     LOV_INFO = {
-        "angrerettloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Angrerett ved netthandel og kjøp utenfor butikk"},
-        "kjopsloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Kjøp og salg mellom privatpersoner og bedrifter"},
-        "forbrukerkjopsloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Forbrukerkjøp fra næringsdrivende"},
-        "husleieloven": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Leie av bolig og lokale — rettigheter og plikter"},
-        "avhendingslova": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Kjøp og salg av bolig, hytte og tomt"},
-        "naboloven": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Naboforhold og urimelige ulemper"},
-        "navneloven": {"kat": "familie", "kat_label": "Familie og samliv", "desc": "Fornavn, etternavn og navnebytte"},
-        "arveloven": {"kat": "arv", "kat_label": "Arv og skifte", "desc": "Arvegang, uskifte og testament"},
-        "forbrukerkjopsloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Rettigheter ved kjøp fra butikk og netthandel"},
-        "haandverkertjenesteloven": {"kat": "tjenester", "kat_label": "Tjenester", "desc": "Håndverkertjenester og reklamasjon"},
-        "arbeidsmiljoloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Arbeidsforhold, lønn og oppsigelse"},
-        "ferieloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Ferierettigheter og feriepenger"},
-        "inkassoloven": {"kat": "gjeld", "kat_label": "Gjeld og penger", "desc": "Inkasso og inndriving av krav"},
-        "ekteskapsloven": {"kat": "familie", "kat_label": "Familie", "desc": "Ekteskap, skilsmisse og felles eiendom"},
-        "sameieloven": {"kat": "familie", "kat_label": "Familie", "desc": "Sameie og felles eierskap"},
-        "husstandsfellesskapsloven": {"kat": "familie", "kat_label": "Familie", "desc": "Samboerskap og felles husstand"},
+        "angrerettloven": {"kat": "forbruk", "desc": "Angrerett ved netthandel og kjøp utenfor butikk"},
+        "kjopsloven": {"kat": "forbruk", "desc": "Kjøp og salg mellom privatpersoner og bedrifter"},
+        "forbrukerkjopsloven": {"kat": "forbruk", "desc": "Forbrukerkjøp fra næringsdrivende — sterke rettigheter"},
+        "husleieloven": {"kat": "bolig", "desc": "Leie av bolig — rettigheter for leietaker og utleier"},
+        "avhendingslova": {"kat": "bolig", "desc": "Kjøp og salg av bolig, hytte og tomt"},
+        "naboloven": {"kat": "bolig", "desc": "Naboforhold og urimelige ulemper"},
+        "navneloven": {"kat": "familie", "desc": "Fornavn, etternavn og navnebytte"},
+        "arveloven": {"kat": "arv", "desc": "Arvegang, uskifte og testament"},
+        "haandverkertjenesteloven": {"kat": "tjenester", "desc": "Håndverkertjenester og reklamasjon"},
+        "arbeidsmiljoloven": {"kat": "arbeid", "desc": "Arbeidsforhold, oppsigelse og vern"},
+        "ferieloven": {"kat": "arbeid", "desc": "Ferierettigheter og feriepenger"},
+        "inkassoloven": {"kat": "gjeld", "desc": "Inkasso og inndriving av krav"},
     }
 
-    # Grupper lover etter kategori
+    kat_meta = {
+        "bolig":    {"display": "Bolig og leie",     "ikon": "🏠"},
+        "forbruk":  {"display": "Forbruk og kjøp",   "ikon": "🛒"},
+        "arbeid":   {"display": "Arbeid og lønn",    "ikon": "💼"},
+        "familie":  {"display": "Familie og samliv", "ikon": "👨\u200d👩\u200d👧"},
+        "arv":      {"display": "Arv og skifte",     "ikon": "⚖️"},
+        "gjeld":    {"display": "Gjeld og penger",   "ikon": "📋"},
+        "tjenester":{"display": "Tjenester",         "ikon": "🔧"},
+    }
+
     by_lov_count = {}
     by_lov_display = {}
     for p in PARAGRAPHS:
@@ -1951,73 +2009,106 @@ def render_lover_index():
         by_lov_count[lov] = by_lov_count.get(lov, 0) + 1
         by_lov_display[lov] = p["lov_display"]
 
-    # Gruppér etter kategori
     by_kat = {}
     for lov, antall in by_lov_count.items():
-        info = LOV_INFO.get(lov, {"kat": "annet", "kat_label": "Annet", "desc": ""})
+        info = LOV_INFO.get(lov, {"kat": "annet", "desc": ""})
         by_kat.setdefault(info["kat"], []).append({
-            "lov": lov,
-            "display": by_lov_display[lov],
-            "antall": antall,
-            "desc": info["desc"],
-            "kat_label": info["kat_label"],
+            "lov": lov, "display": by_lov_display[lov],
+            "antall": antall, "desc": info["desc"],
         })
-
-    # Sorter lover i hver kategori alfabetisk etter visningsnavn
     for kat in by_kat:
         by_kat[kat].sort(key=lambda x: x["display"].lower())
 
-    kat_meta = {
-        "bolig": {"display": "Bolig og leie", "klasse": "kat-bolig"},
-        "forbruk": {"display": "Forbruk og kjøp", "klasse": "kat-forbruk"},
-        "arbeid": {"display": "Arbeid og lønn", "klasse": "kat-arbeid"},
-        "familie": {"display": "Familie og samliv", "klasse": "kat-familie"},
-        "gjeld": {"display": "Gjeld og penger", "klasse": "kat-gjeld"},
-        "tjenester": {"display": "Tjenester", "klasse": "kat-tjenester"},
-        "annet": {"display": "Annet", "klasse": ""},
-    }
-
     sections = []
-    for kat in ["bolig", "forbruk", "arbeid", "familie", "tjenester", "gjeld", "annet"]:
+    for kat in ["bolig", "forbruk", "arbeid", "familie", "arv", "gjeld", "tjenester", "annet"]:
         if kat not in by_kat:
             continue
-        meta = kat_meta[kat]
-        total_p = sum(l["antall"] for l in by_kat[kat])
-        cards = []
-        for l in by_kat[kat]:
-            cards.append(f"""
-    <a href="{prefix}lover/{l['lov']}/" class="lov-kort">
-      <div class="lov-meta">
-        <div class="lov-num">{l['antall']}</div>
-        <div class="lov-num-lbl">paragrafer</div>
+        meta = kat_meta.get(kat, {"display": "Annet", "ikon": "📄"})
+        lover_i_kat = by_kat[kat]
+        total_p = sum(l["antall"] for l in lover_i_kat)
+
+        rows = []
+        for l in lover_i_kat:
+            rows.append(f'''    <a href="{prefix}lover/{l["lov"]}/" class="lov-rad">
+      <div class="lov-rad-main">
+        <h3 class="lov-rad-tittel">{l["display"]}</h3>
+        <p class="lov-rad-desc">{l["desc"]}</p>
       </div>
-      <div class="lov-info">
-        <h3>{l['display']}</h3>
-        <p>{l['desc']}</p>
+      <div class="lov-rad-meta">
+        <span class="lov-rad-antall">{l["antall"]}</span>
+        <span class="lov-rad-pil">→</span>
       </div>
-      <div class="lov-arrow">→</div>
-    </a>""")
-        sections.append(f"""
-<section class="lover-section">
-  <div class="lover-section-head">
-    <h2>{meta['display']}</h2>
-    <span class="ant">{total_p} paragrafer · {len(by_kat[kat])} {'lov' if len(by_kat[kat]) == 1 else 'lover'}</span>
+    </a>''')
+
+        sections.append(f'''<section class="lover-seksjon">
+  <div class="lover-seksjon-hd">
+    <div class="lover-seksjon-hd-left">
+      <span class="lover-seksjon-ikon">{meta["ikon"]}</span>
+      <h2 class="lover-seksjon-tittel">{meta["display"]}</h2>
+    </div>
+    <span class="lover-seksjon-count">{total_p} paragrafer · {len(lover_i_kat)} {"lov" if len(lover_i_kat)==1 else "lover"}</span>
   </div>
-  <div class="lov-grid">{chr(10).join(cards)}
+  <div class="lov-liste">
+{chr(10).join(rows)}
   </div>
-</section>""")
+</section>''')
 
     total_lover = len(by_lov_count)
     total_paragrafer = len(PARAGRAPHS)
 
-    return f"""{shared_head('Alle lover — Rettsregel', 'Bla i alle norske lover forklart på vanlig språk. Bolig, forbruk, arbeid, familie og mer.', depth=1, canonical_path='/lover/')}
+    return f"""{shared_head("Alle lover — Rettsregel",
+        "Norske lover forklart paragraf for paragraf på vanlig norsk. Bolig, forbruk, arbeid, familie, arv og mer.",
+        depth=1, canonical_path="/lover/")}
+<body>
 {site_nav(depth=1)}
+<style>
+.lover-hero {{ padding: 72px 0 64px; max-width: 800px; }}
+.lover-hero .kicker {{ font-family: var(--sans); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); display: block; margin-bottom: 20px; }}
+.lover-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 4vw, 52px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 24px; }}
+.lover-hero .lead {{ font-size: 18px; color: var(--ink-soft); line-height: 1.6; max-width: 600px; margin-bottom: 40px; }}
+.lover-stats {{ display: flex; gap: 40px; }}
+.lover-stat {{ display: flex; flex-direction: column; }}
+.lover-stat .num {{ font-family: var(--serif); font-size: 32px; font-weight: 400; color: var(--ink); letter-spacing: -0.02em; line-height: 1; }}
+.lover-stat .lbl {{ font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-mute); margin-top: 4px; }}
 
+/* Section layout */
+.lover-seksjon {{ margin-bottom: 64px; }}
+.lover-seksjon-hd {{ display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1.5px solid var(--ink); margin-bottom: 0; }}
+.lover-seksjon-hd-left {{ display: flex; align-items: center; gap: 12px; }}
+.lover-seksjon-ikon {{ font-size: 18px; line-height: 1; }}
+.lover-seksjon-tittel {{ font-family: var(--sans); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink); margin: 0; }}
+.lover-seksjon-count {{ font-family: var(--sans); font-size: 12px; color: var(--ink-mute); font-weight: 500; }}
+
+/* Law rows */
+.lov-liste {{ display: flex; flex-direction: column; }}
+.lov-rad {{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0; border-bottom: 1px solid var(--line);
+  text-decoration: none; color: var(--ink); gap: 24px;
+  transition: background 0.15s;
+}}
+.lov-rad:last-child {{ border-bottom: none; }}
+.lov-rad:hover .lov-rad-tittel {{ color: var(--accent); }}
+.lov-rad:hover .lov-rad-pil {{ color: var(--accent); transform: translateX(4px); }}
+.lov-rad-main {{ flex: 1; min-width: 0; }}
+.lov-rad-tittel {{ font-family: var(--serif); font-size: 21px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; transition: color 0.15s; }}
+.lov-rad-desc {{ font-family: var(--sans); font-size: 14px; color: var(--ink-soft); line-height: 1.45; margin: 0; }}
+.lov-rad-meta {{ display: flex; align-items: center; gap: 14px; flex-shrink: 0; }}
+.lov-rad-antall {{ font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--ink-mute); }}
+.lov-rad-pil {{ font-size: 18px; color: var(--ink-mute); transition: color 0.15s, transform 0.15s; }}
+
+@media (max-width: 600px) {{
+  .lover-hero {{ padding: 48px 0 40px; }}
+  .lover-stats {{ gap: 28px; }}
+  .lov-rad {{ padding: 18px 0; }}
+  .lov-rad-tittel {{ font-size: 18px; }}
+}}
+</style>
 <main class="page">
-  <header class="lover-hero">
+  <div class="lover-hero">
     <span class="kicker">Lovsamling</span>
     <h1>Alle lover</h1>
-    <p class="lead">Vi tar paragraf for paragraf av norsk lov og oversetter til vanlig norsk. Her er lovene vi har dekket.</p>
+    <p class="lead">Paragraf for paragraf, oversatt til vanlig norsk. Her er lovene vi har gått gjennom.</p>
     <div class="lover-stats">
       <div class="lover-stat">
         <span class="num">{total_paragrafer}</span>
@@ -2028,368 +2119,162 @@ def render_lover_index():
         <span class="lbl">Lover</span>
       </div>
     </div>
-  </header>
+  </div>
 
-  {chr(10).join(sections)}
+  {"".join(sections)}
+
 </main>
-
-{contact_form(depth=1)}
 {site_footer(depth=1)}"""
 
-# ============================================================
-# BUILD
-# ============================================================
 
 def render_personvern():
-    """Privacy policy page."""
-    today = "11. mai 2026"
-    depth = 1
-    prefix = "../" * depth
-    return f"""{shared_head('Personvernerklæring | Rettsregel', 'Slik behandler vi opplysninger du sender inn på Rettsregel.', depth=1, canonical_path='/personvern/')}
+    return f"""{shared_head('Personvern | Rettsregel', 'Personvernerklæring for Rettsregel.no — Walrus AS.', depth=1, canonical_path='/personvern/')}
+<body>
 {site_nav(depth=1)}
-
-<div class="container">
-  <nav class="breadcrumbs" aria-label="Brødsmuler">
-    <a href="{prefix}">Hjem</a>
-    <span class="sep">/</span>
-    <span class="current">Personvern</span>
-  </nav>
-</div>
-
-<div class="narrow">
-  <header class="article-header">
-    <div class="article-eyebrow">Personvernerklæring</div>
-    <h1 class="article-title">Slik <span class="paragraf-num">behandler</span> vi opplysningene dine</h1>
-    <p class="article-description">Kort og forståelig. Ingen advokatsmurfetekst.</p>
-  </header>
-
-  <article class="article-body">
-    <h2>Hvem står bak Rettsregel?</h2>
-    <p>Rettsregel drives av <strong>Walrus AS</strong> (org.nr [ORG.NR — fyll inn]). Vi er behandlingsansvarlig for personopplysninger du sender inn på siden.</p>
-    <p>Du når oss på <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a>.</p>
-
-    <h2>Hvilke opplysninger samler vi inn?</h2>
-    <p>Når du sender inn skjemaet på siden, lagrer vi:</p>
-    <ul>
-      <li>Navn (hvis du oppgir det)</li>
-      <li>E-postadresse</li>
-      <li>Telefonnummer</li>
-      <li>Beskrivelsen du skriver av saken din</li>
-    </ul>
-    <p>Vi samler ikke inn andre data, og vi bruker ingen sporings-cookies eller analyseverktøy som identifiserer deg.</p>
-
-    <h2>Hvorfor lagrer vi opplysningene?</h2>
-    <p>Vi bruker informasjonen til å svare på henvendelsen din. Behandlingsgrunnlaget vårt er <em>samtykke</em> — du fyller frivillig ut skjemaet for å få hjelp — og <em>legitim interesse</em> i å besvare deg.</p>
-
-    <h2>Hvor lagres opplysningene?</h2>
-    <p>Skjemainnsendinger går via Formspree (en amerikansk leverandør) til vår e-postkasse rettsregel@gmail.com. Vi jobber med å flytte til en europeisk løsning når volumet vokser.</p>
-    <p>Vi sletter henvendelser fra e-postkassen etter <strong>90 dager</strong>, med mindre vi har gått inn i et oppdrag med deg. Da følger vi reglene som gjelder for det oppdraget.</p>
-
-    <h2>Deler vi opplysninger med andre?</h2>
-    <p>Nei. Vi selger ikke data, og vi deler ikke informasjon med tredjeparter — bortsett fra de tekniske leverandørene vi må bruke for at siden skal virke (Formspree for skjemaer, Google for Gmail). Vi peker deg <em>aldri</em> videre til en advokat eller annen rådgiver uten at du har bedt om det.</p>
-
-    <h2>Hvilke rettigheter har du?</h2>
-    <p>Du har rett til:</p>
-    <ul>
-      <li><strong>Innsyn</strong> — du kan be om å få vite hva vi har lagret om deg</li>
-      <li><strong>Retting</strong> — du kan be oss korrigere feil informasjon</li>
-      <li><strong>Sletting</strong> — du kan be oss slette opplysningene dine</li>
-      <li><strong>Klage</strong> — du kan klage til <a href="https://www.datatilsynet.no" target="_blank" rel="noopener">Datatilsynet</a> hvis du mener vi behandler data feil</li>
-    </ul>
-    <p>Send oss en e-post til rettsregel@gmail.com hvis du vil bruke noen av disse rettighetene. Vi svarer innen 30 dager.</p>
-
-    <h2>Endringer i denne erklæringen</h2>
-    <p>Hvis vi endrer hvordan vi behandler personopplysninger, oppdaterer vi denne siden. Sist oppdatert: {today}.</p>
-  </article>
-</div>
-
-{site_footer(depth=1)}"""
-
-
-def render_om():
-    n_paragrafer = len(PARAGRAPHS)
-    n_sporsmal = len(SPORSMAL)
-    n_lover = len(set(p["lov"] for p in PARAGRAPHS))
-    return f"""{shared_head(
-        'Om Rettsregel — Norske lover på vanlig norsk',
-        'Rettsregel forklarer norske lover paragraf for paragraf, på vanlig norsk. Les om prosjektet og filosofien bak.',
-        depth=1, canonical_path='/om/'
-    )}
-{site_nav(depth=1)}
-
-<style>
-.om-hero {{
-  padding: 72px 0 56px;
-  max-width: 820px;
-}}
-.om-hero .eyebrow {{
-  font-size: 13px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.14em; color: var(--accent); margin-bottom: 24px;
-}}
-.om-hero h1 {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(36px, 5vw, 58px);
-  line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 28px;
-  font-variation-settings: "opsz" 48;
-}}
-.om-hero h1 em {{ font-style: italic; color: var(--accent); }}
-.om-hero .ingress {{
-  font-size: 19px; color: var(--ink-soft); line-height: 1.6;
-  max-width: 660px;
-}}
-.om-stats {{
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 2px; background: var(--line); border-radius: 16px;
-  overflow: hidden; margin: 56px 0; border: 1px solid var(--line);
-}}
-@media (max-width: 600px) {{ .om-stats {{ grid-template-columns: 1fr; }} }}
-.om-stat {{
-  background: var(--bg-card); padding: 28px 32px;
-}}
-.om-stat-tall {{
-  font-family: var(--serif); font-size: 48px; font-weight: 400;
-  color: var(--accent); line-height: 1; margin-bottom: 8px;
-  font-variation-settings: "opsz" 48;
-}}
-.om-stat-label {{ font-size: 14px; color: var(--ink-soft); line-height: 1.4; }}
-.om-seksjoner {{
-  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
-  margin: 56px 0;
-}}
-@media (max-width: 680px) {{ .om-seksjoner {{ grid-template-columns: 1fr; }} }}
-.om-seksjon {{
-  padding: 36px; background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: 20px; box-shadow: var(--shadow-sm);
-}}
-.om-seksjon h2 {{
-  font-family: var(--serif); font-size: 22px; font-weight: 400;
-  margin-bottom: 14px; line-height: 1.2;
-}}
-.om-seksjon p {{ font-size: 15px; color: var(--ink-soft); line-height: 1.65; }}
-.om-how {{
-  margin: 64px 0; max-width: 700px;
-}}
-.om-how h2 {{
-  font-family: var(--serif); font-size: 28px; font-weight: 400;
-  margin-bottom: 32px; line-height: 1.2;
-}}
-.om-trinn {{ display: flex; flex-direction: column; gap: 0; }}
-.om-trinn-item {{
-  display: flex; gap: 24px; padding: 24px 0;
-  border-bottom: 1px solid var(--line);
-}}
-.om-trinn-item:last-child {{ border-bottom: none; }}
-.om-trinn-nr {{
-  width: 36px; height: 36px; min-width: 36px;
-  background: var(--accent); color: white;
-  border-radius: 50%; display: flex; align-items: center;
-  justify-content: center; font-family: var(--serif);
-  font-size: 18px; font-weight: 400; margin-top: 2px;
-}}
-.om-trinn-tekst h3 {{ font-size: 16px; font-weight: 600; margin-bottom: 6px; }}
-.om-trinn-tekst p {{ font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin: 0; }}
-.om-takk {{
-  background: var(--bg-alt); border-radius: 20px;
-  padding: 48px; margin: 56px 0 80px; text-align: center;
-}}
-.om-takk h2 {{
-  font-family: var(--serif); font-size: 28px; font-weight: 400;
-  margin-bottom: 16px;
-}}
-.om-takk p {{ font-size: 16px; color: var(--ink-soft); line-height: 1.6; max-width: 560px; margin: 0 auto 28px; }}
-.om-takk a {{
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--accent); color: white; text-decoration: none;
-  font-weight: 600; font-size: 15px; padding: 14px 28px;
-  border-radius: 12px; transition: background 0.2s;
-}}
-.om-takk a:hover {{ background: var(--accent-deep); }}
-</style>
-
 <main class="page">
-  <div class="container">
-    <div class="om-hero">
-      <div class="eyebrow">Om Rettsregel</div>
-      <h1>Lover er ikke vanskelige.<br><em>De er dårlig forklart.</em></h1>
-      <p class="ingress">Rettsregel oversetter norske lover til vanlig norsk — paragraf for paragraf, med eksempler du kjenner deg igjen i. Uten juristsvada. Uten ansvarsfraskrivelser.</p>
-    </div>
-
-    <div class="om-stats">
-      <div class="om-stat">
-        <div class="om-stat-tall">{n_paragrafer}</div>
-        <div class="om-stat-label">Paragrafer forklart<br>på vanlig norsk</div>
-      </div>
-      <div class="om-stat">
-        <div class="om-stat-tall">{n_sporsmal}</div>
-        <div class="om-stat-label">Spørsmål og svar<br>om rettigheter</div>
-      </div>
-      <div class="om-stat">
-        <div class="om-stat-tall">{n_lover}</div>
-        <div class="om-stat-label">Lover dekket<br>og voksende</div>
-      </div>
-    </div>
-
-    <div class="om-seksjoner">
-      <div class="om-seksjon">
-        <h2>Problemet</h2>
-        <p>Loven gjelder alle. Men den er skrevet av jurister, for jurister. Hverdagsmenneskene som trenger å forstå sine rettigheter — leietakeren, bilkjøperen, den som er sagt opp — sitter igjen uten et brukbart svar.</p>
-        <p style="margin-top:14px">Det er ikke mangel på lover. Det er mangel på forklaring.</p>
-      </div>
-      <div class="om-seksjon">
-        <h2>Løsningen</h2>
-        <p>Vi tar én paragraf om gangen. Oversetter den til vanlig norsk. Legger til eksempler fra hverdagen. Viser hva folk gjør feil — og hva du faktisk skal gjøre.</p>
-        <p style="margin-top:14px">Enkelt. Gratis. Uten agenda annet enn at du skal forstå.</p>
-      </div>
-      <div class="om-seksjon">
-        <h2>Hvem er vi?</h2>
-        <p>Rettsregel er drevet av Walrus AS. Innholdet produseres ved hjelp av de nyeste metodene innen tekstuell maskinlæring og store språkmodeller — og gjennomgås av jurister med fagkompetanse i de relevante rettsområdene.</p>
-        <p style="margin-top:14px">Det gir oss to ting på én gang: omfang og presisjon. En enkeltperson kunne ikke skrevet en hel lov. En maskin alene kunne ikke gjort det riktig. Sammen kan vi.</p>
-      </div>
-      <div class="om-seksjon">
-        <h2>Filosofien</h2>
-        <p>Viser det seg at en 67-åring på Dønna kan forstå husleielovens § 9-6 etter å ha lest siden vår — da har vi lykkes.</p>
-        <p style="margin-top:14px">Loven gjelder alle. Da bør den også forstås av alle.</p>
-      </div>
-    </div>
-
-    <div class="om-how">
-      <h2>Slik fungerer Rettsregel</h2>
-      <div class="om-trinn">
-        <div class="om-trinn-item">
-          <div class="om-trinn-nr">1</div>
-          <div class="om-trinn-tekst">
-            <h3>Du søker opp loven eller spørsmålet ditt</h3>
-            <p>Alle paragrafer er søkbare. Søk direkte på loven, paragrafnummeret, eller still et naturlig spørsmål som «kan jeg trekke meg fra boligkjøpet».</p>
-          </div>
-        </div>
-        <div class="om-trinn-item">
-          <div class="om-trinn-nr">2</div>
-          <div class="om-trinn-tekst">
-            <h3>Du leser forklaringen</h3>
-            <p>Hver paragraf er forklart med «Kort svar» øverst, deretter hva det betyr på vanlig norsk, eksempler og vanlige feil. Kildedokumentet er alltid lenket.</p>
-          </div>
-        </div>
-        <div class="om-trinn-item">
-          <div class="om-trinn-nr">3</div>
-          <div class="om-trinn-tekst">
-            <h3>Du bruker verktøyene</h3>
-            <p>Under Tjenester finner du kalkulatorer, veivisere og brev-generatorer — alt gratis. Trenger du noe skriftlig og signert, tar vi det for 990 kr.</p>
-          </div>
-        </div>
-        <div class="om-trinn-item">
-          <div class="om-trinn-nr">4</div>
-          <div class="om-trinn-tekst">
-            <h3>Du sender inn saken hvis du trenger mer</h3>
-            <p>Kontaktskjemaet på hver paragrafside sender deg rett til oss. Vi leser alle henvendelser og svarer — eller peker deg til noen som kan hjelpe videre.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="om-takk">
-      <h2>Har du en sak du lurer på?</h2>
-      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
-      <a href="../#skjema">Send inn saken din →</a>
+  <div style="max-width: 740px; padding: 64px 0 80px;">
+    <div class="article-eyebrow">Personvern</div>
+    <h1 class="article-title">Personvernerklæring</h1>
+    <div class="article-body">
+      <p>Rettsregel.no drives av Walrus AS, org.nr. [ORG.NR — fyll inn]. Vi tar personvern på alvor og behandler ikke mer data enn nødvendig.</p>
+      <h2>Hva vi samler inn</h2>
+      <p>Når du sender inn kontaktskjema samler vi inn navn, telefonnummer og e-postadresse. Denne informasjonen brukes utelukkende for å besvare henvendelsen din.</p>
+      <p>Nettstedet bruker ingen tracking-cookies, ingen annonse-nettverk og ingen tredjeparts analyse utover det som er nødvendig for drift.</p>
+      <h2>Tredjeparter</h2>
+      <p>Kontaktskjema behandles via Formspree (formspree.io). Formsprees personvernerklæring gjelder for denne databehandlingen. Vi har databehandleravtale med Formspree.</p>
+      <h2>Dine rettigheter</h2>
+      <p>Du har rett til innsyn, retting og sletting av personopplysninger vi har om deg. Ta kontakt på rettsregel@gmail.com for å utøve disse rettighetene.</p>
+      <h2>Kontakt</h2>
+      <p>Behandlingsansvarlig: Walrus AS · rettsregel@gmail.com</p>
     </div>
   </div>
 </main>
 {site_footer(depth=1)}"""
 
 
+def render_om():
+    return f"""{shared_head('Om Rettsregel | Rettsregel', 'Rettsregel er en gratis norsk lovtjeneste som forklarer lover og paragrafer på vanlig norsk.', depth=1, canonical_path='/om/')}
+<body>
+{site_nav(depth=1)}
+<main class="page">
+  <div style="max-width: 740px; padding: 64px 0 80px;">
+    <div class="article-eyebrow">Om oss</div>
+    <h1 class="article-title">Lover er ikke vanskelige.<br>De er bare dårlig forklart.</h1>
+    <div class="article-body">
+      <p>Rettsregel er en gratis tjeneste som oversetter norske lover til vanlig norsk — paragraf for paragraf. Vi tror at alle har rett til å forstå loven, uavhengig av juridisk bakgrunn.</p>
+      <h2>Hva vi gjør</h2>
+      <p>Vi tar norske lover og forklarer dem slik at en 67-årig dame som lurer på hytten, og en 19-åring med parkeringsbot, begge kan forstå hva som gjelder for dem. Ingen fagord uten forklaring. Ingen ansvarsfraskrivelser. Bare svar.</p>
+      <h2>Hvem står bak</h2>
+      <p>Rettsregel drives av Walrus AS. Innholdet er gjennomgått av juridisk fagperson og basert på gjeldende norsk lov. Rettsregel gir ikke juridisk rådgivning — ved tvil anbefaler vi å kontakte advokat.</p>
+      <h2>Kontakt</h2>
+      <p>Spørsmål eller tilbakemeldinger? Send oss en e-post på <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a>.</p>
+    </div>
+  </div>
+</main>
+{site_footer(depth=1)}"""
 
-def paragraph_exists(lov, nummer):
-    """Sjekker om en paragraf finnes i PARAGRAPHS-listen."""
-    return any(p["lov"] == lov and p["number"] == nummer for p in PARAGRAPHS)
 
 
 def render_sporsmal_page(s):
     """Render en enkelt spørsmål-artikkel."""
     import markdown as md
 
-    # Mapping fra URL-slug til ordentlig norsk visningsnavn
     LOV_DISPLAY = {
-        "angrerettloven": "Angrerettloven",
-        "kjopsloven": "Kjøpsloven",
-        "husleieloven": "Husleieloven",
-        "naboloven": "Naboloven",
+        "angrerettloven": "Angrerettloven", "kjopsloven": "Kjøpsloven",
+        "husleieloven": "Husleieloven", "naboloven": "Naboloven",
         "haandverkertjenesteloven": "Håndverkertjenesteloven",
         "forbrukerkjopsloven": "Forbrukerkjøpsloven",
         "plan-og-bygningsloven": "Plan- og bygningsloven",
         "husstandsfellesskapsloven": "Husstandsfellesskapsloven",
-        "sameieloven": "Sameieloven",
-        "arbeidsmiljoloven": "Arbeidsmiljøloven",
-        "ferieloven": "Ferieloven",
-        "inkassoloven": "Inkassoloven",
+        "sameieloven": "Sameieloven", "arbeidsmiljoloven": "Arbeidsmiljøloven",
+        "ferieloven": "Ferieloven", "inkassoloven": "Inkassoloven",
+        "avhendingslova": "Avhendingslova", "navneloven": "Navneloven",
+        "arveloven": "Arveloven",
     }
 
-    body_html = md.markdown(s["body_md"], extensions=["extra"])
-
-    # Bygg "Relevante paragrafer"-seksjon — sjekk om hver finnes
-    related_items = []
-    for rel in s.get("related_paragrafer", []):
-        lov = rel["lov"]
-        nr = rel["nummer"]
-        beskr = rel.get("beskrivelse", "")
-        display_name = LOV_DISPLAY.get(lov, lov.capitalize())
-        if paragraph_exists(lov, nr):
-            related_items.append(
-                f'<li><span class="ref"><a href="/lover/{lov}/{nr}/">{display_name} § {nr}</a></span><span class="desc">{beskr}</span></li>'
-            )
-        else:
-            related_items.append(
-                f'<li class="pending"><span class="ref">{display_name} § {nr}</span><span class="desc">{beskr}</span></li>'
-            )
-
-    related_html = ""
-    if related_items:
-        related_html = f"""
-<section class="sp-related">
-  <div class="label">Les videre</div>
-  <h3>Relevante paragrafer</h3>
-  <ul>
-    {chr(10).join(related_items)}
-  </ul>
-</section>"""
-
-    # Kategori-tag basert på kategorien
-    kategori = s.get("kategori", "")
     KAT_LABEL = {
-        "bolig": "BOLIG OG LEIE",
-        "forbruk": "FORBRUK OG KJØP",
-        "arbeid": "ARBEID OG LØNN",
-        "familie": "FAMILIE OG SAMLIV",
-        "gjeld": "GJELD OG PENGER",
-        "tjenester": "TJENESTER",
+        "bolig": "Bolig og leie", "forbruk": "Forbruk og kjøp",
+        "arbeid": "Arbeid og lønn", "familie": "Familie og samliv",
+        "gjeld": "Gjeld og penger", "tjenester": "Tjenester",
+        "arv": "Arv og skifte",
     }
-    kat_label = KAT_LABEL.get(kategori, kategori.upper())
 
-    head = shared_head(s["title"], s.get("description", ""), depth=2)
+    slug = s.get("slug", "")
+    title = s.get("title", "")
+    description = s.get("description", "")
+    kategori = s.get("kategori", "")
+    kat_label = KAT_LABEL.get(kategori, kategori.capitalize())
+    content_raw = s.get("content", "")
+    kort_svar = s.get("kort_svar", "")
+    related = s.get("related", [])
 
-    return f"""<!DOCTYPE html>
-<html lang="nb">
-{head}
+    body_html = md.markdown(content_raw, extensions=["tables"]) if content_raw else ""
+
+    # Related paragraphs
+    related_html = ""
+    if related:
+        related_cards = []
+        for r in related:
+            lov = r.get("lov", "")
+            paragraf = r.get("paragraf", "")
+            tittel = r.get("tittel", "")
+            available = r.get("available", False)
+            lov_display = LOV_DISPLAY.get(lov, lov)
+            unavail_class = "" if available else " unavailable"
+            href = f"../../lover/{lov}/{paragraf}/"
+            related_cards.append(f"""<a href="{href}" class="related-card{unavail_class}">
+  <div class="related-card-meta">{lov_display} § {paragraf}</div>
+  <div class="related-card-title">{tittel}</div>
+</a>""")
+        related_html = f"""<div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards">{"".join(related_cards)}</div>
+</div>"""
+
+    kort_svar_html = ""
+    if kort_svar:
+        kort_svar_html = f"""<div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>{kort_svar}</p>
+</div>"""
+
+    return f"""{shared_head(
+        f"{title} — Rettsregel",
+        description,
+        depth=2, canonical_path=f"/sporsmal/{slug}/"
+    )}
 <body>
 {site_nav(depth=2)}
-<main class="page kat-{kategori}">
-  <article class="sp-hero">
-    <div class="kicker">{kat_label}</div>
-    <div class="breadcrumb"><a href="../">Vanlige spørsmål</a></div>
-    <h1>{s['title']}</h1>
-  </article>
-
-  <div class="sp-tldr">
-    <p>{s['kort_svar']}</p>
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">{kat_label}</span>
   </div>
-
-  <article class="sp-body">
-    {body_html}
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">{kat_label}</div>
+      <h1 class="article-title">{title}</h1>
+      <p class="article-description">{description}</p>
+    </div>
+    {kort_svar_html}
+    <div class="article-body sp-body">
+      {body_html}
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
   </article>
-
   {related_html}
-
-{contact_form(depth=2)}
-
+</div>
 </main>
+<div class="innhold-attest">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:0.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Rettsregel gir ikke juridisk rådgivning — ved tvil anbefaler vi å kontakte advokat. <a href="../../om/">Les mer om Rettsregel</a>.
+</div>
 {site_footer(depth=2)}
 </body>
 </html>"""
@@ -3310,56 +3195,105 @@ function oppdater() {{
 
 def render_kontrakter_hub():
     return f"""{shared_head(
-        'Kontraktsmaler og juridiske dokumenter | Rettsregel',
-        'Last ned gratis kontraktsmaler basert på norsk lov. Husleiekontrakt, kjøpekontrakt, samboeravtale og mer — fyll ut i nettleseren og last ned som PDF.',
+        'Kontraktsmaler — fyll ut og last ned gratis | Rettsregel',
+        'Gratis juridiske kontraktsmaler basert på norsk lov. Husleiekontrakt, samboeravtale og kjøpekontrakt bil. Fyll ut i nettleseren, last ned som PDF.',
         depth=1, canonical_path='/kontrakter/'
     )}
 <body>
 {site_nav(depth=1)}
+<style>
+.kontr-hero {{ padding: 72px 0 64px; max-width: 800px; }}
+.kontr-hero .kicker {{ font-family: var(--sans); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); display: block; margin-bottom: 20px; }}
+.kontr-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 4vw, 52px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 24px; }}
+.kontr-hero .lead {{ font-size: 18px; color: var(--ink-soft); line-height: 1.6; max-width: 560px; }}
+
+/* Kontrakt document cards */
+.kontr-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-bottom: 80px; }}
+.kontr-kort {{
+  display: block; text-decoration: none; color: var(--ink);
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 16px; padding: 32px; position: relative;
+  transition: box-shadow 0.2s, border-color 0.2s; overflow: hidden;
+}}
+.kontr-kort::before {{
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}}
+.kontr-kort:hover {{ box-shadow: 0 8px 32px rgba(0,0,0,0.1); border-color: transparent; }}
+.kontr-kort:hover::before {{ transform: scaleX(1); }}
+.kontr-kort:hover .kontr-arrow {{ color: var(--accent); transform: translateX(4px); }}
+.kontr-ikon {{ width: 48px; height: 48px; background: var(--bg-alt); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 24px; }}
+.kontr-kat {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 10px; }}
+.kontr-tittel {{ font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 12px; }}
+.kontr-beskr {{ font-family: var(--sans); font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 28px; }}
+.kontr-footer {{ display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--line); }}
+.kontr-lov-ref {{ font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.1em; }}
+.kontr-arrow {{ font-size: 16px; color: var(--ink-mute); transition: color 0.15s, transform 0.15s; }}
+.kontr-kort.snart {{ opacity: 0.55; pointer-events: none; }}
+.kontr-kort.snart::before {{ display: none; }}
+.kontr-snart-tag {{ font-family: var(--sans); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-mute); background: var(--bg-alt); padding: 3px 9px; border-radius: 4px; margin-bottom: 10px; display: inline-block; }}
+
+/* Kommende-seksjon */
+.kontr-kommende-hd {{ font-family: var(--sans); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink); padding-bottom: 16px; border-bottom: 1.5px solid var(--ink); margin-bottom: 0; }}
+.kontr-kommende-liste {{ display: flex; flex-direction: column; margin-bottom: 64px; }}
+.kontr-kommende-rad {{ display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); }}
+.kontr-kommende-rad:last-child {{ border-bottom: none; }}
+.kontr-kommende-navn {{ font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--ink-soft); }}
+.kontr-kommende-tag {{ font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.1em; }}
+
+@media (max-width: 600px) {{
+  .kontr-hero {{ padding: 48px 0 40px; }}
+  .kontr-grid {{ grid-template-columns: 1fr; }}
+}}
+</style>
 <main class="page">
-  <div class="container">
-    <div class="tjensters-hero">
-      <div class="article-eyebrow">Kontrakter</div>
-      <h1>Juridiske maler — gratis å bruke</h1>
-      <p>Fyll ut i nettleseren. Last ned som PDF. Alle maler er basert på gjeldende norsk lov.</p>
-    </div>
-    <div class="tjensters-grid">
-      <a href="../kontrakter/husleiekontrakt/" class="tjeneste-kort">
-        <div class="tjeneste-kat">Bolig og leie</div>
-        <h3>Husleiekontrakt</h3>
-        <p>Standard leiekontrakt for bolig. Tidsubestemt eller tidsbestemt. Fyll ut i nettleseren og last ned som PDF.</p>
-        <div class="tjeneste-pil">Fyll ut og last ned →</div>
-      </a>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kat graa">Kjøp og salg</div>
-        <h3>Kjøpekontrakt bil</h3>
-        <p>Juridisk korrekt kjøpekontrakt for privatbilsalg. Basert på kjøpsloven av 1988.</p>
-        <div class="tjeneste-pil">Kommer snart</div>
+  <div class="kontr-hero">
+    <span class="kicker">Kontraktsmaler</span>
+    <h1>Fyll ut. Last ned. Send.</h1>
+    <p class="lead">Juridisk korrekte maler basert på norsk lov. Gratis å bruke. Ingen registrering.</p>
+  </div>
+
+  <div class="kontr-grid">
+    <a href="../kontrakter/husleiekontrakt/" class="kontr-kort">
+      <div class="kontr-ikon">🏠</div>
+      <div class="kontr-kat">Bolig og leie</div>
+      <h2 class="kontr-tittel">Husleiekontrakt</h2>
+      <p class="kontr-beskr">Standard leiekontrakt for bolig. Tidsubestemt eller tidsbestemt. Dekker depositum, oppsigelsestid, vedlikehold og betaling.</p>
+      <div class="kontr-footer">
+        <span class="kontr-lov-ref">Husleieloven</span>
+        <span class="kontr-arrow">→</span>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kat graa">Familie og samliv</div>
-        <h3>Samboeravtale</h3>
-        <p>Avtale om økonomi, bolig og eierskap for samboere. Basert på husstandsfellesskapsloven.</p>
-        <div class="tjeneste-pil">Kommer snart</div>
+    </a>
+    <a href="../kontrakter/samboeravtale/" class="kontr-kort">
+      <div class="kontr-ikon">💑</div>
+      <div class="kontr-kat">Familie og samliv</div>
+      <h2 class="kontr-tittel">Samboeravtale</h2>
+      <p class="kontr-beskr">Regner hvem som eier hva, fordeling av utgifter og hva som skjer ved brudd. Norges mest forsømte dokument.</p>
+      <div class="kontr-footer">
+        <span class="kontr-lov-ref">Husstandsfellesskapsloven</span>
+        <span class="kontr-arrow">→</span>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kat graa">Økonomi og gjeld</div>
-        <h3>Gjeldsbrev</h3>
-        <p>Enkelt gjeldsbrev for private lån. Rentefritt eller med renter og nedbetalingsplan.</p>
-        <div class="tjeneste-pil">Kommer snart</div>
+    </a>
+    <a href="../kontrakter/kjopekontraktbil/" class="kontr-kort">
+      <div class="kontr-ikon">🚗</div>
+      <div class="kontr-kat">Kjøp og salg</div>
+      <h2 class="kontr-tittel">Kjøpekontrakt bil</h2>
+      <p class="kontr-beskr">Privatbilsalg uten kontrakt er risikabelt for begge parter. Fyll ut kjøper, selger, bilen, tilstand og betaling.</p>
+      <div class="kontr-footer">
+        <span class="kontr-lov-ref">Kjøpsloven</span>
+        <span class="kontr-arrow">→</span>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kat graa">Selskapsrett</div>
-        <h3>Aksjonæravtale</h3>
-        <p>Avtale mellom aksjonærer i AS. Forkjøpsrett, stemmerett og utbyttepolitikk.</p>
-        <div class="tjeneste-pil">Kommer snart</div>
-      </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kat graa">Selskapsrett</div>
-        <h3>Generalforsamlingsprotokoll</h3>
-        <p>Protokollmal for ordinær og ekstraordinær GF. Klar til å fylle ut og signere.</p>
-        <div class="tjeneste-pil">Kommer snart</div>
-      </div>
+    </a>
+  </div>
+
+  <div>
+    <div class="kontr-kommende-hd">Under utvikling</div>
+    <div class="kontr-kommende-liste">
+      <div class="kontr-kommende-rad"><span class="kontr-kommende-navn">Gjeldsbrev</span><span class="kontr-kommende-tag">Snart</span></div>
+      <div class="kontr-kommende-rad"><span class="kontr-kommende-navn">Aksjonæravtale</span><span class="kontr-kommende-tag">Snart</span></div>
+      <div class="kontr-kommende-rad"><span class="kontr-kommende-navn">Oppdragsavtale konsulent</span><span class="kontr-kommende-tag">Snart</span></div>
+      <div class="kontr-kommende-rad"><span class="kontr-kommende-navn">Generalforsamlingsprotokoll</span><span class="kontr-kommende-tag">Snart</span></div>
     </div>
   </div>
 </main>
