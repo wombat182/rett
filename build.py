@@ -31,8 +31,12 @@ try:
     from paragraphs_naboloven import PARAGRAPHS as _P_NABOLOVEN
 except ImportError:
     _P_NABOLOVEN = []
+try:
+    from paragraphs_navneloven import PARAGRAPHS as _P_NAVNELOVEN
+except ImportError:
+    _P_NAVNELOVEN = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -383,6 +387,12 @@ footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
 }
 @media (max-width: 760px) {
   .vg3 { grid-template-columns: 1fr 1fr !important; }
+}
+/* Grid overflow fix — all two-column layouts */
+.kontrakt-layout > *, .rek-layout > * { min-width: 0; }
+@media (max-width: 1024px) {
+  .kontrakt-layout, .rek-layout { grid-template-columns: 1fr !important; }
+  .kontrakt-skjema, .rek-skjema { position: static !important; }
 }
 
 .lov-hero { padding: 56px 0 64px; max-width: 780px; }
@@ -1913,6 +1923,7 @@ def render_lover_index():
         "husleieloven": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Leie av bolig og lokale — rettigheter og plikter"},
         "avhendingslova": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Kjøp og salg av bolig, hytte og tomt"},
         "naboloven": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Naboforhold og urimelige ulemper"},
+        "navneloven": {"kat": "familie", "kat_label": "Familie og samliv", "desc": "Fornavn, etternavn og navnebytte"},
         "haandverkertjenesteloven": {"kat": "tjenester", "kat_label": "Tjenester", "desc": "Håndverkertjenester og reklamasjon"},
         "arbeidsmiljoloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Arbeidsforhold, lønn og oppsigelse"},
         "ferieloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Ferierettigheter og feriepenger"},
@@ -2503,6 +2514,7 @@ def render_homepage():
         "husleieloven": ("bolig", "Bolig og leie"),
         "avhendingslova": ("bolig", "Bolig og leie"),
         "naboloven": ("bolig", "Bolig og leie"),
+        "navneloven": ("familie", "Familie og samliv"),
         "haandverkertjenesteloven": ("tjenester", "Tjenester"),
         "arbeidsmiljoloven": ("arbeid", "Arbeid og lønn"),
         "ferieloven": ("arbeid", "Arbeid og lønn"),
