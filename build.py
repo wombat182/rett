@@ -305,33 +305,86 @@ form.contact-form.hide { display: none; }
 .form-success h3 { font-family: var(--serif); font-size: 24px; margin-bottom: 10px; font-variation-settings: "opsz" 28; }
 .form-success p { color: var(--ink-soft); }
 
-/* Footer */
-footer.site-footer { background: var(--ink); color: var(--bg); padding: 64px 0 32px; }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
-@media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; gap: 32px; } }
-.footer-brand {
-  font-family: var(--serif); font-size: 32px; font-weight: 400; letter-spacing: -0.015em;
-  margin-bottom: 12px; font-variation-settings: "opsz" 72;
+/* Footer — redesigned */
+footer.site-footer {
+  background: #0D0C09;
+  color: rgba(250,246,238,0.7);
+  padding: 80px 0 44px;
 }
-.footer-brand span { color: var(--accent-soft); }
-.footer-tagline { color: rgba(250,246,238,0.6); font-size: 15px; max-width: 320px; line-height: 1.5; }
-footer.site-footer h4 {
-  font-family: var(--sans); font-size: 12px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-soft); margin-bottom: 18px;
+.footer-inner {
+  display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 56px;
+}
+@media (max-width: 900px) { .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px 40px; } }
+@media (max-width: 540px) { .footer-inner { grid-template-columns: 1fr; gap: 28px; } }
+.footer-logo {
+  display: flex; align-items: baseline; gap: 10px;
+  text-decoration: none; margin-bottom: 20px; line-height: 1;
+}
+.footer-logo-mark { font-family: var(--serif); font-size: 28px; color: var(--accent); }
+.footer-logo-name { font-family: var(--serif); font-size: 22px; color: rgba(250,246,238,0.9); }
+.footer-tagline {
+  font-size: 15px; line-height: 1.65;
+  color: rgba(250,246,238,0.42); max-width: 260px; margin-bottom: 16px;
+}
+.footer-entity { font-size: 11px; color: rgba(250,246,238,0.22); text-transform: uppercase; letter-spacing: 0.1em; }
+.footer-col-head {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.14em; color: rgba(250,246,238,0.28); margin-bottom: 16px;
 }
 footer.site-footer ul { list-style: none; }
-footer.site-footer li { margin-bottom: 10px; }
+footer.site-footer li { margin-bottom: 11px; }
 footer.site-footer a {
-  color: rgba(250,246,238,0.7); text-decoration: none; font-size: 15px; transition: color 0.2s;
+  color: rgba(250,246,238,0.58); text-decoration: none; font-size: 14px; transition: color 0.2s;
 }
-footer.site-footer a:hover { color: var(--bg); }
+footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
 .footer-bottom {
-  padding-top: 24px; border-top: 1px solid rgba(250,246,238,0.1);
-  font-size: 13px; color: rgba(250,246,238,0.5);
-  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px;
+  padding-top: 28px; border-top: 1px solid rgba(250,246,238,0.07);
+  font-size: 12px; color: rgba(250,246,238,0.22); letter-spacing: 0.01em;
 }
 
-/* Index page (lov overview) */
+/* Hub — tjeneste og kontrakt-kort */
+.tjenester-hero { padding: 48px 0 40px; }
+.tjenester-hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.12; letter-spacing: -0.015em; margin-bottom: 16px; }
+.tjenester-hero p { font-size: 17px; color: var(--ink-soft); max-width: 580px; line-height: 1.55; }
+.tjenester-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin: 36px 0 64px; }
+.tjeneste-kort {
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px;
+  padding: 28px 32px; text-decoration: none; color: var(--ink);
+  transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+  display: flex; flex-direction: column; gap: 8px; position: relative; min-height: 190px;
+}
+.tjeneste-kort:not(.snart):hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: rgba(177,74,42,0.25); }
+.tjeneste-kort.snart { pointer-events: none; }
+.tjeneste-kat {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.14em; color: var(--accent); margin-bottom: 4px;
+}
+.tjeneste-kat.graa { color: var(--ink-mute); }
+.tjeneste-kort h3 { font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.2; margin: 0; }
+.tjeneste-kort.snart h3 { color: var(--ink-soft); }
+.tjeneste-kort p { font-size: 14px; color: var(--ink-soft); line-height: 1.55; flex: 1; margin: 0; }
+.tjeneste-pil { font-size: 13px; color: var(--accent); font-weight: 600; margin-top: 10px; }
+.tjeneste-kort.snart .tjeneste-pil { color: var(--ink-mute); }
+.snart-badge {
+  position: absolute; top: 16px; right: 16px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  background: var(--bg-alt); color: var(--ink-mute); padding: 3px 9px; border-radius: 20px;
+}
+
+/* Mobile wizard fixes — applied globally */
+@media (max-width: 640px) {
+  .vg, .vg3 { grid-template-columns: 1fr !important; }
+  .enk-kort, .steg-kort, .kalkulator { padding: 20px 16px !important; }
+  .kalkulator-valg label { padding: 11px 14px; }
+  .w-input, .wizard-input { font-size: 16px; } /* prevent iOS zoom */
+}
+@media (max-width: 760px) {
+  .vg3 { grid-template-columns: 1fr 1fr !important; }
+}
+
 .lov-hero { padding: 56px 0 64px; max-width: 780px; }
 .lov-hero h1 {
   font-family: var(--serif); font-weight: 400;
@@ -380,28 +433,6 @@ footer.site-footer a:hover { color: var(--bg); }
 /* ============================================================
    TJENESTER — hub og kalkulator
    ============================================================ */
-.tjenester-hero { padding: 48px 0 56px; }
-.tjenester-hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.12; letter-spacing: -0.015em; margin-bottom: 20px; }
-.tjenester-hero p { font-size: 18px; color: var(--ink-soft); max-width: 620px; line-height: 1.55; }
-.tjenester-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin: 40px 0 64px; }
-.tjeneste-kort {
-  background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px;
-  padding: 32px; text-decoration: none; color: var(--ink);
-  box-shadow: var(--shadow-sm); transition: box-shadow 0.2s, transform 0.2s;
-  display: flex; flex-direction: column; gap: 12px; position: relative;
-}
-.tjeneste-kort:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.tjeneste-kort.snart { opacity: 0.6; cursor: default; pointer-events: none; }
-.tjeneste-kort-ikon { font-size: 28px; margin-bottom: 4px; }
-.tjeneste-kort h3 { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.2; }
-.tjeneste-kort p { font-size: 15px; color: var(--ink-soft); line-height: 1.5; flex: 1; }
-.tjeneste-kort-pil { font-size: 14px; color: var(--accent); font-weight: 600; margin-top: 8px; }
-.snart-badge {
-  position: absolute; top: 20px; right: 20px;
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-  background: var(--bg-alt); color: var(--ink-mute); padding: 4px 10px; border-radius: 20px;
-}
-
 /* Kalkulator */
 .kalkulator-intro { margin-bottom: 40px; }
 .kalkulator {
@@ -1598,29 +1629,42 @@ def site_footer(depth=0):
     prefix = "../" * depth
     return f"""<footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-inner">
       <div>
-        <div class="footer-brand">Retts<span>regel</span></div>
-        <p class="footer-tagline">Lover forklart for vanlige folk. En paragraf om gangen.</p>
+        <a href="{prefix}" class="footer-logo">
+          <span class="footer-logo-mark">§</span>
+          <span class="footer-logo-name">Rettsregel</span>
+        </a>
+        <p class="footer-tagline">Lover er ikke vanskelige.<br>De er bare dårlig forklart.</p>
+        <span class="footer-entity">Walrus AS</span>
       </div>
       <div>
-        <h4>Innhold</h4>
+        <div class="footer-col-head">Innhold</div>
         <ul>
           <li><a href="{prefix}lover/">Alle lover</a></li>
-          <li><a href="{prefix}lover/angrerettloven/">Angrerettloven</a></li>
+          <li><a href="{prefix}sporsmal/">Spørsmål og svar</a></li>
+          <li><a href="{prefix}kontrakter/">Kontraktsmaler</a></li>
         </ul>
       </div>
       <div>
-        <h4>Nettstedet</h4>
+        <div class="footer-col-head">Verktøy</div>
+        <ul>
+          <li><a href="{prefix}tjenester/enk-eller-as/">ENK eller AS?</a></li>
+          <li><a href="{prefix}tjenester/reklamasjon-bil/">Reklamasjon bil</a></li>
+          <li><a href="{prefix}kontrakter/husleiekontrakt/">Husleiekontrakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-head">Om</div>
         <ul>
           <li><a href="{prefix}om/">Om Rettsregel</a></li>
-          <li><a href="{prefix}#skjema">Send inn sak</a></li>
           <li><a href="{prefix}personvern/">Personvern</a></li>
+          <li><a href="mailto:rettsregel@gmail.com">Kontakt oss</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Rettsregel</span>
+      <span>© 2026 Walrus AS · Rettsregel.no</span>
       <span>Bygget for å forstås.</span>
     </div>
   </div>
@@ -2177,13 +2221,13 @@ def render_om():
       </div>
       <div class="om-seksjon">
         <h2>Hvem er vi?</h2>
-        <p>Rettsregel er drevet av Wombat AS. Innholdet er utarbeidet av jurister med juridisk fagkompetanse, og kvalitetssikret mot gjeldende lover og forarbeider.</p>
-        <p style="margin-top:14px">Vi er ikke et advokatfirma og vi er ikke et lovkongres. Vi er en redaksjon som oversetter.</p>
+        <p>Rettsregel er drevet av Walrus AS. Innholdet produseres ved hjelp av de nyeste metodene innen tekstuell maskinlæring og store språkmodeller — og gjennomgås av jurister med fagkompetanse i de relevante rettsområdene.</p>
+        <p style="margin-top:14px">Det gir oss to ting på én gang: omfang og presisjon. En enkeltperson kunne ikke skrevet en hel lov. En maskin alene kunne ikke gjort det riktig. Sammen kan vi.</p>
       </div>
       <div class="om-seksjon">
         <h2>Filosofien</h2>
-        <p>«Lover er ikke vanskelige. De er bare dårlig forklart» er ikke bare et slagord. Det er en hypotese vi tester daglig.</p>
-        <p style="margin-top:14px">Viser det seg at en 67-åring på Dønna kan forstå husleielovens § 9-6 etter å ha lest siden vår — da har vi lykkes.</p>
+        <p>Viser det seg at en 67-åring på Dønna kan forstå husleielovens § 9-6 etter å ha lest siden vår — da har vi lykkes.</p>
+        <p style="margin-top:14px">Loven gjelder alle. Da bør den også forstås av alle.</p>
       </div>
     </div>
 
@@ -2688,35 +2732,35 @@ def render_tjenester_hub():
       <p>Svar på spørsmålene, og få en klar anbefaling. Trenger du noe skriftlig og signert, hjelper vi med det også.</p>
     </div>
 
-    <div class="tjenester-grid">
+    <div class="tjensters-grid">
       <a href="../tjenester/enk-eller-as/" class="tjeneste-kort">
-        <div class="tjeneste-kort-ikon">⚖️</div>
+        <div class="tjeneste-kat">Gratis kalkulator</div>
         <h3>ENK eller AS?</h3>
-        <p>Svar på fem spørsmål og finn ut hvilken selskapsform som passer for deg — og hvorfor.</p>
-        <div class="tjeneste-kort-pil">Bruk verktøyet →</div>
+        <p>Svar på fem spørsmål og finn ut hvilken selskapsform som passer for deg — med skatteillustrasjon og selskapsrettslig begrunnelse.</p>
+        <div class="tjeneste-pil">Bruk verktøyet →</div>
       </a>
 
       <a href="../tjenester/reklamasjon-bil/" class="tjeneste-kort">
-        <div class="tjeneste-kort-ikon">🚗</div>
+        <div class="tjeneste-kat">Gratis brevgenerator</div>
         <h3>Reklamasjon bilkjøp</h3>
-        <p>Kjøpte du en bil med feil? Lag et juridisk korrekt reklamasjonsbrev på noen minutter — gratis.</p>
-        <div class="tjeneste-kort-pil">Lag brevet →</div>
+        <p>Kjøpte du en bil med feil? Lag et juridisk korrekt reklamasjonsbrev på noen minutter, med fristberegning og lovhenvisninger.</p>
+        <div class="tjeneste-pil">Lag brevet →</div>
       </a>
 
       <div class="tjeneste-kort snart">
         <span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">📄</div>
-        <h3>Kjøpekontrakt bil</h3>
-        <p>Generer en juridisk korrekt kjøpekontrakt for privatbilsalg. Fylles ut og lastes ned.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-kat graa">Kalkulator</div>
+        <h3>Formuesoppgjør samlivsbrudd</h3>
+        <p>Beregn hva du og partneren din har krav på ved brudd. Basert på husstandsfellesskapsloven.</p>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
 
       <div class="tjeneste-kort snart">
         <span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">🏠</div>
-        <h3>Samboeravtale</h3>
-        <p>Enkel veiviser som lager en samboeravtale tilpasset situasjonen din.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-kat graa">Kalkulator</div>
+        <h3>Reklamasjon forbrukerkjøp</h3>
+        <p>Reklamasjonsveiviser for alt fra hvitevarer til mobiltelefoner. Forbrukerkjøpsloven.</p>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
     </div>
   </div>
@@ -2998,7 +3042,7 @@ def render_enk_eller_as():
       </div>
       <div class="enk-cta">
         <h3>Vil du ha dette skriftlig og signert?</h3>
-        <p>Vi setter opp en kort personlig vurdering av din situasjon — med konkret anbefaling, begrunnelse og sjekkliste for oppstart. Signert av juridisk rådgiver, Wombat AS.</p>
+        <p>Vi setter opp en kort personlig vurdering av din situasjon — med konkret anbefaling, begrunnelse og sjekkliste for oppstart. Signert av juridisk rådgiver, Walrus AS.</p>
         <a href="mailto:rettsregel@gmail.com?subject=Forespørsel%20om%20selskapsform-vurdering" class="btn-aksjon">Send forespørsel →</a>
         <span class="enk-cta-pris">990 kr · Svar innen 48 timer</span>
       </div>
@@ -3234,42 +3278,52 @@ def render_kontrakter_hub():
       <h1>Juridiske maler — gratis å bruke</h1>
       <p>Fyll ut i nettleseren. Last ned som PDF. Alle maler er basert på gjeldende norsk lov.</p>
     </div>
-    <div class="tjenester-grid">
+    <div class="tjensters-grid">
       <a href="../kontrakter/husleiekontrakt/" class="tjeneste-kort">
-        <div class="tjeneste-kort-ikon">🏠</div>
+        <div class="tjeneste-kat">Bolig og leie</div>
         <h3>Husleiekontrakt</h3>
-        <p>Standard leiekontrakt for bolig. Tidsubestemt eller tidsbestemt. Basert på husleieloven.</p>
-        <div class="tjeneste-kort-pil">Fyll ut og last ned →</div>
+        <p>Standard leiekontrakt for bolig. Tidsubestemt eller tidsbestemt. Fyll ut i nettleseren og last ned som PDF.</p>
+        <div class="tjeneste-pil">Fyll ut og last ned →</div>
       </a>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">🚗</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Kjøp og salg</div>
         <h3>Kjøpekontrakt bil</h3>
-        <p>Juridisk korrekt kjøpekontrakt for privatbilsalg. Basert på kjøpsloven.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <p>Juridisk korrekt kjøpekontrakt for privatbilsalg. Basert på kjøpsloven av 1988.</p>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">💑</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Familie og samliv</div>
         <h3>Samboeravtale</h3>
         <p>Avtale om økonomi, bolig og eierskap for samboere. Basert på husstandsfellesskapsloven.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">💰</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Økonomi og gjeld</div>
         <h3>Gjeldsbrev</h3>
         <p>Enkelt gjeldsbrev for private lån. Rentefritt eller med renter og nedbetalingsplan.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">📋</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Selskapsrett</div>
         <h3>Aksjonæravtale</h3>
         <p>Avtale mellom aksjonærer i AS. Forkjøpsrett, stemmerett og utbyttepolitikk.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">🏢</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Selskapsrett</div>
         <h3>Generalforsamlingsprotokoll</h3>
-        <p>Protokollmal for ordinær og ekstraordinær generalforsamling i AS.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <p>Protokollmal for ordinær og ekstraordinær GF. Klar til å fylle ut og signere.</p>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
     </div>
   </div>
@@ -3291,7 +3345,7 @@ def render_kontrakter_husleiekontrakt():
   display: grid; grid-template-columns: 380px 1fr; gap: 32px;
   align-items: start; margin-bottom: 64px;
 }}
-@media (max-width: 900px) {{ .kontrakt-layout {{ grid-template-columns: 1fr; }} }}
+@media (max-width: 1024px) {{ .kontrakt-layout {{ grid-template-columns: 1fr; }} }}
 .kontrakt-skjema {{
   background: var(--bg-card); border: 1px solid var(--line);
   border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md);
@@ -3611,111 +3665,114 @@ oppdater();
 def render_tjenester_reklamasjon_bil():
     return f"""{shared_head(
         'Reklamasjon bilkjøp — lag brevet ditt gratis | Rettsregel',
-        'Kjøpte du en bil med feil? Svar på noen spørsmål og få et juridisk korrekt reklamasjonsbrev klart til å sende — gratis.',
+        'Fyll ut skjemaet og se reklamasjonsbrevet bygge seg live. Gratis verktøy med fristberegning basert på kjøpsloven og forbrukerkjøpsloven.',
         depth=2, canonical_path='/tjenester/reklamasjon-bil/'
     )}
 <body>
 {site_nav(depth=2)}
 
 <style>
-.wizard-wrapper {{ max-width: 760px; margin: 0 auto; }}
-.wizard-progress {{ margin-bottom: 32px; }}
-.progress-bar {{ height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }}
-.progress-fill {{ height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.35s ease; }}
-.progress-tekst {{ font-size: 13px; color: var(--ink-mute); font-weight: 500; }}
-.wizard-steg {{ animation: fadeInUp 0.22s ease; }}
-.steg-kort {{
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: 20px; padding: 40px; box-shadow: var(--shadow-md); margin-bottom: 24px;
+.rek-layout {{
+  display: grid; grid-template-columns: 380px 1fr; gap: 32px;
+  align-items: start; margin-bottom: 64px;
 }}
-@media (max-width: 600px) {{ .steg-kort {{ padding: 24px 20px; }} }}
-.steg-nummer {{ font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px; }}
-.steg-sporsmal {{ font-family: var(--serif); font-size: 22px; font-weight: 400; line-height: 1.25; margin-bottom: 8px; }}
-.steg-hint {{ font-size: 14px; color: var(--ink-mute); margin-bottom: 24px; line-height: 1.5; }}
-.w-input {{
-  width: 100%; padding: 13px 16px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-family: var(--sans); font-size: 15px;
+@media (max-width: 1024px) {{ .rek-layout {{ grid-template-columns: 1fr; }} }}
+.rek-skjema {{
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md);
+  position: sticky; top: 24px;
+}}
+@media (max-width: 1024px) {{ .rek-skjema {{ position: static; }} }}
+.rs-tittel {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 20px; }}
+.rs-sek {{ margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }}
+.rs-sek:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+.rs-sek-tittel {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 12px; }}
+.rf {{ margin-bottom: 10px; }}
+.rf label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
+.rf input, .rf select, .rf textarea {{
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-family: var(--sans); font-size: 16px;
   background: var(--bg); color: var(--ink); box-sizing: border-box; transition: border-color 0.15s;
 }}
-.w-input:focus {{ outline: none; border-color: var(--accent); }}
-.w-textarea {{ min-height: 90px; resize: vertical; }}
-.ig {{ margin-bottom: 16px; }}
-.ig label {{ display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 6px; }}
-.valg-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }}
-.valg-grid-3 {{ grid-template-columns: 1fr 1fr 1fr; }}
-@media (max-width: 560px) {{ .valg-grid, .valg-grid-3 {{ grid-template-columns: 1fr; }} }}
-.valg-kort {{
-  border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 16px;
-  cursor: pointer; text-align: left; background: var(--bg); transition: all 0.15s;
-  font-family: var(--sans); font-size: 14px; color: var(--ink); line-height: 1.35;
-  min-height: 44px;
+.rf input:focus, .rf select:focus, .rf textarea:focus {{ outline: none; border-color: var(--accent); }}
+.rf textarea {{ min-height: 70px; resize: vertical; }}
+.rf-radio {{ display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }}
+.rf-radio label {{
+  display: flex; align-items: center; gap: 8px; font-size: 13px;
+  font-weight: 500; color: var(--ink); cursor: pointer; padding: 8px 12px;
+  border: 1.5px solid var(--line); border-radius: 8px;
 }}
-.valg-kort:hover {{ border-color: var(--accent-soft); }}
-.valg-kort.valgt {{ border-color: var(--accent); background: rgba(177,74,42,0.05); color: var(--accent); font-weight: 600; }}
-.valg-ikon {{ font-size: 22px; display: block; margin-bottom: 6px; }}
-.nav-kn {{ display: flex; gap: 10px; margin-top: 28px; }}
-.kn-neste {{
-  flex: 1; background: var(--accent); color: white; border: none;
-  border-radius: 12px; font-family: var(--sans); font-size: 16px;
-  font-weight: 600; padding: 16px; cursor: pointer; transition: background 0.2s;
-}}
-.kn-neste:hover {{ background: var(--accent-deep); }}
-.kn-tilbake {{
-  background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line);
+.rf-radio input[type=radio] {{ width: auto; margin: 0; accent-color: var(--accent); flex-shrink: 0; }}
+.rf-radio label:has(input:checked) {{ border-color: var(--accent); background: rgba(177,74,42,0.05); color: var(--accent); font-weight: 600; }}
+.rf-radio-2 {{ flex-direction: row; flex-wrap: wrap; }}
+.rf-radio-2 label {{ flex: 1; min-width: 120px; }}
+.gen-kn {{
+  width: 100%; background: var(--accent); color: white; border: none;
   border-radius: 12px; font-family: var(--sans); font-size: 15px;
-  font-weight: 500; padding: 14px 20px; cursor: pointer; transition: all 0.15s;
+  font-weight: 600; padding: 15px; cursor: pointer; margin-top: 20px;
+  transition: background 0.2s; display: flex; align-items: center;
+  justify-content: center; gap: 8px;
 }}
-.kn-tilbake:hover {{ border-color: var(--ink-soft); }}
-.vurdering-kort {{ border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; }}
-.vurdering-kort.ok {{ background: #f0f9f0; border: 1.5px solid #8dcc8d; }}
-.vurdering-kort.advarsel {{ background: #fffbec; border: 1.5px solid #e8c840; }}
-.vurdering-kort.for-sent {{ background: #fdf0ef; border: 1.5px solid #e8a09a; }}
-.vurdering-tittel {{ font-family: var(--serif); font-size: 22px; font-weight: 400; margin-bottom: 14px; }}
-.vurdering-liste {{ margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }}
-.vurdering-liste li {{ font-size: 14px; display: flex; gap: 10px; align-items: flex-start; line-height: 1.45; }}
-.v-ikon {{ flex-shrink: 0; }}
-.brev-wrapper {{ background: white; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-bottom: 24px; }}
-.brev-header {{ background: var(--bg-alt); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); }}
-.brev-header-tittel {{ font-size: 14px; font-weight: 600; color: var(--ink-soft); }}
-.brev-kn-wrapper {{ display: flex; gap: 8px; }}
-.brev-kn {{
+.gen-kn:hover {{ background: var(--accent-deep); }}
+/* Vurdering */
+.rek-vurdering {{
+  border-radius: 12px; padding: 16px 20px; margin-bottom: 20px;
+  font-size: 13px; line-height: 1.55; display: none;
+}}
+.rek-vurdering.ok {{ background: #f0f9f0; border: 1px solid #8dcc8d; }}
+.rek-vurdering.advarsel {{ background: #fffbec; border: 1px solid #e8c840; }}
+.rek-vurdering.for-sent {{ background: #fdf0ef; border: 1px solid #e8a09a; }}
+.rek-vurdering ul {{ margin: 6px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }}
+.rek-vurdering li {{ display: flex; gap: 8px; }}
+.rv-tittel {{ font-weight: 700; margin-bottom: 4px; font-size: 14px; }}
+/* Brev */
+.rek-dokument {{
+  background: white; border: 1px solid var(--line); border-radius: 16px;
+  padding: 48px 56px; font-family: 'EB Garamond', Georgia, serif;
+  font-size: 16px; line-height: 1.8; color: var(--ink);
+}}
+@media (max-width: 600px) {{ .rek-dokument {{ padding: 24px 20px; font-size: 15px; }} }}
+.rek-brev-header {{
+  background: var(--bg-alt); padding: 14px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--line);
+}}
+.rek-brev-wrapper {{ background: white; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-bottom: 24px; }}
+.rek-brev-kn-wrap {{ display: flex; gap: 8px; }}
+.rek-brev-kn {{
   font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 8px;
   border: none; cursor: pointer; font-family: var(--sans);
 }}
-.brev-kn-kopi {{ background: var(--accent); color: white; }}
-.brev-kn-print {{ background: var(--bg-card); border: 1px solid var(--line); color: var(--ink); }}
-.brev-innhold {{
+.rek-brev-kopi {{ background: var(--accent); color: white; }}
+.rek-brev-print {{ background: var(--bg-card); border: 1px solid var(--line); color: var(--ink); }}
+.brev-tekst {{
   padding: 36px 40px; font-family: 'EB Garamond', Georgia, serif;
-  font-size: 16px; line-height: 1.75; white-space: pre-wrap; color: var(--ink);
+  font-size: 15px; line-height: 1.8; white-space: pre-wrap; color: var(--ink);
 }}
-@media (max-width: 600px) {{ .brev-innhold {{ padding: 20px; font-size: 15px; }} }}
-.neste-steg-boks {{ background: var(--bg-alt); border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; }}
+@media (max-width: 600px) {{ .brev-tekst {{ padding: 20px; font-size: 14px; }} }}
+.neste-steg-boks {{ background: var(--bg-alt); border-radius: 16px; padding: 28px 32px; }}
 .neste-steg-boks h3 {{ font-family: var(--serif); font-size: 20px; font-weight: 400; margin-bottom: 16px; }}
-.neste-steg-liste {{ margin: 0; padding: 0; list-style: none; counter-reset: ns; display: flex; flex-direction: column; gap: 12px; }}
-.neste-steg-liste li {{ display: flex; gap: 14px; align-items: flex-start; font-size: 14px; line-height: 1.5; }}
-.neste-steg-liste li::before {{
+.nsl {{ margin: 0; padding: 0; list-style: none; counter-reset: ns; display: flex; flex-direction: column; gap: 12px; }}
+.nsl li {{ display: flex; gap: 14px; align-items: flex-start; font-size: 14px; line-height: 1.5; }}
+.nsl li::before {{
   counter-increment: ns; content: counter(ns);
   background: var(--accent); color: white; width: 24px; height: 24px; min-width: 24px;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
   font-size: 12px; font-weight: 700;
 }}
-.start-paa-nytt {{
-  background: none; border: 1.5px solid var(--line); border-radius: 10px;
-  padding: 12px 24px; font-family: var(--sans); font-size: 14px;
-  cursor: pointer; color: var(--ink-soft); display: block; margin: 16px auto 0;
-}}
 @media print {{
   .no-print {{ display: none !important; }}
-  nav.site-nav, footer.site-footer, #chat-toggle, #chat-panel, .article-header, .sp-body, .breadcrumbs {{ display: none !important; }}
+  nav.site-nav, footer.site-footer, #chat-toggle, #chat-panel, .breadcrumbs, .article-header, .rek-skjema, .sp-body, .neste-steg-boks {{ display: none !important; }}
+  .rek-layout {{ display: block; }}
+  .rek-brev-wrapper {{ border: none; box-shadow: none; }}
+  .rek-brev-header {{ display: none; }}
+  .brev-tekst {{ padding: 0; font-size: 12pt; line-height: 1.7; }}
   body {{ background: white; }}
-  .brev-wrapper {{ border: none; box-shadow: none; }}
-  .brev-header {{ display: none; }}
-  .brev-innhold {{ padding: 0; font-size: 12pt; line-height: 1.7; }}
 }}
 </style>
 
 <main class="page">
-  <div class="narrow">
+  <div class="container">
     <div class="breadcrumbs no-print">
       <a href="../../">Rettsregel</a>
       <span class="sep">›</span>
@@ -3727,376 +3784,259 @@ def render_tjenester_reklamasjon_bil():
     <div class="article-header no-print">
       <div class="article-eyebrow">Gratis verktøy</div>
       <h1 class="article-title">Vil du reklamere på et bilkjøp?</h1>
-      <p class="article-description">Svar på seks spørsmål. Du får en vurdering av rettighetene dine og et ferdig brev du kan sende med en gang.</p>
+      <p class="article-description">Fyll ut feltene til venstre. Brevet bygger seg live. Last ned eller kopier når du er ferdig.</p>
     </div>
 
-    <!-- WIZARD -->
-    <div class="wizard-wrapper no-print" id="wizard-wrapper">
-      <div class="wizard-progress">
-        <div class="progress-bar"><div class="progress-fill" id="pfill" style="width:0%"></div></div>
-        <span class="progress-tekst" id="ptekst">Steg 1 av 6</span>
-      </div>
+    <div class="rek-layout">
+      <!-- SKJEMA -->
+      <div class="rek-skjema no-print">
+        <div class="rs-tittel">Fyll ut om kjøpet</div>
 
-      <!-- Steg 1 -->
-      <div class="wizard-steg" id="steg-1">
-        <div class="steg-kort">
-          <div class="steg-nummer">Steg 1 av 6</div>
-          <div class="steg-sporsmal">Hvem kjøpte du bilen av?</div>
-          <div class="steg-hint">Dette avgjør hvilken lov som gjelder og hvilke rettigheter du har.</div>
-          <div class="valg-grid">
-            <button class="valg-kort" onclick="velg('selger_type','forhandler',this)">
-              <span class="valg-ikon">🏢</span>
-              <strong>Bilforhandler</strong><br>
-              <span style="font-size:13px;color:var(--ink-mute)">Registrert næringsdrivende</span>
-            </button>
-            <button class="valg-kort" onclick="velg('selger_type','privat',this)">
-              <span class="valg-ikon">👤</span>
-              <strong>Privatperson</strong><br>
-              <span style="font-size:13px;color:var(--ink-mute)">Finn.no, bekjente o.l.</span>
-            </button>
-          </div>
-          <div class="nav-kn"><button class="kn-neste" onclick="nesteFra(1)">Neste →</button></div>
-        </div>
-      </div>
-
-      <!-- Steg 2 -->
-      <div class="wizard-steg" id="steg-2" style="display:none">
-        <div class="steg-kort">
-          <div class="steg-nummer">Steg 2 av 6</div>
-          <div class="steg-sporsmal">Litt om kjøpet</div>
-          <div class="steg-hint">Vi bruker dette til fristberegning og til brevet ditt.</div>
-          <div class="ig">
-            <label for="kjopsdato">Dato du kjøpte / overtok bilen</label>
-            <input type="date" id="kjopsdato" class="w-input">
-          </div>
-          <div class="ig">
-            <label for="bil_besk">Bilens merke, modell og regnr</label>
-            <input type="text" id="bil_besk" class="w-input" placeholder="f.eks. Toyota RAV4 2019, regnr AB 12345">
-          </div>
-          <div class="ig">
-            <label for="kjopsum">Kjøpesum (kr)</label>
-            <input type="number" id="kjopsum" class="w-input" placeholder="f.eks. 350000" min="0">
-          </div>
-          <div class="nav-kn">
-            <button class="kn-tilbake" onclick="visSteg(1)">← Tilbake</button>
-            <button class="kn-neste" onclick="nesteFra(2)">Neste →</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Steg 3 -->
-      <div class="wizard-steg" id="steg-3" style="display:none">
-        <div class="steg-kort">
-          <div class="steg-nummer">Steg 3 av 6</div>
-          <div class="steg-sporsmal">Hva er galt med bilen?</div>
-          <div class="steg-hint">Velg kategori og beskriv feilen så konkret du kan. Detaljene styrker brevet ditt.</div>
-          <div class="valg-grid valg-grid-3" style="margin-bottom:16px">
-            <button class="valg-kort" onclick="velg('feil_kat','motor',this)"><span class="valg-ikon">🔧</span>Motor / drivverk</button>
-            <button class="valg-kort" onclick="velg('feil_kat','rust',this)"><span class="valg-ikon">🪣</span>Rust / karosseri</button>
-            <button class="valg-kort" onclick="velg('feil_kat','el',this)"><span class="valg-ikon">⚡</span>Elektronikk</button>
-            <button class="valg-kort" onclick="velg('feil_kat','km',this)"><span class="valg-ikon">📊</span>Feil kilometerstand</button>
-            <button class="valg-kort" onclick="velg('feil_kat','vraket',this)"><span class="valg-ikon">💥</span>Skjult ulykkeshistorikk</button>
-            <button class="valg-kort" onclick="velg('feil_kat','annet',this)"><span class="valg-ikon">📋</span>Annet</button>
-          </div>
-          <div class="ig">
-            <label for="feil_besk">Beskriv feilen konkret</label>
-            <textarea id="feil_besk" class="w-input w-textarea" placeholder="Hva oppdaget du, når skjedde det, og hva er konsekvensen? Jo mer konkret, jo sterkere brev."></textarea>
-          </div>
-          <div class="nav-kn">
-            <button class="kn-tilbake" onclick="visSteg(2)">← Tilbake</button>
-            <button class="kn-neste" onclick="nesteFra(3)">Neste →</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Steg 4 -->
-      <div class="wizard-steg" id="steg-4" style="display:none">
-        <div class="steg-kort">
-          <div class="steg-nummer">Steg 4 av 6</div>
-          <div class="steg-sporsmal">Når oppdaget du feilen — og visste selgeren om den?</div>
-          <div class="steg-hint">Dette påvirker fristene dine og hva du kan kreve.</div>
-          <div class="ig">
-            <label for="oppdagelse">Dato du oppdaget feilen</label>
-            <input type="date" id="oppdagelse" class="w-input">
-          </div>
-          <div class="ig" style="margin-top:20px">
-            <label>Tror du selgeren visste om feilen da bilen ble solgt?</label>
-            <div class="valg-grid" style="margin-top:8px">
-              <button class="valg-kort" onclick="velg('selger_visste','ja',this)">Ja, trolig</button>
-              <button class="valg-kort" onclick="velg('selger_visste','vet_ikke',this)">Vet ikke</button>
-              <button class="valg-kort" onclick="velg('selger_visste','nei',this)">Nei, trolig ikke</button>
+        <div class="rs-sek">
+          <div class="rs-sek-tittel">Hvem kjøpte du av?</div>
+          <div class="rf">
+            <div class="rf-radio">
+              <label><input type="radio" name="selger_type" value="forhandler" onchange="oppdater()"> Bilforhandler / næringsdrivende</label>
+              <label><input type="radio" name="selger_type" value="privat" onchange="oppdater()"> Privatperson (Finn.no, bekjente)</label>
             </div>
           </div>
-          <div class="nav-kn">
-            <button class="kn-tilbake" onclick="visSteg(3)">← Tilbake</button>
-            <button class="kn-neste" onclick="nesteFra(4)">Neste →</button>
+          <div class="rf" id="lov-info" style="display:none">
+            <div style="font-size:12px;color:var(--ink-mute);padding:8px 12px;background:var(--bg-alt);border-radius:8px;line-height:1.5" id="lov-info-tekst"></div>
           </div>
+        </div>
+
+        <div class="rs-sek">
+          <div class="rs-sek-tittel">Bilens detaljer</div>
+          <div class="rf"><label>Kjøpsdato</label><input type="date" id="kjopsdato" oninput="oppdater()"></div>
+          <div class="rf"><label>Bilens merke, modell og regnr</label><input type="text" id="bil_besk" oninput="oppdater()" placeholder="f.eks. Toyota RAV4 2019, regnr AB 12345"></div>
+          <div class="rf"><label>Kjøpesum (kr)</label><input type="number" id="kjopsum" oninput="oppdater()" placeholder="f.eks. 350000" min="0"></div>
+        </div>
+
+        <div class="rs-sek">
+          <div class="rs-sek-tittel">Mangelen</div>
+          <div class="rf">
+            <label>Kategori</label>
+            <select id="feil_kat" onchange="oppdater()">
+              <option value="">— Velg kategori —</option>
+              <option value="motor">Motor / drivverk / girkasse</option>
+              <option value="rust">Rust / karosseri</option>
+              <option value="el">Elektronikk / el-anlegg</option>
+              <option value="km">Feil kilometerstand</option>
+              <option value="vraket">Skjult ulykkeshistorikk</option>
+              <option value="annet">Annet</option>
+            </select>
+          </div>
+          <div class="rf"><label>Beskriv mangelen konkret</label><textarea id="feil_besk" oninput="oppdater()" placeholder="Hva oppdaget du, og hva er konsekvensen? Jo mer konkret, jo sterkere brev."></textarea></div>
+        </div>
+
+        <div class="rs-sek">
+          <div class="rs-sek-tittel">Oppdagelse og selgers kunnskap</div>
+          <div class="rf"><label>Dato du oppdaget mangelen</label><input type="date" id="oppdagelse" oninput="oppdater()"></div>
+          <div class="rf">
+            <label>Visste selgeren om mangelen?</label>
+            <div class="rf-radio">
+              <label><input type="radio" name="visste" value="ja" onchange="oppdater()"> Ja, trolig — selgeren kjente til det</label>
+              <label><input type="radio" name="visste" value="vet_ikke" onchange="oppdater()"> Vet ikke / usikker</label>
+              <label><input type="radio" name="visste" value="nei" onchange="oppdater()"> Nei, trolig ikke</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="rs-sek">
+          <div class="rs-sek-tittel">Ditt krav</div>
+          <div class="rf">
+            <div class="rf-radio">
+              <label><input type="radio" name="krav" value="retting" onchange="oppdater()"> Retting av mangelen</label>
+              <label id="krav-omlevering-label" style="display:none"><input type="radio" name="krav" value="omlevering" onchange="oppdater()"> Omlevering (bytte)</label>
+              <label><input type="radio" name="krav" value="prisavslag" onchange="oppdater()"> Prisavslag</label>
+              <label><input type="radio" name="krav" value="heving" onchange="oppdater()"> Heving — pengene tilbake</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="rs-sek">
+          <div class="rs-sek-tittel">Dine opplysninger</div>
+          <div class="rf"><label>Ditt navn</label><input type="text" id="mitt_navn" oninput="oppdater()" placeholder="Ola Nordmann"></div>
+          <div class="rf"><label>Telefon</label><input type="tel" id="mitt_tlf" oninput="oppdater()" placeholder="400 00 000"></div>
+          <div class="rf"><label>E-post</label><input type="email" id="min_epost" oninput="oppdater()" placeholder="ola@eksempel.no"></div>
+          <div class="rf"><label>Selgerens navn / firma</label><input type="text" id="selger_navn" oninput="oppdater()" placeholder="Kari Nordmann eller Bil AS"></div>
         </div>
       </div>
 
-      <!-- Steg 5 -->
-      <div class="wizard-steg" id="steg-5" style="display:none">
-        <div class="steg-kort">
-          <div class="steg-nummer">Steg 5 av 6</div>
-          <div class="steg-sporsmal">Hva vil du kreve av selgeren?</div>
-          <div class="steg-hint">Du kan endre kravet etter dialog. Velg det som passer best nå.</div>
-          <div class="valg-grid" id="krav-grid">
-            <button class="valg-kort" onclick="velg('krav','retting',this)">🔨 Retting av feilen</button>
-            <button class="valg-kort" id="krav-omlevering" onclick="velg('krav','omlevering',this)">🔄 Bytte til annen bil</button>
-            <button class="valg-kort" onclick="velg('krav','prisavslag',this)">💸 Prisavslag</button>
-            <button class="valg-kort" onclick="velg('krav','heving',this)">🚫 Pengene tilbake (heving)</button>
-          </div>
-          <div class="nav-kn">
-            <button class="kn-tilbake" onclick="visSteg(4)">← Tilbake</button>
-            <button class="kn-neste" onclick="nesteFra(5)">Neste →</button>
-          </div>
+      <!-- BREV + VURDERING -->
+      <div>
+        <div class="rek-vurdering" id="rek-vurdering">
+          <div class="rv-tittel" id="rv-tittel"></div>
+          <ul id="rv-liste"></ul>
         </div>
-      </div>
 
-      <!-- Steg 6 -->
-      <div class="wizard-steg" id="steg-6" style="display:none">
-        <div class="steg-kort">
-          <div class="steg-nummer">Steg 6 av 6</div>
-          <div class="steg-sporsmal">Hvem er du, og hvem er selgeren?</div>
-          <div class="steg-hint">Brukes bare i brevet. Ingenting lagres.</div>
-          <div class="ig"><label for="mitt_navn">Ditt navn</label><input type="text" id="mitt_navn" class="w-input" placeholder="Ola Nordmann"></div>
-          <div class="ig"><label for="mitt_tlf">Ditt telefonnummer</label><input type="tel" id="mitt_tlf" class="w-input" placeholder="400 00 000"></div>
-          <div class="ig"><label for="min_epost">Din e-postadresse</label><input type="email" id="min_epost" class="w-input" placeholder="ola@eksempel.no"></div>
-          <div class="ig" style="margin-top:20px"><label for="selger_navn">Selgerens navn eller firma</label><input type="text" id="selger_navn" class="w-input" placeholder="Kari Nordmann eller Bil AS"></div>
-          <div class="nav-kn">
-            <button class="kn-tilbake" onclick="visSteg(5)">← Tilbake</button>
-            <button class="kn-neste" onclick="generer()">Lag reklamasjonsbrevet →</button>
+        <div class="rek-brev-wrapper">
+          <div class="rek-brev-header no-print">
+            <span style="font-size:14px;font-weight:600;color:var(--ink-soft)">Ditt reklamasjonsbrev</span>
+            <div class="rek-brev-kn-wrap">
+              <button class="rek-brev-kn rek-brev-kopi" onclick="kopier()">Kopier</button>
+              <button class="rek-brev-kn rek-brev-print" onclick="window.print()">Last ned PDF</button>
+            </div>
           </div>
+          <div class="brev-tekst" id="brev-tekst">Fyll ut feltene til venstre — brevet bygger seg her.</div>
+        </div>
+
+        <div class="neste-steg-boks no-print" id="neste-steg" style="display:none">
+          <h3>Hva gjør du nå?</h3>
+          <ol class="nsl">
+            <li>Send brevet til selgeren på e-post med lesebekreftelse — eller rekommandert post. Ta vare på kvitteringen.</li>
+            <li>Sett svarfrist 14 dager. Da vet selgeren hva som gjelder.</li>
+            <li id="nsl-krav-spesifikk">Avviser selgeren kravet? Klag til Forbrukerrådet (gratis) eller Forliksrådet.</li>
+            <li>Komplisert sak? <a href="mailto:rettsregel@gmail.com" style="color:var(--accent)">Send oss saken</a> — vi hjelper deg videre.</li>
+          </ol>
         </div>
       </div>
     </div>
 
-    <!-- RESULTAT -->
-    <div id="resultat-wrapper" style="display:none">
-      <div id="vk" class="vurdering-kort"></div>
-      <div class="brev-wrapper">
-        <div class="brev-header no-print">
-          <span class="brev-header-tittel">Ditt reklamasjonsbrev</span>
-          <div class="brev-kn-wrapper">
-            <button class="brev-kn brev-kn-kopi" onclick="kopier()">Kopier tekst</button>
-            <button class="brev-kn brev-kn-print" onclick="window.print()">Skriv ut / PDF</button>
-          </div>
-        </div>
-        <div class="brev-innhold" id="brev-innhold"></div>
-      </div>
-      <div class="neste-steg-boks no-print" id="neste-steg"></div>
-      <button class="start-paa-nytt no-print" onclick="startNytt()">← Start på nytt</button>
-    </div>
-
-    <!-- SEO -->
-    <div class="prose sp-body" style="margin-top:64px">
-      <h2>Hva har du krav på når bilen har feil?</h2>
-      <p>Kjøpte du bilen av en forhandler, gjelder forbrukerkjøpsloven. Du har 5 år til å reklamere (biler er varige varer), og du har 2 måneder på deg etter at du oppdaget feilen. De første 2 år er det selgeren som må bevise at feilen ikke forelå ved kjøpet.</p>
-      <p>Kjøpte du av en privatperson, gjelder kjøpsloven. Du har 2 år absolutt frist og må reklamere innen rimelig tid — normalt noen uker — etter at du oppdaget feilen.</p>
-      <h3>Hva kan du kreve?</h3>
-      <p>Du kan kreve at feilen rettes, at bilen byttes (bare fra forhandler), prisavslag, eller at kjøpet heves og du får pengene tilbake. Heving krever at feilen er vesentlig. Du kan alltid kreve erstatning for konkrete tap i tillegg.</p>
-      <h3>Visste selgeren om feilen?</h3>
-      <p>Hvis selgeren kjente til feilen og holdt den skjult, bortfaller reklamasjonsfristen etter kjøpsloven § 33. Da kan du reklamere selv om lenger tid har gått. Det samme gjelder hvis selgeren har handlet i strid med god tro.</p>
-      <p>Relaterte paragrafer: <a href="../../lover/kjopsloven/32/">§ 32 Reklamasjonsfrister</a> · <a href="../../lover/kjopsloven/39/">§ 39 Heving ved mangel</a> · <a href="../../lover/kjopsloven/25/">§ 25 Heving ved forsinkelse</a></p>
+    <div class="prose sp-body no-print">
+      <h2>Kjøpte du fra forhandler eller privatperson?</h2>
+      <p>Fra forhandler gjelder forbrukerkjøpsloven. Du har 5 år til å reklamere og minimum 2 måneder fra du oppdaget feilen. Fra privatperson gjelder kjøpsloven — 2 år absolutt frist og «rimelig tid» fra oppdagelse (normalt noen uker).</p>
+      <h3>Relevante paragrafer</h3>
+      <p><a href="../../lover/kjopsloven/32/">§ 32 Reklamasjonsfrister</a> · <a href="../../lover/kjopsloven/39/">§ 39 Heving ved mangel</a> · <a href="../../lover/kjopsloven/33/">§ 33 Unntak ved uærlighet</a></p>
     </div>
   </div>
 </main>
 
 <script>
-const D = {{}};
-
-function velg(felt, verdi, el) {{
-  D[felt] = verdi;
-  el.closest('.valg-grid, [class*="valg-grid"]').querySelectorAll('.valg-kort').forEach(k => k.classList.remove('valgt'));
-  el.classList.add('valgt');
-  if (felt === 'selger_type') {{
-    const omEl = document.getElementById('krav-omlevering');
-    if (omEl) omEl.style.display = verdi === 'privat' ? 'none' : '';
-  }}
-}}
-
-function visSteg(n) {{
-  document.querySelectorAll('.wizard-steg').forEach(s => s.style.display = 'none');
-  const el = document.getElementById('steg-' + n);
-  if (el) el.style.display = 'block';
-  const pct = Math.round((n-1)/6*100);
-  document.getElementById('pfill').style.width = pct + '%';
-  document.getElementById('ptekst').textContent = 'Steg ' + n + ' av 6';
-  document.getElementById('wizard-wrapper').scrollIntoView({{behavior:'smooth',block:'start'}});
-}}
-
-function nesteFra(s) {{
-  if (s===1 && !D.selger_type) {{ alert('Velg hvem du kjøpte av.'); return; }}
-  if (s===2) {{
-    const kd = document.getElementById('kjopsdato').value;
-    const bd = document.getElementById('bil_besk').value.trim();
-    if (!kd) {{ alert('Angi kjøpsdato.'); return; }}
-    if (!bd) {{ alert('Beskriv bilen.'); return; }}
-    D.kjopsdato = kd; D.bil_besk = bd;
-    D.kjopsum = document.getElementById('kjopsum').value;
-  }}
-  if (s===3) {{
-    const fd = document.getElementById('feil_besk').value.trim();
-    if (!D.feil_kat) {{ alert('Velg kategori for feilen.'); return; }}
-    if (!fd) {{ alert('Beskriv feilen.'); return; }}
-    D.feil_besk = fd;
-  }}
-  if (s===4) {{
-    const od = document.getElementById('oppdagelse').value;
-    if (!od) {{ alert('Angi dato du oppdaget feilen.'); return; }}
-    if (!D.selger_visste) {{ alert('Angi om selgeren kjente til feilen.'); return; }}
-    D.oppdagelse = od;
-  }}
-  if (s===5 && !D.krav) {{ alert('Velg hva du vil kreve.'); return; }}
-  visSteg(s+1);
-}}
-
+function v(id) {{ return document.getElementById(id); }}
+function radio(name) {{ const el = document.querySelector('input[name="'+name+'"]:checked'); return el ? el.value : null; }}
 function formDato(iso) {{
   if (!iso) return '';
   return new Date(iso+'T12:00:00').toLocaleDateString('nb-NO',{{day:'numeric',month:'long',year:'numeric'}});
 }}
+function kr(n) {{ return n ? parseInt(n).toLocaleString('nb-NO') + ' kr' : ''; }}
 
 function beregnFrister() {{
-  const kjoep = new Date(D.kjopsdato+'T12:00:00');
-  const oppdaget = new Date(D.oppdagelse+'T12:00:00');
+  const selger = radio('selger_type');
+  const kjop = v('kjopsdato').value;
+  const oppdaget = v('oppdagelse').value;
+  if (!selger || !kjop || !oppdaget) return null;
+  const kjoepD = new Date(kjop+'T12:00:00');
+  const oppdagetD = new Date(oppdaget+'T12:00:00');
   const naa = new Date();
-  const ar = D.selger_type === 'forhandler' ? 5 : 2;
-  const absolutFrist = new Date(kjoep);
+  const ar = selger === 'forhandler' ? 5 : 2;
+  const absolutFrist = new Date(kjoepD);
   absolutFrist.setFullYear(absolutFrist.getFullYear()+ar);
   const innenAbsolutt = naa < absolutFrist;
   const dagerTil = Math.floor((absolutFrist-naa)/(864e5));
-  const dagerSiden = Math.floor((naa-oppdaget)/(864e5));
-  return {{ innenAbsolutt, dagerTil, ar, dagerSiden, absolutFrist }};
+  const dagerSiden = Math.floor((naa-oppdagetD)/(864e5));
+  return {{ selger, ar, innenAbsolutt, dagerTil, dagerSiden }};
 }}
 
-function generer() {{
-  D.mitt_navn  = document.getElementById('mitt_navn').value.trim()  || '[Ditt navn]';
-  D.mitt_tlf   = document.getElementById('mitt_tlf').value.trim()   || '[Telefon]';
-  D.min_epost  = document.getElementById('min_epost').value.trim()  || '[E-post]';
-  D.selger_nav = document.getElementById('selger_navn').value.trim()|| '[Selgers navn]';
+function oppdaterVurdering(f) {{
+  const el = v('rek-vurdering');
+  if (!f) {{ el.style.display='none'; return; }}
+  let klasse, tittel, punkter;
+  if (!f.innenAbsolutt) {{
+    klasse='for-sent'; tittel='⛔ Absolutt frist er trolig utløpt';
+    punkter=['Du kjøpte for over '+f.ar+' år siden. Kontakt oss — unntak kan finnes ved uærlighet.'];
+  }} else if (f.dagerSiden > 60 && f.selger==='privat') {{
+    klasse='advarsel'; tittel='⚠️ Send brevet i dag — fristen er presset';
+    punkter=['Det er '+f.dagerSiden+' dager siden du oppdaget mangelen. «Rimelig tid» er normalt noen uker.',f.ar+'-årsfristen: '+f.dagerTil+' dager igjen.'];
+  }} else if (f.dagerSiden > 28) {{
+    klasse='advarsel'; tittel='⏰ Send brevet snarest';
+    punkter=[f.dagerSiden+' dager siden oppdagelse. Ikke vent.',f.ar+'-årsfristen: '+f.dagerTil+' dager igjen.'];
+  }} else {{
+    klasse='ok'; tittel='✅ Du er godt innenfor fristene';
+    punkter=['Oppdaget for '+f.dagerSiden+' dager siden — innenfor rimelig tid.',f.ar+'-årsfristen: '+f.dagerTil+' dager igjen.'];
+  }}
+  el.className='rek-vurdering '+klasse;
+  v('rv-tittel').textContent=tittel;
+  v('rv-liste').innerHTML=punkter.map(p=>'<li><span>'+p+'</span></li>').join('');
+  el.style.display='block';
+}}
+
+function oppdater() {{
+  const selger = radio('selger_type');
+  const lovInfo = v('lov-info');
+  const lovInfoTekst = v('lov-info-tekst');
+  if (selger) {{
+    lovInfo.style.display='block';
+    lovInfoTekst.textContent = selger==='forhandler'
+      ? 'Forbrukerkjøpsloven gjelder. Du har 5 år til å reklamere og min. 2 måneder fra du oppdaget feilen.'
+      : 'Kjøpsloven gjelder. Du har 2 år absolutt frist og rimelig tid (normalt noen uker) fra oppdagelse.';
+    const omlevEl = v('krav-omlevering-label');
+    if (omlevEl) omlevEl.style.display = selger==='forhandler' ? 'flex' : 'none';
+  }} else {{ lovInfo.style.display='none'; }}
 
   const f = beregnFrister();
-  const lov = D.selger_type === 'forhandler' ? 'forbrukerkjøpsloven' : 'kjøpsloven';
-  const lovK = D.selger_type === 'forhandler' ? 'fkjl.' : 'kjl.';
+  oppdaterVurdering(f);
 
-  // Vurdering
-  let vKlasse, vTittel, vPunkter;
-  if (!f.innenAbsolutt) {{
-    vKlasse = 'for-sent';
-    vTittel = 'Den absolutte fristen er trolig utløpt';
-    vPunkter = [
-      {{i:'⛔', t:'Du kjøpte bilen for over '+f.ar+' år siden. Den absolutte fristen etter '+lov+' er '+f.ar+' år.'}},
-      {{i:'⚠️', t:'Unntak: visste selgeren om feilen og holdt det skjult? Da kan fristen bortfalle. Kontakt oss.'}},
-      {{i:'💡', t:'Har selgeren gitt garanti? Da gjelder garantiperioden i stedet for lovens frist.'}}
-    ];
-  }} else if (f.dagerSiden > 60 && D.selger_type === 'privat') {{
-    vKlasse = 'advarsel';
-    vTittel = 'Send brevet i dag — fristen er presset';
-    vPunkter = [
-      {{i:'⚠️', t:'Det har gått '+f.dagerSiden+' dager siden du oppdaget feilen. «Rimelig tid» er normalt noen uker — dette er lenge.'}},
-      {{i:'✅', t:'Du er innenfor '+f.ar+'-årsfristen — '+f.dagerTil+' dager igjen.'}},
-      {{i:'📋', t:'Kjøpsloven gjelder (kjøp fra privatperson). Send brevet nå og ta vare på bekreftelse.'}}
-    ];
-  }} else if (f.dagerSiden > 30) {{
-    vKlasse = 'advarsel';
-    vTittel = 'Send brevet snarest mulig';
-    vPunkter = [
-      {{i:'⏰', t:'Det har gått '+f.dagerSiden+' dager siden du oppdaget feilen. Ikke vent lenger.'}},
-      {{i:'✅', t:'Du er innenfor den absolutte '+f.ar+'-årsfristen — '+f.dagerTil+' dager igjen.'}},
-      {{i:'📋', t:lov.charAt(0).toUpperCase()+lov.slice(1)+' gjelder for kjøpet ditt.'}}
-    ];
-  }} else {{
-    vKlasse = 'ok';
-    vTittel = 'Du er godt innenfor fristene';
-    vPunkter = [
-      {{i:'✅', t:'Oppdaget feilen for '+f.dagerSiden+' dager siden — innenfor rimelig tid.'}},
-      {{i:'✅', t:f.ar+'-årsfristen: '+f.dagerTil+' dager igjen.'}},
-      {{i:'📋', t:lov.charAt(0).toUpperCase()+lov.slice(1)+' gjelder for kjøpet ditt.'}}
-    ];
-  }}
+  // Generer brev-tekst
+  const lov = selger==='forhandler' ? 'forbrukerkjøpsloven' : 'kjøpsloven';
+  const lovK = selger==='forhandler' ? 'fkjl.' : 'kjl.';
+  const rekPara = selger==='forhandler' ? '27' : '32';
+  const risiPara = selger==='forhandler' ? '14' : '21';
+  const krav = radio('krav');
+  const visste = radio('visste');
 
-  const vEl = document.getElementById('vk');
-  vEl.className = 'vurdering-kort '+vKlasse;
-  vEl.innerHTML = '<div class="vurdering-tittel">'+vTittel+'</div><ul class="vurdering-liste">'+
-    vPunkter.map(p=>'<li><span class="v-ikon">'+p.i+'</span><span>'+p.t+'</span></li>').join('')+'</ul>';
-
-  // Krav-setning
-  const kravMap = {{
-    retting: D.selger_type==='forhandler'
-      ? 'Jeg krever at mangelen rettes vederlagsfritt for meg, jf. forbrukerkjøpsloven § 29.'
-      : 'Jeg krever at mangelen rettes vederlagsfritt for meg, jf. kjøpsloven § 34.',
-    omlevering: 'Jeg krever omlevering — at bilen erstattes med en tilsvarende mangelfri bil, jf. forbrukerkjøpsloven § 29.',
-    prisavslag: D.selger_type==='forhandler'
-      ? 'Jeg krever prisavslag tilsvarende mangelens verdi, jf. forbrukerkjøpsloven § 31.'
-      : 'Jeg krever prisavslag tilsvarende mangelens verdi, jf. kjøpsloven § 38.',
-    heving: D.selger_type==='forhandler'
-      ? 'Mangelen er etter min vurdering vesentlig. Jeg hever herved kjøpet, jf. forbrukerkjøpsloven § 32, og krever full tilbakebetaling av kjøpesummen'+(D.kjopsum?' kr '+parseInt(D.kjopsum).toLocaleString('nb-NO')+','':'')+' jf. forbrukerkjøpsloven § 49.'
-      : 'Mangelen er etter min vurdering vesentlig. Jeg hever herved kjøpet, jf. kjøpsloven § 39, og krever full tilbakebetaling av kjøpesummen'+(D.kjopsum?' kr '+parseInt(D.kjopsum).toLocaleString('nb-NO')+','':'')+' jf. kjøpsloven § 64.'
+  const kravTekster = {{
+    retting: 'Jeg krever at mangelen rettes vederlagsfritt for meg, jf. '+lovK+' § '+(selger==='forhandler'?'29':'34')+'.',
+    omlevering: 'Jeg krever omlevering — at bilen byttes mot en tilsvarende mangelfri bil, jf. fkjl. § 29.',
+    prisavslag: 'Jeg krever prisavslag tilsvarende mangelens verdi, jf. '+lovK+' § '+(selger==='forhandler'?'31':'38')+'.',
+    heving: 'Mangelen er etter min vurdering vesentlig. Jeg hever herved kjøpet, jf. '+lovK+' § '+(selger==='forhandler'?'32':'39')+', og krever full tilbakebetaling av kjøpesummen'+(v('kjopsum').value?' kr '+kr(v('kjopsum').value):'')+'.'
   }};
 
-  const vissteNote = D.selger_visste==='ja'
-    ? '\n\nJeg gjør oppmerksom på at selgeren etter min vurdering kjente til denne feilen ved salget, jf. '+lovK+' § '+(D.selger_type==='forhandler'?'16':'33')+'. Reklamasjonsfristen gjelder ikke i slike tilfeller.'
+  const vissteNote = visste==='ja'
+    ? '\n\nJeg gjør oppmerksom på at selgeren etter min vurdering kjente til mangelen ved salget, jf. '+lovK+' § '+(selger==='forhandler'?'16':'33')+'. Reklamasjonsfristen gjelder ikke i slike tilfeller.'
     : '';
 
+  const navn = v('mitt_navn').value || '[Ditt navn]';
+  const tlf = v('mitt_tlf').value || '[Telefon]';
+  const epost = v('min_epost').value || '[E-post]';
+  const selgerNavn = v('selger_navn').value || '[Selgerens navn]';
+  const bilBesk = v('bil_besk').value || '[bilbeskrivelse]';
+  const feilBesk = v('feil_besk').value || '[beskriv mangelen]';
   const dagensDato = new Date().toLocaleDateString('nb-NO',{{day:'numeric',month:'long',year:'numeric'}});
 
+  if (!selger) {{
+    v('brev-tekst').textContent = 'Velg hvem du kjøpte bilen av for å starte.';
+    return;
+  }}
+
   const brev =
-D.mitt_navn+'\n'+
-D.mitt_tlf+' | '+D.min_epost+'\n\n'+
+navn+'\n'+tlf+' | '+epost+'\n\n'+
 dagensDato+'\n\n'+
-'Til: '+D.selger_nav+'\n\n'+
-'REKLAMASJON — '+(D.bil_besk||'bilkjøp')+'\n\n'+
-'Jeg kjøpte '+(D.bil_besk||'bilen')+' den '+formDato(D.kjopsdato)+(D.kjopsum?' for kr '+parseInt(D.kjopsum).toLocaleString('nb-NO'):'')+'.'+'\n\n'+
-'Den '+formDato(D.oppdagelse)+' oppdaget jeg følgende mangel:\n'+D.feil_besk+'\n\n'+
-'Mangelen forelå etter min vurdering på tidspunktet for risikoens overgang, jf. '+lovK+' § '+(D.selger_type==='forhandler'?'14':'21')+'. Jeg reklamerer herved innen rimelig tid etter oppdagelsen, jf. '+lovK+' § '+(D.selger_type==='forhandler'?'27':'32')+'.'+vissteNote+'\n\n'+
-(kravMap[D.krav]||'')+'\n\n'+
-'Jeg ber om skriftlig svar innen 14 dager fra dags dato.\n\n'+
+'Til: '+selgerNavn+'\n\n'+
+'REKLAMASJON — '+bilBesk+'\n\n'+
+'Jeg kjøpte '+bilBesk+' den '+formDato(v('kjopsdato').value)+(v('kjopsum').value?' for '+kr(v('kjopsum').value):'')+'.'+'\n\n'+
+'Den '+formDato(v('oppdagelse').value)+' oppdaget jeg følgende mangel:\n'+feilBesk+'\n\n'+
+'Mangelen forelå etter min vurdering på tidspunktet for risikoens overgang, jf. '+lovK+' § '+risiPara+'. Jeg reklamerer herved innen rimelig tid, jf. '+lovK+' § '+rekPara+'.'+vissteNote+'\n\n'+
+(kravTekster[krav]||'[Velg hva du vil kreve]')+'\n\n'+
+'Jeg ber om skriftlig svar innen 14 dager.\n\n'+
 'Med vennlig hilsen\n\n'+
-D.mitt_navn+'\n'+D.mitt_tlf+'\n'+D.min_epost;
+navn+'\n'+tlf+'\n'+epost;
 
-  document.getElementById('brev-innhold').textContent = brev;
+  v('brev-tekst').textContent = brev;
 
-  // Neste steg
-  const harHeving = D.krav === 'heving';
-  const erForhandler = D.selger_type === 'forhandler';
-  document.getElementById('neste-steg').innerHTML =
-    '<h3>Hva gjør du nå?</h3><ol class="neste-steg-liste">'+
-    '<li>Send brevet til selgeren på e-post med lesebekreftelse — eller rekommandert post. Ta vare på kvitteringen.</li>'+
-    '<li>Sett en svarfrist på 14 dager i brevet. Da vet selgeren hva som gjelder.</li>'+
-    (D.krav==='retting'?'<li>Gir selgeren beskjed om at han vil rette, gi ham rimelig tid. Men hold øye med at rettingen faktisk løser feilen.</li>':'')+
-    (harHeving?'<li>Ikke bruk bilen mer enn nødvendig etter heving — videre bruk kan tolkes som at du aksepterer situasjonen.</li>':'')+
-    '<li>Avviser selgeren kravet eller svarer ikke? '+(erForhandler?'Klage til Forbrukerrådet (gratis) er neste steg. Bruk forbrukerradet.no/klage.':'Ta saken til Forliksrådet på Altinn — gebyret er 1 215 kr og du kan kreve det dekket.')+' </li>'+
-    '<li>Har du en komplisert sak eller trenger hjelp videre? <a href="mailto:rettsregel@gmail.com" style="color:var(--accent)">Send oss saken</a> — vi ser på den.</li>'+
-    '</ol>';
-
-  document.getElementById('wizard-wrapper').style.display = 'none';
-  const rw = document.getElementById('resultat-wrapper');
-  rw.style.display = 'block';
-  setTimeout(()=>rw.scrollIntoView({{behavior:'smooth',block:'start'}}), 50);
+  const harNokTilNeste = selger && feilBesk && feilBesk !== '[beskriv mangelen]' && krav;
+  v('neste-steg').style.display = harNokTilNeste ? 'block' : 'none';
+  if (harNokTilNeste) {{
+    const kravSpesifikk = v('nsl-krav-spesifikk');
+    if (krav==='heving') kravSpesifikk.textContent = 'Ikke bruk bilen mer enn nødvendig etter at du har hevet — det kan tolkes som aksept av situasjonen.';
+    else if (selger==='forhandler') kravSpesifikk.textContent = 'Avviser forhandleren kravet? Klag til Forbrukerrådet (gratis) på forbrukerradet.no/klage.';
+    else kravSpesifikk.textContent = 'Avviser selgeren kravet? Ta saken til Forliksrådet via Altinn — gebyret er 1 215 kr.';
+  }}
 }}
 
 function kopier() {{
-  const t = document.getElementById('brev-innhold').textContent;
+  const t = v('brev-tekst').textContent;
   navigator.clipboard.writeText(t).then(()=>{{
-    const k = document.querySelector('.brev-kn-kopi');
-    k.textContent='Kopiert ✓'; setTimeout(()=>k.textContent='Kopier tekst',2000);
+    const k = document.querySelector('.rek-brev-kopi');
+    k.textContent='Kopiert ✓'; setTimeout(()=>k.textContent='Kopier',2000);
   }});
 }}
 
-function startNytt() {{
-  Object.keys(D).forEach(k=>delete D[k]);
-  document.getElementById('resultat-wrapper').style.display='none';
-  document.getElementById('wizard-wrapper').style.display='block';
-  document.querySelectorAll('.wizard-steg').forEach(s=>s.style.display='none');
-  document.querySelectorAll('.valg-kort').forEach(k=>k.classList.remove('valgt'));
-  document.getElementById('steg-1').style.display='block';
-  document.getElementById('pfill').style.width='0%';
-  document.getElementById('ptekst').textContent='Steg 1 av 6';
-  document.getElementById('wizard-wrapper').scrollIntoView({{behavior:'smooth',block:'start'}});
-}}
+oppdater();
 </script>
 
 {site_footer(depth=2)}"""
+
 
 
 def build():
