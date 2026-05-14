@@ -35,8 +35,12 @@ try:
     from paragraphs_navneloven import PARAGRAPHS as _P_NAVNELOVEN
 except ImportError:
     _P_NAVNELOVEN = []
+try:
+    from paragraphs_forbrukerkjopsloven import PARAGRAPHS as _P_FKL
+except ImportError:
+    _P_FKL = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -1924,6 +1928,7 @@ def render_lover_index():
         "avhendingslova": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Kjøp og salg av bolig, hytte og tomt"},
         "naboloven": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Naboforhold og urimelige ulemper"},
         "navneloven": {"kat": "familie", "kat_label": "Familie og samliv", "desc": "Fornavn, etternavn og navnebytte"},
+        "forbrukerkjopsloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Rettigheter ved kjøp fra butikk og netthandel"},
         "haandverkertjenesteloven": {"kat": "tjenester", "kat_label": "Tjenester", "desc": "Håndverkertjenester og reklamasjon"},
         "arbeidsmiljoloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Arbeidsforhold, lønn og oppsigelse"},
         "ferieloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Ferierettigheter og feriepenger"},
@@ -2515,6 +2520,7 @@ def render_homepage():
         "avhendingslova": ("bolig", "Bolig og leie"),
         "naboloven": ("bolig", "Bolig og leie"),
         "navneloven": ("familie", "Familie og samliv"),
+        "forbrukerkjopsloven": ("forbruk", "Forbruk og kjøp"),
         "haandverkertjenesteloven": ("tjenester", "Tjenester"),
         "arbeidsmiljoloven": ("arbeid", "Arbeid og lønn"),
         "ferieloven": ("arbeid", "Arbeid og lønn"),
@@ -2783,490 +2789,352 @@ def render_tjenester_hub():
 def render_enk_eller_as():
     return f"""{shared_head(
         'ENK eller AS? Finn ut hva som passer for deg — Rettsregel',
-        'Svar på fem spørsmål og få en grundig anbefaling om du bør velge ENK eller AS — med skatteillustrasjon og selskapsrettslig begrunnelse.',
+        'Fyll ut skjemaet og få en selskapsrettslig anbefaling med skatteillustrasjon — gratis.',
         depth=2, canonical_path='/tjenester/enk-eller-as/'
     )}
 <body>
 {site_nav(depth=2)}
 
 <style>
-.enk-wizard {{ max-width: 780px; margin: 0 auto; }}
-.enk-progress {{ margin-bottom: 32px; }}
-.enk-pbar {{ height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }}
-.enk-pfill {{ height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.35s ease; }}
-.enk-ptekst {{ font-size: 13px; color: var(--ink-mute); font-weight: 500; }}
-.enk-steg {{ animation: fadeInUp 0.22s ease; }}
-.enk-kort {{
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: 20px; padding: 40px; box-shadow: var(--shadow-md); margin-bottom: 24px;
+.enk-layout {{
+  display: grid; grid-template-columns: 380px 1fr; gap: 32px;
+  align-items: start; margin-bottom: 64px;
 }}
-@media (max-width: 600px) {{ .enk-kort {{ padding: 24px 20px; }} }}
-.enk-stegnr {{ font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px; }}
-.enk-q {{ font-family: var(--serif); font-size: 22px; font-weight: 400; line-height: 1.25; margin-bottom: 6px; }}
-.enk-hint {{ font-size: 14px; color: var(--ink-mute); margin-bottom: 24px; line-height: 1.5; }}
-.enk-input {{
-  width: 100%; padding: 13px 16px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-family: var(--sans); font-size: 16px;
+@media (max-width: 1024px) {{ .enk-layout {{ grid-template-columns: 1fr; }} }}
+.enk-layout > * {{ min-width: 0; }}
+.enk-skjema {{
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md);
+  position: sticky; top: 24px;
+}}
+@media (max-width: 1024px) {{ .enk-skjema {{ position: static; }} }}
+.es-tittel {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 20px; }}
+.es-sek {{ margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }}
+.es-sek:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+.es-sek-tittel {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px; }}
+.ef {{ margin-bottom: 10px; }}
+.ef label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
+.ef input[type=number] {{
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-family: var(--sans); font-size: 16px;
   background: var(--bg); color: var(--ink); box-sizing: border-box; transition: border-color 0.15s;
 }}
-.enk-input:focus {{ outline: none; border-color: var(--accent); }}
-.ig {{ margin-bottom: 18px; }}
-.ig label {{ display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 6px; }}
-.vg {{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }}
-.vg3 {{ grid-template-columns: 1fr 1fr 1fr; }}
-@media (max-width: 560px) {{ .vg, .vg3 {{ grid-template-columns: 1fr; }} }}
-.vk {{
-  border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 16px;
-  cursor: pointer; text-align: left; background: var(--bg); transition: all 0.15s;
-  font-family: var(--sans); font-size: 14px; color: var(--ink); line-height: 1.35; min-height: 44px;
+.ef input:focus {{ outline: none; border-color: var(--accent); }}
+.ef-radio {{ display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }}
+.ef-radio label {{
+  display: flex; align-items: center; gap: 8px; font-size: 13px;
+  font-weight: 500; color: var(--ink); cursor: pointer; padding: 8px 12px;
+  border: 1.5px solid var(--line); border-radius: 8px; line-height: 1.35;
 }}
-.vk:hover {{ border-color: var(--accent-soft); background: rgba(177,74,42,0.03); }}
-.vk.av {{ border-color: var(--accent); background: rgba(177,74,42,0.06); color: var(--accent); font-weight: 600; }}
-.vk-ikon {{ font-size: 22px; display: block; margin-bottom: 6px; }}
-.nav-kn {{ display: flex; gap: 10px; margin-top: 28px; }}
-.kn-n {{
-  flex: 1; background: var(--accent); color: white; border: none;
-  border-radius: 12px; font-family: var(--sans); font-size: 16px;
-  font-weight: 600; padding: 16px; cursor: pointer; transition: background 0.2s;
-}}
-.kn-n:hover {{ background: var(--accent-deep); }}
-.kn-t {{
-  background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line);
-  border-radius: 12px; font-family: var(--sans); font-size: 15px;
-  font-weight: 500; padding: 14px 20px; cursor: pointer;
-}}
-.kn-t:hover {{ border-color: var(--ink-soft); }}
+.ef-radio input[type=radio] {{ width: auto; margin: 0; accent-color: var(--accent); flex-shrink: 0; }}
+.ef-radio label:has(input:checked) {{ border-color: var(--accent); background: rgba(177,74,42,0.05); color: var(--accent); font-weight: 600; }}
 /* Resultat */
-.res-badge {{
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 12px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.12em; padding: 6px 14px; border-radius: 20px; margin-bottom: 20px;
+.enk-res {{ display: flex; flex-direction: column; gap: 20px; }}
+.enk-vurdering {{
+  border-radius: 14px; padding: 20px 24px;
+  display: none; border: 1.5px solid var(--line);
 }}
-.res-badge.as {{ background: #e2edf4; color: #2d5970; }}
-.res-badge.enk {{ background: #e8f4e8; color: #2d5a2d; }}
-.res-badge.as-krav {{ background: #dce8f2; color: #1a4060; }}
-.res-tittel {{ font-family: var(--serif); font-size: clamp(24px,3vw,34px); font-weight: 400; margin-bottom: 20px; line-height: 1.15; }}
-.res-boks {{
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: 20px; padding: 40px; box-shadow: var(--shadow-md); margin-bottom: 24px;
-}}
-@media (max-width: 600px) {{ .res-boks {{ padding: 24px 20px; }} }}
-.res-grunner {{ margin: 0 0 28px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }}
-.res-grunner li {{ display: flex; gap: 10px; font-size: 15px; line-height: 1.5; }}
-.res-grunner li::before {{ content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; }}
-/* Skatt-illustrasjon */
-.skatt-panel {{
-  background: var(--bg-alt); border-radius: 14px; padding: 24px 28px; margin: 28px 0;
-  border: 1px solid var(--line);
-}}
-.skatt-panel h4 {{ font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mute); margin-bottom: 16px; }}
-.skatt-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }}
-@media (max-width: 560px) {{ .skatt-grid {{ grid-template-columns: 1fr; }} }}
-.skatt-kolonne {{ background: white; border-radius: 10px; padding: 16px; border: 1px solid var(--line); }}
-.skatt-lov {{ font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); margin-bottom: 10px; }}
-.skatt-rad {{ display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }}
-.skatt-rad:last-child {{ border-bottom: none; }}
-.skatt-rad.total {{ font-weight: 700; font-size: 14px; padding-top: 8px; margin-top: 4px; border-top: 2px solid var(--line); border-bottom: none; }}
-.skatt-rad.igjen {{ color: var(--accent); font-weight: 700; font-size: 14px; }}
-.skatt-disclaimer {{ font-size: 12px; color: var(--ink-mute); margin-top: 12px; line-height: 1.5; }}
-/* Sammenligningstabel */
-.res-tbl-wr {{ overflow-x: auto; margin: 28px 0; }}
-.res-tbl {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
-.res-tbl th {{
-  padding: 10px 14px; text-align: left; font-size: 12px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-  background: var(--bg-alt); border-bottom: 2px solid var(--line);
-}}
-.res-tbl td {{ padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.4; }}
-.res-tbl tr:last-child td {{ border-bottom: none; }}
-.res-tbl td:first-child {{ color: var(--ink-mute); font-size: 12px; font-weight: 600; white-space: nowrap; }}
-.anbefalt-kol th, .anbefalt-kol td {{ background: rgba(177,74,42,0.04); }}
-.res-tbl th.anbefalt-hd {{ color: var(--accent); }}
+.enk-vurdering.as {{ background: #e2edf4; border-color: #8dbcd4; }}
+.enk-vurdering.enk {{ background: #e8f4e8; border-color: #8dcc8d; }}
+.enk-vurdering.as-krav {{ background: #dce8f2; border-color: #6aacd0; }}
+.ev-badge {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; display: block; }}
+.ev-tittel {{ font-family: var(--serif); font-size: 22px; font-weight: 400; margin-bottom: 14px; line-height: 1.2; }}
+.ev-grunner {{ margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }}
+.ev-grunner li {{ display: flex; gap: 8px; font-size: 14px; line-height: 1.5; }}
+.ev-grunner li::before {{ content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; }}
+/* Skatt */
+.enk-skatt {{ background: var(--bg-alt); border-radius: 14px; padding: 20px 24px; border: 1px solid var(--line); display: none; }}
+.enk-skatt h4 {{ font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mute); margin-bottom: 14px; }}
+.skatt-g {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
+@media (max-width: 600px) {{ .skatt-g {{ grid-template-columns: 1fr; }} }}
+.sk {{ background: white; border-radius: 10px; padding: 14px; border: 1px solid var(--line); }}
+.sk-lov {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); margin-bottom: 8px; }}
+.sk-r {{ display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }}
+.sk-r:last-child {{ border-bottom: none; }}
+.sk-r.tot {{ font-weight: 700; font-size: 14px; padding-top: 6px; border-top: 2px solid var(--line); border-bottom: none; }}
+.sk-r.igjen {{ color: var(--accent); font-weight: 700; font-size: 14px; }}
+.skatt-note {{ font-size: 12px; color: var(--ink-mute); margin-top: 10px; line-height: 1.5; }}
+/* Tabell */
+.enk-tbl-wrap {{ overflow-x: auto; display: none; }}
+.enk-tbl {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
+.enk-tbl th {{ padding: 9px 12px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; background: var(--bg-alt); border-bottom: 2px solid var(--line); }}
+.enk-tbl td {{ padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.4; }}
+.enk-tbl tr:last-child td {{ border-bottom: none; }}
+.enk-tbl td:first-child {{ color: var(--ink-mute); font-size: 12px; font-weight: 600; white-space: nowrap; }}
+.enk-tbl th.anbefalt, .enk-tbl td.anbefalt {{ background: rgba(177,74,42,0.04); color: var(--accent); font-weight: 600; }}
 /* CTA */
-.enk-cta {{ background: var(--bg-alt); border-radius: 16px; padding: 32px; margin: 32px 0 56px; }}
-.enk-cta h3 {{ font-family: var(--serif); font-size: 22px; font-weight: 400; margin-bottom: 12px; }}
-.enk-cta p {{ font-size: 15px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 16px; max-width: 540px; }}
-.btn-aksjon {{
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--accent); color: white; text-decoration: none;
-  font-weight: 600; font-size: 15px; padding: 14px 24px;
-  border-radius: 10px; transition: background 0.2s;
-}}
+.enk-cta {{ background: var(--bg-alt); border-radius: 16px; padding: 28px; }}
+.enk-cta h3 {{ font-family: var(--serif); font-size: 20px; font-weight: 400; margin-bottom: 10px; }}
+.enk-cta p {{ font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin-bottom: 14px; max-width: 520px; }}
+.btn-aksjon {{ display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 600; font-size: 14px; padding: 12px 20px; border-radius: 10px; transition: background 0.2s; }}
 .btn-aksjon:hover {{ background: var(--accent-deep); }}
-.enk-cta-pris {{ font-size: 13px; color: var(--ink-mute); display: block; margin-top: 10px; }}
+.enk-cta-pris {{ font-size: 12px; color: var(--ink-mute); display: block; margin-top: 8px; }}
 </style>
 
 <main class="page">
-  <div class="narrow">
-    <div class="breadcrumbs">
-      <a href="../../">Rettsregel</a>
-      <span class="sep">›</span>
-      <a href="../../tjenester/">Tjenester</a>
-      <span class="sep">›</span>
+  <div class="container">
+    <div class="breadcrumbs no-print">
+      <a href="../../">Rettsregel</a><span class="sep">›</span>
+      <a href="../../tjenester/">Tjenester</a><span class="sep">›</span>
       <span class="current">ENK eller AS?</span>
     </div>
-
-    <div class="article-header">
+    <div class="article-header no-print">
       <div class="article-eyebrow">Gratis verktøy</div>
       <h1 class="article-title">Skal du velge ENK eller AS?</h1>
-      <p class="article-description">Svar på fem spørsmål. Du får en selskapsrettslig anbefaling, begrunnelse, og en forenklet skatteillustrasjon med dine egne tall.</p>
+      <p class="article-description">Fyll ut feltene til venstre. Anbefalingen oppdateres live basert på svarene dine.</p>
     </div>
 
-    <!-- WIZARD -->
-    <div class="enk-wizard" id="wiz">
-      <div class="enk-progress">
-        <div class="enk-pbar"><div class="enk-pfill" id="pf" style="width:0%"></div></div>
-        <span class="enk-ptekst" id="pt">Steg 1 av 5</span>
-      </div>
+    <div class="enk-layout">
+      <!-- SKJEMA -->
+      <div class="enk-skjema no-print">
+        <div class="es-tittel">Fortell om virksomheten</div>
 
-      <!-- Steg 1: Eiere -->
-      <div class="enk-steg" id="s1">
-        <div class="enk-kort">
-          <div class="enk-stegnr">Steg 1 av 5</div>
-          <div class="enk-q">Er du alene som eier?</div>
-          <div class="enk-hint">ENK kan bare ha én eier. Er dere to eller flere, er AS den eneste løsningen juridisk sett.</div>
-          <div class="vg">
-            <button class="vk" onclick="velg('eiere','en',this)"><span class="vk-ikon">👤</span><strong>Ja, bare meg</strong></button>
-            <button class="vk" onclick="velg('eiere','flere',this)"><span class="vk-ikon">👥</span><strong>Nei, vi er flere</strong><br><span style="font-size:13px;color:var(--ink-mute)">Medeier eller partner</span></button>
+        <div class="es-sek">
+          <div class="es-sek-tittel">Eiere</div>
+          <div class="ef">
+            <div class="ef-radio">
+              <label><input type="radio" name="eiere" value="en" onchange="oppdater()"> Bare meg — én eier</label>
+              <label><input type="radio" name="eiere" value="flere" onchange="oppdater()"> Vi er to eller flere eiere</label>
+            </div>
           </div>
-          <div class="nav-kn"><button class="kn-n" onclick="neste(1)">Neste →</button></div>
         </div>
-      </div>
 
-      <!-- Steg 2: Økonomi -->
-      <div class="enk-steg" id="s2" style="display:none">
-        <div class="enk-kort">
-          <div class="enk-stegnr">Steg 2 av 5</div>
-          <div class="enk-q">Hva forventer du å tjene — og hva vil du med pengene?</div>
-          <div class="enk-hint">Skriv forventet overskudd det første året. Overskudd = inntekter minus kostnader.</div>
-          <div class="ig">
+        <div class="es-sek">
+          <div class="es-sek-tittel">Økonomi</div>
+          <div class="ef">
             <label for="overskudd">Forventet overskudd år 1 (kr)</label>
-            <input type="number" id="overskudd" class="enk-input" placeholder="f.eks. 400000" min="0" step="10000">
+            <input type="number" id="overskudd" placeholder="f.eks. 400000" min="0" step="10000" oninput="oppdater()">
           </div>
-          <div class="ig" style="margin-top:20px">
-            <label>Hva vil du gjøre med overskuddet?</label>
-            <div class="vg" style="margin-top:8px">
-              <button class="vk" onclick="velg('kapital','ta_ut',this)">💸 Ta ut fortløpende — dette er inntekten min</button>
-              <button class="vk" onclick="velg('kapital','beholde',this)">📈 La det stå og vokse i selskapet</button>
-              <button class="vk" onclick="velg('kapital','blanding',this)">⚖️ Blanding — litt av begge</button>
-              <button class="vk" onclick="velg('kapital','vet_ikke',this)">🤔 Vet ikke ennå</button>
+          <div class="ef" style="margin-top:12px">
+            <div style="font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px">Hva vil du gjøre med overskuddet?</div>
+            <div class="ef-radio">
+              <label><input type="radio" name="kapital" value="ta_ut" onchange="oppdater()"> Ta ut fortløpende — dette er inntekten min</label>
+              <label><input type="radio" name="kapital" value="beholde" onchange="oppdater()"> La det stå og vokse i selskapet</label>
+              <label><input type="radio" name="kapital" value="blanding" onchange="oppdater()"> Blanding</label>
             </div>
           </div>
-          <div class="nav-kn">
-            <button class="kn-t" onclick="visSteg(1)">← Tilbake</button>
-            <button class="kn-n" onclick="neste(2)">Neste →</button>
+        </div>
+
+        <div class="es-sek">
+          <div class="es-sek-tittel">Virksomhet og risiko</div>
+          <div class="ef">
+            <div class="ef-radio">
+              <label><input type="radio" name="bransje" value="konsulent" onchange="oppdater()"> Rådgivning / konsulent / IT</label>
+              <label><input type="radio" name="bransje" value="haandverk" onchange="oppdater()"> Bygg, håndverk, transport</label>
+              <label><input type="radio" name="bransje" value="handel" onchange="oppdater()"> Handel, nettbutikk</label>
+              <label><input type="radio" name="bransje" value="helse" onchange="oppdater()"> Helse, omsorg, terapi</label>
+              <label><input type="radio" name="bransje" value="kreativ" onchange="oppdater()"> Kreativt, kultur, media</label>
+              <label><input type="radio" name="bransje" value="annet" onchange="oppdater()"> Annet / usikker</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="es-sek">
+          <div class="es-sek-tittel">Investorer og kapital</div>
+          <div class="ef">
+            <div style="font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px">Planlegger du å hente investorer?</div>
+            <div class="ef-radio">
+              <label><input type="radio" name="investorer" value="ja" onchange="oppdater()"> Ja</label>
+              <label><input type="radio" name="investorer" value="nei" onchange="oppdater()"> Nei</label>
+            </div>
+          </div>
+          <div class="ef" style="margin-top:12px">
+            <div style="font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px">Har du 30 000 kr til aksjekapital? <span style="font-weight:400;color:var(--ink-mute)">(aksjeloven § 3-1)</span></div>
+            <div class="ef-radio">
+              <label><input type="radio" name="har30k" value="ja" onchange="oppdater()"> Ja</label>
+              <label><input type="radio" name="har30k" value="nei" onchange="oppdater()"> Ikke akkurat nå</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="es-sek">
+          <div class="es-sek-tittel">Sosiale rettigheter</div>
+          <div class="ef">
+            <div style="font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px">Viktig med sykepenger fra dag 1?</div>
+            <div class="ef-radio">
+              <label><input type="radio" name="sykepenger" value="ja" onchange="oppdater()"> Ja — kritisk for meg</label>
+              <label><input type="radio" name="sykepenger" value="nei" onchange="oppdater()"> Nei — tåler to uker uten</label>
+            </div>
+          </div>
+          <div class="ef" style="margin-top:12px">
+            <div style="font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px">Vil du ansette noen?</div>
+            <div class="ef-radio">
+              <label><input type="radio" name="ansette" value="ja" onchange="oppdater()"> Ja</label>
+              <label><input type="radio" name="ansette" value="nei" onchange="oppdater()"> Nei — solo foreløpig</label>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Steg 3: Virksomhet og risiko -->
-      <div class="enk-steg" id="s3" style="display:none">
-        <div class="enk-kort">
-          <div class="enk-stegnr">Steg 3 av 5</div>
-          <div class="enk-q">Hva slags virksomhet driver du?</div>
-          <div class="enk-hint">Risikoen for erstatningskrav varierer mye etter bransje.</div>
-          <div class="vg vg3">
-            <button class="vk" onclick="velg('bransje','konsulent',this)"><span class="vk-ikon">💻</span>Rådgivning / konsulent / IT</button>
-            <button class="vk" onclick="velg('bransje','haandverk',this)"><span class="vk-ikon">🔨</span>Bygg, håndverk, transport</button>
-            <button class="vk" onclick="velg('bransje','handel',this)"><span class="vk-ikon">🛍️</span>Handel, nettbutikk, import</button>
-            <button class="vk" onclick="velg('bransje','helse',this)"><span class="vk-ikon">🏥</span>Helse, omsorg, terapi</button>
-            <button class="vk" onclick="velg('bransje','kreativ',this)"><span class="vk-ikon">🎨</span>Kreativt, kultur, media</button>
-            <button class="vk" onclick="velg('bransje','annet',this)"><span class="vk-ikon">📋</span>Annet / usikker</button>
-          </div>
-          <div class="nav-kn">
-            <button class="kn-t" onclick="visSteg(2)">← Tilbake</button>
-            <button class="kn-n" onclick="neste(3)">Neste →</button>
-          </div>
+      <!-- RESULTAT -->
+      <div class="enk-res">
+        <div id="enk-vurdering" class="enk-vurdering">
+          <span class="ev-badge" id="ev-badge"></span>
+          <div class="ev-tittel" id="ev-tittel">Fyll ut feltene til venstre — anbefalingen bygger seg her.</div>
+          <ul class="ev-grunner" id="ev-grunner"></ul>
         </div>
-      </div>
 
-      <!-- Steg 4: Investorer og vekst -->
-      <div class="enk-steg" id="s4" style="display:none">
-        <div class="enk-kort">
-          <div class="enk-stegnr">Steg 4 av 5</div>
-          <div class="enk-q">Investorer, kapital og ansatte</div>
-          <div class="enk-hint">Disse avgjør mye om ENK er en reell mulighet.</div>
-          <div class="ig">
-            <label>Planlegger du å hente ekstern kapital eller investorer?</label>
-            <div class="vg" style="margin-top:8px">
-              <button class="vk" onclick="velg('investorer','ja',this)">Ja — vi ønsker investorer</button>
-              <button class="vk" onclick="velg('investorer','nei',this)">Nei — selvfinansiert</button>
-            </div>
-          </div>
-          <div class="ig" style="margin-top:20px">
-            <label>Har du 30 000 kr tilgjengelig til aksjekapital? <span style="font-size:12px;color:var(--ink-mute)">(aksjeloven § 3-1)</span></label>
-            <div class="vg" style="margin-top:8px">
-              <button class="vk" onclick="velg('har30k','ja',this)">Ja</button>
-              <button class="vk" onclick="velg('har30k','nei',this)">Nei — ikke akkurat nå</button>
-            </div>
-          </div>
-          <div class="ig" style="margin-top:20px">
-            <label>Planlegger du å ansette noen i løpet av det første året?</label>
-            <div class="vg" style="margin-top:8px">
-              <button class="vk" onclick="velg('ansette','ja',this)">Ja</button>
-              <button class="vk" onclick="velg('ansette','nei',this)">Nei — solo foreløpig</button>
-            </div>
-          </div>
-          <div class="nav-kn">
-            <button class="kn-t" onclick="visSteg(3)">← Tilbake</button>
-            <button class="kn-n" onclick="neste(4)">Neste →</button>
-          </div>
+        <div class="enk-skatt" id="enk-skatt">
+          <h4 id="skatt-tittel">Forenklet skatteillustrasjon</h4>
+          <div class="skatt-g" id="skatt-grid"></div>
+          <div class="skatt-note">⚠️ Forenklet illustrasjon basert på 2026-satser (trygdeavgift 10,8 %, selskapsskatt 22 %, utbytteskatt 37,84 %). Ikke individuelt skatteråd.</div>
         </div>
-      </div>
 
-      <!-- Steg 5: Sosiale rettigheter -->
-      <div class="enk-steg" id="s5" style="display:none">
-        <div class="enk-kort">
-          <div class="enk-stegnr">Steg 5 av 5</div>
-          <div class="enk-q">Sosiale rettigheter — hvor viktig er dette?</div>
-          <div class="enk-hint">ENK og AS gir deg svært ulike rettigheter fra NAV og folketrygden.</div>
-          <div class="ig">
-            <label>Hvor viktig er det å ha fulle sykepenger fra dag 1?</label>
-            <div class="vg" style="margin-top:8px">
-              <button class="vk" onclick="velg('sykepenger','kritisk',this)">Veldig viktig — jeg tåler ikke to ukers karensdager</button>
-              <button class="vk" onclick="velg('sykepenger','ok',this)">Greit — jeg klarer en kortere periode uten</button>
-            </div>
-          </div>
-          <div class="ig" style="margin-top:20px">
-            <label>Er muligheten til å få dagpenger ved nedgang viktig?</label>
-            <div class="enk-hint" style="margin-bottom:8px">ENK-eiere har ikke rett til dagpenger. AS-ansatte har det.</div>
-            <div class="vg" style="margin-top:0">
-              <button class="vk" onclick="velg('dagpenger','ja',this)">Ja — viktig sikkerhetsnett</button>
-              <button class="vk" onclick="velg('dagpenger','nei',this)">Nei — ikke avgjørende</button>
-            </div>
-          </div>
-          <div class="nav-kn">
-            <button class="kn-t" onclick="visSteg(4)">← Tilbake</button>
-            <button class="kn-n" onclick="generer()">Vis anbefaling →</button>
-          </div>
+        <div class="enk-tbl-wrap" id="enk-tbl-wrap">
+          <table class="enk-tbl" id="enk-tbl"></table>
+        </div>
+
+        <div class="enk-cta">
+          <h3>Vil du ha dette skriftlig og signert?</h3>
+          <p>Vi setter opp en personlig vurdering av din situasjon — med anbefaling, begrunnelse og sjekkliste for oppstart. Signert av juridisk rådgiver, Walrus AS.</p>
+          <a href="mailto:rettsregel@gmail.com?subject=Forespørsel%20om%20selskapsform-vurdering" class="btn-aksjon">Send forespørsel →</a>
+          <span class="enk-cta-pris">990 kr · Svar innen 48 timer</span>
         </div>
       </div>
     </div>
 
-    <!-- RESULTAT -->
-    <div id="res" style="display:none">
-      <div class="res-boks">
-        <div id="res-badge"></div>
-        <div class="res-tittel" id="res-tittel"></div>
-        <ul class="res-grunner" id="res-grunner"></ul>
-        <div id="skatt-seksjon"></div>
-        <div class="res-tbl-wr"><table class="res-tbl" id="res-tbl"></table></div>
-      </div>
-      <div class="enk-cta">
-        <h3>Vil du ha dette skriftlig og signert?</h3>
-        <p>Vi setter opp en kort personlig vurdering av din situasjon — med konkret anbefaling, begrunnelse og sjekkliste for oppstart. Signert av juridisk rådgiver, Walrus AS.</p>
-        <a href="mailto:rettsregel@gmail.com?subject=Forespørsel%20om%20selskapsform-vurdering" class="btn-aksjon">Send forespørsel →</a>
-        <span class="enk-cta-pris">990 kr · Svar innen 48 timer</span>
-      </div>
-      <div style="margin-top:8px;text-align:center">
-        <button onclick="startNytt()" style="background:none;border:1.5px solid var(--line);border-radius:10px;padding:12px 24px;font-family:var(--sans);font-size:14px;cursor:pointer;color:var(--ink-soft)">← Start på nytt</button>
-      </div>
-    </div>
-
-    <!-- SEO prose -->
-    <div class="prose sp-body" style="margin-top:64px">
+    <div class="prose sp-body no-print" style="margin-top:0">
       <h2>Hva er forskjellen på ENK og AS?</h2>
-      <p>ENK (enkeltpersonforetak) er ikke en egen juridisk person — det er deg. Hele foretakets økonomi er din private økonomi. AS (aksjeselskap) er en egen juridisk enhet med begrenset ansvar for eierne.</p>
-      <h3>Ansvar</h3>
-      <p>I et ENK hefter du personlig og ubegrenset for all gjeld. Kreditorer kan gå etter hus, bil og sparepenger. I et AS er ansvaret begrenset til aksjekapitalen på 30 000 kr — med mindre du har stilt personlige garantier.</p>
-      <h3>Skattebelastning</h3>
-      <p>ENK: Overskuddet beskattes som personlig næringsinntekt — trygdeavgift 10,8 % pluss flat 22 % og trinnskatt opptil 17,8 %. Effektiv marginalskatt kan nå 51–52 % ved høye inntekter. AS: Selskapet betaler 22 % selskapsskatt. Vil du ta ut penger som utbytte, betaler du 37,84 % av det som gjenstår — total skattebelastning ca. 51,5 %. Men beholder du overskuddet i selskapet, skjer ingen dobbeltbeskatning.</p>
-      <h3>Sosiale rettigheter</h3>
-      <p>ENK: Sykepenger fra dag 17 (80 %), ingen dagpenger ved arbeidsledighet. AS med lønnet eier: 100 % sykepenger fra dag 1 (arbeidsgiver betaler de første 16 dagene), opptjening av dagpenger. Dette har en pris — arbeidsgiveravgift 14,1 % av lønn — men gir fulle NAV-rettigheter.</p>
-      <h3>Overdragelse og eierskap</h3>
-      <p>ENK kan ikke selges som en juridisk enhet. Du kan selge eiendeler, men kjøper må starte nytt foretak. AS kan selges enkelt via aksjesalg — selskapet fortsetter uendret. Det gjør AS langt mer interessant for fremtidig salg eller investorer.</p>
+      <p>I et ENK er du personlig ansvarlig for all gjeld — kreditorer kan gå etter privatøkonomien din. I et AS er ansvaret begrenset til aksjekapitalen (minimum 30 000 kr).</p>
+      <p>ENK: Overskuddet beskattes som personlig næringsinntekt — trygdeavgift 10,8 % pluss flat 22 % og trinnskatt opptil 17,8 %. AS: Selskapet betaler 22 % selskapsskatt. Tar du ut som utbytte betaler du 37,84 % utbytteskatt — ca. 51,5 % totalt. Men beholder du pengene i selskapet: kun 22 %.</p>
+      <p>ENK: Sykepenger fra dag 17 (80 %), ingen dagpenger. AS med lønnet eier: 100 % sykepenger fra dag 1, dagpenger ved arbeidsledighet.</p>
+      <p>ENK kan bare ha én eier og kan ikke selges som juridisk enhet. AS kan ha mange eiere, selges via aksjer, og hente investorer.</p>
     </div>
   </div>
 </main>
 
 <script>
-const D = {{}};
-const TOTAL = 5;
-
-function velg(felt, verdi, el) {{
-  D[felt] = verdi;
-  const gruppe = el.closest('.vg, [class*="ig"]');
-  if (gruppe) {{
-    gruppe.querySelectorAll('.vk').forEach(k => k.classList.remove('av'));
-    el.classList.add('av');
-  }}
+function radio(name) {{
+  const el = document.querySelector('input[name="'+name+'"]:checked');
+  return el ? el.value : null;
 }}
-
-function visSteg(n) {{
-  for (let i=1; i<=TOTAL; i++) {{
-    const el = document.getElementById('s'+i);
-    if (el) el.style.display = i===n ? 'block' : 'none';
-  }}
-  const pct = Math.round((n-1)/TOTAL*100);
-  document.getElementById('pf').style.width = pct+'%';
-  document.getElementById('pt').textContent = 'Steg '+n+' av '+TOTAL;
-  document.getElementById('wiz').scrollIntoView({{behavior:'smooth',block:'start'}});
-}}
-
-function neste(s) {{
-  if (s===1) {{
-    if (!D.eiere) {{ alert('Velg om du er alene eller flere eiere.'); return; }}
-    if (D.eiere === 'flere') {{ generer(); return; }}
-  }}
-  if (s===2) {{
-    if (!D.kapital) {{ alert('Velg hva du vil gjøre med overskuddet.'); return; }}
-    D.overskudd = parseInt(document.getElementById('overskudd').value) || 0;
-  }}
-  if (s===3 && !D.bransje) {{ alert('Velg bransje.'); return; }}
-  if (s===4) {{
-    if (!D.investorer) {{ alert('Angi om du planlegger investorer.'); return; }}
-    if (!D.har30k) {{ alert('Angi om du har 30 000 kr tilgjengelig.'); return; }}
-    if (!D.ansette) {{ alert('Angi om du planlegger å ansette.'); return; }}
-  }}
-  if (s===5) {{ generer(); return; }}
-  visSteg(s+1);
-}}
-
-function kr(n) {{ return n.toLocaleString('nb-NO') + ' kr'; }}
+function kr(n) {{ return n ? parseInt(n).toLocaleString('nb-NO') + ' kr' : '—'; }}
 
 function beregnEnkSkatt(x) {{
-  if (x <= 0) return 0;
+  if (!x || x <= 0) return 0;
   const trygd = x * 0.108;
-  const almInntekt = x - trygd;
-  const flat = almInntekt * 0.22;
+  const flat = (x - trygd) * 0.22;
   let trinn = 0;
   if (x > 226100) trinn += (Math.min(x,318300)-226100)*0.017;
   if (x > 318300) trinn += (Math.min(x,725050)-318300)*0.040;
   if (x > 725050) trinn += (Math.min(x,980100)-725050)*0.137;
   if (x > 980100) trinn += (Math.min(x,1467200)-980100)*0.168;
   if (x > 1467200) trinn += (x-1467200)*0.178;
-  return Math.round(trygd+flat+trinn);
+  return Math.round(trygd + flat + trinn);
 }}
 
-function beregnAsSkatt(x) {{
-  if (x <= 0) return {{ss:0,rest:0,utb:0,tot:0}};
-  const ss = Math.round(x*0.22);
-  const rest = x-ss;
-  const utb = Math.round(rest*0.3784);
-  return {{ss, rest, tot: ss+utb}};
-}}
+function oppdater() {{
+  const eiere     = radio('eiere');
+  const kapital   = radio('kapital');
+  const bransje   = radio('bransje');
+  const investorer= radio('investorer');
+  const har30k    = radio('har30k');
+  const sykepen   = radio('sykepenger');
+  const ansette   = radio('ansette');
+  const overskudd = parseInt(document.getElementById('overskudd').value) || 0;
 
-function generer() {{
-  // Determine recommendation
+  const vEl  = document.getElementById('enk-vurdering');
+  const sEl  = document.getElementById('enk-skatt');
+  const tEl  = document.getElementById('enk-tbl-wrap');
+
+  // Trenger minimum: eiere + én til
+  if (!eiere) {{
+    vEl.style.display='none'; sEl.style.display='none'; tEl.style.display='none';
+    return;
+  }}
+
   let type, tittel, grunner=[];
 
-  if (D.eiere === 'flere') {{
-    type='as-krav';
-    tittel='Dere er flere eiere. Da kreves AS.';
-    grunner=['ENK kan bare ha én eier — det følger av foretaksnavnloven. For felles eierskap er AS den eneste juridiske løsningen.','AS gir dere aksjer som kan fordeles, selges og pantsettes. Dere kan regulere eierforholdet i en aksjonæravtale.','Start med å bestemme eierfordeling og lage vedtekter — det forebygger konflikter fra dag én.'];
-  }} else if (D.investorer === 'ja') {{
-    type='as-krav';
-    tittel='Du trenger AS — investorer krever det.';
-    grunner=['Investorer krever aksjer. Det er ikke mulig med ENK — aksjeloven regulerer eierskapet via aksjer.','Investorer trenger rettsvern, utbytte og mulighet for exit. Alt dette forutsetter AS.'];
-  }} else if (D.har30k === 'nei') {{
-    type='enk';
-    tittel='Start som ENK — vurder AS etter ett til to år.';
-    grunner=['Aksjekapitalen på 30 000 kr er et lovpålagt krav ved stiftelse av AS. Uten den starter du ikke AS.','ENK er gratis å etablere og enklere å drive. Du kan konvertere til AS når økonomien er på plass — det er en kjent og enkel prosess.'];
-    if (D.sykepenger === 'kritisk') grunner.push('Merk: du er avhengig av sykepenger fra dag 1. Det er en reell ulempe med ENK — vurder å spare opp buffer til du konverterer til AS.');
+  if (eiere === 'flere') {{
+    type='as-krav'; tittel='Dere er flere eiere — da kreves AS.';
+    grunner=['ENK kan bare ha én eier. For felles eierskap er AS den eneste juridiske løsningen.',
+             'AS gir dere aksjer som kan fordeles, selges og pantsettes. Reguler eierforholdet i en aksjonæravtale.'];
+  }} else if (investorer === 'ja') {{
+    type='as-krav'; tittel='Du trenger AS — investorer krever det.';
+    grunner=['Investorer krever aksjer. Det er ikke mulig med ENK.',
+             'Aksjeloven gir investorer rettsvern, utbytte og mulighet for exit. Alt forutsetter AS.'];
+  }} else if (har30k === 'nei') {{
+    type='enk'; tittel='Start som ENK — vurder AS om ett til to år.';
+    grunner=['Aksjekapitalen på 30 000 kr er et lovpålagt krav ved stiftelse av AS.',
+             'ENK er gratis å etablere. Du kan konvertere til AS når du er klar.'];
+    if (sykepen === 'ja') grunner.push('Merk: ENK gir sykepenger fra dag 17 (80 %) — ikke dag 1. Bygg en buffer til du konverterer.');
   }} else {{
     let score = 0;
     const risk = {{konsulent:2, haandverk:3, handel:1, helse:3, kreativ:0, annet:1}};
-    score += (risk[D.bransje]||1);
-    if (D.kapital==='beholde') score += 3;
-    if (D.kapital==='blanding') score += 1;
-    if (D.ansette==='ja') score += 2;
-    if (D.sykepenger==='kritisk') score += 2;
-    if (D.dagpenger==='ja') score += 1;
-    if (D.overskudd > 600000) score += 1;
+    if (bransje) score += (risk[bransje]||1);
+    if (kapital==='beholde') score+=3; else if (kapital==='blanding') score+=1;
+    if (ansette==='ja') score+=2;
+    if (sykepen==='ja') score+=2;
+    if (overskudd > 600000) score+=1;
 
-    if (score >= 6) {{
-      type='as';
-      tittel='Vi anbefaler AS.';
-      const riskMap = {{haandverk:'Bransjen din har høy risiko for erstatningskrav. AS begrenser ansvaret ditt til aksjekapitalen.',helse:'Helse og omsorg innebærer ansvar for andres liv og helse. AS gir deg det personlige ansvarsvernet du trenger.', konsulent:'Konsulenter kan stilles ansvarlig for feile råd. AS skiller privatøkonomien din fra virksomhetens risiko.'}};
-      if (riskMap[D.bransje]) grunner.push(riskMap[D.bransje]);
-      if (D.kapital==='beholde') grunner.push('Du vil beholde kapital i selskapet. AS lar deg akkumulere overskudd med kun 22 % selskapsskatt — uten å betale personskatt av det som ikke tas ut.');
-      if (D.ansette==='ja') grunner.push('Du planlegger å ansette. AS er bedre egnet som arbeidsgiver — mer formell struktur, og du kan ansette deg selv med fulle NAV-rettigheter.');
-      if (D.sykepenger==='kritisk') grunner.push('Du er avhengig av sykepenger fra dag 1. Med lønn fra eget AS har du 100 % sykepenger fra første dag — ikke 80 % fra dag 17 som ENK-eier.');
+    if (score >= 5) {{
+      type='as'; tittel='Vi anbefaler AS.';
+      const riskMap = {{haandverk:'Bransjen har høy risiko for erstatningskrav. AS begrenser ditt personlige ansvar.',helse:'Helse og omsorg innebærer ansvar for andres velvære. AS gir deg ansvarsvernet du trenger.',konsulent:'Konsulenter kan stilles ansvarlig for feile råd. AS skiller privatøkonomien fra virksomhetens risiko.'}};
+      if (bransje && riskMap[bransje]) grunner.push(riskMap[bransje]);
+      if (kapital==='beholde') grunner.push('Du vil beholde kapital i selskapet. AS lar deg akkumulere overskudd med kun 22 % selskapsskatt uten å ta det ut som personinntekt.');
+      if (ansette==='ja') grunner.push('Du planlegger å ansette. AS er bedre egnet som arbeidsgiver — du kan ansette deg selv med fulle NAV-rettigheter.');
+      if (sykepen==='ja') grunner.push('Du trenger sykepenger fra dag 1. Med lønn fra eget AS har du 100 % sykepengedekning fra første dag.');
     }} else if (score >= 3) {{
-      type='as';
-      tittel='AS er det tryggeste valget — men ENK kan fungere.';
-      if (D.kapital==='beholde') grunner.push('Du ønsker å beholde kapital i selskapet. AS er langt bedre egnet til det enn ENK.');
-      if (D.sykepenger==='kritisk') grunner.push('Full sykepengedekning fra dag 1 krever at du er lønnet ansatt — mulig bare i AS.');
-      grunner.push('ENK er enklere og billigere å starte. Men AS gir deg bedre vern og mer fleksibilitet over tid.');
+      type='as'; tittel='AS er det tryggeste valget.';
+      if (kapital==='beholde') grunner.push('Du vil beholde kapital i selskapet — AS er langt bedre egnet enn ENK til det.');
+      if (sykepen==='ja') grunner.push('Full sykepengedekning fra dag 1 forutsetter at du er lønnet ansatt, noe som bare er mulig i AS.');
+      grunner.push('ENK er enklere å starte, men AS gir bedre vern og mer fleksibilitet over tid.');
     }} else {{
-      type='enk';
-      tittel='ENK er riktig for deg nå.';
+      type='enk'; tittel='ENK er riktig for deg nå.';
       grunner.push('Du er solo, risikoen er lav, og du tar ut det du tjener. Da er ENK den enkleste og billigste løsningen.');
-      grunner.push('Du sparer 36 825 kr i oppstartskostnader (gebyr + aksjekapital) og slipper årsregnskap og styrekrav.');
-      grunner.push('Du kan alltid konvertere til AS — men spar den overgangen til du faktisk trenger det.');
+      grunner.push('Du sparer 36 825 kr i oppstartskostnader og slipper årsregnskap og styrekrav.');
+      grunner.push('Du kan konvertere til AS når du faktisk trenger det.');
     }}
   }}
 
-  // Badge og tittel
   const badgeTekst = {{as:'AS anbefales',enk:'ENK anbefales','as-krav':'AS er påkrevd'}};
-  document.getElementById('res-badge').innerHTML = `<span class="res-badge ${{type}}">${{badgeTekst[type]}}</span>`;
-  document.getElementById('res-tittel').textContent = tittel;
-  document.getElementById('res-grunner').innerHTML = grunner.map(g=>`<li>${{g}}</li>`).join('');
+  vEl.className = 'enk-vurdering ' + type;
+  vEl.style.display = 'block';
+  document.getElementById('ev-badge').textContent = badgeTekst[type];
+  document.getElementById('ev-tittel').textContent = tittel;
+  document.getElementById('ev-grunner').innerHTML = grunner.map(g=>'<li>'+g+'</li>').join('');
 
-  // Skatt-illustrasjon
-  let skattHTML = '';
-  const ov = D.overskudd || 0;
-  if (ov > 0) {{
-    const enkSkatt = beregnEnkSkatt(ov);
-    const asT = beregnAsSkatt(ov);
-    skattHTML = `
-    <div class="skatt-panel">
-      <h4>Forenklet skatteillustrasjon — ${{kr(ov)}} i overskudd</h4>
-      <div class="skatt-grid">
-        <div class="skatt-kolonne">
-          <div class="skatt-lov">ENK</div>
-          <div class="skatt-rad"><span>Trygdeavgift (10,8 %)</span><span>${{kr(Math.round(ov*0.108))}}</span></div>
-          <div class="skatt-rad"><span>Flat skatt (22 %)</span><span>${{kr(Math.round((ov-ov*0.108)*0.22))}}</span></div>
-          <div class="skatt-rad"><span>Trinnskatt</span><span>${{kr(enkSkatt - Math.round(ov*0.108) - Math.round((ov-ov*0.108)*0.22))}}</span></div>
-          <div class="skatt-rad total"><span>Total skatt</span><span>${{kr(enkSkatt)}}</span></div>
-          <div class="skatt-rad igjen"><span>Du sitter igjen med</span><span>${{kr(ov-enkSkatt)}}</span></div>
-        </div>
-        <div class="skatt-kolonne">
-          <div class="skatt-lov">AS — beholder i selskapet</div>
-          <div class="skatt-rad"><span>Selskapsskatt (22 %)</span><span>${{kr(asT.ss)}}</span></div>
-          <div class="skatt-rad igjen"><span>Akkumulert i AS</span><span>${{kr(asT.rest)}}</span></div>
-          <div class="skatt-rad" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line);color:var(--ink-mute);font-size:12px">Tar du ut som utbytte: +${{kr(asT.utb)}} utbytteskatt → ${{kr(asT.tot)}} total</div>
-        </div>
-      </div>
-      <div class="skatt-disclaimer">⚠️ Forenklet illustrasjon basert på 2026-satser. Inkluderer ikke minstefradrag, fradrag for næring, eller andre individuelle forhold. Ikke individuelt skatteråd.</div>
-    </div>`;
+  // Skatteillustrasjon
+  if (overskudd > 0) {{
+    const enkSkatt = beregnEnkSkatt(overskudd);
+    const ss = Math.round(overskudd*0.22);
+    const rest = overskudd - ss;
+    const utb = Math.round(rest*0.3784);
+    const trygd = Math.round(overskudd*0.108);
+    const flat = Math.round((overskudd-trygd)*0.22);
+    const trinn = enkSkatt - trygd - flat;
+    document.getElementById('skatt-tittel').textContent = 'Forenklet skatteillustrasjon — ' + overskudd.toLocaleString('nb-NO') + ' kr i overskudd';
+    document.getElementById('skatt-grid').innerHTML =
+      '<div class="sk"><div class="sk-lov">ENK</div>'+
+      '<div class="sk-r"><span>Trygdeavgift (10,8 %)</span><span>'+kr(trygd)+'</span></div>'+
+      '<div class="sk-r"><span>Flat skatt (22 %)</span><span>'+kr(flat)+'</span></div>'+
+      '<div class="sk-r"><span>Trinnskatt</span><span>'+kr(trinn)+'</span></div>'+
+      '<div class="sk-r tot"><span>Total skatt</span><span>'+kr(enkSkatt)+'</span></div>'+
+      '<div class="sk-r igjen"><span>Du sitter igjen med</span><span>'+kr(overskudd-enkSkatt)+'</span></div></div>'+
+      '<div class="sk"><div class="sk-lov">AS — beholder i selskapet</div>'+
+      '<div class="sk-r"><span>Selskapsskatt (22 %)</span><span>'+kr(ss)+'</span></div>'+
+      '<div class="sk-r igjen"><span>Akkumulert i AS</span><span>'+kr(rest)+'</span></div>'+
+      '<div class="sk-r" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);color:var(--ink-mute);font-size:12px"><span>Tar du ut som utbytte:</span><span>+'+kr(utb)+' skatt</span></div></div>';
+    sEl.style.display = 'block';
+  }} else {{
+    sEl.style.display = 'none';
   }}
-  document.getElementById('skatt-seksjon').innerHTML = skattHTML;
 
-  // Sammenligningstabell
-  const anbefaltENK = type==='enk';
-  const anbefaltAS = type==='as'||type==='as-krav';
-  document.getElementById('res-tbl').innerHTML = `
-    <thead><tr>
-      <th></th>
-      <th class="${{anbefaltENK?'anbefalt-hd':''}}">ENK</th>
-      <th class="${{anbefaltAS?'anbefalt-hd':''}}">AS</th>
-    </tr></thead>
-    <tbody>
-      <tr><td>Oppstartskostnad</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">0 kr</td><td class="${{anbefaltAS?'anbefalt-kol':''}}">36 825 kr<br><small style="color:var(--ink-mute)">6 825 gebyr + 30 000 aksjekapital</small></td></tr>
-      <tr><td>Antall eiere</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">Bare én</td><td class="${{anbefaltAS?'anbefalt-kol':''}}">En eller flere</td></tr>
-      <tr><td>Personlig ansvar</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">Fullt — ubegrenset</td><td class="${{anbefaltAS?'anbefalt-kol':''}}">Begrenset til aksjekapitalen</td></tr>
-      <tr><td>Skatt på overskudd</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">Personskatt<br><small style="color:var(--ink-mute)">22 % + 10,8 % trygd + trinnskatt</small></td><td class="${{anbefaltAS?'anbefalt-kol':''}}">22 % selskapsskatt<br><small style="color:var(--ink-mute)">+ utbytteskatt 37,84 % ved uttak</small></td></tr>
-      <tr><td>Sykepenger</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">Fra dag 17 (80 %)</td><td class="${{anbefaltAS?'anbefalt-kol':''}}">Fra dag 1 (100 %) med lønn</td></tr>
-      <tr><td>Dagpenger</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">Nei</td><td class="${{anbefaltAS?'anbefalt-kol':''}}">Ja, ved lønnet ansettelse</td></tr>
-      <tr><td>Investorer mulig?</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">Nei</td><td class="${{anbefaltAS?'anbefalt-kol':''}}">Ja</td></tr>
-      <tr><td>Kan selges?</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">Bare enkelteiendeler</td><td class="${{anbefaltAS?'anbefalt-kol':''}}">Ja — via aksjesalg</td></tr>
-      <tr><td>Regnskapskrav</td><td class="${{anbefaltENK?'anbefalt-kol':''}}">Enkel bokføring</td><td class="${{anbefaltAS?'anbefalt-kol':''}}">Årsregnskap, styre, GF</td></tr>
-    </tbody>`;
-
-  document.getElementById('wiz').style.display='none';
-  const resEl = document.getElementById('res');
-  resEl.style.display='block';
-  setTimeout(()=>resEl.scrollIntoView({{behavior:'smooth',block:'start'}}),50);
-}}
-
-function startNytt() {{
-  Object.keys(D).forEach(k=>delete D[k]);
-  document.getElementById('res').style.display='none';
-  document.getElementById('wiz').style.display='block';
-  document.querySelectorAll('.vk').forEach(k=>k.classList.remove('av'));
-  document.getElementById('overskudd').value='';
-  visSteg(1);
+  // Sammenligningstabel
+  const anEN = type==='enk', anAS = (type==='as'||type==='as-krav');
+  document.getElementById('enk-tbl').innerHTML =
+    '<thead><tr><th></th><th'+(anEN?' class="anbefalt"':'')+'>ENK</th><th'+(anAS?' class="anbefalt"':'')+'>AS</th></tr></thead>'+
+    '<tbody>'+
+    '<tr><td>Oppstartskostnad</td><td'+(anEN?' class="anbefalt"':'')+'>0 kr</td><td'+(anAS?' class="anbefalt"':'')+'>36 825 kr</td></tr>'+
+    '<tr><td>Antall eiere</td><td'+(anEN?' class="anbefalt"':'')+'>Bare én</td><td'+(anAS?' class="anbefalt"':'')+'>En eller flere</td></tr>'+
+    '<tr><td>Personlig ansvar</td><td'+(anEN?' class="anbefalt"':'')+'>Fullt ansvar</td><td'+(anAS?' class="anbefalt"':'')+'>Begrenset til 30 000 kr</td></tr>'+
+    '<tr><td>Skatt på overskudd</td><td'+(anEN?' class="anbefalt"':'')+'>Personskatt (22 %+10,8 %+trinn)</td><td'+(anAS?' class="anbefalt"':'')+'>22 % selskapsskatt</td></tr>'+
+    '<tr><td>Sykepenger</td><td'+(anEN?' class="anbefalt"':'')+'>Fra dag 17 (80 %)</td><td'+(anAS?' class="anbefalt"':'')+'>Fra dag 1 (100 %) med lønn</td></tr>'+
+    '<tr><td>Dagpenger</td><td'+(anEN?' class="anbefalt"':'')+'>Nei</td><td'+(anAS?' class="anbefalt"':'')+'>Ja, ved lønnet ansettelse</td></tr>'+
+    '<tr><td>Investorer mulig?</td><td'+(anEN?' class="anbefalt"':'')+'>Nei</td><td'+(anAS?' class="anbefalt"':'')+'>Ja</td></tr>'+
+    '<tr><td>Kan selges?</td><td'+(anEN?' class="anbefalt"':'')+'>Bare enkelteiendeler</td><td'+(anAS?' class="anbefalt"':'')+'>Ja — via aksjesalg</td></tr>'+
+    '</tbody>';
+  tEl.style.display = 'block';
 }}
 </script>
 
@@ -3285,7 +3153,7 @@ def render_kontrakter_hub():
 {site_nav(depth=1)}
 <main class="page">
   <div class="container">
-    <div class="tjenester-hero">
+    <div class="tjensters-hero">
       <div class="article-eyebrow">Kontrakter</div>
       <h1>Juridiske maler — gratis å bruke</h1>
       <p>Fyll ut i nettleseren. Last ned som PDF. Alle maler er basert på gjeldende norsk lov.</p>
@@ -3297,41 +3165,31 @@ def render_kontrakter_hub():
         <p>Standard leiekontrakt for bolig. Tidsubestemt eller tidsbestemt. Fyll ut i nettleseren og last ned som PDF.</p>
         <div class="tjeneste-pil">Fyll ut og last ned →</div>
       </a>
-
-      <div class="tjeneste-kort snart">
-        <span class="snart-badge">Snart</span>
+      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
         <div class="tjeneste-kat graa">Kjøp og salg</div>
         <h3>Kjøpekontrakt bil</h3>
         <p>Juridisk korrekt kjøpekontrakt for privatbilsalg. Basert på kjøpsloven av 1988.</p>
         <div class="tjeneste-pil">Kommer snart</div>
       </div>
-
-      <div class="tjeneste-kort snart">
-        <span class="snart-badge">Snart</span>
+      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
         <div class="tjeneste-kat graa">Familie og samliv</div>
         <h3>Samboeravtale</h3>
         <p>Avtale om økonomi, bolig og eierskap for samboere. Basert på husstandsfellesskapsloven.</p>
         <div class="tjeneste-pil">Kommer snart</div>
       </div>
-
-      <div class="tjeneste-kort snart">
-        <span class="snart-badge">Snart</span>
+      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
         <div class="tjeneste-kat graa">Økonomi og gjeld</div>
         <h3>Gjeldsbrev</h3>
         <p>Enkelt gjeldsbrev for private lån. Rentefritt eller med renter og nedbetalingsplan.</p>
         <div class="tjeneste-pil">Kommer snart</div>
       </div>
-
-      <div class="tjeneste-kort snart">
-        <span class="snart-badge">Snart</span>
+      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
         <div class="tjeneste-kat graa">Selskapsrett</div>
         <h3>Aksjonæravtale</h3>
         <p>Avtale mellom aksjonærer i AS. Forkjøpsrett, stemmerett og utbyttepolitikk.</p>
         <div class="tjeneste-pil">Kommer snart</div>
       </div>
-
-      <div class="tjeneste-kort snart">
-        <span class="snart-badge">Snart</span>
+      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
         <div class="tjeneste-kat graa">Selskapsrett</div>
         <h3>Generalforsamlingsprotokoll</h3>
         <p>Protokollmal for ordinær og ekstraordinær GF. Klar til å fylle ut og signere.</p>
@@ -3357,13 +3215,14 @@ def render_kontrakter_husleiekontrakt():
   display: grid; grid-template-columns: 380px 1fr; gap: 32px;
   align-items: start; margin-bottom: 64px;
 }}
-@media (max-width: 1024px) {{ .kontrakt-layout {{ grid-template-columns: 1fr; }} }}
+.kontrakt-layout > * {{ min-width: 0; }}
+@media (max-width: 1024px) {{ .kontrakt-layout {{ grid-template-columns: 1fr !important; }} }}
 .kontrakt-skjema {{
   background: var(--bg-card); border: 1px solid var(--line);
   border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md);
   position: sticky; top: 24px;
 }}
-@media (max-width: 900px) {{ .kontrakt-skjema {{ position: static; }} }}
+@media (max-width: 1024px) {{ .kontrakt-skjema {{ position: static !important; }} }}
 .ks-tittel {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 20px; }}
 .ks-seksjon {{ margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }}
 .ks-seksjon:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
@@ -3372,7 +3231,7 @@ def render_kontrakter_husleiekontrakt():
 .kf label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
 .kf input, .kf select, .kf textarea {{
   width: 100%; padding: 9px 12px; border: 1.5px solid var(--line);
-  border-radius: 8px; font-family: var(--sans); font-size: 13px;
+  border-radius: 8px; font-family: var(--sans); font-size: 16px;
   background: var(--bg); color: var(--ink); box-sizing: border-box; transition: border-color 0.15s;
 }}
 .kf input:focus, .kf select:focus, .kf textarea:focus {{ outline: none; border-color: var(--accent); }}
@@ -3393,28 +3252,19 @@ def render_kontrakter_husleiekontrakt():
   justify-content: center; gap: 8px;
 }}
 .last-ned-kn:hover {{ background: var(--accent-deep); }}
-/* Dokument */
 .kontrakt-dokument {{
   background: white; border: 1px solid var(--line); border-radius: 16px;
   padding: 48px 56px; box-shadow: var(--shadow-sm); font-family: 'EB Garamond', Georgia, serif;
-  font-size: 15px; line-height: 1.8; color: var(--ink);
+  font-size: 16px; line-height: 1.8; color: var(--ink);
 }}
-@media (max-width: 600px) {{ .kontrakt-dokument {{ padding: 24px 20px; font-size: 14px; }} }}
-.kd-tittel {{
-  font-size: 20px; font-weight: 500; text-align: center;
-  margin-bottom: 6px; letter-spacing: 0.02em;
-}}
+@media (max-width: 600px) {{ .kontrakt-dokument {{ padding: 24px 20px; font-size: 15px; }} }}
+.kd-tittel {{ font-size: 20px; font-weight: 500; text-align: center; margin-bottom: 6px; }}
 .kd-undertittel {{ font-size: 13px; text-align: center; color: var(--ink-mute); margin-bottom: 32px; font-family: var(--sans); }}
 .kd-h2 {{ font-size: 14px; font-weight: 700; font-family: var(--sans); text-transform: uppercase; letter-spacing: 0.08em; margin: 28px 0 8px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }}
 .kd-rad {{ display: flex; gap: 8px; margin-bottom: 4px; }}
 .kd-etikettene {{ color: var(--ink-mute); min-width: 140px; font-size: 14px; }}
 .kd-v {{ font-size: 15px; }}
-.kd-v.tomt {{ color: var(--ink-mute); font-style: italic; }}
-.kd-avsnitt {{ margin: 8px 0; }}
-.kd-varighet-boks {{
-  border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px;
-  margin: 8px 0; background: var(--bg);
-}}
+.kd-varighet-boks {{ border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin: 8px 0; background: var(--bg); }}
 .kd-sign {{ margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }}
 .kd-sign-felt {{ border-top: 1px solid var(--ink); padding-top: 6px; }}
 .kd-sign-etikett {{ font-size: 13px; color: var(--ink-mute); font-family: var(--sans); }}
@@ -3424,7 +3274,7 @@ def render_kontrakter_husleiekontrakt():
   .no-print {{ display: none !important; }}
   nav.site-nav, footer.site-footer, #chat-toggle, #chat-panel, .breadcrumbs, .article-header, .kontrakt-skjema, .sp-body {{ display: none !important; }}
   .kontrakt-layout {{ grid-template-columns: 1fr; display: block; }}
-  .kontrakt-dokument {{ border: none; box-shadow: none; padding: 0; border-radius: 0; font-size: 11pt; line-height: 1.6; }}
+  .kontrakt-dokument {{ border: none; box-shadow: none; padding: 0; border-radius: 0; font-size: 12pt; line-height: 1.6; }}
   body {{ background: white; }}
 }}
 </style>
@@ -3432,13 +3282,10 @@ def render_kontrakter_husleiekontrakt():
 <main class="page">
   <div class="container">
     <div class="breadcrumbs no-print">
-      <a href="../../">Rettsregel</a>
-      <span class="sep">›</span>
-      <a href="../../kontrakter/">Kontrakter</a>
-      <span class="sep">›</span>
+      <a href="../../">Rettsregel</a><span class="sep">›</span>
+      <a href="../../kontrakter/">Kontrakter</a><span class="sep">›</span>
       <span class="current">Husleiekontrakt</span>
     </div>
-
     <div class="article-header no-print">
       <div class="article-eyebrow">Kontraktmal</div>
       <h1 class="article-title">Husleiekontrakt for bolig</h1>
@@ -3446,30 +3293,25 @@ def render_kontrakter_husleiekontrakt():
     </div>
 
     <div class="kontrakt-layout">
-      <!-- SKJEMA -->
       <div class="kontrakt-skjema no-print">
         <div class="ks-tittel">Fyll ut kontrakten</div>
-
         <div class="ks-seksjon">
           <div class="ks-seksjon-tittel">Utleier</div>
           <div class="kf"><label>Fullt navn</label><input type="text" id="utleier_navn" oninput="oppdater()" placeholder="Ola Nordmann"></div>
           <div class="kf"><label>Adresse</label><input type="text" id="utleier_adresse" oninput="oppdater()" placeholder="Storgata 1, 0000 Oslo"></div>
-          <div class="kf"><label>Telefon / e-post</label><input type="text" id="utleier_kontakt" oninput="oppdater()" placeholder="900 00 000 / ola@eksempel.no"></div>
+          <div class="kf"><label>Telefon / e-post</label><input type="text" id="utleier_kontakt" oninput="oppdater()" placeholder="900 00 000"></div>
         </div>
-
         <div class="ks-seksjon">
           <div class="ks-seksjon-tittel">Leietaker</div>
           <div class="kf"><label>Fullt navn</label><input type="text" id="leietaker_navn" oninput="oppdater()" placeholder="Kari Nordmann"></div>
           <div class="kf"><label>Fødselsdato</label><input type="date" id="leietaker_fodsel" oninput="oppdater()"></div>
-          <div class="kf"><label>Telefon / e-post</label><input type="text" id="leietaker_kontakt" oninput="oppdater()" placeholder="900 00 000 / kari@eksempel.no"></div>
+          <div class="kf"><label>Telefon / e-post</label><input type="text" id="leietaker_kontakt" oninput="oppdater()" placeholder="900 00 000"></div>
         </div>
-
         <div class="ks-seksjon">
           <div class="ks-seksjon-tittel">Leieobjektet</div>
           <div class="kf"><label>Adresse</label><input type="text" id="bolig_adresse" oninput="oppdater()" placeholder="Leiegata 5, 5000 Bergen"></div>
           <div class="kf"><label>Type bolig</label><input type="text" id="bolig_type" oninput="oppdater()" placeholder="f.eks. 2-roms leilighet, 55 m²"></div>
-          <div class="kf">
-            <label>Møblering</label>
+          <div class="kf"><label>Møblering</label>
             <div class="kf-radio">
               <label><input type="radio" name="moblert" value="umøblert" onchange="oppdater()" checked> Umøblert</label>
               <label><input type="radio" name="moblert" value="delvis møblert" onchange="oppdater()"> Delvis møblert</label>
@@ -3477,38 +3319,27 @@ def render_kontrakter_husleiekontrakt():
             </div>
           </div>
         </div>
-
         <div class="ks-seksjon">
           <div class="ks-seksjon-tittel">Varighet</div>
-          <div class="kf">
-            <div class="kf-radio">
-              <label><input type="radio" name="varighet" value="tidsubestemt" onchange="oppdaterVarighetUI()" checked> Tidsubestemt</label>
-              <label><input type="radio" name="varighet" value="tidsbestemt" onchange="oppdaterVarighetUI()"> Tidsbestemt</label>
-            </div>
-          </div>
+          <div class="kf"><div class="kf-radio">
+            <label><input type="radio" name="varighet" value="tidsubestemt" onchange="oppdaterVarighetUI()" checked> Tidsubestemt</label>
+            <label><input type="radio" name="varighet" value="tidsbestemt" onchange="oppdaterVarighetUI()"> Tidsbestemt</label>
+          </div></div>
           <div class="kf"><label>Startdato</label><input type="date" id="start_dato" oninput="oppdater()"></div>
-          <div id="tidsbestemt-felt" style="display:none">
-            <div class="kf"><label>Sluttdato</label><input type="date" id="slutt_dato" oninput="oppdater()"></div>
-          </div>
-          <div id="oppsigelse-felt">
-            <div class="kf"><label>Oppsigelsestid (måneder)</label>
-              <select id="oppsigelse_tid" onchange="oppdater()">
-                <option value="1">1 måned</option>
-                <option value="2">2 måneder</option>
-                <option value="3" selected>3 måneder</option>
-              </select>
-            </div>
-          </div>
+          <div id="tidsbestemt-felt" style="display:none"><div class="kf"><label>Sluttdato</label><input type="date" id="slutt_dato" oninput="oppdater()"></div></div>
+          <div id="oppsigelse-felt"><div class="kf"><label>Oppsigelsestid</label>
+            <select id="oppsigelse_tid" onchange="oppdater()">
+              <option value="1">1 måned</option><option value="2">2 måneder</option><option value="3" selected>3 måneder</option>
+            </select>
+          </div></div>
         </div>
-
         <div class="ks-seksjon">
           <div class="ks-seksjon-tittel">Økonomi</div>
           <div class="kf"><label>Månedlig leie (kr)</label><input type="number" id="leie_kr" oninput="oppdater()" placeholder="12000" min="0"></div>
           <div class="kf"><label>Forfallsdato (dag i mnd)</label><input type="number" id="forfall_dag" oninput="oppdater()" placeholder="1" min="1" max="28"></div>
           <div class="kf"><label>Kontonummer</label><input type="text" id="konto_nr" oninput="oppdater()" placeholder="1234 56 78901"></div>
           <div class="kf"><label>Depositum (kr)</label><input type="number" id="depositum_kr" oninput="oppdater()" placeholder="36000" min="0"></div>
-          <div class="kf">
-            <label>Strøm og vann</label>
+          <div class="kf"><label>Strøm og vann</label>
             <div class="kf-radio">
               <label><input type="radio" name="strom" value="Inkludert i leien" onchange="oppdater()" checked> Inkludert</label>
               <label><input type="radio" name="strom" value="Betales i tillegg" onchange="oppdater()"> I tillegg</label>
@@ -3516,24 +3347,20 @@ def render_kontrakter_husleiekontrakt():
             </div>
           </div>
         </div>
-
         <div class="ks-seksjon">
           <div class="ks-seksjon-tittel">Særlige vilkår (valgfritt)</div>
-          <div class="kf"><textarea id="særlige_vilkår" oninput="oppdater()" placeholder="f.eks. Dyrehold er ikke tillatt. Parkering er inkludert (plass nr. 12)."></textarea></div>
+          <div class="kf"><textarea id="saerlige_vilkaar" oninput="oppdater()" placeholder="f.eks. Dyrehold er ikke tillatt."></textarea></div>
         </div>
-
         <button class="last-ned-kn" onclick="window.print()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Last ned som PDF
         </button>
-        <p style="font-size:12px;color:var(--ink-mute);text-align:center;margin-top:10px">Trykk «Last ned» → «Lagre som PDF» i utskriftsdialogen</p>
+        <p style="font-size:12px;color:var(--ink-mute);text-align:center;margin-top:8px">Trykk «Last ned» → «Lagre som PDF» i utskriftsdialogen</p>
       </div>
 
-      <!-- DOKUMENT -->
       <div class="kontrakt-dokument" id="kd">
         <div class="kd-tittel">HUSLEIEKONTRAKT FOR BOLIG</div>
         <div class="kd-undertittel">Utarbeidet i samsvar med husleieloven av 26. mars 1999</div>
-
         <div class="kd-h2">1. Parter</div>
         <div class="kd-rad"><span class="kd-etikettene">Utleier</span><span class="kd-v" id="kd-utleier-navn">_______________</span></div>
         <div class="kd-rad"><span class="kd-etikettene">Adresse</span><span class="kd-v" id="kd-utleier-adresse">_______________</span></div>
@@ -3541,47 +3368,27 @@ def render_kontrakter_husleiekontrakt():
         <div class="kd-rad" style="margin-top:12px"><span class="kd-etikettene">Leietaker</span><span class="kd-v" id="kd-leietaker-navn">_______________</span></div>
         <div class="kd-rad"><span class="kd-etikettene">Fødselsdato</span><span class="kd-v" id="kd-leietaker-fodsel">_______________</span></div>
         <div class="kd-rad"><span class="kd-etikettene">Kontakt</span><span class="kd-v" id="kd-leietaker-kontakt">_______________</span></div>
-
         <div class="kd-h2">2. Leieobjektet</div>
-        <div class="kd-avsnitt">Boligen på <strong id="kd-bolig-adresse">[adresse]</strong> leies ut <strong id="kd-moblert">umøblert</strong>.</div>
-        <div class="kd-avsnitt">Boligtype: <span id="kd-bolig-type">[type]</span>.</div>
-
-        <div class="kd-h2">3. Leieforholdets varighet og oppsigelse</div>
-        <div class="kd-varighet-boks" id="kd-varighet-boks">
-          Tidsubestemt leieforhold. Starter den <strong id="kd-start-dato">[dato]</strong>.
-          Kan sies opp av begge parter med <strong id="kd-oppsigelse-tid">3</strong> måneders varsel,
-          regnet fra 1. i påfølgende måned, jf. husleieloven §§ 9-3 og 9-6.
-        </div>
-
-        <div class="kd-h2">4. Leie, depositum og tillegg</div>
-        <div class="kd-rad"><span class="kd-etikettene">Månedlig leie</span><span class="kd-v"><strong id="kd-leie">_______________</strong> kr/mnd</span></div>
+        <div class="kd-rad"><span class="kd-etikettene">Adresse</span><span class="kd-v" id="kd-bolig-adresse">[adresse]</span></div>
+        <div class="kd-rad"><span class="kd-etikettene">Type</span><span class="kd-v" id="kd-bolig-type">[type]</span></div>
+        <div class="kd-rad"><span class="kd-etikettene">Møblering</span><span class="kd-v" id="kd-moblert">Umøblert</span></div>
+        <div class="kd-h2">3. Varighet og oppsigelse</div>
+        <div class="kd-varighet-boks" id="kd-varighet-boks">Tidsubestemt leieforhold. Starter den <strong id="kd-start-dato">[dato]</strong>. Kan sies opp av begge parter med <strong id="kd-oppsigelse-tid">3</strong> måneders varsel, regnet fra 1. i påfølgende måned, jf. husleieloven §§ 9-3 og 9-6.</div>
+        <div class="kd-h2">4. Leie og økonomi</div>
+        <div class="kd-rad"><span class="kd-etikettene">Månedlig leie</span><span class="kd-v"><strong id="kd-leie">___</strong> kr/mnd</span></div>
         <div class="kd-rad"><span class="kd-etikettene">Forfall</span><span class="kd-v">Den <strong id="kd-forfall">___</strong>. i hver måned</span></div>
         <div class="kd-rad"><span class="kd-etikettene">Konto</span><span class="kd-v" id="kd-konto">_______________</span></div>
-        <div class="kd-rad" style="margin-top:8px"><span class="kd-etikettene">Depositum</span><span class="kd-v"><strong id="kd-depositum">_______________</strong> kr. Settes på særskilt depositumskonto i leietakers navn, jf. husleieloven § 3-5.</span></div>
+        <div class="kd-rad" style="margin-top:8px"><span class="kd-etikettene">Depositum</span><span class="kd-v"><strong id="kd-depositum">___</strong> kr. Settes på særskilt depositumskonto i leietakers navn, jf. husleieloven § 3-5.</span></div>
         <div class="kd-rad" style="margin-top:8px"><span class="kd-etikettene">Strøm og vann</span><span class="kd-v" id="kd-strom">Inkludert i leien</span></div>
-
         <div class="kd-h2">5. Vedlikehold og bruk</div>
-        <div class="kd-avsnitt">Leietaker plikter å behandle boligen med tilbørlig aktsomhet, jf. husleieloven § 5-2. Leietaker bekoster vedlikehold av låser, kraner, elektriske kontakter og batteri i røykvarsler, jf. husleieloven § 5-3. Røyking og dyrehold er kun tillatt etter særskilt skriftlig avtale.</div>
-
-        <div class="kd-h2">6. Husordensregler og bruk</div>
-        <div class="kd-avsnitt">Leietaker plikter å overholde gjeldende husordensregler. Fremleie er ikke tillatt uten utleiers skriftlige samtykke, jf. husleieloven § 7-2.</div>
-
-        <div class="kd-h2" id="kd-sæ-h" style="display:none">7. Særlige vilkår</div>
-        <div class="kd-avsnitt" id="kd-særlige-vilkår" style="display:none"></div>
-
-        <div class="kd-h2">8. Signatur</div>
-        <div class="kd-avsnitt" style="margin-bottom:24px">Kontrakten er undertegnet i to eksemplarer, ett til hver part.</div>
+        <div style="font-size:15px;line-height:1.7">Leietaker plikter å behandle boligen med tilbørlig aktsomhet, jf. husleieloven § 5-2. Leietaker bekoster vedlikehold av låser, kraner og batteri i røykvarsler, jf. husleieloven § 5-3. Røyking og dyrehold er kun tillatt etter skriftlig avtale. Fremleie er ikke tillatt uten utleiers skriftlige samtykke, jf. husleieloven § 7-2.</div>
+        <div class="kd-h2" id="kd-sae-h" style="display:none">6. Særlige vilkår</div>
+        <div id="kd-saerlige-vilkaar" style="display:none;font-size:15px;line-height:1.7"></div>
+        <div class="kd-h2">7. Signatur</div>
+        <div style="font-size:15px;margin-bottom:24px">Kontrakten er undertegnet i to eksemplarer, ett til hver part.</div>
         <div class="kd-sign">
-          <div>
-            <div class="kd-sign-felt"></div>
-            <div class="kd-sign-etikett">Sted og dato — Utleier</div>
-            <div class="kd-sign-navn" id="kd-sign-utleier">_______________</div>
-          </div>
-          <div>
-            <div class="kd-sign-felt"></div>
-            <div class="kd-sign-etikett">Sted og dato — Leietaker</div>
-            <div class="kd-sign-navn" id="kd-sign-leietaker">_______________</div>
-          </div>
+          <div><div class="kd-sign-felt"></div><div class="kd-sign-etikett">Sted og dato — Utleier</div><div class="kd-sign-navn" id="kd-sign-utleier">_______________</div></div>
+          <div><div class="kd-sign-felt"></div><div class="kd-sign-etikett">Sted og dato — Leietaker</div><div class="kd-sign-navn" id="kd-sign-leietaker">_______________</div></div>
         </div>
         <div class="kd-footer">Kontrakten er utarbeidet i samsvar med husleieloven av 26. mars 1999. Rettsregel.no</div>
       </div>
@@ -3589,38 +3396,29 @@ def render_kontrakter_husleiekontrakt():
 
     <div class="prose sp-body no-print">
       <h2>Hva bør en husleiekontrakt inneholde?</h2>
-      <p>En gyldig husleiekontrakt trenger partenes navn, boligens adresse, leiens størrelse, forfallsdato og leieperiodens lengde. Alt annet er viktig, men ikke et krav for gyldighet.</p>
+      <p>En gyldig husleiekontrakt trenger partenes navn, boligens adresse, leiens størrelse, forfallsdato og leieperiodens lengde.</p>
       <h3>Depositum — alltid på depositumskonto</h3>
-      <p>Depositumet skal stå på en særskilt konto i leietakers navn, adskilt fra utleiers midler, jf. husleieloven § 3-5. Maksimalt 6 månedlige leier. Utleier kan ikke disponere pengene uten leietakers samtykke eller dom.</p>
+      <p>Depositumet skal stå på en særskilt konto i leietakers navn, adskilt fra utleiers midler, jf. husleieloven § 3-5. Maksimalt 6 månedlige leier.</p>
       <h3>Tidsbestemt eller tidsubestemt?</h3>
-      <p>Tidsbestemte kontrakter på 3 år eller mer brukes der begge parter vil sikre en bestemt periode. Kortere tidsbestemte kontrakter er lovlig bare i særskilte tilfeller (jf. husleieloven § 9-3). Usikker? Velg tidsubestemt.</p>
-      <h3>Relevante paragrafer</h3>
-      <p><a href="../../lover/husleieloven/3-5/">§ 3-5 Depositum</a> · <a href="../../lover/husleieloven/9-3/">§ 9-3 Oppsigelse fra utleier</a> · <a href="../../lover/husleieloven/9-6/">§ 9-6 Oppsigelse fra leietaker</a> · <a href="../../lover/husleieloven/5-2/">§ 5-2 Leietakers vedlikeholdsplikt</a></p>
+      <p>Tidsbestemte kontrakter på 3 år eller mer brukes der begge parter vil sikre en bestemt periode. Kortere tidsbestemte kontrakter er lovlig bare i særskilte tilfeller, jf. husleieloven § 9-3. Usikker? Velg tidsubestemt.</p>
+      <p>Relevante paragrafer: <a href="../../lover/husleieloven/3-5/">§ 3-5 Depositum</a> · <a href="../../lover/husleieloven/9-3/">§ 9-3 Oppsigelse fra utleier</a> · <a href="../../lover/husleieloven/9-6/">§ 9-6 Oppsigelse fra leietaker</a></p>
     </div>
   </div>
 </main>
 
 <script>
 function v(id) {{ return document.getElementById(id); }}
-function sett(id, tekst) {{
-  const el = v(id);
-  if (!el) return;
-  el.textContent = tekst || '';
-  el.className = 'kd-v' + (tekst ? '' : ' tomt');
-}}
-
+function sett(id, tekst) {{ const el = v(id); if (!el) return; el.textContent = tekst || ''; }}
 function formDato(iso) {{
   if (!iso) return '';
   return new Date(iso+'T12:00:00').toLocaleDateString('nb-NO',{{day:'numeric',month:'long',year:'numeric'}});
 }}
-
 function oppdaterVarighetUI() {{
-  const erTidsbestemt = document.querySelector('input[name=varighet]:checked').value === 'tidsbestemt';
-  v('tidsbestemt-felt').style.display = erTidsbestemt ? 'block' : 'none';
-  v('oppsigelse-felt').style.display = erTidsbestemt ? 'none' : 'block';
+  const erTB = document.querySelector('input[name=varighet]:checked').value === 'tidsbestemt';
+  v('tidsbestemt-felt').style.display = erTB ? 'block' : 'none';
+  v('oppsigelse-felt').style.display = erTB ? 'none' : 'block';
   oppdater();
 }}
-
 function oppdater() {{
   sett('kd-utleier-navn', v('utleier_navn').value);
   sett('kd-utleier-adresse', v('utleier_adresse').value);
@@ -3632,41 +3430,31 @@ function oppdater() {{
   sett('kd-bolig-adresse', v('bolig_adresse').value || '[adresse]');
   sett('kd-bolig-type', v('bolig_type').value || '[type]');
   const mob = document.querySelector('input[name=moblert]:checked');
-  sett('kd-moblert', mob ? mob.value : 'umøblert');
+  sett('kd-moblert', mob ? mob.value : 'Umøblert');
   const leieKr = parseInt(v('leie_kr').value);
-  sett('kd-leie', leieKr ? leieKr.toLocaleString('nb-NO') : '');
-  sett('kd-forfall', v('forfall_dag').value);
-  sett('kd-konto', v('konto_nr').value);
+  sett('kd-leie', leieKr ? leieKr.toLocaleString('nb-NO') : '___');
+  sett('kd-forfall', v('forfall_dag').value || '___');
+  sett('kd-konto', v('konto_nr').value || '_______________');
   const depKr = parseInt(v('depositum_kr').value);
-  sett('kd-depositum', depKr ? depKr.toLocaleString('nb-NO') : '');
+  sett('kd-depositum', depKr ? depKr.toLocaleString('nb-NO') : '___');
   const strom = document.querySelector('input[name=strom]:checked');
   sett('kd-strom', strom ? strom.value : '');
-
-  const erTidsbestemt = document.querySelector('input[name=varighet]:checked').value === 'tidsbestemt';
+  const erTB = document.querySelector('input[name=varighet]:checked').value === 'tidsbestemt';
   const startDato = v('start_dato').value;
   const sluttDato = v('slutt_dato').value;
   const oppsTid = v('oppsigelse_tid') ? v('oppsigelse_tid').value : '3';
-
-  if (erTidsbestemt) {{
-    v('kd-varighet-boks').innerHTML =
-      'Tidsbestemt leieforhold fra <strong>' + (formDato(startDato)||'[startdato]') + '</strong> til <strong>' +
-      (formDato(sluttDato)||'[sluttdato]') + '</strong>. Leieforholdet opphører uten oppsigelse ved utløpsdato, jf. husleieloven § 9-3.';
+  if (erTB) {{
+    v('kd-varighet-boks').innerHTML = 'Tidsbestemt leieforhold fra <strong>'+(formDato(startDato)||'[startdato]')+'</strong> til <strong>'+(formDato(sluttDato)||'[sluttdato]')+'</strong>. Leieforholdet opphører uten oppsigelse ved utløpsdato, jf. husleieloven § 9-3.';
   }} else {{
-    v('kd-varighet-boks').innerHTML =
-      'Tidsubestemt leieforhold. Starter den <strong>' + (formDato(startDato)||'[dato]') + '</strong>. ' +
-      'Kan sies opp av begge parter med <strong>' + oppsTid + '</strong> måneders varsel, ' +
-      'regnet fra 1. i påfølgende måned, jf. husleieloven §§ 9-3 og 9-6.';
+    v('kd-varighet-boks').innerHTML = 'Tidsubestemt leieforhold. Starter den <strong>'+(formDato(startDato)||'[dato]')+'</strong>. Kan sies opp av begge parter med <strong>'+oppsTid+'</strong> måneders varsel, regnet fra 1. i påfølgende måned, jf. husleieloven §§ 9-3 og 9-6.';
   }}
-
-  const særlige = v('særlige_vilkår').value.trim();
-  v('kd-sæ-h').style.display = særlige ? 'block' : 'none';
-  v('kd-særlige-vilkår').style.display = særlige ? 'block' : 'none';
-  v('kd-særlige-vilkår').textContent = særlige;
-
-  sett('kd-sign-utleier', v('utleier_navn').value);
-  sett('kd-sign-leietaker', v('leietaker_navn').value);
+  const saer = v('saerlige_vilkaar').value.trim();
+  v('kd-sae-h').style.display = saer ? 'block' : 'none';
+  v('kd-saerlige-vilkaar').style.display = saer ? 'block' : 'none';
+  v('kd-saerlige-vilkaar').textContent = saer;
+  sett('kd-sign-utleier', v('utleier_navn').value || '_______________');
+  sett('kd-sign-leietaker', v('leietaker_navn').value || '_______________');
 }}
-
 oppdater();
 </script>
 
