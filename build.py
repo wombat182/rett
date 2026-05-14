@@ -2736,6 +2736,167 @@ def paragraf_sort_key(p):
 
 def render_tjenester_hub():
     return f"""{shared_head(
+        'Juridiske verktøy — gratis kalkulatorer og brevgeneratorer | Rettsregel',
+        'Reklamasjonsbrev, arveoppgjør, leieøkning, inkasso-sjekk og mer. Gratis juridiske verktøy basert på norsk lov.',
+        depth=1, canonical_path='/tjenester/'
+    )}
+<body>
+{site_nav(depth=1)}
+<style>
+.verktoy-seksjon {{ margin-bottom: 48px; }}
+.verktoy-seksjon-hd {{ display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }}
+.verktoy-seksjon-hd h2 {{ font-family: var(--serif); font-size: 22px; font-weight: 400; margin: 0; }}
+.verktoy-seksjon-hd .vs-linje {{ flex: 1; height: 1px; background: var(--line); }}
+.verktoy-seksjon-hd .vs-kat {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-mute); white-space: nowrap; }}
+.verktoy-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }}
+.verktoy-kort {{ background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; text-decoration: none; color: var(--ink); transition: box-shadow 0.18s, border-color 0.18s; display: block; }}
+.verktoy-kort:hover {{ box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-color: var(--accent); }}
+.verktoy-kort.snart {{ opacity: 0.6; cursor: default; pointer-events: none; background: var(--bg); }}
+.vk-icon {{ width: 40px; height: 40px; border-radius: 10px; background: rgba(177,74,42,0.1); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }}
+.verktoy-kort.snart .vk-icon {{ background: var(--bg-alt); }}
+.vk-kat {{ font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 8px; }}
+.verktoy-kort.snart .vk-kat {{ color: var(--ink-mute); }}
+.vk-tittel {{ font-family: var(--serif); font-size: 19px; font-weight: 400; margin-bottom: 8px; line-height: 1.25; }}
+.vk-beskr {{ font-size: 13px; color: var(--ink-soft); line-height: 1.55; margin-bottom: 14px; }}
+.vk-pil {{ font-size: 13px; font-weight: 600; color: var(--accent); }}
+.verktoy-kort.snart .vk-pil {{ color: var(--ink-mute); }}
+.snart-tag {{ display: inline-block; background: var(--bg-alt); border: 1px solid var(--line); color: var(--ink-mute); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }}
+</style>
+<main class="page">
+  <div class="container">
+    <div class="article-header">
+      <div class="article-eyebrow">Verktøy</div>
+      <h1 class="article-title">Juridiske verktøy — gratis</h1>
+      <p class="article-description">Kalkulatorer, brevgeneratorer og kontraktsmaler basert på norsk lov. Ingen registrering, ingen betaling.</p>
+    </div>
+
+    <!-- BREVGENERATORER -->
+    <div class="verktoy-seksjon">
+      <div class="verktoy-seksjon-hd">
+        <span class="vs-kat">Brev og klager</span>
+        <div class="vs-linje"></div>
+      </div>
+      <div class="verktoy-grid">
+        <a href="../tjenester/reklamasjon/" class="verktoy-kort">
+          <div class="vk-icon">✉️</div>
+          <div class="vk-kat">Brevgenerator</div>
+          <h3 class="vk-tittel">Reklamasjonsbrev</h3>
+          <p class="vk-beskr">Kjøpte du noe som er ødelagt eller ikke som beskrevet? Brevet genereres live med riktige lovhenvisninger. Fungerer for alle varer.</p>
+          <div class="vk-pil">Skriv brevet →</div>
+        </a>
+        <a href="../tjenester/reklamasjon-bil/" class="verktoy-kort">
+          <div class="vk-icon">🚗</div>
+          <div class="vk-kat">Brevgenerator</div>
+          <h3 class="vk-tittel">Reklamasjon bilkjøp</h3>
+          <p class="vk-beskr">Spesialtilpasset bilkjøp — med fristberegning og automatisk valg av kjøpsloven vs. forbrukerkjøpsloven.</p>
+          <div class="vk-pil">Skriv brevet →</div>
+        </a>
+        <a href="../tjenester/inkasso/" class="verktoy-kort">
+          <div class="vk-icon">🔍</div>
+          <div class="vk-kat">Sjekk + brevgenerator</div>
+          <h3 class="vk-tittel">Inkasso-sjekk</h3>
+          <p class="vk-beskr">Er inkassokravet ditt lovlig? Vi sjekker foreldelse, formalia og gebyrer — og genererer en ferdig innsigelse om du trenger det.</p>
+          <div class="vk-pil">Sjekk kravet →</div>
+        </a>
+        <a href="../tjenester/leie-okning/" class="verktoy-kort">
+          <div class="vk-icon">📬</div>
+          <div class="vk-kat">Kalkulator + varselbrev</div>
+          <h3 class="vk-tittel">Leieøkning</h3>
+          <p class="vk-beskr">Beregn maksimal lovlig leieøkning etter KPI og husleieloven § 4-2. Genererer et ferdig varselbrev til leietaker.</p>
+          <div class="vk-pil">Beregn og varsle →</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- KALKULATORER -->
+    <div class="verktoy-seksjon">
+      <div class="verktoy-seksjon-hd">
+        <span class="vs-kat">Kalkulatorer</span>
+        <div class="vs-linje"></div>
+      </div>
+      <div class="verktoy-grid">
+        <a href="../tjenester/arv/" class="verktoy-kort">
+          <div class="vk-icon">⚖️</div>
+          <div class="vk-kat">Kalkulator</div>
+          <h3 class="vk-tittel">Arveoppgjør — hvem arver hva?</h3>
+          <p class="vk-beskr">Se arvefordelingen visuelt basert på familiesituasjon, ektefelle, samboer og barn. Etter arveloven av 2021.</p>
+          <div class="vk-pil">Beregn arv →</div>
+        </a>
+        <a href="../tjenester/enk-eller-as/" class="verktoy-kort">
+          <div class="vk-icon">🏢</div>
+          <div class="vk-kat">Kalkulator</div>
+          <h3 class="vk-tittel">ENK eller AS?</h3>
+          <p class="vk-beskr">Fyll ut om virksomheten og få en selskapsrettslig anbefaling med skatteillustrasjon. Tilpasset din situasjon.</p>
+          <div class="vk-pil">Finn selskapsform →</div>
+        </a>
+        <div class="verktoy-kort snart">
+          <div class="vk-icon">👥</div>
+          <span class="snart-tag">Snart</span>
+          <div class="vk-kat">Kalkulator</div>
+          <h3 class="vk-tittel">Formuesoppgjør samlivsbrudd</h3>
+          <p class="vk-beskr">Hva har du krav på? Beregn felleseie og særeie ved samlivsbrudd basert på husstandsfellesskapsloven.</p>
+          <div class="vk-pil">Kommer snart</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTRAKTER -->
+    <div class="verktoy-seksjon">
+      <div class="verktoy-seksjon-hd">
+        <span class="vs-kat">Kontraktsmaler</span>
+        <div class="vs-linje"></div>
+      </div>
+      <div class="verktoy-grid">
+        <a href="../kontrakter/husleiekontrakt/" class="verktoy-kort">
+          <div class="vk-icon">🏠</div>
+          <div class="vk-kat">Kontraktsmal</div>
+          <h3 class="vk-tittel">Husleiekontrakt</h3>
+          <p class="vk-beskr">Fyll ut og last ned en juridisk korrekt husleiekontrakt. Tidsubestemt eller tidsbestemt. Basert på husleieloven.</p>
+          <div class="vk-pil">Fyll ut og last ned →</div>
+        </a>
+        <div class="verktoy-kort snart">
+          <div class="vk-icon">🚗</div>
+          <span class="snart-tag">Snart</span>
+          <div class="vk-kat">Kontraktsmal</div>
+          <h3 class="vk-tittel">Kjøpekontrakt bil</h3>
+          <p class="vk-beskr">Juridisk korrekt kjøpekontrakt for privatbilsalg. Basert på kjøpsloven.</p>
+          <div class="vk-pil">Kommer snart</div>
+        </div>
+        <div class="verktoy-kort snart">
+          <div class="vk-icon">💑</div>
+          <span class="snart-tag">Snart</span>
+          <div class="vk-kat">Kontraktsmal</div>
+          <h3 class="vk-tittel">Samboeravtale</h3>
+          <p class="vk-beskr">Hvem eier hva — og hva skjer ved brudd. En samboeravtale gir trygghet for begge parter.</p>
+          <div class="vk-pil">Kommer snart</div>
+        </div>
+        <div class="verktoy-kort snart">
+          <div class="vk-icon">📝</div>
+          <span class="snart-tag">Snart</span>
+          <div class="vk-kat">Kontraktsmal</div>
+          <h3 class="vk-tittel">Gjeldsbrev</h3>
+          <p class="vk-beskr">Privatlån mellom venner og familie. Fyll ut og last ned et juridisk gyldig gjeldsbrev.</p>
+          <div class="vk-pil">Kommer snart</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGNERT VURDERING -->
+    <div style="background: var(--bg-alt); border-radius: 20px; padding: 36px; border: 1px solid var(--line); margin-bottom: 48px;">
+      <div style="max-width: 620px;">
+        <div class="article-eyebrow" style="margin-bottom: 10px;">Trenger du noe skriftlig og signert?</div>
+        <h2 style="font-family: var(--serif); font-size: 26px; font-weight: 400; margin-bottom: 12px;">Personlig juridisk vurdering</h2>
+        <p style="font-size: 15px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 20px;">For situasjoner der du trenger en signert vurdering fra en juridisk rådgiver. Svar innen 48 timer.</p>
+        <a href="mailto:rettsregel@gmail.com?subject=Forespørsel%20om%20juridisk%20vurdering" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:white;text-decoration:none;font-weight:600;font-size:14px;padding:13px 22px;border-radius:10px;">Send forespørsel →</a>
+        <span style="display:block;font-size:12px;color:var(--ink-mute);margin-top:10px;">990 kr · Selskapsrett og forbrukerrett · Ikke skatterådgivning</span>
+      </div>
+    </div>
+  </div>
+</main>
+{site_footer(depth=1)}"""
+
+
+    return f"""{shared_head(
         'Juridiske verktøy og tjenester | Rettsregel',
         'Gratis kalkulatorer og verktøy som hjelper deg å ta juridisk riktige valg. ENK eller AS, kontraktsvalg og mer.',
         depth=1, canonical_path='/tjenester/'
@@ -3839,6 +4000,1132 @@ oppdater();
 
 
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TJENESTE 1: REKLAMASJONSBREV (GENERELL)
+# ─────────────────────────────────────────────────────────────────────────────
+def render_tjenester_reklamasjon():
+    return f"""{shared_head(
+        'Reklamasjonsbrev — skriv klagen din gratis | Rettsregel',
+        'Skriv et juridisk korrekt reklamasjonsbrev på sekunder. Fungerer for alle varer fra butikk eller netthandel. Basert på forbrukerkjøpsloven.',
+        depth=2, canonical_path='/tjenester/reklamasjon/'
+    )}
+<body>
+{site_nav(depth=2)}
+<style>
+.rek2-layout {{ display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
+.rek2-layout > * {{ min-width: 0; }}
+@media (max-width: 1024px) {{ .rek2-layout {{ grid-template-columns: 1fr !important; }} }}
+.rek2-skjema {{ background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md); position: sticky; top: 24px; }}
+@media (max-width: 1024px) {{ .rek2-skjema {{ position: static !important; }} }}
+.rek2-sek {{ margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }}
+.rek2-sek:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+.rek2-tittel {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 20px; }}
+.rek2-sek-hd {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px; }}
+.rf {{ margin-bottom: 10px; }}
+.rf label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
+.rf input, .rf select, .rf textarea {{
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-family: var(--sans); font-size: 16px;
+  background: var(--bg); color: var(--ink); box-sizing: border-box;
+}}
+.rf input:focus, .rf select:focus, .rf textarea:focus {{ outline: none; border-color: var(--accent); }}
+.rf textarea {{ min-height: 70px; resize: vertical; }}
+.rf-radio {{ display: flex; flex-direction: column; gap: 6px; }}
+.rf-radio label {{
+  display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500;
+  cursor: pointer; padding: 8px 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; line-height: 1.35;
+}}
+.rf-radio input[type=radio] {{ width: auto; margin: 0; accent-color: var(--accent); flex-shrink: 0; }}
+.rf-radio label:has(input:checked) {{ border-color: var(--accent); background: rgba(177,74,42,0.05); color: var(--accent); font-weight: 600; }}
+.last-ned-kn {{ width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; font-family: var(--sans); font-size: 15px; font-weight: 600; padding: 15px; cursor: pointer; margin-top: 20px; transition: background 0.2s; }}
+.last-ned-kn:hover {{ background: var(--accent-deep); }}
+/* Status badge */
+.rek2-status {{ padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; display: none; margin-bottom: 16px; }}
+.rek2-status.ok {{ background: #e8f4e8; color: #2d6a2d; border: 1px solid #8dcc8d; }}
+.rek2-status.advarsel {{ background: #fff3cd; color: #7d6008; border: 1px solid #ffc107; }}
+.rek2-status.feil {{ background: #fde8e8; color: #8b2020; border: 1px solid #f0a0a0; }}
+/* Dokument */
+.brev-wrap {{ background: var(--bg-alt); border-radius: 16px; padding: 24px; border: 1px solid var(--line); }}
+.brev-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }}
+.brev-header h3 {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin: 0; }}
+.brev-kn-rad {{ display: flex; gap: 10px; }}
+.brev-kn {{ padding: 8px 16px; border-radius: 8px; font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; border: none; }}
+.brev-kn.kopier {{ background: var(--accent); color: white; }}
+.brev-kn.skriv {{ background: var(--bg-card); border: 1.5px solid var(--line); color: var(--ink); }}
+.brev-kn:hover {{ opacity: 0.85; }}
+.brev-dokument {{ background: white; border-radius: 12px; padding: 36px 40px; font-family: 'EB Garamond', Georgia, serif; font-size: 16px; line-height: 1.8; color: var(--ink); border: 1px solid var(--line); min-height: 200px; }}
+@media (max-width: 600px) {{ .brev-dokument {{ padding: 20px 16px; font-size: 15px; }} }}
+.brev-tom {{ color: var(--ink-mute); font-style: italic; font-family: var(--sans); font-size: 14px; }}
+.brev-lov-ref {{ font-size: 13px; color: var(--ink-mute); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); font-family: var(--sans); }}
+@media print {{
+  .no-print {{ display: none !important; }}
+  nav.site-nav, footer.site-footer, #chat-toggle, #chat-panel, .breadcrumbs, .article-header, .rek2-skjema, .sp-body {{ display: none !important; }}
+  .rek2-layout {{ display: block; }}
+  .brev-wrap {{ border: none; padding: 0; background: white; }}
+  .brev-dokument {{ border: none; padding: 0; box-shadow: none; }}
+  body {{ background: white; }}
+}}
+</style>
+<main class="page">
+  <div class="container">
+    <div class="breadcrumbs no-print">
+      <a href="../../">Rettsregel</a><span class="sep">›</span>
+      <a href="../../tjenester/">Tjenester</a><span class="sep">›</span>
+      <span class="current">Reklamasjonsbrev</span>
+    </div>
+    <div class="article-header no-print">
+      <div class="article-eyebrow">Gratis verktøy</div>
+      <h1 class="article-title">Skriv reklamasjonsbrevet ditt</h1>
+      <p class="article-description">Fyll ut om kjøpet og feilen. Brevet bygger seg live og er klart til å sende.</p>
+    </div>
+    <div class="rek2-layout">
+      <div class="rek2-skjema no-print">
+        <div class="rek2-tittel">Om kjøpet</div>
+        <div class="rek2-sek">
+          <div class="rek2-sek-hd">Hvem kjøpte du av?</div>
+          <div class="rf">
+            <div class="rf-radio">
+              <label><input type="radio" name="selger_type" value="bedrift" onchange="oppdater()" checked> Butikk eller nettbutikk (bedrift)</label>
+              <label><input type="radio" name="selger_type" value="privat" onchange="oppdater()"> Privatperson (Finn.no, bekjente)</label>
+            </div>
+          </div>
+        </div>
+        <div class="rek2-sek">
+          <div class="rek2-sek-hd">Selgeren</div>
+          <div class="rf"><label>Butikkens / selgerens navn</label><input type="text" id="selger_navn" oninput="oppdater()" placeholder="f.eks. Elkjøp / Kari Nordmann"></div>
+          <div class="rf"><label>Adresse (hvis kjent)</label><input type="text" id="selger_adresse" oninput="oppdater()" placeholder="Storgata 1, 0000 Oslo"></div>
+          <div class="rf"><label>E-post / kundeservice-adresse</label><input type="text" id="selger_epost" oninput="oppdater()" placeholder="kundeservice@butikk.no"></div>
+        </div>
+        <div class="rek2-sek">
+          <div class="rek2-sek-hd">Varen og kjøpet</div>
+          <div class="rf"><label>Hva kjøpte du?</label><input type="text" id="vare_navn" oninput="oppdater()" placeholder="f.eks. Samsung TV 55 tommer"></div>
+          <div class="rf"><label>Kjøpsdato</label><input type="date" id="kjops_dato" oninput="oppdater()"></div>
+          <div class="rf"><label>Betalt sum (kr)</label><input type="number" id="betalt_sum" oninput="oppdater()" placeholder="4990" min="0"></div>
+          <div class="rf"><label>Ordrenummer / kvitteringsnummer (valgfritt)</label><input type="text" id="ordre_nr" oninput="oppdater()" placeholder="ORD-12345"></div>
+        </div>
+        <div class="rek2-sek">
+          <div class="rek2-sek-hd">Feilen</div>
+          <div class="rf"><label>Kategori</label>
+            <select id="feil_kategori" onchange="oppdater()">
+              <option value="">— Velg kategori —</option>
+              <option value="stopper">Slutter å fungere / virker ikke</option>
+              <option value="feil_info">Ikke som beskrevet i annonse eller på esken</option>
+              <option value="mangler_deler">Mangler deler, tilbehør eller bruksanvisning</option>
+              <option value="feil_montering">Feil montering eller installasjon av selger</option>
+              <option value="kvalitet">Dårlig kvalitet, slitasje eller holdbarhet</option>
+              <option value="annet">Annet</option>
+            </select>
+          </div>
+          <div class="rf"><label>Beskriv feilen kort</label><textarea id="feil_beskrivelse" oninput="oppdater()" placeholder="f.eks. Skjermen ble svart etter 3 uker uten at jeg har utsatt den for støt eller fukt."></textarea></div>
+          <div class="rf"><label>Når oppdaget du feilen?</label><input type="date" id="feil_dato" oninput="oppdater()"></div>
+        </div>
+        <div class="rek2-sek">
+          <div class="rek2-sek-hd">Hva krever du?</div>
+          <div class="rf">
+            <div class="rf-radio">
+              <label><input type="radio" name="krav" value="reparasjon" onchange="oppdater()" checked> Reparasjon (retting av feilen)</label>
+              <label><input type="radio" name="krav" value="ny_vare" onchange="oppdater()"> Ny vare (omlevering)</label>
+              <label><input type="radio" name="krav" value="heving" onchange="oppdater()"> Pengene tilbake (heving)</label>
+              <label><input type="radio" name="krav" value="prisavslag" onchange="oppdater()"> Prisavslag</label>
+            </div>
+          </div>
+        </div>
+        <div class="rek2-sek">
+          <div class="rek2-sek-hd">Dine opplysninger</div>
+          <div class="rf"><label>Ditt fulle navn</label><input type="text" id="mitt_navn" oninput="oppdater()" placeholder="Ola Nordmann"></div>
+          <div class="rf"><label>Din adresse</label><input type="text" id="min_adresse" oninput="oppdater()" placeholder="Veien 5, 5000 Bergen"></div>
+          <div class="rf"><label>Din e-post</label><input type="text" id="min_epost" oninput="oppdater()" placeholder="ola@epost.no"></div>
+          <div class="rf"><label>Din telefon</label><input type="text" id="min_tlf" oninput="oppdater()" placeholder="900 00 000"></div>
+        </div>
+        <button class="last-ned-kn no-print" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-right:6px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Last ned som PDF
+        </button>
+      </div>
+      <div>
+        <div class="rek2-status" id="rek2-status"></div>
+        <div class="brev-wrap">
+          <div class="brev-header">
+            <h3>Ditt reklamasjonsbrev</h3>
+            <div class="brev-kn-rad no-print">
+              <button class="brev-kn kopier" onclick="kopierBrev()">Kopier tekst</button>
+              <button class="brev-kn skriv" onclick="window.print()">Last ned PDF</button>
+            </div>
+          </div>
+          <div class="brev-dokument" id="brev-innhold"><p class="brev-tom">Fyll ut feltene til venstre — brevet bygger seg her.</p></div>
+          <div class="brev-lov-ref" id="brev-lov-ref"></div>
+        </div>
+      </div>
+    </div>
+    <div class="prose sp-body no-print">
+      <h2>Hvordan reklamerer du?</h2>
+      <p>Reklamasjon betyr at du sier ifra til selgeren om en feil ved varen. Du har alltid minst to måneder fra du oppdaget feilen til å klage. For varige varer (TV, bil, hvitevarer, telefon) har du fem år på deg totalt.</p>
+      <p>Send brevet på e-post slik at du har bevis med dato og klokkeslett. Be om lesebekreftelse. Ta vare på e-posten i «Sendt»-mappen.</p>
+      <p>Kjøpte du av en butikk? Da gjelder forbrukerkjøpsloven og du har sterke rettigheter. Kjøpte du av en privatperson? Da gjelder kjøpsloven, som gir noe færre rettigheter.</p>
+    </div>
+  </div>
+</main>
+<script>
+function dato(iso) {{
+  if (!iso) return '________';
+  return new Date(iso+'T12:00:00').toLocaleDateString('nb-NO', {{day:'numeric',month:'long',year:'numeric'}});
+}}
+function kr(n) {{
+  const num = parseInt(n);
+  if (!num) return '';
+  return num.toLocaleString('nb-NO') + ' kr';
+}}
+function radio(name) {{
+  const el = document.querySelector('input[name="'+name+'"]:checked');
+  return el ? el.value : null;
+}}
+function beregnFristStatus() {{
+  const kjopsStr = document.getElementById('kjops_dato').value;
+  const feilStr = document.getElementById('feil_dato').value;
+  if (!kjopsStr) return null;
+  const kjops = new Date(kjopsStr);
+  const feil = feilStr ? new Date(feilStr) : new Date();
+  const naa = new Date();
+  const aar5 = new Date(kjops); aar5.setFullYear(aar5.getFullYear()+5);
+  const aar2 = new Date(kjops); aar2.setFullYear(aar2.getFullYear()+2);
+  const maaneder2 = new Date(feil); maaneder2.setMonth(maaneder2.getMonth()+2);
+  if (naa > aar5) return 'foreldet5';
+  if (naa > aar2) return 'aar2_5'; // possible for varige
+  if (naa > maaneder2) return 'for_sent_relativ';
+  return 'ok';
+}}
+function oppdater() {{
+  const selgerType = radio('selger_type') || 'bedrift';
+  const selgerNavn = document.getElementById('selger_navn').value.trim();
+  const selgerAdresse = document.getElementById('selger_adresse').value.trim();
+  const selgerEpost = document.getElementById('selger_epost').value.trim();
+  const vareNavn = document.getElementById('vare_navn').value.trim();
+  const kjopsDato = document.getElementById('kjops_dato').value;
+  const betaltSum = document.getElementById('betalt_sum').value;
+  const ordreNr = document.getElementById('ordre_nr').value.trim();
+  const feilKat = document.getElementById('feil_kategori').value;
+  const feilBesk = document.getElementById('feil_beskrivelse').value.trim();
+  const feilDato = document.getElementById('feil_dato').value;
+  const krav = radio('krav') || 'reparasjon';
+  const mittNavn = document.getElementById('mitt_navn').value.trim();
+  const minAdresse = document.getElementById('min_adresse').value.trim();
+  const minEpost = document.getElementById('min_epost').value.trim();
+  const minTlf = document.getElementById('min_tlf').value.trim();
+  const erBedrift = selgerType === 'bedrift';
+  const lov = erBedrift ? 'forbrukerkjøpsloven' : 'kjøpsloven';
+
+  // Status
+  const statusEl = document.getElementById('rek2-status');
+  if (kjopsDato) {{
+    const fristStatus = beregnFristStatus();
+    if (fristStatus === 'foreldet5') {{
+      statusEl.className = 'rek2-status feil'; statusEl.style.display='block';
+      statusEl.textContent = '⚠️ Varen ble kjøpt for mer enn 5 år siden. Reklamasjonsretten er sannsynligvis utløpt.';
+    }} else if (fristStatus === 'for_sent_relativ') {{
+      statusEl.className = 'rek2-status advarsel'; statusEl.style.display='block';
+      statusEl.textContent = '⚠️ Det er mer enn 2 måneder siden du oppdaget feilen. Du bør sende klagen snarest og argumentere for at du handlet innen rimelig tid.';
+    }} else if (fristStatus === 'ok') {{
+      statusEl.className = 'rek2-status ok'; statusEl.style.display='block';
+      statusEl.textContent = '✓ Klagen er innenfor reklamasjonsfristen. Du er i tide.';
+    }} else {{ statusEl.style.display='none'; }}
+  }} else {{ statusEl.style.display='none'; }}
+
+  // Krav-tekst
+  const kravMap = {{
+    reparasjon: 'jeg krever at feilen rettes (reparasjon) innen rimelig tid, og uten kostnad for meg, jf. ' + (erBedrift ? 'forbrukerkjøpsloven § 29 og § 30' : 'kjøpsloven § 34'),
+    ny_vare: 'jeg krever at tingen byttes ut med en tilsvarende ny vare (omlevering), jf. ' + (erBedrift ? 'forbrukerkjøpsloven § 29' : 'kjøpsloven § 34'),
+    heving: 'jeg hever kjøpet og krever kjøpesummen refundert i sin helhet, jf. ' + (erBedrift ? 'forbrukerkjøpsloven § 32' : 'kjøpsloven § 39'),
+    prisavslag: 'jeg krever et prisavslag som gjenspeiler verditapet feilen har påført tingen, jf. ' + (erBedrift ? 'forbrukerkjøpsloven § 31' : 'kjøpsloven § 38'),
+  }};
+  const feilKatMap = {{
+    stopper: 'Tingen slutter å fungere / virker ikke',
+    feil_info: 'Tingen samsvarer ikke med opplysningene i markedsføringen eller på innpakningen',
+    mangler_deler: 'Tingen mangler deler, tilbehør eller bruksanvisning som følger av avtalen',
+    feil_montering: 'Feilen skyldes uriktig installering/montering utført av selger',
+    kvalitet: 'Tingen holder ikke den standarden man med rimelighet kan forvente',
+    annet: 'Annet',
+  }};
+
+  if (!mittNavn && !selgerNavn && !vareNavn) {{
+    document.getElementById('brev-innhold').innerHTML = '<p class="brev-tom">Fyll ut feltene til venstre — brevet bygger seg her.</p>';
+    document.getElementById('brev-lov-ref').innerHTML = '';
+    return;
+  }}
+
+  const idag = new Date().toLocaleDateString('nb-NO', {{day:'numeric',month:'long',year:'numeric'}});
+  let brev = '';
+  // Avsender
+  brev += `<div style="margin-bottom:24px;font-size:14px;">`;
+  if (mittNavn) brev += `<strong>${{mittNavn}}</strong><br>`;
+  if (minAdresse) brev += `${{minAdresse}}<br>`;
+  if (minEpost) brev += `${{minEpost}}<br>`;
+  if (minTlf) brev += `${{minTlf}}<br>`;
+  brev += `</div>`;
+  // Mottaker
+  brev += `<div style="margin-bottom:24px;font-size:14px;">`;
+  if (selgerNavn) brev += `<strong>${{selgerNavn}}</strong><br>`;
+  if (selgerAdresse) brev += `${{selgerAdresse}}<br>`;
+  if (selgerEpost) brev += `${{selgerEpost}}<br>`;
+  brev += `</div>`;
+  // Dato
+  brev += `<div style="margin-bottom:24px;font-size:14px;">${{idag}}</div>`;
+  // Tittel
+  brev += `<div style="font-weight:700;font-size:17px;margin-bottom:20px;font-family:var(--sans);">REKLAMASJON${{ordreNr ? ' — ' + ordreNr : ''}}</div>`;
+  // Innledning
+  brev += `<p>`;
+  if (mittNavn && selgerNavn) brev += `Jeg, ${{mittNavn}}, reklamerer herved på følgende kjøp hos ${{selgerNavn}}.`;
+  else if (mittNavn) brev += `Jeg, ${{mittNavn}}, reklamerer herved på følgende kjøp.`;
+  else brev += `Jeg reklamerer herved på følgende kjøp.`;
+  brev += `</p>`;
+  // Kjøpsinfo
+  brev += `<p style="margin-top:16px;"><strong>Vare:</strong> ${{vareNavn || '[vare ikke angitt]'}}<br>`;
+  if (kjopsDato) brev += `<strong>Kjøpsdato:</strong> ${{dato(kjopsDato)}}<br>`;
+  if (betaltSum) brev += `<strong>Kjøpesum:</strong> ${{kr(betaltSum)}}<br>`;
+  if (ordreNr) brev += `<strong>Ordrenr.:</strong> ${{ordreNr}}<br>`;
+  brev += `</p>`;
+  // Feil
+  brev += `<p style="margin-top:16px;"><strong>Mangel:</strong> `;
+  if (feilKat) brev += feilKatMap[feilKat] + '.';
+  if (feilBesk) brev += `<br><br>${{feilBesk}}`;
+  if (feilDato) brev += `<br><br>Feilen ble oppdaget ${{dato(feilDato)}}.`;
+  brev += `</p>`;
+  // Krav
+  brev += `<p style="margin-top:16px;">På denne bakgrunn, ${{kravMap[krav] || 'krever jeg utbedring'}}.</p>`;
+  // Juridisk forankring
+  if (erBedrift) {{
+    brev += `<p style="margin-top:16px;">Jeg gjør gjeldende mine rettigheter etter forbrukerkjøpsloven. `;
+    brev += `Feilen formodes å ha eksistert ved leveringen, jf. forbrukerkjøpsloven § 18. `;
+    if (krav === 'heving') brev += `Jeg minner om at selgeren har bevisbyrden for at mangelen er uvesentlig, jf. § 32. `;
+    brev += `Klagen fremsettes innen rimelig tid etter at feilen ble oppdaget, jf. § 27.</p>`;
+  }} else {{
+    brev += `<p style="margin-top:16px;">Jeg gjør gjeldende mine rettigheter etter kjøpsloven, som gjelder ved privatpersoners salg til privatpersoner.</p>`;
+  }}
+  // Frist
+  brev += `<p style="margin-top:16px;">Jeg ber om tilbakemelding innen <strong>14 dager</strong> fra dags dato.</p>`;
+  // Avslutning
+  brev += `<div style="margin-top:32px;">`;
+  brev += `Med vennlig hilsen<br><br>`;
+  if (mittNavn) brev += `<strong>${{mittNavn}}</strong>`;
+  brev += `</div>`;
+
+  document.getElementById('brev-innhold').innerHTML = brev;
+  const lovRef = erBedrift
+    ? '⚖️ Lovgrunnlag: Forbrukerkjøpsloven §§ 15, 16, 18, 27' + (krav==='reparasjon'?' og 29–30':krav==='ny_vare'?' og 29':krav==='heving'?' og 32':krav==='prisavslag'?' og 31':'')
+    : '⚖️ Lovgrunnlag: Kjøpsloven §§ 17, 30–33';
+  document.getElementById('brev-lov-ref').textContent = lovRef;
+}}
+function kopierBrev() {{
+  const el = document.getElementById('brev-innhold');
+  const txt = el.innerText;
+  navigator.clipboard.writeText(txt).then(() => {{
+    const kn = document.querySelector('.brev-kn.kopier');
+    kn.textContent = '✓ Kopiert!';
+    setTimeout(() => kn.textContent = 'Kopier tekst', 2500);
+  }});
+}}
+oppdater();
+</script>
+{site_footer(depth=2)}"""
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TJENESTE 2: ARVEOPPGJØR KALKULATOR
+# ─────────────────────────────────────────────────────────────────────────────
+def render_tjenester_arv():
+    return f"""{shared_head(
+        'Arveoppgjør — hvem arver hva? | Rettsregel',
+        'Beregn arvefordeling etter norsk arvelov. Se hvem som arver hva basert på familiesituasjon, ektefelle, samboer, barn og testament.',
+        depth=2, canonical_path='/tjenester/arv/'
+    )}
+<body>
+{site_nav(depth=2)}
+<style>
+.arv-layout {{ display: grid; grid-template-columns: 360px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
+.arv-layout > * {{ min-width: 0; }}
+@media (max-width: 1024px) {{ .arv-layout {{ grid-template-columns: 1fr !important; }} }}
+.arv-skjema {{ background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md); position: sticky; top: 24px; }}
+@media (max-width: 1024px) {{ .arv-skjema {{ position: static !important; }} }}
+.arv-tittel {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 20px; }}
+.arv-sek {{ margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }}
+.arv-sek:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+.arv-sek-hd {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px; }}
+.af {{ margin-bottom: 10px; }}
+.af label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
+.af input, .af select {{ width: 100%; padding: 9px 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: var(--sans); font-size: 16px; background: var(--bg); color: var(--ink); box-sizing: border-box; }}
+.af input:focus, .af select:focus {{ outline: none; border-color: var(--accent); }}
+.af-radio {{ display: flex; flex-direction: column; gap: 6px; }}
+.af-radio label {{ display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; cursor: pointer; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 8px; }}
+.af-radio input[type=radio] {{ width: auto; margin: 0; accent-color: var(--accent); flex-shrink: 0; }}
+.af-radio label:has(input:checked) {{ border-color: var(--accent); background: rgba(177,74,42,0.05); color: var(--accent); font-weight: 600; }}
+/* Resultat */
+.arv-res-wrap {{ display: none; }}
+.arv-tom {{ color: var(--ink-mute); font-style: italic; font-family: var(--sans); font-size: 14px; padding: 32px 0; text-align: center; }}
+/* Arv-kort (én per arving) */
+.arving-grid {{ display: flex; flex-direction: column; gap: 16px; }}
+.arving-kort {{ border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }}
+.arving-header {{ display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }}
+.arving-rolle {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; }}
+.arving-navn {{ font-family: var(--serif); font-size: 19px; font-weight: 400; }}
+.arving-prosent {{ font-family: var(--serif); font-size: 28px; font-weight: 400; }}
+.arving-sum {{ font-size: 13px; font-weight: 600; opacity: 0.8; }}
+.arving-bar-wrap {{ height: 6px; background: rgba(0,0,0,0.1); }}
+.arving-bar {{ height: 100%; transition: width 0.4s ease; }}
+.arving-detaljer {{ padding: 12px 20px 16px; background: rgba(255,255,255,0.6); border-top: 1px solid rgba(0,0,0,0.06); }}
+.arving-detaljer p {{ font-size: 13px; line-height: 1.5; margin: 0; color: var(--ink-soft); }}
+/* Farger per arving */
+.arv-color-0 {{ background: #e8f4f0; }} .arv-color-0 .arving-bar {{ background: #2d7a5e; }}
+.arv-color-1 {{ background: #e8eef4; }} .arv-color-1 .arving-bar {{ background: #2d5a8a; }}
+.arv-color-2 {{ background: #f4f0e8; }} .arv-color-2 .arving-bar {{ background: #8a6b2d; }}
+.arv-color-3 {{ background: #f0e8f4; }} .arv-color-3 .arving-bar {{ background: #6b2d8a; }}
+.arv-color-4 {{ background: #f4e8e8; }} .arv-color-4 .arving-bar {{ background: #8a2d2d; }}
+/* Info-boks */
+.arv-info {{ background: var(--bg-alt); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-top: 20px; }}
+.arv-info h4 {{ font-size: 14px; font-weight: 700; margin-bottom: 8px; }}
+.arv-info p {{ font-size: 13px; line-height: 1.6; color: var(--ink-soft); margin: 0; }}
+.arv-merk {{ font-size: 12px; color: var(--ink-mute); margin-top: 16px; font-family: var(--sans); padding: 12px; border-top: 1px solid var(--line); }}
+</style>
+<main class="page">
+  <div class="container">
+    <div class="breadcrumbs no-print">
+      <a href="../../">Rettsregel</a><span class="sep">›</span>
+      <a href="../../tjenester/">Tjenester</a><span class="sep">›</span>
+      <span class="current">Arveoppgjør</span>
+    </div>
+    <div class="article-header no-print">
+      <div class="article-eyebrow">Kalkulator</div>
+      <h1 class="article-title">Hvem arver hva?</h1>
+      <p class="article-description">Fyll ut familiesituasjon og formue. Kalkulatoren viser arvefordelingen etter norsk arvelov — live.</p>
+    </div>
+    <div class="arv-layout">
+      <div class="arv-skjema no-print">
+        <div class="arv-tittel">Beskriv situasjonen</div>
+        <div class="arv-sek">
+          <div class="arv-sek-hd">Sivilstatus</div>
+          <div class="af">
+            <div class="af-radio">
+              <label><input type="radio" name="sivil" value="gift" onchange="oppdater()" checked> Gift</label>
+              <label><input type="radio" name="sivil" value="samboer" onchange="oppdater()"> Samboer (registrert / felles barn)</label>
+              <label><input type="radio" name="sivil" value="enslig" onchange="oppdater()"> Enslig (aldri gift, ingen samboer)</label>
+              <label><input type="radio" name="sivil" value="skilt" onchange="oppdater()"> Skilt / separert</label>
+            </div>
+          </div>
+        </div>
+        <div class="arv-sek">
+          <div class="arv-sek-hd">Barn</div>
+          <div class="af"><label>Felles barn (med ektefelle/samboer)</label>
+            <select id="felles_barn" onchange="oppdater()">
+              <option value="0">Ingen felles barn</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5 eller flere</option>
+            </select>
+          </div>
+          <div class="af"><label>Særkullsbarn (fra tidligere forhold)</label>
+            <select id="saerkull_barn" onchange="oppdater()">
+              <option value="0">Ingen særkullsbarn</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5 eller flere</option>
+            </select>
+          </div>
+        </div>
+        <div class="arv-sek">
+          <div class="arv-sek-hd">Testament</div>
+          <div class="af">
+            <div class="af-radio">
+              <label><input type="radio" name="testament" value="nei" onchange="oppdater()" checked> Ingen testament</label>
+              <label><input type="radio" name="testament" value="ja" onchange="oppdater()"> Har testament</label>
+            </div>
+          </div>
+          <div id="testament-info" style="display:none;margin-top:8px;font-size:12px;color:var(--ink-mute);padding:10px;background:var(--bg-alt);border-radius:8px;">Med testament kan du fritt fordele det som overstiger pliktarven til barna (2/3 av boet, min 15G per barn ≈ 1,8 mill kr). Ektefelle/samboer kan styrkes, men barn kan ikke arve under sin pliktarv.</div>
+        </div>
+        <div class="arv-sek">
+          <div class="arv-sek-hd">Formue</div>
+          <div class="af"><label>Estimert nettoverdi av boet (kr)</label><input type="number" id="formue" oninput="oppdater()" placeholder="f.eks. 3000000" min="0"></div>
+          <div style="font-size:12px;color:var(--ink-mute);margin-top:4px;">Tips: Legg sammen bolig, hytte, bil, bankkonto, aksjer. Trekk fra gjeld og begravelsesutgifter.</div>
+        </div>
+      </div>
+      <div>
+        <div id="arv-tom" class="arv-tom">Fyll ut situasjonen til venstre — arvefordelingen beregnes her.</div>
+        <div class="arv-res-wrap" id="arv-res">
+          <div class="arving-grid" id="arving-grid"></div>
+          <div class="arv-info" id="arv-info"></div>
+          <div class="arv-merk">⚠️ Forenklet beregning etter arveloven av 2021. Tar ikke hensyn til ektepakt, samboeravtale, livsforsikring, særeie eller andre særlige forhold. Rådgivning fra advokat anbefales ved komplekse situasjoner.</div>
+        </div>
+      </div>
+    </div>
+    <div class="prose sp-body no-print">
+      <h2>Grunnreglene i arveloven</h2>
+      <p>Norsk arvelov av 2021 gir ektefellen rett til minst en firedel av arven, men aldri under 4G (ca. 500 000 kr). Barn arver likt seg imellom, begrenset oppad til pliktarven. Særkullsbarn har krav på sin pliktarv umiddelbart — de kan ikke holdes tilbake av uskiftet bo.</p>
+      <p>Samboere med felles barn eller registrert samboerskap har rett til 4G fra arven. Uten felles barn: ingenting, med mindre det er testament.</p>
+      <p>Testament kan endre fordelingen, men aldri krenke pliktarven til barna (2/3 av boet, minimum 15G per barn).</p>
+    </div>
+  </div>
+</main>
+<script>
+const G = 124028; // Grunnbeløp 2026 (ca.)
+function radio(name) {{
+  const el = document.querySelector('input[name="'+name+'"]:checked');
+  return el ? el.value : null;
+}}
+function kr(n) {{
+  return Math.round(n).toLocaleString('nb-NO') + ' kr';
+}}
+function pst(andel, total) {{
+  if (!total) return '—';
+  return Math.round(andel/total*100) + ' %';
+}}
+function oppdater() {{
+  const sivil = radio('sivil') || 'enslig';
+  const fellesBarn = parseInt(document.getElementById('felles_barn').value) || 0;
+  const saerkullBarn = parseInt(document.getElementById('saerkull_barn').value) || 0;
+  const harTestament = radio('testament') === 'ja';
+  const formue = parseFloat(document.getElementById('formue').value) || 0;
+  const totalBarn = fellesBarn + saerkullBarn;
+  document.getElementById('testament-info').style.display = harTestament ? 'block' : 'none';
+
+  let arvinger = [];
+  let info = '';
+
+  if (sivil === 'gift') {{
+    const minEktefelle = Math.max(formue * 0.25, 4 * G);
+    if (totalBarn === 0) {{
+      // Ektefelle arver alt
+      arvinger = [{{rolle:'Ektefelle', andel: formue, info:'Arver hele boet når det ikke finnes barn, jf. arveloven § 9.'}}];
+      info = 'Ingen barn: Ektefellen arver alt.';
+    }} else {{
+      let ektefellesAndel, resttilBarn;
+      if (saerkullBarn === 0) {{
+        // Kan sitte i uskiftet bo med fellesbarn
+        ektefellesAndel = Math.max(formue * 0.25, 4 * G);
+        ektefellesAndel = Math.min(ektefellesAndel, formue);
+        resttilBarn = Math.max(0, formue - ektefellesAndel);
+        const perFellesbarn = fellesBarn > 0 ? resttilBarn / fellesBarn : 0;
+        arvinger.push({{rolle:'Ektefelle', andel: ektefellesAndel, info:'Minstearv ¼ av boet, min 4G ('+kr(4*G)+'). Kan velge uskiftet bo med fellesbarna.'}});
+        for (let i = 0; i < Math.min(fellesBarn, 4); i++) {{
+          arvinger.push({{rolle:'Fellesbarn '+(i+1), andel: perFellesbarn, info:'Arver likt med sine søsken. Kan skyves ut dersom ektefellen velger uskiftet bo.'}});
+        }}
+        if (fellesBarn > 4) arvinger.push({{rolle:'Fellesbarn 5+', andel: perFellesbarn * (fellesBarn - 4), info:'Resterende fellesbarn.'}});
+        info = 'Ektefellen kan velge uskiftet bo med fellesbarna — det vil si skifte utsettes til ektefellen dør. Særkullsbarna (ingen her) har krav på sin arv med en gang.';
+      }} else {{
+        // Særkullsbarn kan ikke utsettes
+        const saerkullAndel = formue / (totalBarn + 0.25) * saerkullBarn;
+        ektefellesAndel = Math.max(formue * 0.25, 4 * G);
+        ektefellesAndel = Math.min(ektefellesAndel, formue - saerkullAndel * 0.5);
+        resttilBarn = Math.max(0, formue - ektefellesAndel);
+        const perBarn = totalBarn > 0 ? resttilBarn / totalBarn : 0;
+        arvinger.push({{rolle:'Ektefelle', andel: ektefellesAndel, info:'Minstearv ¼ av boet, min 4G. Kan ikke sitte i uskiftet bo — særkullsbarna krever sitt med én gang.'}});
+        for (let i = 0; i < Math.min(saerkullBarn, 3); i++) {{
+          arvinger.push({{rolle:'Særkullsbarn '+(i+1), andel: perBarn, info:'Arver likt med søsken. Krever sitt nå — kan ikke vente til ektefellens død.'}});
+        }}
+        for (let i = 0; i < Math.min(fellesBarn, 3); i++) {{
+          arvinger.push({{rolle:'Fellesbarn '+(i+1), andel: perBarn, info:'Arver likt med søsken.'}});
+        }}
+        if (saerkullBarn + fellesBarn > 6) arvinger.push({{rolle:'Øvrige barn', andel: perBarn * (totalBarn - Math.min(saerkullBarn,3) - Math.min(fellesBarn,3)), info:''}});
+        info = '⚠️ Særkullsbarn krever sin arv umiddelbart. Ektefellen kan IKKE velge uskiftet bo uten særkullsbarnas samtykke.';
+      }}
+    }}
+  }} else if (sivil === 'samboer') {{
+    const samboerArv = Math.min(4 * G, formue);
+    const resttilBarn = Math.max(0, formue - samboerArv);
+    const perBarn = totalBarn > 0 ? resttilBarn / totalBarn : 0;
+    if (totalBarn === 0) {{
+      arvinger = [{{rolle:'Samboer', andel: formue, info:'Arver alt når det ikke finnes barn — forutsatt felles barn eller registrert samboerskap, jf. arveloven § 13.'}}];
+      info = harTestament ? 'Med testament kan samboeren tilgodeses ytterligere.' : 'Samboer med felles barn eller registrert samboerskap arver 4G.';
+    }} else {{
+      arvinger.push({{rolle:'Samboer', andel: samboerArv, info:'Rett til 4G ('+kr(4*G)+') forutsatt felles barn eller registrert samboerskap, jf. arveloven § 13.'}});
+      for (let i = 0; i < Math.min(totalBarn, 4); i++) {{
+        arvinger.push({{rolle:'Barn '+(i+1), andel: perBarn, info:'Arver likt med søsken etter at samboerens minstearv er trukket.'}});
+      }}
+      if (totalBarn > 4) arvinger.push({{rolle:'Øvrige barn', andel: perBarn*(totalBarn-4), info:''}});
+      info = 'Samboer uten felles barn eller registrert samboerskap arver ingenting etter loven — kun testament hjelper.';
+    }}
+  }} else {{
+    // Enslig/skilt
+    if (totalBarn > 0) {{
+      const perBarn = formue / totalBarn;
+      for (let i = 0; i < Math.min(totalBarn, 5); i++) {{
+        arvinger.push({{rolle:'Barn '+(i+1), andel: perBarn, info:'Arver likt med sine søsken, jf. arveloven § 6.'}});
+      }}
+      if (totalBarn > 5) arvinger.push({{rolle:'Øvrige barn', andel: perBarn*(totalBarn-5), info:''}});
+      info = 'Ingen ektefelle/samboer: Barna arver alt, likt fordelt.';
+    }} else {{
+      arvinger = [{{rolle:'Foreldre', andel: formue * 0.5, info:'Deler likt, jf. arveloven § 10.'}}, {{rolle:'Søsken / søskens etterkommere', andel: formue * 0.5, info:'Arver hvis en forelder er død.'}}];
+      info = 'Ingen barn: Foreldrene arver likt. Er de døde, arver søsken.';
+    }}
+  }}
+
+  if (arvinger.length === 0) {{
+    document.getElementById('arv-tom').style.display = 'block';
+    document.getElementById('arv-res').style.display = 'none';
+    return;
+  }}
+  document.getElementById('arv-tom').style.display = 'none';
+  document.getElementById('arv-res').style.display = 'block';
+
+  const total = arvinger.reduce((s,a)=>s+a.andel, 0) || formue || 1;
+  const grid = document.getElementById('arving-grid');
+  grid.innerHTML = arvinger.map((a,i) => {{
+    const pstTall = Math.round(a.andel/total*100);
+    const sumTekst = formue > 0 ? kr(a.andel) : '';
+    return `<div class="arving-kort arv-color-${{i%5}}">
+      <div class="arving-header">
+        <div><div class="arving-rolle">${{a.rolle}}</div></div>
+        <div style="text-align:right"><div class="arving-prosent">${{pstTall}} %</div>${{sumTekst ? '<div class="arving-sum">'+sumTekst+'</div>' : ''}}</div>
+      </div>
+      <div class="arving-bar-wrap"><div class="arving-bar" style="width:${{pstTall}}%"></div></div>
+      <div class="arving-detaljer"><p>${{a.info}}</p></div>
+    </div>`;
+  }}).join('');
+  document.getElementById('arv-info').innerHTML = info ? `<h4>Viktig å vite</h4><p>${{info}}</p>` : '';
+}}
+oppdater();
+</script>
+{site_footer(depth=2)}"""
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TJENESTE 3: LEIEØKNING KALKULATOR
+# ─────────────────────────────────────────────────────────────────────────────
+def render_tjenester_leie_okning():
+    return f"""{shared_head(
+        'Leieøkning-kalkulator — beregn maks leieøkning og skriv varsel | Rettsregel',
+        'Beregn maksimal lovlig leieøkning etter KPI og husleieloven § 4-2. Gratis varselbrev som du kan sende direkte til leietaker.',
+        depth=2, canonical_path='/tjenester/leie-okning/'
+    )}
+<body>
+{site_nav(depth=2)}
+<style>
+.lo-layout {{ display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
+.lo-layout > * {{ min-width: 0; }}
+@media (max-width: 1024px) {{ .lo-layout {{ grid-template-columns: 1fr !important; }} }}
+.lo-skjema {{ background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md); position: sticky; top: 24px; }}
+@media (max-width: 1024px) {{ .lo-skjema {{ position: static !important; }} }}
+.lo-tittel {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 20px; }}
+.lo-sek {{ margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }}
+.lo-sek:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+.lo-sek-hd {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px; }}
+.lf {{ margin-bottom: 10px; }}
+.lf label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
+.lf input {{ width: 100%; padding: 9px 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: var(--sans); font-size: 16px; background: var(--bg); color: var(--ink); box-sizing: border-box; }}
+.lf input:focus {{ outline: none; border-color: var(--accent); }}
+.last-ned-kn {{ width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; font-family: var(--sans); font-size: 15px; font-weight: 600; padding: 15px; cursor: pointer; margin-top: 20px; transition: background 0.2s; }}
+.last-ned-kn:hover {{ background: var(--accent-deep); }}
+/* Resultat-display */
+.lo-res-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }}
+@media (max-width: 600px) {{ .lo-res-grid {{ grid-template-columns: 1fr; }} }}
+.lo-res-kort {{ background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }}
+.lo-res-kort .lo-res-label {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mute); margin-bottom: 6px; }}
+.lo-res-kort .lo-res-val {{ font-family: var(--serif); font-size: 28px; font-weight: 400; color: var(--accent); }}
+.lo-res-kort .lo-res-sub {{ font-size: 12px; color: var(--ink-mute); margin-top: 4px; }}
+.lo-res-kort.groen .lo-res-val {{ color: #2d6a2d; }}
+/* Brev */
+.brev-wrap {{ background: var(--bg-alt); border-radius: 16px; padding: 24px; border: 1px solid var(--line); }}
+.brev-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }}
+.brev-header h3 {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin: 0; }}
+.brev-kn-rad {{ display: flex; gap: 10px; }}
+.brev-kn {{ padding: 8px 16px; border-radius: 8px; font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; border: none; }}
+.brev-kn.kopier {{ background: var(--accent); color: white; }}
+.brev-kn.skriv {{ background: var(--bg-card); border: 1.5px solid var(--line); color: var(--ink); }}
+.brev-dokument {{ background: white; border-radius: 12px; padding: 36px 40px; font-family: 'EB Garamond', Georgia, serif; font-size: 16px; line-height: 1.8; color: var(--ink); border: 1px solid var(--line); }}
+@media (max-width: 600px) {{ .brev-dokument {{ padding: 20px 16px; font-size: 15px; }} }}
+.brev-tom {{ color: var(--ink-mute); font-style: italic; font-family: var(--sans); font-size: 14px; }}
+@media print {{
+  .no-print {{ display: none !important; }}
+  nav.site-nav, footer.site-footer, #chat-toggle, #chat-panel, .breadcrumbs, .article-header, .lo-skjema, .sp-body, .lo-res-grid {{ display: none !important; }}
+  .lo-layout {{ display: block; }}
+  .brev-wrap {{ border: none; padding: 0; background: white; }}
+  .brev-dokument {{ border: none; padding: 0; box-shadow: none; }}
+  body {{ background: white; }}
+}}
+</style>
+<main class="page">
+  <div class="container">
+    <div class="breadcrumbs no-print">
+      <a href="../../">Rettsregel</a><span class="sep">›</span>
+      <a href="../../tjenester/">Tjenester</a><span class="sep">›</span>
+      <span class="current">Leieøkning</span>
+    </div>
+    <div class="article-header no-print">
+      <div class="article-eyebrow">Kalkulator + varselbrev</div>
+      <h1 class="article-title">Leieøkning — beregn og varsle</h1>
+      <p class="article-description">Fyll ut nåværende leie og KPI-endring. Du får maks lovlig økning og et ferdig varselbrev til leietaker.</p>
+    </div>
+    <div class="lo-layout">
+      <div class="lo-skjema no-print">
+        <div class="lo-tittel">Leieforholdet</div>
+        <div class="lo-sek">
+          <div class="lo-sek-hd">Utleier</div>
+          <div class="lf"><label>Ditt navn (utleier)</label><input type="text" id="utleier_navn" oninput="oppdater()" placeholder="Ola Nordmann"></div>
+          <div class="lf"><label>Din adresse</label><input type="text" id="utleier_adresse" oninput="oppdater()" placeholder="Storgata 1, 0000 Oslo"></div>
+        </div>
+        <div class="lo-sek">
+          <div class="lo-sek-hd">Leietaker</div>
+          <div class="lf"><label>Leietakers navn</label><input type="text" id="leietaker_navn" oninput="oppdater()" placeholder="Kari Nordmann"></div>
+          <div class="lf"><label>Leieobjektets adresse</label><input type="text" id="bolig_adresse" oninput="oppdater()" placeholder="Leiegata 5, 5000 Bergen"></div>
+        </div>
+        <div class="lo-sek">
+          <div class="lo-sek-hd">Leie og tidspunkt</div>
+          <div class="lf"><label>Nåværende månedlig leie (kr)</label><input type="number" id="naaleie" oninput="oppdater()" placeholder="12000" min="0"></div>
+          <div class="lf"><label>Dato for siste leieøkning (eller leiestart)</label><input type="date" id="siste_okning" oninput="oppdater()"></div>
+        </div>
+        <div class="lo-sek">
+          <div class="lo-sek-hd">KPI-endring</div>
+          <div class="lf">
+            <label>12-måneders KPI-endring (%)</label>
+            <input type="number" id="kpi_pst" oninput="oppdater()" placeholder="f.eks. 4.2" step="0.1">
+            <div style="font-size:11px;color:var(--ink-mute);margin-top:4px;">Finn siste 12-mnd konsumprisindeks på ssb.no/statistikk/kpi</div>
+          </div>
+        </div>
+        <div class="lo-sek">
+          <div class="lo-sek-hd">Varsel</div>
+          <div class="lf"><label>Dato for ønsket ikrafttredelse</label><input type="date" id="ikraft_dato" oninput="oppdater()"></div>
+          <div style="font-size:11px;color:var(--ink-mute);">Husleieloven krever 6 ukers skriftlig varsel (§ 4-3).</div>
+        </div>
+        <button class="last-ned-kn no-print" onclick="window.print()">Last ned som PDF</button>
+      </div>
+      <div>
+        <!-- Resultat-tall -->
+        <div class="lo-res-grid" id="lo-res-grid" style="display:none">
+          <div class="lo-res-kort groen">
+            <div class="lo-res-label">Maks ny leie</div>
+            <div class="lo-res-val" id="res-ny-leie">—</div>
+            <div class="lo-res-sub">per måned</div>
+          </div>
+          <div class="lo-res-kort">
+            <div class="lo-res-label">Økning</div>
+            <div class="lo-res-val" id="res-okning">—</div>
+            <div class="lo-res-sub" id="res-okning-sub">per måned</div>
+          </div>
+          <div class="lo-res-kort">
+            <div class="lo-res-label">Tidligst ikrafttredelse</div>
+            <div class="lo-res-val" id="res-frist" style="font-size:18px">—</div>
+            <div class="lo-res-sub">6 uker fra varseldato</div>
+          </div>
+          <div class="lo-res-kort">
+            <div class="lo-res-label">Status</div>
+            <div class="lo-res-val" id="res-status" style="font-size:16px">—</div>
+            <div class="lo-res-sub" id="res-status-sub"></div>
+          </div>
+        </div>
+        <!-- Varselbrev -->
+        <div class="brev-wrap">
+          <div class="brev-header">
+            <h3>Varselbrev til leietaker</h3>
+            <div class="brev-kn-rad no-print">
+              <button class="brev-kn kopier" onclick="kopierBrev()">Kopier tekst</button>
+              <button class="brev-kn skriv" onclick="window.print()">Last ned PDF</button>
+            </div>
+          </div>
+          <div class="brev-dokument" id="lo-brev"><p class="brev-tom">Fyll ut feltene til venstre — varselbrevet bygger seg her.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="prose sp-body no-print">
+      <h2>Reglene for leieøkning</h2>
+      <p>Etter husleieloven § 4-2 kan leien reguleres én gang per 12 måneder. Økningen er begrenset til endringen i konsumprisindeksen (KPI) i samme periode. Du kan aldri sette opp leien mer enn det KPI-endringen tilsier — men du kan sette opp mindre.</p>
+      <p>Varselet må fremsettes skriftlig med minst 6 ukers frist, jf. husleieloven § 4-3. Varselet kan sendes på e-post dersom leietaker har akseptert elektronisk kommunikasjon.</p>
+      <p>Ønsker du å sette leien til gjengs leie (markedsleie), gjelder egne regler etter husleieloven § 4-3. Det er en annen prosess enn KPI-regulering.</p>
+    </div>
+  </div>
+</main>
+<script>
+function dato(iso) {{
+  if (!iso) return '________';
+  return new Date(iso+'T12:00:00').toLocaleDateString('nb-NO', {{day:'numeric',month:'long',year:'numeric'}});
+}}
+function kr(n) {{
+  return Math.round(n).toLocaleString('nb-NO') + ' kr';
+}}
+function addDager(isoStr, dager) {{
+  if (!isoStr) return null;
+  const d = new Date(isoStr+'T12:00:00');
+  d.setDate(d.getDate() + dager);
+  return d;
+}}
+function oppdater() {{
+  const utleierNavn = document.getElementById('utleier_navn').value.trim();
+  const utleierAdresse = document.getElementById('utleier_adresse').value.trim();
+  const leietakerNavn = document.getElementById('leietaker_navn').value.trim();
+  const boligAdresse = document.getElementById('bolig_adresse').value.trim();
+  const naaLeie = parseFloat(document.getElementById('naaleie').value) || 0;
+  const sisteOkning = document.getElementById('siste_okning').value;
+  const kpiPst = parseFloat(document.getElementById('kpi_pst').value);
+  const ikraftDato = document.getElementById('ikraft_dato').value;
+
+  // Beregn
+  const nyLeie = naaLeie && !isNaN(kpiPst) ? naaLeie * (1 + kpiPst/100) : 0;
+  const okning = nyLeie - naaLeie;
+  const naa = new Date();
+  const varseldato = naa;
+  const tidligstIkraft = addDager(naa.toISOString().split('T')[0], 42); // 6 uker
+
+  // Status: kan vi øke?
+  let kanOke = true, statusTekst = '✓ Kan økes nå', statusSub = '';
+  if (sisteOkning) {{
+    const siste = new Date(sisteOkning+'T12:00:00');
+    const nesteMulig = new Date(siste);
+    nesteMulig.setFullYear(nesteMulig.getFullYear() + 1);
+    if (naa < nesteMulig) {{
+      kanOke = false;
+      statusTekst = '⏳ For tidlig';
+      statusSub = 'Tidligst ' + nesteMulig.toLocaleDateString('nb-NO', {{day:'numeric',month:'short',year:'numeric'}});
+    }}
+  }}
+
+  // Vis tall
+  if (naaLeie && !isNaN(kpiPst)) {{
+    document.getElementById('lo-res-grid').style.display = 'grid';
+    document.getElementById('res-ny-leie').textContent = kr(nyLeie) + '/mnd';
+    document.getElementById('res-okning').textContent = '+' + kr(okning) + '/mnd';
+    document.getElementById('res-okning-sub').textContent = '+' + kr(okning*12) + ' per år';
+    document.getElementById('res-frist').textContent = tidligstIkraft ? tidligstIkraft.toLocaleDateString('nb-NO',{{day:'numeric',month:'short'}}) : '—';
+    document.getElementById('res-status').textContent = statusTekst;
+    document.getElementById('res-status-sub').textContent = statusSub;
+  }} else {{
+    document.getElementById('lo-res-grid').style.display = 'none';
+  }}
+
+  // Varselbrev
+  if (!utleierNavn && !leietakerNavn && !naaLeie) {{
+    document.getElementById('lo-brev').innerHTML = '<p class="brev-tom">Fyll ut feltene til venstre — varselbrevet bygger seg her.</p>';
+    return;
+  }}
+  const idag = naa.toLocaleDateString('nb-NO', {{day:'numeric',month:'long',year:'numeric'}});
+  const nyLeieStr = nyLeie > 0 ? kr(nyLeie) : '[ny leie]';
+  const ikraft = ikraftDato ? dato(ikraftDato) : (tidligstIkraft ? dato(tidligstIkraft.toISOString().split('T')[0]) : '[ikrafttredelsesdato]');
+  let brev = '';
+  brev += `<div style="margin-bottom:24px;font-size:14px;">`;
+  if (utleierNavn) brev += `<strong>${{utleierNavn}}</strong><br>`;
+  if (utleierAdresse) brev += `${{utleierAdresse}}<br>`;
+  brev += `</div>`;
+  brev += `<div style="margin-bottom:24px;font-size:14px;">`;
+  if (leietakerNavn) brev += `<strong>${{leietakerNavn}}</strong><br>`;
+  if (boligAdresse) brev += `${{boligAdresse}}<br>`;
+  brev += `</div>`;
+  brev += `<div style="margin-bottom:24px;font-size:14px;">${{idag}}</div>`;
+  brev += `<div style="font-weight:700;font-size:17px;margin-bottom:20px;font-family:var(--sans);">VARSEL OM LEIEØKNING</div>`;
+  brev += `<p>Leiebolig: <strong>${{boligAdresse || '[adresse]'}}</strong></p>`;
+  brev += `<p style="margin-top:12px;">Du varsles herved om at husleien reguleres i samsvar med konsumprisindeksen, jf. husleieloven § 4-2.</p>`;
+  brev += `<p style="margin-top:12px;"><strong>Nåværende månedlig leie:</strong> ${{naaLeie ? kr(naaLeie)+'/mnd' : '[nåværende leie]'}}<br>`;
+  if (!isNaN(kpiPst)) brev += `<strong>KPI-endring (12 mnd):</strong> ${{kpiPst}} %<br>`;
+  brev += `<strong>Ny månedlig leie:</strong> ${{nyLeieStr}}/mnd</p>`;
+  brev += `<p style="margin-top:12px;">Den nye leien trer i kraft fra <strong>${{ikraft}}</strong>.</p>`;
+  brev += `<p style="margin-top:12px;">Fristen for dette varselet er 6 uker, jf. husleieloven § 4-3. Ønsker du å bestride reguleringsgrunnlaget, ta skriftlig kontakt innen denne fristen.</p>`;
+  brev += `<div style="margin-top:32px;">Med vennlig hilsen<br><br>${{utleierNavn || '________________'}}</div>`;
+  document.getElementById('lo-brev').innerHTML = brev;
+}}
+function kopierBrev() {{
+  const el = document.getElementById('lo-brev');
+  navigator.clipboard.writeText(el.innerText).then(() => {{
+    const kn = document.querySelector('.brev-kn.kopier');
+    kn.textContent = '✓ Kopiert!';
+    setTimeout(() => kn.textContent = 'Kopier tekst', 2500);
+  }});
+}}
+oppdater();
+</script>
+{site_footer(depth=2)}"""
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TJENESTE 4: INKASSO-SJEKK
+# ─────────────────────────────────────────────────────────────────────────────
+def render_tjenester_inkasso():
+    return f"""{shared_head(
+        'Inkasso-sjekk — er kravet lovlig? | Rettsregel',
+        'Sjekk om inkassokravet du har fått er lovlig og innenfor fristen. Gratis verktøy med ferdig innsigelse-mal om nødvendig.',
+        depth=2, canonical_path='/tjenester/inkasso/'
+    )}
+<body>
+{site_nav(depth=2)}
+<style>
+.ink-layout {{ display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
+.ink-layout > * {{ min-width: 0; }}
+@media (max-width: 1024px) {{ .ink-layout {{ grid-template-columns: 1fr !important; }} }}
+.ink-skjema {{ background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md); position: sticky; top: 24px; }}
+@media (max-width: 1024px) {{ .ink-skjema {{ position: static !important; }} }}
+.ink-tittel {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 20px; }}
+.ink-sek {{ margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }}
+.ink-sek:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+.ink-sek-hd {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px; }}
+.inkf {{ margin-bottom: 10px; }}
+.inkf label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
+.inkf input, .inkf select, .inkf textarea {{
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-family: var(--sans); font-size: 16px;
+  background: var(--bg); color: var(--ink); box-sizing: border-box;
+}}
+.inkf input:focus, .inkf select:focus, .inkf textarea:focus {{ outline: none; border-color: var(--accent); }}
+.inkf textarea {{ min-height: 70px; resize: vertical; }}
+.inkf-radio {{ display: flex; flex-direction: column; gap: 6px; }}
+.inkf-radio label {{ display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; cursor: pointer; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 8px; line-height: 1.35; }}
+.inkf-radio input[type=radio] {{ width: auto; margin: 0; accent-color: var(--accent); flex-shrink: 0; }}
+.inkf-radio label:has(input:checked) {{ border-color: var(--accent); background: rgba(177,74,42,0.05); color: var(--accent); font-weight: 600; }}
+/* Analyse */
+.ink-analyse {{ display: none; }}
+.ink-dom-kort {{ border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; }}
+.ink-dom-kort.rod {{ background: #fde8e8; border: 1.5px solid #f0a0a0; }}
+.ink-dom-kort.gul {{ background: #fff3cd; border: 1.5px solid #ffc107; }}
+.ink-dom-kort.groen {{ background: #e8f4e8; border: 1.5px solid #8dcc8d; }}
+.ink-dom-tittel {{ font-family: var(--serif); font-size: 20px; font-weight: 400; margin-bottom: 10px; }}
+.ink-dom-tekst {{ font-size: 14px; line-height: 1.65; }}
+/* Sjekkliste */
+.ink-sjekk-liste {{ display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }}
+.ink-sjekk-item {{ display: flex; gap: 10px; padding: 12px 16px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--line); font-size: 13px; line-height: 1.5; }}
+.ink-sjekk-item .ink-icon {{ font-size: 16px; flex-shrink: 0; }}
+/* Brevboks */
+.brev-wrap {{ background: var(--bg-alt); border-radius: 16px; padding: 24px; border: 1px solid var(--line); }}
+.brev-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }}
+.brev-header h3 {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin: 0; }}
+.brev-kn-rad {{ display: flex; gap: 10px; }}
+.brev-kn {{ padding: 8px 16px; border-radius: 8px; font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; border: none; }}
+.brev-kn.kopier {{ background: var(--accent); color: white; }}
+.brev-kn.skriv {{ background: var(--bg-card); border: 1.5px solid var(--line); color: var(--ink); }}
+.brev-dokument {{ background: white; border-radius: 12px; padding: 36px 40px; font-family: 'EB Garamond', Georgia, serif; font-size: 16px; line-height: 1.8; color: var(--ink); border: 1px solid var(--line); }}
+@media (max-width: 600px) {{ .brev-dokument {{ padding: 20px 16px; font-size: 15px; }} }}
+.brev-tom {{ color: var(--ink-mute); font-style: italic; font-family: var(--sans); font-size: 14px; }}
+@media print {{
+  .no-print {{ display: none !important; }}
+  nav.site-nav, footer.site-footer, #chat-toggle, #chat-panel, .breadcrumbs, .article-header, .ink-skjema, .sp-body {{ display: none !important; }}
+  .ink-layout {{ display: block; }}
+  .brev-wrap {{ border: none; padding: 0; background: white; }}
+  .brev-dokument {{ border: none; padding: 0; box-shadow: none; }}
+  body {{ background: white; }}
+}}
+</style>
+<main class="page">
+  <div class="container">
+    <div class="breadcrumbs no-print">
+      <a href="../../">Rettsregel</a><span class="sep">›</span>
+      <a href="../../tjenester/">Tjenester</a><span class="sep">›</span>
+      <span class="current">Inkasso-sjekk</span>
+    </div>
+    <div class="article-header no-print">
+      <div class="article-eyebrow">Gratis verktøy</div>
+      <h1 class="article-title">Er inkassokravet ditt lovlig?</h1>
+      <p class="article-description">Fyll ut hva du har mottatt. Vi sjekker foreldelse, formalia og gir deg riktig respons — med ferdig innsigelse-mal om du trenger det.</p>
+    </div>
+    <div class="ink-layout">
+      <div class="ink-skjema no-print">
+        <div class="ink-tittel">Kravet du har fått</div>
+        <div class="ink-sek">
+          <div class="ink-sek-hd">Grunnlaget</div>
+          <div class="inkf"><label>Hva gjelder kravet?</label>
+            <select id="krav_type" onchange="oppdater()">
+              <option value="">— Velg —</option>
+              <option value="faktura">Ubetalt faktura fra bedrift</option>
+              <option value="leie">Husleie / strøm / abonnement</option>
+              <option value="lan">Lån (privat eller bank)</option>
+              <option value="erstatning">Erstatningskrav</option>
+              <option value="annet">Annet / vet ikke</option>
+            </select>
+          </div>
+          <div class="inkf"><label>Kroppens navn / inkassoselskapet</label><input type="text" id="inkasso_navn" oninput="oppdater()" placeholder="f.eks. Lindorff / Kredinor"></div>
+        </div>
+        <div class="ink-sek">
+          <div class="ink-sek-hd">Beløp</div>
+          <div class="inkf"><label>Opprinnelig krav (kr) — fra kvitteringen</label><input type="number" id="oppr_krav" oninput="oppdater()" placeholder="f.eks. 3000" min="0"></div>
+          <div class="inkf"><label>Totalt krevd inkl. gebyrer (kr)</label><input type="number" id="totalt_krav" oninput="oppdater()" placeholder="f.eks. 6800" min="0"></div>
+        </div>
+        <div class="ink-sek">
+          <div class="ink-sek-hd">Datoer</div>
+          <div class="inkf"><label>Når var kravet opprinnelig forfalt?</label><input type="date" id="forfall_dato" oninput="oppdater()"></div>
+          <div class="inkf"><label>Fikk du inkassovarsel (purring) før inkasso?</label>
+            <div class="inkf-radio">
+              <label><input type="radio" name="hadde_varsel" value="ja" onchange="oppdater()" checked> Ja</label>
+              <label><input type="radio" name="hadde_varsel" value="nei" onchange="oppdater()"> Nei — ingen purring</label>
+              <label><input type="radio" name="hadde_varsel" value="vet_ikke" onchange="oppdater()"> Vet ikke</label>
+            </div>
+          </div>
+        </div>
+        <div class="ink-sek">
+          <div class="ink-sek-hd">Din situasjon</div>
+          <div class="inkf"><label>Kjenner du igjen kravet?</label>
+            <div class="inkf-radio">
+              <label><input type="radio" name="kjenner_krav" value="ja" onchange="oppdater()" checked> Ja, jeg kjenner det igjen</label>
+              <label><input type="radio" name="kjenner_krav" value="delvis" onchange="oppdater()"> Delvis — bestrider deler av det</label>
+              <label><input type="radio" name="kjenner_krav" value="nei" onchange="oppdater()"> Nei, ukjent krav</label>
+            </div>
+          </div>
+          <div class="inkf"><label>Ditt fulle navn</label><input type="text" id="mitt_navn_ink" oninput="oppdater()" placeholder="Ola Nordmann"></div>
+          <div class="inkf"><label>Din adresse</label><input type="text" id="min_adresse_ink" oninput="oppdater()" placeholder="Veien 5, 0000 Oslo"></div>
+        </div>
+      </div>
+      <div>
+        <div id="ink-tom" class="brev-wrap" style="margin-bottom:24px">
+          <p class="brev-tom">Fyll ut feltene til venstre — analysen bygger seg her.</p>
+        </div>
+        <div class="ink-analyse" id="ink-analyse">
+          <div id="ink-dom-kort"></div>
+          <div class="ink-sjekk-liste" id="ink-sjekk-liste"></div>
+          <div class="brev-wrap" id="ink-brev-seksjon" style="display:none">
+            <div class="brev-header">
+              <h3 id="brev-tittel-ink">Innsigelse til inkassoselskapet</h3>
+              <div class="brev-kn-rad no-print">
+                <button class="brev-kn kopier" onclick="kopierBrev()">Kopier tekst</button>
+                <button class="brev-kn skriv" onclick="window.print()">Last ned PDF</button>
+              </div>
+            </div>
+            <div class="brev-dokument" id="ink-brev"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="prose sp-body no-print">
+      <h2>Dine rettigheter overfor inkasso</h2>
+      <p>Et gyldig inkassokrav krever at det er sendt ett inkassovarsel med minst 14 dagers frist, og ett purrebrev med minst 14 dagers frist, før inkassosaken starter. Mangler disse stegene, er inkassosalæret ulovlig.</p>
+      <p>Alle krav foreldes. Vanlig foreldelsesfrist er 3 år fra forfallsdato. Dommer og gjeldsbrev har 10 år. Etter foreldelse er du ikke lenger juridisk forpliktet til å betale.</p>
+      <p>Er du uenig i kravet eller mener det er foreldet: Send skriftlig innsigelse til inkassoselskapet. De plikter da å stanse innkrevingen og sette saken i bero, jf. inkassoloven § 12.</p>
+    </div>
+  </div>
+</main>
+<script>
+function radio(name) {{
+  const el = document.querySelector('input[name="'+name+'"]:checked');
+  return el ? el.value : null;
+}}
+function dato(iso) {{
+  if (!iso) return '________';
+  return new Date(iso+'T12:00:00').toLocaleDateString('nb-NO', {{day:'numeric',month:'long',year:'numeric'}});
+}}
+function kr(n) {{
+  return parseInt(n).toLocaleString('nb-NO') + ' kr';
+}}
+function oppdater() {{
+  const kravType = document.getElementById('krav_type').value;
+  const inkassoNavn = document.getElementById('inkasso_navn').value.trim();
+  const opprKrav = parseFloat(document.getElementById('oppr_krav').value) || 0;
+  const totaltKrav = parseFloat(document.getElementById('totalt_krav').value) || 0;
+  const forfallDato = document.getElementById('forfall_dato').value;
+  const haddeVarsel = radio('hadde_varsel');
+  const kjennerKrav = radio('kjenner_krav');
+  const mittNavn = document.getElementById('mitt_navn_ink').value.trim();
+  const minAdresse = document.getElementById('min_adresse_ink').value.trim();
+
+  // Trenger minimum ett felt
+  if (!kravType && !opprKrav && !forfallDato) {{
+    document.getElementById('ink-tom').style.display = 'block';
+    document.getElementById('ink-analyse').style.display = 'none';
+    return;
+  }}
+  document.getElementById('ink-tom').style.display = 'none';
+  document.getElementById('ink-analyse').style.display = 'block';
+
+  // Sjekk foreldelse
+  let erForeldet = false, aarTil3 = null;
+  if (forfallDato) {{
+    const forfall = new Date(forfallDato+'T12:00:00');
+    const naa = new Date();
+    const ms3aar = 3 * 365.25 * 24 * 3600 * 1000;
+    const alder = (naa - forfall) / ms3aar;
+    erForeldet = alder > 3;
+    aarTil3 = alder.toFixed(1);
+  }}
+
+  // Gebyrer sjekk
+  const gebyrer = totaltKrav && opprKrav ? totaltKrav - opprKrav : 0;
+  const gebyrHoey = gebyrer > opprKrav * 0.25 + 1300; // Grovt anslag
+
+  // Dom
+  let domKlasse, domTittel, domTekst;
+  if (erForeldet) {{
+    domKlasse = 'rod';
+    domTittel = 'Kravet er sannsynligvis foreldet';
+    domTekst = `Kravet forfalt for over 3 år siden. Den ordinære foreldelsesfristen er 3 år fra forfallsdato, jf. foreldelsesloven § 2. Du er sannsynligvis ikke lenger juridisk forpliktet til å betale. Send innsigelse med én gang.`;
+  }} else if (kjennerKrav === 'nei') {{
+    domKlasse = 'gul';
+    domTittel = 'Ukjent krav — send innsigelse';
+    domTekst = `Du kjenner ikke igjen kravet. Det kan skyldes forveksling, identitetstyveri, eller at kravet rett og slett tilhører noen andre. Send skriftlig innsigelse til inkassoselskapet umiddelbart. De har da plikt til å stanse innkrevingen og dokumentere grunnlaget.`;
+  }} else if (haddeVarsel === 'nei') {{
+    domKlasse = 'gul';
+    domTittel = 'Mangler inkassovarsel — salæret kan være ulovlig';
+    domTekst = `Inkassoselskapet har ikke lov til å kreve inkassosalær uten at det er sendt et inkassovarsel med minst 14 dagers frist først, jf. inkassoloven § 9 og § 10. Mangler dette steget, kan du nekte å betale salæret.`;
+  }} else if (kjennerKrav === 'delvis') {{
+    domKlasse = 'gul';
+    domTittel = 'Del av kravet er omtvistet';
+    domTekst = `Du bestrider deler av kravet. Du kan betale det du erkjenner og sende innsigelse på det du er uenig i. Inkassoselskapet plikter å behandle innsigelsen og kan ikke sende den omtvistede delen til namsmannen før uenigheten er avklart.`;
+  }} else if (gebyrHoey) {{
+    domKlasse = 'gul';
+    domTittel = 'Mulig for høye gebyrer';
+    domTekst = `Gebyrene (${{kr(gebyrer)}}) ser høye ut i forhold til opprinnelig krav (${{kr(opprKrav)}}). Maksimale inkassosatser er fastsatt i inkassoforskriften. Du kan be om spesifisert opprinnelse og lovhjemmel for hvert gebyr.`;
+  }} else {{
+    domKlasse = 'groen';
+    domTittel = 'Kravet virker legitimt';
+    domTekst = `Basert på opplysningene du har gitt virker inkassokravet legitimt — innenfor foreldelsesfristen, med varsel, og med kjent grunnlag. Kravet bør betales for å unngå videre gebyrer og eventuell namsmannsbehandling.`;
+  }}
+  document.getElementById('ink-dom-kort').innerHTML = `<div class="ink-dom-kort ${{domKlasse}}"><div class="ink-dom-tittel">${{domTittel}}</div><div class="ink-dom-tekst">${{domTekst}}</div></div>`;
+
+  // Sjekkliste
+  const sjekkItems = [];
+  if (forfallDato) {{
+    sjekkItems.push({{
+      icon: erForeldet ? '🔴' : '🟢',
+      tekst: erForeldet
+        ? `Forfallsdato: ${{dato(forfallDato)}} — <strong>over 3 år siden</strong>. Kravet er sannsynligvis foreldet.`
+        : `Forfallsdato: ${{dato(forfallDato)}} — ${{aarTil3}} år siden. Innenfor 3-årsfristen.`
+    }});
+  }}
+  sjekkItems.push({{
+    icon: haddeVarsel === 'ja' ? '🟢' : haddeVarsel === 'nei' ? '🔴' : '🟡',
+    tekst: haddeVarsel === 'ja' ? 'Inkassovarsel er mottatt ✓' : haddeVarsel === 'nei' ? '<strong>Mangler inkassovarsel</strong> — salæret kan kreves fratrukket' : 'Usikkert om inkassovarsel ble sendt'
+  }});
+  if (opprKrav && totaltKrav) {{
+    sjekkItems.push({{
+      icon: gebyrHoey ? '🟡' : '🟢',
+      tekst: `Gebyrer: ${{kr(gebyrer)}} utover opprinnelig krav (${{kr(opprKrav)}}). ${{gebyrHoey ? 'Virker høyt — be om spesifikasjon.' : 'Virker rimelig.'}}`
+    }});
+  }}
+  sjekkItems.push({{
+    icon: kjennerKrav === 'ja' ? '🟢' : kjennerKrav === 'nei' ? '🔴' : '🟡',
+    tekst: kjennerKrav === 'ja' ? 'Kravet er kjent' : kjennerKrav === 'nei' ? '<strong>Ukjent krav</strong> — send innsigelse umiddelbart' : 'Deler av kravet er bestridt'
+  }});
+  document.getElementById('ink-sjekk-liste').innerHTML = sjekkItems.map(i =>
+    `<div class="ink-sjekk-item"><span class="ink-icon">${{i.icon}}</span><span>${{i.tekst}}</span></div>`
+  ).join('');
+
+  // Brev — vis hvis krav er problematisk
+  const trengerBrev = erForeldet || kjennerKrav === 'nei' || kjennerKrav === 'delvis' || haddeVarsel === 'nei';
+  const brevSeksjon = document.getElementById('ink-brev-seksjon');
+  if (trengerBrev) {{
+    brevSeksjon.style.display = 'block';
+    const idag = new Date().toLocaleDateString('nb-NO', {{day:'numeric',month:'long',year:'numeric'}});
+    let brevTittel, brevTekst;
+    if (erForeldet) {{
+      brevTittel = 'Innsigelse — foreldet krav';
+      brevTekst = `Jeg bestrider herved ovennevnte krav som foreldet. Kravet forfalt ${{dato(forfallDato)}}, og den ordinære foreldelsesfristen på 3 år etter foreldelsesloven § 2 er dermed overskredet. Jeg er ikke lenger juridisk forpliktet til å betale, jf. foreldelsesloven § 24. Jeg ber om at kravet omgående frafalles og at registreringer hos kredittopplysningsbyråer slettes.`;
+    }} else if (kjennerKrav === 'nei') {{
+      brevTittel = 'Innsigelse — ukjent krav';
+      brevTekst = `Jeg bestrider herved ovennevnte krav i sin helhet. Kravet er meg fullstendig ukjent, og jeg har ingen kjennskap til noe rettslig grunnlag for det. I henhold til inkassoloven § 12 ber jeg om at innkrevingen stanses umiddelbart og at dere dokumenterer grunnlaget for kravet skriftlig, herunder original faktura, kontrakt eller annet avtalegrunnlag. Jeg forbeholder meg retten til å anmelde forholdet til Finanstilsynet og politiet ved urettmessig inkasso.`;
+    }} else if (kjennerKrav === 'delvis') {{
+      brevTekst = `Jeg erkjenner deler av ovennevnte krav, men bestrider det overskytende. Jeg ber om en detaljert spesifikasjon av alle gebyrer og om hvilken hjemmel i inkassoforskriften hvert enkelt gebyr er begrunnet i. Det bestridte beløpet kreves satt i bero, jf. inkassoloven § 12, inntil uenigheten er avklart.`;
+      brevTittel = 'Innsigelse — delvis bestridt krav';
+    }} else {{
+      brevTekst = `Jeg bestrider herved ovennevnte inkassosalær. Kravet ble sendt til inkasso uten at det forutgående ble sendt et inkassovarsel med 14 dagers betalingsfrist, slik inkassoloven §§ 9 og 10 krever. Inkassosalæret er dermed ulovlig pålagt. Jeg betaler det opprinnelige kravet på ${{kr(opprKrav)}}, men nekter å betale det ulovlig pålagte salæret.`;
+      brevTittel = 'Innsigelse — manglende inkassovarsel';
+    }}
+    document.getElementById('brev-tittel-ink').textContent = brevTittel;
+    const brev = `<div style="margin-bottom:24px;font-size:14px;"><strong>${{mittNavn || '[Ditt navn]'}}</strong><br>${{minAdresse || '[Din adresse]'}}</div>`+
+      `<div style="margin-bottom:24px;font-size:14px;"><strong>${{inkassoNavn || '[Inkassoselskapet]'}}</strong></div>`+
+      `<div style="margin-bottom:24px;font-size:14px;">${{idag}}</div>`+
+      `<div style="font-weight:700;font-size:17px;margin-bottom:20px;font-family:var(--sans);">INNSIGELSE MOT INKASSOKRAV</div>`+
+      `<p>Referanse: ${{inkassoNavn || '[inkassoselskap]'}}${{opprKrav ? ' — opprinnelig krav ' + kr(opprKrav) : ''}}</p>`+
+      `<p style="margin-top:16px;">${{brevTekst}}</p>`+
+      `<div style="margin-top:32px;">Med vennlig hilsen<br><br><strong>${{mittNavn || '[Ditt navn]'}}</strong></div>`;
+    document.getElementById('ink-brev').innerHTML = brev;
+  }} else {{
+    brevSeksjon.style.display = 'none';
+  }}
+}}
+function kopierBrev() {{
+  const el = document.getElementById('ink-brev');
+  navigator.clipboard.writeText(el.innerText).then(() => {{
+    const kn = document.querySelector('.brev-kn.kopier');
+    kn.textContent = '✓ Kopiert!';
+    setTimeout(() => kn.textContent = 'Kopier tekst', 2500);
+  }});
+}}
+oppdater();
+</script>
+{site_footer(depth=2)}"""
+
+
 def build():
     out = "/home/claude/site/dist"
     # Bygg fortsatt til dist/ i Claudes workdir — men zip-leveransen pakker flat
@@ -3909,6 +5196,18 @@ def build():
     os.makedirs(f"{out}/tjenester/reklamasjon-bil", exist_ok=True)
     with open(f"{out}/tjenester/reklamasjon-bil/index.html", "w", encoding="utf-8") as f:
         f.write(render_tjenester_reklamasjon_bil())
+    os.makedirs(f"{out}/tjenester/reklamasjon", exist_ok=True)
+    with open(f"{out}/tjenester/reklamasjon/index.html", "w", encoding="utf-8") as f:
+        f.write(render_tjenester_reklamasjon())
+    os.makedirs(f"{out}/tjenester/arv", exist_ok=True)
+    with open(f"{out}/tjenester/arv/index.html", "w", encoding="utf-8") as f:
+        f.write(render_tjenester_arv())
+    os.makedirs(f"{out}/tjenester/leie-okning", exist_ok=True)
+    with open(f"{out}/tjenester/leie-okning/index.html", "w", encoding="utf-8") as f:
+        f.write(render_tjenester_leie_okning())
+    os.makedirs(f"{out}/tjenester/inkasso", exist_ok=True)
+    with open(f"{out}/tjenester/inkasso/index.html", "w", encoding="utf-8") as f:
+        f.write(render_tjenester_inkasso())
 
     # Kontrakter
     os.makedirs(f"{out}/kontrakter", exist_ok=True)
