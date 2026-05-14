@@ -399,3 +399,611 @@ PARAGRAPHS = [
         ],
     },
 ]
+
+# §§ 15–35 added
+_EXTRA = [
+    {
+        "number": "15",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Hvilke krav kan du stille til varen du kjøper?",
+        "kategori": "forbruk",
+        "description": "Har du kjøpt en vare som ikke fungerer som avtalt? Loven krever at varen har den kvaliteten og de egenskapene du ble lovet da du kjøpte den.",
+        "kort_svar": "Varen du kjøper skal stemme overens med det som ble avtalt. Den skal ha den mengden, kvaliteten og funksjonaliteten du forventer, og passe til vanlige formål. Selger plikter også å gi deg oppdateringer for smarte produkter.",
+        "paragraftekst": "Tingen skal være i samsvar med de krav til art, mengde, kvalitet, funksjonalitet og andre egenskaper som følger av avtalen. Tingen skal leveres med innpakning og alt tilbehør som følger av avtalen. Det samme gjelder veiledning, herunder veiledning om installasjon, og eventuelle oppdateringer.",
+        "hva_betyr_html": """<p>Paragrafen setter en «grunnstandard» for alt du kjøper. Kjøper du en kaffetrakter, skal den trakte kaffe, ha vanlig holdbarhet, og komme med ledning og bruksanvisning.</p>
+<p>Kjøper du en telefon eller annen internett-koblet dings, pålegger paragrafen butikken et ekstra ansvar: du må få sikkerhetsoppdateringer og andre oppdateringer som trengs for at dingsen skal fortsette å virke. Dette ansvaret gjelder så lenge du med rimelighet kan forvente at tingen skal vare — minimum to år.</p>
+<p>Kjøper du «B-vare» med synlig feil, er dette lovlig — men bare hvis selgeren uttrykkelig fortalte deg om feilen <em>før</em> du betalte, og du eksplisitt aksepterte den.</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius spør en ansatt i sportsbutikken om et telt som tåler kraftig vind og minusgrader. Selgeren anbefaler et telt til 3 500 kr. På fjellet knekker teltstengene i første vindkast. Teltet passet ikke til det spesielle formålet Marius oppga — selgeren godtok det da han anbefalte varen. Dette er et brudd på § 15."}
+        ],
+        "vanlige_feil": [
+            "Tro at du ikke kan klage på billige ting — de skal også fungere til sitt vanlige formål",
+            "Glemme å installere programvareoppdateringer og deretter klage på at appene slutter å virke",
+            "Tro at generelle skilt («alle varer selges som de er») fratar deg rettighetene — de gjør det ikke",
+        ],
+        "hva_bor_du_html": "<p>Sjekk kvitteringen og finn frem annonsen eller esken varen kom i. Dokumentasjon på hva som ble lovet er det sterkeste kortet du har. Oppdater smartprodukter umiddelbart når varselet om oppdatering dukker opp.</p>",
+        "dumme_sporsmal": [
+            {"q": "Hva om varen er brukt?", "a": "Forventningene senkes når du kjøper noe brukt. Men den skal fortsatt fungere til vanlig bruk, med mindre selgeren spesifikt pekte på feilene og du godtok dem."},
+            {"q": "Har det noe å si hvis det manglet en liten kabel i esken?", "a": "Ja. Loven sier at alt tilbehør som er vanlig å få med skal følge med. Mangler det en ladekabel som esken sier skal være der, oppfyller ikke varen kravene."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "16", "tittel": "Mangel", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "18", "tittel": "Tidspunktet for mangelsbedømmelsen", "available": True},
+        ],
+    },
+    {
+        "number": "16",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Hva regnes som en mangel?",
+        "kategori": "forbruk",
+        "description": "Hva betyr det egentlig at en vare har en mangel? Her er reglene som avgjør om du har krav på reparasjon eller bytte.",
+        "kort_svar": "En vare har en «mangel» hvis den ikke er i den standen dere avtalte, hvis selgeren holdt tilbake viktige opplysninger, eller hvis det er gitt feil informasjon i reklamen. En mangel gir deg rett til å klage.",
+        "paragraftekst": "Tingen har en mangel dersom den ikke er i samsvar med kravene i § 15, selgeren forsømt å opplyse om vesentlige forhold, den ikke svarer til opplysninger gitt i markedsføringen, eller bruken hindres som følge av tredjeparts rettigheter.",
+        "hva_betyr_html": """<p>En «mangel» er inngangsbilletten din til å kreve noe av selgeren. Det finnes tre vanlige typer:</p>
+<p><strong>Tingen svikter</strong> — skoene rakner, TV-en er svart. Se § 15.</p>
+<p><strong>Selgeren tier om noe viktig.</strong> Kjøper du bruktbil og forhandleren vet at girkassen er utslitt uten å si det, er det en mangel.</p>
+<p><strong>Falsk reklame.</strong> Står det på esken at støvsugeren har 60 minutters batteritid, men den dør etter 20, er det en mangel — selv om det var produsenten som trykket feil.</p>""",
+        "eksempler": [
+            {"navn": "Kari", "tekst": "Kari ser en Facebook-annonse for en smartklokke som kan måle blodtrykk. Hun kjøper den i butikken. Funksjonen finnes ikke. Butikken sier produsenten fjernet den rett før lansering. Kari kan slå i bordet med § 16 — varen svarer ikke til markedsføringen. Hun kan heve kjøpet."}
+        ],
+        "vanlige_feil": [
+            "Tro at enhver feil gir rett til ny vare — feil du har påført selv er ikke en mangel",
+            "Godta at butikken sier «det var produsenten som skrev feil på esken, ikke vi» — butikken har uansett ansvaret",
+        ],
+        "hva_bor_du_html": "<p>Oppdager du en feil: ta skjermbilder av nettannonsen, behold esken, og skriv ned hva selgeren lovte muntlig. Ikke skru opp produktet, og ikke vent med å si ifra.</p>",
+        "dumme_sporsmal": [
+            {"q": "Kan butikken slippe unna hvis de rekker å rette opp feilen i annonsen?", "a": "Ja, men bare hvis de rettet feilen på tydelig måte FØR du kjøpte. Har du allerede trukket kortet, kan du ikke ta bort den gamle feilinformasjonen som mangel."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "15", "tittel": "Tingens egenskaper", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "27", "tittel": "Reklamasjon", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "18", "tittel": "Tidspunktet for mangelsbedømmelsen", "available": True},
+        ],
+    },
+    {
+        "number": "17",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Mangel som skyldes feil montering eller installering",
+        "kategori": "forbruk",
+        "description": "Gikk oppvaskmaskinen i stykker fordi den ble koblet feil? Du har rettigheter hvis selgeren eller en dårlig bruksanvisning har skylden.",
+        "kort_svar": "Feilmonterer butikken en vare, regnes feilen som en mangel du kan klage på. Det samme gjelder hvis du monterer den selv, men ødelegger varen fordi bruksanvisningen fra selgeren var feil.",
+        "paragraftekst": "Feil ved tingen som skyldes uriktig installering anses som en mangel dersom installeringen er del av kjøpsavtalen og ble utført av selgeren, eller hvis installeringen var ment å utføres av forbrukeren og den uriktige installeringen skyldes mangler i installasjonsveiledningen.",
+        "hva_betyr_html": """<p>Mange varer fungerer ikke før de er skrudd sammen eller koblet til. Loven sikrer at en feil i denne fasen ikke faller på deg — så lenge det ikke er din feil.</p>
+<p>Kjøper du skap med montering, og montørene setter hengslene feil, er skapet «mangelfullt» i lovens øyne.</p>
+<p>Enda viktigere: Hvis du følger tegningene til punkt og prikke, men tingen likevel ødelegges fordi veiledningen manglet et viktig steg, er det selgerens problem.</p>""",
+        "eksempler": [
+            {"navn": "Håkon", "tekst": "Håkon kjøper et overvåkningskamera. Appen guider ham gjennom installasjonen og ber ham trykke «godta» under en oppdatering — noe som kortslutt kameraets programvare. Selv om Håkon trykket, var det veiledningen som var feil. Kameraet har en mangel, og butikken må gi ham et nytt."}
+        ],
+        "vanlige_feil": [
+            "Kaste bruksanvisningen — den er beviset ditt på at du fulgte instruksjonene",
+            "Tro at man ikke kan klage fordi man «skrudde skruen i selv» — var tegningen feil, er det butikkens feil",
+        ],
+        "hva_bor_du_html": "<p>Finn frem manualen FØR du begynner. Opplever du at en tegning er uforståelig, ring butikken for å spørre — ikke gjett. Se over varen rett etter at montørene er ferdige, mens de ennå er til stede.</p>",
+        "dumme_sporsmal": [
+            {"q": "Hva skjer hvis jeg glemte å lese bruksanvisningen?", "a": "Da har du en dårlig sak. Hvis veiledningen var tydelig og korrekt men du valgte å overse den, må du selv ta regningen."},
+            {"q": "Hva om rørleggeren jeg fant på Facebook ødelegger vasken?", "a": "Da er ikke nettbutikken (selgerens) ansvar — rørleggeren var ikke del av kjøpsavtalen. Klag til rørleggeren etter håndverkertjenesteloven."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "16", "tittel": "Mangel", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "15", "tittel": "Tingens egenskaper", "available": True},
+        ],
+    },
+    {
+        "number": "18",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Når oppstod feilen — og hvem må bevise det?",
+        "kategori": "forbruk",
+        "description": "Gikk tingen i stykker? Her er den gylne regelen for bevisbyrde. Viser feilen seg innen to år, er det selgeren som må bevise at det er din feil.",
+        "kort_svar": "Det avgjørende er om feilen var til stede da du overtok varen. For å gjøre dette enklere for deg sier loven at hvis en feil oppstår innen to år etter kjøpet, skal man anta at feilen var der fra starten. Da må selgeren bevise at det er din feil.",
+        "paragraftekst": "Ved bedømmelsen av om tingen har en mangel, skal tidspunktet for leveringen legges til grunn, selv om mangelen først viser seg senere. En mangel som viser seg innen to år etter leveringen formodes å ha eksistert ved leveringen, med mindre annet bevises.",
+        "hva_betyr_html": """<p>Loven «fryser» tidspunktet til sekundet du mottok varen. Det er tilstanden <em>akkurat da</em> som bestemmer om butikken har ansvaret.</p>
+<p><strong>Toårsregelen:</strong> Alle feil som dukker opp de første to årene regnes automatisk som fabrikasjonsfeil — med mindre selgeren kan bevise noe annet. Selgeren har bevisbyrden i denne perioden.</p>
+<p>Etter to år snur dette. Reklamasjonstiden for varige varer er fem år, men i år 3–5 er det du som i større grad må sannsynliggjøre at feilen skyldes dårlig kvalitet, ikke normal slitasje.</p>""",
+        "eksempler": [
+            {"navn": "Tom", "tekst": "Tom kjøper en dyr TV. Halvannet år senere blir halve skjermen svart. TV-en har hengt rolig på veggen. Butikken ber ham betale for reparasjon. Tom viser til § 18: under to år = butikken har bevisbyrden. Verkstedet finner ingen klem- eller støtskader. Butikken må fikse TV-en gratis."}
+        ],
+        "vanlige_feil": [
+            "Gi seg når butikken bak skranken avviser reklamasjonen uten å undersøke varen",
+            "Tro at «bevisbyrde» betyr at du må leie inn en ekspert — som regel gjøres sjekken av butikkens eget verksted",
+        ],
+        "hva_bor_du_html": "<p>Lever varen inn snarest. Beskriv nøyaktig når og hvordan feilen oppstod. La ikke uautoriserte verksteder åpne varen — da vil selgeren hevde bevisene er ødelagt.</p>",
+        "dumme_sporsmal": [
+            {"q": "Betyr toårsregelen at reklamasjonstiden bare er to år?", "a": "Nei. For ting som er ment å vare lenge (TV, bil, hvitevarer) er reklamasjonsfristen fem år. To år handler bare om hvem som har bevisbyrden."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "16", "tittel": "Mangel", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "27", "tittel": "Reklamasjon", "available": True},
+        ],
+    },
+    {
+        "number": "18a",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Hva gir en garanti deg egentlig rett til?",
+        "kategori": "forbruk",
+        "description": "Mange butikker skryter av lange garantier. Loven sier klart at en garanti faktisk må gi deg noe ekstra utover dine vanlige rettigheter for å være meningsfull.",
+        "kort_svar": "En garanti er et ekstra løfte fra selger eller produsent. Den skal gi deg rettigheter utover lovens klagefrist. Går varen i stykker i garantiperioden, må selger fikse den gratis — med mindre de kan bevise at du har ødelagt den.",
+        "paragraftekst": "Selgeren kan påta seg å svare for feil ved tingen som ikke er en mangel etter loven. En garanti er rettslig bindende for garantigiveren på de vilkår som er fastsatt, og den begrenser ikke forbrukerens rettigheter etter loven.",
+        "hva_betyr_html": """<p><strong>Garanti og reklamasjon er to forskjellige ting.</strong> Reklamasjon er din lovfestede rett (2–5 år). Garanti er noe frivillig butikken tilbyr for å vise at de stoler på produktet.</p>
+<p>En garanti kan gi deg mer tid (f.eks. «10 års motorgaranti»), eller dekke feil du har gjort selv (som «tabbegaranti» for knust skjerm).</p>
+<p>Du mister aldri lovens klagefrist selv om en garanti går ut. Har butikken annonsert «livstidsgaranti på rammen», kan de ikke skjule en klausul om at «livstid» bare betyr syv år.</p>""",
+        "eksempler": [
+            {"navn": "Anne", "tekst": "Anne kjøper en vaskemaskin med «10 års garanti på den børsteløse motoren». Etter syv år vil maskinen plutselig ikke tromle. Loven ga bare fem års klagefrist — men garantien gjelder i 10 år. Verkstedet finner at motoren sviktet av seg selv. Produsenten dekker ny motor gratis."}
+        ],
+        "vanlige_feil": [
+            "Kaste varen etter to år fordi «garantien har gått ut», og glemme at reklamasjonsfristen er fem år",
+            "Tro at garantien dekker selvforskyldte uhell — sjekk alltid vilkårene",
+        ],
+        "hva_bor_du_html": "<p>Be om å få se hva garantien faktisk dekker. Lagre garantibeviset — om noen år husker du kanskje ikke hvem som ga den. Sjekk om det er butikken eller produsenten som er garantigiver.</p>",
+        "dumme_sporsmal": [
+            {"q": "Er garanti og reklamasjon det samme?", "a": "Nei. Reklamasjon er lovfestet (alltid 2–5 år). Garanti er frivillig fra selger — kan gi deg mer, men tar aldri fra deg reklamasjonsretten."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "18", "tittel": "Bevisbyrde", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "27", "tittel": "Reklamasjon og frister", "available": True},
+        ],
+    },
+    {
+        "number": "19",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Rettigheter når varen er forsinket",
+        "kategori": "forbruk",
+        "description": "Dukker ikke varen opp til avtalt tid? Loven gir deg fire muligheter — fra å holde tilbake penger til å avbryte hele kjøpet.",
+        "kort_svar": "Hvis butikken ikke leverer til avtalt tid, kan du holde tilbake betalingen, kreve varen levert, avbryte kjøpet (heve), eller kreve erstatning for tap du lider.",
+        "paragraftekst": "Dersom tingen ikke blir levert eller blir levert for sent og dette ikke skyldes forbrukeren, kan forbrukeren holde kjøpesummen tilbake, kreve oppfyllelse, kreve heving, eller kreve erstatning.",
+        "hva_betyr_html": """<p>Selgeren er forsinket hvis varen ikke er hos deg innen avtalt dato — eller innen 30 dager hvis ingen dato var avtalt.</p>
+<p>Du kan kombinere kravene: Begynn gjerne med å holde pengene og kreve levering. Går dagene og ukene, gå over til heving. Retten til erstatning lever sitt eget liv — selv om du hever kjøpet, kan du fremdeles kreve erstatning for tap forsinkelsen ga deg.</p>""",
+        "eksempler": [
+            {"navn": "Ingrid", "tekst": "Ingrid har betalt forhånd for en sofa med avtalt levering i uke 40. I uke 42 har ingenting skjedd. Hun kontakter butikken og krever levering, og setter en siste frist: kommer ikke sofaen innen fredag, hever hun kjøpet og krever pengene tilbake. Etter § 19 har hun full rett til det."}
+        ],
+        "vanlige_feil": [
+            "Akseptere et tilgodebevis i stedet for å kreve rettighetene loven gir",
+            "Nekte å ta imot varen når den til slutt kommer, uten å ha varslet om heving i forkant",
+        ],
+        "hva_bor_du_html": "<p>Kontakt selgeren skriftlig. Sett en tydelig ny og kort frist for levering. Gjør det klart at du vil heve kjøpet om fristen ikke overholdes.</p>",
+        "dumme_sporsmal": [
+            {"q": "Er det forsinkelse hvis budbilen kjørte i grøfta?", "a": "Ja. Forhold som skjer med selgerens transportør er selgerens ansvar."},
+            {"q": "Kan jeg heve kjøpet med én gang varen er forsinket?", "a": "Som hovedregel nei — du må gi selgeren en rimelig tilleggsfrist først. Se § 23."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "20", "tittel": "Tilbakeholdsrett", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "23", "tittel": "Heving ved forsinkelse", "available": True},
+        ],
+    },
+    {
+        "number": "20",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Retten til å holde tilbake betaling ved forsinkelse",
+        "kategori": "forbruk",
+        "description": "Er varen forsinket og fakturaen har forfalt? Du har lov til å holde tilbake penger som sikkerhet inntil varen faktisk leveres.",
+        "kort_svar": "Hvis butikken ikke leverer varen når de skal, trenger du ikke betale for den før den kommer. Du kan holde tilbake et beløp som gir deg sikkerhet — men ikke urimelig mye for en liten forsinkelse.",
+        "paragraftekst": "Forbrukeren kan holde tilbake betalingen for å dekke krav som følge av selgerens forsinkelse, men ikke åpenbart mer enn det som vil gi betryggende sikkerhet for kravet.",
+        "hva_betyr_html": """<p>Hvis du har fått en regning, men varen fortsatt ligger på et lager i Sverige, har du rett til å la regningen ligge ubetalt inntil varen er levert. Butikken kan ikke sende inkassokrav på en vare de er forsinket med å levere.</p>
+<p>Loven setter en grense for hvor mye: Har du ikke fått hovedvaren, betaler du ingenting. Har du fått nesten alt og det mangler én del, kan du holde tilbake et beløp tilsvarende verdien av det som mangler — pluss litt ekstra for sikkerhetens skyld.</p>""",
+        "eksempler": [
+            {"navn": "Lars", "tekst": "Lars bestiller seng og nattbord for 25 000 kr. Sengen leveres, men nattbordene (4 000 kr) er forsinket. Lars betaler 20 000 kr nå og holder tilbake 5 000 kr til nattbordene ankommer. Butikken kan ikke kreve forsinkelsesrenter av de 5 000 kronene."}
+        ],
+        "vanlige_feil": [
+            "Betale fakturaen i sin helhet av frykt for inkasso, selv om varen ikke er kommet",
+            "Holde tilbake et åpenbart urimelig beløp relativt til forsinkelsens størrelse",
+        ],
+        "hva_bor_du_html": "<p>Send umiddelbart e-post til selgeren: «Varen er forsinket. Jeg holder tilbake betalingen etter forbrukerkjøpsloven § 20 til varen er levert.» Kontakt også Klarna/kredittkortselskapet og «bestrid» kravet — da fryser de fakturaen.</p>",
+        "dumme_sporsmal": [
+            {"q": "Gjelder dette også når jeg har forhåndsbetalt?", "a": "Nei — pengene er allerede trukket. Har du betalt med kredittkort kan du derimot kreve pengene tilbake via kortutstederen hvis varen aldri dukker opp."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "19", "tittel": "Krav ved forsinkelse", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "21", "tittel": "Rett til oppfyllelse", "available": True},
+        ],
+    },
+    {
+        "number": "21",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Du kan kreve at selgeren faktisk leverer varen",
+        "kategori": "forbruk",
+        "description": "Er varen forsinket og butikken ber deg kansellere? Du trenger ikke gå med på det. Loven gir deg rett til å kreve at de leverer.",
+        "kort_svar": "Selv om leveringsdatoen har passert, kan du fastholde kjøpet og kreve at selgeren skaffer varen — med mindre det er fysisk umulig eller vil koste butikken urimelig mye.",
+        "paragraftekst": "Er leveringstiden kommet uten at tingen er levert, kan forbrukeren likevel fastholde kjøpet og kreve oppfyllelse. Dette gjelder ikke om det foreligger en hindring selgeren ikke kan overvinne, eller om oppfyllelse vil medføre uforholdsmessig store kostnader.",
+        "hva_betyr_html": """<p>Du trenger ikke godta at butikken bare refunderer pengene og vasker hendene. Du kan «fastholde» kjøpet — det betyr at butikken må bestille inn varen på nytt og levere til avtalte pris, selv om de må skaffe den fra en annen leverandør.</p>
+<p>Unntak: 1) Det er umulig (fabrikken har brent ned, varen produseres ikke lenger). 2) Urimelig kostnad — butikken må spesialfly inn varen med enorm kostnad sammenlignet med varens verdi. I normale tilfeller, der varen bare er utsolgt hos én leverandør, må butikken skaffe den.</p>""",
+        "eksempler": [
+            {"navn": "Sara", "tekst": "Sara kjøper en platespiller på nett. To uker over fristen tilbyr butikken å slette ordren. Sara nekter og krever oppfyllelse. Platespilleren lages fortsatt, og selv om butikken må kjøpe den fra en fordyrende grossist i England, overstiger ikke dette kravet til «urimelige kostnader». Butikken er bundet av avtalen."}
+        ],
+        "vanlige_feil": [
+            "Tro at butikken bare kan heve kjøpet når det passer dem og sende pengene i retur",
+            "Glemme å si ifra raskt — venter du for lenge, mister du retten til å kreve oppfyllelse",
+        ],
+        "hva_bor_du_html": "<p>Svar skriftlig med én gang du får melding om forsinkelse eller kansellering: «Jeg aksepterer ikke kansellering og fastholder kjøpet etter forbrukerkjøpsloven § 21. Bekreft ny leveringsdato.»</p>",
+        "dumme_sporsmal": [
+            {"q": "Butikken sier de taper penger på å skaffe varen nå. Slipper de unna?", "a": "Nei. At handelen blir en dårlig deal for butikken gir dem ikke lov til å bryte avtalen. Det skal svært store tap til for å utløse unntaket."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "19", "tittel": "Krav ved forsinkelse", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "23", "tittel": "Heving", "available": True},
+        ],
+    },
+    {
+        "number": "22",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Hva skjer hvis butikken ber om å få levere senere?",
+        "kategori": "forbruk",
+        "description": "Får du melding om at varen blir forsinket med en uke? Svarer du ikke på meldingen, mister du retten til å avbryte kjøpet.",
+        "kort_svar": "Hvis selgeren varsler om forsinkelse og setter en ny dato, og du lar være å svare, aksepterer du i praksis den nye datoen. Du kan da ikke plutselig heve kjøpet når varen ankommer innen den nye fristen.",
+        "paragraftekst": "Dersom selgeren spør om forbrukeren vil motta levering tross forsinkelsen eller underretter forbrukeren om at tingen vil bli levert innen en angitt tid, men forbrukeren ikke svarer innen rimelig tid, kan forbrukeren ikke heve om oppfyllelse skjer innen den angitte tid.",
+        "hva_betyr_html": """<p>Dette er lovens «den som tier samtykker»-regel ved forsinkelser.</p>
+<p>Får du e-post: «Ny leveringsdato er 15. oktober» — og du ikke svarer — sier loven at du har akseptert den nye fristen stilltiende. Ankommer varen 13. oktober, må du ta imot og betale.</p>
+<p>Er du <em>ikke</em> fornøyd med ny dato: Svar umiddelbart. Skriv: «Dette er uaktuelt. Jeg hever med dette kjøpet.»</p>""",
+        "eksempler": [
+            {"navn": "Eva", "tekst": "Eva har bestilt en robotgressklipper til 1. mai. 25. april varsler butikken om levering 20. mai. Eva leser e-posten, svarer ikke, og kjøper heller en annen klipper lokalt. 20. mai nekter hun å ta imot leveransen. Siden hun ikke svarte på butikkens melding, tapte hun retten til å heve — hun er bundet av avtalen."}
+        ],
+        "vanlige_feil": [
+            "Ignorere oppdateringer om forsinket leveringstid og tro at man likevel kan heve",
+            "Tro at taushet beholder retten til å heve",
+        ],
+        "hva_bor_du_html": "<p>Kan du leve med ny dato? Da trenger du ikke gjøre noe. Kan du IKKE leve med den? Svar umiddelbart og krev heving skriftlig.</p>",
+        "dumme_sporsmal": [
+            {"q": "Hva om butikken ikke oppga ny dato, bare «vi kommer tilbake til deg»?", "a": "Regelen gjelder ikke. Den krever at selgeren oppgir en spesifikk ny dato. Et vagt løfte krever ikke at du varsler om heving."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "19", "tittel": "Krav ved forsinkelse", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "23", "tittel": "Heving", "available": True},
+        ],
+    },
+    {
+        "number": "23",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Når kan du avbryte kjøpet fordi varen er forsinket?",
+        "kategori": "forbruk",
+        "description": "Er du lei av å vente? Lær hvordan du krever «heving» og får pengene tilbake — og hvorfor du normalt må sette en siste frist først.",
+        "kort_svar": "For å avbryte et forsinket kjøp, må du normalt gi selgeren en siste sjanse — en «tilleggsfrist». Leverer de ikke da heller, kan du få pengene tilbake. Du kan heve umiddelbart hvis varen var tidsbundet (som en bryllupskjole), eller butikken sier rett ut at de nekter å levere.",
+        "paragraftekst": "Har selgeren ikke levert i tide, skal forbrukeren oppfordre selgeren til å levere innen en rimelig tilleggsfrist. Dersom selgeren ikke leverer innen tilleggsfristen, kan forbrukeren heve avtalen. Tilleggsfrist kreves ikke hvis selgeren har nektet å levere, eller leveringstidspunktet var avgjørende for inngåelsen av avtalen.",
+        "hva_betyr_html": """<p>Heving betyr å slette avtalen totalt: du får pengene tilbake, butikken beholder varen. Men du kan ikke heve fordi pakken var én time forsinket.</p>
+<p>Tilleggsfristen må være «rimelig» — tre til syv dager for en hyllevare. Overskrides den, kan du kansellere kjøpet og kreve refusjon.</p>
+<p>Tre unntak gir deg rett til umiddelbar heving: 1) Butikken nekter å levere. 2) Kjøpet var tidsbundet (juletrær, bryllupskake). 3) Du ga uttrykkelig beskjed om at leveringsdatoen var avgjørende.</p>""",
+        "eksempler": [
+            {"navn": "Petter", "tekst": "Petter bestiller bakdekk på nett, lovet leveranse 2–4 dager. Etter 10 dager ingenting. Han sender e-post og setter en siste frist på 5 dager. Fristen løper ut uten levering. Petter sender ny e-post: «Fristen er brutt, jeg hever kjøpet og krever pengene tilbake.» Kjøpet er nå annullert."}
+        ],
+        "vanlige_feil": [
+            "Kreve heving umiddelbart uten å gi selgeren en tilleggsfrist",
+            "Sette en latterlig kort tilleggsfrist — «to timer» er ikke rimelig",
+            "Ta imot en ekstremt forsinket vare og bruke den i en uke, for så å prøve å heve",
+        ],
+        "hva_bor_du_html": "<p>Gjør det skriftlig. Steg 1: «Jeg setter rimelig tilleggsfrist til [dato]. Leveres ikke da, hever jeg kjøpet.» Steg 2: Etter fristen: «Tilleggsfristen utløpt. Kjøpet er hevet. Kreditér beløpet tilbake til min konto.»</p>",
+        "dumme_sporsmal": [
+            {"q": "Hva om butikken sier de har sendt pakken, men Posten har mistet den?", "a": "Selgerens ansvar, uavhengig av om Posten rotet det til. Sett tilleggsfrist, og hev om varen fremdeles ikke dukker opp."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "19", "tittel": "Krav ved forsinkelse", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "21", "tittel": "Rett til oppfyllelse", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "24", "tittel": "Erstatning", "available": True},
+        ],
+    },
+    {
+        "number": "24",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Erstatning når varen er forsinket",
+        "kategori": "forbruk",
+        "description": "Taper du penger fordi butikken ikke leverer i tide? Loven gir deg rett til erstatning — med mindre forsinkelsen skyldes force majeure.",
+        "kort_svar": "Du kan kreve at selgeren dekker økonomiske tap du får fordi varen er forsinket. Selgeren slipper bare hvis forsinkelsen skyldes en uforutsett hindring utenfor deres kontroll — som en naturkatastrofe.",
+        "paragraftekst": "Forbrukeren kan kreve erstatning for tap som følge av forsinkelse fra selgerens side. Dette gjelder ikke så langt selgeren godtgjør at forsinkelsen skyldes hindring utenfor hans eller hennes kontroll som selgeren ikke med rimelighet kunne ha tatt i betraktning eller unngått.",
+        "hva_betyr_html": """<p>Når en vare ikke ankommer, kan det skape kjedereaksjoner som koster deg penger. § 24 sikrer at du ikke bærer den økonomiske smellen.</p>
+<p>Typiske tap: Du måtte leie en erstatningsvare, eller kjøpte den samme varen dyrere et annet sted fordi den første var forsinket.</p>
+<p>Unntaket: «Force majeure» — brann på fabrikken, nasjonal streik, forlist lasteskip. Men at leverandøren bare var treig, er ikke en gyldig unnskyldning. Selgeren er ansvarlig for sine underleverandører.</p>""",
+        "eksempler": [
+            {"navn": "Sofie", "tekst": "Sofie bestiller en bilstol. Nettbutikken lovet levering til fredag — lørdag er det ferietur. Torsdag røper butikken at ordren er rotet bort. Sofie må kjøpe bilstol lokalt — 1 000 kr dyrere. Hun avbestiller og sender krav om erstatning på 1 000 kr til nettbutikken. Butikken må betale."}
+        ],
+        "vanlige_feil": [
+            "Kreve kompensasjon for «tort og svie» — bare konkret økonomisk tap erstattes",
+            "Ikke forsøke å begrense tapet — du kan ikke leie den dyreste erstatningsvaren du finner",
+        ],
+        "hva_bor_du_html": "<p>Kontakt selgeren FØR du pådrar deg store utgifter. Si: «Siden dere ikke leverer, ser jeg meg nødt til å [tiltak]. Jeg vil kreve dette som erstatning etter § 24.»</p>",
+        "dumme_sporsmal": [
+            {"q": "Hva om de sier «vi tar ikke ansvar for underleverandører»?", "a": "Det kan de si, men det bryter med loven. Selgeren har ansvaret selv om forsinkelsen skjer hos leverandøren eller fraktpartneren."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "19", "tittel": "Krav ved forsinkelse", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "23", "tittel": "Heving", "available": True},
+        ],
+    },
+    {
+        "number": "25",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Butikkens plikt til å si ifra om forsinkelser",
+        "kategori": "forbruk",
+        "description": "Venter du forgjeves? Selgeren har plikt til å varsle deg om forsinkelser — og taper de penger for deg ved ikke å gjøre det, kan du kreve erstatning.",
+        "kort_svar": "Butikken skal gi deg beskjed så snart de vet at varen din vil bli forsinket. Sier de ikke ifra til deg, og du taper penger fordi du ventet forgjeves, må butikken dekke dette tapet.",
+        "paragraftekst": "Hindres selgeren i å oppfylle kjøpet til rett tid, skal forbrukeren gis melding om hindringen og dens virkning. Får forbrukeren ikke slik melding innen rimelig tid, kan forbrukeren kreve erstattet tap som kunne ha vært unngått om meldingen var gitt i tide.",
+        "hva_betyr_html": """<p>Selgeren har ikke lov til å gjemme hodet i sanden. Selv om de kanskje slipper erstatning for selve forsinkelsen (force majeure, § 24), plikter de å varsle deg.</p>
+<p>Opplysningsplikten slår inn så fort selgeren forstår — eller burde forstå — at de ikke rekker fristen.</p>
+<p>Glemmer de å varsle, og du pådrar deg tap fordi du ikke fikk avbestille elektrikeren i tide, kan du kreve disse kostnadene dekket.</p>""",
+        "eksempler": [
+            {"navn": "Jonas", "tekst": "Jonas bestiller stekeovn med hjemlevering onsdag 10–14. Mandag vet butikken at hele partiet er ødelagt. De varsler ikke Jonas. Onsdag sitter elektrikeren og venter i to timer — 1 800 kr bomtur. Jonas krever disse 1 800 kronene av butikken etter § 25. Han ville ha avbestilt elektrikeren om butikken varslet tirsdag."}
+        ],
+        "vanlige_feil": [
+            "Butikker som tenker «kunden merker jo at det blir forsinket» og lar være å informere",
+        ],
+        "hva_bor_du_html": "<p>Dokumenter at du ikke fikk beskjed, og at dette utløste en kostnad for deg. Send kravet til selgeren og vis til forbrukerkjøpsloven § 25.</p>",
+        "dumme_sporsmal": [
+            {"q": "Hvor lang tid har de på seg til å si ifra?", "a": "Så fort som mulig i vanlig arbeidstid. Vet de om det mandag, bør beskjeden senest gå ut tirsdag."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "24", "tittel": "Erstatning", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "19", "tittel": "Krav ved forsinkelse", "available": True},
+        ],
+    },
+    {
+        "number": "26",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Rettigheter når varen har en mangel",
+        "kategori": "forbruk",
+        "description": "Har du kjøpt noe som ikke fungerer? Dette er lovens meny over rettigheter — reparasjon, ny vare, prisavslag eller pengene tilbake.",
+        "kort_svar": "Hvis varen har en feil som ikke er din skyld, kan du holde tilbake betaling, kreve reparasjon eller ny vare, kreve prisavslag, heve kjøpet, og kreve erstatning for ekstrautgifter.",
+        "paragraftekst": "Dersom det foreligger en mangel og dette ikke skyldes forbrukeren, kan forbrukeren holde kjøpesummen tilbake, velge mellom retting og omlevering, kreve prisavslag, kreve heving, og kreve erstatning.",
+        "hva_betyr_html": """<p>§ 26 er innholdsfortegnelsen for mangler. Det er et trappetrinn-system:</p>
+<p>Første trinn: Krav om reparasjon eller ny vare (§ 29). Loven prioriterer at avtalen reddes.</p>
+<p>Klarer butikken ikke å fikse feilen: Prisavslag (beholde varen mot penger tilbake) eller heving (levere inn varen, få alt tilbake).</p>
+<p>I tillegg: Erstatning for ekstrautgifter feilen har gitt deg — uavhengig av de andre kravene.</p>""",
+        "eksempler": [
+            {"navn": "Anne", "tekst": "Anne har kjøpt en bærbar PC. Etter to uker slutter tastaturet å fungere — en maskinvarefeil. Etter § 26 tar hun PC-en til butikken og krever reparasjon eller ny PC. Siden hun forhåndsbetalte, kan hun ikke holde tilbake penger, men hun har full rett til en maskin som fungerer."}
+        ],
+        "vanlige_feil": [
+            "Kreve pengene tilbake med én gang man oppdager en feil — butikken har rett til å prøve å fikse den først",
+            "Glemme å be om erstatning for dokumenterte tap som fulgte med feilen",
+        ],
+        "hva_bor_du_html": "<p>Ta tingen og kvitteringen til butikken. Pek på problemet og si: «Dette er en mangel. Jeg ønsker reparasjon eller ny vare.»</p>",
+        "dumme_sporsmal": [
+            {"q": "Kan jeg heve kjøpet hvis jeg bare har angret meg?", "a": "Nei. Du kan ikke bruke § 26 bare fordi du ikke likte fargen. Det må foreligge en faktisk mangel."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "16", "tittel": "Mangel", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "29", "tittel": "Retting og omlevering", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "32", "tittel": "Heving", "available": True},
+        ],
+    },
+    {
+        "number": "27",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Hvor lenge kan du klage på en vare?",
+        "kategori": "forbruk",
+        "description": "Gikk telefonen i stykker etter tre år? Her finner du de viktigste fristene — reklamasjonsretten på to og fem år.",
+        "kort_svar": "Du må si ifra til selgeren raskt etter at du oppdaget feilen — alltid innen to måneder. Den absolutte grensen er to år, eller fem år for varer som er ment å vare lenge (bil, TV, hvitevarer, telefon).",
+        "paragraftekst": "Forbrukeren må innen rimelig tid etter at han eller hun oppdaget mangelen gi selgeren melding om at han eller hun vil påberope seg mangelen. Fristen kan aldri være kortere enn to måneder. Reklamasjon må senest skje to år etter levering. For varer som ved vanlig bruk er ment å vare vesentlig lenger, er fristen fem år.",
+        "hva_betyr_html": """<p><strong>To frister å huske:</strong></p>
+<p>1. <strong>Den relative fristen:</strong> Si ifra «innen rimelig tid» — minimum to måneder fra du oppdaget feilen. Klager du innen to måneder, er du trygg.</p>
+<p>2. <strong>Den absolutte fristen:</strong> To år fra levering for varer med kort levetid. Fem år for varer ment å vare lenge: mobil, TV, hvitevarer, bil, PC, møbler.</p>
+<p>Viktig: Mange butikker sier «ett års garanti». Det er fint det første året — men etter garantien har du fremdeles reklamasjonsretten i to eller fem år. «Garantien er gått ut» er ikke et argument for å nekte reklamasjon.</p>""",
+        "eksempler": [
+            {"navn": "Per", "tekst": "Per kjøper en iPhone. Etter tre og et halvt år slutter mikrofonen å virke. Feilen skjer 1. mars. Per drar til butikken 15. april — halvannen måned etter. Mobiler har fem års klagefrist. Han holdt seg innenfor to-månedersfristen. Butikken må behandle klagen."}
+        ],
+        "vanlige_feil": [
+            "Tro at «garantien er gått ut» betyr at klagefristen er over — det er to helt forskjellige ting",
+            "Vente fem måneder med å si ifra — da kan du miste retten selv om tingen er ett år gammel",
+        ],
+        "hva_bor_du_html": "<p>Utsett det ikke. Send en e-post til butikken i det sekundet du oppdager feilen — da er fristen fryst. Du kan levere inn tingen fysisk etterpå.</p>",
+        "dumme_sporsmal": [
+            {"q": "Butikken sier de bare har ett års klagefrist?", "a": "Da bryter de loven. Ingen norske butikker kan gi kortere klagefrist enn to år på forbrukerkjøp."},
+            {"q": "Må jeg ha originalkvitteringen?", "a": "Du trenger bevis for når og hvor du kjøpte. En kontoutskrift med butikkens navn og dato fungerer vanligvis."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "18", "tittel": "Bevisbyrde", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "16", "tittel": "Mangel", "available": True},
+        ],
+    },
+    {
+        "number": "28",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Du kan holde tilbake penger når varen har en mangel",
+        "kategori": "forbruk",
+        "description": "Oppdaget du en feil på varen og regningen er ikke betalt? Du har rett til å holde tilbake betaling inntil butikken har ryddet opp.",
+        "kort_svar": "Har varen en feil og fakturaen er ubetalt, trenger du ikke betale alt. Du kan holde tilbake et beløp som tilsvarer feilen — men ikke et urimelig stort beløp for en bagatell.",
+        "paragraftekst": "Forbrukeren kan holde tilbake betalingen for å dekke krav som følge av mangelen, men ikke åpenbart mer enn det som vil gi betryggende sikkerhet for kravet.",
+        "hva_betyr_html": """<p>Dette er akkurat det samme maktmiddelet du har ved forsinkelse (§ 20), men nå fordi varen har en feil. En ubetalt faktura er ditt sterkeste forhandlingskort — butikken er mye mer motivert til å fikse feilen mens de venter på pengene.</p>
+<p>Du kan holde tilbake et beløp som er fornuftig i forhold til feilen. Er det en liten skramme på én av ti møbeldeler, kan du ikke holde tilbake hele regningen. Hold tilbake verdien av det ødelagte, pluss en liten margin.</p>""",
+        "eksempler": [
+            {"navn": "Kari", "tekst": "Kari mottar baderomsfliser for 10 000 kr. To dekorfliser (1 500 kr) er sprukket under transporten. Kari betaler 7 000 kr og holder tilbake 3 000 kr til hun har fått to nye uskadde fliser. Korrekt bruk av tilbakeholdsretten."}
+        ],
+        "vanlige_feil": [
+            "Betale hele regningen uansett fordi man er redd for inkasso — da mister du det beste forhandlingskortet",
+            "Holde tilbake 100 % av kjøpesummen for en marginal, kosmetisk feil",
+        ],
+        "hva_bor_du_html": "<p>Ta bilde av feilen. Send e-post: «Jeg har mottatt varen men den har en skade. Jeg reklamerer og holder tilbake kr [beløp] etter forbrukerkjøpsloven § 28 frem til feilen er utbedret.» Send samme beskjed til Klarna/fakturaselskapet.</p>",
+        "dumme_sporsmal": [
+            {"q": "Hva om jeg har kjøpt med kredittkort og pengene er trukket?", "a": "Da kan du ikke holde tilbake — pengene er borte. Nekter butikken å ordne opp, kan du bruke reglene i finansavtaleloven til å kreve pengene tilbake via kredittkortselskapet."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "20", "tittel": "Tilbakeholdsrett ved forsinkelse", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "26", "tittel": "Krav ved mangler", "available": True},
+        ],
+    },
+    {
+        "number": "29",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Rett til å velge mellom reparasjon og ny vare",
+        "kategori": "forbruk",
+        "description": "Er varen ødelagt? Du kan i utgangspunktet selv velge om du vil ha en ny vare, eller om butikken skal reparere den gamle.",
+        "kort_svar": "Som hovedregel bestemmer du om butikken skal gi deg en ny, tilsvarende vare eller reparere den du har. Butikken kan bare nekte ny vare hvis det er umulig å skaffe, eller hvis det koster dem urimelig mye mer enn reparasjon.",
+        "paragraftekst": "Forbrukeren kan velge mellom å kreve retting av mangelen eller levering av tilsvarende ting (omlevering). Dette gjelder ikke hvis den valgte beføyelsen er umulig eller vil påføre selgeren uforholdsmessig store kostnader.",
+        "hva_betyr_html": """<p>Butikken har rett til å ordne opp («avhjelp»). Du kan peke på hva du vil ha: reparere jakken eller ny jakke.</p>
+<p>Du har stor valgfrihet, men ikke uendelig makt. Krever du ny telefon fordi volumknappen er løs, kan butikken si nei og reparere i stedet — hvis det å gi deg en ny koster dem uforholdsmessig mye mer.</p>
+<p>På billige varer (kaffetrakter, brødrister) er det gjerne billigere for butikken å bytte ut enn å reparere. Da vinner du frem med krav om ny vare. På dyre varer (bil, hviteevarer) vil butikken nesten alltid ha rett til å reparere den aktuelle komponenten.</p>""",
+        "eksempler": [
+            {"navn": "Jonas", "tekst": "Jonas har kjøpt en kaffemaskin til 1 500 kr. Etter tre måneder slutter varmeelementet å fungere. Han krever ny maskin. Butikken vil sende til verksted. Fordi det koster mer for butikken å frakte, feilsøke og reparere enn å gi ny fra pallen, har Jonas loven på sin side. De må gi ham en ny maskin."}
+        ],
+        "vanlige_feil": [
+            "Godta at butikken sender alt til reparasjon selv på veldig billige varer",
+            "Kreve ny bil fordi girkassen har en feil — her har forhandleren rett til å reparere",
+        ],
+        "hva_bor_du_html": "<p>Er det en vare som er lett å bytte fra hylla? Si klart: «Jeg krever omlevering (ny vare) etter § 29.» Spør hva det koster dem i verkstedtimer å reparere — de innser ofte at ny vare er billigst for alle.</p>",
+        "dumme_sporsmal": [
+            {"q": "Hva om de ikke har fargen min inne lenger?", "a": "Da er en identisk omlevering «umulig». De kan tilby en annen farge eller reparere. Vil du ikke ha annen farge, er neste steg prisavslag eller heving."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "30", "tittel": "Gjennomføring av avhjelp", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "32", "tittel": "Heving", "available": True},
+        ],
+    },
+    {
+        "number": "30",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Reglene for når butikken fikser feilen",
+        "kategori": "forbruk",
+        "description": "Hvor lang tid kan en reparasjon ta, koster det penger, og har du krav på låneprodukt? Her er spillereglene for verkstedsbesøket.",
+        "kort_svar": "Butikken skal reparere varen gratis og innen rimelig tid. Du kan nekte at de prøver å fikse samme feil flere ganger. Mens du venter, har du i mange tilfeller krav på et lånprodukt.",
+        "paragraftekst": "Avhjelp skal skje uten kostnad, uten vesentlig ulempe for forbrukeren og innen rimelig tid. Viser det seg en mangel etter retting eller omlevering, kan forbrukeren avvise ytterligere avhjelp, med mindre det er rimelig at selgeren får et nytt forsøk.",
+        "hva_betyr_html": """<p>Når du leverer inn en vare for reparasjon, setter loven fire klare rammer:</p>
+<p><strong>Alltid gratis</strong> — deler, arbeid, porto. Du betaler ingenting.</p>
+<p><strong>Rimelig tid</strong> — normalt 2–4 uker. For uunnværlige ting (varmebereder vinterstid) er «rimelig» dager.</p>
+<p><strong>Ingen vesentlig ulempe</strong> — er varen uunnværlig (mobil, kjøleskap), plikter butikken som regel å gi deg en gratis låneting.</p>
+<p><strong>Mislykkede reparasjoner</strong> — hvis butikken har prøvd å reparere og feilen kommer tilbake, kan du nekte nytt forsøk og heller kreve prisavslag eller pengene tilbake.</p>""",
+        "eksempler": [
+            {"navn": "Sara", "tekst": "Sara leverer defekt MacBook til elektronikkbutikken. Tre uker uten studiemaskin er vesentlig ulempe — hun krever og får gratis lånemaskin. Maskinen kommer tilbake med nøyaktig samme feil. Sara avviser nytt reparasjonsforsøk og krever heving."}
+        ],
+        "vanlige_feil": [
+            "Betale «fraktgebyr» for at butikken sender varen til produsenten — du skal aldri betale noe",
+            "Finne seg i å vente åtte uker på telefon-reparasjon uten å få lånetelefon",
+        ],
+        "hva_bor_du_html": "<p>Spør ved innlevering: «Hvor lenge tar det?» Be om lånegjenstand hvis du trenger tingen daglig. Sjekk at feilen er korrekt nedskrevet på kvitteringen — bevis på at det er samme feil om den kommer tilbake.</p>",
+        "dumme_sporsmal": [
+            {"q": "Har de lov til å ta betalt for undersøkelse hvis de ikke finner noen feil?", "a": "Ja, men BARE hvis de advarte deg om dette gebyret da du leverte inn. Sa ingen et ord om undersøkelsesgebyr, kan du nekte å betale."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "29", "tittel": "Valget mellom retting og omlevering", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "32", "tittel": "Heving", "available": True},
+        ],
+    },
+    {
+        "number": "31",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Slik krever du prisavslag",
+        "kategori": "forbruk",
+        "description": "Klarer ikke butikken å fikse varen, men du vil beholde den likevel? Du har krav på at de betaler tilbake en andel av prisen.",
+        "kort_svar": "Hvis butikken ikke fikser eller bytter varen innen rimelig tid, kan du beholde varen og kreve penger tilbake. Avslaget skal tilsvare verditapet feilen har påført varen.",
+        "paragraftekst": "Dersom mangelen ikke rettes eller tingen omleveres, eller det er klart at dette ikke vil skje, kan forbrukeren kreve et prisavslag slik at forholdet mellom nedsatt og avtalt pris svarer til forholdet mellom tingens verdi i mangelfull og kontraktsmessig stand.",
+        "hva_betyr_html": """<p>Prisavslag er plan B når butikken ikke får ordnet opp. Du beholder varen, men avtalen gjøres rettferdig ved at du betaler mindre.</p>
+<p>Regnestykket: Hvor mye mindre var varen verdt da du fikk den, på grunn av feilen? Et vanlig mål er hva det koster å få varen utbedret et annet sted.</p>
+<p>Kosmetisk feil som ikke påvirker funksjonen: 10–20 % av kjøpesummen er typisk utgangspunkt. Bruk sunn fornuft og foreslå et konkret beløp.</p>""",
+        "eksempler": [
+            {"navn": "Marius", "tekst": "Marius kjøper en sofa til 15 000 kr. Leveransen har en stor flenge i stoffet på baksiden. Butikken er utsolgt og kan ikke bytte. Marius velger å beholde sofaen siden den uansett skal stå inntil en vegg. De blir enige om 3 000 kr i prisavslag."}
+        ],
+        "vanlige_feil": [
+            "Kreve 50 % prisavslag for en liten stripe ingen ser — avslaget skal være proporsjonalt med verditapet",
+        ],
+        "hva_bor_du_html": "<p>Vær pragmatisk. Foreslå et konkret beløp: «Hvis dere refunderer 1 000 kr for ripen, anser vi saken som ute av verden.»</p>",
+        "dumme_sporsmal": [
+            {"q": "Kan jeg heve kjøpet og få prisavslag samtidig?", "a": "Nei. Enten beholder du tingen med rabatt (prisavslag), eller leverer du den tilbake og får alle pengene tilbake (heving). Ikke begge deler."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "32", "tittel": "Heving", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "29", "tittel": "Retting og omlevering", "available": True},
+        ],
+    },
+    {
+        "number": "32",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Slik krever du pengene tilbake (heving) for en ødelagt vare",
+        "kategori": "forbruk",
+        "description": "Er varen full av feil og butikken får det ikke til? Du kan levere tilbake tingen og kreve alle pengene tilbake.",
+        "kort_svar": "Får du ikke varen reparert eller byttet, kan du «heve» avtalen — gi tilbake varen og få alt du betalte tilbake. Du kan alltid heve med mindre selgeren beviser at feilen er en bagatell.",
+        "paragraftekst": "I stedet for prisavslag kan forbrukeren heve avtalen, med mindre selgeren beviser at mangelen er uvesentlig.",
+        "hva_betyr_html": """<p>Heving er det tyngste våpenet. Avtalen slettes totalt: du leverer varen, butikken betaler tilbake alt.</p>
+<p>Etter en lovendring er det nå <em>selgeren</em> som må bevise at feilen er uvesentlig (en bagatell) — ikke du som må bevise at den er alvorlig. Klarer de ikke det, har du rett til å heve.</p>
+<p>Hva er «uvesentlig»? En sytråd som stikker ut. En knapp med feil farge. Noe som har null praktisk betydning. En motor som kutter i motbakker, er ikke uvesentlig.</p>""",
+        "eksempler": [
+            {"navn": "Ingrid", "tekst": "Ingrid kjøper en elsykkel. Motoren kutter stadig i motbakker. Etter mislykket verkstedsbesøk krever hun heving. Butikken sier «bare en sensor». Butikken har nå bevisbyrden og klarer ikke bevise at feilen er uvesentlig — hele poenget med elsykkel er at motoren virker i motbakker. Ingrid får tilbake sine 35 000 kr."}
+        ],
+        "vanlige_feil": [
+            "Kreve heving umiddelbart uten å la butikken prøve å reparere én gang",
+            "Butikker som avfeier hevingskravet uten bevis — «uvesentlig mangel» må de faktisk argumentere for",
+        ],
+        "hva_bor_du_html": "<p>Formelt og skriftlig: «Siden varen fremdeles ikke fungerer og mangelen ikke er uvesentlig, hever jeg kjøpet etter forbrukerkjøpsloven § 32. Kjøpesummen [X kr] forventes refundert innen 14 dager. Utstyret er klart for henting.»</p>",
+        "dumme_sporsmal": [
+            {"q": "Får jeg tilbake penger jeg betalte for frakt og montering?", "a": "Ja. Heving innebærer at du stilles som om handelen aldri fant sted. Alt som fulgte kjøpet skal refunderes."},
+            {"q": "Må jeg ha originalemballasjen?", "a": "Nei. Du kan heve selv om pappen er resirkulert."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "31", "tittel": "Prisavslag", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "29", "tittel": "Retting og omlevering", "available": True},
+        ],
+    },
+    {
+        "number": "33",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Erstatning når varen er defekt",
+        "kategori": "forbruk",
+        "description": "Har den ødelagte varen gitt deg ekstrautgifter? Du kan kreve at butikken dekker det økonomiske tapet.",
+        "kort_svar": "Når en vare har en feil, kan du kreve at butikken dekker alle ekstraregninger og tap du pådrar deg som følge av feilen. Du kan ikke få erstatning for stress eller tapt fritid.",
+        "paragraftekst": "Forbrukeren kan kreve erstatning for tap han eller hun lider som følge av at tingen har en mangel. Erstatningen utmåles etter reglene i kapittel 11.",
+        "hva_betyr_html": """<p>Koster butikkens defekte produkt deg penger, skal butikken betale. Typiske tap:</p>
+<p>Direkte utlegg — du måtte sende varen tilbake for 150 kr, eller leie erstatningsvare.</p>
+<p>Prisforskjell — kjøpet ble hevet, men du måtte kjøpe det samme et annet sted til 2 000 kr mer.</p>
+<p>Erstatningsansvaret for vanlige varer er «objektivt» — butikken betaler uansett om det var deres eller fabrikkens feil.</p>""",
+        "eksempler": [
+            {"navn": "Tom", "tekst": "Tom kjøper en vinterjakke. Glidelåsen svikter på tur. Han leier dunjakke på hotellet for 800 kr og hever kjøpet. I tillegg til jakkeprisen sender han krav på 800 kr som erstatning etter § 33. Direktetap forårsaket av defekt vare — butikken betaler."}
+        ],
+        "vanlige_feil": [
+            "Kreve tusener for «tort og svie» — bare konkret økonomisk tap erstattes",
+            "Ikke ta vare på kvitteringer fra nødvendige erstatningskjøp",
+        ],
+        "hva_bor_du_html": "<p>Begrens utgiftene der du kan, ta vare på alle bilag, og send dem samlet til butikken når klagesaken er løst. Skriv kort hva regningene gjelder og at du krever erstatning for tap som følge av mangel.</p>",
+        "dumme_sporsmal": [
+            {"q": "Hva om kjøleskapet lekket og ødela hele tregulvet?", "a": "Da går du over til reglene om «produktskader» i § 34."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "34", "tittel": "Produktskader", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "26", "tittel": "Krav ved mangler", "available": True},
+        ],
+    },
+    {
+        "number": "34",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Erstatning når varen ødelegger andre ting",
+        "kategori": "forbruk",
+        "description": "Gikk fryseren i stykker slik at 20 kg indrefilet måtte kastes? Butikken kan ha ansvar når den mangelfulle varen skader hjemmet eller tingene dine.",
+        "kort_svar": "Går varen i stykker og ødelegger noe annet, kan selgeren måtte betale for disse skadene. Særlig der varen ødelegger ting med «nær og direkte sammenheng» — som maten i kjøleskapet.",
+        "paragraftekst": "Selgerens erstatningsansvar for tap som følge av en mangel omfatter, foruten skade på salgstingen selv, også skade på gjenstander som salgstingen brukes til fremstilling av, eller som har nær og direkte sammenheng med salgstingens forutsatte bruk.",
+        "hva_betyr_html": """<p>Loven skiller mellom to typer følgeskader:</p>
+<p><strong>Nær og direkte sammenheng:</strong> Vaskemaskinen og klærne inni. Fryseren og maten. Telefonen og minnekortet. Her er ansvaret strengt — selgeren betaler uten unntak.</p>
+<p><strong>Andre produktskader (som gulvet):</strong> Den defekte vaskemaskinen oversvømmer stuegulvet. Her kan selgeren slippe unna om de ikke har gjort noe galt. I praksis: Ring innboforsikringen. De gjør opp raskt og tar krangelen med produsenten selv.</p>""",
+        "eksempler": [
+            {"navn": "Håkon", "tekst": "Håkon kjøper en fotoskriver med en fatal maskinvarefeil som spruter blekk og spiser papiret. Skriveren reklameres, men Håkon har også tapt fotopapir for 1 000 kr. Papiret har «nær og direkte sammenheng» med skriverens bruk. De 1 000 kronene kan han kreve av butikken."}
+        ],
+        "vanlige_feil": [
+            "Krangle med elektronikkbutikken i månedsvis om oversvømt gulv — ring heller innboforsikringen",
+            "Kaste ødelagt mat uten å ta bilde og notere verdi",
+        ],
+        "hva_bor_du_html": "<p>Nær og direkte skade (mat, klær): Ta bilder, estimer verdi, send krav til butikken. Bygningsskade: Ring forsikringsselskapet samme kveld.</p>",
+        "dumme_sporsmal": [
+            {"q": "Betyr siste avsnitt at jeg skal kontakte produsenten?", "a": "Nei — det betyr at butikken kan kreve beløpet tilbake fra produsenten i etterkant. Du forholder deg kun til butikken."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "33", "tittel": "Erstatning", "available": True},
+        ],
+    },
+    {
+        "number": "35",
+        "lov": "forbrukerkjopsloven", "lov_display": "Forbrukerkjøpsloven",
+        "title": "Kan du klage til grossisten eller importøren?",
+        "kategori": "forbruk",
+        "description": "Gikk butikken konkurs? Loven lar deg hoppe over selgeren og klage direkte til importøren eller grossisten.",
+        "kort_svar": "Hvis du oppdager en feil, kan du i stedet for å gå til butikken rette klagen direkte mot et tidligere ledd — for eksempel en norsk importør eller grossist. Dette kalles direktekrav.",
+        "paragraftekst": "Forbrukeren kan gjøre sitt mangelskrav mot selgeren gjeldende mot et tidligere yrkessalgsledd for så vidt tilsvarende krav kan gjøres gjeldende av selgeren mot det tidligere leddet.",
+        "hva_betyr_html": """<p>§ 35 er en skjult redningsplanke: «direktekravet». Det er gull verdt hvis den lokale forhandleren din har gått konkurs eller er umulig å ha med å gjøre.</p>
+<p>Betingelsen er at mangelen fantes da tingen forlot det tidligere leddet. Importøren kan ikke bruke kontrakter fra business-verdenen mot deg — de må gi deg to eller fem års klagefrist akkurat som butikken.</p>""",
+        "eksempler": [
+            {"navn": "Eva", "tekst": "Eva kjøpte varmepumpe av «Tronds Klima», som nå er konkurs. Pumpen svikter. Eva vet varmepumpen ble importert av en stor elektrogrossist. Etter § 35 retter hun krav direkte mot grossisten — som plikter å sende servicemann og utbedre mangelen."}
+        ],
+        "vanlige_feil": [
+            "Kaste varen fordi den lille nettbutikken har lagt ned, uten å tenke på norsk importør",
+            "Prøve å nå fabrikker i Kina som ikke opererer under norsk lov",
+        ],
+        "hva_bor_du_html": "<p>Er selgeren konkurs: Sjekk hvem som er norsk importør (google merkevare + «Norge» eller «importør»). Send e-post, vis til «forbrukerkjøpsloven § 35 - Direktekrav», legg ved kvitteringen og krev at importøren retter feilen.</p>",
+        "dumme_sporsmal": [
+            {"q": "Kan importøren nekte fordi butikken skylder dem penger?", "a": "Nei. Loven stanser dette smutthullet: de kan ikke motregne mot deg fordi butikken gikk konkurs."},
+        ],
+        "related": [
+            {"lov": "forbrukerkjopsloven", "paragraf": "16", "tittel": "Mangel", "available": True},
+            {"lov": "forbrukerkjopsloven", "paragraf": "27", "tittel": "Reklamasjon", "available": True},
+        ],
+    },
+]
+
+PARAGRAPHS = PARAGRAPHS + _EXTRA
