@@ -2860,22 +2860,20 @@ def render_tjenester_hub():
           <p class="vk-beskr">Fyll ut og last ned en juridisk korrekt husleiekontrakt. Tidsubestemt eller tidsbestemt. Basert på husleieloven.</p>
           <div class="vk-pil">Fyll ut og last ned →</div>
         </a>
-        <div class="verktoy-kort snart">
+        <a href="../kontrakter/kjopekontraktbil/" class="verktoy-kort">
           <div class="vk-icon">🚗</div>
-          <span class="snart-tag">Snart</span>
           <div class="vk-kat">Kontraktsmal</div>
           <h3 class="vk-tittel">Kjøpekontrakt bil</h3>
-          <p class="vk-beskr">Juridisk korrekt kjøpekontrakt for privatbilsalg. Basert på kjøpsloven.</p>
-          <div class="vk-pil">Kommer snart</div>
-        </div>
-        <div class="verktoy-kort snart">
+          <p class="vk-beskr">Juridisk korrekt kjøpekontrakt for privatbilsalg. Fyll ut om kjøper, selger og bilen.</p>
+          <div class="vk-pil">Fyll ut og last ned →</div>
+        </a>
+        <a href="../kontrakter/samboeravtale/" class="verktoy-kort">
           <div class="vk-icon">💑</div>
-          <span class="snart-tag">Snart</span>
           <div class="vk-kat">Kontraktsmal</div>
           <h3 class="vk-tittel">Samboeravtale</h3>
-          <p class="vk-beskr">Hvem eier hva — og hva skjer ved brudd. En samboeravtale gir trygghet for begge parter.</p>
-          <div class="vk-pil">Kommer snart</div>
-        </div>
+          <p class="vk-beskr">Hvem eier hva — og hva skjer ved brudd? Fyll ut om dere og boligen. Ferdig PDF å signere.</p>
+          <div class="vk-pil">Fyll ut og last ned →</div>
+        </a>
         <div class="verktoy-kort snart">
           <div class="vk-icon">📝</div>
           <span class="snart-tag">Snart</span>
@@ -5132,6 +5130,766 @@ oppdater();
 {site_footer(depth=2)}"""
 
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# KONTRAKT 1: SAMBOERAVTALE
+# ─────────────────────────────────────────────────────────────────────────────
+def render_kontrakter_samboeravtale():
+    return f"""{shared_head(
+        'Samboeravtale — fyll ut og last ned gratis | Rettsregel',
+        'Lag en juridisk korrekt samboeravtale gratis. Dekker bolig, gjeld, felles utgifter og hva som skjer ved samlivsbrudd. Last ned som PDF.',
+        depth=2, canonical_path='/kontrakter/samboeravtale/'
+    )}
+<body>
+{site_nav(depth=2)}
+<style>
+.samb-layout {{ display: grid; grid-template-columns: 400px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
+.samb-layout > * {{ min-width: 0; }}
+@media (max-width: 1100px) {{ .samb-layout {{ grid-template-columns: 1fr !important; }} }}
+.samb-skjema {{ background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md); position: sticky; top: 24px; }}
+@media (max-width: 1100px) {{ .samb-skjema {{ position: static !important; }} }}
+.samb-sek {{ margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }}
+.samb-sek:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+.samb-sek-hd {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 12px; }}
+.sf {{ margin-bottom: 10px; }}
+.sf label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
+.sf input, .sf select, .sf textarea {{ width: 100%; padding: 9px 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: var(--sans); font-size: 16px; background: var(--bg); color: var(--ink); box-sizing: border-box; }}
+.sf input:focus, .sf select:focus, .sf textarea:focus {{ outline: none; border-color: var(--accent); }}
+.sf textarea {{ min-height: 60px; resize: vertical; }}
+.sf-rad {{ display: flex; flex-direction: column; gap: 6px; }}
+.sf-rad label {{ display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; cursor: pointer; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 8px; line-height: 1.35; }}
+.sf-rad input[type=radio] {{ width: auto; margin: 0; accent-color: var(--accent); flex-shrink: 0; }}
+.sf-rad label:has(input:checked) {{ border-color: var(--accent); background: rgba(177,74,42,0.06); color: var(--accent); font-weight: 600; }}
+.sf-2kol {{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }}
+.last-ned-kn {{ width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; font-family: var(--sans); font-size: 15px; font-weight: 600; padding: 15px; cursor: pointer; margin-top: 20px; transition: background 0.2s; }}
+.last-ned-kn:hover {{ background: var(--accent-deep); }}
+/* Dokument */
+.dok-wrap {{ background: var(--bg-alt); border-radius: 16px; padding: 24px; border: 1px solid var(--line); }}
+.dok-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }}
+.dok-header h3 {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin: 0; }}
+.dok-kn-rad {{ display: flex; gap: 10px; }}
+.dok-kn {{ padding: 8px 16px; border-radius: 8px; font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; border: none; }}
+.dok-kn.kopier {{ background: var(--accent); color: white; }}
+.dok-kn.skriv {{ background: var(--bg-card); border: 1.5px solid var(--line); color: var(--ink); }}
+.dok-dokument {{ background: white; border-radius: 12px; padding: 48px 52px; font-family: 'EB Garamond', Georgia, serif; font-size: 16px; line-height: 1.85; color: #1a1612; border: 1px solid var(--line); }}
+@media (max-width: 600px) {{ .dok-dokument {{ padding: 24px 18px; font-size: 15px; }} }}
+.dok-tom {{ color: var(--ink-mute); font-style: italic; font-family: var(--sans); font-size: 14px; padding: 32px 0; text-align: center; }}
+.dok-tittel-blokk {{ text-align: center; margin-bottom: 36px; }}
+.dok-tittel-blokk h1 {{ font-size: 22px; font-weight: 700; font-family: var(--sans); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px; }}
+.dok-tittel-blokk .dok-sub {{ font-size: 14px; color: #555; font-family: var(--sans); }}
+.dok-sek {{ margin-bottom: 28px; }}
+.dok-sek h2 {{ font-family: var(--sans); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; border-bottom: 1.5px solid #1a1612; padding-bottom: 5px; }}
+.sign-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }}
+.sign-boks {{ border-top: 1px solid #888; padding-top: 10px; font-family: var(--sans); font-size: 13px; color: #555; }}
+@media (max-width: 600px) {{ .sign-grid {{ grid-template-columns: 1fr; }} }}
+@media print {{
+  .no-print {{ display: none !important; }}
+  nav.site-nav, footer.site-footer, #chat-toggle, #chat-panel, .breadcrumbs, .article-header, .samb-skjema, .sp-body {{ display: none !important; }}
+  .samb-layout {{ display: block; }}
+  .dok-wrap {{ border: none; padding: 0; background: white; }}
+  .dok-dokument {{ border: none; padding: 0; box-shadow: none; font-size: 13pt; line-height: 1.7; }}
+  body {{ background: white; }}
+}}
+</style>
+<main class="page">
+  <div class="container">
+    <div class="breadcrumbs no-print">
+      <a href="../../">Rettsregel</a><span class="sep">›</span>
+      <a href="../../kontrakter/">Kontrakter</a><span class="sep">›</span>
+      <span class="current">Samboeravtale</span>
+    </div>
+    <div class="article-header no-print">
+      <div class="article-eyebrow">Gratis kontraktsmal</div>
+      <h1 class="article-title">Samboeravtale</h1>
+      <p class="article-description">Fyll ut om dere og boligen. Avtalen bygger seg live — last ned ferdig PDF.</p>
+    </div>
+    <div class="samb-layout">
+      <div class="samb-skjema no-print">
+
+        <div class="samb-sek">
+          <div class="samb-sek-hd">Part 1</div>
+          <div class="sf"><label>Fullt navn</label><input id="p1_navn" oninput="oppdater()" placeholder="Ola Nordmann"></div>
+          <div class="sf"><label>Fødselsdato (valgfritt)</label><input id="p1_fodt" oninput="oppdater()" placeholder="01.01.1990" type="text"></div>
+          <div class="sf"><label>Adresse</label><input id="p1_adr" oninput="oppdater()" placeholder="Veien 1, 0000 Oslo"></div>
+        </div>
+
+        <div class="samb-sek">
+          <div class="samb-sek-hd">Part 2</div>
+          <div class="sf"><label>Fullt navn</label><input id="p2_navn" oninput="oppdater()" placeholder="Kari Nordmann"></div>
+          <div class="sf"><label>Fødselsdato (valgfritt)</label><input id="p2_fodt" oninput="oppdater()" placeholder="01.01.1992" type="text"></div>
+          <div class="sf"><label>Adresse</label><input id="p2_adr" oninput="oppdater()" placeholder="Veien 1, 0000 Oslo"></div>
+        </div>
+
+        <div class="samb-sek">
+          <div class="samb-sek-hd">Boligen</div>
+          <div class="sf"><label>Boligens adresse</label><input id="bol_adr" oninput="oppdater()" placeholder="Felles adresse, 0000 Oslo"></div>
+          <div class="sf"><label>Eierforhold</label>
+            <div class="sf-rad">
+              <label><input type="radio" name="eier" value="felles" onchange="oppdater()" checked> Eies i fellesskap</label>
+              <label><input type="radio" name="eier" value="p1" onchange="oppdater()"> Eies av Part 1 alene</label>
+              <label><input type="radio" name="eier" value="p2" onchange="oppdater()"> Eies av Part 2 alene</label>
+              <label><input type="radio" name="eier" value="leier" onchange="oppdater()"> Begge leier (ingen av oss eier)</label>
+            </div>
+          </div>
+          <div id="andel-seksjon" class="sf-2kol">
+            <div class="sf"><label>Part 1 sin eierandel (%)</label><input id="andel_p1" oninput="oppdaterAndel()" type="number" min="1" max="99" placeholder="50"></div>
+            <div class="sf"><label>Part 2 sin eierandel (%)</label><input id="andel_p2" type="number" min="1" max="99" placeholder="50" readonly style="background:var(--bg-alt);color:var(--ink-mute)"></div>
+          </div>
+          <div class="sf"><label>Kjøpesum / takst (kr, valgfritt)</label><input id="bol_verdi" oninput="oppdater()" type="number" placeholder="4500000" min="0"></div>
+        </div>
+
+        <div class="samb-sek">
+          <div class="samb-sek-hd">Felles økonomi</div>
+          <div class="sf"><label>Fordeling av felles boutgifter</label>
+            <div class="sf-rad">
+              <label><input type="radio" name="utgifter" value="likt" onchange="oppdater()" checked> Deles likt (50/50)</label>
+              <label><input type="radio" name="utgifter" value="andel" onchange="oppdater()"> Deles etter eierandel</label>
+              <label><input type="radio" name="utgifter" value="inntekt" onchange="oppdater()"> Deles etter inntekt</label>
+              <label><input type="radio" name="utgifter" value="annet" onchange="oppdater()"> Annen fordeling</label>
+            </div>
+          </div>
+          <div id="annen-fordeling-boks" class="sf" style="display:none">
+            <label>Beskriv fordelingen</label>
+            <textarea id="annen_fordeling" oninput="oppdater()" placeholder="f.eks. Part 1 dekker boliglån, Part 2 dekker strøm og felleskostnader"></textarea>
+          </div>
+          <div class="sf"><label>Felles bankkonto for boutgifter?</label>
+            <div class="sf-rad">
+              <label><input type="radio" name="felleskonto" value="ja" onchange="oppdater()" checked> Ja, vi oppretter / bruker felles konto</label>
+              <label><input type="radio" name="felleskonto" value="nei" onchange="oppdater()"> Nei, vi betaler separat</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="samb-sek">
+          <div class="samb-sek-hd">Ved samlivsbrudd</div>
+          <div class="sf"><label>Hvem kan overta boligen ved brudd?</label>
+            <div class="sf-rad">
+              <label><input type="radio" name="brudd_bol" value="forkjop" onchange="oppdater()" checked> Den ene kan kreve å kjøpe ut den andre til takst</label>
+              <label><input type="radio" name="brudd_bol" value="selges" onchange="oppdater()"> Boligen selges og overskuddet fordeles etter eierandel</label>
+              <label><input type="radio" name="brudd_bol" value="forhandle" onchange="oppdater()"> Partene forhandler ved brudd</label>
+            </div>
+          </div>
+          <div class="sf"><label>Frist for å avklare boligen etter brudd</label>
+            <div class="sf-rad">
+              <label><input type="radio" name="brudd_frist" value="3" onchange="oppdater()" checked> 3 måneder</label>
+              <label><input type="radio" name="brudd_frist" value="6" onchange="oppdater()"> 6 måneder</label>
+              <label><input type="radio" name="brudd_frist" value="12" onchange="oppdater()"> 12 måneder</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="samb-sek">
+          <div class="samb-sek-hd">Særeie og gjeld</div>
+          <div class="sf"><label>Verdier eid av Part 1 FØR samboerskapet (valgfritt)</label>
+            <textarea id="saereie_p1" oninput="oppdater()" placeholder="f.eks. hytte på Hafjell verdsatt til 1 500 000 kr, arvede møbler"></textarea>
+          </div>
+          <div class="sf"><label>Verdier eid av Part 2 FØR samboerskapet (valgfritt)</label>
+            <textarea id="saereie_p2" oninput="oppdater()" placeholder="f.eks. bil av merke Toyota, reg.nr AB 12345, verdi 250 000 kr"></textarea>
+          </div>
+          <div class="sf"><label>Felles gjeld (valgfritt)</label>
+            <textarea id="felles_gjeld" oninput="oppdater()" placeholder="f.eks. felles boliglån i DNB, lånenr. 12345, total restgjeld 3 200 000 kr. Deles likt."></textarea>
+          </div>
+        </div>
+
+        <div class="samb-sek">
+          <div class="samb-sek-hd">Underskrift</div>
+          <div class="sf"><label>Sted og dato</label><input id="sign_sted_dato" oninput="oppdater()" placeholder="Oslo, 14. mai 2026"></div>
+        </div>
+
+        <button class="last-ned-kn no-print" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-right:6px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Last ned som PDF
+        </button>
+      </div>
+
+      <div>
+        <div class="dok-wrap">
+          <div class="dok-header">
+            <h3>Din samboeravtale</h3>
+            <div class="dok-kn-rad no-print">
+              <button class="dok-kn kopier" onclick="kopier()">Kopier tekst</button>
+              <button class="dok-kn skriv" onclick="window.print()">Last ned PDF</button>
+            </div>
+          </div>
+          <div class="dok-dokument" id="dok-innhold">
+            <p class="dok-tom">Fyll ut feltene til venstre — avtalen bygger seg her.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose sp-body no-print">
+      <h2>Hvorfor trenger samboere en samboeravtale?</h2>
+      <p>Samboere har langt svakere juridiske rettigheter enn gifte par. Ved samlivsbrudd gjelder ingen automatisk likedeling — du har rett til det du eide inn, og ingenting mer. Uten en samboeravtale kan det oppstå uklarhet om hvem som eier hva, hvem som har betalt hva, og hvem som har rett til å bli boende.</p>
+      <p>Samboeravtalen er særlig viktig hvis du har betalt mer inn i en felles bolig enn din formelle eierandel tilsier, hvis du har hatt inntektsforskjell underveis i samboerskapet, eller hvis dere eier ting med veldig ulik verdi fra før.</p>
+      <p>Avtalen er gyldig uten notarius publicus. To eksemplarer skrives ut og begge signerer begge eksemplarene. Begge beholder hvert sitt eksemplar.</p>
+    </div>
+  </div>
+</main>
+<script>
+function radio(name) {{ return (document.querySelector('input[name="'+name+'"]:checked')||{{}}).value || ''; }}
+function v(id) {{ const el=document.getElementById(id); return el ? el.value.trim() : ''; }}
+function kr(n) {{ const num=parseInt(n); return num ? num.toLocaleString('nb-NO')+' kr' : ''; }}
+function oppdaterAndel() {{
+  const a1 = parseInt(document.getElementById('andel_p1').value)||50;
+  const a2 = Math.max(1, Math.min(99, 100-a1));
+  document.getElementById('andel_p2').value = a2;
+  oppdater();
+}}
+function vis(id, show) {{ document.getElementById(id).style.display = show ? '' : 'none'; }}
+
+function oppdater() {{
+  const p1 = v('p1_navn') || 'Part 1';
+  const p2 = v('p2_navn') || 'Part 2';
+  const p1f = v('p1_fodt');
+  const p2f = v('p2_fodt');
+  const p1a = v('p1_adr');
+  const p2a = v('p2_adr');
+  const bolAdr = v('bol_adr');
+  const eier = radio('eier') || 'felles';
+  const andel1 = parseInt(v('andel_p1'))||50;
+  const andel2 = 100-andel1;
+  const bolVerdi = v('bol_verdi');
+  const utgifter = radio('utgifter') || 'likt';
+  const felleskonto = radio('felleskonto') || 'ja';
+  const bruddBol = radio('brudd_bol') || 'forkjop';
+  const bruddFrist = radio('brudd_frist') || '3';
+  const saereieP1 = v('saereie_p1');
+  const saereieP2 = v('saereie_p2');
+  const fellesGjeld = v('felles_gjeld');
+  const signStedDato = v('sign_sted_dato');
+  const annenFordeling = v('annen_fordeling');
+
+  // Toggle visibility
+  vis('andel-seksjon', eier === 'felles');
+  vis('annen-fordeling-boks', utgifter === 'annet');
+
+  if (!v('p1_navn') && !v('p2_navn') && !bolAdr) {{
+    document.getElementById('dok-innhold').innerHTML = '<p class="dok-tom">Fyll ut feltene til venstre — avtalen bygger seg her.</p>';
+    return;
+  }}
+
+  // Eierforhold-tekst
+  let eierTekst = '';
+  if (eier === 'felles') {{
+    eierTekst = `${{p1}} eier ${{andel1}} % og ${{p2}} eier ${{andel2}} % av boligen${{bolAdr?' i '+bolAdr:''}}.`;
+    if (bolVerdi) eierTekst += ` Boligen er ved avtaleinngåelsen verdsatt til ${{kr(bolVerdi)}}.`;
+  }} else if (eier === 'p1') {{
+    eierTekst = `Boligen${{bolAdr?' i '+bolAdr:''}} eies av ${{p1}} alene. ${{p2}} har bruksrett til boligen gjennom samboerskapet.`;
+  }} else if (eier === 'p2') {{
+    eierTekst = `Boligen${{bolAdr?' i '+bolAdr:''}} eies av ${{p2}} alene. ${{p1}} har bruksrett til boligen gjennom samboerskapet.`;
+  }} else {{
+    eierTekst = `Begge parter leier boligen${{bolAdr?' i '+bolAdr:''}}. Ingen av partene er eiere.`;
+  }}
+
+  // Utgifter-tekst
+  let utgifterTekst = '';
+  if (utgifter === 'likt') utgifterTekst = 'Felles boutgifter (boliglån/husleie, strøm, forsikring og andre løpende kostnader knyttet til felles bolig) deles likt mellom partene med 50 % på hver.';
+  else if (utgifter === 'andel') utgifterTekst = `Felles boutgifter deles i henhold til eierandel: ${{p1}} dekker ${{andel1}} % og ${{p2}} dekker ${{andel2}} %.`;
+  else if (utgifter === 'inntekt') utgifterTekst = 'Felles boutgifter fordeles forholdsmessig etter partenes løpende inntekt. Fordelingen justeres ved vesentlig endring i inntektsforholdet.';
+  else if (annenFordeling) utgifterTekst = annenFordeling;
+  else utgifterTekst = 'Partene avtaler fordeling av felles boutgifter særskilt.';
+
+  if (felleskonto === 'ja') utgifterTekst += ' Partene oppretter eller benytter en felles bankkonto til boutgifter, og overfører sin andel månedlig.';
+
+  // Brudd-tekst
+  let bruddTekst = '';
+  if (bruddBol === 'forkjop') {{
+    bruddTekst = `Enhver av partene kan kreve å overta den andres eierandel i boligen til takstverdi fastsatt av uavhengig takstmann. Den parten som ønsker å overta, må gi skriftlig beskjed innen ${{bruddFrist}} måneder etter samlivsbruddet. Kan partene ikke enes om takstmann, oppnevnes én av Norges Takseringsforbund.`;
+  }} else if (bruddBol === 'selges') {{
+    bruddTekst = `Ved samlivsbrudd selges boligen til markedspris via eiendomsmegler, og salgssummen etter fratrekk av gjeld og omkostninger fordeles mellom partene i henhold til eierandel. Salget skal igangsettes innen ${{bruddFrist}} måneder etter samlivsbruddet.`;
+  }} else {{
+    bruddTekst = `Ved samlivsbrudd forhandler partene i god tro om den videre disponeringen av boligen. Dersom enighet ikke oppnås innen ${{bruddFrist}} måneder, selges boligen og nettoprovenyet fordeles etter eierandel.`;
+  }}
+
+  let dok = `
+  <div class="dok-tittel-blokk">
+    <h1>Samboeravtale</h1>
+    <div class="dok-sub">Inngått mellom ${{p1}} og ${{p2}}</div>
+  </div>
+
+  <div class="dok-sek">
+    <h2>§ 1 — Partene</h2>
+    <p><strong>Part 1:</strong> ${{p1}}${{p1f?' (f. '+p1f+')':''}}${{p1a?', '+p1a:''}}</p>
+    <p style="margin-top:8px"><strong>Part 2:</strong> ${{p2}}${{p2f?' (f. '+p2f+')':''}}${{p2a?', '+p2a:''}}</p>
+    <p style="margin-top:12px">Partene er samboere og ønsker med denne avtalen å regulere sine økonomiske rettigheter og forpliktelser i samboerskapet og ved eventuelt brudd.</p>
+  </div>
+
+  <div class="dok-sek">
+    <h2>§ 2 — Boligen</h2>
+    <p>${{eierTekst}}</p>
+    <p style="margin-top:12px">Verdier den enkelte part har tilført boligen utover den formelle eierandelen (f.eks. arv øremerket nedbetaling av boliglån), dokumenteres separat og kan kreves tilbakeført ved brudd.</p>
+  </div>
+
+  <div class="dok-sek">
+    <h2>§ 3 — Felles økonomi</h2>
+    <p>${{utgifterTekst}}</p>
+    <p style="margin-top:12px">Personlige utgifter (klær, egne fritidsaktiviteter, gaver til egen familie m.v.) dekkes av den enkelte part for seg selv.</p>
+  </div>`;
+
+  if (saereieP1 || saereieP2) {{
+    dok += `<div class="dok-sek"><h2>§ 4 — Eiendeler eid før samboerskapet</h2>`;
+    if (saereieP1) dok += `<p><strong>${{p1}}s eiendeler ved avtaleinngåelsen:</strong> ${{saereieP1}}</p>`;
+    if (saereieP2) dok += `<p style="margin-top:8px"><strong>${{p2}}s eiendeler ved avtaleinngåelsen:</strong> ${{saereieP2}}</p>`;
+    dok += `<p style="margin-top:12px">Ovennevnte eiendeler er og forblir den respektive parts private eiendom og kan ikke kreves delt ved samlivsbrudd.</p></div>`;
+  }}
+
+  if (fellesGjeld) {{
+    dok += `<div class="dok-sek"><h2>§ ${{(saereieP1||saereieP2)?'5':'4'}} — Gjeld</h2><p>${{fellesGjeld}}</p></div>`;
+  }}
+
+  const neste = (saereieP1||saereieP2) ? (fellesGjeld?'6':'5') : (fellesGjeld?'5':'4');
+  dok += `
+  <div class="dok-sek">
+    <h2>§ ${{neste}} — Ved samlivsbrudd</h2>
+    <p>${{bruddTekst}}</p>
+    <p style="margin-top:12px">Innbo og løsøre som en part har med seg inn i samboerskapet, beholder den samme part ved brudd. Innbo og løsøre kjøpt i fellesskap deles etter verdi slik at begge parter mottar halvparten av samlet verdi, enten ved at den ene overtar mot kompensasjon, eller ved salg.</p>
+    <p style="margin-top:12px">Denne avtalen kan endres ved ny skriftlig avtale signert av begge parter.</p>
+  </div>
+
+  <div class="dok-sek">
+    <h2>§ ${{parseInt(neste)+1}} — Lovvalg og tvisteløsning</h2>
+    <p>Denne avtalen er regulert av norsk rett. Tvister søkes løst ved forhandlinger mellom partene. Oppnås ikke enighet, avgjøres tvisten av de ordinære domstoler med verneting der boligen er beliggende.</p>
+  </div>
+
+  <div style="margin-top:48px;font-family:var(--sans);font-size:14px;color:#555;border-top:1px solid #ddd;padding-top:20px;">
+    <p>Avtalen er utferdiget i to originale eksemplarer. Hver part beholder ett eksemplar.</p>
+    <p style="margin-top:8px">Sted og dato: <strong>${{signStedDato || '________________________'}}</strong></p>
+  </div>
+
+  <div class="sign-grid">
+    <div class="sign-boks">
+      <div style="margin-bottom:36px">&nbsp;</div>
+      <strong>${{p1}}</strong><br>Part 1
+    </div>
+    <div class="sign-boks">
+      <div style="margin-bottom:36px">&nbsp;</div>
+      <strong>${{p2}}</strong><br>Part 2
+    </div>
+  </div>`;
+
+  document.getElementById('dok-innhold').innerHTML = dok;
+}}
+
+function kopier() {{
+  const el = document.getElementById('dok-innhold');
+  navigator.clipboard.writeText(el.innerText).then(() => {{
+    const kn = document.querySelector('.dok-kn.kopier');
+    kn.textContent = '✓ Kopiert!';
+    setTimeout(() => kn.textContent = 'Kopier tekst', 2500);
+  }});
+}}
+oppdater();
+</script>
+{site_footer(depth=2)}"""
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# KONTRAKT 2: KJØPEKONTRAKT BIL
+# ─────────────────────────────────────────────────────────────────────────────
+def render_kontrakter_kjopekontraktbil():
+    return f"""{shared_head(
+        'Kjøpekontrakt bil — fyll ut og last ned gratis | Rettsregel',
+        'Lag en juridisk korrekt kjøpekontrakt for privatbilsalg gratis. Dekker kjøper og selger, bilens tilstand, heftelser og betalingsbetingelser. Last ned som PDF.',
+        depth=2, canonical_path='/kontrakter/kjopekontraktbil/'
+    )}
+<body>
+{site_nav(depth=2)}
+<style>
+.bil-layout {{ display: grid; grid-template-columns: 400px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
+.bil-layout > * {{ min-width: 0; }}
+@media (max-width: 1100px) {{ .bil-layout {{ grid-template-columns: 1fr !important; }} }}
+.bil-skjema {{ background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md); position: sticky; top: 24px; }}
+@media (max-width: 1100px) {{ .bil-skjema {{ position: static !important; }} }}
+.bil-sek {{ margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }}
+.bil-sek:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+.bil-sek-hd {{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 12px; }}
+.bf {{ margin-bottom: 10px; }}
+.bf label {{ display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }}
+.bf input, .bf select, .bf textarea {{ width: 100%; padding: 9px 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: var(--sans); font-size: 16px; background: var(--bg); color: var(--ink); box-sizing: border-box; }}
+.bf input:focus, .bf select:focus, .bf textarea:focus {{ outline: none; border-color: var(--accent); }}
+.bf textarea {{ min-height: 60px; resize: vertical; }}
+.bf-rad {{ display: flex; flex-direction: column; gap: 6px; }}
+.bf-rad label {{ display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; cursor: pointer; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 8px; line-height: 1.35; }}
+.bf-rad input[type=radio], .bf-rad input[type=checkbox] {{ width: auto; margin: 0; accent-color: var(--accent); flex-shrink: 0; }}
+.bf-rad label:has(input:checked) {{ border-color: var(--accent); background: rgba(177,74,42,0.06); color: var(--accent); font-weight: 600; }}
+.bf-2kol {{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }}
+.status-badge {{ display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; margin-bottom: 14px; }}
+.status-badge.ok {{ background: #e8f4e8; color: #2d6a2d; border: 1px solid #8dcc8d; }}
+.status-badge.advarsel {{ background: #fff3cd; color: #7d5f00; border: 1px solid #f0c040; }}
+.last-ned-kn {{ width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; font-family: var(--sans); font-size: 15px; font-weight: 600; padding: 15px; cursor: pointer; margin-top: 20px; transition: background 0.2s; }}
+.last-ned-kn:hover {{ background: var(--accent-deep); }}
+/* Dokument */
+.dok-wrap {{ background: var(--bg-alt); border-radius: 16px; padding: 24px; border: 1px solid var(--line); }}
+.dok-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }}
+.dok-header h3 {{ font-family: var(--serif); font-size: 18px; font-weight: 400; margin: 0; }}
+.dok-kn-rad {{ display: flex; gap: 10px; }}
+.dok-kn {{ padding: 8px 16px; border-radius: 8px; font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; border: none; }}
+.dok-kn.kopier {{ background: var(--accent); color: white; }}
+.dok-kn.skriv {{ background: var(--bg-card); border: 1.5px solid var(--line); color: var(--ink); }}
+.dok-dokument {{ background: white; border-radius: 12px; padding: 48px 52px; font-family: 'EB Garamond', Georgia, serif; font-size: 16px; line-height: 1.85; color: #1a1612; border: 1px solid var(--line); }}
+@media (max-width: 600px) {{ .dok-dokument {{ padding: 24px 18px; font-size: 15px; }} }}
+.dok-tom {{ color: var(--ink-mute); font-style: italic; font-family: var(--sans); font-size: 14px; padding: 32px 0; text-align: center; }}
+.bil-boks {{ background: var(--bg-alt); border: 1.5px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 20px; font-family: var(--sans); font-size: 13px; }}
+.bil-boks-rad {{ display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--line); }}
+.bil-boks-rad:last-child {{ border-bottom: none; }}
+.bil-boks-rad span:first-child {{ color: var(--ink-soft); }}
+.bil-boks-rad span:last-child {{ font-weight: 600; }}
+.dok-sek {{ margin-bottom: 24px; }}
+.dok-sek h2 {{ font-family: var(--sans); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; border-bottom: 1.5px solid #1a1612; padding-bottom: 5px; }}
+.sign-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }}
+.sign-boks {{ border-top: 1px solid #888; padding-top: 10px; font-family: var(--sans); font-size: 13px; color: #555; }}
+@media (max-width: 600px) {{ .sign-grid {{ grid-template-columns: 1fr; }} }}
+@media print {{
+  .no-print {{ display: none !important; }}
+  nav.site-nav, footer.site-footer, #chat-toggle, #chat-panel, .breadcrumbs, .article-header, .bil-skjema, .sp-body, .bil-boks, .status-badge {{ display: none !important; }}
+  .bil-layout {{ display: block; }}
+  .dok-wrap {{ border: none; padding: 0; background: white; }}
+  .dok-dokument {{ border: none; padding: 0; box-shadow: none; font-size: 13pt; line-height: 1.7; }}
+  body {{ background: white; }}
+}}
+</style>
+<main class="page">
+  <div class="container">
+    <div class="breadcrumbs no-print">
+      <a href="../../">Rettsregel</a><span class="sep">›</span>
+      <a href="../../kontrakter/">Kontrakter</a><span class="sep">›</span>
+      <span class="current">Kjøpekontrakt bil</span>
+    </div>
+    <div class="article-header no-print">
+      <div class="article-eyebrow">Gratis kontraktsmal</div>
+      <h1 class="article-title">Kjøpekontrakt bil — privatbilsalg</h1>
+      <p class="article-description">Fyll ut om kjøper, selger og bilen. Kontrakten bygger seg live — last ned ferdig PDF.</p>
+    </div>
+    <div class="bil-layout">
+      <div class="bil-skjema no-print">
+
+        <div class="bil-sek">
+          <div class="bil-sek-hd">Selger</div>
+          <div class="bf"><label>Fullt navn</label><input id="s_navn" oninput="oppdater()" placeholder="Ola Nordmann"></div>
+          <div class="bf"><label>Adresse</label><input id="s_adr" oninput="oppdater()" placeholder="Veien 1, 0000 Oslo"></div>
+          <div class="bf"><label>Telefon / e-post</label><input id="s_kontakt" oninput="oppdater()" placeholder="900 00 000 / ola@epost.no"></div>
+        </div>
+
+        <div class="bil-sek">
+          <div class="bil-sek-hd">Kjøper</div>
+          <div class="bf"><label>Fullt navn</label><input id="k_navn" oninput="oppdater()" placeholder="Kari Nordmann"></div>
+          <div class="bf"><label>Adresse</label><input id="k_adr" oninput="oppdater()" placeholder="Gata 2, 5000 Bergen"></div>
+          <div class="bf"><label>Telefon / e-post</label><input id="k_kontakt" oninput="oppdater()" placeholder="911 22 333 / kari@epost.no"></div>
+        </div>
+
+        <div class="bil-sek">
+          <div class="bil-sek-hd">Bilen</div>
+          <div class="bf-2kol">
+            <div class="bf"><label>Registreringsnummer</label><input id="bil_reg" oninput="oppdater()" placeholder="AB 12345" style="text-transform:uppercase"></div>
+            <div class="bf"><label>Årsmodell</label><input id="bil_aar" oninput="oppdater()" type="number" placeholder="2018" min="1900" max="2030"></div>
+          </div>
+          <div class="bf-2kol">
+            <div class="bf"><label>Merke</label><input id="bil_merke" oninput="oppdater()" placeholder="Toyota"></div>
+            <div class="bf"><label>Modell</label><input id="bil_modell" oninput="oppdater()" placeholder="Corolla"></div>
+          </div>
+          <div class="bf-2kol">
+            <div class="bf"><label>Kilometerstand</label><input id="bil_km" oninput="oppdater()" type="number" placeholder="87500" min="0"></div>
+            <div class="bf"><label>Drivstoff</label>
+              <select id="bil_drivstoff" onchange="oppdater()">
+                <option value="Bensin">Bensin</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Elektrisk">Elektrisk</option>
+                <option value="Hybrid">Hybrid (plug-in)</option>
+                <option value="Hybrid mild">Hybrid (mild)</option>
+              </select>
+            </div>
+          </div>
+          <div class="bf"><label>Chassisnummer (VIN) — valgfritt</label><input id="bil_vin" oninput="oppdater()" placeholder="XXXXXXXXXXXXXXXXX" maxlength="17" style="text-transform:uppercase"></div>
+          <div class="bf"><label>EU-kontroll gyldig til</label><input id="bil_eu" oninput="oppdater()" type="month" placeholder="2026-10"></div>
+        </div>
+
+        <div class="bil-sek">
+          <div class="bil-sek-hd">Pris og betaling</div>
+          <div class="bf"><label>Avtalt kjøpesum (kr)</label><input id="pris" oninput="oppdater()" type="number" placeholder="185000" min="0"></div>
+          <div class="bf"><label>Betalingsmåte</label>
+            <div class="bf-rad">
+              <label><input type="radio" name="betaling" value="overfor" onchange="oppdater()" checked> Bankoverføring</label>
+              <label><input type="radio" name="betaling" value="vipps" onchange="oppdater()"> Vipps</label>
+              <label><input type="radio" name="betaling" value="kontant" onchange="oppdater()"> Kontant</label>
+            </div>
+          </div>
+          <div class="bf"><label>Betalingsfrist / overtagelsesdato</label><input id="dato" oninput="oppdater()" type="date"></div>
+        </div>
+
+        <div class="bil-sek">
+          <div class="bil-sek-hd">Tilstand og heftelser</div>
+          <div class="bf"><label>Er bilen fri for heftelser (pant, lån)?</label>
+            <div class="bf-rad">
+              <label><input type="radio" name="heftelser" value="fri" onchange="oppdater()" checked> Ja — fri for heftelser</label>
+              <label><input type="radio" name="heftelser" value="har" onchange="oppdater()"> Nei — det er heftelser</label>
+            </div>
+          </div>
+          <div id="heftelse-detaljer" class="bf" style="display:none">
+            <label>Beskriv heftelsen(e)</label>
+            <textarea id="heftelse_tekst" oninput="oppdater()" placeholder="f.eks. pant til DNB, restgjeld ca. 45 000 kr, innfris av selger ved overlevering"></textarea>
+          </div>
+          <div class="bf"><label>Kjente feil og mangler (valgfritt)</label>
+            <textarea id="feil" oninput="oppdater()" placeholder="f.eks. ripe i venstre bakskjerm, klimaanlegg lader sakte. Selges ellers i kjørt stand."></textarea>
+          </div>
+          <div class="bf"><label>Medfølgende utstyr</label>
+            <div class="bf-rad">
+              <label><input type="checkbox" id="ekstra_hjul" onchange="oppdater()"> Ekstra hjulsett (sommerdekk / vinterdekk)</label>
+              <label><input type="checkbox" id="ekstra_nokkel" onchange="oppdater()"> Ekstra nøkkel</label>
+              <label><input type="checkbox" id="serviceheftet" onchange="oppdater()"> Serviceheftet</label>
+            </div>
+          </div>
+          <div class="bf"><label>Annet utstyr som medfølger (valgfritt)</label>
+            <input id="annet_utstyr" oninput="oppdater()" placeholder="f.eks. takboks, hengerfeste, varmekabler"></div>
+        </div>
+
+        <div class="bil-sek">
+          <div class="bil-sek-hd">Garanti</div>
+          <div class="bf">
+            <div class="bf-rad">
+              <label><input type="radio" name="garanti" value="ingen" onchange="oppdater()" checked> Selges uten garanti — «as is»</label>
+              <label><input type="radio" name="garanti" value="garanti" onchange="oppdater()"> Selger gir begrenset garanti</label>
+            </div>
+          </div>
+          <div id="garanti-detaljer" class="bf" style="display:none">
+            <label>Beskriv garantien</label>
+            <textarea id="garanti_tekst" oninput="oppdater()" placeholder="f.eks. 3 måneder garanti på motor og girkasse"></textarea>
+          </div>
+        </div>
+
+        <div class="bil-sek">
+          <div class="bil-sek-hd">Underskrift</div>
+          <div class="bf"><label>Sted og dato</label><input id="sign_dato" oninput="oppdater()" placeholder="Oslo, 14. mai 2026"></div>
+        </div>
+
+        <button class="last-ned-kn no-print" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-right:6px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Last ned som PDF
+        </button>
+      </div>
+
+      <div>
+        <!-- Live sammendrag -->
+        <div class="bil-boks no-print" id="bil-sammendrag" style="display:none">
+          <div class="bil-boks-rad"><span>Bil</span><span id="s-bil">—</span></div>
+          <div class="bil-boks-rad"><span>Registreringsnr.</span><span id="s-reg">—</span></div>
+          <div class="bil-boks-rad"><span>Kilometerstand</span><span id="s-km">—</span></div>
+          <div class="bil-boks-rad"><span>EU-kontroll</span><span id="s-eu">—</span></div>
+          <div class="bil-boks-rad"><span>Kjøpesum</span><span id="s-pris">—</span></div>
+        </div>
+
+        <div class="dok-wrap">
+          <div class="dok-header">
+            <h3>Din kjøpekontrakt</h3>
+            <div class="dok-kn-rad no-print">
+              <button class="dok-kn kopier" onclick="kopier()">Kopier tekst</button>
+              <button class="dok-kn skriv" onclick="window.print()">Last ned PDF</button>
+            </div>
+          </div>
+          <div class="dok-dokument" id="dok-innhold">
+            <p class="dok-tom">Fyll ut feltene til venstre — kontrakten bygger seg her.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose sp-body no-print">
+      <h2>Hvorfor trenger du kjøpekontrakt ved privatbilsalg?</h2>
+      <p>En kjøpekontrakt er det viktigste dokumentet ved privatbilsalg. Den beskytter begge parter: Selgeren er beskyttet mot senere krav om feil og mangler du ikke visste om, og kjøperen er beskyttet mot at selgeren kan nekte for hva som ble avtalt om pris, km-stand og tilstand.</p>
+      <p>Uten kontrakt er det ord mot ord om hva som ble sagt over telefon eller på Finn.no. Med kontrakt er alt dokumentert.</p>
+      <p>Husk alltid å sjekke bilen i Brønnøysundregistrene for heftelser (pant) FØR du betaler. Dette gjør du gratis på brreg.no. Heftelser på bilen kan i verste fall bety at banken tar bilen tilbake selv om du har betalt kjøpesummen til selgeren.</p>
+      <p>Kontrakten skal signeres i to eksemplarer. Kjøper og selger beholder ett eksemplar hver.</p>
+    </div>
+  </div>
+</main>
+<script>
+function radio(name) {{ return (document.querySelector('input[name="'+name+'"]:checked')||{{}}).value || ''; }}
+function v(id) {{ const el=document.getElementById(id); return el ? el.value.trim() : ''; }}
+function checked(id) {{ const el=document.getElementById(id); return el ? el.checked : false; }}
+function kr(n) {{ const num=parseInt(n); return num ? num.toLocaleString('nb-NO')+' kr' : ''; }}
+function dato(isoStr) {{
+  if (!isoStr) return '';
+  try {{
+    const d = new Date(isoStr+'T12:00:00');
+    return d.toLocaleDateString('nb-NO', {{day:'numeric',month:'long',year:'numeric'}});
+  }} catch(e) {{ return isoStr; }}
+}}
+function euDato(monthStr) {{
+  if (!monthStr) return '';
+  const [y,m] = monthStr.split('-');
+  const mnd = ['januar','februar','mars','april','mai','juni','juli','august','september','oktober','november','desember'];
+  return mnd[parseInt(m)-1]+' '+y;
+}}
+
+function oppdater() {{
+  const sNavn = v('s_navn') || 'Selger';
+  const sAdr = v('s_adr');
+  const sKontakt = v('s_kontakt');
+  const kNavn = v('k_navn') || 'Kjøper';
+  const kAdr = v('k_adr');
+  const kKontakt = v('k_kontakt');
+  const bilReg = v('bil_reg').toUpperCase();
+  const bilAar = v('bil_aar');
+  const bilMerke = v('bil_merke');
+  const bilModell = v('bil_modell');
+  const bilKm = v('bil_km');
+  const bilDrivstoff = v('bil_drivstoff') || 'Bensin';
+  const bilVin = v('bil_vin').toUpperCase();
+  const bilEU = v('bil_eu');
+  const pris = v('pris');
+  const betaling = radio('betaling') || 'overfor';
+  const datoStr = v('dato');
+  const heftelser = radio('heftelser') || 'fri';
+  const heftelserTekst = v('heftelse_tekst');
+  const feil = v('feil');
+  const garanti = radio('garanti') || 'ingen';
+  const garantiTekst = v('garanti_tekst');
+  const signDato = v('sign_dato');
+  const harHjul = checked('ekstra_hjul');
+  const harNokkel = checked('ekstra_nokkel');
+  const harService = checked('serviceheftet');
+  const annetUtstyr = v('annet_utstyr');
+
+  // Toggle visibility
+  document.getElementById('heftelse-detaljer').style.display = (heftelser === 'har') ? '' : 'none';
+  document.getElementById('garanti-detaljer').style.display = (garanti === 'garanti') ? '' : 'none';
+
+  const bilNavn = [bilAar, bilMerke, bilModell].filter(Boolean).join(' ') || 'Kjøretøyet';
+
+  // Sammendrag
+  const sammendrag = document.getElementById('bil-sammendrag');
+  if (bilMerke || bilReg || pris) {{
+    sammendrag.style.display = 'block';
+    document.getElementById('s-bil').textContent = bilNavn || '—';
+    document.getElementById('s-reg').textContent = bilReg || '—';
+    document.getElementById('s-km').textContent = bilKm ? parseInt(bilKm).toLocaleString('nb-NO')+' km' : '—';
+    document.getElementById('s-eu').textContent = bilEU ? euDato(bilEU) : '—';
+    document.getElementById('s-pris').textContent = kr(pris) || '—';
+  }} else {{
+    sammendrag.style.display = 'none';
+  }}
+
+  if (!v('s_navn') && !v('k_navn') && !bilMerke && !pris) {{
+    document.getElementById('dok-innhold').innerHTML = '<p class="dok-tom">Fyll ut feltene til venstre — kontrakten bygger seg her.</p>';
+    return;
+  }}
+
+  // Betalings-tekst
+  const betalingMap = {{ overfor: 'bankoverføring', vipps: 'Vipps', kontant: 'kontant' }};
+  const betalingTekst = betalingMap[betaling] || 'bankoverføring';
+
+  // Utstyr-liste
+  let utstyrListe = [];
+  if (harHjul) utstyrListe.push('ekstra hjulsett');
+  if (harNokkel) utstyrListe.push('ekstra nøkkel');
+  if (harService) utstyrListe.push('serviceheftet');
+  if (annetUtstyr) utstyrListe.push(annetUtstyr);
+
+  let dok = `
+  <div style="text-align:center;margin-bottom:36px">
+    <div style="font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#888;margin-bottom:8px">Privatbilsalg</div>
+    <h1 style="font-family:var(--sans);font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin:0">Kjøpekontrakt</h1>
+    <div style="font-family:var(--sans);font-size:14px;color:#555;margin-top:6px">${{bilNavn}}${{bilReg?' — Reg.nr. '+bilReg:''}}</div>
+  </div>
+
+  <div class="dok-sek">
+    <h2>§ 1 — Parter</h2>
+    <p><strong>Selger:</strong> ${{sNavn}}${{sAdr?', '+sAdr:''}}${{sKontakt?', '+sKontakt:''}}</p>
+    <p style="margin-top:8px"><strong>Kjøper:</strong> ${{kNavn}}${{kAdr?', '+kAdr:''}}${{kKontakt?', '+kKontakt:''}}</p>
+  </div>
+
+  <div class="dok-sek">
+    <h2>§ 2 — Kjøretøy</h2>
+    <table style="width:100%;border-collapse:collapse;font-family:var(--sans);font-size:14px">
+      ${{bilMerke?'<tr><td style="padding:5px 0;color:#666;width:40%">Merke og modell</td><td style="padding:5px 0;font-weight:600">'+[bilMerke,bilModell].filter(Boolean).join(' ')+'</td></tr>':''}}
+      ${{bilReg?'<tr><td style="padding:5px 0;color:#666">Registreringsnr.</td><td style="padding:5px 0;font-weight:600">'+bilReg+'</td></tr>':''}}
+      ${{bilAar?'<tr><td style="padding:5px 0;color:#666">Årsmodell</td><td style="padding:5px 0;font-weight:600">'+bilAar+'</td></tr>':''}}
+      ${{bilDrivstoff?'<tr><td style="padding:5px 0;color:#666">Drivstoff</td><td style="padding:5px 0;font-weight:600">'+bilDrivstoff+'</td></tr>':''}}
+      ${{bilKm?'<tr><td style="padding:5px 0;color:#666">Kilometerstand</td><td style="padding:5px 0;font-weight:600">'+parseInt(bilKm).toLocaleString('nb-NO')+' km ved salg</td></tr>':''}}
+      ${{bilEU?'<tr><td style="padding:5px 0;color:#666">EU-kontroll gyldig til</td><td style="padding:5px 0;font-weight:600">'+euDato(bilEU)+'</td></tr>':''}}
+      ${{bilVin?'<tr><td style="padding:5px 0;color:#666">Chassisnummer (VIN)</td><td style="padding:5px 0;font-weight:600">'+bilVin+'</td></tr>':''}}
+    </table>
+  </div>
+
+  <div class="dok-sek">
+    <h2>§ 3 — Kjøpesum og betaling</h2>
+    <p>Avtalt kjøpesum er <strong>${{kr(pris) || '[sum ikke angitt]'}}</strong>, å betale ved ${{betalingTekst}}${{datoStr?' innen '+dato(datoStr):''}}.</p>
+    <p style="margin-top:10px">Kjøretøyet overleveres til kjøper når kjøpesummen er mottatt og bekreftet av selger. Eierskifte registreres av kjøper og selger på vegne av hverandre i Statens vegvesen sitt eierskiftesystem.</p>
+  </div>
+
+  <div class="dok-sek">
+    <h2>§ 4 — Heftelser</h2>`;
+
+  if (heftelser === 'fri') {{
+    dok += `<p>Selger bekrefter at kjøretøyet er fritt for heftelser, herunder pant og registrert i Løsøreregisteret. Kjøper oppfordres til å kontrollere dette på brreg.no eller via tinglysing.no.</p>`;
+  }} else {{
+    dok += `<p>Kjøretøyet har følgende registrerte heftelser: ${{heftelserTekst || '[beskriv heftelsene]'}}</p>`;
+  }}
+
+  dok += `</div>
+
+  <div class="dok-sek">
+    <h2>§ 5 — Tilstand og kjente feil</h2>`;
+
+  if (feil) {{
+    dok += `<p>Selger gjør kjøper oppmerksom på følgende kjente feil og mangler ved kjøretøyet:</p><p style="margin-top:8px;font-style:italic">${{feil}}</p>`;
+  }} else {{
+    dok += `<p>Selger kjenner ikke til andre feil eller mangler enn det som fremkommer av bilens naturlige slitasje ved ${{bilKm?parseInt(bilKm).toLocaleString('nb-NO')+' km':'oppgitt kilometerstand'}} og alder.</p>`;
+  }}
+
+  if (garanti === 'ingen') {{
+    dok += `<p style="margin-top:10px">Kjøretøyet selges i den stand det er ved besiktigelse, og uten garanti fra selger. Kjøper har hatt anledning til å besiktige bilen og er kjent med dens stand.</p>`;
+  }} else {{
+    dok += `<p style="margin-top:10px">Selger gir følgende garanti: ${{garantiTekst || '[beskriv garantien]'}}</p>`;
+  }}
+
+  dok += `</div>`;
+
+  if (utstyrListe.length > 0) {{
+    dok += `<div class="dok-sek"><h2>§ 6 — Medfølgende utstyr</h2><p>Følgende utstyr inngår i handelen: ${{utstyrListe.join(', ')}}.</p></div>`;
+  }}
+
+  const neste = utstyrListe.length > 0 ? '7' : '6';
+
+  dok += `
+  <div class="dok-sek">
+    <h2>§ ${{neste}} — Ansvar og reklamasjon</h2>
+    <p>Denne kontrakten er et privatbilsalg mellom to privatpersoner. Kjøpsloven gjelder for handelen. Kjøper er kjent med at selger ikke er næringsdrivende og at reklamasjonsrettighetene etter forbrukerkjøpsloven dermed ikke gjelder.</p>
+    <p style="margin-top:10px">Eventuelle reklamasjoner på feil og mangler som selger hadde kunnskap om men unnlot å opplyse om, behandles etter kjøpslovens bestemmelser om heving og prisavslag.</p>
+  </div>
+
+  <div style="margin-top:40px;font-family:var(--sans);font-size:14px;color:#555;border-top:1px solid #ddd;padding-top:16px;">
+    <p>Kontrakten er utferdiget i to originale eksemplarer. Kjøper og selger beholder ett eksemplar hver.</p>
+    <p style="margin-top:6px">Sted og dato: <strong>${{signDato || '________________________'}}</strong></p>
+  </div>
+
+  <div class="sign-grid">
+    <div class="sign-boks">
+      <div style="margin-bottom:40px">&nbsp;</div>
+      <strong>${{sNavn}}</strong><br>Selger
+    </div>
+    <div class="sign-boks">
+      <div style="margin-bottom:40px">&nbsp;</div>
+      <strong>${{kNavn}}</strong><br>Kjøper
+    </div>
+  </div>`;
+
+  document.getElementById('dok-innhold').innerHTML = dok;
+}}
+
+function kopier() {{
+  const el = document.getElementById('dok-innhold');
+  navigator.clipboard.writeText(el.innerText).then(() => {{
+    const kn = document.querySelector('.dok-kn.kopier');
+    kn.textContent = '✓ Kopiert!';
+    setTimeout(() => kn.textContent = 'Kopier tekst', 2500);
+  }});
+}}
+oppdater();
+</script>
+{site_footer(depth=2)}"""
+
+
 def build():
     out = "/home/claude/site/dist"
     # Bygg fortsatt til dist/ i Claudes workdir — men zip-leveransen pakker flat
@@ -5222,6 +5980,12 @@ def build():
     os.makedirs(f"{out}/kontrakter/husleiekontrakt", exist_ok=True)
     with open(f"{out}/kontrakter/husleiekontrakt/index.html", "w", encoding="utf-8") as f:
         f.write(render_kontrakter_husleiekontrakt())
+    os.makedirs(f"{out}/kontrakter/samboeravtale", exist_ok=True)
+    with open(f"{out}/kontrakter/samboeravtale/index.html", "w", encoding="utf-8") as f:
+        f.write(render_kontrakter_samboeravtale())
+    os.makedirs(f"{out}/kontrakter/kjopekontraktbil", exist_ok=True)
+    with open(f"{out}/kontrakter/kjopekontraktbil/index.html", "w", encoding="utf-8") as f:
+        f.write(render_kontrakter_kjopekontraktbil())
     
     # Sitemap.xml
     today = "2026-05-11"
