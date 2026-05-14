@@ -39,8 +39,12 @@ try:
     from paragraphs_forbrukerkjopsloven import PARAGRAPHS as _P_FKL
 except ImportError:
     _P_FKL = []
+try:
+    from paragraphs_arveloven import PARAGRAPHS as _P_ARVELOVEN
+except ImportError:
+    _P_ARVELOVEN = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -1928,6 +1932,7 @@ def render_lover_index():
         "avhendingslova": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Kjøp og salg av bolig, hytte og tomt"},
         "naboloven": {"kat": "bolig", "kat_label": "Bolig og leie", "desc": "Naboforhold og urimelige ulemper"},
         "navneloven": {"kat": "familie", "kat_label": "Familie og samliv", "desc": "Fornavn, etternavn og navnebytte"},
+        "arveloven": {"kat": "arv", "kat_label": "Arv og skifte", "desc": "Arvegang, uskifte og testament"},
         "forbrukerkjopsloven": {"kat": "forbruk", "kat_label": "Forbruk og kjøp", "desc": "Rettigheter ved kjøp fra butikk og netthandel"},
         "haandverkertjenesteloven": {"kat": "tjenester", "kat_label": "Tjenester", "desc": "Håndverkertjenester og reklamasjon"},
         "arbeidsmiljoloven": {"kat": "arbeid", "kat_label": "Arbeid og lønn", "desc": "Arbeidsforhold, lønn og oppsigelse"},
@@ -2520,6 +2525,7 @@ def render_homepage():
         "avhendingslova": ("bolig", "Bolig og leie"),
         "naboloven": ("bolig", "Bolig og leie"),
         "navneloven": ("familie", "Familie og samliv"),
+        "arveloven": ("arv", "Arv og skifte"),
         "forbrukerkjopsloven": ("forbruk", "Forbruk og kjøp"),
         "haandverkertjenesteloven": ("tjenester", "Tjenester"),
         "arbeidsmiljoloven": ("arbeid", "Arbeid og lønn"),
