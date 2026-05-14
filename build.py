@@ -305,33 +305,86 @@ form.contact-form.hide { display: none; }
 .form-success h3 { font-family: var(--serif); font-size: 24px; margin-bottom: 10px; font-variation-settings: "opsz" 28; }
 .form-success p { color: var(--ink-soft); }
 
-/* Footer */
-footer.site-footer { background: var(--ink); color: var(--bg); padding: 64px 0 32px; }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
-@media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; gap: 32px; } }
-.footer-brand {
-  font-family: var(--serif); font-size: 32px; font-weight: 400; letter-spacing: -0.015em;
-  margin-bottom: 12px; font-variation-settings: "opsz" 72;
+/* Footer — redesigned */
+footer.site-footer {
+  background: #0D0C09;
+  color: rgba(250,246,238,0.7);
+  padding: 80px 0 44px;
 }
-.footer-brand span { color: var(--accent-soft); }
-.footer-tagline { color: rgba(250,246,238,0.6); font-size: 15px; max-width: 320px; line-height: 1.5; }
-footer.site-footer h4 {
-  font-family: var(--sans); font-size: 12px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-soft); margin-bottom: 18px;
+.footer-inner {
+  display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 56px;
+}
+@media (max-width: 900px) { .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px 40px; } }
+@media (max-width: 540px) { .footer-inner { grid-template-columns: 1fr; gap: 28px; } }
+.footer-logo {
+  display: flex; align-items: baseline; gap: 10px;
+  text-decoration: none; margin-bottom: 20px; line-height: 1;
+}
+.footer-logo-mark { font-family: var(--serif); font-size: 28px; color: var(--accent); }
+.footer-logo-name { font-family: var(--serif); font-size: 22px; color: rgba(250,246,238,0.9); }
+.footer-tagline {
+  font-size: 15px; line-height: 1.65;
+  color: rgba(250,246,238,0.42); max-width: 260px; margin-bottom: 16px;
+}
+.footer-entity { font-size: 11px; color: rgba(250,246,238,0.22); text-transform: uppercase; letter-spacing: 0.1em; }
+.footer-col-head {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.14em; color: rgba(250,246,238,0.28); margin-bottom: 16px;
 }
 footer.site-footer ul { list-style: none; }
-footer.site-footer li { margin-bottom: 10px; }
+footer.site-footer li { margin-bottom: 11px; }
 footer.site-footer a {
-  color: rgba(250,246,238,0.7); text-decoration: none; font-size: 15px; transition: color 0.2s;
+  color: rgba(250,246,238,0.58); text-decoration: none; font-size: 14px; transition: color 0.2s;
 }
-footer.site-footer a:hover { color: var(--bg); }
+footer.site-footer a:hover { color: rgba(250,246,238,0.95); }
 .footer-bottom {
-  padding-top: 24px; border-top: 1px solid rgba(250,246,238,0.1);
-  font-size: 13px; color: rgba(250,246,238,0.5);
-  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px;
+  padding-top: 28px; border-top: 1px solid rgba(250,246,238,0.07);
+  font-size: 12px; color: rgba(250,246,238,0.22); letter-spacing: 0.01em;
 }
 
-/* Index page (lov overview) */
+/* Hub — tjeneste og kontrakt-kort */
+.tjenester-hero { padding: 48px 0 40px; }
+.tjenester-hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.12; letter-spacing: -0.015em; margin-bottom: 16px; }
+.tjenester-hero p { font-size: 17px; color: var(--ink-soft); max-width: 580px; line-height: 1.55; }
+.tjenester-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin: 36px 0 64px; }
+.tjeneste-kort {
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 20px;
+  padding: 28px 32px; text-decoration: none; color: var(--ink);
+  transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+  display: flex; flex-direction: column; gap: 8px; position: relative; min-height: 190px;
+}
+.tjeneste-kort:not(.snart):hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: rgba(177,74,42,0.25); }
+.tjeneste-kort.snart { pointer-events: none; }
+.tjeneste-kat {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.14em; color: var(--accent); margin-bottom: 4px;
+}
+.tjeneste-kat.graa { color: var(--ink-mute); }
+.tjeneste-kort h3 { font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.2; margin: 0; }
+.tjeneste-kort.snart h3 { color: var(--ink-soft); }
+.tjeneste-kort p { font-size: 14px; color: var(--ink-soft); line-height: 1.55; flex: 1; margin: 0; }
+.tjeneste-pil { font-size: 13px; color: var(--accent); font-weight: 600; margin-top: 10px; }
+.tjeneste-kort.snart .tjeneste-pil { color: var(--ink-mute); }
+.snart-badge {
+  position: absolute; top: 16px; right: 16px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  background: var(--bg-alt); color: var(--ink-mute); padding: 3px 9px; border-radius: 20px;
+}
+
+/* Mobile wizard fixes — applied globally */
+@media (max-width: 640px) {
+  .vg, .vg3 { grid-template-columns: 1fr !important; }
+  .enk-kort, .steg-kort, .kalkulator { padding: 20px 16px !important; }
+  .kalkulator-valg label { padding: 11px 14px; }
+  .w-input, .wizard-input { font-size: 16px; } /* prevent iOS zoom */
+}
+@media (max-width: 760px) {
+  .vg3 { grid-template-columns: 1fr 1fr !important; }
+}
+
 .lov-hero { padding: 56px 0 64px; max-width: 780px; }
 .lov-hero h1 {
   font-family: var(--serif); font-weight: 400;
@@ -380,28 +433,6 @@ footer.site-footer a:hover { color: var(--bg); }
 /* ============================================================
    TJENESTER — hub og kalkulator
    ============================================================ */
-.tjenester-hero { padding: 48px 0 56px; }
-.tjenester-hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.12; letter-spacing: -0.015em; margin-bottom: 20px; }
-.tjenester-hero p { font-size: 18px; color: var(--ink-soft); max-width: 620px; line-height: 1.55; }
-.tjenester-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin: 40px 0 64px; }
-.tjeneste-kort {
-  background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px;
-  padding: 32px; text-decoration: none; color: var(--ink);
-  box-shadow: var(--shadow-sm); transition: box-shadow 0.2s, transform 0.2s;
-  display: flex; flex-direction: column; gap: 12px; position: relative;
-}
-.tjeneste-kort:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.tjeneste-kort.snart { opacity: 0.6; cursor: default; pointer-events: none; }
-.tjeneste-kort-ikon { font-size: 28px; margin-bottom: 4px; }
-.tjeneste-kort h3 { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.2; }
-.tjeneste-kort p { font-size: 15px; color: var(--ink-soft); line-height: 1.5; flex: 1; }
-.tjeneste-kort-pil { font-size: 14px; color: var(--accent); font-weight: 600; margin-top: 8px; }
-.snart-badge {
-  position: absolute; top: 20px; right: 20px;
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-  background: var(--bg-alt); color: var(--ink-mute); padding: 4px 10px; border-radius: 20px;
-}
-
 /* Kalkulator */
 .kalkulator-intro { margin-bottom: 40px; }
 .kalkulator {
@@ -1598,29 +1629,42 @@ def site_footer(depth=0):
     prefix = "../" * depth
     return f"""<footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-inner">
       <div>
-        <div class="footer-brand">Retts<span>regel</span></div>
-        <p class="footer-tagline">Lover forklart for vanlige folk. En paragraf om gangen.</p>
+        <a href="{prefix}" class="footer-logo">
+          <span class="footer-logo-mark">§</span>
+          <span class="footer-logo-name">Rettsregel</span>
+        </a>
+        <p class="footer-tagline">Lover er ikke vanskelige.<br>De er bare dårlig forklart.</p>
+        <span class="footer-entity">Wombat AS</span>
       </div>
       <div>
-        <h4>Innhold</h4>
+        <div class="footer-col-head">Innhold</div>
         <ul>
           <li><a href="{prefix}lover/">Alle lover</a></li>
-          <li><a href="{prefix}lover/angrerettloven/">Angrerettloven</a></li>
+          <li><a href="{prefix}sporsmal/">Spørsmål og svar</a></li>
+          <li><a href="{prefix}kontrakter/">Kontraktsmaler</a></li>
         </ul>
       </div>
       <div>
-        <h4>Nettstedet</h4>
+        <div class="footer-col-head">Verktøy</div>
+        <ul>
+          <li><a href="{prefix}tjenester/enk-eller-as/">ENK eller AS?</a></li>
+          <li><a href="{prefix}tjenester/reklamasjon-bil/">Reklamasjon bil</a></li>
+          <li><a href="{prefix}kontrakter/husleiekontrakt/">Husleiekontrakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-head">Om</div>
         <ul>
           <li><a href="{prefix}om/">Om Rettsregel</a></li>
-          <li><a href="{prefix}#skjema">Send inn sak</a></li>
           <li><a href="{prefix}personvern/">Personvern</a></li>
+          <li><a href="mailto:rettsregel@gmail.com">Kontakt oss</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Rettsregel</span>
+      <span>© 2026 Wombat AS · Rettsregel.no</span>
       <span>Bygget for å forstås.</span>
     </div>
   </div>
@@ -2688,35 +2732,35 @@ def render_tjenester_hub():
       <p>Svar på spørsmålene, og få en klar anbefaling. Trenger du noe skriftlig og signert, hjelper vi med det også.</p>
     </div>
 
-    <div class="tjenester-grid">
+    <div class="tjensters-grid">
       <a href="../tjenester/enk-eller-as/" class="tjeneste-kort">
-        <div class="tjeneste-kort-ikon">⚖️</div>
+        <div class="tjeneste-kat">Gratis kalkulator</div>
         <h3>ENK eller AS?</h3>
-        <p>Svar på fem spørsmål og finn ut hvilken selskapsform som passer for deg — og hvorfor.</p>
-        <div class="tjeneste-kort-pil">Bruk verktøyet →</div>
+        <p>Svar på fem spørsmål og finn ut hvilken selskapsform som passer for deg — med skatteillustrasjon og selskapsrettslig begrunnelse.</p>
+        <div class="tjeneste-pil">Bruk verktøyet →</div>
       </a>
 
       <a href="../tjenester/reklamasjon-bil/" class="tjeneste-kort">
-        <div class="tjeneste-kort-ikon">🚗</div>
+        <div class="tjeneste-kat">Gratis brevgenerator</div>
         <h3>Reklamasjon bilkjøp</h3>
-        <p>Kjøpte du en bil med feil? Lag et juridisk korrekt reklamasjonsbrev på noen minutter — gratis.</p>
-        <div class="tjeneste-kort-pil">Lag brevet →</div>
+        <p>Kjøpte du en bil med feil? Lag et juridisk korrekt reklamasjonsbrev på noen minutter, med fristberegning og lovhenvisninger.</p>
+        <div class="tjeneste-pil">Lag brevet →</div>
       </a>
 
       <div class="tjeneste-kort snart">
         <span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">📄</div>
-        <h3>Kjøpekontrakt bil</h3>
-        <p>Generer en juridisk korrekt kjøpekontrakt for privatbilsalg. Fylles ut og lastes ned.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-kat graa">Kalkulator</div>
+        <h3>Formuesoppgjør samlivsbrudd</h3>
+        <p>Beregn hva du og partneren din har krav på ved brudd. Basert på husstandsfellesskapsloven.</p>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
 
       <div class="tjeneste-kort snart">
         <span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">🏠</div>
-        <h3>Samboeravtale</h3>
-        <p>Enkel veiviser som lager en samboeravtale tilpasset situasjonen din.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-kat graa">Kalkulator</div>
+        <h3>Reklamasjon forbrukerkjøp</h3>
+        <p>Reklamasjonsveiviser for alt fra hvitevarer til mobiltelefoner. Forbrukerkjøpsloven.</p>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
     </div>
   </div>
@@ -3234,42 +3278,52 @@ def render_kontrakter_hub():
       <h1>Juridiske maler — gratis å bruke</h1>
       <p>Fyll ut i nettleseren. Last ned som PDF. Alle maler er basert på gjeldende norsk lov.</p>
     </div>
-    <div class="tjenester-grid">
+    <div class="tjensters-grid">
       <a href="../kontrakter/husleiekontrakt/" class="tjeneste-kort">
-        <div class="tjeneste-kort-ikon">🏠</div>
+        <div class="tjeneste-kat">Bolig og leie</div>
         <h3>Husleiekontrakt</h3>
-        <p>Standard leiekontrakt for bolig. Tidsubestemt eller tidsbestemt. Basert på husleieloven.</p>
-        <div class="tjeneste-kort-pil">Fyll ut og last ned →</div>
+        <p>Standard leiekontrakt for bolig. Tidsubestemt eller tidsbestemt. Fyll ut i nettleseren og last ned som PDF.</p>
+        <div class="tjeneste-pil">Fyll ut og last ned →</div>
       </a>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">🚗</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Kjøp og salg</div>
         <h3>Kjøpekontrakt bil</h3>
-        <p>Juridisk korrekt kjøpekontrakt for privatbilsalg. Basert på kjøpsloven.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <p>Juridisk korrekt kjøpekontrakt for privatbilsalg. Basert på kjøpsloven av 1988.</p>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">💑</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Familie og samliv</div>
         <h3>Samboeravtale</h3>
         <p>Avtale om økonomi, bolig og eierskap for samboere. Basert på husstandsfellesskapsloven.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">💰</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Økonomi og gjeld</div>
         <h3>Gjeldsbrev</h3>
         <p>Enkelt gjeldsbrev for private lån. Rentefritt eller med renter og nedbetalingsplan.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">📋</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Selskapsrett</div>
         <h3>Aksjonæravtale</h3>
         <p>Avtale mellom aksjonærer i AS. Forkjøpsrett, stemmerett og utbyttepolitikk.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
-      <div class="tjeneste-kort snart"><span class="snart-badge">Snart</span>
-        <div class="tjeneste-kort-ikon">🏢</div>
+
+      <div class="tjeneste-kort snart">
+        <span class="snart-badge">Snart</span>
+        <div class="tjeneste-kat graa">Selskapsrett</div>
         <h3>Generalforsamlingsprotokoll</h3>
-        <p>Protokollmal for ordinær og ekstraordinær generalforsamling i AS.</p>
-        <div class="tjeneste-kort-pil">Kommer snart</div>
+        <p>Protokollmal for ordinær og ekstraordinær GF. Klar til å fylle ut og signere.</p>
+        <div class="tjeneste-pil">Kommer snart</div>
       </div>
     </div>
   </div>
@@ -3291,7 +3345,7 @@ def render_kontrakter_husleiekontrakt():
   display: grid; grid-template-columns: 380px 1fr; gap: 32px;
   align-items: start; margin-bottom: 64px;
 }}
-@media (max-width: 900px) {{ .kontrakt-layout {{ grid-template-columns: 1fr; }} }}
+@media (max-width: 1024px) {{ .kontrakt-layout {{ grid-template-columns: 1fr; }} }}
 .kontrakt-skjema {{
   background: var(--bg-card); border: 1px solid var(--line);
   border-radius: 20px; padding: 28px; box-shadow: var(--shadow-md);
@@ -3643,7 +3697,10 @@ def render_tjenester_reklamasjon_bil():
 .ig label {{ display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 6px; }}
 .valg-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }}
 .valg-grid-3 {{ grid-template-columns: 1fr 1fr 1fr; }}
-@media (max-width: 560px) {{ .valg-grid, .valg-grid-3 {{ grid-template-columns: 1fr; }} }}
+@media (max-width: 640px) {{ .valg-grid {{ grid-template-columns: 1fr; }} }}
+@media (max-width: 760px) {{ .valg-grid-3 {{ grid-template-columns: 1fr 1fr; }} }}
+@media (max-width: 560px) {{ .valg-grid-3 {{ grid-template-columns: 1fr; }} }}
+@media (max-width: 600px) {{ .w-input {{ font-size: 16px; }} }}
 .valg-kort {{
   border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 16px;
   cursor: pointer; text-align: left; background: var(--bg); transition: all 0.15s;
