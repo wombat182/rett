@@ -84,7 +84,7 @@ CSS = """
   --kat-familie: #B8654A;
   --kat-gjeld: #7A6E5D;
   --kat-tjenester: #4E6E80;
-  --serif: 'Fraunces', 'Palatino', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --serif: Optima, 'Optima Nova', 'URW Classico', Candara, 'Lucida Sans', 'Lucida Sans Unicode', 'Trebuchet MS', sans-serif;
   --serif-prose: 'Palatino', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
   --sans: 'Manrope', system-ui, sans-serif;
 }
@@ -126,11 +126,10 @@ nav.site-nav {
 .logo-mark .glyph { fill: var(--accent); transition: fill 0.2s; }
 .logo-wordmark {
   font-family: var(--serif); font-weight: 400;
-  font-size: 44px; letter-spacing: -0.022em;
+  font-size: 40px; letter-spacing: -0.022em;
   color: var(--ink); line-height: 1;
   transition: color 0.2s;
   font-feature-settings: "liga" 1, "dlig" 1, "kern" 1;
-  font-variation-settings: "opsz" 60, "SOFT" 50;
 }
 .logo-tld {
   color: var(--accent); font-weight: 500;
@@ -147,7 +146,7 @@ nav.site-nav {
 @media (max-width: 720px) {
   .nav-links { gap: 20px; }
   .nav-links a { font-size: 13px; }
-  .logo-wordmark { font-size: 32px; }
+  .logo-wordmark { font-size: 28px; }
 }
 
 /* Breadcrumbs */
@@ -170,7 +169,6 @@ nav.site-nav {
   font-family: var(--serif); font-weight: 400;
   font-size: clamp(26px, 3.2vw, 40px);
   line-height: 1.08; letter-spacing: -0.022em; margin-bottom: 28px;
-  font-variation-settings: "opsz" 48;
 }
 .article-title .paragraf-num { color: var(--accent); font-style: italic; }
 .article-description {
@@ -192,7 +190,6 @@ nav.site-nav {
 .kort-svar p {
   font-family: var(--serif); font-size: 20px; line-height: 1.6;
   color: var(--ink); margin: 0; letter-spacing: -0.005em;
-  font-variation-settings: "opsz" 22;
 }
 
 /* Article body */
@@ -206,14 +203,12 @@ nav.site-nav {
   font-size: clamp(24px, 2.8vw, 32px);
   line-height: 1.15; letter-spacing: -0.015em;
   margin: 64px 0 20px;
-  font-variation-settings: "opsz" 36;
   color: var(--ink);
 }
 .article-body h2 + p, .article-body h2 + ul, .article-body h2 + ol { margin-top: 0; }
 .article-body h3 {
   font-family: var(--serif); font-weight: 500; font-size: 22px;
   line-height: 1.3; margin: 32px 0 12px; letter-spacing: -0.005em;
-  font-variation-settings: "opsz" 24;
 }
 .article-body p { margin-bottom: 18px; color: var(--ink); }
 .article-body ul, .article-body ol { margin: 18px 0 18px 24px; }
@@ -229,7 +224,6 @@ nav.site-nav {
   padding: 28px 32px; margin: 24px 0;
   font-family: var(--serif); font-size: 17px; line-height: 1.6; color: var(--ink-soft);
   font-style: italic; white-space: pre-wrap;
-  font-variation-settings: "opsz" 18;
 }
 .lovtekst-attr {
   margin-top: 16px; font-family: var(--sans); font-style: normal; font-size: 13px;
@@ -248,7 +242,6 @@ nav.site-nav {
   font-family: var(--serif); font-weight: 600; font-size: 16px;
   color: var(--accent); margin-bottom: 8px;
   letter-spacing: 0.02em;
-  font-variation-settings: "opsz" 18;
 }
 .example-name::before { content: 'Eksempel · '; color: var(--ink-mute); font-weight: 500; }
 .example p { margin: 0; color: var(--ink); }
@@ -263,7 +256,6 @@ nav.site-nav {
   font-family: var(--serif); font-weight: 500; font-size: 19px;
   line-height: 1.35; color: var(--ink); margin-bottom: 10px;
   letter-spacing: -0.005em;
-  font-variation-settings: "opsz" 24;
 }
 .faq-a { color: var(--ink-soft); line-height: 1.6; }
 
@@ -292,7 +284,6 @@ nav.site-nav {
 .related-card-title {
   font-family: var(--serif); font-weight: 500; font-size: 18px;
   line-height: 1.3; color: var(--ink);
-  font-variation-settings: "opsz" 20;
 }
 .related-card.unavailable { opacity: 0.6; pointer-events: none; }
 .related-card.unavailable .related-card-meta::after {
@@ -314,7 +305,6 @@ nav.site-nav {
   font-family: var(--serif); font-weight: 400;
   font-size: clamp(24px, 3vw, 36px); line-height: 1.1;
   letter-spacing: -0.015em; margin-bottom: 20px;
-  font-variation-settings: "opsz" 60;
 }
 .cta-intro h2 em { font-style: italic; color: var(--accent); }
 .cta-intro p { font-size: 17px; color: var(--ink-soft); line-height: 1.55; max-width: 420px; }
@@ -353,7 +343,7 @@ form.contact-form {
 .form-success { display: none; background: var(--bg); padding: 40px; border-radius: 20px; border: 1px solid var(--accent-soft); text-align: center; }
 .form-success.show { display: block; }
 form.contact-form.hide { display: none; }
-.form-success h3 { font-family: var(--serif); font-size: 24px; margin-bottom: 10px; font-variation-settings: "opsz" 28; }
+.form-success h3 { font-family: var(--serif); font-size: 24px; margin-bottom: 10px; }
 .form-success p { color: var(--ink-soft); }
 
 /* Footer — warm light redesign */
@@ -379,9 +369,8 @@ footer.site-footer {
   color: var(--accent); line-height: 0.85; position: relative; top: 3px;
 }
 .footer-logo-name {
-  font-family: var(--serif); font-size: 36px;
-  letter-spacing: -0.022em; color: var(--ink);
-  font-variation-settings: "opsz" 60;
+  font-family: var(--serif); font-size: 32px;
+  letter-spacing: -0.022em; color: var(--ink); font-weight: 400;
 }
 .footer-tagline {
   font-family: var(--serif); font-size: 15px; line-height: 1.65; font-style: italic;
@@ -660,7 +649,6 @@ footer.site-footer a:hover { color: var(--accent); }
   line-height: 1.06;
   letter-spacing: -0.022em;
   margin-bottom: 0;
-  font-variation-settings: "opsz" 60;
 }
 .homepage-hero h1 + h1 { margin-bottom: 32px; }
 .homepage-hero h1 em {
@@ -727,7 +715,6 @@ footer.site-footer a:hover { color: var(--accent); }
   line-height: 1.1;
   letter-spacing: -0.015em;
   margin-bottom: 10px;
-  font-variation-settings: "opsz" 36;
 }
 .section-sub {
   color: var(--ink-mute);
@@ -752,7 +739,6 @@ footer.site-footer a:hover { color: var(--accent); }
   font-size: clamp(24px, 3vw, 36px);
   line-height: 1.08;
   letter-spacing: -0.022em;
-  font-variation-settings: "opsz" 60;
 }
 .om-header h1 em {
   font-style: italic;
@@ -769,7 +755,6 @@ footer.site-footer a:hover { color: var(--accent); }
   letter-spacing: -0.01em;
   color: var(--accent);
   margin-bottom: 20px;
-  font-variation-settings: "opsz" 28;
 }
 .om-section p {
   font-family: var(--serif);
@@ -778,7 +763,6 @@ footer.site-footer a:hover { color: var(--accent); }
   line-height: 1.6;
   color: var(--ink);
   margin-bottom: 18px;
-  font-variation-settings: "opsz" 22;
 }
 .om-lead {
   font-size: 26px !important;
@@ -1207,7 +1191,6 @@ footer.site-footer a:hover { color: var(--accent); }
   font-family: var(--serif); font-size: 32px;
   font-weight: 500; line-height: 1; color: var(--accent);
   letter-spacing: -0.02em; flex-shrink: 0;
-  font-variation-settings: "opsz" 48;
 }
 .lov-kort .lov-num-lbl {
   font-family: var(--sans); font-size: 10px;
@@ -1567,7 +1550,7 @@ def shared_head(title, description, depth=0, canonical_path=""):
 <meta name="twitter:description" content="{description}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,30..100,0..1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{prefix}styles.css">
 </head>
 <body>"""
@@ -2252,7 +2235,7 @@ def render_lover_index():
 .lk-page {{ max-width: 880px; margin: 0 auto; padding: 0 24px; }}
 .lk-hero {{ padding: 56px 0 40px; border-bottom: 1px solid var(--line); margin-bottom: 48px; }}
 .lk-hero .lk-kicker {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 14px; display: block; }}
-.lk-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 16px 0; }}
+.lk-hero h1 {{ font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 16px 0; }}
 .lk-hero .lk-lead {{ font-size: 17px; color: var(--ink-soft); line-height: 1.6; max-width: 540px; margin: 0; }}
 
 .lk-stats {{ display: flex; gap: 32px; margin-top: 24px; padding-top: 0; }}
@@ -2363,6 +2346,7 @@ def render_om():
   padding: 120px 24px 100px;
   border-bottom: 1px solid var(--line);
   text-align: left;
+  background: #E8E1D5;
 }}
 .om-hero-inner {{ max-width: 1080px; margin: 0 auto; width: 100%; }}
 .om-kicker {{
@@ -2371,10 +2355,9 @@ def render_om():
   color: var(--accent); margin-bottom: 24px; display: block;
 }}
 .om-h1 {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(40px, 7vw, 88px); line-height: 1.02;
-  letter-spacing: -0.032em; margin: 0 0 28px 0; max-width: 920px;
-  font-variation-settings: "opsz" 96, "SOFT" 50;
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(32px, 5.6vw, 70px); line-height: 1.05;
+  letter-spacing: -0.016em; margin: 0 0 28px 0; max-width: 920px;
 }}
 .om-h1 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
 .om-lead-hero {{
@@ -2384,10 +2367,9 @@ def render_om():
 }}
 
 .om-h2 {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05;
-  letter-spacing: -0.026em; margin: 0 0 24px 0; max-width: 800px;
-  font-variation-settings: "opsz" 72, "SOFT" 50;
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(26px, 3.6vw, 42px); line-height: 1.1;
+  letter-spacing: -0.016em; margin: 0 0 24px 0; max-width: 800px;
 }}
 .om-h2 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
 .om-lead {{
@@ -2408,7 +2390,6 @@ def render_om():
   font-family: var(--serif); font-size: clamp(48px, 6vw, 76px);
   font-weight: 400; line-height: 1; letter-spacing: -0.028em;
   color: var(--ink); margin-bottom: 12px;
-  font-variation-settings: "opsz" 96;
   font-variant-numeric: tabular-nums;
 }}
 .om-stat-lbl {{
@@ -2437,7 +2418,6 @@ def render_om():
 .om-prinsipp h3 {{
   font-family: var(--serif); font-size: 22px; font-weight: 400;
   letter-spacing: -0.012em; line-height: 1.2; margin: 0 0 10px 0;
-  font-variation-settings: "opsz" 28;
 }}
 .om-prinsipp p {{
   font-family: var(--serif-prose); font-size: 15.5px; line-height: 1.55;
@@ -2446,11 +2426,10 @@ def render_om():
 
 /* QUOTE / LARGE STATEMENT */
 .om-quote {{
-  font-family: var(--serif); font-weight: 400; font-style: italic;
-  font-size: clamp(28px, 4vw, 44px); line-height: 1.2;
-  letter-spacing: -0.018em; color: var(--ink);
+  font-family: var(--serif); font-weight: 300; font-style: italic;
+  font-size: clamp(22px, 3.2vw, 36px); line-height: 1.25;
+  letter-spacing: -0.012em; color: var(--ink);
   max-width: 900px; margin: 0;
-  font-variation-settings: "opsz" 60;
 }}
 .om-quote-attr {{
   font-family: var(--sans); font-size: 13px; font-weight: 500;
@@ -2464,7 +2443,6 @@ def render_om():
   font-family: var(--serif); font-size: 48px; font-weight: 400;
   line-height: 1; color: var(--accent); margin-bottom: 16px;
   letter-spacing: -0.02em;
-  font-variation-settings: "opsz" 60;
 }}
 .om-steg h4 {{
   font-family: var(--serif); font-size: 19px; font-weight: 400;
@@ -2487,7 +2465,6 @@ def render_om():
   font-family: var(--serif); font-size: 22px; font-weight: 400;
   letter-spacing: -0.012em; line-height: 1.25; color: var(--ink);
   margin: 0;
-  font-variation-settings: "opsz" 28;
 }}
 .om-info-val a {{ color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color 0.15s; }}
 .om-info-val a:hover {{ border-bottom-color: var(--accent); }}
@@ -2816,7 +2793,7 @@ def render_sporsmal_hub():
 .sp-page {{ max-width: 900px; margin: 0 auto; padding: 0 24px; }}
 .sp-hero {{ padding: 56px 0 36px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }}
 .sp-hero .sp-kicker {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 14px; display: block; }}
-.sp-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 16px 0; }}
+.sp-hero h1 {{ font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 16px 0; }}
 .sp-hero .sp-lead {{ font-size: 17px; color: var(--ink-soft); line-height: 1.6; max-width: 560px; margin: 0; }}
 
 .sp-toolbar {{ position: sticky; top: 0; background: var(--bg); padding: 14px 0 16px; margin-bottom: 8px; z-index: 5; border-bottom: 1px solid var(--line); }}
@@ -3003,14 +2980,13 @@ def render_homepage():
   padding: 100px 24px 80px;
   border-bottom: 1px solid var(--line);
   position: relative;
+  background: #E8E1D5;
 }}
 .sl-hero-inner {{ max-width: 1080px; margin: 0 auto; width: 100%; }}
 .sl-hero h1 {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(46px, 8vw, 104px); line-height: 1.0;
-  letter-spacing: -0.035em; margin: 0;
-  font-feature-settings: "liga" 1, "dlig" 1;
-  font-variation-settings: "opsz" 120, "SOFT" 50, "WONK" 0;
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(36px, 6.4vw, 84px); line-height: 1.05;
+  letter-spacing: -0.018em; margin: 0;
 }}
 .sl-hero h1 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
 .sl-hero .sl-hero-meta {{
@@ -3041,10 +3017,9 @@ def render_homepage():
   color: var(--accent); margin-bottom: 20px; display: block;
 }}
 .sl-h2 {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05;
-  letter-spacing: -0.026em; margin: 0 0 20px 0; max-width: 760px;
-  font-variation-settings: "opsz" 72, "SOFT" 50;
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(26px, 3.6vw, 42px); line-height: 1.1;
+  letter-spacing: -0.016em; margin: 0 0 20px 0; max-width: 760px;
 }}
 .sl-lead {{
   font-size: 18px; color: var(--ink-soft); line-height: 1.55;
@@ -3073,9 +3048,9 @@ def render_homepage():
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }}
 .sl-info {{ flex: 1; min-width: 0; }}
-.sl-navn {{ font-family: var(--serif); font-size: 20px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 5px; font-variation-settings: "opsz" 24; }}
+.sl-navn {{ font-family: var(--serif); font-size: 17px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 5px; }}
 .sl-beskr {{ font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }}
-.sl-tall {{ font-family: var(--serif); font-size: 28px; color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 400; letter-spacing: -0.02em; font-variation-settings: "opsz" 36; }}
+.sl-tall {{ font-family: var(--serif); font-size: 28px; color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 400; letter-spacing: -0.02em; }}
 .sl-pil {{ font-size: 18px; color: var(--ink-mute); transition: transform 0.2s, color 0.2s; flex-shrink: 0; }}
 
 .sl-cta-rad {{ margin-top: 56px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }}
@@ -3108,7 +3083,7 @@ def render_homepage():
   border-radius: 18px;
   display: flex; align-items: center; justify-content: center;
 }}
-.sl-kat-navn {{ font-family: var(--serif); font-size: 24px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 8px; font-variation-settings: "opsz" 28; }}
+.sl-kat-navn {{ font-family: var(--serif); font-size: 20px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 8px; }}
 .sl-kat-beskr {{ font-size: 13.5px; color: var(--ink-soft); line-height: 1.55; }}
 
 @media (max-width: 700px) {{
@@ -3168,36 +3143,6 @@ def render_homepage():
   </section>
 
   <section class="home-slide">
-    <div class="home-slide-inner">
-      <span class="sl-kicker">Verktøy</span>
-      <h2 class="sl-h2">Hva trenger du hjelp med?</h2>
-      <p class="sl-lead">Velg en livssituasjon — så finner du verktøyene som hører til.</p>
-      <div class="sl-kat-grid">
-        <a href="tjenester/#leier-bolig" class="sl-kat">
-          <div class="sl-kat-em">🏠</div>
-          <div class="sl-kat-navn">Bolig og leie</div>
-          <div class="sl-kat-beskr">Husleiekontrakt, depositum, leieøkning, oppsigelse.</div>
-        </a>
-        <a href="tjenester/#arv-og-familie" class="sl-kat">
-          <div class="sl-kat-em">👨‍👩‍👧</div>
-          <div class="sl-kat-navn">Arv og familie</div>
-          <div class="sl-kat-beskr">Testament, samboeravtale, ektepakt, samvær.</div>
-        </a>
-        <a href="tjenester/#jobber" class="sl-kat">
-          <div class="sl-kat-em">💼</div>
-          <div class="sl-kat-navn">Arbeid</div>
-          <div class="sl-kat-beskr">Arbeidsavtale, feriepenger, oppsigelse, overtid.</div>
-        </a>
-        <a href="tjenester/#kjop" class="sl-kat">
-          <div class="sl-kat-em">🛒</div>
-          <div class="sl-kat-navn">Kjøp og forbruk</div>
-          <div class="sl-kat-beskr">Reklamasjon, angrerett, mangel, prisavslag.</div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="home-slide" style="background:var(--bg-alt)">
     <div class="home-slide-inner">
       <span class="sl-kicker">Spørsmål</span>
       <h2 class="sl-h2">Har du et konkret spørsmål?</h2>
@@ -3362,14 +3307,14 @@ def render_tjenester_hub():
 <style>
 .vh-page {{ max-width: 1140px; margin: 0 auto; padding: 0 24px; }}
 .vh-hero {{ padding: 56px 0 44px; margin-bottom: 24px; }}
-.vh-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 4.6vw, 56px); letter-spacing: -0.025em; line-height: 1.04; margin: 0 0 18px 0; max-width: 760px; }}
+.vh-hero h1 {{ font-family: var(--serif); font-weight: 300; font-size: clamp(28px, 3.6vw, 44px); letter-spacing: -0.025em; line-height: 1.04; margin: 0 0 18px 0; max-width: 760px; }}
 .vh-hero h1 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
 .vh-hero .vh-lead {{ font-size: 18px; line-height: 1.55; color: var(--ink-soft); max-width: 580px; margin: 0; }}
 .vh-hero .vh-meta {{ font-family: var(--sans); font-size: 13px; color: var(--ink-mute); letter-spacing: 0.02em; margin-top: 24px; }}
 .vh-hero .vh-meta strong {{ color: var(--accent); font-weight: 700; }}
 
 .vh-seksjon {{ margin-bottom: 56px; }}
-.vh-seksjon-tittel {{ font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.6vw, 28px); letter-spacing: -0.015em; line-height: 1.2; margin: 0 0 24px 0; display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }}
+.vh-seksjon-tittel {{ font-family: var(--serif); font-weight: 300; font-size: clamp(18px, 2.1vw, 24px); letter-spacing: -0.015em; line-height: 1.2; margin: 0 0 24px 0; display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }}
 .vh-seksjon-em {{ font-size: 26px; line-height: 1; }}
 
 .vh-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; }}
