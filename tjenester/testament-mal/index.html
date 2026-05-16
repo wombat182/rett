@@ -4,12 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Testament-mal — generer utkast gratis | Rettsregel</title>
-<meta name="description" content="Generer et testament-utkast med riktige formuleringer. Husk: testamentet er ikke gyldig uten underskrift fra testator og to vitner. Basert på arveloven § 40.">
+<meta name="description" content="Generer et testament-utkast med riktige formuleringer og vitnefelt. Basert på arveloven § 40. Gratis, uten registrering.">
 <link rel="canonical" href="https://rettsregel.no/tjenester/testament-mal/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Rettsregel">
-<meta property="og:title" content="Testament-mal — generer utkast gratis">
-<meta property="og:description" content="Generer et testament-utkast med riktige formuleringer. Basert på arveloven § 40.">
-<meta property="og:url" content="https://rettsregel.no/tjenester/testament-mal/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -36,8 +32,8 @@
 .k-sek-hd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:12px}
 .sf{margin-bottom:10px}
 .sf label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:4px}
-.sf input,.sf select,.sf textarea{width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--sans);font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box}
-.sf input:focus,.sf select:focus,.sf textarea:focus{outline:none;border-color:var(--accent)}
+.sf input,.sf textarea{width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--sans);font-size:16px;background:var(--bg);color:var(--ink);box-sizing:border-box}
+.sf input:focus,.sf textarea:focus{outline:none;border-color:var(--accent)}
 .sf textarea{min-height:80px;resize:vertical}
 .last-ned-kn{width:100%;background:var(--accent);color:white;border:none;border-radius:12px;font-family:var(--sans);font-size:15px;font-weight:600;padding:15px;cursor:pointer;margin-top:20px;transition:background .2s}
 .last-ned-kn:hover{background:var(--accent-deep)}
@@ -48,7 +44,7 @@
 .dok-kn{padding:8px 16px;border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;border:none}
 .dok-kn.kopier{background:var(--accent);color:white}
 .dok-kn.skriv{background:var(--bg-card);border:1.5px solid var(--line);color:var(--ink)}
-.dok-dokument{background:white;border-radius:12px;padding:48px 52px;font-family:'EB Garamond',Georgia,serif;font-size:16px;line-height:1.85;color:#1a1612;border:1px solid var(--line)}
+.dok-dokument{background:white;border-radius:12px;padding:48px 52px;font-family:"EB Garamond",Georgia,serif;font-size:16px;line-height:1.85;color:#1a1612;border:1px solid var(--line)}
 @media(max-width:600px){.dok-dokument{padding:24px 18px;font-size:15px}}
 .dok-tom{color:var(--ink-mute);font-style:italic;font-family:var(--sans);font-size:14px;padding:32px 0;text-align:center}
 .dok-tittel-blokk{text-align:center;margin-bottom:36px}
@@ -62,26 +58,95 @@
 .ib{background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:28px;margin-bottom:32px}
 .ib h2{font-family:var(--serif);font-size:22px;font-weight:400;margin-bottom:12px}
 .ib p{font-size:14px;color:var(--ink-soft);line-height:1.7;margin-bottom:10px}
-@media print{.no-print{display:none!important}nav.site-nav,footer.site-footer,#chat-toggle,#chat-panel,.breadcrumbs,.article-header,.k-skjema{display:none!important}.k-layout{display:block}.dok-wrap{border:none;padding:0;background:white}.dok-dokument{border:none;padding:0;font-size:13pt;line-height:1.7}body{background:white}}
+@media print{.no-print{display:none!important}nav,footer,#chat-toggle,#chat-panel,.k-skjema,.breadcrumbs,.article-header{display:none!important}.k-layout{display:block}.dok-wrap{border:none;padding:0;background:white}.dok-dokument{border:none;padding:0;font-size:13pt}body{background:white}}
 </style>
+
+<!-- JavaScript: GLOBALE funksjoner, ingen IIFE -->
+<script>
+function tmOppdater() {
+  var navn = (document.getElementById('tm_navn').value || '').trim();
+  var fnr  = (document.getElementById('tm_fnr').value  || '').trim();
+  var adr  = (document.getElementById('tm_adr').value  || '').trim();
+  var arv  = (document.getElementById('tm_arv').value  || '').trim();
+  var spesial = (document.getElementById('tm_spesial').value || '').trim();
+
+  var el = document.getElementById('dokInnhold');
+  if (!el) return;
+
+  if (!navn) {
+    el.innerHTML = '<div class="dok-tom">Skriv inn ditt fulle navn til venstre — testamentet bygges her i sanntid.</div>';
+    return;
+  }
+  if (!arv) {
+    el.innerHTML = '<div class="dok-tom">Fyll inn hvem som arver hva.</div>';
+    return;
+  }
+
+  var arvLinjer = arv.replace(/
+/g, '<br>');
+  var spesialLinjer = spesial ? spesial.replace(/
+/g, '<br>') : '';
+
+  el.innerHTML =
+    '<div class="advarsel">&#9888; <strong>Viktig:</strong> Dette er et utkast. Testamentet er ikke gyldig uten underskrift fra testator og <em>to</em> vitner som er til stede samtidig. Vitnene kan ikke arve etter testamentet.</div>' +
+    '<div class="dok-tittel-blokk"><h1>TESTAMENT</h1></div>' +
+    '<div class="dok-sek"><h2>§ 1 Testator</h2>' +
+    '<p>Jeg, <strong>' + navn + '</strong>' +
+    (fnr ? ', fødselsnummer ' + fnr : '') +
+    (adr ? ', bosatt ' + adr : '') +
+    ', oppretter herved dette testament i samsvar med arveloven §§ 40–47.</p></div>' +
+    '<div class="dok-sek"><h2>§ 2 Arvefordeling</h2><p>' + arvLinjer + '</p></div>' +
+    (spesialLinjer ? '<div class="dok-sek"><h2>§ 3 Særlige bestemmelser</h2><p>' + spesialLinjer + '</p></div>' : '') +
+    '<div class="dok-sek"><h2>§ 4 Opphevelse</h2><p>Dette testament opphever alle tidligere testamenter jeg har opprettet.</p></div>' +
+    '<div class="sign-grid"><div class="sign-boks" style="grid-column:1/-1">' +
+    'Sted og dato: ___________________<br><br>' +
+    'Underskrift: ___________________<br><br>' +
+    navn + '<br><em>(testator)</em></div></div>' +
+    '<div class="dok-sek" style="margin-top:40px"><h2>Vitneattest</h2>' +
+    '<p>Vi bekrefter at testator (' + navn + ') personlig og i vår <em>samtidige</em> nærværelse har undertegnet dette testament, og at testator etter vår overbevisning er ved full mental kapasitet og handler av fri vilje.</p></div>' +
+    '<div class="sign-grid">' +
+    '<div class="sign-boks">Vitne 1:<br>Navn: ___________________<br>Fnr: ___________________<br>Adresse: ___________________<br><br>Underskrift: ___________________<br>Dato: ___________________</div>' +
+    '<div class="sign-boks">Vitne 2:<br>Navn: ___________________<br>Fnr: ___________________<br>Adresse: ___________________<br><br>Underskrift: ___________________<br>Dato: ___________________</div>' +
+    '</div>';
+}
+
+function tmKopier() {
+  var el = document.getElementById('dokInnhold');
+  if (!el) return;
+  var r = document.createRange();
+  r.selectNode(el);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(r);
+  document.execCommand('copy');
+  window.getSelection().removeAllRanges();
+}
+</script>
+
 <main class="page"><div class="container">
 <div class="breadcrumbs no-print"><a href="../../">Rettsregel</a><span class="sep">›</span><a href="../../tjenester/">Verktøy</a><span class="sep">›</span><span class="current">Testament-mal</span></div>
-<div class="article-header no-print"><div class="article-eyebrow">Gratis verktøy</div><h1 class="article-title">Testament-mal</h1><p class="article-description">Lag et testament-utkast med riktig struktur. Skriv ut og signer med to vitner.</p></div>
+<div class="article-header no-print">
+  <div class="article-eyebrow">Gratis verktøy</div>
+  <h1 class="article-title">Testament-mal</h1>
+  <p class="article-description">Lag et testament-utkast med riktig struktur. Skriv ut og signer med to vitner.</p>
+</div>
 
 <div class="k-layout">
-  <div class="k-skjema no-print" id="kontraktSkjema">
+  <div class="k-skjema no-print">
     <div class="k-sek">
       <div class="k-sek-hd">Testator (deg)</div>
-      <div class="sf"><label>Ditt fulle navn</label><input type="text" id="tm_navn" placeholder="Ola Nordmann"></div>
-      <div class="sf"><label>Fødselsnummer (valgfritt)</label><input type="text" id="tm_fnr" placeholder="01010145678" maxlength="11"></div>
-      <div class="sf"><label>Din adresse</label><input type="text" id="tm_adr" placeholder="Gata 1, 0000 Oslo"></div>
+      <div class="sf"><label>Ditt fulle navn</label>
+        <input type="text" id="tm_navn" oninput="tmOppdater()" placeholder="Ola Nordmann"></div>
+      <div class="sf"><label>Fødselsnummer (valgfritt)</label>
+        <input type="text" id="tm_fnr" oninput="tmOppdater()" placeholder="01010145678" maxlength="11"></div>
+      <div class="sf"><label>Din adresse</label>
+        <input type="text" id="tm_adr" oninput="tmOppdater()" placeholder="Gata 1, 0000 Oslo"></div>
     </div>
     <div class="k-sek">
       <div class="k-sek-hd">Testamentets innhold</div>
       <div class="sf"><label>Hvem arver hva?</label>
-        <textarea id="tm_arv" rows="5" placeholder="F.eks.: Min ektefelle Kari Nordmann (f. 02.02.1980) arver all min formue. / Mine to barn, Per og Lise, arver likt. / Vennen min Erik Andersen arver bilen min."></textarea></div>
+        <textarea id="tm_arv" rows="5" oninput="tmOppdater()" placeholder="F.eks.: Min ektefelle Kari Nordmann arver all min formue. / Mine to barn arver likt. / Vennen min Erik Andersen arver bilen min."></textarea></div>
       <div class="sf"><label>Særlige bestemmelser (valgfritt)</label>
-        <textarea id="tm_spesial" rows="3" placeholder="F.eks.: Arven til barna skal ikke kunne kreves utbetalt før de fyller 25 år. / Hytten på Sjusjøen skal tilfalle sønnen min."></textarea></div>
+        <textarea id="tm_spesial" rows="3" oninput="tmOppdater()" placeholder="F.eks.: Arven til barna skal ikke kunne kreves utbetalt før de fyller 25 år."></textarea></div>
     </div>
     <button class="last-ned-kn" onclick="window.print()">Skriv ut / Last ned →</button>
   </div>
@@ -90,7 +155,7 @@
     <div class="dok-header no-print">
       <h3>Testament-utkast</h3>
       <div class="dok-kn-rad">
-        <button class="dok-kn kopier" onclick="kopierDok()">Kopier</button>
+        <button class="dok-kn kopier" onclick="tmKopier()">Kopier</button>
         <button class="dok-kn skriv" onclick="window.print()">Skriv ut</button>
       </div>
     </div>
@@ -100,12 +165,12 @@
   </div>
 </div>
 
-<div class="ib"><h2>Formkravene til testament</h2>
-<p><strong>Arveloven § 40</strong> stiller strenge formkrav. Testament er gyldig bare når:</p>
-<p>1. Det er <strong>skriftlig</strong>.<br>2. Testator <strong>underskriver</strong> dokumentet.<br>3. To <strong>vitner</strong> som er til stede <em>samtidig</em> underskriver testamentet mens testator er til stede.<br>4. Vitnene vet at dokumentet er et testament — men trenger ikke kjenne innholdet.</p>
-<p>Vitner kan <strong>ikke</strong> være: under 18 år, den som mottar arv etter testamentet, eller nærstående til mottakeren (ektefelle, samboer, foreldre, søsken, barn).</p>
-<p>Et testament som bryter formkravene er ugyldig. Få gjerne en advokat til å gjennomgå det ferdige testamentet.</p></div>
-
+<div class="ib">
+  <h2>Formkravene til testament</h2>
+  <p><strong>Arveloven § 40</strong> stiller strenge formkrav. Testament er gyldig bare når:</p>
+  <p>1. Det er <strong>skriftlig</strong>.<br>2. Testator <strong>underskriver</strong> dokumentet.<br>3. To <strong>vitner</strong> som er til stede <em>samtidig</em> underskriver mens testator er til stede.<br>4. Vitnene vet at dokumentet er et testament.</p>
+  <p>Vitner kan <strong>ikke</strong> være: under 18 år, den som mottar arv etter testamentet, eller nærstående til mottakeren.</p>
+</div>
 </div></main>
 
 <footer class="site-footer"><div class="container"><div class="footer-inner">
@@ -113,116 +178,41 @@
     <p class="footer-tagline">Lover er ikke vanskelige.<br>De er bare dårlig forklart.</p>
     <span class="footer-entity">Walrus AS</span></div>
   <div><div class="footer-col-head">Lover</div><ul>
-    <li><a href="../../lover/">Alle lover</a></li><li><a href="../../lover/husleieloven/">Husleieloven</a></li>
-    <li><a href="../../lover/arveloven/">Arveloven</a></li><li><a href="../../lover/kjopsloven/">Kjøpsloven</a></li></ul></div>
+    <li><a href="../../lover/">Alle lover</a></li>
+    <li><a href="../../lover/arveloven/">Arveloven</a></li></ul></div>
   <div><div class="footer-col-head">Verktøy</div><ul>
-    <li><a href="../../tjenester/">Alle verktøy</a></li><li><a href="../../tjenester/reklamasjon/">Reklamasjonsbrev</a></li>
-    <li><a href="../../tjenester/arv/">Arveoppgjør</a></li><li><a href="../../tjenester/feriepenger/">Feriepenger</a></li></ul></div>
+    <li><a href="../../tjenester/">Alle verktøy</a></li>
+    <li><a href="../../tjenester/arv/">Arvefordeling</a></li></ul></div>
   <div><div class="footer-col-head">Om</div><ul>
-    <li><a href="../../om/">Om Rettsregel</a></li><li><a href="../../sporsmal/">Spørsmål og svar</a></li>
-    <li><a href="../../personvern/">Personvern</a></li><li><a href="mailto:rettsregel@gmail.com">Kontakt</a></li></ul></div>
+    <li><a href="../../om/">Om Rettsregel</a></li>
+    <li><a href="mailto:rettsregel@gmail.com">Kontakt</a></li></ul></div>
 </div><div class="footer-bottom"><span>© 2026 Walrus AS · Rettsregel.no</span><span>Juridisk informasjon, ikke rådgivning.</span></div></div></footer>
 
 <button id="chat-toggle" class="chat-toggle"><span class="chat-toggle-icon">💬</span><span>Spør Roy</span></button>
-<div id="chat-panel" class="chat-panel" role="dialog">
+<div id="chat-panel" class="chat-panel">
   <div class="chat-header"><div><div class="chat-header-title">Roy</div><div class="chat-header-sub">Forklarer loven på vanlig norsk</div></div><button id="chat-close" class="chat-close">×</button></div>
   <div class="chat-disclaimer">AI-assistent. Generell informasjon — kan gjøre feil.</div>
   <div id="chat-messages" class="chat-messages"><div class="chat-message bot">Hei, jeg er Roy. Beskriv problemet ditt — så finner jeg riktig paragraf.</div></div>
   <form id="chat-form" class="chat-input-bar"><input type="text" id="chat-input" class="chat-input" placeholder="Skriv som du tenker..." maxlength="1000" autocomplete="off"><button type="submit" id="chat-send" class="chat-send">Send</button></form>
 </div>
 <script>
-(function() {
-  function v(id) {
-    var el = document.getElementById(id);
-    return el ? el.value.trim() : '';
-  }
-  
-  function kopierDok() {
-    var el = document.getElementById('dokInnhold');
-    var r = document.createRange();
-    r.selectNode(el);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(r);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-  }
-  window.kopierDok = kopierDok;
-  
-  function oppdater() {
-    var navn = v('tm_navn');
-    var fnr = v('tm_fnr');
-    var adr = v('tm_adr');
-    var arv = v('tm_arv');
-    var spesial = v('tm_spesial');
-    
-    if (!navn) {
-      document.getElementById('dokInnhold').innerHTML = '<div class="dok-tom">Skriv inn ditt fulle navn til venstre — testamentet bygges her i sanntid.</div>';
-      return;
-    }
-    if (!arv) {
-      document.getElementById('dokInnhold').innerHTML = '<div class="dok-tom">Fyll ut hvem som skal arve hva.</div>';
-      return;
-    }
-    
-    var arvLinjer = arv.split('
-').join('<br>');
-    var spesialLinjer = spesial ? spesial.split('
-').join('<br>') : '';
-    
-    var d = '<div class="advarsel">⚠ <strong>Viktig:</strong> Dette er et utkast. Testamentet er ikke gyldig før det er underskrevet av testator og <em>to</em> vitner som er til stede samtidig. Vitnene kan ikke arve etter testamentet.</div>' +
-      '<div class="dok-tittel-blokk"><h1>TESTAMENT</h1></div>' +
-      '<div class="dok-sek"><h2>§ 1 Testator</h2>' +
-      '<p>Jeg, <strong>' + navn + '</strong>' +
-      (fnr ? ', fødselsnummer ' + fnr : '') +
-      (adr ? ', bosatt ' + adr : '') +
-      ', oppretter herved dette testament i samsvar med arveloven §§ 40–47.</p></div>' +
-      '<div class="dok-sek"><h2>§ 2 Arvefordeling</h2><p>' + arvLinjer + '</p></div>' +
-      (spesialLinjer ? '<div class="dok-sek"><h2>§ 3 Særlige bestemmelser</h2><p>' + spesialLinjer + '</p></div>' : '') +
-      '<div class="dok-sek"><h2>§ 4 Opphevelse av tidligere testamenter</h2>' +
-      '<p>Dette testament opphever alle tidligere testamenter jeg har opprettet.</p></div>' +
-      '<div class="sign-grid">' +
-      '<div class="sign-boks" style="grid-column:1/-1">Sted og dato: ___________________<br><br>Underskrift: ___________________<br><br>' + navn + '<br><em>(testator)</em></div>' +
-      '</div>' +
-      '<div class="dok-sek" style="margin-top:40px"><h2>Vitneattest</h2>' +
-      '<p>Vi bekrefter at testator (' + navn + ') personlig og i vår <em>samtidige</em> nærværelse har undertegnet dette testament, og at testator etter vår overbevisning er ved full mental kapasitet og handler av fri vilje.</p></div>' +
-      '<div class="sign-grid">' +
-      '<div class="sign-boks">Vitne 1:<br>Navn: ___________________<br>Fødselsnummer: ___________________<br>Adresse: ___________________<br><br>Underskrift: ___________________<br>Dato: ___________________</div>' +
-      '<div class="sign-boks">Vitne 2:<br>Navn: ___________________<br>Fødselsnummer: ___________________<br>Adresse: ___________________<br><br>Underskrift: ___________________<br>Dato: ___________________</div>' +
-      '</div>';
-    
-    document.getElementById('dokInnhold').innerHTML = d;
-  }
-  
-  // Live update på alle felt
-  document.querySelectorAll('#kontraktSkjema input, #kontraktSkjema textarea').forEach(function(el) {
-    el.addEventListener('input', oppdater);
-  });
-  
-  // Kjør ved oppstart
-  oppdater();
-  
-  // Chat widget
-  var W = "https://rettsregel-bot.brys4ypd5x.workers.dev";
-  var tg = document.getElementById('chat-toggle'), pn = document.getElementById('chat-panel'),
-      cb = document.getElementById('chat-close'), ms = document.getElementById('chat-messages'),
-      fm = document.getElementById('chat-form'), ip = document.getElementById('chat-input'),
-      sb = document.getElementById('chat-send'), hist = [];
-  tg.addEventListener('click', function() { pn.classList.add('open'); tg.classList.add('open'); setTimeout(function() { ip.focus(); }, 100); });
-  cb.addEventListener('click', function() { pn.classList.remove('open'); tg.classList.remove('open'); });
-  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-  function amsg(r, t) { var d = document.createElement('div'); d.className = 'chat-message ' + r; d.innerHTML = esc(t).replace(/
-/g, '<br>'); ms.appendChild(d); ms.scrollTop = ms.scrollHeight; }
-  fm.addEventListener('submit', function(e) {
-    e.preventDefault(); var t = ip.value.trim(); if (!t) return;
-    amsg('user', t); ip.value = ''; sb.disabled = true;
-    var ld = document.createElement('div'); ld.className = 'chat-message bot'; ld.textContent = 'Tenker...'; ms.appendChild(ld); ms.scrollTop = ms.scrollHeight;
-    fetch(W, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: t, history: hist }) })
-      .then(function(r) { return r.json(); }).then(function(d) { ld.remove(); sb.disabled = false; amsg('bot', d.error || d.reply || 'Ingen svar.');
-        if (d.reply) { hist.push({ role: 'user', content: t }); hist.push({ role: 'assistant', content: d.reply }); if (hist.length > 12) hist = hist.slice(-12); }
-      }).catch(function() { ld.remove(); sb.disabled = false; amsg('bot', 'Noe gikk galt. Prøv igjen.'); });
-  });
+(function(){
+var W="https://rettsregel-bot.brys4ypd5x.workers.dev";
+var tg=document.getElementById('chat-toggle'),pn=document.getElementById('chat-panel'),
+    cb=document.getElementById('chat-close'),ms=document.getElementById('chat-messages'),
+    fm=document.getElementById('chat-form'),ip=document.getElementById('chat-input'),
+    sb=document.getElementById('chat-send'),hist=[];
+tg.addEventListener('click',function(){pn.classList.add('open');tg.classList.add('open');setTimeout(function(){ip.focus();},100);});
+cb.addEventListener('click',function(){pn.classList.remove('open');tg.classList.remove('open');});
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function amsg(r,t){var d=document.createElement('div');d.className='chat-message '+r;d.innerHTML=esc(t).replace(/
+/g,'<br>');ms.appendChild(d);ms.scrollTop=ms.scrollHeight;}
+fm.addEventListener('submit',function(e){e.preventDefault();var t=ip.value.trim();if(!t)return;amsg('user',t);ip.value='';sb.disabled=true;
+var ld=document.createElement('div');ld.className='chat-message bot';ld.textContent='Tenker...';ms.appendChild(ld);ms.scrollTop=ms.scrollHeight;
+fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t,history:hist})})
+.then(function(r){return r.json();}).then(function(d){ld.remove();sb.disabled=false;amsg('bot',d.error||d.reply||'Ingen svar.');
+if(d.reply){hist.push({role:'user',content:t});hist.push({role:'assistant',content:d.reply});if(hist.length>12)hist=hist.slice(-12);}})
+.catch(function(){ld.remove();sb.disabled=false;amsg('bot','Noe gikk galt. Prøv igjen.');});});
 })();
 </script>
-
-<script>document.addEventListener("DOMContentLoaded",function(){oppdater();});</script>
 </body></html>
