@@ -130,6 +130,10 @@ nav.site-nav {
   transition: color 0.2s;
   font-feature-settings: "liga" 1, "dlig" 1, "kern" 1;
 }
+.logo-tld {
+  color: var(--accent); font-weight: 500;
+  letter-spacing: -0.02em;
+}
 .logo:hover .glyph { fill: var(--accent-deep); }
 .logo:hover .logo-wordmark { color: var(--ink-soft); }
 .nav-links { display: flex; gap: 36px; list-style: none; }
@@ -1575,7 +1579,7 @@ def site_nav(depth=0):
 </svg>'''
     return f"""<div class="container">
 <nav class="site-nav">
-  <a href="{prefix}" class="logo"><span class="logo-mark">{logo_svg}</span><span class="logo-wordmark">Rettsregel</span></a>
+  <a href="{prefix}" class="logo"><span class="logo-mark">{logo_svg}</span><span class="logo-wordmark">rettsregel<span class="logo-tld">.no</span></span></a>
   <ul class="nav-links">
     <li><a href="{prefix}tjenester/">Verktøy</a></li>
     <li><a href="{prefix}lover/">Lover</a></li>
@@ -1735,7 +1739,7 @@ def site_footer(depth=0):
       <div>
         <a href="{prefix}" class="footer-logo">
           <span class="footer-logo-mark">§</span>
-          <span class="footer-logo-name">Rettsregel</span>
+          <span class="footer-logo-name">rettsregel<span style="color:var(--accent);font-weight:500">.no</span></span>
         </a>
         <p class="footer-tagline">Lover er ikke vanskelige.<br>De er bare dårlig forklart.</p>
         <span class="footer-entity">Walrus AS</span>
@@ -1856,6 +1860,29 @@ def auto_link_paragraphs(text, current_lov, depth=3):
             display = f"§ {paragraf}"
         return f'<a href="{prefix}lover/{lov_url}/{paragraf}/">{display}</a>'
     return re.sub(pattern, replace, text)
+
+def paragraf_sort_key(p):
+    """Sortér paragrafer numerisk: § 2-1 før § 10, § 88a etter § 88."""
+    num = str(p.get("number", ""))
+    parts = []
+    cur = ""
+    is_digit = None
+    for ch in num:
+        ch_digit = ch.isdigit()
+        if is_digit is None:
+            is_digit = ch_digit
+            cur = ch
+        elif ch_digit == is_digit:
+            cur += ch
+        else:
+            parts.append(int(cur) if is_digit else cur)
+            cur = ch
+            is_digit = ch_digit
+    if cur:
+        parts.append(int(cur) if is_digit else cur)
+    # Sammenligning: konverter alle til (type, value) for å sortere safe
+    return tuple((0, p) if isinstance(p, int) else (1, p) for p in parts)
+
 
 def render_paragraph_page(p):
     lov_url = p["lov"].replace("ø", "o").replace("æ", "ae").replace("å", "aa")
@@ -2868,295 +2895,273 @@ def render_sporsmal_hub():
 
 
 def render_homepage():
-    """Forsiden."""
-    depth = 0
-    prefix = ""
-    # Featured paragrafer — håndplukket etter nytteverdi på tvers av lover
-    featured = [
-        ("angrerettloven", "16", "forbruk", "FORBRUK · ANGRERETT", "Den viktigste knappen på nett", "Når du kan angre — og når du ikke kan."),
-        ("kjopsloven", "32", "forbruk", "PRIVATKJØP · REKLAMASJON", "Reklamasjonsfristene", "To år, fem år, eller noe annet? Her er hva som gjelder."),
-        ("kjopsloven", "19", "forbruk", "PRIVATKJØP · FINN.NO", "Solgt «som den er» — hva betyr det?", "Selger slipper ikke alt ansvar — uansett hva kontrakten sier."),
-        ("kjopsloven", "39", "forbruk", "PRIVATKJØP · HEVING", "Heving ved mangel", "Når kan du gå fra hele kjøpet — og få pengene tilbake?"),
-        ("angrerettloven", "20", "forbruk", "FORBRUK · ANGRERETT", "Slik bruker du angreretten", "Korte steg: meld fra, returner, få pengene tilbake."),
-        ("kjopsloven", "17", "forbruk", "PRIVATKJØP · MANGEL", "Når har varen en mangel?", "Forskjellen mellom slitasje og reell feil."),
+    """Forsiden — minimalistisk, slide-basert. Ingen søk."""
+
+    total_paragrafer = len(PARAGRAPHS)
+    total_lover = len(set(p["lov"] for p in PARAGRAPHS))
+
+    # Slide 2 — viktige kontrakter og maler
+    KONTRAKTER = [
+        ("tjenester/testament-mal/", "📜", "Testament", "Skriv testament med vitnefelt, klart for signering."),
+        ("kontrakter/samboeravtale/", "🤝", "Samboeravtale", "Hvem eier hva ved brudd? Beskytt deg i dag."),
+        ("kontrakter/husleiekontrakt/", "🔑", "Husleiekontrakt", "Tidsubestemt eller tidsbestemt. Husleieloven."),
+        ("kontrakter/arbeidsavtale/", "✍️", "Arbeidsavtale", "Alle aml. § 14-6-krav. Fyll ut og signer."),
+        ("kontrakter/fremtidsfullmakt/", "🤲", "Fremtidsfullmakt", "Hvem ivaretar deg ved sviktende helse."),
+        ("tjenester/reklamasjon/", "✉️", "Reklamasjonsbrev", "Juridisk korrekt klage på et kjøp."),
     ]
-    cards_html = ""
-    for lov, paragraf, kat, kategori, tittel, beskr in featured:
-        cards_html += f"""
-    <a href="{prefix}lover/{lov}/{paragraf}/" class="sphub-card kat-{kat}">
-      <div class="kat-tag">§ {paragraf} · {kategori}</div>
-      <h3>{tittel}</h3>
-      <p>{beskr}</p>
-      <span class="read-more">Les paragrafen</span>
-    </a>"""
+    kontrakter_html = ""
+    for url, em, navn, beskr in KONTRAKTER:
+        kontrakter_html += f'''      <a href="{url}" class="sl-kort">
+        <div class="sl-em">{em}</div>
+        <div class="sl-info">
+          <div class="sl-navn">{navn}</div>
+          <div class="sl-beskr">{beskr}</div>
+        </div>
+        <div class="sl-pil">→</div>
+      </a>
+'''
 
-    # Spørsmål-artikler — vis opptil 6 på hjemmesiden
-    KAT_LABEL = {
-        "bolig": "BOLIG",
-        "forbruk": "FORBRUK",
-        "arbeid": "ARBEID",
-        "familie": "FAMILIE",
-        "gjeld": "GJELD",
-    }
-    sporsmal_cards = ""
-    for s in SPORSMAL[:4]:
-        kat = s.get("kategori", "")
-        kat_label = KAT_LABEL.get(kat, kat.upper())
-        sporsmal_cards += f"""
-    <a href="{prefix}sporsmal/{s['slug']}/" class="sphub-card kat-{kat}">
-      <div class="kat-tag">SPØRSMÅL · {kat_label}</div>
-      <h3>{s['title']}</h3>
-      <p>{s.get('description', '')}</p>
-      <span class="read-more">Les svaret</span>
-    </a>"""
-
-    # Lov-oversikt — dynamisk basert på antall paragrafer per lov
-    LOV_KATEGORI = {
-        "angrerettloven": ("forbruk", "Forbruk og kjøp"),
-        "kjopsloven": ("forbruk", "Forbruk og kjøp"),
-        "forbrukerkjopsloven": ("forbruk", "Forbruk og kjøp"),
-        "husleieloven": ("bolig", "Bolig og leie"),
-        "avhendingslova": ("bolig", "Bolig og leie"),
-        "naboloven": ("bolig", "Bolig og leie"),
-        "navneloven": ("familie", "Familie og samliv"),
-        "arveloven": ("arv", "Arv og skifte"),
-        "forbrukerkjopsloven": ("forbruk", "Forbruk og kjøp"),
-        "haandverkertjenesteloven": ("tjenester", "Tjenester"),
-        "arbeidsmiljoloven": ("arbeid", "Arbeid og lønn"),
-        "ferieloven": ("arbeid", "Arbeid og lønn"),
-        "inkassoloven": ("gjeld", "Gjeld og penger"),
-        "ekteskapsloven": ("familie", "Familie"),
-        "sameieloven": ("familie", "Familie"),
-        "husstandsfellesskapsloven": ("familie", "Familie"),
-    }
-    LOV_DESC_HOME = {
-        "angrerettloven": "Angrerett ved netthandel og kjøp utenfor butikk",
-        "kjopsloven": "Kjøp og salg mellom privatpersoner og bedrifter",
-        "husleieloven": "Leie av bolig — rettigheter og plikter",
-        "avhendingslova": "Kjøp og salg av bolig, hytte og tomt",
-    }
-    by_lov_count = {}
-    by_lov_display = {}
+    # Slide 3 — viktige lover
+    counts = {}
+    displays = {}
     for p in PARAGRAPHS:
-        lov = p["lov"]
-        by_lov_count[lov] = by_lov_count.get(lov, 0) + 1
-        by_lov_display[lov] = p["lov_display"]
-    sorted_lover = sorted(by_lov_count.items(), key=lambda x: -x[1])
-    lov_cards = ""
-    for lov, antall in sorted_lover:
-        kat, kat_lbl = LOV_KATEGORI.get(lov, ("", ""))
-        desc = LOV_DESC_HOME.get(lov, kat_lbl)
-        lov_cards += f"""
-      <a href="{prefix}lover/{lov}/" class="lov-kort">
-        <div class="lov-meta">
-          <div class="lov-num">{antall}</div>
-          <div class="lov-num-lbl">paragrafer</div>
+        counts[p["lov"]] = counts.get(p["lov"], 0) + 1
+        displays[p["lov"]] = p["lov_display"]
+    LOV_DESC = {
+        "arveloven": "Arv, testament og pliktdel",
+        "husleieloven": "Rettigheter ved leie av bolig",
+        "kjopsloven": "Kjøp privat — privatperson til privatperson",
+        "forbrukerkjopsloven": "Kjøp som forbruker — strengeste vern",
+        "avhendingslova": "Kjøp og salg av bolig, hytte, tomt",
+        "angrerettloven": "Angre kjøp gjort på nett og utenfor butikk",
+    }
+    TOP_LOVER = ["arveloven", "husleieloven", "kjopsloven", "forbrukerkjopsloven", "avhendingslova", "angrerettloven"]
+    lover_html = ""
+    for lov in TOP_LOVER:
+        if lov in counts:
+            lover_html += f'''      <a href="lover/{lov}/" class="sl-kort">
+        <div class="sl-info">
+          <div class="sl-navn">{displays[lov]}</div>
+          <div class="sl-beskr">{LOV_DESC.get(lov, "")}</div>
         </div>
-        <div class="lov-info">
-          <h3>{by_lov_display[lov]}</h3>
-          <p>{desc}</p>
-        </div>
-        <div class="lov-arrow">→</div>
-      </a>"""
+        <div class="sl-tall">{counts[lov]}</div>
+        <div class="sl-pil">→</div>
+      </a>
+'''
 
-    return f"""{shared_head('Rettsregel — Norske lover på vanlig norsk', 'Lover er ikke vanskelige. De er bare dårlig forklart. Bla i norske lover, paragraf for paragraf.', depth=0, canonical_path='/')}
+    return f"""{shared_head('rettsregel.no — Norske lover på vanlig norsk', 'Lover er ikke vanskelige. De er bare dårlig forklart. Bla i norske lover, paragraf for paragraf.', depth=0, canonical_path='/')}
 {site_nav(depth=0)}
 
-<main class="page">
-  <header class="home-hero-v3">
-    <div class="hero-line">
-      <span class="hero-count">{len(PARAGRAPHS)} paragrafer</span>
-      <span class="hero-dot">·</span>
-      <span class="hero-count">{len(set(p["lov"] for p in PARAGRAPHS))} lover</span>
-      <span class="hero-dot">·</span>
-      <span class="hero-count">91+ verktøy</span>
-      <span class="hero-dot">·</span>
-      <span class="hero-count">på vanlig norsk</span>
-    </div>
+<style>
+/* === SLIDE-FORSIDE === */
+.home-slide {{
+  padding: 96px 24px;
+  border-bottom: 1px solid var(--line);
+}}
+.home-slide-inner {{ max-width: 1040px; margin: 0 auto; }}
 
-    <div class="search-wrapper">
-      <div class="search-input-wrap">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <input type="text" class="search-input" id="rrSearch" placeholder="Søk i paragrafer, spørsmål, verktøy…" autocomplete="off">
-      </div>
-      <div class="search-tags">
-        <a class="search-tag" data-q="depositum">depositum</a>
-        <a class="search-tag" data-q="angrerett">angrerett</a>
-        <a class="search-tag" data-q="mangel">mangel</a>
-        <a class="search-tag" data-q="oppsigelse">oppsigelse</a>
-        <a class="search-tag" data-q="naboer">naboer</a>
-        <a class="search-tag" data-q="testament">testament</a>
-      </div>
-      <div class="search-results" id="rrSearchResults"></div>
-    </div>
-  </header>
+/* HERO */
+.sl-hero {{
+  min-height: calc(100vh - 80px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 24px 60px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}}
+.sl-hero-inner {{ max-width: 1040px; margin: 0 auto; width: 100%; }}
+.sl-hero h1 {{
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(40px, 7vw, 88px); line-height: 1.02;
+  letter-spacing: -0.03em; margin: 0;
+  font-feature-settings: "liga" 1, "dlig" 1;
+}}
+.sl-hero h1 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
+.sl-hero .sl-hero-meta {{
+  font-family: var(--sans); font-size: 13px;
+  color: var(--ink-mute); letter-spacing: 0.04em;
+  margin-top: 44px;
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+}}
+.sl-hero .sl-hero-meta .dot {{ opacity: 0.4; }}
+.sl-hero .sl-hero-scroll {{
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: var(--sans); font-size: 11px;
+  color: var(--ink-mute); letter-spacing: 0.16em; text-transform: uppercase;
+  text-decoration: none;
+  animation: sl-bob 2.4s ease-in-out infinite;
+}}
+.sl-hero .sl-hero-scroll svg {{ stroke: var(--ink-mute); }}
+@keyframes sl-bob {{
+  0%, 100% {{ transform: translate(-50%, 0); opacity: 0.6; }}
+  50% {{ transform: translate(-50%, 6px); opacity: 1; }}
+}}
 
-  <section class="home-vtoy">
-    <div class="home-vtoy-hd">
-      <h2>Verktøy og maler</h2>
-      <a href="{prefix}tjenester/" class="home-vtoy-alle">Se alle →</a>
+/* GENERELL SLIDE */
+.sl-kicker {{
+  font-family: var(--sans); font-size: 11px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--accent); margin-bottom: 16px; display: block;
+}}
+.sl-h2 {{
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(28px, 4vw, 44px); line-height: 1.08;
+  letter-spacing: -0.022em; margin: 0 0 16px 0; max-width: 720px;
+}}
+.sl-lead {{
+  font-size: 17px; color: var(--ink-soft); line-height: 1.55;
+  max-width: 560px; margin: 0 0 40px 0;
+}}
+
+/* KORT-GRID */
+.sl-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; }}
+.sl-kort {{
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 22px 24px; text-decoration: none; color: var(--ink);
+  display: flex; align-items: center; gap: 16px;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.13s;
+}}
+.sl-kort:hover {{
+  border-color: var(--accent-soft);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+  transform: translateY(-1px);
+}}
+.sl-kort:hover .sl-pil {{ transform: translateX(4px); color: var(--accent); }}
+.sl-em {{
+  font-size: 22px; width: 44px; height: 44px;
+  background: rgba(177,74,42,0.06); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}}
+.sl-info {{ flex: 1; min-width: 0; }}
+.sl-navn {{ font-family: var(--serif); font-size: 18px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.25; margin-bottom: 3px; }}
+.sl-beskr {{ font-size: 13px; line-height: 1.5; color: var(--ink-soft); }}
+.sl-tall {{ font-family: var(--sans); font-size: 14px; color: var(--ink-mute); font-variant-numeric: tabular-nums; }}
+.sl-pil {{ font-size: 18px; color: var(--ink-mute); transition: transform 0.13s, color 0.13s; flex-shrink: 0; }}
+
+.sl-cta-rad {{ margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }}
+.sl-cta {{
+  font-family: var(--sans); font-size: 14px; font-weight: 600;
+  text-decoration: none; padding: 12px 22px; border-radius: 100px;
+  transition: all 0.13s; display: inline-flex; align-items: center; gap: 8px;
+}}
+.sl-cta-primary {{ background: var(--ink); color: var(--bg); }}
+.sl-cta-primary:hover {{ background: var(--accent); }}
+.sl-cta-ghost {{ color: var(--ink-soft); border: 1px solid var(--line); }}
+.sl-cta-ghost:hover {{ border-color: var(--accent); color: var(--accent); }}
+
+/* SLIDE 4 — KATEGORIER */
+.sl-kat-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }}
+.sl-kat {{
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 32px 26px; text-decoration: none; color: var(--ink); display: block;
+  transition: border-color 0.15s, transform 0.13s;
+}}
+.sl-kat:hover {{ border-color: var(--accent-soft); transform: translateY(-2px); }}
+.sl-kat-em {{ font-size: 36px; line-height: 1; margin-bottom: 18px; }}
+.sl-kat-navn {{ font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 6px; }}
+.sl-kat-beskr {{ font-size: 13px; color: var(--ink-soft); line-height: 1.5; }}
+
+@media (max-width: 700px) {{
+  .home-slide {{ padding: 64px 24px; }}
+  .sl-hero {{ padding: 60px 24px 40px; min-height: calc(100vh - 60px); }}
+  .sl-hero-scroll {{ bottom: 24px; }}
+}}
+</style>
+
+<main>
+
+  <section class="sl-hero">
+    <div class="sl-hero-inner">
+      <h1>Lover er ikke vanskelige.<br><em>De er bare dårlig forklart.</em></h1>
+      <div class="sl-hero-meta">
+        <span>{total_paragrafer} paragrafer</span>
+        <span class="dot">·</span>
+        <span>{total_lover} lover</span>
+        <span class="dot">·</span>
+        <span>92 verktøy</span>
+        <span class="dot">·</span>
+        <span>på vanlig norsk</span>
+      </div>
     </div>
-    <div class="home-feat-grid">
-      <a href="{prefix}tjenester/reklamasjon/" class="home-feat">
-        <span class="home-feat-ikon">✉️</span>
-        <div class="home-feat-tittel">Reklamasjonsbrev</div>
-        <div class="home-feat-beskr">Skriv juridisk korrekt klage med riktige lovhenvisninger. Fungerer for alle varer.</div>
-      </a>
-      <a href="{prefix}kontrakter/husleiekontrakt/" class="home-feat">
-        <span class="home-feat-ikon">🏠</span>
-        <div class="home-feat-tittel">Husleiekontrakt</div>
-        <div class="home-feat-beskr">Fyll ut og last ned. Tidsubestemt eller tidsbestemt. Basert på husleieloven.</div>
-      </a>
-      <a href="{prefix}tjenester/testament-mal/" class="home-feat">
-        <span class="home-feat-ikon">📜</span>
-        <div class="home-feat-tittel">Testament-mal</div>
-        <div class="home-feat-beskr">Generer testament-utkast med riktig struktur og vitnefelt. Skriv ut og signer.</div>
-      </a>
-      <a href="{prefix}tjenester/arv/" class="home-feat">
-        <span class="home-feat-ikon">⚖️</span>
-        <div class="home-feat-tittel">Arvefordeling</div>
-        <div class="home-feat-beskr">Hvem arver hva? Visuell oversikt basert på familiesituasjon og arveloven 2021.</div>
-      </a>
-    </div>
-    <div class="home-quick">
-      <a href="{prefix}kontrakter/samboeravtale/"><span>💑</span> Samboeravtale</a>
-      <a href="{prefix}tjenester/reklamasjonsfrist/"><span>⏱️</span> Reklamasjonsfrist</a>
-      <a href="{prefix}tjenester/feriepenger/"><span>🏖️</span> Feriepenger</a>
-      <a href="{prefix}tjenester/angrefrist/"><span>↩️</span> Angrefrist</a>
-      <a href="{prefix}tjenester/arbeid-oppsigelse/"><span>📆</span> Oppsigelsestid jobb</a>
-      <a href="{prefix}tjenester/pliktdel/"><span>📊</span> Pliktdel</a>
-      <a href="{prefix}tjenester/fullmakt-mal/"><span>✍️</span> Fullmakt</a>
-      <a href="{prefix}tjenester/depositum/"><span>🏦</span> Depositum</a>
-      <a href="{prefix}tjenester/usaklig-oppsigelse/"><span>💼</span> Usaklig oppsigelse</a>
-      <a href="{prefix}tjenester/">+ Alle 42 verktøy →</a>
+    <a href="#begynn" class="sl-hero-scroll">
+      <span>Bla</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </a>
+  </section>
+
+  <section class="home-slide" id="begynn">
+    <div class="home-slide-inner">
+      <span class="sl-kicker">Begynn her</span>
+      <h2 class="sl-h2">Viktige kontrakter og maler</h2>
+      <p class="sl-lead">Seks dokumenter de fleste nordmenn trenger en eller annen gang i livet. Fyll ut og signer — gratis, basert på norsk lov.</p>
+      <div class="sl-grid">
+{kontrakter_html}      </div>
+      <div class="sl-cta-rad">
+        <a href="tjenester/" class="sl-cta sl-cta-primary">Se alle 92 verktøy <span>→</span></a>
+      </div>
     </div>
   </section>
 
-  <section class="home-section-v2">
-    <div class="home-section-head-v2">
-      <div class="left">
-        <h2>Vanlige spørsmål</h2>
+  <section class="home-slide" style="background:var(--bg-alt)">
+    <div class="home-slide-inner">
+      <span class="sl-kicker">Lovsamling</span>
+      <h2 class="sl-h2">{total_paragrafer} paragrafer, forklart</h2>
+      <p class="sl-lead">Lovteksten slik den står — og hva den faktisk betyr. På vanlig norsk.</p>
+      <div class="sl-grid">
+{lover_html}      </div>
+      <div class="sl-cta-rad">
+        <a href="lover/" class="sl-cta sl-cta-primary">Se alle lover <span>→</span></a>
       </div>
-      <div class="right">
-        <a href="{prefix}sporsmal/">Se alle →</a>
-      </div>
-    </div>
-    <div class="sphub-grid">{sporsmal_cards}
     </div>
   </section>
 
-
-
-  <section class="home-section-v2">
-    <div class="home-section-head-v2">
-      <div class="left">
-        <h2>Alle lover</h2>
+  <section class="home-slide">
+    <div class="home-slide-inner">
+      <span class="sl-kicker">Verktøy</span>
+      <h2 class="sl-h2">Hva trenger du hjelp med?</h2>
+      <p class="sl-lead">Velg en livssituasjon — så finner du verktøyene som hører til.</p>
+      <div class="sl-kat-grid">
+        <a href="tjenester/#leier-bolig" class="sl-kat">
+          <div class="sl-kat-em">🏠</div>
+          <div class="sl-kat-navn">Bolig og leie</div>
+          <div class="sl-kat-beskr">Husleiekontrakt, depositum, leieøkning, oppsigelse.</div>
+        </a>
+        <a href="tjenester/#arv-og-familie" class="sl-kat">
+          <div class="sl-kat-em">👨‍👩‍👧</div>
+          <div class="sl-kat-navn">Arv og familie</div>
+          <div class="sl-kat-beskr">Testament, samboeravtale, ektepakt, samvær.</div>
+        </a>
+        <a href="tjenester/#jobber" class="sl-kat">
+          <div class="sl-kat-em">💼</div>
+          <div class="sl-kat-navn">Arbeid</div>
+          <div class="sl-kat-beskr">Arbeidsavtale, feriepenger, oppsigelse, overtid.</div>
+        </a>
+        <a href="tjenester/#kjop" class="sl-kat">
+          <div class="sl-kat-em">🛒</div>
+          <div class="sl-kat-navn">Kjøp og forbruk</div>
+          <div class="sl-kat-beskr">Reklamasjon, angrerett, mangel, prisavslag.</div>
+        </a>
       </div>
-      <div class="right">
-        <a href="{prefix}lover/">Se alle →</a>
-      </div>
-    </div>
-    <div class="lov-grid">{lov_cards}
     </div>
   </section>
-</main>
+
+  <section class="home-slide" style="background:var(--bg-alt)">
+    <div class="home-slide-inner">
+      <span class="sl-kicker">Spørsmål</span>
+      <h2 class="sl-h2">Har du et konkret spørsmål?</h2>
+      <p class="sl-lead">Roy svarer på vanlig norsk og peker deg til paragrafen som gjelder. Eller bla i {len(SPORSMAL)} ferdige spørsmål-og-svar.</p>
+      <div class="sl-cta-rad">
+        <a href="sporsmal/" class="sl-cta sl-cta-primary">Bla i spørsmål <span>→</span></a>
+        <a href="#" onclick="document.getElementById('chat-toggle').click();return false;" class="sl-cta sl-cta-ghost">💬 Spør Roy nå</a>
+      </div>
+    </div>
+  </section>
 
 {contact_form(depth=0)}
 
-<script>
-(function() {{
-  const input = document.getElementById('rrSearch');
-  const results = document.getElementById('rrSearchResults');
-  const tags = document.querySelectorAll('.search-tag');
-  let index = null;
-
-  // Last index én gang
-  fetch('paragraphs-index.json').then(r => r.json()).then(data => {{ index = data; }});
-
-  function score(item, q) {{
-    const Q = q.toLowerCase();
-    const title = (item.title || '').toLowerCase();
-    const lov = (item.lov_display || '').toLowerCase();
-    const number = (item.number || '').toLowerCase();
-    const ks = (item.kort_svar || '').toLowerCase();
-    const desc = (item.description || '').toLowerCase();
-    let s = 0;
-    if (title.startsWith(Q)) s += 100;
-    else if (title.includes(Q)) s += 60;
-    if (lov.includes(Q)) s += 20;
-    if (number === Q) s += 200;
-    if (number.startsWith(Q)) s += 50;
-    if (ks.includes(Q)) s += 10;
-    if (desc.includes(Q)) s += 8;
-    return s;
-  }}
-
-  function render(q) {{
-    if (!index || !q || q.length < 2) {{
-      results.classList.remove('visible');
-      results.innerHTML = '';
-      return;
-    }}
-    const matches = index
-      .map(i => ({{...i, _s: score(i, q)}}))
-      .filter(i => i._s > 0)
-      .sort((a,b) => b._s - a._s)
-      .slice(0, 8);
-    if (matches.length === 0) {{
-      results.innerHTML = '<div class="search-empty">Ingen treff for "' + q + '"</div>';
-      results.classList.add('visible');
-      return;
-    }}
-    results.innerHTML = matches.map(m => {{
-      if (m.type === 'sporsmal') {{
-        return '<a class="search-result" href="sporsmal/' + m.slug + '/">' +
-          '<div class="sr-title">' + m.title + '</div>' +
-          '<div class="sr-meta"><strong>Spørsmål</strong></div>' +
-        '</a>';
-      }} else {{
-        return '<a class="search-result" href="lover/' + m.lov + '/' + m.number + '/">' +
-          '<div class="sr-title">' + m.title + '</div>' +
-          '<div class="sr-meta"><strong>' + m.lov_display + ' § ' + m.number + '</strong></div>' +
-        '</a>';
-      }}
-    }}).join('');
-    results.classList.add('visible');
-  }}
-
-  input.addEventListener('input', e => render(e.target.value.trim()));
-  input.addEventListener('focus', e => {{ if (e.target.value.trim()) render(e.target.value.trim()); }});
-  document.addEventListener('click', e => {{
-    if (!e.target.closest('.search-wrapper')) {{
-      results.classList.remove('visible');
-    }}
-  }});
-  tags.forEach(tag => {{
-    tag.addEventListener('click', e => {{
-      e.preventDefault();
-      const q = tag.dataset.q;
-      input.value = q;
-      input.focus();
-      render(q);
-    }});
-  }});
-}})();
-</script>
+</main>
 
 {site_footer(depth=0)}"""
-
-
-def paragraf_sort_key(p):
-    """Sort key that handles paragrafs like '1', '6-50', '9a', '14b-2'."""
-    num = p["number"]
-    m = re.match(r'(\d+)(?:-(\d+))?([a-zA-Z]+)?', num)
-    if m:
-        main = int(m.group(1))
-        sub = int(m.group(2)) if m.group(2) else 0
-        letter = m.group(3) or ''
-        return (main, sub, letter)
-    return (0, 0, '')
 
 
 def render_tjenester_hub():
