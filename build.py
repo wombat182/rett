@@ -297,8 +297,9 @@ nav.site-nav {
 
 /* Form CTA section */
 .cta-section {
-  background: var(--bg-alt); padding: 80px 0 100px;
-  margin-top: 100px;
+  background: var(--bg); padding: 80px 0 60px;
+  margin-top: 80px;
+  border-top: 1px solid var(--line);
 }
 .cta-grid {
   display: grid; grid-template-columns: 1fr 1.2fr; gap: 72px; align-items: start;
@@ -341,7 +342,9 @@ form.contact-form {
   display: flex; align-items: center; justify-content: center; gap: 10px;
 }
 .form-submit:hover { background: var(--accent); transform: translateY(-1px); }
-.form-note { margin-top: 14px; font-size: 13px; color: var(--ink-mute); text-align: center; }
+.form-note { margin-top: 14px; font-size: 13px; color: var(--ink-mute); text-align: center; line-height: 1.5; }
+.form-note a { color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
+.form-note a:hover { border-bottom-color: var(--accent); }
 .form-success { display: none; background: var(--bg); padding: 40px; border-radius: 20px; border: 1px solid var(--accent-soft); text-align: center; }
 .form-success.show { display: block; }
 form.contact-form.hide { display: none; }
@@ -350,11 +353,11 @@ form.contact-form.hide { display: none; }
 
 /* Footer — warm light redesign */
 footer.site-footer {
-  background: var(--footer-bg);
+  background: var(--bg);
   color: var(--ink-soft);
-  padding: 72px 0 40px;
+  padding: 64px 0 40px;
   margin-top: 80px;
-  border-top: 1px solid var(--line-strong);
+  border-top: 1px solid var(--line);
 }
 .footer-inner {
   display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -1565,10 +1568,10 @@ def shared_head(title, description, depth=0, canonical_path=""):
 
 def site_nav(depth=0):
     prefix = "../" * depth
-    # Custom § glyph as SVG — refined editorial weight, monogram-style on subtle pill
+    # Ekte § glyph med editorial serif. Subtil bakgrunn-pille.
     logo_svg = '''<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<rect class="glyph" x="0" y="0" width="32" height="32" rx="8" fill="currentColor" opacity="0.08"/>
-<path class="glyph" d="M16.4 5.5c-3.0 0-5.1 1.7-5.1 4.2 0 2.0 1.3 3.3 4.2 4.3l2.1 0.75c1.8 0.65 2.5 1.3 2.5 2.3 0 1.4-1.3 2.3-3.5 2.3-2.2 0-3.7-0.9-3.9-2.5h-2.6c0.1 2.7 2.4 4.7 5.7 4.9v1.8h1.3v-1.8c3.2-0.15 5.3-2.0 5.3-4.7 0-2.0-1.2-3.3-4.2-4.4l-1.9-0.7c-1.8-0.6-2.6-1.3-2.6-2.4 0-1.3 1.2-2.1 3.2-2.1 2.0 0 3.4 0.85 3.6 2.3h2.5c-0.15-2.5-2.4-4.4-5.5-4.6V3.5h-1.3v2.0z"/>
+<rect x="0" y="0" width="32" height="32" rx="7" fill="currentColor" class="glyph-bg" opacity="0.08"/>
+<text x="16" y="23" text-anchor="middle" class="glyph" font-family="'EB Garamond', Georgia, serif" font-size="22" font-weight="500" fill="currentColor">§</text>
 </svg>'''
     return f"""<div class="container">
 <nav class="site-nav">
@@ -2133,157 +2136,155 @@ def render_lov_index(lov_name, lov_display, paragraphs):
 {site_footer(depth=2)}"""
 
 def render_lover_index():
-    """Overview page — editorial list design, Jony Ive approved."""
-    depth = 1
-    prefix = "../" * depth
+    """Lov-oversikt — Apple-aktig kompakt liste-design."""
 
-    LOV_INFO = {
-        "angrerettloven": {"kat": "forbruk", "desc": "Angrerett ved netthandel og kjøp utenfor butikk"},
-        "kjopsloven": {"kat": "forbruk", "desc": "Kjøp og salg mellom privatpersoner og bedrifter"},
-        "forbrukerkjopsloven": {"kat": "forbruk", "desc": "Forbrukerkjøp fra næringsdrivende — sterke rettigheter"},
-        "husleieloven": {"kat": "bolig", "desc": "Leie av bolig — rettigheter for leietaker og utleier"},
-        "avhendingslova": {"kat": "bolig", "desc": "Kjøp og salg av bolig, hytte og tomt"},
-        "naboloven": {"kat": "bolig", "desc": "Naboforhold og urimelige ulemper"},
-        "navneloven": {"kat": "familie", "desc": "Fornavn, etternavn og navnebytte"},
-        "arveloven": {"kat": "arv", "desc": "Arvegang, uskifte og testament"},
-        "haandverkertjenesteloven": {"kat": "tjenester", "desc": "Håndverkertjenester og reklamasjon"},
-        "arbeidsmiljoloven": {"kat": "arbeid", "desc": "Arbeidsforhold, oppsigelse og vern"},
-        "ferieloven": {"kat": "arbeid", "desc": "Ferierettigheter og feriepenger"},
-        "inkassoloven": {"kat": "gjeld", "desc": "Inkasso og inndriving av krav"},
+    # Grupper etter kategori
+    LOV_KATEGORI = {
+        "angrerettloven": ("kjop", "Forbruk og kjøp"),
+        "kjopsloven": ("kjop", "Forbruk og kjøp"),
+        "forbrukerkjopsloven": ("kjop", "Forbruk og kjøp"),
+        "husleieloven": ("bolig", "Bolig"),
+        "avhendingslova": ("bolig", "Bolig"),
+        "naboloven": ("bolig", "Bolig"),
+        "bustadoppforingslova": ("bolig", "Bolig"),
+        "navneloven": ("familie", "Familie"),
+        "arveloven": ("arv", "Arv og familie"),
+    }
+    LOV_KORT_DESC = {
+        "angrerettloven": "Angrerett ved netthandel og kjøp utenfor butikk",
+        "kjopsloven": "Kjøp og salg — privat og bedrift",
+        "forbrukerkjopsloven": "Kjøp som forbruker — strengeste forbrukervern",
+        "husleieloven": "Leie av bolig — rettigheter for begge parter",
+        "avhendingslova": "Kjøp og salg av bolig, hytte, tomt",
+        "naboloven": "Konflikter og avstander til naboer",
+        "bustadoppforingslova": "Bygging av ny bolig eller hytte",
+        "navneloven": "Navnevalg og navneendring",
+        "arveloven": "Arv, testament og pliktdel",
     }
 
-    kat_meta = {
-        "bolig":    {"display": "Bolig og leie",     "ikon": "🏠"},
-        "forbruk":  {"display": "Forbruk og kjøp",   "ikon": "🛒"},
-        "arbeid":   {"display": "Arbeid og lønn",    "ikon": "💼"},
-        "familie":  {"display": "Familie og samliv", "ikon": "👨\u200d👩\u200d👧"},
-        "arv":      {"display": "Arv og skifte",     "ikon": "⚖️"},
-        "gjeld":    {"display": "Gjeld og penger",   "ikon": "📋"},
-        "tjenester":{"display": "Tjenester",         "ikon": "🔧"},
-    }
-
-    by_lov_count = {}
-    by_lov_display = {}
+    # Tell paragrafer per lov
+    counts = {}
+    displays = {}
     for p in PARAGRAPHS:
         lov = p["lov"]
-        by_lov_count[lov] = by_lov_count.get(lov, 0) + 1
-        by_lov_display[lov] = p["lov_display"]
+        counts[lov] = counts.get(lov, 0) + 1
+        displays[lov] = p["lov_display"]
 
-    by_kat = {}
-    for lov, antall in by_lov_count.items():
-        info = LOV_INFO.get(lov, {"kat": "annet", "desc": ""})
-        by_kat.setdefault(info["kat"], []).append({
-            "lov": lov, "display": by_lov_display[lov],
-            "antall": antall, "desc": info["desc"],
-        })
-    for kat in by_kat:
-        by_kat[kat].sort(key=lambda x: x["display"].lower())
+    # Grupper etter kategori
+    KAT_ORDER = ["bolig", "kjop", "arv", "familie"]
+    KAT_TITLER = {
+        "bolig": "Bolig",
+        "kjop": "Kjøp og forbruk",
+        "arv": "Arv og familie",
+        "familie": "Familie",
+    }
+    grouped = {}
+    for lov, antall in counts.items():
+        kat, _ = LOV_KATEGORI.get(lov, ("annet", "Annet"))
+        grouped.setdefault(kat, []).append((lov, antall))
 
-    sections = []
-    for kat in ["bolig", "forbruk", "arbeid", "familie", "arv", "gjeld", "tjenester", "annet"]:
-        if kat not in by_kat:
+    seksjoner_html = ""
+    for kat in KAT_ORDER:
+        if kat not in grouped:
             continue
-        meta = kat_meta.get(kat, {"display": "Annet", "ikon": "📄"})
-        lover_i_kat = by_kat[kat]
-        total_p = sum(l["antall"] for l in lover_i_kat)
+        lover = sorted(grouped[kat], key=lambda x: -x[1])
+        n_para = sum(a for _, a in lover)
+        n_lov = len(lover)
+        rader = ""
+        for lov, antall in lover:
+            navn = displays[lov]
+            desc = LOV_KORT_DESC.get(lov, "")
+            rader += f'''        <a href="{lov}/" class="lk-rad">
+          <div class="lk-info">
+            <h3 class="lk-navn">{navn}</h3>
+            <p class="lk-desc">{desc}</p>
+          </div>
+          <div class="lk-meta">
+            <span class="lk-antall">{antall}</span>
+            <span class="lk-pil">→</span>
+          </div>
+        </a>
+'''
+        seksjoner_html += f'''    <section class="lk-seksjon">
+      <header class="lk-seksjon-hd">
+        <h2>{KAT_TITLER[kat]}</h2>
+        <span class="lk-seksjon-meta">{n_para} paragrafer · {n_lov} {"lov" if n_lov==1 else "lover"}</span>
+      </header>
+      <div class="lk-liste">
+{rader}      </div>
+    </section>
+'''
 
-        rows = []
-        for l in lover_i_kat:
-            rows.append(f'''    <a href="{prefix}lover/{l["lov"]}/" class="lov-rad">
-      <div class="lov-rad-main">
-        <h3 class="lov-rad-tittel">{l["display"]}</h3>
-        <p class="lov-rad-desc">{l["desc"]}</p>
-      </div>
-      <div class="lov-rad-meta">
-        <span class="lov-rad-antall">{l["antall"]}</span>
-        <span class="lov-rad-pil">→</span>
-      </div>
-    </a>''')
+    total_para = sum(counts.values())
+    total_lov = len(counts)
 
-        sections.append(f'''<section class="lover-seksjon">
-  <div class="lover-seksjon-hd">
-    <div class="lover-seksjon-hd-left">
-      <span class="lover-seksjon-ikon">{meta["ikon"]}</span>
-      <h2 class="lover-seksjon-tittel">{meta["display"]}</h2>
-    </div>
-    <span class="lover-seksjon-count">{total_p} paragrafer · {len(lover_i_kat)} {"lov" if len(lover_i_kat)==1 else "lover"}</span>
-  </div>
-  <div class="lov-liste">
-{chr(10).join(rows)}
-  </div>
-</section>''')
-
-    total_lover = len(by_lov_count)
-    total_paragrafer = len(PARAGRAPHS)
-
-    return f"""{shared_head("Alle lover — Rettsregel",
-        "Norske lover forklart paragraf for paragraf på vanlig norsk. Bolig, forbruk, arbeid, familie, arv og mer.",
-        depth=1, canonical_path="/lover/")}
+    return f"""{shared_head(
+        'Alle lover — forklart på vanlig norsk | Rettsregel',
+        f'{total_para} paragrafer i {total_lov} norske lover, forklart på vanlig norsk. Bla i lovene.',
+        depth=1, canonical_path='/lover/'
+    )}
 <body>
 {site_nav(depth=1)}
 <style>
-.lover-hero {{ padding: 72px 0 64px; max-width: 800px; }}
-.lover-hero .kicker {{ font-family: var(--sans); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); display: block; margin-bottom: 20px; }}
-.lover-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 3.4vw, 40px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 24px; }}
-.lover-hero .lead {{ font-size: 18px; color: var(--ink-soft); line-height: 1.6; max-width: 600px; margin-bottom: 40px; }}
-.lover-stats {{ display: flex; gap: 40px; }}
-.lover-stat {{ display: flex; flex-direction: column; }}
-.lover-stat .num {{ font-family: var(--serif); font-size: 32px; font-weight: 400; color: var(--ink); letter-spacing: -0.02em; line-height: 1; }}
-.lover-stat .lbl {{ font-family: var(--sans); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-mute); margin-top: 4px; }}
+.lk-page {{ max-width: 880px; margin: 0 auto; padding: 0 24px; }}
+.lk-hero {{ padding: 56px 0 40px; border-bottom: 1px solid var(--line); margin-bottom: 48px; }}
+.lk-hero .lk-kicker {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 14px; display: block; }}
+.lk-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 16px 0; }}
+.lk-hero .lk-lead {{ font-size: 17px; color: var(--ink-soft); line-height: 1.6; max-width: 540px; margin: 0; }}
 
-/* Section layout */
-.lover-seksjon {{ margin-bottom: 64px; }}
-.lover-seksjon-hd {{ display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1.5px solid var(--ink); margin-bottom: 0; }}
-.lover-seksjon-hd-left {{ display: flex; align-items: center; gap: 12px; }}
-.lover-seksjon-ikon {{ font-size: 18px; line-height: 1; }}
-.lover-seksjon-tittel {{ font-family: var(--sans); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink); margin: 0; }}
-.lover-seksjon-count {{ font-family: var(--sans); font-size: 12px; color: var(--ink-mute); font-weight: 500; }}
+.lk-stats {{ display: flex; gap: 32px; margin-top: 24px; padding-top: 0; }}
+.lk-stat-num {{ font-family: var(--serif); font-size: 30px; font-weight: 400; line-height: 1; color: var(--ink); }}
+.lk-stat-lbl {{ font-family: var(--sans); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-mute); margin-top: 6px; }}
 
-/* Law rows */
-.lov-liste {{ display: flex; flex-direction: column; }}
-.lov-rad {{
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 22px 0; border-bottom: 1px solid var(--line);
-  text-decoration: none; color: var(--ink); gap: 24px;
-  transition: background 0.15s;
+.lk-seksjon {{ margin-bottom: 56px; }}
+.lk-seksjon-hd {{ display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }}
+.lk-seksjon-hd h2 {{ font-family: var(--serif); font-weight: 400; font-size: 22px; letter-spacing: -0.01em; margin: 0; line-height: 1.2; }}
+.lk-seksjon-meta {{ font-family: var(--sans); font-size: 12px; color: var(--ink-mute); letter-spacing: 0.04em; }}
+
+.lk-liste {{}}
+.lk-rad {{
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 20px 4px; border-bottom: 1px solid var(--line);
+  text-decoration: none; color: var(--ink);
+  transition: padding 0.13s;
 }}
-.lov-rad:last-child {{ border-bottom: none; }}
-.lov-rad:hover .lov-rad-tittel {{ color: var(--accent); }}
-.lov-rad:hover .lov-rad-pil {{ color: var(--accent); transform: translateX(4px); }}
-.lov-rad-main {{ flex: 1; min-width: 0; }}
-.lov-rad-tittel {{ font-family: var(--serif); font-size: 21px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; transition: color 0.15s; }}
-.lov-rad-desc {{ font-family: var(--sans); font-size: 14px; color: var(--ink-soft); line-height: 1.45; margin: 0; }}
-.lov-rad-meta {{ display: flex; align-items: center; gap: 14px; flex-shrink: 0; }}
-.lov-rad-antall {{ font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--ink-mute); }}
-.lov-rad-pil {{ font-size: 18px; color: var(--ink-mute); transition: color 0.15s, transform 0.15s; }}
+.lk-rad:last-child {{ border-bottom: none; }}
+.lk-rad:hover {{ padding-left: 12px; }}
+.lk-rad:hover .lk-pil {{ transform: translateX(4px); color: var(--accent); }}
+.lk-info {{ min-width: 0; flex: 1; }}
+.lk-navn {{ font-family: var(--serif); font-weight: 400; font-size: 19px; letter-spacing: -0.01em; margin: 0 0 4px 0; line-height: 1.25; }}
+.lk-desc {{ font-size: 13px; color: var(--ink-soft); margin: 0; line-height: 1.5; }}
+.lk-meta {{ display: flex; align-items: center; gap: 14px; flex-shrink: 0; }}
+.lk-antall {{ font-family: var(--sans); font-size: 13px; color: var(--ink-mute); font-variant-numeric: tabular-nums; }}
+.lk-pil {{ font-size: 16px; color: var(--ink-mute); transition: transform 0.13s, color 0.13s; }}
 
 @media (max-width: 600px) {{
-  .lover-hero {{ padding: 48px 0 40px; }}
-  .lover-stats {{ gap: 28px; }}
-  .lov-rad {{ padding: 18px 0; }}
-  .lov-rad-tittel {{ font-size: 18px; }}
+  .lk-hero {{ padding: 36px 0 28px; margin-bottom: 36px; }}
+  .lk-stats {{ gap: 24px; }}
+  .lk-stat-num {{ font-size: 24px; }}
+  .lk-rad {{ padding: 16px 4px; }}
+  .lk-navn {{ font-size: 17px; }}
+  .lk-desc {{ font-size: 12.5px; }}
 }}
 </style>
-<main class="page">
-  <div class="lover-hero">
-    <span class="kicker">Lovsamling</span>
-    <h1>Alle lover</h1>
-    <p class="lead">Paragraf for paragraf, oversatt til vanlig norsk. Her er lovene vi har gått gjennom.</p>
-    <div class="lover-stats">
-      <div class="lover-stat">
-        <span class="num">{total_paragrafer}</span>
-        <span class="lbl">Paragrafer</span>
+
+<main>
+  <div class="lk-page">
+
+    <header class="lk-hero">
+      <span class="lk-kicker">Lovsamling</span>
+      <h1>Norske lover, paragraf for paragraf</h1>
+      <p class="lk-lead">Vi tar lovteksten slik den står og forklarer hva den faktisk betyr.</p>
+      <div class="lk-stats">
+        <div><div class="lk-stat-num">{total_para}</div><div class="lk-stat-lbl">paragrafer</div></div>
+        <div><div class="lk-stat-num">{total_lov}</div><div class="lk-stat-lbl">lover</div></div>
       </div>
-      <div class="lover-stat">
-        <span class="num">{total_lover}</span>
-        <span class="lbl">Lover</span>
-      </div>
-    </div>
+    </header>
+
+{seksjoner_html}
   </div>
-
-  {"".join(sections)}
-
 </main>
+
 {site_footer(depth=1)}"""
 
 
@@ -2687,81 +2688,183 @@ def render_sporsmal_page(s):
 
 
 def render_sporsmal_hub():
-    """Render hub-side på /sporsmal/index.html — liste over alle spørsmål."""
-    # Grupper etter kategori
-    by_kat = {}
-    for s in SPORSMAL:
-        by_kat.setdefault(s.get("kategori", "annet"), []).append(s)
+    """Spørsmål-hub — skalerbar for 1000+ artikler. Søk + kategori-filter + compact liste."""
 
-    kat_meta = {
-        "bolig": {"display": "Bolig og leie", "label": "BOLIG", "klasse": "kat-bolig"},
-        "forbruk": {"display": "Forbruk og kjøp", "label": "FORBRUK", "klasse": "kat-forbruk"},
-        "arbeid": {"display": "Arbeid og lønn", "label": "ARBEID", "klasse": "kat-arbeid"},
-        "familie": {"display": "Familie og samliv", "label": "FAMILIE", "klasse": "kat-familie"},
-        "gjeld": {"display": "Gjeld og penger", "label": "GJELD", "klasse": "kat-gjeld"},
-        "tjenester": {"display": "Tjenester og håndverk", "label": "TJENESTER", "klasse": "kat-tjenester"},
-        "annet": {"display": "Annet", "label": "ANNET", "klasse": ""},
+    KAT_LABEL = {
+        "bolig": "Bolig",
+        "forbruk": "Forbruk og kjøp",
+        "arbeid": "Arbeid",
+        "familie": "Familie",
+        "gjeld": "Gjeld og penger",
+        "tjenester": "Tjenester",
+        "arv": "Arv",
     }
 
-    sections = []
-    for kat in ["bolig", "forbruk", "arbeid", "familie", "gjeld", "tjenester", "annet"]:
-        if kat not in by_kat:
-            continue
-        items = by_kat[kat]
-        meta = kat_meta.get(kat, kat_meta["annet"])
-        antall = len(items)
-        antall_tekst = f"{antall} spørsmål" if antall != 1 else "1 spørsmål"
+    # Tell etter kategori
+    by_kat = {}
+    for s in SPORSMAL:
+        kat = s.get("kategori", "annet")
+        by_kat.setdefault(kat, []).append(s)
 
-        # Første kort er featured, resten er vanlige
-        cards_html = []
-        for i, s in enumerate(items):
-            featured_class = " featured" if i == 0 and len(items) > 2 else ""
-            cards_html.append(f"""
-    <a href="/sporsmal/{s['slug']}/" class="sphub-card {meta['klasse']}{featured_class}">
-      <div class="kat-tag">{meta['label']}</div>
-      <h3>{s['title']}</h3>
-      <p>{s.get('description', '')}</p>
-      <span class="read-more">Les svaret</span>
-    </a>""")
+    # Sortert etter antall (mest brukte først)
+    kat_sorted = sorted(by_kat.items(), key=lambda x: -len(x[1]))
 
-        sections.append(f"""
-<section class="sphub-section {meta['klasse']}">
-  <div class="sphub-section-head">
-    <span class="sphub-section-kat">{meta['label']}</span>
-    <h2>{meta['display']}</h2>
-    <span class="sphub-section-count">{antall_tekst}</span>
-  </div>
-  <div class="sphub-grid">
-    {chr(10).join(cards_html)}
-  </div>
-</section>""")
+    # Lag kategori-pills for filter
+    pills_html = '<button class="sp-pill active" data-kat="alle">Alle <span class="sp-pill-n">' + str(len(SPORSMAL)) + '</span></button>\n'
+    for kat, items in kat_sorted:
+        navn = KAT_LABEL.get(kat, kat.capitalize())
+        pills_html += f'    <button class="sp-pill" data-kat="{kat}">{navn} <span class="sp-pill-n">{len(items)}</span></button>\n'
 
-    total = len(SPORSMAL)
-    head = shared_head(
-        "Vanlige spørsmål — Rettsregel",
-        "Konkrete svar på de vanligste juridiske spørsmålene nordmenn har: depositum, bilkjøp, naboer, arbeid, gjeld.",
-        depth=1,
-    )
+    # Bygg liste — alle spørsmål, gruppert etter kategori
+    liste_html = ""
+    for kat, items in kat_sorted:
+        kat_label = KAT_LABEL.get(kat, kat.capitalize())
+        rader = ""
+        for s in items:
+            slug = s.get("slug", "")
+            tittel = s.get("title", "")
+            desc = s.get("description", "")
+            rader += f'''        <a href="{slug}/" class="sp-rad" data-kat="{kat}" data-search="{tittel.lower()} {desc.lower()}">
+          <div class="sp-rad-info">
+            <div class="sp-rad-tittel">{tittel}</div>
+            <div class="sp-rad-desc">{desc}</div>
+          </div>
+          <div class="sp-rad-meta">
+            <span class="sp-rad-kat">{kat_label}</span>
+            <span class="sp-rad-pil">→</span>
+          </div>
+        </a>
+'''
+        liste_html += f'''    <div class="sp-gruppe" data-kat="{kat}">
+      <h2 class="sp-gruppe-tittel">{kat_label} <span class="sp-gruppe-meta">{len(items)}</span></h2>
+      <div class="sp-rader">
+{rader}      </div>
+    </div>
+'''
 
-    return f"""<!DOCTYPE html>
-<html lang="nb">
-{head}
+    return f"""{shared_head(
+        'Spørsmål og svar — vanlige juridiske spørsmål | Rettsregel',
+        f'{len(SPORSMAL)} spørsmål om norsk lov. Konkrete svar, ikke generelle floskler.',
+        depth=1, canonical_path='/sporsmal/'
+    )}
 <body>
 {site_nav(depth=1)}
-<main class="page">
-  <header class="sphub-hero">
-    <span class="kicker">Spørsmål og svar</span>
-    <h1>Vanlige spørsmål</h1>
-    <p class="lead">Konkrete svar på problemene folk møter. Skrevet på vanlig norsk, med stegene du kan ta.</p>
-    <div class="sphub-meta"><strong>{total}</strong> spørsmål · oppdatert regelmessig</div>
-  </header>
+<style>
+.sp-page {{ max-width: 900px; margin: 0 auto; padding: 0 24px; }}
+.sp-hero {{ padding: 56px 0 36px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }}
+.sp-hero .sp-kicker {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 14px; display: block; }}
+.sp-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 16px 0; }}
+.sp-hero .sp-lead {{ font-size: 17px; color: var(--ink-soft); line-height: 1.6; max-width: 560px; margin: 0; }}
 
-  {chr(10).join(sections)}
+.sp-toolbar {{ position: sticky; top: 0; background: var(--bg); padding: 14px 0 16px; margin-bottom: 8px; z-index: 5; border-bottom: 1px solid var(--line); }}
+.sp-sok-wrap {{ position: relative; margin-bottom: 12px; }}
+.sp-sok-icon {{ position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); width: 16px; height: 16px; pointer-events: none; }}
+.sp-sok-input {{ width: 100%; padding: 11px 14px 11px 40px; border: 1.5px solid var(--line); border-radius: 10px; font-family: var(--sans); font-size: 14px; background: var(--bg-card); color: var(--ink); box-sizing: border-box; transition: border-color 0.13s; }}
+.sp-sok-input:focus {{ outline: none; border-color: var(--accent); }}
+.sp-pills {{ display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }}
+.sp-pills::-webkit-scrollbar {{ display: none; }}
+.sp-pill {{ background: var(--bg-card); border: 1px solid var(--line); color: var(--ink-soft); font-family: var(--sans); font-size: 12.5px; font-weight: 500; padding: 6px 12px; border-radius: 100px; cursor: pointer; white-space: nowrap; transition: all 0.13s; display: inline-flex; align-items: center; gap: 6px; }}
+.sp-pill:hover {{ border-color: var(--accent-soft); }}
+.sp-pill.active {{ background: var(--ink); color: var(--bg); border-color: var(--ink); }}
+.sp-pill-n {{ font-size: 11px; opacity: 0.7; font-variant-numeric: tabular-nums; }}
 
+.sp-gruppe {{ margin-bottom: 40px; }}
+.sp-gruppe-tittel {{ font-family: var(--serif); font-weight: 400; font-size: 20px; letter-spacing: -0.01em; margin: 0 0 4px 0; padding: 16px 0 10px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; }}
+.sp-gruppe-meta {{ font-family: var(--sans); font-size: 12px; color: var(--ink-mute); font-weight: 500; font-variant-numeric: tabular-nums; }}
+
+.sp-rader {{}}
+.sp-rad {{
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 16px 4px; border-bottom: 1px solid var(--line);
+  text-decoration: none; color: var(--ink); transition: padding 0.13s;
+}}
+.sp-rad:last-child {{ border-bottom: none; }}
+.sp-rad:hover {{ padding-left: 10px; }}
+.sp-rad:hover .sp-rad-pil {{ transform: translateX(4px); color: var(--accent); }}
+.sp-rad-info {{ min-width: 0; flex: 1; }}
+.sp-rad-tittel {{ font-family: var(--serif); font-size: 16px; font-weight: 400; line-height: 1.3; letter-spacing: -0.005em; margin-bottom: 4px; }}
+.sp-rad-desc {{ font-size: 13px; color: var(--ink-soft); line-height: 1.5; }}
+.sp-rad-meta {{ display: flex; align-items: center; gap: 10px; flex-shrink: 0; padding-top: 3px; }}
+.sp-rad-kat {{ font-family: var(--sans); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); padding: 3px 9px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 100px; white-space: nowrap; }}
+.sp-rad-pil {{ font-size: 14px; color: var(--ink-mute); transition: transform 0.13s, color 0.13s; }}
+
+.sp-ingen {{ display: none; padding: 60px 0; text-align: center; color: var(--ink-mute); font-style: italic; }}
+.sp-ingen.show {{ display: block; }}
+
+@media (max-width: 600px) {{
+  .sp-hero {{ padding: 36px 0 24px; margin-bottom: 24px; }}
+  .sp-rad-meta {{ flex-direction: column; align-items: flex-end; gap: 4px; }}
+  .sp-rad-tittel {{ font-size: 15px; }}
+}}
+</style>
+
+<main>
+  <div class="sp-page">
+
+    <header class="sp-hero">
+      <span class="sp-kicker">Spørsmål og svar</span>
+      <h1>Vanlige spørsmål — konkrete svar</h1>
+      <p class="sp-lead">Skrevet på vanlig norsk, med stegene du kan ta. Søk i listen eller filtrer på kategori.</p>
+    </header>
+
+    <div class="sp-toolbar">
+      <div class="sp-sok-wrap">
+        <svg class="sp-sok-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="spSok" class="sp-sok-input" placeholder="Søk blant {len(SPORSMAL)} spørsmål…" autocomplete="off">
+      </div>
+      <div class="sp-pills" id="spPills">
+        {pills_html}
+      </div>
+    </div>
+
+{liste_html}
+
+    <div class="sp-ingen" id="spIngen">Ingen spørsmål matcher.</div>
+
+  </div>
 </main>
-{site_footer(depth=1)}
-</body>
-</html>"""
+
+<script>
+(function(){{
+  var sok = document.getElementById('spSok');
+  var pills = document.querySelectorAll('.sp-pill');
+  var rader = document.querySelectorAll('.sp-rad');
+  var grupper = document.querySelectorAll('.sp-gruppe');
+  var ingen = document.getElementById('spIngen');
+  var aktivKat = 'alle';
+
+  function filtrer() {{
+    var q = sok.value.toLowerCase().trim();
+    var synlig = 0;
+    rader.forEach(function(r) {{
+      var matchKat = (aktivKat === 'alle' || r.dataset.kat === aktivKat);
+      var matchSok = (!q || r.dataset.search.indexOf(q) !== -1);
+      var vis = matchKat && matchSok;
+      r.style.display = vis ? '' : 'none';
+      if (vis) synlig++;
+    }});
+    // Skjul tomme grupper
+    grupper.forEach(function(g) {{
+      var aktive = g.querySelectorAll('.sp-rad:not([style*="none"])').length > 0 ||
+                   Array.from(g.querySelectorAll('.sp-rad')).some(function(r){{ return r.style.display !== 'none'; }});
+      g.style.display = aktive ? '' : 'none';
+    }});
+    ingen.classList.toggle('show', synlig === 0);
+  }}
+
+  sok.addEventListener('input', filtrer);
+  pills.forEach(function(p) {{
+    p.addEventListener('click', function() {{
+      pills.forEach(function(x){{ x.classList.remove('active'); }});
+      p.classList.add('active');
+      aktivKat = p.dataset.kat;
+      filtrer();
+    }});
+  }});
+}})();
+</script>
+
+{site_footer(depth=1)}"""
 
 
 def render_homepage():
