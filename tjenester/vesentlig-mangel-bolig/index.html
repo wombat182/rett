@@ -111,7 +111,22 @@ function rvm(){
   var utb=parseFloat(document.getElementById('vm_u').value)||0;
   var mtype=document.getElementById('vm_t').value;
   var som=document.querySelector('input[name=vm_s]:checked').value;
-  if(!pris||!utb||!mtype){document.getElementById('ovm').innerHTML='<div class="ot">Fyll ut alle felt.</div>';return;}
+  if(!pris||!utb||!mtype){
+    var mangler=[];
+    if(!pris) mangler.push('kjøpesum');
+    if(!utb) mangler.push('utbedringskostnad');
+    if(!mtype) mangler.push('type mangel');
+    var har=[];
+    if(pris) har.push('Kjøpesum: '+pris.toLocaleString('nb-NO')+' kr');
+    if(utb) har.push('Utbedringskostnad: '+utb.toLocaleString('nb-NO')+' kr');
+    if(pris&&utb) {
+      var pct=Math.round(utb/pris*1000)/10;
+      har.push('Andel: '+pct+' %');
+    }
+    var harHtml = har.length ? '<div style="margin-top:14px;padding:14px;background:var(--bg-card);border-radius:10px;font-size:13px;color:var(--ink-soft)">'+har.map(function(h){return '✓ '+h;}).join('<br>')+'</div>' : '';
+    document.getElementById('ovm').innerHTML='<div class="ot" style="text-align:left"><strong>Mangler:</strong> '+mangler.join(', ')+'.'+harHtml+'</div>';
+    return;
+  }
   var pst=utb/pris*100;
   var pstRund=Math.round(pst*10)/10;
   var vesentlig,bk,tit,tx;

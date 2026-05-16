@@ -102,7 +102,19 @@ function rdm(){
   var pris=parseFloat(document.getElementById('dm_p').value)||0;
   var av=document.getElementById('dm_av').value;
   var fak=document.getElementById('dm_fak').value;
-  if(!pris||!av||!fak){document.getElementById('odm').innerHTML='<div class="ot">Fyll ut kjøpesum og begge datoer.</div>';return;}
+  if(!pris||!av||!fak){
+    var mangler=[];
+    if(!pris) mangler.push('kjøpesum');
+    if(!av) mangler.push('avtalt overtakelsesdato');
+    if(!fak) mangler.push('faktisk overtakelsesdato');
+    var har=[];
+    if(pris) har.push('Kjøpesum: '+pris.toLocaleString('nb-NO')+' kr');
+    if(av) har.push('Avtalt overtakelse: '+new Date(av).toLocaleDateString('nb-NO'));
+    if(fak) har.push('Faktisk overtakelse: '+new Date(fak).toLocaleDateString('nb-NO'));
+    var harHtml = har.length ? '<div style="margin-top:14px;padding:14px;background:var(--bg-card);border-radius:10px;font-size:13px;color:var(--ink-soft)">'+har.map(function(h){return '✓ '+h;}).join('<br>')+'</div>' : '';
+    document.getElementById('odm').innerHTML='<div class="ot" style="text-align:left"><strong>Mangler:</strong> '+mangler.join(', ')+'.'+harHtml+'</div>';
+    return;
+  }
   var avD=new Date(av),fakD=new Date(fak);
   var dag=Math.max(0,Math.round((fakD-avD)/864e5));
   var dagBegr=Math.min(dag,100);
