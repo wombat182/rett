@@ -84,7 +84,8 @@ CSS = """
   --kat-familie: #B8654A;
   --kat-gjeld: #7A6E5D;
   --kat-tjenester: #4E6E80;
-  --serif: 'EB Garamond', Garamond, Georgia, serif;
+  --serif: 'Fraunces', 'Palatino', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --serif-prose: 'Palatino', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
   --sans: 'Manrope', system-ui, sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -125,16 +126,16 @@ nav.site-nav {
 .logo-mark .glyph { fill: var(--accent); transition: fill 0.2s; }
 .logo-wordmark {
   font-family: var(--serif); font-weight: 400;
-  font-size: 24px; letter-spacing: -0.018em;
+  font-size: 44px; letter-spacing: -0.022em;
   color: var(--ink); line-height: 1;
   transition: color 0.2s;
   font-feature-settings: "liga" 1, "dlig" 1, "kern" 1;
+  font-variation-settings: "opsz" 60, "SOFT" 50;
 }
 .logo-tld {
   color: var(--accent); font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
-.logo:hover .glyph { fill: var(--accent-deep); }
 .logo:hover .logo-wordmark { color: var(--ink-soft); }
 .nav-links { display: flex; gap: 36px; list-style: none; }
 .nav-links a {
@@ -146,8 +147,7 @@ nav.site-nav {
 @media (max-width: 720px) {
   .nav-links { gap: 20px; }
   .nav-links a { font-size: 13px; }
-  .logo-mark { width: 26px; height: 26px; }
-  .logo-wordmark { font-size: 20px; }
+  .logo-wordmark { font-size: 32px; }
 }
 
 /* Breadcrumbs */
@@ -197,7 +197,8 @@ nav.site-nav {
 
 /* Article body */
 .article-body {
-  font-size: 17px; line-height: 1.75;
+  font-family: var(--serif-prose);
+  font-size: 18px; line-height: 1.7;
   color: var(--ink-soft);
 }
 .article-body h2 {
@@ -378,8 +379,9 @@ footer.site-footer {
   color: var(--accent); line-height: 0.85; position: relative; top: 3px;
 }
 .footer-logo-name {
-  font-family: var(--serif); font-size: 22px;
-  letter-spacing: -0.025em; color: var(--ink);
+  font-family: var(--serif); font-size: 36px;
+  letter-spacing: -0.022em; color: var(--ink);
+  font-variation-settings: "opsz" 60;
 }
 .footer-tagline {
   font-family: var(--serif); font-size: 15px; line-height: 1.65; font-style: italic;
@@ -1565,21 +1567,16 @@ def shared_head(title, description, depth=0, canonical_path=""):
 <meta name="twitter:description" content="{description}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,30..100,0..1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{prefix}styles.css">
 </head>
 <body>"""
 
 def site_nav(depth=0):
     prefix = "../" * depth
-    # Ekte § glyph med editorial serif. Subtil bakgrunn-pille.
-    logo_svg = '''<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<rect x="0" y="0" width="32" height="32" rx="7" fill="currentColor" class="glyph-bg" opacity="0.08"/>
-<text x="16" y="23" text-anchor="middle" class="glyph" font-family="'EB Garamond', Georgia, serif" font-size="22" font-weight="500" fill="currentColor">§</text>
-</svg>'''
     return f"""<div class="container">
 <nav class="site-nav">
-  <a href="{prefix}" class="logo"><span class="logo-mark">{logo_svg}</span><span class="logo-wordmark">rettsregel<span class="logo-tld">.no</span></span></a>
+  <a href="{prefix}" class="logo"><span class="logo-wordmark">Rettsregel<span class="logo-tld">.no</span></span></a>
   <ul class="nav-links">
     <li><a href="{prefix}tjenester/">Verktøy</a></li>
     <li><a href="{prefix}lover/">Lover</a></li>
@@ -1738,8 +1735,7 @@ def site_footer(depth=0):
     <div class="footer-inner">
       <div>
         <a href="{prefix}" class="footer-logo">
-          <span class="footer-logo-mark">§</span>
-          <span class="footer-logo-name">rettsregel<span style="color:var(--accent);font-weight:500">.no</span></span>
+          <span class="footer-logo-name">Rettsregel<span style="color:var(--accent);font-weight:500">.no</span></span>
         </a>
         <p class="footer-tagline">Lover er ikke vanskelige.<br>De er bare dårlig forklart.</p>
         <span class="footer-entity">Walrus AS</span>
@@ -2341,273 +2337,313 @@ def render_personvern():
 
 
 def render_om():
-    # Tell innhold dynamisk
-    n_paragrafer = len(PARAGRAPHS)
-    n_lover = len(set(p["lov"] for p in PARAGRAPHS))
-    n_verktoy = 91  # 48 tjenester + 43 kontrakter
-    n_sporsmal = len(SPORSMAL)
+    """Om-side i samme Apple-slide-stil som forsiden."""
+    total_paragrafer = len(PARAGRAPHS)
+    total_lover = len(set(p["lov"] for p in PARAGRAPHS))
+    total_sporsmal = len(SPORSMAL)
 
-    return f"""{shared_head('Om Rettsregel — Norske lover forklart på vanlig norsk', 'Rettsregel forklarer norske lover paragraf for paragraf på vanlig norsk. Gratis. Drevet av Walrus AS, kvalitetssikret av juridisk fagperson.', depth=1, canonical_path='/om/')}
+    return f"""{shared_head(
+        'Om Rettsregel — norske lover på vanlig norsk',
+        'Vi gjør norske lover forståelige — paragraf for paragraf. Bygd av Walrus AS for å gi alle tilgang til hva loven faktisk sier.',
+        depth=1, canonical_path='/om/'
+    )}
 <body>
 {site_nav(depth=1)}
 
 <style>
-.om-wrap {{ max-width: 880px; margin: 0 auto; padding: 0 24px; }}
-.om-hero {{ padding: 48px 0 36px; border-bottom: 1px solid var(--line); margin-bottom: 56px; }}
-.om-hero .kicker {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .18em; color: var(--accent); margin-bottom: 16px; display: block; }}
-.om-hero h1 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.6vw, 42px); line-height: 1.14; letter-spacing: -0.02em; margin-bottom: 18px; max-width: 720px; }}
-.om-hero h1 em {{ font-style: italic; color: var(--accent); }}
-.om-hero .lead {{ font-size: 17px; color: var(--ink-soft); line-height: 1.65; max-width: 620px; }}
+.om-slide {{ padding: 128px 24px; border-bottom: 1px solid var(--line); }}
+.om-slide-inner {{ max-width: 1080px; margin: 0 auto; }}
+.om-slide.tight {{ padding: 96px 24px; }}
+.om-slide.alt {{ background: var(--bg-alt); }}
 
-/* Stats */
-.om-stats {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 64px; }}
-@media (max-width: 700px) {{ .om-stats {{ grid-template-columns: repeat(2, 1fr); }} }}
-.om-stat {{ padding: 28px 16px; border-right: 1px solid var(--line); }}
-.om-stat:last-child {{ border-right: none; }}
-@media (max-width: 700px) {{ .om-stat:nth-child(2) {{ border-right: none; }} .om-stat:nth-child(-n+2) {{ border-bottom: 1px solid var(--line); }} }}
-.om-stat-num {{ font-family: var(--serif); font-size: clamp(28px, 3.4vw, 38px); font-weight: 400; line-height: 1; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 8px; }}
-.om-stat-lbl {{ font-family: var(--sans); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-mute); }}
+/* HERO */
+.om-hero {{
+  min-height: calc(75vh - 80px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 24px 100px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}}
+.om-hero-inner {{ max-width: 1080px; margin: 0 auto; width: 100%; }}
+.om-kicker {{
+  font-family: var(--sans); font-size: 11px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;
+  color: var(--accent); margin-bottom: 24px; display: block;
+}}
+.om-h1 {{
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(40px, 7vw, 88px); line-height: 1.02;
+  letter-spacing: -0.032em; margin: 0 0 28px 0; max-width: 920px;
+  font-variation-settings: "opsz" 96, "SOFT" 50;
+}}
+.om-h1 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
+.om-lead-hero {{
+  font-family: var(--serif-prose);
+  font-size: clamp(20px, 2.2vw, 26px); line-height: 1.45; color: var(--ink-soft);
+  max-width: 720px; margin: 0; font-weight: 400;
+}}
 
-/* Section heading style */
-.om-sek {{ margin-bottom: 56px; }}
-.om-sek-lbl {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .18em; color: var(--accent); margin-bottom: 14px; display: block; }}
-.om-sek h2 {{ font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.18; letter-spacing: -0.015em; margin-bottom: 20px; max-width: 640px; }}
-.om-sek p {{ font-size: 16px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 14px; max-width: 660px; }}
-.om-sek p strong {{ color: var(--ink); font-weight: 600; }}
+.om-h2 {{
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05;
+  letter-spacing: -0.026em; margin: 0 0 24px 0; max-width: 800px;
+  font-variation-settings: "opsz" 72, "SOFT" 50;
+}}
+.om-h2 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
+.om-lead {{
+  font-family: var(--serif-prose);
+  font-size: 19px; color: var(--ink-soft); line-height: 1.55;
+  max-width: 620px; margin: 0 0 56px 0; font-weight: 400;
+}}
 
-/* Metode-steg */
-.om-metode {{ display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 28px; }}
-@media (max-width: 700px) {{ .om-metode {{ grid-template-columns: 1fr; }} }}
-.om-steg {{ padding: 24px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; }}
-.om-steg-num {{ font-family: var(--serif); font-size: 28px; color: var(--accent); line-height: 1; margin-bottom: 12px; }}
-.om-steg h3 {{ font-family: var(--serif); font-size: 18px; font-weight: 500; margin-bottom: 8px; line-height: 1.3; }}
-.om-steg p {{ font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0; }}
+/* STORE TALL */
+.om-stats {{
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px; background: var(--line);
+  border: 1px solid var(--line); border-radius: 24px; overflow: hidden;
+  margin-top: 8px;
+}}
+.om-stat {{ background: var(--bg-card); padding: 44px 32px; }}
+.om-stat-num {{
+  font-family: var(--serif); font-size: clamp(48px, 6vw, 76px);
+  font-weight: 400; line-height: 1; letter-spacing: -0.028em;
+  color: var(--ink); margin-bottom: 12px;
+  font-variation-settings: "opsz" 96;
+  font-variant-numeric: tabular-nums;
+}}
+.om-stat-lbl {{
+  font-family: var(--sans); font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-mute);
+}}
 
-/* Innhold-grid */
-.om-innhold {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }}
-@media (max-width: 700px) {{ .om-innhold {{ grid-template-columns: 1fr; }} }}
-.om-innh-kort {{ display: block; padding: 24px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; text-decoration: none; color: var(--ink); transition: border-color .13s, box-shadow .13s; }}
-.om-innh-kort:hover {{ border-color: var(--accent); box-shadow: 0 4px 16px rgba(28,23,16,.08); }}
-.om-innh-num {{ font-family: var(--serif); font-size: 30px; font-weight: 400; line-height: 1; color: var(--ink); margin-bottom: 8px; }}
-.om-innh-tit {{ font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 6px; }}
-.om-innh-d {{ font-size: 12px; color: var(--ink-mute); line-height: 1.5; }}
-.om-innh-pil {{ font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 12px; }}
+/* PRINSIPP-KORT */
+.om-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }}
+.om-prinsipp {{
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 24px;
+  padding: 36px 32px; display: flex; flex-direction: column;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}}
+.om-prinsipp:hover {{
+  border-color: var(--accent-soft); transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.04);
+}}
+.om-prinsipp-em {{
+  font-size: 32px; line-height: 1; margin-bottom: 18px;
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, rgba(177,74,42,0.10), rgba(177,74,42,0.04));
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+}}
+.om-prinsipp h3 {{
+  font-family: var(--serif); font-size: 22px; font-weight: 400;
+  letter-spacing: -0.012em; line-height: 1.2; margin: 0 0 10px 0;
+  font-variation-settings: "opsz" 28;
+}}
+.om-prinsipp p {{
+  font-family: var(--serif-prose); font-size: 15.5px; line-height: 1.55;
+  color: var(--ink-soft); margin: 0;
+}}
 
-/* Trust/quality list */
-.om-prinsipper {{ list-style: none; padding: 0; margin: 24px 0; }}
-.om-prinsipper li {{ display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: flex-start; }}
-.om-prinsipper li:last-child {{ border-bottom: none; }}
-.om-prinsipper-num {{ font-family: var(--serif); font-size: 13px; color: var(--accent); font-weight: 600; min-width: 32px; padding-top: 1px; }}
-.om-prinsipper-body strong {{ display: block; font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }}
-.om-prinsipper-body span {{ font-size: 14px; color: var(--ink-soft); line-height: 1.6; }}
+/* QUOTE / LARGE STATEMENT */
+.om-quote {{
+  font-family: var(--serif); font-weight: 400; font-style: italic;
+  font-size: clamp(28px, 4vw, 44px); line-height: 1.2;
+  letter-spacing: -0.018em; color: var(--ink);
+  max-width: 900px; margin: 0;
+  font-variation-settings: "opsz" 60;
+}}
+.om-quote-attr {{
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  color: var(--ink-mute); letter-spacing: 0.04em; margin-top: 32px;
+}}
 
-/* CTA bunn */
-.om-cta {{ background: var(--bg-card); border-radius: 20px; padding: 40px; border: 1px solid var(--line); margin-top: 24px; }}
-.om-cta h2 {{ font-family: var(--serif); font-size: clamp(22px, 2.4vw, 28px); font-weight: 400; margin-bottom: 12px; }}
-.om-cta p {{ font-size: 15px; color: var(--ink-soft); margin-bottom: 20px; max-width: 540px; line-height: 1.65; }}
-.om-cta-kn {{ display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 600; font-size: 14px; padding: 13px 22px; border-radius: 10px; }}
-.om-cta-kn:hover {{ background: var(--accent-deep); }}
-.om-cta-sub {{ font-size: 13px; color: var(--ink-mute); margin-top: 14px; display: block; }}
+/* METODE-RAD */
+.om-metode {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }}
+.om-steg {{ background: var(--bg-card); padding: 36px 30px; }}
+.om-steg-tall {{
+  font-family: var(--serif); font-size: 48px; font-weight: 400;
+  line-height: 1; color: var(--accent); margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 60;
+}}
+.om-steg h4 {{
+  font-family: var(--serif); font-size: 19px; font-weight: 400;
+  letter-spacing: -0.01em; margin: 0 0 8px 0; line-height: 1.25;
+}}
+.om-steg p {{
+  font-family: var(--serif-prose); font-size: 14.5px; line-height: 1.55;
+  color: var(--ink-soft); margin: 0;
+}}
 
-/* FAQ */
-.om-faq details {{ border-bottom: 1px solid var(--line); padding: 18px 0; }}
-.om-faq details:first-child {{ border-top: 1px solid var(--line); }}
-.om-faq summary {{ font-family: var(--serif); font-size: 18px; font-weight: 400; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--ink); }}
-.om-faq summary::-webkit-details-marker {{ display: none; }}
-.om-faq summary::after {{ content: "+"; font-size: 22px; color: var(--accent); line-height: 1; margin-left: 16px; transition: transform .15s; }}
-.om-faq details[open] summary::after {{ transform: rotate(45deg); }}
-.om-faq details[open] summary {{ color: var(--accent); }}
-.om-faq-svar {{ padding-top: 12px; font-size: 15px; color: var(--ink-soft); line-height: 1.7; max-width: 720px; }}
+/* INFO-BOKS */
+.om-info-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }}
+.om-info-rad {{ background: var(--bg-card); padding: 32px 30px; }}
+.om-info-lbl {{
+  font-family: var(--sans); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-mute);
+  margin-bottom: 12px;
+}}
+.om-info-val {{
+  font-family: var(--serif); font-size: 22px; font-weight: 400;
+  letter-spacing: -0.012em; line-height: 1.25; color: var(--ink);
+  margin: 0;
+  font-variation-settings: "opsz" 28;
+}}
+.om-info-val a {{ color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color 0.15s; }}
+.om-info-val a:hover {{ border-bottom-color: var(--accent); }}
 
-/* Subtle divider */
-.om-divider {{ width: 60px; height: 2px; background: var(--accent); margin: 60px 0 50px; }}
+/* CTA */
+.om-cta-rad {{ display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-top: 48px; }}
+.om-cta {{
+  font-family: var(--sans); font-size: 14.5px; font-weight: 600;
+  text-decoration: none; padding: 14px 28px; border-radius: 100px;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px;
+}}
+.om-cta-primary {{ background: var(--ink); color: var(--bg); }}
+.om-cta-primary:hover {{ background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(177,74,42,0.25); }}
+.om-cta-ghost {{ color: var(--ink-soft); border: 1px solid var(--line); }}
+.om-cta-ghost:hover {{ border-color: var(--accent); color: var(--accent); }}
+
+@media (max-width: 700px) {{
+  .om-slide {{ padding: 80px 24px; }}
+  .om-slide.tight {{ padding: 64px 24px; }}
+  .om-hero {{ padding: 80px 24px 60px; min-height: auto; }}
+  .om-prinsipp {{ padding: 28px 24px; border-radius: 20px; }}
+  .om-stats, .om-info-grid, .om-metode {{ border-radius: 20px; }}
+  .om-stat {{ padding: 30px 24px; }}
+}}
 </style>
 
-<main class="page">
-<div class="om-wrap">
+<main>
 
-<!-- HERO -->
-<header class="om-hero">
-  <span class="kicker">Om Rettsregel</span>
-  <h1>Lover er ikke vanskelige. <em>De er bare dårlig forklart.</em></h1>
-  <p class="lead">Rettsregel oversetter norske lover til vanlig norsk — paragraf for paragraf. Gratis, uten registrering, uten ansvarsfraskrivelser i hver setning. Bare svar du faktisk forstår.</p>
-</header>
-
-<!-- STATS -->
-<div class="om-stats">
-  <div class="om-stat"><div class="om-stat-num">{n_paragrafer}</div><div class="om-stat-lbl">paragrafer forklart</div></div>
-  <div class="om-stat"><div class="om-stat-num">{n_verktoy}+</div><div class="om-stat-lbl">verktøy og maler</div></div>
-  <div class="om-stat"><div class="om-stat-num">{n_lover}</div><div class="om-stat-lbl">lover dekket</div></div>
-  <div class="om-stat"><div class="om-stat-num">100 %</div><div class="om-stat-lbl">gratis · ingen konto</div></div>
-</div>
-
-<!-- HVORFOR -->
-<section class="om-sek">
-  <span class="om-sek-lbl">Hvorfor finnes vi</span>
-  <h2>Det er noe rart med juridisk informasjon i Norge.</h2>
-  <p>Lovene er offentlige. De er skrevet for å gjelde alle. Likevel er de utilgjengelige for de fleste. Den som har behov for å forstå loven — fordi noe har gått galt, fordi en kontrakt skal signeres, fordi en bolig skal kjøpes — møter et språk skrevet for jurister, ikke for folk.</p>
-  <p>Resultatet er at vanlige folk enten gjetter, gir opp, eller betaler for en advokattime de strengt tatt ikke trenger. <strong>Rettsregel finnes for å lukke det gapet.</strong></p>
-</section>
-
-<!-- METODE -->
-<section class="om-sek">
-  <span class="om-sek-lbl">Slik jobber vi</span>
-  <h2>Hver paragraf forklares etter samme oppskrift.</h2>
-  <p>Det er fire faste deler. Du finner dem på hver eneste paragrafside.</p>
-  <div class="om-metode">
-    <div class="om-steg">
-      <div class="om-steg-num">1</div>
-      <h3>Kort svar først</h3>
-      <p>Hva betyr paragrafen — i én eller to setninger. Du skal kunne lukke siden etter ti sekunder med svar.</p>
+  <section class="om-hero">
+    <div class="om-hero-inner">
+      <span class="om-kicker">Om Rettsregel</span>
+      <h1 class="om-h1">Lover er ikke vanskelige.<br><em>De er bare dårlig forklart.</em></h1>
+      <p class="om-lead-hero">Vi tar lovteksten slik den står og oversetter den til vanlig norsk — paragraf for paragraf. Gratis, uten registrering. Bygd for alle som trenger å vite hva loven faktisk sier.</p>
     </div>
-    <div class="om-steg">
-      <div class="om-steg-num">2</div>
-      <h3>Paragraftekst og forklaring</h3>
-      <p>Selve lovteksten, deretter en gjennomgang på vanlig norsk. Hva betyr den juridiske setningen i praksis?</p>
+  </section>
+
+  <section class="om-slide">
+    <div class="om-slide-inner">
+      <span class="om-kicker">Innholdet</span>
+      <h2 class="om-h2">Et helt jus-bibliotek.<br>Oversatt til folkemunne.</h2>
+      <div class="om-stats">
+        <div class="om-stat"><div class="om-stat-num">{total_paragrafer}</div><div class="om-stat-lbl">Paragrafer</div></div>
+        <div class="om-stat"><div class="om-stat-num">{total_lover}</div><div class="om-stat-lbl">Lover</div></div>
+        <div class="om-stat"><div class="om-stat-num">92</div><div class="om-stat-lbl">Verktøy</div></div>
+        <div class="om-stat"><div class="om-stat-num">{total_sporsmal}</div><div class="om-stat-lbl">Spørsmål</div></div>
+      </div>
     </div>
-    <div class="om-steg">
-      <div class="om-steg-num">3</div>
-      <h3>Eksempler og vanlige feil</h3>
-      <p>Et hverdagseksempel — Kari, Per, Ola — viser hvordan regelen slår ut. Pluss de fellene folk ofte går i.</p>
+  </section>
+
+  <section class="om-slide alt">
+    <div class="om-slide-inner">
+      <span class="om-kicker">Hvorfor</span>
+      <h2 class="om-h2">For mange faller mellom to stoler</h2>
+      <p class="om-lead">Lovverket gjelder for alle — men er skrevet for jurister. Du skal egentlig kunne lese loven selv. I praksis betyr ord som "<em>rimelig tid</em>", "<em>vesentlig mangel</em>" og "<em>særskilt tilfelle</em>" at de fleste gir opp før de er ferdig med første setning.</p>
+      <blockquote class="om-quote">«Det er ikke nok at loven er gratis. Den må også være forståelig.»</blockquote>
+      <div class="om-quote-attr">— Rettsregels grunntese</div>
     </div>
-    <div class="om-steg">
-      <div class="om-steg-num">4</div>
-      <h3>Hva du bør gjøre</h3>
-      <p>Konkrete steg — ikke abstrakt rådgivning. Skriv brev. Sjekk fristen. Ring banken. Tinglys avtalen.</p>
+  </section>
+
+  <section class="om-slide">
+    <div class="om-slide-inner">
+      <span class="om-kicker">Slik jobber vi</span>
+      <h2 class="om-h2">Fra lovtekst til hverdagsnorsk</h2>
+      <p class="om-lead">Hver paragraf gjennomgår samme prosess — strukturert, transparent, gjennomtenkt.</p>
+      <div class="om-metode">
+        <div class="om-steg">
+          <div class="om-steg-tall">01</div>
+          <h4>Original</h4>
+          <p>Vi viser deg lovteksten ordrett. Ingen skjult omskriving.</p>
+        </div>
+        <div class="om-steg">
+          <div class="om-steg-tall">02</div>
+          <h4>Oversettelse</h4>
+          <p>Forklart på vanlig norsk — uten å miste det juridisk essensielle.</p>
+        </div>
+        <div class="om-steg">
+          <div class="om-steg-tall">03</div>
+          <h4>Konkret</h4>
+          <p>Hverdagseksempler som viser hvordan paragrafen faktisk slår ut.</p>
+        </div>
+        <div class="om-steg">
+          <div class="om-steg-tall">04</div>
+          <h4>Kontroll</h4>
+          <p>Gjennomgått av jurist før publisering. Oppdateres ved lovendring.</p>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- INNHOLD -->
-<section class="om-sek">
-  <span class="om-sek-lbl">Hva du finner her</span>
-  <h2>Tre nivåer av hjelp — fra rask kalkulator til paragraf-dyp.</h2>
-  <div class="om-innhold">
-    <a href="../lover/" class="om-innh-kort">
-      <div class="om-innh-num">{n_paragrafer}</div>
-      <div class="om-innh-tit">Paragrafer forklart</div>
-      <div class="om-innh-d">{n_lover} norske lover, paragraf for paragraf. Husleieloven, kjøpsloven, arveloven, bustadoppføringslova, og flere.</div>
-      <div class="om-innh-pil">Bla i lovene →</div>
-    </a>
-    <a href="../tjenester/" class="om-innh-kort">
-      <div class="om-innh-num">{n_verktoy}+</div>
-      <div class="om-innh-tit">Verktøy og maler</div>
-      <div class="om-innh-d">Kalkulatorer for reklamasjon, ferie og oppsigelse. Brevgeneratorer. 43 kontraktsmaler — fra husleie til testament.</div>
-      <div class="om-innh-pil">Se verktøyene →</div>
-    </a>
-    <a href="../sporsmal/" class="om-innh-kort">
-      <div class="om-innh-num">{n_sporsmal}</div>
-      <div class="om-innh-tit">Spørsmål og svar</div>
-      <div class="om-innh-d">Vanlige spørsmål forklart i artikkelform — fra «hva er pliktdel?» til «når kan utleier kaste meg ut?».</div>
-      <div class="om-innh-pil">Bla i artiklene →</div>
-    </a>
-  </div>
-</section>
-
-<div class="om-divider"></div>
-
-<!-- KVALITET -->
-<section class="om-sek">
-  <span class="om-sek-lbl">Kvalitet og kilder</span>
-  <h2>Vi tar feil for å skje. Slik gjør vi det så sjeldent som mulig.</h2>
-  <ol class="om-prinsipper">
-    <li>
-      <div class="om-prinsipper-num">01</div>
-      <div class="om-prinsipper-body">
-        <strong>Gjeldende lov er fasiten.</strong>
-        <span>Alt innhold bygger på lovteksten slik den står i Lovdata. Når lovene endres, oppdaterer vi.</span>
+  <section class="om-slide alt">
+    <div class="om-slide-inner">
+      <span class="om-kicker">Prinsipper</span>
+      <h2 class="om-h2">Det vi ikke gjør</h2>
+      <p class="om-lead">Like viktig som hva Rettsregel er — er hva Rettsregel ikke er.</p>
+      <div class="om-grid">
+        <div class="om-prinsipp">
+          <div class="om-prinsipp-em">🚫</div>
+          <h3>Ingen registrering</h3>
+          <p>Du trenger ikke konto. Du trenger ikke e-post. Du bare bruker det.</p>
+        </div>
+        <div class="om-prinsipp">
+          <div class="om-prinsipp-em">📭</div>
+          <h3>Ingen reklame</h3>
+          <p>Ingen tracking, ingen ad-nettverk, ingen popups. Bare lov.</p>
+        </div>
+        <div class="om-prinsipp">
+          <div class="om-prinsipp-em">⚖️</div>
+          <h3>Ikke rådgivning</h3>
+          <p>Vi forklarer hva loven sier — men erstatter ikke en advokat ved konkrete saker.</p>
+        </div>
+        <div class="om-prinsipp">
+          <div class="om-prinsipp-em">🤖</div>
+          <h3>Ikke et chatbot-bibliotek</h3>
+          <p>Hver paragraf er menneskelig redigert. Roy er bonus, ikke grunnlaget.</p>
+        </div>
       </div>
-    </li>
-    <li>
-      <div class="om-prinsipper-num">02</div>
-      <div class="om-prinsipper-body">
-        <strong>Juridisk fagperson gjennomgår innholdet.</strong>
-        <span>Forklaringene er kvalitetssikret. Det betyr ikke at vi aldri tar feil — men det betyr at vi har et apparat for å fange feilene tidlig.</span>
+    </div>
+  </section>
+
+  <section class="om-slide">
+    <div class="om-slide-inner">
+      <span class="om-kicker">Bak siden</span>
+      <h2 class="om-h2">Walrus AS</h2>
+      <p class="om-lead">Rettsregel.no driftes av <strong>Walrus AS</strong>, et lite norsk selskap som tror at åpen kunnskap er en samfunnsoppgave. Vi har ingen investorer, ingen sponsoravtaler og ingen lojalitet utenfor brukeren.</p>
+      <div class="om-info-grid">
+        <div class="om-info-rad">
+          <div class="om-info-lbl">Selskap</div>
+          <p class="om-info-val">Walrus AS</p>
+        </div>
+        <div class="om-info-rad">
+          <div class="om-info-lbl">Kontakt</div>
+          <p class="om-info-val"><a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a></p>
+        </div>
+        <div class="om-info-rad">
+          <div class="om-info-lbl">Beliggenhet</div>
+          <p class="om-info-val">Dønna, Nordland</p>
+        </div>
       </div>
-    </li>
-    <li>
-      <div class="om-prinsipper-num">03</div>
-      <div class="om-prinsipper-body">
-        <strong>Vi sier ikke mer enn vi vet.</strong>
-        <span>Når en sak er på grensen — for eksempel hva som er "vesentlig mangel" — sier vi det, og peker på rettspraksis i stedet for å gjette.</span>
+    </div>
+  </section>
+
+  <section class="om-slide alt">
+    <div class="om-slide-inner">
+      <span class="om-kicker">Kom i gang</span>
+      <h2 class="om-h2">Begynn å bla.</h2>
+      <p class="om-lead">Lovverket er åpent. Du har lov til å vite hva som gjelder.</p>
+      <div class="om-cta-rad">
+        <a href="../tjenester/" class="om-cta om-cta-primary">Se alle 92 verktøy <span>→</span></a>
+        <a href="../lover/" class="om-cta om-cta-ghost">Bla i lovene</a>
       </div>
-    </li>
-    <li>
-      <div class="om-prinsipper-num">04</div>
-      <div class="om-prinsipper-body">
-        <strong>Tilbakemeldinger blir lest.</strong>
-        <span>Hvis du ser noe som er feil, skriv. Vi får e-poster fra advokater, regnskapsførere og helt vanlige folk — alle blir vurdert.</span>
-      </div>
-    </li>
-  </ol>
-</section>
+    </div>
+  </section>
 
-<!-- ROY -->
-<section class="om-sek">
-  <span class="om-sek-lbl">Roy — AI-assistenten</span>
-  <h2>Hvis du ikke vet hvilken paragraf som gjelder, spør Roy.</h2>
-  <p>Nederst i høyre hjørne finner du en chat-knapp. Roy er en AI-assistent som hjelper deg navigere — beskriv problemet, så finner han riktig paragraf eller verktøy. Roy gir generell informasjon, ikke juridisk rådgivning, og kan ta feil. Bruk han som et utgangspunkt, ikke en fasit.</p>
-</section>
-
-<!-- HVA VI IKKE GJØR -->
-<section class="om-sek">
-  <span class="om-sek-lbl">Det Rettsregel ikke er</span>
-  <h2>Vi er ikke advokater. Det er en bevisst grense.</h2>
-  <p>Rettsregel gir <strong>informasjon</strong>, ikke <strong>rådgivning</strong>. Forskjellen er reell og viktig: rådgivning gjelder din konkrete situasjon, alle dens detaljer, og bærer profesjonelt ansvar. Det leverer vi ikke.</p>
-  <p>Hvis saken er stor — boligkjøp som glapp, oppsigelse du vil bestride, arveoppgjør der det er konflikt — kontakt en advokat. Vi peker deg ofte selv i den retningen. Det er ingen skam i å bruke en time advokat når mye står på spill.</p>
-</section>
-
-<!-- OM WALRUS -->
-<section class="om-sek">
-  <span class="om-sek-lbl">Selskapet bak</span>
-  <h2>Walrus AS.</h2>
-  <p>Rettsregel drives av <strong>Walrus AS</strong>, et norsk aksjeselskap som bygger digitale verktøy for å gjøre lovverket tilgjengelig. Vi tjener ikke penger på Rettsregel direkte — det er en plattform vi har valgt å holde gratis. Det er ingen annonser, ingen sporing utover det som trengs for å drive siden, og ingen krav om konto.</p>
-</section>
-
-<!-- FAQ -->
-<section class="om-sek">
-  <span class="om-sek-lbl">Vanlige spørsmål om Rettsregel</span>
-  <h2>Spørsmål og svar.</h2>
-  <div class="om-faq">
-    <details>
-      <summary>Er Rettsregel virkelig gratis?</summary>
-      <div class="om-faq-svar">Ja. Hele innholdet — paragrafer, verktøy, maler, Q&amp;A — er fritt tilgjengelig. Ingen betalingsmur, ingen registrering. Hvis du vil støtte arbeidet, send oss en e-post med tilbakemelding eller et savn — det er den mest verdifulle støtten vi får.</div>
-    </details>
-    <details>
-      <summary>Kan jeg stole på innholdet?</summary>
-      <div class="om-faq-svar">Innholdet er kvalitetssikret av en juridisk fagperson og bygger på gjeldende lovtekst. Men ingen kilde er feilfri — heller ikke vår. Bruk Rettsregel som et utgangspunkt, ikke som siste ord. Ved tvist eller stor økonomisk verdi: kontakt advokat.</div>
-    </details>
-    <details>
-      <summary>Hvordan oppdaterer dere innholdet?</summary>
-      <div class="om-faq-svar">Når lovene endres, oppdaterer vi. Vi følger med på lovendringer fra Stortinget og forvaltningsorganene. Spør du om en endring vi ikke har fanget opp, send oss en e-post — vi prioriterer oppdateringer som faktisk er etterspurt.</div>
-    </details>
-    <details>
-      <summary>Hvorfor står ikke navnet på forfatteren?</summary>
-      <div class="om-faq-svar">Innholdet utvikles på fritiden, og vi har valgt å holde det redaksjonelt — i Walrus AS' navn — uten å koble enkeltartikler til personer. Det er en bevisst skille mellom Rettsregel som plattform og personlige stillinger.</div>
-    </details>
-    <details>
-      <summary>Kan jeg bidra med innhold?</summary>
-      <div class="om-faq-svar">Ja, særlig hvis du jobber juridisk og ser noe vi har fått feil eller mangler. Send en e-post med konkret tilbakemelding. Vi har ikke åpne bidrag ennå, men gode forslag blir alltid tatt med.</div>
-    </details>
-    <details>
-      <summary>Hvor finner jeg loven selv?</summary>
-      <div class="om-faq-svar">Den offisielle, oppdaterte kilden er <a href="https://lovdata.no" target="_blank" rel="noopener">Lovdata.no</a>. Det er staten Norges egen tjeneste. Vi peker dit der det er relevant. Rettsregel er ikke en erstatning for Lovdata — vi er en oversettelse.</div>
-    </details>
-  </div>
-</section>
-
-<!-- CTA -->
-<div class="om-cta">
-  <h2>Har du en sak du lurer på?</h2>
-  <p>Send oss en e-post. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan — enten en paragraf på siden, et verktøy, eller en advokat.</p>
-  <a href="mailto:rettsregel@gmail.com?subject=Sak%20fra%20Rettsregel" class="om-cta-kn">rettsregel@gmail.com →</a>
-  <span class="om-cta-sub">Walrus AS · Rettsregel.no · Vi svarer som regel innen et døgn.</span>
-</div>
-
-</div>
 </main>
-{site_footer(depth=1)}"""
 
+{site_footer(depth=1)}"""
 
 
 def render_sporsmal_page(s):
@@ -2953,118 +2989,134 @@ def render_homepage():
 {site_nav(depth=0)}
 
 <style>
-/* === SLIDE-FORSIDE === */
+/* === SLIDE-FORSIDE — Apple-raffinert === */
 .home-slide {{
-  padding: 96px 24px;
+  padding: 128px 24px;
   border-bottom: 1px solid var(--line);
 }}
-.home-slide-inner {{ max-width: 1040px; margin: 0 auto; }}
+.home-slide-inner {{ max-width: 1080px; margin: 0 auto; }}
 
 /* HERO */
 .sl-hero {{
   min-height: calc(100vh - 80px);
   display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 24px 60px;
+  padding: 100px 24px 80px;
   border-bottom: 1px solid var(--line);
   position: relative;
 }}
-.sl-hero-inner {{ max-width: 1040px; margin: 0 auto; width: 100%; }}
+.sl-hero-inner {{ max-width: 1080px; margin: 0 auto; width: 100%; }}
 .sl-hero h1 {{
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(40px, 7vw, 88px); line-height: 1.02;
-  letter-spacing: -0.03em; margin: 0;
+  font-size: clamp(46px, 8vw, 104px); line-height: 1.0;
+  letter-spacing: -0.035em; margin: 0;
   font-feature-settings: "liga" 1, "dlig" 1;
+  font-variation-settings: "opsz" 120, "SOFT" 50, "WONK" 0;
 }}
 .sl-hero h1 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
 .sl-hero .sl-hero-meta {{
   font-family: var(--sans); font-size: 13px;
-  color: var(--ink-mute); letter-spacing: 0.04em;
-  margin-top: 44px;
-  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  color: var(--ink-mute); letter-spacing: 0.06em;
+  margin-top: 56px;
+  display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
 }}
-.sl-hero .sl-hero-meta .dot {{ opacity: 0.4; }}
+.sl-hero .sl-hero-meta .dot {{ opacity: 0.3; }}
 .sl-hero .sl-hero-scroll {{
-  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  font-family: var(--sans); font-size: 11px;
-  color: var(--ink-mute); letter-spacing: 0.16em; text-transform: uppercase;
-  text-decoration: none;
-  animation: sl-bob 2.4s ease-in-out infinite;
+  position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-family: var(--sans); font-size: 10.5px;
+  color: var(--ink-mute); letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; font-weight: 500;
+  animation: sl-bob 2.6s ease-in-out infinite;
 }}
 .sl-hero .sl-hero-scroll svg {{ stroke: var(--ink-mute); }}
 @keyframes sl-bob {{
-  0%, 100% {{ transform: translate(-50%, 0); opacity: 0.6; }}
+  0%, 100% {{ transform: translate(-50%, 0); opacity: 0.55; }}
   50% {{ transform: translate(-50%, 6px); opacity: 1; }}
 }}
 
 /* GENERELL SLIDE */
 .sl-kicker {{
   font-family: var(--sans); font-size: 11px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em;
-  color: var(--accent); margin-bottom: 16px; display: block;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;
+  color: var(--accent); margin-bottom: 20px; display: block;
 }}
 .sl-h2 {{
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(28px, 4vw, 44px); line-height: 1.08;
-  letter-spacing: -0.022em; margin: 0 0 16px 0; max-width: 720px;
+  font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05;
+  letter-spacing: -0.026em; margin: 0 0 20px 0; max-width: 760px;
+  font-variation-settings: "opsz" 72, "SOFT" 50;
 }}
 .sl-lead {{
-  font-size: 17px; color: var(--ink-soft); line-height: 1.55;
-  max-width: 560px; margin: 0 0 40px 0;
+  font-size: 18px; color: var(--ink-soft); line-height: 1.55;
+  max-width: 580px; margin: 0 0 56px 0;
+  font-weight: 400;
 }}
 
 /* KORT-GRID */
-.sl-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; }}
+.sl-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }}
 .sl-kort {{
-  background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px;
-  padding: 22px 24px; text-decoration: none; color: var(--ink);
-  display: flex; align-items: center; gap: 16px;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.13s;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 22px;
+  padding: 28px 28px; text-decoration: none; color: var(--ink);
+  display: flex; align-items: center; gap: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s;
 }}
 .sl-kort:hover {{
   border-color: var(--accent-soft);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.04);
-  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.05);
+  transform: translateY(-2px);
 }}
-.sl-kort:hover .sl-pil {{ transform: translateX(4px); color: var(--accent); }}
+.sl-kort:hover .sl-pil {{ transform: translateX(5px); color: var(--accent); }}
 .sl-em {{
-  font-size: 22px; width: 44px; height: 44px;
-  background: rgba(177,74,42,0.06); border-radius: 10px;
+  font-size: 26px; width: 52px; height: 52px;
+  background: linear-gradient(135deg, rgba(177,74,42,0.10), rgba(177,74,42,0.04));
+  border-radius: 14px;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }}
 .sl-info {{ flex: 1; min-width: 0; }}
-.sl-navn {{ font-family: var(--serif); font-size: 18px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.25; margin-bottom: 3px; }}
-.sl-beskr {{ font-size: 13px; line-height: 1.5; color: var(--ink-soft); }}
-.sl-tall {{ font-family: var(--sans); font-size: 14px; color: var(--ink-mute); font-variant-numeric: tabular-nums; }}
-.sl-pil {{ font-size: 18px; color: var(--ink-mute); transition: transform 0.13s, color 0.13s; flex-shrink: 0; }}
+.sl-navn {{ font-family: var(--serif); font-size: 20px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 5px; font-variation-settings: "opsz" 24; }}
+.sl-beskr {{ font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }}
+.sl-tall {{ font-family: var(--serif); font-size: 28px; color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 400; letter-spacing: -0.02em; font-variation-settings: "opsz" 36; }}
+.sl-pil {{ font-size: 18px; color: var(--ink-mute); transition: transform 0.2s, color 0.2s; flex-shrink: 0; }}
 
-.sl-cta-rad {{ margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }}
+.sl-cta-rad {{ margin-top: 56px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }}
 .sl-cta {{
   font-family: var(--sans); font-size: 14px; font-weight: 600;
-  text-decoration: none; padding: 12px 22px; border-radius: 100px;
-  transition: all 0.13s; display: inline-flex; align-items: center; gap: 8px;
+  text-decoration: none; padding: 14px 26px; border-radius: 100px;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px;
 }}
 .sl-cta-primary {{ background: var(--ink); color: var(--bg); }}
-.sl-cta-primary:hover {{ background: var(--accent); }}
+.sl-cta-primary:hover {{ background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(177,74,42,0.25); }}
 .sl-cta-ghost {{ color: var(--ink-soft); border: 1px solid var(--line); }}
 .sl-cta-ghost:hover {{ border-color: var(--accent); color: var(--accent); }}
 
 /* SLIDE 4 — KATEGORIER */
-.sl-kat-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }}
+.sl-kat-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }}
 .sl-kat {{
-  background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px;
-  padding: 32px 26px; text-decoration: none; color: var(--ink); display: block;
-  transition: border-color 0.15s, transform 0.13s;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 24px;
+  padding: 40px 32px; text-decoration: none; color: var(--ink); display: block;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }}
-.sl-kat:hover {{ border-color: var(--accent-soft); transform: translateY(-2px); }}
-.sl-kat-em {{ font-size: 36px; line-height: 1; margin-bottom: 18px; }}
-.sl-kat-navn {{ font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 6px; }}
-.sl-kat-beskr {{ font-size: 13px; color: var(--ink-soft); line-height: 1.5; }}
+.sl-kat:hover {{
+  border-color: var(--accent-soft);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.06);
+}}
+.sl-kat-em {{
+  font-size: 40px; line-height: 1; margin-bottom: 22px;
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, rgba(177,74,42,0.10), rgba(177,74,42,0.04));
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+}}
+.sl-kat-navn {{ font-family: var(--serif); font-size: 24px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 8px; font-variation-settings: "opsz" 28; }}
+.sl-kat-beskr {{ font-size: 13.5px; color: var(--ink-soft); line-height: 1.55; }}
 
 @media (max-width: 700px) {{
-  .home-slide {{ padding: 64px 24px; }}
-  .sl-hero {{ padding: 60px 24px 40px; min-height: calc(100vh - 60px); }}
-  .sl-hero-scroll {{ bottom: 24px; }}
+  .home-slide {{ padding: 80px 24px; }}
+  .sl-hero {{ padding: 70px 24px 50px; min-height: calc(100vh - 60px); }}
+  .sl-hero-scroll {{ bottom: 28px; }}
+  .sl-kort {{ padding: 22px 22px; border-radius: 18px; }}
+  .sl-kat {{ padding: 30px 24px; border-radius: 20px; }}
 }}
 </style>
 
