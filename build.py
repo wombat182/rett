@@ -1510,6 +1510,147 @@ form.contact-form.hide { display: none; }
   }
   .chat-toggle { bottom: 16px; right: 16px; padding: 12px 18px; font-size: 14px; }
 }
+/* ---------- Typographic index pages (lover, sporsmal, verktoy) ---------- */
+.tk-page { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+
+.tk-hero { padding: 56px 0 28px; max-width: 760px; }
+.tk-hero-label {
+  font-family: var(--serif); font-size: 12px;
+  font-weight: 500; letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 22px 0;
+}
+.tk-hero h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(24px, 3.4vw, 34px);
+  line-height: 1.22;
+  letter-spacing: -0.012em;
+  margin: 0 0 20px 0;
+  color: var(--ink);
+}
+.tk-hero-lead {
+  font-family: var(--serif);
+  font-size: 17px; line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 0 28px 0;
+  max-width: 560px;
+}
+.tk-hero-meta {
+  font-family: var(--serif);
+  font-size: 13px; color: var(--ink-mute);
+  letter-spacing: 0.005em;
+  margin: 0;
+}
+.tk-hero-meta-sep { margin: 0 12px; opacity: 0.5; }
+
+.tk-cat-bar {
+  display: flex; flex-wrap: wrap;
+  align-items: baseline; gap: 30px;
+  padding: 16px 0 14px 0;
+  margin: 32px 0 64px 0;
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0;
+  background: linear-gradient(to bottom, var(--bg) 88%, transparent);
+  z-index: 20;
+}
+.tk-cat {
+  font-family: var(--serif);
+  font-size: 15px; font-weight: 500;
+  color: var(--ink-mute); text-decoration: none;
+  padding-bottom: 6px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.18s ease, border-color 0.18s ease;
+  letter-spacing: 0.002em;
+}
+.tk-cat:hover { color: var(--ink); }
+.tk-cat.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.tk-section { margin: 0 0 80px 0; scroll-margin-top: 80px; }
+.tk-section-title {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(22px, 2.4vw, 28px);
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  margin: 0 0 28px 0;
+}
+
+.tk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 56px; row-gap: 0;
+  border-top: 1px solid var(--line);
+}
+.tk-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: 16px; row-gap: 4px;
+  align-items: baseline;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none; color: inherit;
+  transition: color 0.18s ease;
+}
+.tk-row-name {
+  font-family: var(--serif);
+  font-size: 16px; font-weight: 500;
+  color: var(--ink);
+  grid-column: 1; grid-row: 1;
+  letter-spacing: 0.002em;
+}
+.tk-row-desc {
+  font-family: var(--serif);
+  font-size: 14px; color: var(--ink-soft);
+  line-height: 1.45;
+  grid-column: 1; grid-row: 2;
+}
+.tk-row-arrow {
+  grid-column: 2; grid-row: 1 / span 2;
+  align-self: center;
+  font-family: var(--serif); font-size: 16px;
+  color: var(--ink-mute);
+  transition: color 0.18s ease, transform 0.2s ease;
+  font-weight: 400;
+}
+.tk-row:hover .tk-row-name { color: var(--ink); }
+.tk-row:hover .tk-row-arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+@media (min-width: 720px) {
+  .tk-grid { position: relative; }
+  .tk-grid::before {
+    content: "";
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--line);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .tk-page { padding: 0 20px; }
+  .tk-hero { padding: 40px 0 20px; }
+  .tk-cat-bar {
+    gap: 18px; margin: 24px 0 40px 0;
+    overflow-x: auto; flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+  .tk-cat-bar::-webkit-scrollbar { display: none; }
+  .tk-cat { flex-shrink: 0; font-size: 14px; }
+  .tk-section { margin-bottom: 56px; }
+  .tk-section-title { font-size: 22px; margin-bottom: 18px; }
+  .tk-grid { grid-template-columns: 1fr; column-gap: 0; }
+  .tk-row { padding: 16px 0; }
+}
+
 """
 
 # ============================================================
@@ -1553,14 +1694,7 @@ def site_nav(depth=0):
     prefix = "../" * depth
     return f"""<header class="site-header">
   <a href="{prefix}" class="site-logo" aria-label="Rettsregel forside">
-    <svg viewBox="0 0 76 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <line x1="32" y1="14" x2="32" y2="80"/>
-      <line x1="32" y1="14" x2="50" y2="14"/>
-      <path d="M50 14 C66 14, 66 48, 50 48"/>
-      <line x1="32" y1="48" x2="50" y2="48"/>
-      <line x1="44" y1="48" x2="62" y2="80"/>
-      <line x1="18" y1="48" x2="18" y2="80"/>
-    </svg>
+    <svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M30 15 L30 85 M30 15 L52 15 C70 15 70 52 52 52 L30 52 M44 52 L66 85"/><line x1="14" y1="55" x2="14" y2="85"/></svg>
   </a>
 
   <input type="checkbox" id="site-nav-toggle" class="site-nav-toggle" aria-hidden="true">
@@ -2119,156 +2253,123 @@ def render_lov_index(lov_name, lov_display, paragraphs):
 {site_footer(depth=2)}"""
 
 def render_lover_index():
-    """Lov-oversikt — Apple-aktig kompakt liste-design."""
+    """Lov-oversikt — samme typografiske indeks som verktøy-hub."""
 
-    # Grupper etter kategori
-    LOV_KATEGORI = {
-        "angrerettloven": ("kjop", "Forbruk og kjøp"),
-        "kjopsloven": ("kjop", "Forbruk og kjøp"),
-        "forbrukerkjopsloven": ("kjop", "Forbruk og kjøp"),
-        "husleieloven": ("bolig", "Bolig"),
-        "avhendingslova": ("bolig", "Bolig"),
-        "naboloven": ("bolig", "Bolig"),
-        "bustadoppforingslova": ("bolig", "Bolig"),
-        "navneloven": ("familie", "Familie"),
-        "arveloven": ("arv", "Arv og familie"),
-    }
-    LOV_KORT_DESC = {
-        "angrerettloven": "Angrerett ved netthandel og kjøp utenfor butikk",
-        "kjopsloven": "Kjøp og salg — privat og bedrift",
-        "forbrukerkjopsloven": "Kjøp som forbruker — strengeste forbrukervern",
-        "husleieloven": "Leie av bolig — rettigheter for begge parter",
-        "avhendingslova": "Kjøp og salg av bolig, hytte, tomt",
-        "naboloven": "Konflikter og avstander til naboer",
-        "bustadoppforingslova": "Bygging av ny bolig eller hytte",
-        "navneloven": "Navnevalg og navneendring",
-        "arveloven": "Arv, testament og pliktdel",
+    # (slug, display name, kort beskrivelse)
+    LOV_INFO = {
+        "angrerettloven": ("Angrerettloven", "Angrerett ved netthandel og kjøp utenfor butikk."),
+        "kjopsloven": ("Kjøpsloven", "Kjøp og salg — privat og bedrift."),
+        "forbrukerkjopsloven": ("Forbrukerkjøpsloven", "Kjøp som forbruker — strengeste forbrukervern."),
+        "husleieloven": ("Husleieloven", "Leie av bolig — rettigheter for begge parter."),
+        "avhendingslova": ("Avhendingslova", "Kjøp og salg av bolig, hytte, tomt."),
+        "naboloven": ("Naboloven", "Konflikter og avstander til naboer."),
+        "bustadoppforingslova": ("Bustadoppføringslova", "Bygging av ny bolig eller hytte."),
+        "navneloven": ("Navneloven", "Navnevalg og navneendring."),
+        "arveloven": ("Arveloven", "Arv, testament og pliktdel."),
     }
 
     # Tell paragrafer per lov
     counts = {}
-    displays = {}
     for p in PARAGRAPHS:
         lov = p["lov"]
         counts[lov] = counts.get(lov, 0) + 1
-        displays[lov] = p["lov_display"]
+    total_paragrafer = sum(counts.values())
 
-    # Grupper etter kategori
-    KAT_ORDER = ["bolig", "kjop", "arv", "familie"]
-    KAT_TITLER = {
-        "bolig": "Bolig",
-        "kjop": "Kjøp og forbruk",
-        "arv": "Arv og familie",
-        "familie": "Familie",
-    }
-    grouped = {}
-    for lov, antall in counts.items():
-        kat, _ = LOV_KATEGORI.get(lov, ("annet", "Annet"))
-        grouped.setdefault(kat, []).append((lov, antall))
+    # Categories
+    KATEGORIER = [
+        ("bolig", "Bolig", ["husleieloven", "avhendingslova", "naboloven", "bustadoppforingslova"]),
+        ("kjop", "Kjøp og forbruk", ["angrerettloven", "kjopsloven", "forbrukerkjopsloven"]),
+        ("arv", "Arv og familie", ["arveloven", "navneloven"]),
+    ]
 
-    seksjoner_html = ""
-    for kat in KAT_ORDER:
-        if kat not in grouped:
-            continue
-        lover = sorted(grouped[kat], key=lambda x: -x[1])
-        n_para = sum(a for _, a in lover)
-        n_lov = len(lover)
-        rader = ""
-        for lov, antall in lover:
-            navn = displays[lov]
-            desc = LOV_KORT_DESC.get(lov, "")
-            rader += f'''        <a href="{lov}/" class="lk-rad">
-          <div class="lk-info">
-            <h3 class="lk-navn">{navn}</h3>
-            <p class="lk-desc">{desc}</p>
-          </div>
-          <div class="lk-meta">
-            <span class="lk-antall">{antall}</span>
-            <span class="lk-pil">→</span>
-          </div>
-        </a>
-'''
-        seksjoner_html += f'''    <section class="lk-seksjon">
-      <header class="lk-seksjon-hd">
-        <h2>{KAT_TITLER[kat]}</h2>
-        <span class="lk-seksjon-meta">{n_para} paragrafer · {n_lov} {"lov" if n_lov==1 else "lover"}</span>
-      </header>
-      <div class="lk-liste">
-{rader}      </div>
-    </section>
-'''
+    nav_items = ""
+    for slug, tittel, _ in KATEGORIER:
+        nav_items += f'    <a href="#{slug}" class="tk-cat" data-cat="{slug}">{tittel}</a>\n'
+    nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle lover</a>\n'
 
-    total_para = sum(counts.values())
-    total_lov = len(counts)
+    sections = ""
+    for slug, tittel, lov_slugs in KATEGORIER:
+        rows = ""
+        for lov_slug in lov_slugs:
+            if lov_slug not in LOV_INFO:
+                continue
+            display, desc = LOV_INFO[lov_slug]
+            antall = counts.get(lov_slug, 0)
+            full_desc = f"{desc} {antall} paragrafer."
+            rows += (
+                f'      <a href="{lov_slug}/" class="tk-row">\n'
+                f'        <span class="tk-row-name">{display}</span>\n'
+                f'        <span class="tk-row-desc">{full_desc}</span>\n'
+                f'        <span class="tk-row-arrow" aria-hidden="true">→</span>\n'
+                f'      </a>\n'
+            )
+        sections += (
+            f'  <section class="tk-section" id="{slug}">\n'
+            f'    <h2 class="tk-section-title">{tittel}</h2>\n'
+            f'    <div class="tk-grid">\n'
+            f'{rows}'
+            f'    </div>\n'
+            f'  </section>\n\n'
+        )
+
+    chat = chat_widget()
 
     return f"""{shared_head(
-        'Alle lover — forklart på vanlig norsk | Rettsregel',
-        f'{total_para} paragrafer i {total_lov} norske lover, forklart på vanlig norsk. Bla i lovene.',
+        'Lover — alle norske lover forklart på vanlig norsk | Rettsregel',
+        f'{len(LOV_INFO)} norske lover, {total_paragrafer} paragrafer forklart på vanlig norsk. Husleieloven, arveloven, kjøpsloven, og flere.',
         depth=1, canonical_path='/lover/'
     )}
 <body>
 {site_nav(depth=1)}
-<style>
-.lk-page {{ max-width: 880px; margin: 0 auto; padding: 0 24px; }}
-.lk-hero {{ padding: 56px 0 40px; border-bottom: 1px solid var(--line); margin-bottom: 48px; }}
-.lk-hero .lk-kicker {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 14px; display: block; }}
-.lk-hero h1 {{ font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 16px 0; }}
-.lk-hero .lk-lead {{ font-size: 17px; color: var(--ink-soft); line-height: 1.6; max-width: 540px; margin: 0; }}
 
-.lk-stats {{ display: flex; gap: 32px; margin-top: 24px; padding-top: 0; }}
-.lk-stat-num {{ font-family: var(--serif); font-size: 30px; font-weight: 400; line-height: 1; color: var(--ink); }}
-.lk-stat-lbl {{ font-family: var(--sans); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-mute); margin-top: 6px; }}
+<main class="tk-page">
 
-.lk-seksjon {{ margin-bottom: 56px; }}
-.lk-seksjon-hd {{ display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }}
-.lk-seksjon-hd h2 {{ font-family: var(--serif); font-weight: 400; font-size: 22px; letter-spacing: -0.01em; margin: 0; line-height: 1.2; }}
-.lk-seksjon-meta {{ font-family: var(--sans); font-size: 12px; color: var(--ink-mute); letter-spacing: 0.04em; }}
+  <section class="tk-hero">
+    <p class="tk-hero-label">Lover</p>
+    <h1>Loven, paragraf for paragraf.</h1>
+    <p class="tk-hero-lead">Norske lover på vanlig norsk — bla deg gjennom paragraf for paragraf og finn ut hva som faktisk gjelder.</p>
+    <p class="tk-hero-meta">
+      {len(LOV_INFO)} lover<span class="tk-hero-meta-sep">·</span>{total_paragrafer} paragrafer<span class="tk-hero-meta-sep">·</span>på vanlig norsk
+    </p>
+  </section>
 
-.lk-liste {{}}
-.lk-rad {{
-  display: flex; align-items: center; justify-content: space-between; gap: 24px;
-  padding: 20px 4px; border-bottom: 1px solid var(--line);
-  text-decoration: none; color: var(--ink);
-  transition: padding 0.13s;
-}}
-.lk-rad:last-child {{ border-bottom: none; }}
-.lk-rad:hover {{ padding-left: 12px; }}
-.lk-rad:hover .lk-pil {{ transform: translateX(4px); color: var(--accent); }}
-.lk-info {{ min-width: 0; flex: 1; }}
-.lk-navn {{ font-family: var(--serif); font-weight: 400; font-size: 19px; letter-spacing: -0.01em; margin: 0 0 4px 0; line-height: 1.25; }}
-.lk-desc {{ font-size: 13px; color: var(--ink-soft); margin: 0; line-height: 1.5; }}
-.lk-meta {{ display: flex; align-items: center; gap: 14px; flex-shrink: 0; }}
-.lk-antall {{ font-family: var(--sans); font-size: 13px; color: var(--ink-mute); font-variant-numeric: tabular-nums; }}
-.lk-pil {{ font-size: 16px; color: var(--ink-mute); transition: transform 0.13s, color 0.13s; }}
+  <nav class="tk-cat-bar" id="alle" aria-label="Lovkategorier">
+{nav_items}  </nav>
 
-@media (max-width: 600px) {{
-  .lk-hero {{ padding: 36px 0 28px; margin-bottom: 36px; }}
-  .lk-stats {{ gap: 24px; }}
-  .lk-stat-num {{ font-size: 24px; }}
-  .lk-rad {{ padding: 16px 4px; }}
-  .lk-navn {{ font-size: 17px; }}
-  .lk-desc {{ font-size: 12.5px; }}
-}}
-</style>
+{sections}
 
-<main>
-  <div class="lk-page">
-
-    <header class="lk-hero">
-      <span class="lk-kicker">Lovsamling</span>
-      <h1>Norske lover, paragraf for paragraf</h1>
-      <p class="lk-lead">Vi tar lovteksten slik den står og forklarer hva den faktisk betyr.</p>
-      <div class="lk-stats">
-        <div><div class="lk-stat-num">{total_para}</div><div class="lk-stat-lbl">paragrafer</div></div>
-        <div><div class="lk-stat-num">{total_lov}</div><div class="lk-stat-lbl">lover</div></div>
-      </div>
-    </header>
-
-{seksjoner_html}
-  </div>
 </main>
 
-{site_footer(depth=1)}"""
+{site_footer(depth=1)}
+
+<script>
+(function() {{
+  var cats = document.querySelectorAll('.tk-cat');
+  var sections = document.querySelectorAll('.tk-section');
+  if (!('IntersectionObserver' in window) || cats.length === 0 || sections.length === 0) return;
+  function setActive(slug) {{
+    cats.forEach(function(c) {{
+      if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
+      else c.classList.remove('is-active');
+    }});
+  }}
+  var observer = new IntersectionObserver(function(entries) {{
+    var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
+    if (visible.length === 0) return;
+    visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
+    setActive(visible[0].target.id);
+  }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
+  sections.forEach(function(s) {{ observer.observe(s); }});
+  if (cats[0]) setActive(cats[0].getAttribute('data-cat'));
+}})();
+</script>
+
+{chat}
+</body>
+</html>"""
+
+
+
 
 
 def render_personvern():
@@ -2705,183 +2806,115 @@ def render_sporsmal_page(s):
 
 
 def render_sporsmal_hub():
-    """Spørsmål-hub — skalerbar for 1000+ artikler. Søk + kategori-filter + compact liste."""
+    """Spørsmål-hub — samme typografiske indeks som verktøy og lover."""
 
+    # Group by kategori
     KAT_LABEL = {
-        "bolig": "Bolig",
-        "forbruk": "Forbruk og kjøp",
+        "bolig": "Bolig og leie",
+        "forbruk": "Kjøp og klage",
         "arbeid": "Arbeid",
         "familie": "Familie",
+        "arv": "Arv og familie",
         "gjeld": "Gjeld og penger",
-        "tjenester": "Tjenester",
-        "arv": "Arv",
+        "tjenester": "Selskap",
     }
 
-    # Tell etter kategori
     by_kat = {}
     for s in SPORSMAL:
         kat = s.get("kategori", "annet")
         by_kat.setdefault(kat, []).append(s)
 
-    # Sortert etter antall (mest brukte først)
+    # Order categories by size (largest first) for natural reading order
     kat_sorted = sorted(by_kat.items(), key=lambda x: -len(x[1]))
 
-    # Lag kategori-pills for filter
-    pills_html = '<button class="sp-pill active" data-kat="alle">Alle <span class="sp-pill-n">' + str(len(SPORSMAL)) + '</span></button>\n'
+    nav_items = ""
     for kat, items in kat_sorted:
-        navn = KAT_LABEL.get(kat, kat.capitalize())
-        pills_html += f'    <button class="sp-pill" data-kat="{kat}">{navn} <span class="sp-pill-n">{len(items)}</span></button>\n'
+        label = KAT_LABEL.get(kat, kat.capitalize())
+        nav_items += f'    <a href="#{kat}" class="tk-cat" data-cat="{kat}">{label}</a>\n'
+    nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle spørsmål</a>\n'
 
-    # Bygg liste — alle spørsmål, gruppert etter kategori
-    liste_html = ""
+    sections = ""
     for kat, items in kat_sorted:
-        kat_label = KAT_LABEL.get(kat, kat.capitalize())
-        rader = ""
+        label = KAT_LABEL.get(kat, kat.capitalize())
+        rows = ""
         for s in items:
             slug = s.get("slug", "")
             tittel = s.get("title", "")
             desc = s.get("description", "")
-            rader += f'''        <a href="{slug}/" class="sp-rad" data-kat="{kat}" data-search="{tittel.lower()} {desc.lower()}">
-          <div class="sp-rad-info">
-            <div class="sp-rad-tittel">{tittel}</div>
-            <div class="sp-rad-desc">{desc}</div>
-          </div>
-          <div class="sp-rad-meta">
-            <span class="sp-rad-kat">{kat_label}</span>
-            <span class="sp-rad-pil">→</span>
-          </div>
-        </a>
-'''
-        liste_html += f'''    <div class="sp-gruppe" data-kat="{kat}">
-      <h2 class="sp-gruppe-tittel">{kat_label} <span class="sp-gruppe-meta">{len(items)}</span></h2>
-      <div class="sp-rader">
-{rader}      </div>
-    </div>
-'''
+            rows += (
+                f'      <a href="{slug}/" class="tk-row">\n'
+                f'        <span class="tk-row-name">{tittel}</span>\n'
+                f'        <span class="tk-row-desc">{desc}</span>\n'
+                f'        <span class="tk-row-arrow" aria-hidden="true">→</span>\n'
+                f'      </a>\n'
+            )
+        sections += (
+            f'  <section class="tk-section" id="{kat}">\n'
+            f'    <h2 class="tk-section-title">{label}</h2>\n'
+            f'    <div class="tk-grid">\n'
+            f'{rows}'
+            f'    </div>\n'
+            f'  </section>\n\n'
+        )
+
+    chat = chat_widget()
 
     return f"""{shared_head(
-        'Spørsmål og svar — vanlige juridiske spørsmål | Rettsregel',
-        f'{len(SPORSMAL)} spørsmål om norsk lov. Konkrete svar, ikke generelle floskler.',
+        'Spørsmål og svar — vanlige juridiske spørsmål forklart | Rettsregel',
+        f'{len(SPORSMAL)} spørsmål om norsk lov, med konkrete svar. Husleie, boligkjøp, naboforhold og mer.',
         depth=1, canonical_path='/sporsmal/'
     )}
 <body>
 {site_nav(depth=1)}
-<style>
-.sp-page {{ max-width: 900px; margin: 0 auto; padding: 0 24px; }}
-.sp-hero {{ padding: 56px 0 36px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }}
-.sp-hero .sp-kicker {{ font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 14px; display: block; }}
-.sp-hero h1 {{ font-family: var(--serif); font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.022em; line-height: 1.1; margin: 0 0 16px 0; }}
-.sp-hero .sp-lead {{ font-size: 17px; color: var(--ink-soft); line-height: 1.6; max-width: 560px; margin: 0; }}
 
-.sp-toolbar {{ position: sticky; top: 0; background: var(--bg); padding: 14px 0 16px; margin-bottom: 8px; z-index: 5; border-bottom: 1px solid var(--line); }}
-.sp-sok-wrap {{ position: relative; margin-bottom: 12px; }}
-.sp-sok-icon {{ position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); width: 16px; height: 16px; pointer-events: none; }}
-.sp-sok-input {{ width: 100%; padding: 11px 14px 11px 40px; border: 1.5px solid var(--line); border-radius: 10px; font-family: var(--sans); font-size: 14px; background: var(--bg-card); color: var(--ink); box-sizing: border-box; transition: border-color 0.13s; }}
-.sp-sok-input:focus {{ outline: none; border-color: var(--accent); }}
-.sp-pills {{ display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }}
-.sp-pills::-webkit-scrollbar {{ display: none; }}
-.sp-pill {{ background: var(--bg-card); border: 1px solid var(--line); color: var(--ink-soft); font-family: var(--sans); font-size: 12.5px; font-weight: 500; padding: 6px 12px; border-radius: 100px; cursor: pointer; white-space: nowrap; transition: all 0.13s; display: inline-flex; align-items: center; gap: 6px; }}
-.sp-pill:hover {{ border-color: var(--accent-soft); }}
-.sp-pill.active {{ background: var(--ink); color: var(--bg); border-color: var(--ink); }}
-.sp-pill-n {{ font-size: 11px; opacity: 0.7; font-variant-numeric: tabular-nums; }}
+<main class="tk-page">
 
-.sp-gruppe {{ margin-bottom: 40px; }}
-.sp-gruppe-tittel {{ font-family: var(--serif); font-weight: 400; font-size: 20px; letter-spacing: -0.01em; margin: 0 0 4px 0; padding: 16px 0 10px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; }}
-.sp-gruppe-meta {{ font-family: var(--sans); font-size: 12px; color: var(--ink-mute); font-weight: 500; font-variant-numeric: tabular-nums; }}
+  <section class="tk-hero">
+    <p class="tk-hero-label">Spørsmål</p>
+    <h1>Det folk faktisk lurer på.</h1>
+    <p class="tk-hero-lead">Korte svar på konkrete spørsmål — basert på norsk rett, ikke generelle floskler.</p>
+    <p class="tk-hero-meta">
+      {len(SPORSMAL)} spørsmål<span class="tk-hero-meta-sep">·</span>klare svar<span class="tk-hero-meta-sep">·</span>basert på norsk rett
+    </p>
+  </section>
 
-.sp-rader {{}}
-.sp-rad {{
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
-  padding: 16px 4px; border-bottom: 1px solid var(--line);
-  text-decoration: none; color: var(--ink); transition: padding 0.13s;
-}}
-.sp-rad:last-child {{ border-bottom: none; }}
-.sp-rad:hover {{ padding-left: 10px; }}
-.sp-rad:hover .sp-rad-pil {{ transform: translateX(4px); color: var(--accent); }}
-.sp-rad-info {{ min-width: 0; flex: 1; }}
-.sp-rad-tittel {{ font-family: var(--serif); font-size: 16px; font-weight: 400; line-height: 1.3; letter-spacing: -0.005em; margin-bottom: 4px; }}
-.sp-rad-desc {{ font-size: 13px; color: var(--ink-soft); line-height: 1.5; }}
-.sp-rad-meta {{ display: flex; align-items: center; gap: 10px; flex-shrink: 0; padding-top: 3px; }}
-.sp-rad-kat {{ font-family: var(--sans); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); padding: 3px 9px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 100px; white-space: nowrap; }}
-.sp-rad-pil {{ font-size: 14px; color: var(--ink-mute); transition: transform 0.13s, color 0.13s; }}
+  <nav class="tk-cat-bar" id="alle" aria-label="Spørsmål-kategorier">
+{nav_items}  </nav>
 
-.sp-ingen {{ display: none; padding: 60px 0; text-align: center; color: var(--ink-mute); font-style: italic; }}
-.sp-ingen.show {{ display: block; }}
+{sections}
 
-@media (max-width: 600px) {{
-  .sp-hero {{ padding: 36px 0 24px; margin-bottom: 24px; }}
-  .sp-rad-meta {{ flex-direction: column; align-items: flex-end; gap: 4px; }}
-  .sp-rad-tittel {{ font-size: 15px; }}
-}}
-</style>
-
-<main>
-  <div class="sp-page">
-
-    <header class="sp-hero">
-      <span class="sp-kicker">Spørsmål og svar</span>
-      <h1>Vanlige spørsmål — konkrete svar</h1>
-      <p class="sp-lead">Skrevet på vanlig norsk, med stegene du kan ta. Søk i listen eller filtrer på kategori.</p>
-    </header>
-
-    <div class="sp-toolbar">
-      <div class="sp-sok-wrap">
-        <svg class="sp-sok-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="spSok" class="sp-sok-input" placeholder="Søk blant {len(SPORSMAL)} spørsmål…" autocomplete="off">
-      </div>
-      <div class="sp-pills" id="spPills">
-        {pills_html}
-      </div>
-    </div>
-
-{liste_html}
-
-    <div class="sp-ingen" id="spIngen">Ingen spørsmål matcher.</div>
-
-  </div>
 </main>
 
+{site_footer(depth=1)}
+
 <script>
-(function(){{
-  var sok = document.getElementById('spSok');
-  var pills = document.querySelectorAll('.sp-pill');
-  var rader = document.querySelectorAll('.sp-rad');
-  var grupper = document.querySelectorAll('.sp-gruppe');
-  var ingen = document.getElementById('spIngen');
-  var aktivKat = 'alle';
-
-  function filtrer() {{
-    var q = sok.value.toLowerCase().trim();
-    var synlig = 0;
-    rader.forEach(function(r) {{
-      var matchKat = (aktivKat === 'alle' || r.dataset.kat === aktivKat);
-      var matchSok = (!q || r.dataset.search.indexOf(q) !== -1);
-      var vis = matchKat && matchSok;
-      r.style.display = vis ? '' : 'none';
-      if (vis) synlig++;
+(function() {{
+  var cats = document.querySelectorAll('.tk-cat');
+  var sections = document.querySelectorAll('.tk-section');
+  if (!('IntersectionObserver' in window) || cats.length === 0 || sections.length === 0) return;
+  function setActive(slug) {{
+    cats.forEach(function(c) {{
+      if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
+      else c.classList.remove('is-active');
     }});
-    // Skjul tomme grupper
-    grupper.forEach(function(g) {{
-      var aktive = g.querySelectorAll('.sp-rad:not([style*="none"])').length > 0 ||
-                   Array.from(g.querySelectorAll('.sp-rad')).some(function(r){{ return r.style.display !== 'none'; }});
-      g.style.display = aktive ? '' : 'none';
-    }});
-    ingen.classList.toggle('show', synlig === 0);
   }}
-
-  sok.addEventListener('input', filtrer);
-  pills.forEach(function(p) {{
-    p.addEventListener('click', function() {{
-      pills.forEach(function(x){{ x.classList.remove('active'); }});
-      p.classList.add('active');
-      aktivKat = p.dataset.kat;
-      filtrer();
-    }});
-  }});
+  var observer = new IntersectionObserver(function(entries) {{
+    var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
+    if (visible.length === 0) return;
+    visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
+    setActive(visible[0].target.id);
+  }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
+  sections.forEach(function(s) {{ observer.observe(s); }});
+  if (cats[0]) setActive(cats[0].getAttribute('data-cat'));
 }})();
 </script>
 
-{site_footer(depth=1)}"""
+{chat}
+</body>
+</html>"""
+
+
+
 
 
 def render_homepage():
@@ -2922,7 +2955,7 @@ def render_homepage():
   background: var(--bg-card); border-radius: 14px;
   padding: 32px 22px 24px;
   display: flex; flex-direction: column; align-items: center;
-  text-align: center; min-height: 260px;
+  text-align: center; min-height: 220px;
   text-decoration: none; color: inherit;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }}
@@ -2944,13 +2977,8 @@ def render_homepage():
 .home-tile-title {{
   font-family: var(--serif); font-size: 17px;
   font-weight: 500; color: var(--ink);
-  margin: 0 0 8px; line-height: 1.3;
+  margin: 0 0 28px; line-height: 1.3;
   letter-spacing: -0.005em;
-}}
-.home-tile-desc {{
-  font-family: var(--serif); font-size: 13px;
-  color: var(--ink-soft); margin: 0 0 20px;
-  line-height: 1.5;
 }}
 .home-tile-arrow {{
   width: 30px; height: 30px; border-radius: 50%;
@@ -2971,7 +2999,7 @@ def render_homepage():
   .home-hero {{ margin: 64px auto; }}
   .home-hero-divider {{ margin: 28px auto 14px; }}
   .home-tiles {{ grid-template-columns: 1fr; gap: 12px; margin-bottom: 64px; }}
-  .home-tile {{ min-height: auto; padding: 30px 24px 22px; }}
+  .home-tile {{ min-height: auto; padding: 28px 24px 22px; }}
   .home-tile-icon {{ height: 60px; }}
   .home-tile-paragraf {{ font-size: 52px; }}
 }}
@@ -2984,8 +3012,6 @@ def render_homepage():
       <span class="home-hero-line">Loven er ikke vanskelig.</span>
       <span class="home-hero-line home-hero-italic">Den er bare dårlig forklart.</span>
     </h1>
-    <div class="home-hero-divider" aria-hidden="true"></div>
-    <p class="home-hero-sub">Vi hjelper deg med tre ting.</p>
   </section>
 
   <section class="home-tiles" aria-label="Tre tjenester">
@@ -2995,8 +3021,7 @@ def render_homepage():
         <span class="home-tile-paragraf">§</span>
       </div>
       <div class="home-tile-divider" aria-hidden="true"></div>
-      <h2 class="home-tile-title">Forklarer lovparagrafer</h2>
-      <p class="home-tile-desc">Norske lovparagrafer, på vanlig språk.</p>
+      <h2 class="home-tile-title">Vi forklarer lovparagrafer.</h2>
       <span class="home-tile-arrow" aria-hidden="true">
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 6h8M7 3l3 3-3 3"/>
@@ -3016,8 +3041,7 @@ def render_homepage():
         </svg>
       </div>
       <div class="home-tile-divider" aria-hidden="true"></div>
-      <h2 class="home-tile-title">Lager verktøy og maler</h2>
-      <p class="home-tile-desc">Gratis dokumenter, kontrakter og brev.</p>
+      <h2 class="home-tile-title">Vi lager verktøy og maler.</h2>
       <span class="home-tile-arrow" aria-hidden="true">
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 6h8M7 3l3 3-3 3"/>
@@ -3035,8 +3059,7 @@ def render_homepage():
         </svg>
       </div>
       <div class="home-tile-divider" aria-hidden="true"></div>
-      <h2 class="home-tile-title">Svarer på vanlige spørsmål</h2>
-      <p class="home-tile-desc">Det folk faktisk lurer på.</p>
+      <h2 class="home-tile-title">Vi svarer på vanlige spørsmål.</h2>
       <span class="home-tile-arrow" aria-hidden="true">
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 6h8M7 3l3 3-3 3"/>
@@ -3206,185 +3229,6 @@ def render_tjenester_hub():
 <body class="tk-page-body">
 {site_nav(depth=1)}
 
-<style>
-.tk-page {{ max-width: 1180px; margin: 0 auto; padding: 0 32px; }}
-
-/* Hero */
-.tk-hero {{ padding: 56px 0 28px; max-width: 760px; }}
-.tk-hero-label {{
-  font-family: var(--serif); font-size: 12px;
-  font-weight: 500; letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0 0 24px 0;
-}}
-.tk-hero h1 {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(24px, 3.4vw, 34px);
-  line-height: 1.22;
-  letter-spacing: -0.012em;
-  margin: 0 0 20px 0;
-  color: var(--ink);
-}}
-.tk-hero-lead {{
-  font-family: var(--serif);
-  font-size: 17px;
-  line-height: 1.55;
-  color: var(--ink-soft);
-  margin: 0 0 28px 0;
-  max-width: 560px;
-}}
-.tk-hero-meta {{
-  font-family: var(--serif);
-  font-size: 13px;
-  color: var(--ink-mute);
-  letter-spacing: 0.005em;
-  margin: 0;
-}}
-.tk-hero-meta-sep {{ margin: 0 12px; opacity: 0.5; }}
-
-/* Category nav */
-.tk-cat-bar {{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 30px;
-  padding: 0 0 14px 0;
-  margin: 32px 0 64px 0;
-  border-bottom: 1px solid var(--line);
-  position: sticky;
-  top: 0;
-  background: linear-gradient(to bottom, var(--bg) 88%, transparent);
-  padding-top: 16px;
-  z-index: 20;
-}}
-.tk-cat {{
-  font-family: var(--serif);
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ink-mute);
-  text-decoration: none;
-  padding-bottom: 6px;
-  border-bottom: 1px solid transparent;
-  transition: color 0.18s ease, border-color 0.18s ease;
-  letter-spacing: 0.002em;
-}}
-.tk-cat:hover {{ color: var(--ink); }}
-.tk-cat.is-active {{
-  color: var(--ink);
-  border-bottom-color: var(--accent);
-}}
-
-/* Section */
-.tk-section {{ margin: 0 0 80px 0; scroll-margin-top: 80px; }}
-.tk-section-title {{
-  font-family: var(--serif-prose, var(--serif));
-  font-weight: 400;
-  font-size: clamp(26px, 2.6vw, 32px);
-  letter-spacing: -0.012em;
-  color: var(--ink);
-  margin: 0 0 28px 0;
-}}
-
-/* Two-column grid */
-.tk-grid {{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 56px;
-  row-gap: 0;
-  border-top: 1px solid var(--line);
-}}
-.tk-row {{
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto;
-  column-gap: 16px;
-  row-gap: 4px;
-  align-items: baseline;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--line);
-  text-decoration: none;
-  color: inherit;
-  transition: color 0.18s ease;
-}}
-.tk-row-name {{
-  font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--ink);
-  grid-column: 1;
-  grid-row: 1;
-  letter-spacing: 0.002em;
-}}
-.tk-row-desc {{
-  font-family: var(--serif);
-  font-size: 14px;
-  color: var(--ink-soft);
-  line-height: 1.45;
-  grid-column: 1;
-  grid-row: 2;
-}}
-.tk-row-arrow {{
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  align-self: center;
-  font-family: var(--serif);
-  font-size: 16px;
-  color: var(--ink-mute);
-  transition: color 0.18s ease, transform 0.2s ease;
-  font-weight: 400;
-}}
-.tk-row:hover .tk-row-name {{ color: var(--ink); }}
-.tk-row:hover .tk-row-arrow {{
-  color: var(--accent);
-  transform: translateX(3px);
-}}
-
-/* Very faint vertical column separator on desktop (uses pseudo on grid container) */
-@media (min-width: 720px) {{
-  .tk-grid {{
-    position: relative;
-  }}
-  .tk-grid::before {{
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--line);
-    opacity: 0.4;
-    pointer-events: none;
-  }}
-  /* But hide the divider behind the rows so it doesn't double up with the row hairlines */
-  .tk-row {{ background: transparent; }}
-}}
-
-/* Mobile: single column */
-@media (max-width: 720px) {{
-  .tk-page {{ padding: 0 20px; }}
-  .tk-hero {{ padding: 40px 0 20px; }}
-  .tk-hero h1 {{ font-size: 22px; }}
-  .tk-cat-bar {{
-    gap: 18px;
-    margin: 24px 0 40px 0;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    scrollbar-width: none;
-  }}
-  .tk-cat-bar::-webkit-scrollbar {{ display: none; }}
-  .tk-cat {{ flex-shrink: 0; font-size: 14px; }}
-  .tk-section {{ margin-bottom: 56px; }}
-  .tk-section-title {{ font-size: 24px; margin-bottom: 18px; }}
-  .tk-grid {{ grid-template-columns: 1fr; column-gap: 0; }}
-  .tk-row {{ padding: 16px 0; }}
-}}
-
-/* Minimal footer override for this page */
-.tk-page-body .site-footer {{
-  margin-top: 24px;
-}}
-</style>
 
 <main class="tk-page">
 
