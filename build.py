@@ -1522,16 +1522,16 @@ form.contact-form.hide { display: none; }
   margin: 0 0 22px 0;
 }
 .tk-hero h1 {
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(22px, 3vw, 30px);
-  line-height: 1.22;
-  letter-spacing: -0.012em;
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(20px, 2.6vw, 26px);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
   margin: 0 0 20px 0;
   color: var(--ink);
 }
 .tk-hero-lead {
   font-family: var(--serif);
-  font-size: 16px; line-height: 1.55;
+  font-size: 15px; line-height: 1.45;
   color: var(--ink-soft);
   margin: 0 0 28px 0;
   max-width: 560px;
@@ -1571,9 +1571,10 @@ form.contact-form.hide { display: none; }
 
 .tk-section { margin: 0 0 80px 0; scroll-margin-top: 80px; }
 .tk-section-title {
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(20px, 2.2vw, 24px);
-  letter-spacing: -0.012em;
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(18px, 2vw, 22px);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
   color: var(--ink);
   margin: 0 0 28px 0;
 }
@@ -1597,8 +1598,9 @@ form.contact-form.hide { display: none; }
 }
 .tk-row-name {
   font-family: var(--serif);
-  font-size: 16px; font-weight: 500;
+  font-size: 15px; font-weight: 500;
   color: var(--ink);
+  letter-spacing: -0.005em;
   grid-column: 1; grid-row: 1;
   letter-spacing: 0.002em;
 }
@@ -1681,6 +1683,8 @@ form.contact-form.hide { display: none; }
 .rr-nav a:hover { color: var(--accent); }
 .rr-nav-cta { color: var(--accent) !important; }
 .rr-nav-cta:hover { color: var(--accent-deep) !important; }
+.rr-nav a.rr-nav-active { color: var(--accent); }
+
 
 .rr-burger { display: none; }
 .rr-burger-toggle { display: none; }
@@ -1707,6 +1711,73 @@ form.contact-form.hide { display: none; }
     z-index: 50;
   }
   .rr-burger-toggle:checked ~ .rr-nav { display: flex; }
+}
+
+/* ---------- Tjenester page extras (search, progressive disclosure) ---------- */
+.tk-search-wrap {
+  margin: 24px 0 8px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 0;
+  display: flex; align-items: center; gap: 16px;
+}
+.tk-search-icon {
+  color: var(--ink-mute); flex-shrink: 0;
+  display: inline-flex;
+}
+.tk-search-input {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: var(--serif);
+  font-size: 16px; color: var(--ink);
+  letter-spacing: 0.002em;
+  padding: 4px 0;
+}
+.tk-search-input::placeholder { color: var(--ink-mute); }
+.tk-search-hint {
+  font-family: var(--serif); font-size: 12px;
+  color: var(--ink-mute); flex-shrink: 0;
+  letter-spacing: 0.01em;
+}
+@media (max-width: 720px) { .tk-search-hint { display: none; } }
+
+/* Progressive disclosure */
+.tk-section[data-collapsed] .tk-row.tk-row-extra { display: none; }
+.tk-section:not([data-collapsed]) .tk-show-all { display: none; }
+.tk-show-all {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--serif); font-size: 14px;
+  color: var(--accent); text-decoration: none;
+  letter-spacing: 0.005em;
+  transition: color 0.18s ease;
+}
+.tk-show-all:hover { color: var(--accent-deep); }
+.tk-show-all-arrow { transition: transform 0.2s ease; display: inline-block; }
+.tk-show-all:hover .tk-show-all-arrow { transform: translateX(3px); }
+
+/* Search filtering states */
+.tk-row[data-hidden-by-search] { display: none !important; }
+.tk-section[data-hidden-by-search] { display: none !important; }
+
+/* Compact hero for tjenester */
+.tk-hero-compact {
+  padding: 48px 0 14px;
+  max-width: 760px;
+}
+.tk-hero-compact h1 {
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.08;
+  letter-spacing: -0.024em;
+  margin: 0 0 14px 0;
+  color: var(--ink);
+}
+.tk-hero-compact-lead {
+  font-family: var(--serif);
+  font-size: 15px; line-height: 1.4;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 540px;
 }
 
 """
@@ -1747,12 +1818,17 @@ def shared_head(title, description, depth=0, canonical_path=""):
 </head>
 <body>"""
 
-def site_nav(depth=1):
-    """Unified header — same look as homepage. Path prefix from depth."""
+def site_nav(depth=1, active=None):
+    """Unified header — same look as homepage. Path prefix from depth.
+    active: 'lover' | 'sporsmal' | 'tjenester' | 'om' | None
+    """
     if depth == 0:
         prefix = ""
     else:
         prefix = "../" * depth
+
+    def cls(name):
+        return ' class="rr-nav-active"' if active == name else ""
 
     return f"""<div class="rr-header">
   <div class="rr-header-row">
@@ -1768,10 +1844,10 @@ def site_nav(depth=1):
       <span></span><span></span><span></span>
     </label>
     <nav class="rr-nav" aria-label="Hovedmeny">
-      <a href="{prefix}lover/">Lover</a>
-      <a href="{prefix}sporsmal/">Spørsmål</a>
-      <a href="{prefix}tjenester/">Verktøy/maler</a>
-      <a href="{prefix}om/">Om</a>
+      <a href="{prefix}lover/"{cls('lover')}>Lover</a>
+      <a href="{prefix}sporsmal/"{cls('sporsmal')}>Spørsmål</a>
+      <a href="{prefix}tjenester/"{cls('tjenester')}>Verktøy/maler</a>
+      <a href="{prefix}om/"{cls('om')}>Om</a>
       <a href="{prefix}om/#kontakt" class="rr-nav-cta">Send inn sak →</a>
     </nav>
   </div>
@@ -2382,8 +2458,7 @@ def render_lover_index():
         f'{len(LOV_INFO)} norske lover, {total_paragrafer} paragrafer forklart på vanlig norsk. Husleieloven, arveloven, kjøpsloven, og flere.',
         depth=1, canonical_path='/lover/'
     )}
-<body>
-{site_nav(depth=1)}
+{site_nav(depth=1, active='lover')}
 
 <main class="tk-page">
 
@@ -2437,7 +2512,6 @@ def render_lover_index():
 
 def render_personvern():
     return f"""{shared_head('Personvern | Rettsregel', 'Personvernerklæring for Rettsregel.no — Walrus AS.', depth=1, canonical_path='/personvern/')}
-<body>
 {site_nav(depth=1)}
 <main class="page">
   <div style="max-width: 740px; padding: 64px 0 80px;">
@@ -2471,8 +2545,7 @@ def render_om():
         'Vi gjør norske lover forståelige — paragraf for paragraf. Bygd av Walrus AS for å gi alle tilgang til hva loven faktisk sier.',
         depth=1, canonical_path='/om/'
     )}
-<body>
-{site_nav(depth=1)}
+{site_nav(depth=1, active='om')}
 
 <style>
 .om-slide {{ padding: 128px 24px; border-bottom: 1px solid var(--line); }}
@@ -2832,7 +2905,6 @@ def render_sporsmal_page(s):
         description,
         depth=2, canonical_path=f"/sporsmal/{slug}/"
     )}
-<body>
 {site_nav(depth=2)}
 <main class="page">
 <div class="container">
@@ -2927,8 +2999,7 @@ def render_sporsmal_hub():
         f'{len(SPORSMAL)} spørsmål om norsk lov, med konkrete svar. Husleie, boligkjøp, naboforhold og mer.',
         depth=1, canonical_path='/sporsmal/'
     )}
-<body>
-{site_nav(depth=1)}
+{site_nav(depth=1, active='sporsmal')}
 
 <main class="tk-page">
 
@@ -2989,7 +3060,6 @@ def render_homepage():
         'Norske lover paragraf for paragraf, verktøy og maler, og svar på vanlige juridiske spørsmål.',
         depth=0, canonical_path='/'
     )}
-<body class="home-body">
 <style>
 .home-body {{ background: var(--bg); }}
 
@@ -3002,10 +3072,10 @@ def render_homepage():
 
 .home-question {{
   font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(26px, 3.4vw, 38px);
-  line-height: 1.15;
-  letter-spacing: -0.014em;
+  font-weight: 500;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.08;
+  letter-spacing: -0.022em;
   color: var(--ink);
   margin: 0 0 96px 0;
 }}
@@ -3032,11 +3102,11 @@ def render_homepage():
 .home-rowlink:hover .home-rowlink-title {{ color: var(--ink); }}
 .home-rowlink-title {{
   font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(20px, 2vw, 26px);
-  letter-spacing: -0.008em;
+  font-weight: 500;
+  font-size: clamp(18px, 1.8vw, 22px);
+  letter-spacing: -0.018em;
   color: var(--ink);
-  line-height: 1.2;
+  line-height: 1.1;
 }}
 .home-rowlink-desc {{
   font-family: var(--serif);
@@ -3154,167 +3224,188 @@ def render_homepage():
 
 
 def render_tjenester_hub():
-    """Verktøy-indeks — rolig, typografisk, to-kolonne-rader. Ingen kort, ingen emojis."""
+    """Verktøy/maler — funksjonell indeks med søk og progressive disclosure."""
 
-    # 6 kategorier, alle 91 verktøy distribuert. (slug, tittel, [(url, navn, beskrivelse), ...])
+    # Intent-based kategorier (slug, tittel, [(url, navn, beskrivelse), ...])
+    # Order within each: most useful/most common first (first 8 shown by default)
     KATEGORIER = [
-        ("kjop", "Kjøp og klage", [
+        ("klage-og-krav", "Klage og krav", [
             ("../tjenester/reklamasjon/", "Reklamasjonsbrev", "Klage med riktige lovhenvisninger."),
-            ("../tjenester/reklamasjonsfrist/", "Reklamasjonsfrist", "Har du fortsatt rett til å klage?"),
-            ("../tjenester/angrefrist/", "Angrefrist", "Har du fortsatt rett til å angre kjøpet?"),
-            ("../tjenester/angreskjema/", "Angrerettskjema", "EU-standardskjema, klart til utfylling."),
-            ("../tjenester/mangel/", "Mangel-sjekker", "Er feilen juridisk mangel — eller bare slitasje?"),
-            ("../tjenester/heving/", "Heving av kjøp", "Kan du gå fra kjøpet og få pengene tilbake?"),
+            ("../tjenester/heving/", "Heving av kjøp", "Få pengene tilbake ved vesentlig feil."),
             ("../tjenester/prisavslag/", "Prisavslag", "Hvor mye kan du kreve i avslag?"),
+            ("../tjenester/mangel/", "Mangel-sjekker", "Er feilen juridisk mangel — eller bare slitasje?"),
+            ("../tjenester/angreskjema/", "Angrerettskjema", "EU-standardskjema, klart til utfylling."),
+            ("../tjenester/inkasso/", "Inkasso-sjekk", "Er kravet lovlig? Foreldelse og gebyrer."),
+            ("../tjenester/forsikringsavslag/", "Forsikringsavslag", "Grunnlag for klage? Finansklagenemnda."),
+            ("../tjenester/handverker-reklamasjon/", "Håndverker-reklamasjon", "Brev ved dårlig håndverkertjeneste."),
+            # Extras
             ("../tjenester/reklamasjon-bil/", "Reklamasjon bil", "Brev ved feil på bilen du kjøpte."),
             ("../tjenester/kredittkjop/", "Kredittkjøp-sjekker", "Er banken medansvarlig når selger svikter?"),
-            ("../tjenester/handverker-reklamasjon/", "Håndverker-reklamasjon", "Brev ved dårlig håndverkertjeneste."),
+            ("../tjenester/klagefrist/", "Klagefrist forvaltning", "3 uker etter vedtak. Utløpt?"),
+            ("../tjenester/pakkereis/", "Pakkereise-kalkulator", "250–600 EUR ved forsinkelse. EU 261/2004."),
+            ("../tjenester/gdpr-innsyn/", "GDPR-innsynskrav", "Be selskaper om å vise dine data."),
+            ("../kontrakter/misligholdsvarsel/", "Misligholdsvarsel", "Siste varsel før inkasso."),
         ]),
-        ("arbeid", "Arbeid", [
-            ("../tjenester/feriepenger/", "Feriepenger", "Standard, tariff og over 60."),
+        ("arbeid-og-oppsigelse", "Arbeid og oppsigelse", [
             ("../tjenester/arbeid-oppsigelse/", "Oppsigelsestid", "Lovlig varsel basert på ansettelsestid og alder."),
-            ("../tjenester/overtid/", "Overtid-kalkulator", "Beregn overtid med lovpålagt tillegg."),
             ("../tjenester/usaklig-oppsigelse/", "Usaklig oppsigelse", "Saklig grunn, saksbehandling, sykevern."),
+            ("../tjenester/arbeidskontrakt/", "Arbeidskontrakt-sjekker", "Alle lovpålagte minimumsopplysninger?"),
+            ("../kontrakter/arbeidsavtale/", "Arbeidsavtale", "Fast ansettelse — alle aml. § 14-6-krav."),
             ("../tjenester/sykmelding-vern/", "Sykmelding-vern", "Er du vernet de første 12 månedene?"),
             ("../tjenester/permittering/", "Permittering-sjekker", "Lovlig varsel og arbeidsgiverperiode?"),
             ("../tjenester/konkurranse-klausul/", "Konkurranse-/kundeklausul", "Gyldig? Kompensasjon og maksvarighet."),
-            ("../tjenester/arbeidskontrakt/", "Arbeidskontrakt-sjekker", "Alle lovpålagte minimumsopplysninger?"),
-            ("../kontrakter/arbeidsavtale/", "Arbeidsavtale (fast)", "Alle aml. § 14-6-krav."),
+            ("../kontrakter/sluttavtale/", "Sluttavtale", "Frivillig avslutning av arbeidsforhold."),
+            # Extras
             ("../kontrakter/arbeidsavtale-deltid/", "Arbeidsavtale (deltid)", "Stillingsprosent og fortrinnsrett."),
             ("../kontrakter/arbeidsavtale-midlertidig/", "Arbeidsavtale (midlertidig)", "Vikariat, prosjekt og sesong."),
-            ("../kontrakter/sluttavtale/", "Sluttavtale", "Frivillig avslutning av arbeidsforhold."),
             ("../kontrakter/taushetserklaring/", "Taushetserklæring (NDA)", "For ansatte, konsulenter, samarbeidspartnere."),
             ("../kontrakter/arbeidsattest/", "Arbeidsattest", "Alle ansatte har rett på attest. Aml. § 15-15."),
         ]),
-        ("bolig", "Bolig og leie", [
+        ("bolig-og-leie", "Bolig og leie", [
             ("../kontrakter/husleiekontrakt/", "Husleiekontrakt", "Tidsubestemt eller tidsbestemt."),
-            ("../kontrakter/fremleiekontrakt/", "Fremleiekontrakt", "Fremleie hele eller deler av boligen din."),
-            ("../tjenester/leie-okning/", "Leieøkning", "Maks lovlig økning etter KPI, med varselbrev."),
-            ("../tjenester/depositum/", "Depositum-kalkulator", "Maks lovlig depositum basert på månedsleien."),
             ("../tjenester/depositum-tilbake/", "Depositum tilbake", "Depositum og renter du har krav på."),
             ("../tjenester/husleie-oppsigelse/", "Oppsigelsestid leie", "Lovlig oppsigelsestid for utleier og leietaker."),
+            ("../tjenester/leie-okning/", "Leieøkning", "Maks lovlig økning etter KPI, med varselbrev."),
             ("../tjenester/vedlikehold/", "Vedlikeholdsansvar", "Utleier eller leietaker — hvem fikser hva?"),
-            ("../tjenester/fremleie/", "Fremleie-sjekker", "Kan du fremleie? Kan utleier nekte?"),
-            ("../kontrakter/depositumavtale/", "Depositumavtale", "Sperret konto, maks 6 mnd. Husleieloven § 3-5."),
-            ("../kontrakter/leiekontrakt-naring/", "Leiekontrakt næring", "Kontor, butikk, lager. KPI-regulering."),
-            ("../tjenester/reklamasjonsfrist-bolig/", "Reklamasjonsfrist bolig", "5-årsregel og 2-månedersfrist."),
+            ("../tjenester/boligkjoper-sjekkliste/", "Boligkjøper-sjekkliste", "8 punkter — ivareta undersøkelsesplikten."),
             ("../tjenester/vesentlig-mangel-bolig/", "Vesentlig mangel bolig", "Over Høyesteretts 3–6 %-terskel?"),
             ("../tjenester/selger-opplysningsplikt/", "Selgers opplysningsplikt", "Holdt selger tilbake info? §§ 3-7 og 3-8."),
+            # Extras
+            ("../kontrakter/fremleiekontrakt/", "Fremleiekontrakt", "Fremleie hele eller deler av boligen din."),
+            ("../tjenester/fremleie/", "Fremleie-sjekker", "Kan du fremleie? Kan utleier nekte?"),
+            ("../kontrakter/depositumavtale/", "Depositumavtale", "Sperret konto, maks 6 mnd. Husleieloven § 3-5."),
             ("../tjenester/prisavslag-bolig/", "Prisavslag bolig", "Beregn krav basert på utbedringskostnad."),
-            ("../tjenester/dagmulkt/", "Dagmulkt", "Dagmulkt ved forsinket boligovertakelse."),
-            ("../tjenester/boligkjoper-sjekkliste/", "Boligkjøper-sjekkliste", "8 punkter — ivareta undersøkelsesplikten."),
             ("../kontrakter/overtakelsesprotokoll/", "Overtakelsesprotokoll", "Målere, nøkler, feil. Avgjørende dokumentasjon."),
             ("../kontrakter/nabovarsel/", "Nabovarsel", "Påkrevd før byggesøknad. 2 ukers merknadsfrist."),
             ("../kontrakter/kjopekontrakthytte/", "Kjøpekontrakt hytte", "Fritidseiendom og tomt."),
-            ("../kontrakter/sameieandel/", "Sameierklæring", "Hvem eier hva? Dokumentér sameieandeler."),
-            ("../kontrakter/bruksrettsavtale/", "Bruksrettsavtale", "Gi rett til å bruke noe uten å overdra eierskap."),
+            ("../kontrakter/leiekontrakt-naring/", "Leiekontrakt næring", "Kontor, butikk, lager. KPI-regulering."),
+            ("../kontrakter/sameieandel/", "Sameieerklæring", "Hvem eier hva? Dokumentér sameieandeler."),
         ]),
-        ("arv", "Arv og familie", [
-            ("../tjenester/arv/", "Arvefordeling", "Visuell oversikt basert på familiesituasjonen."),
-            ("../tjenester/testament-mal/", "Testament-mal", "Generer testament-utkast med vitnefelt."),
-            ("../tjenester/pliktdel/", "Pliktdel", "Hva kan du testamentere bort? 2/3-regelen."),
-            ("../tjenester/uskifte/", "Uskifte-sjekker", "Kan gjenlevende sitte i uskifte?"),
-            ("../tjenester/samboer-arverett/", "Samboer-arverett", "Arver samboeren din uten testament?"),
-            ("../tjenester/arvegjeld/", "Arvegjeld-sjekker", "Overtar du avdødes gjeld?"),
-            ("../kontrakter/gavebrev/", "Gavebrev", "Med særeie-klausul og arveforskudd."),
-            ("../kontrakter/ektepakt/", "Ektepakt (særeie)", "Gjør formue til særeie."),
-            ("../kontrakter/ektepakt-felleseie/", "Ektepakt (arv som særeie)", "Felleseie, men arv og gaver beskyttes."),
-            ("../kontrakter/fremtidsfullmakt/", "Fremtidsfullmakt", "Hvem ivaretar deg ved sviktende helse."),
-            ("../kontrakter/samvaersavtale/", "Samværsavtale", "Barnets hverdag etter samlivsbrudd."),
-            ("../kontrakter/skifteavtale/", "Skifteavtale", "Bolig, bil, gjeld ved samlivsbrudd."),
-            ("../kontrakter/samboeravtale/", "Samboeravtale", "Hvem eier hva ved brudd?"),
-        ]),
-        ("selskap", "Selskap", [
-            ("../tjenester/enk-eller-as/", "ENK eller AS?", "Optimal selskapsform med skatteillustrasjon."),
-            ("../tjenester/utbytte-skatt/", "Utbytte-skatt", "Effektiv sats 37,84 %. Netto utbytte."),
-            ("../tjenester/omdanning-enk-as/", "Omdanning ENK→AS", "Er det lønnsomt? Skattesammenligning."),
-            ("../tjenester/styreansvar/", "Styreansvar-sjekker", "Personlig ansvar? Handleplikt og insolvens."),
-            ("../tjenester/aksjekapital/", "Aksjekapital-sjekker", "Handleplikt og utbytteregler."),
-            ("../tjenester/aksjonaravtale/", "Aksjonæravtale-sjekker", "10-punkts sjekkliste."),
-            ("../kontrakter/stiftelsesdokument/", "Stiftelsesdokument AS", "Stift AS med vedtekter."),
+        ("avtaler-og-fullmakter", "Avtaler og fullmakter", [
+            ("../tjenester/fullmakt-mal/", "Fullmakt-mal", "Fullmakt for Nav, bank, eiendom."),
+            ("../kontrakter/kjopekontraktbil/", "Kjøpekontrakt bil", "Privatbilsalg, basert på kjøpsloven."),
+            ("../kontrakter/kvittering/", "Kvittering", "Kontantbetaling, depositum og håndverk."),
+            ("../kontrakter/gjeldsbrev/", "Gjeldsbrev", "Privatlån mellom venner og familie."),
+            ("../kontrakter/kausjonsavtale/", "Kausjonsavtale", "Simpel eller selvskyldnerkausjon."),
+            ("../kontrakter/betalingsplan/", "Betalingsplan", "Nedbetaling av gjeld i avdrag."),
+            ("../kontrakter/konsulentavtale/", "Konsulentavtale", "For frilansere og selvstendige konsulenter."),
             ("../kontrakter/aksjonaravtale2/", "Aksjonæravtale", "Forkjøpsrett, tag-along, utbytte, exit."),
+            # Extras
+            ("../kontrakter/kjopekontraktbat/", "Kjøpekontrakt båt", "Privat båtsalg med tilstandsklausul."),
+            ("../kontrakter/kjopekontraktgjenstand/", "Kjøpekontrakt eiendeler", "Finn.no-kjøp: møbler, elektronikk, mer."),
+            ("../kontrakter/panteavtale/", "Panteavtale", "Sikre lån med pant i bil eller løsøre."),
+            ("../kontrakter/bruksrettsavtale/", "Bruksrettsavtale", "Gi rett til å bruke noe uten å overdra eierskap."),
+            ("../kontrakter/stiftelsesdokument/", "Stiftelsesdokument AS", "Stift AS med vedtekter."),
             ("../kontrakter/aksjekjopekontrakt/", "Aksjekjøpekontrakt", "Overdragelse av aksjer med garantier."),
             ("../kontrakter/opsjonsavtale/", "Opsjonsavtale ansatte", "Vesting-periode og innløsningspris."),
             ("../kontrakter/styreprotokoll/", "Styreprotokoll", "Protokollér styremøtet riktig. Asl. § 6-29."),
             ("../kontrakter/generalforsamlingsprotokoll/", "GF-protokoll", "Protokollér GF riktig. Asl. § 5-16."),
-            ("../kontrakter/konsulentavtale/", "Konsulentavtale", "For frilansere og selvstendige konsulenter."),
             ("../kontrakter/leverandoravtale/", "Leverandøravtale", "Kjøp av varer og tjenester over tid."),
             ("../kontrakter/samarbeidsavtale/", "Samarbeidsavtale", "Strategisk samarbeid mellom virksomheter."),
             ("../kontrakter/overdragelsesavtale/", "Overdragelsesavtale", "Salg av virksomhet. Goodwill, kunder, inventar."),
             ("../kontrakter/tjenesteavtale/", "Tjenesteavtale", "For malere, vaskehjelp, håndverkere."),
             ("../kontrakter/consignmentavtale/", "Consignmentavtale", "Selg kunst eller varer på vegne av en annen."),
         ]),
-        ("brev", "Brev og fullmakt", [
-            ("../tjenester/fullmakt-mal/", "Fullmakt-mal", "Fullmakt for Nav, bank, eiendom."),
-            ("../tjenester/gdpr-innsyn/", "GDPR-innsynskrav", "Be selskaper om å vise dine data."),
-            ("../tjenester/forsikringsavslag/", "Forsikringsavslag", "Grunnlag for klage? Finansklagenemnda."),
-            ("../tjenester/klagefrist/", "Klagefrist forvaltning", "3 uker etter vedtak. Utløpt?"),
-            ("../tjenester/pakkereis/", "Pakkereise-kalkulator", "250–600 EUR ved forsinkelse. EU 261/2004."),
-            ("../tjenester/inkasso/", "Inkasso-sjekk", "Er kravet lovlig? Foreldelse og gebyrer."),
-            ("../kontrakter/kvittering/", "Kvittering", "Kontantbetaling, depositum og håndverk."),
-            ("../kontrakter/kjopekontraktbil/", "Kjøpekontrakt bil", "Privatbilsalg, basert på kjøpsloven."),
-            ("../kontrakter/kjopekontraktbat/", "Kjøpekontrakt båt", "Privat båtsalg med tilstandsklausul."),
-            ("../kontrakter/kjopekontraktgjenstand/", "Kjøpekontrakt eiendeler", "Finn.no-kjøp: møbler, elektronikk, mer."),
-            ("../kontrakter/gjeldsbrev/", "Gjeldsbrev", "Privatlån mellom venner og familie."),
-            ("../kontrakter/panteavtale/", "Panteavtale", "Sikre lån med pant i bil eller løsøre."),
-            ("../kontrakter/kausjonsavtale/", "Kausjonsavtale", "Simpel eller selvskyldnerkausjon."),
-            ("../kontrakter/betalingsplan/", "Betalingsplan", "Nedbetaling av gjeld i avdrag."),
-            ("../kontrakter/misligholdsvarsel/", "Misligholdsvarsel", "Siste varsel før inkasso."),
+        ("arv-og-testament", "Arv og testament", [
+            ("../tjenester/arv/", "Arvefordeling", "Visuell oversikt basert på familiesituasjonen."),
+            ("../tjenester/testament-mal/", "Testament-mal", "Generer testament-utkast med vitnefelt."),
+            ("../tjenester/pliktdel/", "Pliktdel", "Hva kan du testamentere bort? 2/3-regelen."),
+            ("../tjenester/uskifte/", "Uskifte-sjekker", "Kan gjenlevende sitte i uskifte?"),
+            ("../tjenester/samboer-arverett/", "Samboer-arverett", "Arver samboeren din uten testament?"),
+            ("../kontrakter/fremtidsfullmakt/", "Fremtidsfullmakt", "Hvem ivaretar deg ved sviktende helse."),
+            ("../kontrakter/samboeravtale/", "Samboeravtale", "Hvem eier hva ved brudd?"),
+            ("../kontrakter/ektepakt/", "Ektepakt (særeie)", "Gjør formue til særeie."),
+            # Extras
+            ("../tjenester/arvegjeld/", "Arvegjeld-sjekker", "Overtar du avdødes gjeld?"),
+            ("../kontrakter/gavebrev/", "Gavebrev", "Med særeie-klausul og arveforskudd."),
+            ("../kontrakter/ektepakt-felleseie/", "Ektepakt (arv som særeie)", "Felleseie, men arv og gaver beskyttes."),
+            ("../kontrakter/samvaersavtale/", "Samværsavtale", "Barnets hverdag etter samlivsbrudd."),
+            ("../kontrakter/skifteavtale/", "Skifteavtale", "Bolig, bil, gjeld ved samlivsbrudd."),
+        ]),
+        ("frister-og-kalkulatorer", "Frister og kalkulatorer", [
+            ("../tjenester/reklamasjonsfrist/", "Reklamasjonsfrist", "Har du fortsatt rett til å klage?"),
+            ("../tjenester/angrefrist/", "Angrefrist", "Har du fortsatt rett til å angre kjøpet?"),
+            ("../tjenester/feriepenger/", "Feriepenger-kalkulator", "Standard, tariff og over 60."),
+            ("../tjenester/overtid/", "Overtid-kalkulator", "Beregn overtid med lovpålagt tillegg."),
+            ("../tjenester/depositum/", "Depositum-kalkulator", "Maks lovlig depositum basert på månedsleien."),
+            ("../tjenester/enk-eller-as/", "ENK eller AS?", "Optimal selskapsform med skatteillustrasjon."),
+            ("../tjenester/utbytte-skatt/", "Utbytte-skatt", "Effektiv sats 37,84 %. Netto utbytte."),
+            ("../tjenester/omdanning-enk-as/", "Omdanning ENK→AS", "Er det lønnsomt? Skattesammenligning."),
+            # Extras
+            ("../tjenester/reklamasjonsfrist-bolig/", "Reklamasjonsfrist bolig", "5-årsregel og 2-månedersfrist."),
+            ("../tjenester/dagmulkt/", "Dagmulkt", "Dagmulkt ved forsinket boligovertakelse."),
+            ("../tjenester/styreansvar/", "Styreansvar-sjekker", "Personlig ansvar? Handleplikt og insolvens."),
+            ("../tjenester/aksjekapital/", "Aksjekapital-sjekker", "Handleplikt og utbytteregler."),
+            ("../tjenester/aksjonaravtale/", "Aksjonæravtale-sjekker", "10-punkts sjekkliste."),
         ]),
     ]
 
     total = sum(len(verktoy) for _, _, verktoy in KATEGORIER)
+    VISIBLE_BY_DEFAULT = 8
 
     # Build category nav
     nav_items = ""
     for slug, tittel, _ in KATEGORIER:
         nav_items += f'    <a href="#{slug}" class="tk-cat" data-cat="{slug}">{tittel}</a>\n'
-    nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle verktøy</a>\n'
+    nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle</a>\n'
 
     # Build sections
     sections = ""
     for slug, tittel, verktoy in KATEGORIER:
+        collapsed_attr = ' data-collapsed' if len(verktoy) > VISIBLE_BY_DEFAULT else ''
         rows = ""
-        for url, navn, beskr in verktoy:
+        for i, (url, navn, beskr) in enumerate(verktoy):
+            extra_cls = ' tk-row-extra' if i >= VISIBLE_BY_DEFAULT else ''
+            search_data = f"{navn.lower()} {beskr.lower()}"
             rows += (
-                f'      <a href="{url}" class="tk-row">\n'
+                f'      <a href="{url}" class="tk-row{extra_cls}" data-search="{search_data}">\n'
                 f'        <span class="tk-row-name">{navn}</span>\n'
                 f'        <span class="tk-row-desc">{beskr}</span>\n'
                 f'        <span class="tk-row-arrow" aria-hidden="true">→</span>\n'
                 f'      </a>\n'
             )
+        show_all = ""
+        if len(verktoy) > VISIBLE_BY_DEFAULT:
+            show_all = (
+                f'    <a href="#" class="tk-show-all" data-section="{slug}">'
+                f'Vis alle {len(verktoy)} i {tittel} '
+                f'<span class="tk-show-all-arrow" aria-hidden="true">→</span></a>\n'
+            )
         sections += (
-            f'  <section class="tk-section" id="{slug}">\n'
+            f'  <section class="tk-section" id="{slug}"{collapsed_attr}>\n'
             f'    <h2 class="tk-section-title">{tittel}</h2>\n'
             f'    <div class="tk-grid">\n'
             f'{rows}'
             f'    </div>\n'
+            f'{show_all}'
             f'  </section>\n\n'
         )
 
     chat = chat_widget()
 
     return f"""{shared_head(
-        'Verktøy og maler — gratis juridiske dokumenter og kalkulatorer | Rettsregel',
-        f'{total} gratis juridiske verktøy basert på norsk lov. Kontraktsmaler, brev, kalkulatorer og sjekkere. Ingen registrering.',
+        'Verktøy og maler — juridiske dokumenter, kontrakter og kalkulatorer | Rettsregel',
+        f'{total} ferdige juridiske verktøy, kontrakter, brev og kalkulatorer — basert på norsk rett. Klar til bruk, gratis.',
         depth=1, canonical_path='/tjenester/'
     )}
-<body class="tk-page-body">
-{site_nav(depth=1)}
-
+{site_nav(depth=1, active='tjenester')}
 
 <main class="tk-page">
 
-  <section class="tk-hero">
-    <p class="tk-hero-label">Verktøy og maler</p>
-    <h1>Gjør det selv.</h1>
-    <p class="tk-hero-lead">Gratis juridiske dokumenter, brev og sjekker — klare til bruk.</p>
-    <p class="tk-hero-meta">
-      {total} verktøy<span class="tk-hero-meta-sep">·</span>Ingen registrering<span class="tk-hero-meta-sep">·</span>Basert på norsk rett
-    </p>
+  <section class="tk-hero-compact" id="alle">
+    <h1>Hva skal du lage?</h1>
+    <p class="tk-hero-compact-lead">Kontrakter, brev, skjemaer og sjekker — klare til bruk.</p>
   </section>
 
-  <nav class="tk-cat-bar" id="alle" aria-label="Verktøykategorier">
+  <div class="tk-search-wrap">
+    <span class="tk-search-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    </span>
+    <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter dokument, brev eller situasjon …" aria-label="Søk i verktøy">
+    <span class="tk-search-hint">Trykk Enter for å søke</span>
+  </div>
+
+  <nav class="tk-cat-bar" aria-label="Kategorier">
 {nav_items}  </nav>
 
 {sections}
@@ -3325,30 +3416,77 @@ def render_tjenester_hub():
 
 <script>
 (function() {{
-  // Scrollspy: marker aktiv kategori basert på hvor du er på siden
+  // Progressive disclosure
+  document.querySelectorAll('.tk-show-all').forEach(function(link) {{
+    link.addEventListener('click', function(e) {{
+      e.preventDefault();
+      var section = link.closest('.tk-section');
+      if (section) section.removeAttribute('data-collapsed');
+    }});
+  }});
+
+  // Scrollspy
   var cats = document.querySelectorAll('.tk-cat');
   var sections = document.querySelectorAll('.tk-section');
-  if (!('IntersectionObserver' in window) || cats.length === 0 || sections.length === 0) return;
-
   function setActive(slug) {{
     cats.forEach(function(c) {{
       if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
       else c.classList.remove('is-active');
     }});
   }}
+  if ('IntersectionObserver' in window && cats.length > 0 && sections.length > 0) {{
+    var observer = new IntersectionObserver(function(entries) {{
+      var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
+      if (visible.length === 0) return;
+      visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
+      setActive(visible[0].target.id);
+    }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
+    sections.forEach(function(s) {{ observer.observe(s); }});
+  }}
 
-  var observer = new IntersectionObserver(function(entries) {{
-    // Pick the topmost visible section
-    var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
-    if (visible.length === 0) return;
-    visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
-    setActive(visible[0].target.id);
-  }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
+  // Search
+  var input = document.getElementById('tk-search');
+  if (!input) return;
+  var allRows = Array.from(document.querySelectorAll('.tk-row'));
+  var allSections = Array.from(document.querySelectorAll('.tk-section'));
+  var allShowAll = Array.from(document.querySelectorAll('.tk-show-all'));
 
-  sections.forEach(function(s) {{ observer.observe(s); }});
-
-  // Initial: first category active
-  if (cats[0]) setActive(cats[0].getAttribute('data-cat'));
+  function applyFilter() {{
+    var q = input.value.trim().toLowerCase();
+    if (q === '') {{
+      // Reset to default view
+      allRows.forEach(function(r) {{ r.removeAttribute('data-hidden-by-search'); }});
+      allSections.forEach(function(s) {{
+        s.removeAttribute('data-hidden-by-search');
+        // Restore collapsed state if it had >8 rows
+        var rows = s.querySelectorAll('.tk-row');
+        if (rows.length > 8) s.setAttribute('data-collapsed', '');
+      }});
+      allShowAll.forEach(function(a) {{ a.style.display = ''; }});
+      return;
+    }}
+    // Filter rows
+    allSections.forEach(function(section) {{
+      var rows = section.querySelectorAll('.tk-row');
+      var anyVisible = false;
+      rows.forEach(function(r) {{
+        var hay = r.getAttribute('data-search') || '';
+        if (hay.indexOf(q) === -1) {{
+          r.setAttribute('data-hidden-by-search', '');
+        }} else {{
+          r.removeAttribute('data-hidden-by-search');
+          anyVisible = true;
+        }}
+      }});
+      // Expand section (show all rows) during search
+      section.removeAttribute('data-collapsed');
+      if (anyVisible) section.removeAttribute('data-hidden-by-search');
+      else section.setAttribute('data-hidden-by-search', '');
+    }});
+    // Hide show-all links during search
+    allShowAll.forEach(function(a) {{ a.style.display = 'none'; }});
+  }}
+  input.addEventListener('input', applyFilter);
 }})();
 </script>
 
@@ -3357,16 +3495,12 @@ def render_tjenester_hub():
 </html>"""
 
 
-
-
-
 def render_enk_eller_as():
     return f"""{shared_head(
         'ENK eller AS? Finn ut hva som passer for deg — Rettsregel',
         'Fyll ut skjemaet og få en selskapsrettslig anbefaling med skatteillustrasjon — gratis.',
         depth=2, canonical_path='/tjenester/enk-eller-as/'
     )}
-<body>
 {site_nav(depth=2)}
 
 <style>
@@ -3723,7 +3857,6 @@ def render_kontrakter_hub():
         'Gratis juridiske kontraktsmaler basert på norsk lov. Husleiekontrakt, samboeravtale og kjøpekontrakt bil. Fyll ut i nettleseren, last ned som PDF.',
         depth=1, canonical_path='/kontrakter/'
     )}
-<body>
 {site_nav(depth=1)}
 <style>
 .kontr-hero {{ padding: 72px 0 64px; max-width: 800px; }}
@@ -3830,7 +3963,6 @@ def render_kontrakter_husleiekontrakt():
         'Gratis husleiekontrakt for bolig. Fyll ut i nettleseren og last ned som PDF. Basert på husleieloven av 26. mars 1999.',
         depth=2, canonical_path='/kontrakter/husleiekontrakt/'
     )}
-<body>
 {site_nav(depth=2)}
 
 <style>
@@ -4091,7 +4223,6 @@ def render_tjenester_reklamasjon_bil():
         'Fyll ut skjemaet og se reklamasjonsbrevet bygge seg live. Gratis verktøy med fristberegning basert på kjøpsloven og forbrukerkjøpsloven.',
         depth=2, canonical_path='/tjenester/reklamasjon-bil/'
     )}
-<body>
 {site_nav(depth=2)}
 
 <style>
@@ -4486,7 +4617,6 @@ def render_tjenester_reklamasjon():
         'Skriv et juridisk korrekt reklamasjonsbrev på sekunder. Fungerer for alle varer fra butikk eller netthandel. Basert på forbrukerkjøpsloven.',
         depth=2, canonical_path='/tjenester/reklamasjon/'
     )}
-<body>
 {site_nav(depth=2)}
 <style>
 .rek2-layout {{ display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
@@ -4815,7 +4945,6 @@ def render_tjenester_arv():
         'Beregn arvefordeling etter norsk arvelov. Se hvem som arver hva basert på familiesituasjon, ektefelle, samboer, barn og testament.',
         depth=2, canonical_path='/tjenester/arv/'
     )}
-<body>
 {site_nav(depth=2)}
 <style>
 .arv-layout {{ display: grid; grid-template-columns: 360px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
@@ -5065,7 +5194,6 @@ def render_tjenester_leie_okning():
         'Beregn maksimal lovlig leieøkning etter KPI og husleieloven § 4-2. Gratis varselbrev som du kan sende direkte til leietaker.',
         depth=2, canonical_path='/tjenester/leie-okning/'
     )}
-<body>
 {site_nav(depth=2)}
 <style>
 .lo-layout {{ display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
@@ -5309,7 +5437,6 @@ def render_tjenester_inkasso():
         'Sjekk om inkassokravet du har fått er lovlig og innenfor fristen. Gratis verktøy med ferdig innsigelse-mal om nødvendig.',
         depth=2, canonical_path='/tjenester/inkasso/'
     )}
-<body>
 {site_nav(depth=2)}
 <style>
 .ink-layout {{ display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
@@ -5612,7 +5739,6 @@ def render_kontrakter_samboeravtale():
         'Lag en juridisk korrekt samboeravtale gratis. Dekker bolig, gjeld, felles utgifter og hva som skjer ved samlivsbrudd. Last ned som PDF.',
         depth=2, canonical_path='/kontrakter/samboeravtale/'
     )}
-<body>
 {site_nav(depth=2)}
 <style>
 .samb-layout {{ display: grid; grid-template-columns: 400px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
@@ -5965,7 +6091,6 @@ def render_kontrakter_kjopekontraktbil():
         'Lag en juridisk korrekt kjøpekontrakt for privatbilsalg gratis. Dekker kjøper og selger, bilens tilstand, heftelser og betalingsbetingelser. Last ned som PDF.',
         depth=2, canonical_path='/kontrakter/kjopekontraktbil/'
     )}
-<body>
 {site_nav(depth=2)}
 <style>
 .bil-layout {{ display: grid; grid-template-columns: 400px 1fr; gap: 32px; align-items: start; margin-bottom: 64px; }}
