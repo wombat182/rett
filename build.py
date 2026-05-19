@@ -1024,7 +1024,7 @@ form.contact-form.hide { display: none; }
   border-radius: 999px; color: white;
 }
 .sphub-section h2 {
-  font-family: var(--serif); font-size: clamp(22px, 2.4vw, 28px);
+  font-family: var(--serif); font-size: clamp(20px, 2.2vw, 24px);
   font-weight: 500; letter-spacing: -0.015em; line-height: 1.15;
   margin: 0; color: var(--ink);
 }
@@ -1152,7 +1152,7 @@ form.contact-form.hide { display: none; }
   display: flex; align-items: baseline; gap: 14px;
 }
 .lover-section h2 {
-  font-family: var(--serif); font-size: clamp(22px, 2.4vw, 28px);
+  font-family: var(--serif); font-size: clamp(20px, 2.2vw, 24px);
   font-weight: 500; letter-spacing: -0.015em;
   margin: 0; color: var(--ink);
 }
@@ -1523,7 +1523,7 @@ form.contact-form.hide { display: none; }
 }
 .tk-hero h1 {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(24px, 3.4vw, 34px);
+  font-size: clamp(22px, 3vw, 30px);
   line-height: 1.22;
   letter-spacing: -0.012em;
   margin: 0 0 20px 0;
@@ -1531,7 +1531,7 @@ form.contact-form.hide { display: none; }
 }
 .tk-hero-lead {
   font-family: var(--serif);
-  font-size: 17px; line-height: 1.55;
+  font-size: 16px; line-height: 1.55;
   color: var(--ink-soft);
   margin: 0 0 28px 0;
   max-width: 560px;
@@ -1572,7 +1572,7 @@ form.contact-form.hide { display: none; }
 .tk-section { margin: 0 0 80px 0; scroll-margin-top: 80px; }
 .tk-section-title {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(22px, 2.4vw, 28px);
+  font-size: clamp(20px, 2.2vw, 24px);
   letter-spacing: -0.012em;
   color: var(--ink);
   margin: 0 0 28px 0;
@@ -1651,6 +1651,64 @@ form.contact-form.hide { display: none; }
   .tk-row { padding: 16px 0; }
 }
 
+/* ---------- Unified site header (homepage + all subpages) ---------- */
+.rr-header {
+  max-width: 1280px; margin: 0 auto;
+  padding: 32px 48px 0 48px;
+}
+.rr-header-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.rr-logo {
+  display: inline-flex; align-items: center;
+  text-decoration: none; color: var(--ink);
+}
+.rr-logo svg { display: block; }
+.rr-nav {
+  display: flex; align-items: center;
+  gap: 48px;
+  font-family: var(--serif);
+  font-size: 15px; font-weight: 400;
+  letter-spacing: 0.002em;
+}
+.rr-nav a {
+  color: var(--ink); text-decoration: none;
+  transition: color 0.18s ease;
+}
+.rr-nav a:hover { color: var(--accent); }
+.rr-nav-cta { color: var(--accent) !important; }
+.rr-nav-cta:hover { color: var(--accent-deep) !important; }
+
+.rr-burger { display: none; }
+.rr-burger-toggle { display: none; }
+
+@media (max-width: 760px) {
+  .rr-header { padding: 22px 20px 0 20px; }
+  .rr-header-row { padding-bottom: 18px; }
+
+  .rr-burger {
+    display: inline-flex; flex-direction: column;
+    gap: 5px; padding: 8px; cursor: pointer;
+    background: transparent; border: none;
+  }
+  .rr-burger span {
+    display: block; width: 22px; height: 1px; background: var(--ink);
+  }
+  .rr-nav {
+    display: none;
+    position: absolute; top: calc(100% + 4px); right: 0; left: 0;
+    background: var(--card, #FDFAF5); border: 1px solid var(--line);
+    border-radius: 8px; padding: 22px;
+    flex-direction: column; gap: 18px;
+    align-items: flex-start;
+    z-index: 50;
+  }
+  .rr-burger-toggle:checked ~ .rr-nav { display: flex; }
+}
+
 """
 
 # ============================================================
@@ -1689,31 +1747,36 @@ def shared_head(title, description, depth=0, canonical_path=""):
 </head>
 <body>"""
 
-def site_nav(depth=0):
-    """Site header — R-logo SVG + minimal Optima nav. Shared across all pages including homepage."""
-    prefix = "../" * depth
-    return f"""<header class="site-header">
-  <a href="{prefix}" class="site-logo" aria-label="Rettsregel forside">
-    <svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M30 15 L30 85 M30 15 L52 15 C70 15 70 52 52 52 L30 52 M44 52 L66 85"/><line x1="14" y1="55" x2="14" y2="85"/></svg>
-  </a>
+def site_nav(depth=1):
+    """Unified header — same look as homepage. Path prefix from depth."""
+    if depth == 0:
+        prefix = ""
+    else:
+        prefix = "../" * depth
 
-  <input type="checkbox" id="site-nav-toggle" class="site-nav-toggle" aria-hidden="true">
-  <label for="site-nav-toggle" class="site-nav-toggle-label" aria-label="Åpne meny">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
-      <line x1="4" y1="7" x2="20" y2="7"/>
-      <line x1="4" y1="12" x2="20" y2="12"/>
-      <line x1="4" y1="17" x2="20" y2="17"/>
-    </svg>
-  </label>
-
-  <ul class="site-nav-links">
-    <li><a href="{prefix}lover/">Lover</a></li>
-    <li><a href="{prefix}sporsmal/">Spørsmål</a></li>
-    <li><a href="{prefix}tjenester/">Verktøy</a></li>
-    <li><a href="{prefix}om/">Om</a></li>
-    <li><a href="mailto:rettsregel@gmail.com" class="site-nav-cta">Send inn sak <span aria-hidden="true">→</span></a></li>
-  </ul>
-</header>"""
+    return f"""<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="{prefix or '/'}" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="42" height="56" viewBox="0 0 135 180" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="10" y1="70" x2="10" y2="170"/>
+        <path d="M10 10 L65 10 C105 10 125 30 95 70 L34 70"/>
+        <line x1="63" y1="70" x2="103" y2="170"/>
+      </svg>
+    </a>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="{prefix}lover/">Lover</a>
+      <a href="{prefix}sporsmal/">Spørsmål</a>
+      <a href="{prefix}tjenester/">Verktøy/maler</a>
+      <a href="{prefix}om/">Om</a>
+      <a href="{prefix}om/#kontakt" class="rr-nav-cta">Send inn sak →</a>
+    </nav>
+  </div>
+</div>
+"""
 
 def chat_widget():
     """Returns HTML + JS for the chat widget. Inserted before </body> on every page."""
@@ -2918,160 +2981,170 @@ def render_sporsmal_hub():
 
 
 def render_homepage():
-    """Forsiden — bruker delt site_nav() og site_footer() for én kilde til sannhet."""
+    """Forside — editorial, minimal: spørsmål + tre rader."""
+    chat = chat_widget()
 
     return f"""{shared_head(
-        'rettsregel.no — Norske lover på vanlig norsk',
-        'Loven er ikke vanskelig. Den er bare dårlig forklart. Norske lovparagrafer på vanlig språk, gratis verktøy og svar på vanlige spørsmål.',
+        'Rettsregel — norske lover, forklart på vanlig norsk',
+        'Norske lover paragraf for paragraf, verktøy og maler, og svar på vanlige juridiske spørsmål.',
         depth=0, canonical_path='/'
     )}
-<body class="home">
-
-{site_nav(depth=0)}
-
+<body class="home-body">
 <style>
-.home-main {{ max-width: 1180px; margin: 0 auto; padding: 0 32px; }}
-.home-hero {{ text-align: center; margin: 96px auto; max-width: 600px; }}
-.home-hero-headline {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(24px, 3.4vw, 34px);
-  line-height: 1.22; letter-spacing: -0.012em;
-  margin: 0; color: var(--ink);
-}}
-.home-hero-line {{ display: block; }}
-.home-hero-italic {{ font-style: italic; color: var(--accent); margin-top: 2px; }}
-.home-hero-divider {{ width: 24px; height: 1px; background: var(--accent); margin: 36px auto 18px; }}
-.home-hero-sub {{
-  font-family: var(--serif); font-size: 15px;
-  font-style: italic; color: var(--ink-soft);
-  margin: 0; letter-spacing: 0.005em;
+.home-body {{ background: var(--bg); }}
+
+/* Header — generøs, hairline under */
+/* Main */
+.home-main {{
+  max-width: 1280px; margin: 0 auto;
+  padding: 140px 48px 80px 48px;
 }}
 
-.home-tiles {{
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 14px; margin-bottom: 96px;
-}}
-.home-tile {{
-  background: var(--bg-card); border-radius: 14px;
-  padding: 32px 22px 24px;
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center; min-height: 220px;
-  text-decoration: none; color: inherit;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}}
-.home-tile:hover {{
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(28, 23, 16, 0.06);
-}}
-.home-tile-icon {{
-  height: 70px; display: flex;
-  align-items: center; justify-content: center;
-  margin-bottom: 6px; color: var(--ink);
-}}
-.home-tile-paragraf {{
-  font-family: var(--serif); font-size: 62px;
-  font-style: italic; color: var(--ink);
-  line-height: 1; font-weight: 400;
-}}
-.home-tile-divider {{ width: 20px; height: 1px; background: var(--accent); margin: 12px 0 16px; }}
-.home-tile-title {{
-  font-family: var(--serif); font-size: 17px;
-  font-weight: 500; color: var(--ink);
-  margin: 0 0 28px; line-height: 1.3;
-  letter-spacing: -0.005em;
-}}
-.home-tile-arrow {{
-  width: 30px; height: 30px; border-radius: 50%;
-  border: 1px solid var(--accent);
-  display: inline-flex; align-items: center; justify-content: center;
-  color: var(--accent); margin-top: auto;
-  transition: background 0.2s ease, color 0.2s ease;
-}}
-.home-tile:hover .home-tile-arrow {{ background: var(--accent); color: var(--bg-card); }}
-
-@media (max-width: 900px) {{
-  .home-tile {{ padding: 28px 16px 20px; }}
-  .home-tile-paragraf {{ font-size: 54px; }}
+.home-question {{
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -0.014em;
+  color: var(--ink);
+  margin: 0 0 96px 0;
 }}
 
-@media (max-width: 640px) {{
-  .home-main {{ padding: 0 20px; }}
-  .home-hero {{ margin: 64px auto; }}
-  .home-hero-divider {{ margin: 28px auto 14px; }}
-  .home-tiles {{ grid-template-columns: 1fr; gap: 12px; margin-bottom: 64px; }}
-  .home-tile {{ min-height: auto; padding: 28px 24px 22px; }}
-  .home-tile-icon {{ height: 60px; }}
-  .home-tile-paragraf {{ font-size: 52px; }}
+.home-rows {{
+  margin: 0;
+  border-top: 1px solid var(--line);
+}}
+.home-rowlink {{
+  display: grid;
+  grid-template-columns: 1fr 1.2fr auto;
+  align-items: baseline;
+  gap: 40px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+  transition: padding 0.2s ease;
+}}
+.home-rowlink:hover .home-rowlink-arrow {{
+  color: var(--accent);
+  transform: translateX(6px);
+}}
+.home-rowlink:hover .home-rowlink-title {{ color: var(--ink); }}
+.home-rowlink-title {{
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(20px, 2vw, 26px);
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  line-height: 1.2;
+}}
+.home-rowlink-desc {{
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.3vw, 18px);
+  color: var(--ink-soft);
+  line-height: 1.45;
+  letter-spacing: 0.003em;
+}}
+.home-rowlink-arrow {{
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--ink-mute);
+  transition: color 0.18s ease, transform 0.22s ease;
+  line-height: 1;
+}}
+
+/* Footer */
+.home-foot {{
+  max-width: 1280px; margin: 0 auto;
+  padding: 64px 48px 36px 48px;
+}}
+.home-foot-row {{
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  font-family: var(--serif);
+  font-size: 13.5px;
+  color: var(--ink-mute);
+  letter-spacing: 0.005em;
+}}
+.home-foot-links {{ display: flex; gap: 40px; }}
+.home-foot a {{ color: var(--ink-mute); text-decoration: none; }}
+.home-foot a:hover {{ color: var(--ink); }}
+
+/* Mobile hamburger toggle */
+@media (max-width: 760px) {{
+      /* Hamburger */
+        .home-burger-toggle:checked ~   .home-main {{ padding: 64px 22px 40px 22px; }}
+  .home-question {{ margin-bottom: 56px; font-size: clamp(28px, 7vw, 36px); }}
+
+  .home-rowlink {{
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 6px 16px;
+    padding: 26px 0;
+  }}
+  .home-rowlink-title {{ grid-column: 1; grid-row: 1; font-size: 22px; }}
+  .home-rowlink-desc {{ grid-column: 1; grid-row: 2; font-size: 15px; }}
+  .home-rowlink-arrow {{
+    grid-column: 2; grid-row: 1 / span 2;
+    align-self: center;
+  }}
+
+  .home-foot {{ padding: 40px 22px 28px 22px; }}
+  .home-foot-row {{
+    flex-direction: column; gap: 14px; align-items: flex-start;
+    padding-top: 20px;
+  }}
+  .home-foot-links {{ gap: 24px; }}
 }}
 </style>
 
+{site_nav(depth=0)}
+
 <main class="home-main">
 
-  <section class="home-hero">
-    <h1 class="home-hero-headline">
-      <span class="home-hero-line">Loven er ikke vanskelig.</span>
-      <span class="home-hero-line home-hero-italic">Den er bare dårlig forklart.</span>
-    </h1>
-  </section>
+  <h1 class="home-question">Hva trenger du hjelp med?</h1>
 
-  <section class="home-tiles" aria-label="Tre tjenester">
+  <div class="home-rows" role="list">
 
-    <a href="lover/" class="home-tile">
-      <div class="home-tile-icon" aria-hidden="true">
-        <span class="home-tile-paragraf">§</span>
-      </div>
-      <div class="home-tile-divider" aria-hidden="true"></div>
-      <h2 class="home-tile-title">Vi forklarer lovparagrafer.</h2>
-      <span class="home-tile-arrow" aria-hidden="true">
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 6h8M7 3l3 3-3 3"/>
-        </svg>
-      </span>
+    <a href="lover/" class="home-rowlink" role="listitem">
+      <span class="home-rowlink-title">Lovparagrafer</span>
+      <span class="home-rowlink-desc">Norske lover, paragraf for paragraf.</span>
+      <span class="home-rowlink-arrow" aria-hidden="true">→</span>
     </a>
 
-    <a href="tjenester/" class="home-tile">
-      <div class="home-tile-icon" aria-hidden="true">
-        <svg width="46" height="58" viewBox="0 0 56 70" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M6 4h32l10 10v52H6z"/>
-          <path d="M38 4v10h10"/>
-          <line x1="14" y1="26" x2="40" y2="26"/>
-          <line x1="14" y1="33" x2="40" y2="33"/>
-          <line x1="14" y1="40" x2="32" y2="40"/>
-          <path d="M14 54 C20 50, 26 56, 34 53"/>
-        </svg>
-      </div>
-      <div class="home-tile-divider" aria-hidden="true"></div>
-      <h2 class="home-tile-title">Vi lager verktøy og maler.</h2>
-      <span class="home-tile-arrow" aria-hidden="true">
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 6h8M7 3l3 3-3 3"/>
-        </svg>
-      </span>
+    <a href="tjenester/" class="home-rowlink" role="listitem">
+      <span class="home-rowlink-title">Verktøy og maler</span>
+      <span class="home-rowlink-desc">Dokumenter, kontrakter og brev.</span>
+      <span class="home-rowlink-arrow" aria-hidden="true">→</span>
     </a>
 
-    <a href="sporsmal/" class="home-tile">
-      <div class="home-tile-icon" aria-hidden="true">
-        <svg width="60" height="52" viewBox="0 0 74 64" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M4 8h66v36h-38l-14 12v-12H4z"/>
-          <circle cx="25" cy="26" r="1.8" fill="currentColor" stroke="none"/>
-          <circle cx="37" cy="26" r="1.8" fill="currentColor" stroke="none"/>
-          <circle cx="49" cy="26" r="1.8" fill="currentColor" stroke="none"/>
-        </svg>
-      </div>
-      <div class="home-tile-divider" aria-hidden="true"></div>
-      <h2 class="home-tile-title">Vi svarer på vanlige spørsmål.</h2>
-      <span class="home-tile-arrow" aria-hidden="true">
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 6h8M7 3l3 3-3 3"/>
-        </svg>
-      </span>
+    <a href="sporsmal/" class="home-rowlink" role="listitem">
+      <span class="home-rowlink-title">Vanlige spørsmål</span>
+      <span class="home-rowlink-desc">Korte svar på juridiske problemer.</span>
+      <span class="home-rowlink-arrow" aria-hidden="true">→</span>
     </a>
 
-  </section>
+  </div>
 
 </main>
 
-{site_footer(depth=0)}"""
+<footer class="home-foot">
+  <div class="home-foot-row">
+    <span>© 2026 Rettsregel</span>
+    <div class="home-foot-links">
+      <a href="personvern/">Personvern</a>
+      <a href="om/#kontakt">Kontakt</a>
+    </div>
+  </div>
+</footer>
+
+{chat}
+</body>
+</html>"""
+
+
+
 
 
 
