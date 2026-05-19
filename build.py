@@ -1917,7 +1917,7 @@ def render_paragraph_page(p):
     
     # Auto-link paragraph references in the prose (depth=3 for paragraph pages)
     hva_betyr = auto_link_paragraphs(p["hva_betyr_html"], p["lov"], depth=3)
-    hva_bor_du = auto_link_paragraphs(p["hva_bor_du_html"], p["lov"], depth=3)
+    hva_bor_du = auto_link_paragraphs(p.get("hva_bor_du_html", ""), p["lov"], depth=3) if p.get("hva_bor_du_html") else ""
     
     lov_url = p["lov"].replace("ø", "o").replace("æ", "ae").replace("å", "aa")
     canonical = f"/lover/{lov_url}/{p['number']}/"

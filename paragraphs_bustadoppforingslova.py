@@ -1131,4 +1131,1079 @@ PARAGRAPHS = [
         {"lov": LOV, "paragraf": "16", "tittel": "Ettårsbefaringen", "available": True},
     ],
 },
+{
+    "number": "33",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Kreve penger i stedet for reparasjon (prisavslag)",
+    "description": "Nekter entreprenøren å reparere byggefeilen, eller er det umulig å fikse den? Da kan du kreve å få pengene tilbakebetalt i form av prisavslag.",
+    "kort_svar": "Prisavslag er plan B. Hvis entreprenøren ikke retter byggefeilen innen rimelig tid, eller hvis feilen fysisk sett ikke kan rettes, kan du kreve penger tilbake for verditapet feilen utgjør.",
+    "paragraftekst": "Dersom ein mangel ikkje blir retta i samsvar med § 32, kan forbrukaren krevje prisavslag. Dette gjeld likevel ikkje dersom forbrukaren avslår retting som entreprenøren har rett til å utføre etter § 32 andre ledd. Prisavslaget skal vere lik kostnadene for forbrukaren med å få mangelen retta, bortsett frå slike kostnader som er nemnde i § 32 fjerde ledd tredje punktum. Blir kostnadene urimeleg høge i høve til det mangelen har å seie for forbrukaren, skal prisavslaget vere lik den verdireduksjonen som mangelen medfører. Prisavslaget skal likevel minst tilsvare det entreprenøren har spart ved ikkje å levere mangelfri yting.",
+    "hva_betyr_html": _p(
+        "Paragrafen setter prisavslag i en klar rekkefølge: Først skal utbyggeren få lov til å prøve å rette feilen fysisk (§ 32). Prisavslag er en erstatningsløsning som aktiveres bare når rettingen feiler, de nekter å komme, eller hvis retting er bygningsteknisk meningsløst (f.eks. at takhøyden er fem centimeter for lav).",
+        "Neste spørsmål er: Hvor mye penger utgjør et prisavslag? Loven har en tre-trinns rakett for beregningen:",
+        "Trinn 1 (Hovedregelen): Prisavslaget skal tilsvare det det koster deg å leie inn noen andre til å fikse feilen. Koster det 40 000 kroner å få en annen rørlegger til å bytte den ødelagte vasken den første nektet å ta ansvar for? Da er prisavslaget ditt 40 000 kroner.",
+        "Trinn 2 (Når utbedring er for dyrt): Hvis det koster 2 millioner å rive taket for å endre fargen på en takbjelke, er det en urimelig høy kostnad i forhold til nytten. Da beregnes prisavslaget ut fra \"verdireduksjon\". Har feil farge gjort huset mindre verdt ved videresalg? Kanskje verdien sank med 50 000 kr. Da er det prisavslaget.",
+        "Trinn 3 (Straffebestemmelsen): Prisavslaget kan aldri være lavere enn det entreprenøren sparte på å jukse. Hvis de brukte en billig isolasjon i veggen som de tjente 20 000 kroner på, og dette ikke påvirker markedsverdien på huset (verdireduksjon = 0), slår trinn 3 inn. De skal aldri få tjene penger på å levere feil. Prisavslaget blir da på de 20 000 kronene de prøvde å spare.",
+    ),
+    "eksempler": [
+        {"navn": "Eva", "tekst": "Eva bygger hytte. Kontrakten spesifiserte at terrassen skulle være 40 kvadratmeter. Da hytta var ferdig, viste det seg at utbyggeren leste tegningen feil og bare bygget 35 kvadratmeter. Å rive terrassen og bygge ny (retting) ville vært kjempedyrt, og utbygger nekter. Eva krever da prisavslag etter § 33. Hun innhenter pris på hva det vil koste en annen lokal snekker å bygge et tilbygg til terrassen på 5 kvadratmeter. Den prisen er 30 000 kr. Eva krever dette beløpet i prisavslag og holder det tilbake i sluttoppgjøret."},
+    ],
+    "vanlige_feil": [
+        "Å kreve prisavslag umiddelbart uten å ha sendt en reklamasjon der man gir utbyggeren frist til å rette feilen først. (Unntaket er der retting er fysisk umulig).",
+        "Å gjette på en sum (for eksempel: \"Jeg synes jeg bør få 100 000 kroner i rabatt for dette\"). Domstolen hater gjetting. Prisavslag skal alltid dokumenteres teknisk.",
+    ],
+    "hva_bor_du_html": _p(
+        "For å få penger (prisavslag) ut av en motvillig utbygger, må du levere bevis. Ring to uavhengige håndverkerfirmaer og be dem gi et skriftlig tilbud på å utbedre feilen. Da har du et konkret tall. Send dette til utbygger: \"Siden dere har avvist retting, kreves herved prisavslag etter bustadoppføringslova § 33. I henhold til vedlagte tilbud utgjør dette 45 000 kr, som vil bli trukket fra restbetalingen.\"",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg prisavslag for de timene jeg selv brukte på å rydde opp vannlekkasjen?", "a": "Nei, prisavslag dekker verditapet på selve huset eller regningen fra andre håndverkere. Din egen innsats eller ødelagte møbler regnes som et økonomisk tap, og skal kreves gjennom erstatning (skadebot) i § 35."},
+        {"q": "Huset står en halvmeter feil på tomta, men det koster ingenting for husets markedsverdi og det sparer ikke utbygger noe for. Får jeg ikke noe da?", "a": "Slike saker (ofte kalt \"estetiske mangler\") er veldig vanskelige, og retten dømmer ofte at prisavslaget blir kroner 0,- fordi vilkårene i beregningen ikke slår ut. Du må i så fall kunne bevise at huset vil oppfattes som mindre attraktivt i markedet (verdireduksjon)."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "32", "tittel": "§ 32", "available": True},
+        {"lov": LOV, "paragraf": "29", "tittel": "§ 29", "available": True},
+        {"lov": LOV, "paragraf": "49", "tittel": "§ 49", "available": True},
+    ],
+},
+{
+    "number": "34",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Siste utvei: Du kansellerer huset (Heving)",
+    "description": "Har du tatt over et hus som viser seg å være bygget så feil at det er helsefarlig? Da kan du i ekstreme tilfeller heve kontrakten.",
+    "kort_svar": "Hvis feilen i boligen er massiv og innebærer et \"vesentlig avtalebrudd\", kan du heve avtalen. Dette betyr at du gir huset tilbake til entreprenøren og får alle pengene dine tilbakebetalt. Det skal svært mye til for at domstolene tillater heving fremfor å kreve feilen utbedret eller dekket med penger.",
+    "paragraftekst": "Forbrukaren kan heve avtalen dersom mangelen inneber eit vesentleg avtalebrot. Forbrukaren kan òg heve avtalen før overtakingstidspunktet dersom det er klårt at ytinga kjem til å få ein slik mangel som nemnd i første punktum.",
+    "hva_betyr_html": _p(
+        "Paragraf 34 er tvillingen til paragraf 20. Mens § 20 gjelder for heving på grunn av forsinkelse, gjelder § 34 heving på grunn av feil og mangler i selve bygget. Dette er den absolutte nødløsningen.",
+        "Du kan ikke heve en boligkontrakt fordi parketten knirker, selv om du hater knirk. For å heve, må domstolen konkludere med at bygget har et \"vesentlig avtalebrudd\". Da ser de på totalbildet: Er huset helsefarlig? Må store deler av det rives for å kunne rettes? Nekter utbygger å ordne opp?",
+        "Hvis en familie flytter inn, og to uker senere oppdager de at det er brukt giftige plater, ingen fuktsikring og taket er iferd med å klappe sammen, kan de heve. Konsekvensen står i § 21: Penger bytter hender slik at du settes i samme økonomiske situasjon som før du tegnet kontrakten. Du gir huset tilbake og får millionene dine utbetalt fra entreprenøren (eller bankgarantien).",
+    ),
+    "eksempler": [
+        {"navn": "Kari", "tekst": "Kari har kjøpt og flyttet inn i et ferdighus. Etter to måneder begynner veggene å bule innover. Takstmannen oppdager at utbyggeren har murt inn våt, råtten plank i hele reisverket, og huset er fullt av giftig muggsopp. Det vil koste mer å rive huset og bygge det opp igjen enn det kostet å kjøpe det i utgangspunktet. I tillegg nekter utbygger skyld og skylder på \"condens fra Karis tørketrommel\". Dette er et grovt og vesentlig avtalebrudd. Kari engasjerer advokat, hever kjøpet, og retten dømmer utbygger (og garantibanken deres) til å betale tilbake alt Kari har innbetalt pluss erstatning for opphold på hotell."},
+    ],
+    "vanlige_feil": [
+        "Å prøve å heve avtalen som et \"forhandlingskort\" i en konflikt om små mangler. Gjør du dette uberettiget, blir du saksøkt for kontraktsbrudd.",
+        "Å heve avtalen muntlig over telefon. Heving må fremmes formelt, skriftlig, og helst av en advokat.",
+        "Flytte ut av huset uten en skriftlig plan for hevingsprosessen.",
+    ],
+    "hva_bor_du_html": _p(
+        "Bruk aldri ordet \"heving\" til utbyggeren din i en e-post uten at du har snakket med en ekspert i bygningsrett eller takstbransjen først. Terskelen er skyhøy i norsk rett. Det normale er prisavslag og erstatning (§ 33 og § 35), hvor du i stedet bruker pengene til å betale et proft firma for å renovere huset mens du bor der. Heving velges kun når huset er tilnærmet usalgbart.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg beholde huset hvis jeg hever?", "a": "Nei, poenget med heving for bolig+tomt er at prestasjonene går tilbake. De får boligen og risikoen, du får tilbake pengene (pluss eventuelt forsinkelsesrenter og erstatning for ulempen)."},
+        {"q": "Hva om jeg bygget på egen tomt og hever fordi huset ble bygget feil?", "a": "Da gjelder § 21 andre ledd. Entreprenøren forsvinner fra tomten din, du betaler dem kun for verdien av det de faktisk har bygget riktig oppå din jord, og så overtar et nytt firma."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "33", "tittel": "§ 33", "available": True},
+        {"lov": LOV, "paragraf": "20", "tittel": "§ 20", "available": True},
+        {"lov": LOV, "paragraf": "21", "tittel": "§ 21", "available": True},
+    ],
+},
+{
+    "number": "35",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Penger for økonomisk tap (Erstatning) ved byggefeil",
+    "description": "Lakk røret slik at TV-en din ble ødelagt? Eller måtte du bo på hotell? Du har krav på erstatning for økonomiske tap som feilen forårsaket.",
+    "kort_svar": "I tillegg til at utbyggeren må fikse selve huset, kan du kreve at de erstatter andre økonomiske tap som feilen deres var skyld i. Du har rett på erstatning selv om utbyggeren ikke gjorde feilen med vilje.",
+    "paragraftekst": "Økonomisk tap som kjem av ein mangel, og som ikkje er dekt ved prisavslag etter § 33, kan forbrukaren krevje bøtt utan at det ligg føre skyld på entreprenørens side. Dette gjeld likevel ikkje så langt entreprenøren godtgjer at mangelen oppstod på grunn av ei hindring utanfor entreprenørens kontroll, og det ikkje er rimeleg å vente at entreprenøren kunne ha rekna med hindringa på avtaletida, eller at entreprenøren kunne ha overvunne eller unngått følgjene av hindringa.",
+    "hva_betyr_html": _p(
+        "Mens prisavslag og retting gjelder feil på selve huset, handler paragraf 35 om \"følgeskader\" (også kalt skadebot eller erstatning).",
+        "Kravet i loven er et såkalt objektivt ansvar (kontrollansvar). Det betyr at du ikke trenger å bevise at snekkeren eller rørleggeren var fyllesyk, uaktsom eller elendig i jobben sin. Så lenge huset har en byggefeil (for eksempel et rør som hopper av under vasken), og dette påfører deg et ekstra økonomisk tap (kjøkkenskapet ditt og en dyr blender blir ødelagt), er utbyggeren ansvarlig for tapet. De er ansvarlige uansett om det er deres egne ansatte, eller rørleggeren de leide inn, som forårsaket det.",
+        "Den eneste måten entreprenøren slipper å betale deg på, er hvis de kan bevise force majeure. Det betyr at feilen skyldtes noe helt ekstremt utenfor deres kontroll (som et jordskjelv). I Norge skjer nesten alt under utbyggers \"kontrollsfære\", fra kvaliteten på limet til arbeidet som utføres, så regelen er veldig sterk for deg.",
+    ),
+    "eksempler": [
+        {"navn": "Jonas", "tekst": "Et år etter at Jonas flyttet inn, svikter membranen i dusjen fordi mureren til utbyggeren la den feil. Vannet renner ned i etasjen under, og taket raser ned over stua. Den dyre stressless-stolen til Jonas blir fullstendig ødelagt av vann, og Jonas og familien må leie en Airbnb i to uker mens gulvet rives og tørkes. Etter § 32 må entreprenøren rive badet og bygge det på nytt (retting av feilen). Etter § 35 kan Jonas sende krav til entreprenøren for de andre tapene: Regningen for Airbnb-oppholdet, og en sum som tilsvarer verdien av den ødelagte stolen."},
+    ],
+    "vanlige_feil": [
+        "Å blande det med hjemmeforsikringen. Det er som regel billigere å bruke egen innboforsikring på ødelagt løsøre fordi du får det raskt, men du kan kreve at entreprenøren betaler egenandelen og tapet av bonus.",
+        "Å kreve erstatning for \"frustrasjon\" og \"tort og svie\". Paragrafen krever et konkret, dokumenterbart økonomisk tap. Du må ha kvitteringer.",
+        "Å akseptere at hovedentreprenøren avviser deg og ber deg ringe underleverandøren (elektrikeren) direkte. Loven slår fast at hovedentreprenøren har ansvaret overfor deg.",
+    ],
+    "hva_bor_du_html": _p(
+        "Når en byggefeil oppstår, lag en egen mappe som heter \"Erstatning\". Legg inn alle kvitteringer du påføres fordi feilen eksisterer: parkeringskvitteringer når du måtte dra på visning for en Airbnb, lunsjkvitteringer hvis kjøkkenet måtte stenges ned i en uke, og kvitteringer for tapte leieinntekter hvis du hadde en leieboer i kjelleren. Dokumenter alt med bilder og send det som ett samlet erstatningskrav sammen med mangelsklagen.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg dekket at jeg måtte ta en fridag fra jobben for å være hjemme da de reparerte feilen?", "a": "Ja. Tapt arbeidsfortjeneste fordi du måtte tilrettelegge for håndverkere som skal reparere en klage-sak, regnes som et økonomisk tap etter § 35, hvis det var absolutt nødvendig at du var hjemme."},
+        {"q": "Kan de tvinge meg til å bruke deres forsikringsselskap for den ødelagte sofaen?", "a": "Du har et krav mot entreprenøren. Om entreprenøren betaler deg kontant, eller sender kravet videre til sitt eget forsikringsselskap (ansvarsforsikring), er deres interne sak."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "36", "tittel": "§ 36", "available": True},
+        {"lov": LOV, "paragraf": "33", "tittel": "§ 33", "available": True},
+        {"lov": LOV, "paragraf": "6", "tittel": "§ 6", "available": True},
+    ],
+},
+{
+    "number": "36",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Hvilke økonomiske tap får du erstattet?",
+    "description": "Du har rett på erstatning for byggefeil. Men loven krever at du gjør det du kan for å holde regningen lavest mulig for utbyggeren.",
+    "kort_svar": "Får du erstatning for en byggefeil, skal beløpet dekke det faktiske økonomiske tapet ditt (f.eks. utgifter, prisforskjeller og tapt lønn). Men du får ikke ubegrenset med penger. Loven krever at tapet måtte være forventet for entreprenøren, og at du aktivt prøver å begrense utgiftene dine.",
+    "paragraftekst": "Skadebota skal svare til det økonomiske tapet forbrukaren har hatt (utlegg, prisskilnad, tapt arbeidsforteneste, tingskade m.m.). Dette gjeld likevel berre tap som ein rimeleg kunne ha rekna med som ei mogleg følgje av mangelen. Forsømer forbrukaren å avgrense tapet gjennom rimelege tiltak, må forbrukaren sjølv bere den tilsvarande delen av tapet.",
+    "hva_betyr_html": _p(
+        "Paragrafen forteller deg akkurat hva erstatningen din (skadeboten) skal inneholde. Du har krav på å bli stilt som om feilen aldri skjedde.",
+        "Loven lister opp typiske tap: utlegg, prisforskjeller, tapt arbeidsfortjeneste og tingskader.",
+        "Men det er to store begrensninger. For det første må tapet være \"påregnelig\". Hvis strømmen går på grunn av en feilmontert stikkontakt, er det forventet at maten i fryseren blir ødelagt. Men hvis du hadde lagret en lottokupong på PC-en som du ikke fikk levert fordi strømmen gikk, kunne ikke snekkeren forvente det. Da får du ikke erstatning for tapte lottomillioner.",
+        "For det andre har du \"tapsbegrensningsplikt\". Det betyr at du ikke kan lene deg tilbake og la takstameteret løpe. Du må handle fornuftig for å holde prisen nede. Går et rør lekk, må du skru av hovedkranen. Lar du vannet renne i en uke fordi \"det er rørleggerens skyld\", får du ikke erstatning for den skaden du kunne forhindret.",
+    ),
+    "eksempler": [
+        {"navn": "Anne", "tekst": "En vannlekkasje på det nye badet ødelegger gulvet i etasjen under, som Anne pleier å leie ut. Hun må kaste ut leieboeren i fire måneder mens entreprenøren tørker og bygger opp badet. Anne krever erstatning. Hun legger frem dokumentasjon for tapt leieinntekt på 12 000 kr i måneden, pluss egenandelen hun betalte for å få byttet ut en ødelagt sofa. Entreprenøren må erstatte alt sammen, siden tapte leieinntekter og ødelagte møbler er tap en utbygger med rimelighet kan forvente ved en lekkasje."},
+    ],
+    "vanlige_feil": [
+        "Å kreve erstatning for sinne, stress og tårer. Det finnes ikke noe som heter \"tort og svie\" for boligfeil.",
+        "Å ikke ta umiddelbare grep for å stoppe en skade, slik at man mister retten på penger.",
+        "Leie en luksusbil fordi den vanlige bilen stod innesperret i den ødelagte garasjen.",
+    ],
+    "hva_bor_du_html": _p(
+        "Dokumenter alt. Før en logg. Må du ta deg fri fra jobben? Be sjefen din om en skriftlig bekreftelse på at du har tapt for eksempel 2 500 kr i lønn den dagen. Må du leie hotell? Sjekk prisene på to ulike hoteller, velg det rimeligste, og lagre kvitteringen. Når du sender kravet til utbygger, legger du frem en ryddig Excel-liste med bilag på alt. Da er det veldig vanskelig for dem å argumentere mot kravet.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg betalt for tiden jeg brukte på å klage og skrive e-poster?", "a": "Normalt sett, nei. Din egen tid (fritid) til å rydde opp i rotet eller klage, regnes ikke som et økonomisk tap. Unntaket er hvis du faktisk har tapt inntekt fordi du måtte ta fri fra jobben for å gjøre det."},
+        {"q": "Hva om de sier det blir altfor dyrt for dem å betale alt?", "a": "Siste ledd gir en bitte liten sikkerhetsventil for utbygger (lemping). Hvis erstatningen er helt ruinerende urimelig for dem, kan dommeren redusere beløpet. Men dette skjer nesten aldri."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "35", "tittel": "§ 35", "available": True},
+        {"lov": LOV, "paragraf": "22", "tittel": "§ 22", "available": True},
+        {"lov": LOV, "paragraf": "19", "tittel": "§ 19", "available": True},
+    ],
+},
+{
+    "number": "37",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Kan du klage direkte til underleverandøren?",
+    "description": "Gikk snekkeren konkurs, eller er de vanskelige? Du har rett til å hoppe over dem og sende klagen rett til produsenten av varen.",
+    "kort_svar": "Ja. Du trenger ikke alltid gå gjennom firmaet du skrev kontrakt med. Loven gir deg rett til å rette klagen (direktekrav) mot rørleggeren de leide inn, fabrikken som laget vinduet, eller importøren av gulvet, hvis de har gjort en feil.",
+    "paragraftekst": "Forbrukaren kan gjere sitt krav som følgje av mangel gjeldande mot ein tidlegare avtalepart som har gjort avtalen som ledd i næringsverksemd, i same mon som mangelen kan gjerast gjeldande av entreprenøren eller annan avtalepart. Avtale som innskrenkar det kravet entreprenøren eller ein annan avtalepart har, kan ikkje gjerast gjeldande mot forbrukaren i større mon enn det som kunne ha vore avtalt mellom forbrukaren og entreprenøren.",
+    "hva_betyr_html": _p(
+        "I byggebransjen finnes det ofte en lang kjede av firmaer. Du hyrer en hovedentreprenør. De kjøper fliser fra en flisbutikk. Butikken kjøpte dem fra en norsk importør. Importøren kjøpte dem fra Italia.",
+        "Hvis flisene sprekker på grunn av en fabrikasjonsfeil, skal du normalt klage til hovedentreprenøren din. Men hva om de har gått konkurs, eller bare nekter å svare på telefonen?",
+        "Paragraf 37 er din snarvei. Den gir deg \"direktekravsrett\". Du kan hoppe over din egen entreprenør og gå direkte på flisbutikken eller importøren (det \"bakre leddet\") for å kreve retting eller penger. De har ikke lov til å avvise deg med å si \"du er ikke kunden vår\". Så lenge de har solgt varen som et ledd i sin egen næringsvirksomhet, må de rydde opp.",
+        "Loven sier at de heller ikke kan bruke dårlige proff-kontrakter mot deg. Hvis importøren har skrevet i kontrakten med butikken at \"vi gir kun 1 års garanti på disse flisene\", gjelder ikke dette mot deg. Du har dine 5 år etter bustadoppføringslova i behold.",
+    ),
+    "eksempler": [
+        {"navn": "Tom", "tekst": "Tom flytter inn i et nytt hus. Tre år senere begynner vann å lekke inn gjennom et takvindu av merket Velux, på grunn av en feil med selve glassruten. Utbyggerselskapet som bygget huset gikk konkurs i fjor. Tom kontakter Velux Norge direkte og reklamerer på feilen etter § 37. Velux kan ikke be ham om å ta det med konkursboet. De er det \"tidligere avtalepart\" og må ta saken, og de dekker et nytt vindu."},
+    ],
+    "vanlige_feil": [
+        "Å gi opp saken når utbyggeren går konkurs, fordi man glemmer at man kan gå etter fabrikken, grossisten eller underleverandøren i stedet.",
+        "Å tro at produsenten har ansvaret for feilmontering. Rørlegger-firmaet har ansvaret hvis de skrudde røret skjevt på.",
+        "Vente for lenge med å sende klagen til det bakre leddet.",
+    ],
+    "hva_bor_du_html": _p(
+        "Det er alltid ryddigst å klage til den utbyggeren du har skrevet kontrakt med. La dem ordne opp med sine egne leverandører. Men hvis saken stopper opp der, be dem om en liste over hvem som leverte hva. Hvis problemet er vinduene, badet eller ventilasjonen, finn ut hvem som er den norske produsenten eller importøren. Send en formell klage til dem og vis til \"direktekrav etter bustadoppføringslova § 37\".",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Hva om produsenten holder til i Tyskland?", "a": "I teorien gjelder regelen uansett, men i praksis er det svært vanskelig å føre en rettssak mot et tysk selskap i Tyskland som privatperson. Gå derfor alltid etter den norske importøren eller grossisten som solgte varen til din utbygger."},
+        {"q": "Snekkeren min kjøpte trappa brukt av en annen privatperson. Kan jeg klage til ham?", "a": "Nei. Paragrafen krever uttrykkelig at den tidligere parten må ha handlet som \"ledd i næringsverksemd\". Privatpersoner har du ingen direktekrav mot."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "38", "tittel": "§ 38", "available": True},
+        {"lov": LOV, "paragraf": "25", "tittel": "§ 25", "available": True},
+        {"lov": LOV, "paragraf": "30", "tittel": "§ 30", "available": True},
+    ],
+},
+{
+    "number": "38",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Når tredjepersonen skrøt på seg noe",
+    "description": "Du kan også kreve erstatning fra produsenten hvis reklamen deres viste seg å være usann.",
+    "kort_svar": "Hvis produsenten av vinduet eller parketten ga falske opplysninger i sin egen reklame, kan du kreve erstatning (skadebot) direkte fra produsenten. De står ansvarlig for lovnadene de sprer.",
+    "paragraftekst": "Ein person som ikkje har mangelsansvar etter § 37, svarer andsynes forbrukaren etter reglane i § 35 dersom vedkomande har gjeve slike opplysningar om ytinga som § 27 nemner, på vegner av entreprenøren eller i eigenskap av eller på vegner av tidlegare leverandørledd.",
+    "hva_betyr_html": _p(
+        "Paragraf 38 henger tett sammen med paragraf 37 (direktekrav) og 27 (uriktige opplysninger i markedsføring).",
+        "Se for deg at du kjøper et hus. Snekkeren monterer en ekstremt dyr terrassebord-type fra en produsent. Produsenten har en plakat der det står: \"Denne typen treverk vil aldri råtne\". Fire år senere er treverket pillråttent.",
+        "Selv om produsenten ligger langt bak i kjeden, og selv om du aldri tegnet kontrakt direkte med dem, kan du saksøke dem for at de løy. De \"svarer andsynes forbrukaren\". Fordi produsenten aktivt har gitt falske eller villedende opplysninger i sin markedsføring (se § 27), fanger loven dem direkte.",
+    ),
+    "eksempler": [
+        {"navn": "Kari", "tekst": "Kari bygger nytt. I en katalog fra vindusprodusenten \"Glassfabrikken AS\" står det tydelig: \"Alle våre vinduer garanteres 100 % lyddempende for trafikkstøy over 60 dB\". Huset bygges, og Kari hører bilene tydelig gjennom lukket vindu. Hun oppdager at glassene ikke isolerer på langt nær det reklamen lovet. Hovedentreprenøren nekter å ta ansvar fordi \"det var bare de vinduene Glassfabrikken sendte oss\". Kari bruker § 38 og retter kravet for feil markedsføring direkte mot Glassfabrikken AS, og krever utgiftene til nye vinduer dekket av dem."},
+    ],
+    "vanlige_feil": [
+        "Å la en produsent slippe unna løgnaktig reklame med argumentet \"du kjøpte ikke av oss direkte\".",
+        "Glemme å klage raskt nok til selve produsenten.",
+    ],
+    "hva_bor_du_html": _p(
+        "Ta vare på produktark, brosjyrer og FDV-dokumentasjon (Forvaltning, Drift, Vedlikehold) for alt det dyre utstyret i huset: varmepumper, sentralstøvsuger, vinduer, smarthus-systemer og taktekking. Det er disse dokumentene som beviser at produsenten lovet en funksjon.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Hvorfor gå på produsenten og ikke bare snekkeren?", "a": "Vanligvis går du på snekkeren (hovedentreprenøren). De har totalansvaret. Men av og til er snekkeren gått konkurs, eller de krangler så voldsomt at det faktisk er lettere å gå rett på et stort, seriøst produsentfirma som bare vil rydde opp for merkevarens skyld."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "37", "tittel": "§ 37", "available": True},
+        {"lov": LOV, "paragraf": "27", "tittel": "§ 27", "available": True},
+        {"lov": LOV, "paragraf": "35", "tittel": "§ 35", "available": True},
+    ],
+},
+{
+    "number": "39",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Noen andre eier noe i huset ditt (Rettsmangel)",
+    "description": "Du tok over et nytt hus, men så får du beskjed om at naboen har tinglyst rett til å bruke veien din, eller at banken har pant i tomten. Slik løser loven det.",
+    "kort_svar": "Hvis det viser seg at en tredjeperson har rettigheter i eiendommen din (for eksempel et panteselskap, eller naboen), kalles det en rettsmangel. Loven gir deg rett til å kreve prisavslag, erstatning, eller i verste fall at du leverer huset tilbake, på samme måte som ved fysiske feil.",
+    "paragraftekst": "Har ein tredjeperson eigedomsrett, panterett eller annan rett i det entreprenøren skal yte, gjeld føresegnene om manglar tilsvarande, om ikkje forbrukaren etter avtalen skal overta heftet. Forbrukaren kan likevel ikkje krevje retting etter § 32.",
+    "hva_betyr_html": _p(
+        "Feil i et hus handler ikke bare om vannlekkasjer. Det kan også være juridiske feil. Du kjøper kanskje en prosjektbolig og forventer at hele hagen er din egen. Men etter at du har betalt, finner du ut at naboen har tinglyst en evig bruksrett til å kjøre traktor over hagen din. Eller du oppdager at utbyggerens bank fortsatt har et pantedokument på 5 millioner liggende på din tomt.",
+        "Dette er \"rettsmangler\". Du eier rett og slett ikke 100 % av det du trodde du kjøpte.",
+        "Paragraf 39 sier at dette skal behandles nesten likt som fysiske mangler. Du kan kreve penger tilbake (prisavslag). Men, ganske logisk, du kan ikke kreve \"retting\" av entreprenøren (at snekkeren skal reise ned med hammer for å fjerne naboens juridiske rettighet).",
+    ),
+    "eksempler": [
+        {"navn": "Lars", "tekst": "Lars kjøper og overtar en nybygget hytte inkludert tomt av Utbygger AS. Et år senere får Lars et inkassovarsel i posten. Utbygger AS glemte å slette et pantlån (heftelse) de hadde på tomten fra sin egen bank før de overførte den til Lars. Nå krever banken tomta tvangssolgt fordi Utbygger AS ikke har betalt regningene sine. Dette er en rettsmangel. Lars krever erstatning av Utbygger AS, som må punge ut for å betale slette-gebyret til banken slik at Lars får tomten gjeldfri."},
+    ],
+    "vanlige_feil": [
+        "Å ikke lese grunnboken (tinglyste heftelser) før man signerer på en eiendom.",
+        "Å tro at utbygger ikke har ansvar for at tomten selges med andres pantelån liggende der.",
+    ],
+    "hva_bor_du_html": _p(
+        "Sjekk alltid grunnboken hos Kartverket (dette er gratis) før du kjøper et boligprosjekt. Det skal stå \"Ingen heftelser\" eller bare heftelser som du aksepterer (som for eksempel borettslagets fellesgjeld). Hvis det plutselig ligger en uavklart rettighet der etter overtakelsen, send et umiddelbart erstatningskrav til utbyggeren for å få det slettet.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg erstatning hvis noen har tinglyst rett til å ha vannrør under min hage?", "a": "Trolig ja, hvis det begrenser din bruk av hagen og du ikke fikk vite det på forhånd. Det er en rettsmangel. Koster det deg penger eller verdi, kan du kreve prisavslag."},
+        {"q": "Hva skjer hvis naboen bare har en muntlig avtale med den tidligere tomteeieren?", "a": "Da er det vanligvis naboens problem, siden usignerte og utinglyste avtaler sjelden er gyldige mot en ny kjøper i god tro. Entreprenøren må uansett rydde opp i det."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "40", "tittel": "§ 40", "available": True},
+        {"lov": LOV, "paragraf": "29", "tittel": "§ 29", "available": True},
+        {"lov": LOV, "paragraf": "25", "tittel": "§ 25", "available": True},
+    ],
+},
+{
+    "number": "40",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Kommunen sier nei til å bruke tomten",
+    "description": "Du kjøper et hus, men kommunen har lagt ned et lokalt byggeforbud, og du kan ikke bruke garasjen. Dette gir deg de samme rettighetene som ved byggefeil.",
+    "kort_svar": "Hvis eiendommen du overtar har \"offentligrettslige rådighetsbegrensninger\" – som betyr at kommunen eller staten har bestemt noe som begrenser din bruk av eiendommen – regnes dette som en mangel (feil) som du kan klage på.",
+    "paragraftekst": "For avtalar som omfattar rett til grunn (§ 1 første ledd bokstav b), gjeld føresegnene om manglar tilsvarande i høve til offentlegrettslege rådvaldsband eller offentlegrettslege tyngsler på eigedomen.",
+    "hva_betyr_html": _p(
+        "Paragraf 40 er en fortsettelse av paragraf 39. Men mens § 39 handler om at naboen eller banken har private rettigheter på tomta di, handler § 40 om at det offentlige stikker kjepper i hjulene.",
+        "Når du kjøper en ny bolig inkludert tomt (prosjekt), forventer du at boligen er fullt lovlig å bo i. \"Offentlegrettslege rådvaldsband\" betyr vedtak fra stat, kommune eller fylke.",
+        "Eksempler: Du får ikke brukstillatelse på boligen fordi den er bygget over en kommunal vannledning i strid med reguleringsplanen. Boligen mangler brannseksjonering og kommunen nedlegger bruksforbud på kjelleren. Kommunen har vedtatt ekspropriasjon og utbygger skjulte dette.",
+        "Slike restriksjoner fra det offentlige er utbyggerens ansvar. De solgte deg en tomt som ikke har de kvalitetene en vanlig bolig skal ha. Siden feilen regnes som en mangel, kan du kreve prisavslag, erstatning eller i ytterste konsekvens heve hele kjøpet.",
+    ),
+    "eksempler": [
+        {"navn": "Sofie", "tekst": "Sofie har nettopp overtatt en nøkkelferdig hytte av Utbygger AS. Tre uker senere kommer det et brev fra fylkesmannen. Brygga som hørte til hytta, er bygget i et vernet naturreservat uten gyldig dispensasjon, og staten krever at Sofie river den. Sofie sjekker § 40. Hytta er solgt med en offentlig tyngsle/restriksjon hun ikke ble opplyst om. Sofie kan henvise utbyggeren til denne loven og kreve flere hundre tusen kroner i prisavslag, fordi en hytte uten brygge har mye lavere verdi."},
+    ],
+    "vanlige_feil": [
+        "Å tro at man er overlatt til seg selv i kampen mot kommunen for en ulovlig bygget garasje man nettopp har kjøpt ny. Du skal rette kravet direkte mot utbygger.",
+        "Å ikke be utbygger fremlegge midlertidig brukstillatelse eller ferdigattest før overtakelse.",
+    ],
+    "hva_bor_du_html": _p(
+        "Dersom kommunen sender et brev om \"ulovlig bruk\" av det nye bygget, ring dem først for å forstå hva vedtaket gjelder. Send deretter umiddelbart e-post til utbygger: \"Viser til vedtak fra kommunen datert dd.mm.åå. Da eiendommen lider av offentligrettslige rådighetsbegrensninger jeg ikke ble varslet om, utgjør dette en mangel etter bustadoppføringslova § 40.\"",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Hva om reguleringsplanen bare sier \"potensielt støyområde\"?", "a": "Det må foreligge en faktisk begrensning eller forbud. Et generelt varsel i reguleringsplanen om støy kan utgjøre en mangel etter \"manglende opplysninger\" (§ 26), men er vanligvis ikke et \"rådvaldsband\" etter denne paragrafen."},
+        {"q": "Gjelder dette hvis jeg eide tomten selv fra før?", "a": "Paragrafen gjelder uttrykkelig bare når avtalen omfatter rett til grunn (prosjektbolig). Har du eid tomten din i ti år og ber noen bygge et hus der, er det du som sitter med ansvaret."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "39", "tittel": "§ 39", "available": True},
+        {"lov": LOV, "paragraf": "29", "tittel": "§ 29", "available": True},
+    ],
+},
+{
+    "number": "41",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Hva er prisen hvis dere ikke avtalte noe?",
+    "description": "Du bestilte en snekker, men glemte å spørre hva det kostet. Nå har du fått en regning du mener er galskap. Hvor mye har de egentlig lov å kreve?",
+    "kort_svar": "Du skal betale den prisen dere har avtalt. Er ingen pris avtalt, skal du kun betale det som regnes som en \"rimelig pris\" i markedet. Har de gitt deg et prisoverslag, kan sluttregningen maks bli 15 prosent dyrere. Merverdiavgift (moms) skal alltid være inkludert.",
+    "paragraftekst": "Forbrukaren skal betale det vederlaget som er avtalt. I den mon det ikkje er avtalt kva vederlag entreprenøren har krav på, skal forbrukaren betale eit vederlag som dekkjer nødvendige kostnader og eit rimeleg påslag. Dersom entreprenøren har gjeve eit prisoverslag, skal vederlaget ikkje overstige den oppgjevne summen vesentleg, og høgst med 15 prosent.",
+    "hva_betyr_html": _p(
+        "Paragraf 41 rydder opp i de vanligste pengekranglene i byggebransjen.",
+        "Regning uten avtalt pris: Sier du bare \"kan du bygge denne verandaen?\", og ikke ber om pris, går avtalen på regning. Da sier loven at du skal betale for \"nødvendige kostnader\" pluss et \"rimelig påslag\". Dette er løpende timer og materialer til normal markedspris.",
+        "Prisoverslaget (15%-regelen): Hvis entreprenøren sier \"Det vil koste cirka 500 000 kroner\", er dette et prisoverslag. Loven setter et tak: De kan aldri kreve mer enn 15 % på toppen av dette. Sluttregningen kan altså ikke bli mer enn 575 000 kr.",
+        "Moms: Noen useriøse aktører legger på \"25 % MVA\" med små bokstaver på den aller siste fakturaen. Det er ulovlig overfor privatpersoner. Alle priser en håndverker gir deg skal alltid inneholde moms.",
+        "Prisstigning: Utbyggeren kan ikke sende deg et gebyr for \"økning i trelastprisene\", med mindre det står skriftlig nedfelt i avtalen at de har lov til å prisregulere kontrakten.",
+    ),
+    "eksempler": [
+        {"navn": "Ola", "tekst": "Ola skal grave opp hagen og asfaltere. Han spør en entreprenør hva det vil koste. Entreprenøren sender en SMS: \"Estimert pris på gravejobben ca. 100 000 kr\". Ola svarer ja. Tre uker senere dumper det ned en faktura i innboksen på 150 000 kroner + MVA, totalt 187 500 kr. Ola sjekker § 41. Han avviser regningen. SMS-en er et prisoverslag. Taket på 15 % betyr maksimalt 115 000 kr. Og siden MVA alltid skal være inkludert overfor forbrukere, var estimatet deres på 100 000 allerede inkludert MVA. Ola betaler lovlig 115 000 kr for hele jobben."},
+    ],
+    "vanlige_feil": [
+        "Å godta en dyr regning basert på at de brukte \"mange fler timer enn forventet\" når de allerede hadde gitt et prisoverslag.",
+        "Å ikke be om priser skriftlig.",
+        "Utbyggere som nekter å bære smellen for egne grove bom-kalkyler i et anbud.",
+    ],
+    "hva_bor_du_html": _p(
+        "Be alltid om fastpris. Unngå ord som \"anslag\", \"estimat\" eller \"timepris\" i kontrakten. Har du først fått et prisoverslag, og ser at byggeprosessen ser ut til å dra ut, minn håndverkeren vennlig om 15%-regelen.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Fungerer 15%-regelen hvis jeg har bedt dem om å bygge en carport etter at estimatet ble gitt?", "a": "Nei. Regelen gjelder det opprinnelige prisoverslaget. Bestiller du endringer og ber om et tilbygg som gjør prosjektet dyrere, faktureres dette i tillegg til de opprinnelige 15 prosentene."},
+        {"q": "Kan utbygger kreve 15 % mer uten grunn, selv om estimatet deres var perfekt?", "a": "Nei. De skal kun fakturere for de faktiske timene og materialene de brukte. 15 % er bare et absolutt pristak."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "42", "tittel": "§ 42", "available": True},
+        {"lov": LOV, "paragraf": "3", "tittel": "§ 3", "available": True},
+        {"lov": LOV, "paragraf": "9", "tittel": "§ 9", "available": True},
+    ],
+},
+{
+    "number": "42",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Hva koster det å endre planene?",
+    "description": "Har du bestemt deg for å få eikeparkett i stedet for furu? Denne regelen styrer hvordan snekkeren skal regne ut den nye prisen for deg.",
+    "kort_svar": "Når du gjør endringer underveis i byggingen, skal prisen forhøyes eller senkes ut fra hva endringen faktisk koster snekkeren i materialer og tid, pluss et normalt fortjenestepåslag.",
+    "paragraftekst": "Partane kan krevje justering av vederlaget som følgje av endringar og tilleggsarbeid i den mon det følgjer av den opprinnelege avtalen eller er fastsett i særskilt skriftleg avtale om endringane eller tilleggsarbeidet.",
+    "hva_betyr_html": _p(
+        "Gjennom byggeprosjektet (ifølge § 9) har du rett til å bestille endringer (tilvalg) og fjerne ting (fradrag). Paragraf 42 forteller hvordan regningen påvirkes.",
+        "Første ledd er drømmescenariet: Dere avtaler prisen skriftlig før jobben gjøres. \"Ny eikeparkett i stedet for standard vil koste 25 000 kroner ekstra.\" Ferdig snakka.",
+        "Andre ledd dekker det som skjer i den virkelige verden: Snekkeren står i stua di, du ber om at en vegg flyttes, han sier \"ok\", og ingen snakker om penger. Snekkeren kan etter loven bare kreve ekstra penger for dette dersom han varslet deg om at det ville koste ekstra akkurat da du ba om det, eller hvis du, som en normalt oppegående person, måtte skjønne at det selvsagt koster ekstra å flytte en helt ny vegg.",
+        "Tredje ledd er prisformelen. Hvis du la til veggen, skal du betale for de faktiske, dokumenterte utgiftene snekkeren hadde til materialer og ekstra timer, pluss det vanlige påslaget de tjener penger på.",
+    ),
+    "eksempler": [
+        {"navn": "Kari", "tekst": "Kari bygger nøkkelferdig hus. Etter at grunnmuren er støpt, ringer hun entreprenøren og sier: \"Jeg vil ha varmekabler i garasjegulvet også.\" Entreprenøren svarer \"Vi fikser det!\", men nevner ikke pris. Ved sluttoppgjøret krever entreprenøren 50 000 kr ekstra for kablene. Kari nekter å betale fordi de ikke krevde tillegg der og da. Men Kari taper saken. Bokstav b sier at hun, som huseier, måtte skjøne at det å kjøpe inn og montere varmekabler i et nytt gulv koster ekstra penger."},
+    ],
+    "vanlige_feil": [
+        "Muntlige tilvalg uten å spørre om \"Hva blir ekstrakostnaden for dette, helt konkret?\".",
+        "Entreprenører som prøver å kreve urealistisk høye timesatser for endringer fordi du nå er \"låst\" til dem som leverandør.",
+        "Forbrukere som forventer at de kan trekke ut dyre kjøkken fra entreprenøren for å kjøpe det på IKEA, og tror de får refundert 100 % av katalogprisen.",
+    ],
+    "hva_bor_du_html": _p(
+        "Ikke godta \"vi tar det på regning\" når du gjør endringer i en fastpriskontrakt. Skriv alltid en e-post der du bestiller endringen, og be om at de skriftlig bekrefter summen, og om det vil påvirke overleveringsdatoen.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Fakturagrunnlaget viser at snekkeren tok 20 prosent påslag på materialene han la til for meg. Er det lov?", "a": "Ja. Det kalles \"entreprenørens påslag\". Et påslag på rundt 10 til 20 prosent oppå innkjøpsprisen regnes normalt som \"rimelig\" i norsk byggebransje."},
+        {"q": "Snekkeren foreslo selv å bytte ut treverket på terrassen fordi de var utsolgt, men sendte faktura på 10 000 kr ekstra. Må jeg betale?", "a": "Nei, ikke hvis det var deres problem som løste seg ved byttet, og du ikke krevde oppgraderingen."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "9", "tittel": "§ 9", "available": True},
+        {"lov": LOV, "paragraf": "41", "tittel": "§ 41", "available": True},
+        {"lov": LOV, "paragraf": "43", "tittel": "§ 43", "available": True},
+    ],
+},
+{
+    "number": "43",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Ekstrautgifter fordi du rotet det til",
+    "description": "Hvis du somlet med betalingen eller glemte å rydde tomta, slik at entreprenøren måtte bruke ekstra tid, kan de kreve kompensasjon for dette.",
+    "kort_svar": "Entreprenøren kan kreve mer penger av deg (tilleggsvederlag) hvis du som kunde er skyld i at de har fått unødvendige kostnader, for eksempel fordi du ikke dukket opp for å slippe dem inn, eller fordi du manglet byggetillatelse.",
+    "paragraftekst": "Entreprenøren kan krevje tilleggsvederlag for nødvendige kostnader som kjem av forhold på forbrukarens side, med tilsvarande endring av entreprenørens påslag. Entreprenøren kan likevel ikkje krevje tilleggsvederlag på grunn av manglande medverknad dersom forbrukaren har krav på tilleggsfrist etter § 51.",
+    "hva_betyr_html": _p(
+        "Akkurat som entreprenøren må betale dagmulkt når de roter med tiden, må du betale hvis du kaster bort entreprenørens tid og penger.",
+        "\"Forhold på forbrukerens side\" dekker alt du hadde ansvaret for. For eksempel: Det er avtalt at du selv skal fjerne alle paller og rydde tomten hver fredag. Du glemmer det, og graveren kan ikke komme frem mandag morgen. Graveren må bruke to timer på å flytte paller før han kan starte gravingen. Entreprenøren kan da kreve at du betaler for de to timene gravemaskinen og arbeideren gikk tomgang.",
+        "Unntaket i siste setning er din \"force majeure\". Hvis du ikke kunne rydde tomten fordi lynet slo ned og brente opp bilen din, og du varsler om dette, har du rett på en fristutsettelse. Da kan ikke entreprenøren gi deg noen strafferegning.",
+    ),
+    "eksempler": [
+        {"navn": "Per", "tekst": "Per pusser opp huset. Kontrakten sier at Per skal kjøpe inn og levere alt av fliser og baderomsinnredning, mens entreprenøren skal montere. Den dagen rørleggeren og flisleggeren kommer til huset, er ikke varene ankommet. Arbeiderne må snu, reise tilbake til brakka, og bedriften taper arbeidsdagen. Entreprenøren sender Per en faktura på 8 000 kroner for \"bomtur og tapt arbeidstid\". Per må betale denne."},
+    ],
+    "vanlige_feil": [
+        "Forbrukere som avtaler å gjøre stor egeninnsats (male, legge gulv), uten å innse at forsinkelser i eget arbeid vil koste dyrt.",
+        "Å ikke slippe håndverkerne inn på avtalt tid, for deretter å nekte å betale bomtur-fakturaen.",
+    ],
+    "hva_bor_du_html": _p(
+        "Pass på avtalen. Hvis kontrakten sier at du skal skaffe godkjenninger fra kommunen, sikre at tomten er ryddet, eller levere materialer innen 1. september – overhold den fristen. Ligger du an til å bomme på din egen frist, må du informere entreprenøren skriftlig uker i forveien.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Kommunen somlet med byggetillatelsen. Er det \"min skyld\"?", "a": "Ja, overfor entreprenøren er dette ditt ansvar. Entreprenøren bryr seg ikke om at byråkratiet går sakte; for dem er tomten ulovlig å gå inn på, og de mister tid."},
+        {"q": "Må jeg betale entreprenørens \"påslag\" på den tiden de satt og ventet på meg?", "a": "Ja, loven sier \"med tilsvarande endring av entreprenørens påslag\". De skal ikke bare ha dekket selve lønnen til snekkeren; de har lov til å kreve det de normalt ville tjent som bedrift de timene."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "42", "tittel": "§ 42", "available": True},
+        {"lov": LOV, "paragraf": "51", "tittel": "§ 51", "available": True},
+        {"lov": LOV, "paragraf": "50", "tittel": "§ 50", "available": True},
+    ],
+},
+{
+    "number": "44",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Skal arkitekten ha betalt før kontrakten er signert?",
+    "description": "Du tok et innledende møte med en snekker og fikk noen fine tegninger. Kan de plutselig sende regning for dette? Ikke uten at de advarte deg først.",
+    "kort_svar": "Entreprenøren eller arkitekten har ikke lov til å sende deg en faktura for utredninger, tegnearbeid eller prisoverslag de har gjort før dere inngikk den endelige byggekontrakten, med mindre de ga deg krystallklar beskjed på forhånd om at dette arbeidet koster penger.",
+    "paragraftekst": "For utgreiingar, teikningar, utarbeiding av pristilbod og for liknande førebuing før ytinga er bestilt, skal forbrukaren berre betale vederlag dersom det er opplyst eller teke atterhald om det på førehand.",
+    "hva_betyr_html": _p(
+        "Paragrafen beskytter deg mot overraskelsesregninger i den fasen hvor du bare \"shopper rundt\" for å finne riktig byggefirma.",
+        "Mange husfirmaer tilbyr seg å tegne skisser, regne på tilbud og foreslå smarte løsninger på tomta di. For bedriften koster dette mye tid. Av og til blir det ikke noe av byggingen. En irritert utbygger prøver da ofte å sende en regning på 15 000 kroner for \"Konsulenttjenester\".",
+        "Loven gir dem null og niks. Hovedregelen er at innsalg, tilbud og befaring er gratis markedsføring. Eneste unntak: Firmaet sier allerede på første møte (og kan bevise det): \"Vi kommer gjerne på tomta og tegner et forslag til deg. Dette er en tjeneste vi tar 5 000 kroner for, uansett om du velger oss eller ikke.\" Hvis du da sier \"ja, gjør det\", må du selvsagt betale.",
+    ),
+    "eksempler": [
+        {"navn": "Sofie", "tekst": "Sofie har arvet en eiendom. Hun kontakter \"Lokal Byggmester AS\" og spør hva de vil ta for å bygge en hytte. Byggmesteren kommer på befaring, sender skisser og tegninger, og gir henne et tilbud på 3 millioner kroner. Sofie synes det er for dyrt og velger å ikke bygge i det hele tatt. To uker senere dumper det en regning fra Byggmester AS ned i postkassen på 8 500 kroner for \"Møtevirksomhet og utarbeidelse av prisoverslag\". Sofie avviser fakturaen med henvisning til § 44. Firmaet varslet aldri at de tok betalt for utarbeidelsen av tilbudet."},
+    ],
+    "vanlige_feil": [
+        "Entreprenører som forsøker å \"straffe\" en kunde som valgte konkurrenten, ved å ettersende et krav for tiden de brukte på salget.",
+        "Kunder som føler seg skyldige og betaler for arkitekttimer de ikke hadde avtalt.",
+        "Entreprenører som skriver med bittesmå bokstaver i bunnen av e-postsignaturen at \"møter faktureres med 1500,-\".",
+    ],
+    "hva_bor_du_html": _p(
+        "Når du kontakter et firma for å få priser og ideer, skriv gjerne i den første e-posten: \"Vi innhenter tilbud fra flere. Kan dere komme med et uforpliktende og kostnadsfritt prisoverslag?\". Får du likevel en regning i etterkant, bestrider du den skriftlig: \"Bestrider faktura. Det var ikke inngått avtale om betaling for forarbeid, jf. bustadoppføringslova § 44.\"",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Hva om jeg ber dem bruke arkitekten sin til å lage godkjente byggetegninger for kommunen, men ikke skriver kontrakt på selve huset?", "a": "Det å tegne et komplett arkitekt-sett som kan sendes inn til en bygge-søknad, er et omfattende oppdrag som i seg selv er \"bestilt\". I slike tilfeller er det stor sjanse for at domstolen anser arbeidet for å gå langt utover et vanlig \"pristilbud og forberedelse\"."},
+        {"q": "Entreprenøren ringte og sa muntlig at de tok betalt for befaringen. Gjelder det?", "a": "Ja, det er \"opplyst på førehand\". Hvis de tar det til forliksrådet, vil utfordringen deres være å bevise at telefonsamtalen fant sted."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "41", "tittel": "§ 41", "available": True},
+        {"lov": LOV, "paragraf": "61", "tittel": "§ 61", "available": True},
+    ],
+},
+{
+    "number": "45",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Hvem betaler hvis huset skades underveis?",
+    "description": "Du skal ikke betale for materialer som blir stjålet fra byggeplassen, eller for vegger som blåser over ende før du har flyttet inn. Dette er utbyggers risiko.",
+    "kort_svar": "Risikoen for at noe blir ødelagt, stjålet eller brenner ned før den formelle overtakelsesdatoen, ligger 100 prosent på utbyggeren. Entreprenøren må selv betale for å kjøpe nye materialer og bygge opp huset igjen.",
+    "paragraftekst": "Forbrukaren skal ikkje betale for arbeid eller materialar som blir skadde eller går tapt ved ei hending før overtakinga som ikkje kjem av forhold på forbrukarens side. Entreprenøren har òg vågnaden for materialar som forbrukaren har skaffa, dersom dei er overlatne til entreprenøren.",
+    "hva_betyr_html": _p(
+        "\"Vågnad\" er et gammelt ord for risiko. Hvem har ansvaret og regningen hvis katastrofen inntreffer?",
+        "Loven gir deg en enorm trygghet under byggetiden. Frem til overtakelsesprotokollen er signert og du får nøkkelen, eier utbyggeren risikoen.",
+        "Hvis noen stjeler verktøy og treverk fra tomta i helgen, eller et uvær blåser taket av nybygget, er det et rent tap for snekkerfirmaet. Loven slår fast at de må kjøpe nytt treverk, bestille nytt tak, og bygge det opp igjen – og du skal kun betale det beløpet dere opprinnelig ble enige om i kontrakten.",
+        "Loven går faktisk enda lenger i andre setning. La oss si at du kjørte til Maxbo og brukte dine egne sparepenger på 40 000 kr til italienske fliser. Du kjører dem til byggeplassen og sier til snekkeren: \"Vær så god, disse skal brukes på badet.\" I det du overleverer dem til entreprenøren, går risikoen for de knuselige flisene over på entreprenøren.",
+        "Unntaket? \"Hending som kjem av forhold på forbrukarens side.\" Besøker du byggeplassen i helgen og velter et malingspann over det nye parkettgulvet, er skaden selvfølgelig din skyld.",
+    ),
+    "eksempler": [
+        {"navn": "Håkon", "tekst": "Håkon og familien gleder seg til å overta det nye ferdighuset om en uke. Lørdag natt brenner huset ned til grunnen. Brannvesenet finner ingen mistenkelig årsak. Entreprenøren må, etter § 45, rydde tomten og bygge opp nøyaktig det samme huset for Håkon på nytt. Håkon skal kun betale den avtalte kontraktssummen når hus nummer to står ferdig."},
+    ],
+    "vanlige_feil": [
+        "At utbygger sender regning til huseier for opprydding etter vandalisme på byggeplassen.",
+        "Forbrukere som sier seg villige til å bruke egen innboforsikring på løsøre de har levert på byggeplassen.",
+        "Tror at risikoen følger med når man betaler avdragene underveis.",
+    ],
+    "hva_bor_du_html": _p(
+        "Pass på hvem som har tilgang til plassen og materialene. Hvis du har kjøpt egne vinduer som står under en presenning i oppkjørselen, bør du skrive en e-post til utbygger: \"De nye vinduene står nå på tunet og overleveres herved til dere for montering.\" Da har du skriftlig bekreftelse på at risikoen har hoppet over til entreprenøren.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får utbyggeren forlenget frist til å bli ferdig hvis bygget brenner?", "a": "Brann eller tyveri er i noen tilfeller force majeure, men ikke alltid. Hvis det brenner på grunn av en ulmende feil i en skjøteledning de selv brukte, er det innenfor deres kontroll."},
+        {"q": "Naboen min rygget på en vegg de hadde satt opp. Er det \"min skyld\"?", "a": "Nei, naboen din er ikke en \"person forbrukeren svarer for\". Da må utbyggers forsikringsselskap dekke skaden, og de må ta erstatningskravet videre med naboen."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "14", "tittel": "§ 14", "available": True},
+        {"lov": LOV, "paragraf": "13", "tittel": "§ 13", "available": True},
+        {"lov": LOV, "paragraf": "55", "tittel": "§ 55", "available": True},
+    ],
+},
+{
+    "number": "46",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Når skal du betale for bygget?",
+    "description": "Du skal ikke betale noe før du har fått huset, med mindre noe annet er strengt avtalt. Her er hovedreglene for når regningen forfaller.",
+    "kort_svar": "Hovedregelen er at du betaler når huset er ferdig og du har fått nøkkelen. Kjøper du tomt og bolig som en pakke (prosjektbolig), skal du betale når skjøtet på eiendommen overføres til deg i grunnboken.",
+    "paragraftekst": "Er ikkje betalingstida avtalt, skal forbrukaren betale når entreprenøren krev det etter overtaking. Ved avtalar som omfattar rett til grunn (§ 1 første ledd bokstav b), kan entreprenøren berre krevje betaling mot heimelsoverføring.",
+    "hva_betyr_html": _p(
+        "I byggebransjen gjelder regelen \"ytelse mot ytelse\". Dette er ryggraden i en rettferdig avtale. Entreprenøren gir deg et hus, og i det samme øyeblikket gir du dem pengene.",
+        "Så lenge dere ikke har avtalt noe annet, kan snekkeren sende deg fakturaen den dagen dere skriver under overtakelsesprotokollen. De har ingen rett til å be om \"20 prosent ved byggestart\" med mindre det er uttrykkelig inngått en lovlig avtale om forskuddsbetaling.",
+        "Den andre setningen handler om prosjektboliger. Her blir loven enda strengere. Du trenger ikke overføre sluttoppgjøret før entreprenøren fysisk har gitt papirene (skjøtet) til Kartverket slik at du offisielt står som eier.",
+        "Loven beskytter selvsagt også entreprenøren: Bygger du et hus, er det en stor risiko for at du ikke har penger når regningen kommer. Derfor sier § 46 at de kan kreve at du beviser betalingsevnen din – som regel i form av et finansieringsbevis fra banken din.",
+    ),
+    "eksempler": [
+        {"navn": "Kari", "tekst": "Kari engasjerer et firma for å bygge et tilbygg på 600 000 kr. De inngår standardkontrakt uten å fylle inn egne betalingsplaner. Etter første dag med graving sender entreprenøren en e-post: \"Vi trenger 200 000 kr overført nå, for å betale sement-leverandøren.\" Kari sjekker § 46 og ser at det ikke er avtalt forskuddsbetaling. Hovedregelen er \"betaling etter overtaking\". Hun nekter pent å betale regningen før tilbygget er 100 prosent ferdig."},
+    ],
+    "vanlige_feil": [
+        "Å føle seg forpliktet til å overføre halve regningen \"slik at snekkeren kan kjøpe materialer\".",
+        "Å nekte å levere finansieringsbevis til entreprenøren i starten fordi man synes det er \"privat\".",
+    ],
+    "hva_bor_du_html": _p(
+        "Sjekk kontrakten. Mange standardkontrakter har en ferdig utfylt betalingsplan for \"avdrag\". Signerer du denne, gjelder § 47 i stedet for § 46. Ønsker du maksimal trygghet, streker du over betalingsplanen før du signerer, og krever at dere følger § 46: Alt betales til slutt.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg sjekke huset etter overtakelse før jeg betaler?", "a": "Loven sier \"etter overtaking\". Det betyr at pengene som hovedregel forfaller i løpet av en vanlig fakturafrist etter at møtet er ferdig og du har fått nøkkelen. Men oppdager du feil på overtakelsen, fryser du en del av oppgjøret (tilbakeholdsrett, § 31)."},
+        {"q": "Hva om utbygger krever å ha pengene mine låst (deponert) på meglers konto en måned før overtakelse?", "a": "Dette er veldig vanlig. Du overfører da pengene til meglerens sperrede klientkonto før du får nøkkelen. Megleren utbetaler ikke pengene til entreprenøren før skjøtet er tinglyst på deg."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "47", "tittel": "§ 47", "available": True},
+        {"lov": LOV, "paragraf": "14", "tittel": "§ 14", "available": True},
+        {"lov": LOV, "paragraf": "48", "tittel": "§ 48", "available": True},
+    ],
+},
+{
+    "number": "47",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Strenge regler for forskudd og avdrag",
+    "description": "Skal du betale regninger mens huset bygges? Loven stiller knallharde vilkår for at entreprenøren skal få lov til å kreve penger før de er ferdige.",
+    "kort_svar": "Entreprenøren kan ikke kreve at du betaler penger raskere enn bygget reiser seg. Betaler du avdrag underveis, krever loven at verdien av materialene og arbeidet på tomta minst tilsvarer det du har betalt. Du skal alltid holde tilbake minst 10 % av totalsummen helt til bygget er overlevert til deg.",
+    "paragraftekst": "Avtale om at forbrukaren skal betale avdrag eller forskot på entreprenørens vederlag, gjeld berre så langt verdien av arbeid som er utført på eigedomen, saman med materialar som er tilførte eigedomen, minst svarer til det som til kvar tid er betalt, det ikkje kviler salspant eller andre hefte på materialar som er innbygde eller tilførte eigedomen, og minst ein tiandedel av vederlaget ikkje skal betalast før overtakinga.",
+    "hva_betyr_html": _p(
+        "Mange byggeprosjekter skjer ved at man betaler tre eller fire store fakturaer i løpet av året bygget tar. Paragraf 47 er skrevet for å unngå at utbyggeren får inn store forskudd og stikker av med dem.",
+        "Loven lister opp tre jernharde krav: Ikke forskudd: Du skal aldri betale før jobben er gjort. Hvis snekkeren har støpt grunnmur og satt opp trevegger til en anslått verdi av 400 000 kr, kan de maksimalt be deg om en faktura på 400 000 kr. Ingen gjeld på plankene: Materialene de bruker, skal være betalt for av entreprenøren. Hvis snekkeren slår seg konkurs, skal ikke Montér komme hjem til deg og kreve parketten tilbakebetalt. Ti-prosent-regelen: Utbygger kan aldri kreve 100 % innbetalt før nøkkelen overleveres. 10 % av hele kjøpesummen skal stå på din konto som en \"gissel-sum\" frem til overtakelsen.",
+        "For deg som kjøper \"prosjektbolig\", er det en fjerde livsviktig regel: Du skal aldri betale så mye som en krone underveis, uten at du allerede har fått tinglyst hele eiendommen på ditt eget navn. Den eneste måten de kan omgå dette på, er å gi deg en formell bankgaranti for alle forskuddspengene dine.",
+    ),
+    "eksempler": [
+        {"navn": "Jonas", "tekst": "Jonas bygger på egen tomt og har signert en fremdriftsplan. Huset koster 2 000 000 kr. Byggefirmaet graver bare ut et lite hull i hagen (anslått verdi: 50 000 kr), før de sender en \"første avdragsregning\" på 400 000 kroner for å \"komme i gang\". Jonas sjekker § 47. Loven sier verdien av utført arbeid må tilsvare betalingen. Å betale 400 000 kr for et hull i bakken er et usikret forskudd og ulovlig. Jonas bestrider fakturaen."},
+    ],
+    "vanlige_feil": [
+        "Betale hundretusener for \"materialer de sier at de har på lager hos seg\". Materialene må befinne seg på din tomt før de kan regnes med.",
+        "Å ikke sjekke om tinglysningen av skjøtet er i orden før man betaler den første millionen i et ferdighus-prosjekt.",
+        "Overføre de siste ti prosentene dagen før befaringen for å \"være hyggelig\".",
+    ],
+    "hva_bor_du_html": _p(
+        "Når du får en faktura på et avdrag, ta deg en tur ut på tomta. Vurder om arbeidet som er gjort, rent fysisk er verdt den summen du skal betale nå. Ser du at betalingene ligger milevis foran fremdriften, må du slå bremser på.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Firmaet sier de ikke har råd til å bestille inn det svindyre kjøkkenet jeg valgte uten at jeg overfører penger til det først. Hva da?", "a": "Loven gir dem et smutthull: De kan be deg betale i forskudd for å kjøpe inn materialene, MEN kun hvis de stiller en egen forskuddsgaranti fra en norsk bank. Uten denne garantien: Nei, ikke betal."},
+        {"q": "Kan vi ikke bare bli enige i kontrakten om at de får forskudd, siden vi er venner?", "a": "Nei, Bustadoppføringslova er ufravikelig (§ 3)."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "46", "tittel": "§ 46", "available": True},
+        {"lov": LOV, "paragraf": "12", "tittel": "§ 12", "available": True},
+        {"lov": LOV, "paragraf": "14", "tittel": "§ 14", "available": True},
+    ],
+},
+{
+    "number": "48",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Ryddig sluttoppgjør før betaling",
+    "description": "Du har rett til en komplett og forståelig sluttregning. Entreprenøren kan verken ta urimelige administrasjonsgebyrer eller skjule pristillegg.",
+    "kort_svar": "Før du betaler den siste regningen, kan du kreve at entreprenøren leverer et tydelig regnskap som kan kontrolleres. Hvis regningen stemmer, har du én måned på deg til å klage før du låses til prisen. Entreprenøren har heller ikke lov til å skrive på bestillings- eller skrivegebyrer.",
+    "paragraftekst": "Forbrukaren kan setje som vilkår for betaling av avdrag og sluttoppgjer at entreprenøren legg fram rekning som kan kontrollerast. Tillegg for prisstiging, justering av vederlaget etter § 42 og tillegg etter § 43 skal gå fram særskilt. Rekning for sluttoppgjer utan atterhald er bindande for forbrukaren dersom innvending ikkje er reist seinast ein månad etter at rekninga er motteken. Entreprenøren kan ikkje krevje bestillingsgebyr, ordregebyr, ekspedisjonsgebyr, gebyr for skriving av rekning e.l. i tillegg til vederlaget.",
+    "hva_betyr_html": _p(
+        "Paragraf 48 sørger for at du og entreprenøren blir ferdige med hverandre økonomisk, på en ryddig måte.",
+        "Du har rett til en regning du faktisk forstår. Får du et ark hvor det bare står \"Bygging av hus – 5,6 millioner kr\" og et kontonummer, kan du lovlig stoppe betalingen. Loven krever at regningen skal kunne kontrolleres.",
+        "Sendt regning er bindende for entreprenøren. Når de har sendt sluttoppgjøret, kan de ikke våkne tre uker senere og si \"Ops, vi glemte å kreve 40 000 for malingen.\"",
+        "Hvis regningen ser grei ut, men du egentlig mener at 10 000 for ekstra stikkontakter er feil – har du nøyaktig én måned på deg til å si ifra. Venter du lengre enn det, låses regningen også for deg, og du må betale.",
+        "Til slutt: Ikke aksepter \"fakturagebyr på 49,-\" eller \"administrasjonspåslag 1000,-\". Lovens fjerde ledd forbyr entreprenøren fra å dytte irriterende smågebyrer for eget kontorarbeid over på kunden.",
+    ),
+    "eksempler": [
+        {"navn": "Eva", "tekst": "Eva bygger hytte og har valgt å gjøre en del endringer underveis. Når hytta er ferdig, sender entreprenøren en sluttfaktura på 450 000 kroner med tekst: \"Restbeløp inkludert alle tidligere og nye tillegg og fradrag\". Eva sender regningen tilbake og viser til § 48. Hun krever en ny versjon der de spesifiserer prisen for det opprinnelige restbeløpet, og eksakt pris pr ekstra vindu hun bestilte, pluss fradraget hun skal ha for at hun valgte bort peisen."},
+    ],
+    "vanlige_feil": [
+        "Å betale gebyrer (\"ordregebyr\") blindt fordi \"det stod på regningen\".",
+        "At entreprenører fakturerer et klumpbeløp uten spesifikasjon og truer kunden med inkasso.",
+        "Å irritere seg over en regning, men glemme å sende et skriftlig avslag innen den absolutte fristen på én måned.",
+    ],
+    "hva_bor_du_html": _p(
+        "Gå alltid gjennom sluttfakturaen med falkeblikk. Finn frem kontrakten og de godkjente tilbudene for endringer du har gjort. Sammenlign prisene. Finner du en utregning som skurrer, send e-posten i kveld: \"Jeg bestrider faktura X på det grunnlaget at punkt 4 om flislegging ikke samsvarer med opprinnelig kontrakt.\"",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Hva om fakturaen er urimelig dyr, og det gikk mer enn en måned?", "a": "Da er det et bittelite håp. Paragrafen har et unntak: Fristen din gjelder ikke hvis regningen er i strid med \"avtalen\" eller den er helt åpenbart \"urimeleg\"."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "41", "tittel": "§ 41", "available": True},
+        {"lov": LOV, "paragraf": "42", "tittel": "§ 42", "available": True},
+        {"lov": LOV, "paragraf": "46", "tittel": "§ 46", "available": True},
+    ],
+},
+{
+    "number": "49",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Slik setter du penger på sperret konto (Deponering)",
+    "description": "Utbygger nekter å gi deg nøkkelen fordi du nekter å betale for en byggefeil. Løsningen er å deponere pengene i banken inntil dere er enige.",
+    "kort_svar": "Hvis du og entreprenøren krangler om en regning helt på slutten av byggingen, kan dere løse floken ved å låse pengene inne på en sperret konto i en norsk bank. Rettslig sett regnes pengene da som \"betalt\", og utbyggeren må gi deg huset.",
+    "paragraftekst": "Er det avtalt at sluttoppgjeret skal vere betalt før overtaking eller før heimelsoverføring, og noko av vederlaget er omtvista, skal betalinga likevel reknast for å vere skjedd dersom den omtvista delen er deponert etter føresegnene i andre og tredje ledd og resten er betalt.",
+    "hva_betyr_html": _p(
+        "Paragraf 49 er tvisteløseren. Ofte står partene steilt mot hverandre på overtakelsesdagen: Huseieren sier \"Taket lekker, jeg holder igjen 200 000 kroner\". Entreprenøren sier: \"Taket er helt fint, og kontrakten sier at du ikke får nøkkelen før 100 % av pengene er på min konto.\"",
+        "Dette skaper en fastlåst situasjon. Men loven gir deg en løsning: Deponering.",
+        "Du tar de omstridte 200 000 kronene og ber din egen bank opprette en \"sperret depositumskonto i forbindelse med tvist\". (Resten av kjøpesummen betaler du til entreprenøren). I det øyeblikket banken bekrefter at de 200 000 kronene står trygt på den sperrede kontoen, sier loven at du formelt sett har \"betalt\". Entreprenøren har da mistet retten til å nekte deg huset.",
+        "Pengene står der trygt og samler renter. Banken gir dem ikke til snekkeren, og du kan ikke ta dem ut for å kjøpe ny bil. De låses opp først når du og entreprenøren signerer et papir der dere er enige om et forlik, eller hvis dere går i retten.",
+    ),
+    "eksempler": [
+        {"navn": "Håkon", "tekst": "Håkon er i en heftig diskusjon med utbygger om en forsinkelse som ga ham 50 000 kr i dagmulkt. Utbyggeren nekter å anerkjenne forsinkelsen, krever betaling og nekter å tinglyse huset før alt er innbetalt. Håkon går til banken sin, oppretter en deponeringskonto etter § 49, og setter inn de omstridte 50 000 kronene der. Banken sender en bekreftelse. Håkon oversender dette til utbygger og krever nøklene. Utbygger er lovpålagt å utlevere nøklene."},
+    ],
+    "vanlige_feil": [
+        "Å godta meglerens beskjed om at \"vi kan holde dem på vår meglerkonto inntil videre\". Bruk din egen bank.",
+        "Utbyggere som nekter overlevering av huset fordi de \"ikke anerkjenner deponering\". Deponering er en ufravikelig rett du har.",
+    ],
+    "hva_bor_du_html": _p(
+        "Snakk med banken din før selve overtakelsesforretningen hvis du vet at det blir bråk. Spør dem: \"Hvordan oppretter vi en deponeringskonto etter bustadoppføringsloven § 49 hvis det trengs raskt?\".",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får utbyggeren rentene som bygger seg opp på kontoen mens vi venter i årevis på rettssak?", "a": "Den som vinner pengene, får også de tilhørende rentene. Hvis retten sier at du hadde rett til prisavslaget, får du ut pengene pluss den renten banken har lagt til mens den var låst."},
+        {"q": "Koster det penger å ha en slik sperret konto?", "a": "Vanligvis vil banken ta et lite etableringsgebyr, men dette dekkes normalt av selve renten kontoen skaper."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "31", "tittel": "§ 31", "available": True},
+        {"lov": LOV, "paragraf": "24", "tittel": "§ 24", "available": True},
+        {"lov": LOV, "paragraf": "14", "tittel": "§ 14", "available": True},
+    ],
+},
+{
+    "number": "50",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Du må faktisk gjøre din del av jobben",
+    "description": "Du kan ikke bare lene deg tilbake og klage på at huset ikke blir ferdig hvis du selv aldri leverer fargen du skulle male med, eller holder tomten låst.",
+    "kort_svar": "Byggeprosjektet er et samarbeid. Loven krever at du møter opp til avtalt tid for avgjørelser, leverer papirer du har lovet å skaffe, og ikke stenger entreprenøren ute fra byggeplassen.",
+    "paragraftekst": "Skal forbrukaren eller nokon forbrukaren svarer for, levere teikningar, skaffe materialar eller medverke på anna vis, skal medverknaden ytast til den tida som er avtalt, og elles til slik tid at det blir teke rimeleg omsyn til utføringa av entreprenørens arbeid.",
+    "hva_betyr_html": _p(
+        "Selv om det er entreprenøren som bygger huset, har du som huseier også en juridisk plikt i kontrakten. Dette kalles \"medvirkningsplikt\".",
+        "Hvis du har inngått en avtale hvor snekkerne trenger ditt samtykke før de kjøper flisene, kan du ikke vente i tre uker med å bestemme deg. Du må yte din innsats i tide.",
+        "Andre eksempler på medvirkning er at du faktisk er tilstede og låser opp hytta den dagen de skal begynne, at arkitekten du leide inn leverer tegningene til snekkeren i tide, og at du holder avtaler for å la dem montere byggestrøm.",
+        "Bommer du på dette, kan det få store konsekvenser. Du mister da retten til å kreve dagmulkt hvis huset blir forsinket på grunn av deg, og du kan selv bli krevd for ekstra penger.",
+    ),
+    "eksempler": [
+        {"navn": "Sofie", "tekst": "Sofie har avtalt med kjøkkenmontøren at de skal komme mandag morgen klokken 07:00 for å sette opp det nye kjøkkenet. Hun har avtalt at hun selv skal hente og bære inn alle flatpakkene fra Ikea i løpet av helgen. Lørdagen regner bort, og Sofie gidder ikke hente pakkene. Mandag klokken 07:00 står montørene klare, men stua er tom. Sofie har brutt medvirkningsplikten sin etter § 50. Montørene kan lovlig forlate plassen og fakturere Sofie for tapt arbeidstid."},
+    ],
+    "vanlige_feil": [
+        "Å være utilgjengelig på telefon når håndverkerne ringer for å få en \"kjapp avklaring\".",
+        "Å overlate \"litt maling\" til en vennegjeng midt i byggetiden, som aldri dukker opp.",
+    ],
+    "hva_bor_du_html": _p(
+        "Be entreprenøren om en tidsplan over \"milepæler for beslutninger\". Dette er utrolig nyttig. Hvis de gir deg et ark hvor det står: \"Farge i stue må velges innen 14. april\", \"Parkett leveres av deg senest 1. mai\", har du klare rammer å forholde deg til.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Må jeg låse dem inn klokken 06:00 om morgenen hvis de krever det?", "a": "Nei, loven krever at din medvirkning skal skje \"til slik tid at det blir teke rimeleg omsyn\". Avtaler om tilgang gjøres med rimelighet."},
+        {"q": "De sier jeg forsinket dem fordi jeg ikke bestilte rørlegger i tide, men jeg visste ikke at jeg skulle gjøre det?", "a": "Du må bare medvirke med det som er avtalt, eller det som åpenbart forutsettes at er ditt ansvar."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "43", "tittel": "§ 43", "available": True},
+        {"lov": LOV, "paragraf": "51", "tittel": "§ 51", "available": True},
+        {"lov": LOV, "paragraf": "55", "tittel": "§ 55", "available": True},
+    ],
+},
+{
+    "number": "51",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Du forsinker arbeidet, men har en god unnskyldning",
+    "description": "Klarer du ikke å betale eller gjøre jobben din i tide, kan du få ekstra frist hvis det var banken som sviktet eller stormen som hindret deg.",
+    "kort_svar": "Du har krav på mer tid (tilleggsfrist) til å betale regningen eller levere materialer, hvis forsinkelsen skyldes at snekkeren har tabbet seg ut, eller fordi noe helt ekstremt utenfor din kontroll har skjedd.",
+    "paragraftekst": "Forbrukaren kan krevje lenging av fristar for betaling og medverknad dersom betalinga eller medverknaden blir seinka på grunn av entreprenørens forhold, eller betalinga eller medverknaden blir seinka på grunn av ei hindring utanfor forbrukarens kontroll, og det ikkje er rimeleg å vente at forbrukaren kunne ha rekna med hindringa på avtaletida.",
+    "hva_betyr_html": _p(
+        "Denne paragrafen er ditt speilbilde av paragraf 11. Hvis kontrakten din sier at du må betale innen 1. september, eller rydde hagen innen fredag, er det to grunner som fritar deg for den avtalen:",
+        "Snekkerens feil: Du skal betale faktura nr. 3 når taket er lukket. Men snekkeren har brukt tre uker lenger enn avtalt på å lukke taket. Da forlenges selvsagt også din frist for å betale fakturaen helt automatisk.",
+        "Ekstreme hindringer: Dette er forbrukerens egen \"force majeure\". Skulle du overføre tre millioner kroner 1. desember, men bankenes datasystemer krasjet over hele Europa slik at overføringen kom frem tre dager for sent? Siden du verken kunne forutse det da du kjøpte huset, eller gjøre noe som helst for å fikse bankens IT-system, er det en hindring utenfor din kontroll.",
+    ),
+    "eksempler": [
+        {"navn": "Kari", "tekst": "Kari skal ifølge kontrakten hente nøkkelen og betale sluttoppgjøret for hytta si. Kvelden før går det et gigantisk steinras som kutter all vei til fjellandsbyen, og veivesenet stenger veien i en uke. Kari kan verken sjekke hytta, og nettet i landsbyen er brutt slik at banken ikke kan frigjøre midlene. Utbygger truer med å heve avtalen. Kari har full ryggdekning i § 51. Steinraset var helt utenfor hennes kontroll, og hun får en lovlig utvidet frist for betalingen og overtakelsen."},
+    ],
+    "vanlige_feil": [
+        "Å tro at man får lovlig tilleggsfrist fordi man \"hadde det for travelt på jobben\", \"ble litt syk\" eller \"glemte det\".",
+        "Å tro at det faktum at man ikke fikk lån i banken likevel, er en force majeure. Det å ikke ha penger er nesten aldri utenfor din kontroll.",
+    ],
+    "hva_bor_du_html": _p(
+        "Hvis banken roter det til slik at oppgjøret ditt sendes for sent: Send en e-post til entreprenøren umiddelbart. Skriv: \"Pga et sammenbrudd hos DNB er oppgjøret forsinket. Dette er et forhold utenfor min kontroll, og jeg krever derfor tilleggsfrist for oppgjøret etter bustadoppføringslova § 51.\"",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Entreprenøren fakturerte feil beløp og sendte en ny i går, men fristen var i dag. Må jeg betale i dag?", "a": "Nei, du får tilleggsfrist (\"på grunn av entreprenørens forhold\"). De må gi deg den vanlige betalingstiden regnet fra det tidspunktet de endelig sendte deg en riktig faktura."},
+        {"q": "Gjelder force majeure hvis jeg mister jobben og går personlig konkurs?", "a": "Nei, som hovedregel dekker sjelden \"penge- og inntektssvikt\" kravene for hindring utenfor kontroll."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "50", "tittel": "§ 50", "available": True},
+        {"lov": LOV, "paragraf": "11", "tittel": "§ 11", "available": True},
+        {"lov": LOV, "paragraf": "60", "tittel": "§ 60", "available": True},
+    ],
+},
+{
+    "number": "52",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Du har rett til å avlyse hele byggeprosjektet",
+    "description": "Har livssituasjonen endret seg, og du vil trekke deg fra huskjøpet? Du kan avbestille når som helst, men det kan bli dyrt.",
+    "kort_svar": "Du har en ubetinget rett til å avbestille boligen eller deler av den, helt frem til den dagen du overtar nøkkelen. Men du må betale for alt arbeidet snekkeren allerede har utført, pluss erstatning for den fortjenesten snekkerfirmaet taper på at de ikke får bygge huset ferdig.",
+    "paragraftekst": "Forbrukaren kan avbestille ytinga eller delar av den før overtaking. For arbeid som er utført før avbestillinga, kan entreprenøren krevje vederlag. Entreprenøren kan vidare krevje skadebot for økonomisk tap så langt forbrukaren rimeleg kunne rekne med tapet som ei følgje av avbestillinga.",
+    "hva_betyr_html": _p(
+        "Noen ganger skjer livet. Du signerer en byggekontrakt, men to måneder senere mister du jobben, eller du og partneren skiller lag.",
+        "Første ledd er krystallklart: Entreprenøren kan ikke tvinge deg til å bygge huset. Du kan ringe dem og si \"stopp, vi avbestiller\".",
+        "Men utbyggeren skal ikke tape penger på at du trekker deg. Regningen din deles i to: Du må betale for det som allerede er bygget, og du må betale erstatning for tapt fortjeneste (skadebot). De hadde satt av de neste seks månedene til å bygge for deg, og de forventet å tjene kanskje 400 000 kroner i overskudd. Når du avlyser, mister de denne inntekten.",
+        "Loven stiller likevel et krav til utbygger: De må prøve å skaffe seg en ny jobb. Får de et annet byggeoppdrag umiddelbart, taper de ikke fortjenesten sin.",
+        "Det finnes et unntak: Din force majeure. Blir du rammet av en ekstrem og uforutsett hindring, slipper du å betale erstatning for tapt fortjeneste.",
+    ),
+    "eksempler": [
+        {"navn": "Jonas og Mette", "tekst": "Jonas og Mette har signert en kontrakt på 3 millioner kroner for bygging av en hytte. Snekkerfirmaet har ikke begynt å bygge ennå, men de har brukt to uker på planlegging og innkjøp. Paret går fra hverandre og må avbestille. Snekkeren sender et krav: 50 000 kr for utført planlegging og materialer, pluss 200 000 kr i tapt fortjeneste fordi de nå har en tom kalender de neste månedene. Jonas og Mette er lovpålagt å betale de 250 000 kronene."},
+    ],
+    "vanlige_feil": [
+        "Å tro at man har en gratis \"angrefrist\" på flere uker når man skriver under en byggekontrakt.",
+        "Å ikke be utbyggeren dokumentere at de faktisk tapte penger.",
+        "Å nekte å betale fordi man synes det er urettferdig.",
+    ],
+    "hva_bor_du_html": _p(
+        "Må du avbestille, gjør det så tidlig som overhodet mulig. Jo før du sier ifra, jo større sjanse er det for at utbyggeren klarer å fylle kalenderen sin med andre kunder.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Gjelder dette også hvis jeg bare vil ta ut malerjobben fra kontrakten?", "a": "Ja. Å fjerne deler av prosjektet kalles en del-avbestilling. Men entreprenøren har rett til å kreve utbetalt den fortjenesten de hadde budsjettert med."},
+        {"q": "Jeg mistet jobben og fikk ikke lån i banken. Slipper jeg erstatning?", "a": "Nei. Det å ikke få lån i banken regnes som en risiko du bærer selv. Det er ikke en \"hindring utenfor kontroll\" i lovens forstand."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "53", "tittel": "§ 53", "available": True},
+        {"lov": LOV, "paragraf": "54", "tittel": "§ 54", "available": True},
+        {"lov": LOV, "paragraf": "41", "tittel": "§ 41", "available": True},
+    ],
+},
+{
+    "number": "53",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Avbestilling når du kjøper tomt og hus sammen",
+    "description": "Kjøpte du hus på utbyggerens tomt? Da er det litt mer komplisert å avbestille. Ofte må utbyggeren ta boligen tilbake og selge den til noen andre.",
+    "kort_svar": "Hvis du kjøper en bolig som inkluderer både tomt og hus fra en utbygger, kan du avbestille. Men siden tomten var en del av pakken, kan entreprenøren bestemme at hele avtalen går i vasken. Du må betale utbyggeren erstatning for eventuelle tap de lider når de må selge boligen til noen andre.",
+    "paragraftekst": "§ 52 andre til fjerde ledd gjeld ikkje når avbestillinga omfattar rett til grunn. I slike tilfelle kan entreprenøren krevje skadebot for økonomisk tap så langt forbrukaren rimeleg kunne rekne med tapet som ei følgje av avbestillinga.",
+    "hva_betyr_html": _p(
+        "Paragraf 53 er en tilpasning av avbestillingsreglene, spesielt laget for \"prosjektboliger\" og ferdighus der tomta følger med i prisen.",
+        "Hvis du avbestiller et slikt prosjekt, kan du ikke bare betale for den halvferdige grunnmuren og kreve at tomta står der. Utbyggeren eier normalt prosjektet frem til det er ferdig. Utbygger kan sette som vilkår at hele kjøpet annulleres, altså at de beholder tomten og selger det halvferdige huset til en annen familie.",
+        "Erstatningen du skal betale fungerer annerledes her enn i paragraf 52. Fordi utbyggeren kan selge boligen (kalt et \"dekningssalg\"), skal du bare betale det de taper på at du trakk deg.",
+        "Kjøpte du huset for 4 millioner, men utbygger nå bare klarer å selge det videre til en annen for 3,8 millioner, taper de 200 000 kroner. I tillegg må de kanskje betale megleren 50 000 kroner. Da sender de en erstatningsregning til deg på 250 000 kroner.",
+    ),
+    "eksempler": [
+        {"navn": "Kari", "tekst": "Kari signerer en kontrakt på en nøkkelferdig leilighet i et nytt blokkprosjekt til 5 millioner kroner. Tre måneder senere mister Kari jobben og avbestiller. Utbyggeren legger leiligheten ut på det åpne markedet igjen. Fordi boligmarkedet har steget, får utbyggeren solgt den til en ny kjøper for 5,2 millioner. Siden utbyggeren faktisk tjente mer penger enn de ville gjort med Kari, har de ikke hatt et \"økonomisk tap\". Kari slipper dermed å betale erstatning."},
+    ],
+    "vanlige_feil": [
+        "Å tro at utbyggeren kan beholde hele innskuddet/forskuddet ditt som straff.",
+        "Å ikke følge med på hva utbyggeren selger boligen din for.",
+    ],
+    "hva_bor_du_html": _p(
+        "Hvis du må avbestille en prosjektbolig, kan det i noen tilfeller lønne seg å ikke avbestille, men heller vente til boligen er ferdig, overta den, og deretter selge den selv. Da har du full kontroll på salgsprosessen.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg tilbakebetalt penger hvis utbygger selger boligen dyrere enn jeg kjøpte for?", "a": "Nei. Hvis utbyggeren selger leiligheten din for 500 000 mer enn du hadde avtalt å betale, putter de den gevinsten i sin egen lomme. Du har ingen rett til fremtidig verdistigning."},
+        {"q": "Entreprenøren forlanger 10 % av kjøpesummen fordi det er \"standard\". Må jeg betale?", "a": "Hvis de henviser til et fast avbestillingsgebyr, gjelder reglene i paragraf 54. Har dere ikke avtalt et slikt gebyr skriftlig, må de bevise tapet sitt krone for krone."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "52", "tittel": "§ 52", "available": True},
+        {"lov": LOV, "paragraf": "54", "tittel": "§ 54", "available": True},
+    ],
+},
+{
+    "number": "54",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Faste gebyrer ved avbestilling",
+    "description": "For å slippe en lang krangel om hvor mye penger utbygger tapte på at du avlyste, kan dere avtale et fast avbestillingsgebyr i kontrakten.",
+    "kort_svar": "I stedet for å finregne på akkurat hvor mye utbyggeren tapte, tillater loven at dere på forhånd avtaler et fast avbestillingsgebyr (normalskadebot). Dette gir forutsigbarhet for begge parter.",
+    "paragraftekst": "I staden for skadebotansvar etter § 52 eller § 53 kan avtalen fastsetje ei normalskadebot (avbestillingsgebyr) ved avbestilling. Normalskadebota lyt verke rimeleg i lys av føresegnene i § 52 og § 53.",
+    "hva_betyr_html": _p(
+        "Det er slitsomt, tidkrevende og dyrt å regne ut nøyaktig hva et byggefirma taper i fremtidig fortjeneste.",
+        "Denne lille paragrafen lar utbyggerne putte en \"angre-pris\" inn i kontrakten. Det står typisk: \"Ved avbestilling før igangsettingstillatelse foreligger, belastes et gebyr på 5 % av kjøpesummen. Ved avbestilling etter dette, belastes 10 % av kjøpesummen.\"",
+        "Poenget er at verken du eller entreprenøren trenger å dokumentere ett eneste tap. Hever du kontrakten, utløses gebyret automatisk. Avbestiller du en leilighet til 5 millioner der gebyret er 5 %, får du en regning på 250 000 kroner.",
+        "Loven stiller bare ett krav: Gebyret må være \"rimelig\". De kan ikke ha en kontrakt som sier \"Ved avbestilling beholder vi 50 % av kjøpesummen\". Da vil domstolene anse avtalen som ugyldig.",
+    ),
+    "eksempler": [
+        {"navn": "Tom", "tekst": "Tom signerer kontrakt for oppføring av en hytte. I kontrakten står det: \"Avbestillingsgebyr utgjør 8 % av kontraktsummen\". Etter seks måneder blir Tom syk, og han mister muligheten til å få lån. Han må avbestille hytta som skulle koste 3 millioner kroner. Snekkeren trenger ikke bevise at de har tapt penger. De sender Tom en regning på 240 000 kroner (8 %)."},
+    ],
+    "vanlige_feil": [
+        "Å signere kontrakter med urimelig høye gebyrer uten å protestere.",
+        "Å tro at utbygger kan kreve både det faste avbestillingsgebyret og dokumentert erstatning i tillegg.",
+    ],
+    "hva_bor_du_html": _p(
+        "Sjekk alltid kontrakten for \"Avbestillingsgebyr\" eller \"Normalskadebot\" før du signerer. Er prosentsatsen veldig høy, kan du forsøke å forhandle den ned, eller be om at gebyret trappes.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Utbyggeren har solgt boligen min videre med stor fortjeneste. Slipper jeg gebyret da?", "a": "Nei, og det er den store risikoen med fast gebyr. Selv om utbyggeren ikke har hatt et eneste reelt økonomisk tap, har de likevel krav på å få betalt det faste avbestillingsgebyret."},
+        {"q": "Gebyret står på fakturaen, men ikke i kontrakten. Må jeg betale?", "a": "Nei. Normalskadebot må være \"fastsatt i avtalen\" på forhånd."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "52", "tittel": "§ 52", "available": True},
+        {"lov": LOV, "paragraf": "53", "tittel": "§ 53", "available": True},
+    ],
+},
+{
+    "number": "55",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Utbyggers rettigheter når DU er forsinket",
+    "description": "Betaler du ikke avdragene dine i tide? Loven gir entreprenøren rett til å stanse arbeidet, kreve forsinkelsesrenter, eller kansellere hele byggekontrakten.",
+    "kort_svar": "Entreprenøren har en egen verktøykasse med maktmidler mot deg. Hvis du er forsinket med å betale fakturaer, eller hvis du hindrer snekkerne i å jobbe, har entreprenøren rett til å stoppe byggingen, heve kontrakten, og kreve forsinkelsesrenter pluss erstatning fra deg.",
+    "paragraftekst": "Dersom betaling eller medverknad frå forbrukarens side ikkje blir ytt til dei tider entreprenøren kan krevje, kan entreprenøren stanse arbeidet og krevje tilleggsvederlag, heve avtalen og krevje skadebot, eller krevje rente og skadebot for rentetap.",
+    "hva_betyr_html": _p(
+        "Paragraf 55 er speilbildet av paragraf 17. Mens § 17 lister opp hva du kan gjøre mot snekkeren, lister § 55 opp hva snekkeren kan gjøre mot deg.",
+        "Utbyggers verktøykasse ser slik ut: Stoppe arbeidet: De kan legge ned hammeren, sette seg i brakka, og sende deg regning for tapt arbeidstid frem til du betaler regningen de venter på. Heve avtalen: Hvis forsinkelsen din er alvorlig (f.eks. banken nekter deg lån og du kan ikke betale i det hele tatt), kan snekkeren avlyse kontrakten. Renter: For hver dag du betaler fakturaen for sent, har de krav på ganske høye forsinkelsesrenter.",
+        "Det siste leddet er kanskje det mest brukte i praksis: Entreprenøren har full rett til å skifte lås på huset og nekte å gi deg nøkkelen, helt frem til alle fakturaer er betalt.",
+    ),
+    "eksempler": [
+        {"navn": "Marius", "tekst": "Marius bygger en tomannsbolig og har avtalt å fjerne alt søppel hver søndag. Han glemmer det to uker på rad, og stillaset sperres av søppel slik at snekkerne ikke får bygd taket. Etter § 55 har Marius \"ikke ytt medvirkning\" til tiden. Entreprenøren pakker sakene, stanser arbeidet, og sender Marius et krav om betaling for tapt arbeidstid for de fem snekkerne. Arbeidet starter ikke opp igjen før Marius har ryddet plassen."},
+    ],
+    "vanlige_feil": [
+        "Å holde tilbake betaling i sinne, uten å vise til en lovfestet grunn.",
+        "At man ikke har avklart finansiering i banken, og avdragene blir to uker forsinket.",
+    ],
+    "hva_bor_du_html": _p(
+        "Hold fristene dine! Skal du betale 500 000 kroner om fem dager, sjekk i dag at beløpsgrensen i nettbanken din er høy nok. Hvis du lovlig holder igjen penger fordi huset har feil, må du alltid skrive en e-post der du sier: \"Jeg betaler ikke fakturaen fordi jeg utøver tilbakeholdsrett etter § 31\".",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får utbygger kreve et gebyr (dagmulkt) av meg hver dag jeg er forsinket?", "a": "Nei. Det finnes ingen \"omvendt dagmulkt\" for forbrukere. Utbygger får kun forsinkelsesrenter pluss eventuell kompensasjon for direkte tap."},
+        {"q": "Kan snekkerne holde igjen verktøyet mitt som straff?", "a": "Loven gir dem rett til å stanse byggearbeidet og holde huset igjen før overtakelse. Men de har ikke lov til å stjele private gjenstander."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "56", "tittel": "§ 56", "available": True},
+        {"lov": LOV, "paragraf": "57", "tittel": "§ 57", "available": True},
+        {"lov": LOV, "paragraf": "17", "tittel": "§ 17", "available": True},
+    ],
+},
+{
+    "number": "56",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Utbyggeren legger ned arbeidet (Stansing)",
+    "description": "Hvis du slutter å betale regningene dine, vil håndverkerne pakke sammen og stanse byggeplassen. De kan også sende deg faktura for tapt arbeidstid.",
+    "kort_svar": "Entreprenøren kan stoppe arbeidet midlertidig hvis du ikke betaler avtalt forskudd eller avdrag. De må gi deg beskjed først. Stanses arbeidet, har de krav på ekstra betaling for alle forsinkelser og tap stansen medfører. De plikter imidlertid å sikre byggeplassen før de drar.",
+    "paragraftekst": "Betaler forbrukaren ikkje avtalt avdrag eller forskot på entreprenørens vederlag til rett tid, kan entreprenøren gje forbrukaren varsel om stansing. Betaler ikkje forbrukaren snarast råd etter at han har motteke eit slikt varsel, kan entreprenøren stanse arbeidet. Entreprenøren skal likevel i rimeleg omfang sikre utført arbeid og materialar og utstyr som finst på byggjeplassen.",
+    "hva_betyr_html": _p(
+        "Utbyggere trenger kontantstrøm. Hvis kontrakten sier at du skal betale 1 million kroner når taket er tett, og pengene ikke dukker opp på kontoen deres, er dette et alvorlig kontraktsbrudd.",
+        "Paragraf 56 gir dem rett til å stenge byggeplassen. Slik er reglene: Først må de gi deg et varsel. De kan ikke bare stoppe fordi betalingen er tre timer forsinket. Varselet betyr: \"Får vi ikke penger umiddelbart, stopper vi.\"",
+        "Hvis du fortsatt ikke betaler, går snekkerne hjem. Men de må opptre proft. De skal dekke til materialer med presenning, stenge for vind og vær, og låse porten (sikring).",
+        "I tillegg åpner andre ledd opp for at det blir dyrt for deg. Når byggeplassen stanses, koster det penger å sende arbeiderne hjem eller flytte gravemaskiner. Alt dette kan utbygger legge på den neste fakturaen din.",
+    ),
+    "eksempler": [
+        {"navn": "Ola", "tekst": "Ola har bestilt nytt hus og skal betale det andre avdraget på 600 000 kr. Pengene forfaller 1. april. Ola betaler ikke. Den 4. april sender entreprenøren en e-post om at betalingen uteblir, og at arbeidet vil stanses i morgen hvis ikke pengene mottas. Ola svarer ikke. 5. april dekker snekkerne til veggene og forlater plassen. To uker senere skaffer Ola pengene. Snekkerne kommer tilbake, men Ola får nå et \"tilleggsvederlag\" på 40 000 kr for administrasjon og tapte timer for de to ukene."},
+    ],
+    "vanlige_feil": [
+        "Å overse varselet fra entreprenøren og tro de bare \"truer\".",
+        "Å holde tilbake et gigantisk avdrag på 800 000 kr fordi vinduet til 5 000 kr har feil farge.",
+    ],
+    "hva_bor_du_html": _p(
+        "Hvis du vet at banken din er forsinket med overføringen, ikke vent i stillhet. Ring entreprenøren, forklar situasjonen, og send gjerne over en bekreftelse fra saksbehandleren i banken.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får de lov til å stanse bygget selv om jeg ikke mottok fakturaen i posten?", "a": "Hvis de har sendt den til adressen/e-posten du har oppgitt, ligger risikoen hos deg. Men de har en varslingsplikt før de stanser arbeidet."},
+        {"q": "Må jeg betale regningen hvis stormen blåste ned det usikrede taket etter at de stanset arbeidet?", "a": "Nei, entreprenøren har en streng plikt til å sikre \"i rimelig omfang\". Hvis de slurvet med sikringen, er de erstatningsansvarlige."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "55", "tittel": "§ 55", "available": True},
+        {"lov": LOV, "paragraf": "50", "tittel": "§ 50", "available": True},
+        {"lov": LOV, "paragraf": "43", "tittel": "§ 43", "available": True},
+    ],
+},
+{
+    "number": "57",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Entreprenøren kansellerer kontrakten (Heving)",
+    "description": "Du er helt tom for penger og kan ikke betale for bygget. Da har utbyggeren rett til å rive i stykker kontrakten, sparke deg som kunde og saksøke deg.",
+    "kort_svar": "Entreprenøren kan avbryte (heve) byggekontrakten hvis du gjør deg skyldig i et vesentlig avtalebrudd, vanligvis at du totalt slutter å betale regningene. Når du har fått skjøtet på huset (tinglyst), mister entreprenøren retten til å heve.",
+    "paragraftekst": "Entreprenøren kan heve avtalen dersom forseinking med forbrukarens betaling eller medverknad inneber vesentleg avtalebrot. Entreprenøren kan ikkje heve avtalen etter overtaking eller etter at skøyte eller festedokument er tinglyst eller gjeve forbrukaren.",
+    "hva_betyr_html": _p(
+        "Paragraf 57 gir utbyggeren den samme \"atomknappen\" som du har: Retten til å heve avtalen. Heving betyr å avbryte hele kjøpet og kreve økonomisk oppgjør.",
+        "For at en snekker skal kunne sparke deg som kunde, må ditt brudd være \"vesentleg\". De kan ikke heve en avtale på fire millioner fordi du er to dager forsinket med en regning på fem tusen kroner. \"Vesentlig avtalebrudd\" betyr at du har misligholdt avdrag for flere hundre tusen kroner over lang tid, at banken din har trukket lånetilsagnet ditt, eller at du nekter dem tilgang til tomten over lengre tid.",
+        "Men entreprenøren har en \"deadline\". Når du har overtatt huset og skjøtet er tinglyst på deg, er toget gått. Loven sier at da eier du huset. Mangler det da betaling, kan de ikke lenger \"ta huset tilbake\" ved å heve; da må de sende regningen din til inkasso.",
+    ),
+    "eksempler": [
+        {"navn": "Håkon", "tekst": "Håkon er i store økonomiske problemer og klarer ikke å betale det tredje avdraget på 1 million kroner til ferdighus-firmaet. Han svarer ikke på varsler om stans, og det går en måned uten penger. Å utebli med en fjerdedel av kjøpesummen i lang tid, regnes som et vesentlig avtalebrudd. Utbyggeren sender Håkon et brev om at kontrakten er hevet. Firmaet plikter da ikke å bygge huset ferdig, og de kan nå kreve erstatning fra Håkon."},
+    ],
+    "vanlige_feil": [
+        "Å begrave hodet i sanden når man mister finansieringen.",
+        "Forbrukere som tror at de kan bare trekke seg gratis ved å \"slutte å betale\" og håpe entreprenøren hever.",
+    ],
+    "hva_bor_du_html": _p(
+        "Mister du betalingsevnen, ta kontakt med utbygger umiddelbart. I stedet for å la dem heve kontrakten og saksøke deg for tap, kan du undersøke om det er bedre å avbestille etter § 52 og forsøke å forhandle frem et akseptabelt erstatningsbeløp.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får snekkeren ta med seg vinduene han satte inn sist uke, hvis han hever avtalen?", "a": "Nei, ikke uten videre. Hvis de har satt opp deler av huset på din egen tomt, inngår materialene normalt i det som blir igjen på tomten din."},
+        {"q": "Hva menes med at \"skjøtet er tinglyst\"?", "a": "Tinglysing hos Kartverket betyr at samfunnet offisielt anerkjenner at du eier eiendommen."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "58", "tittel": "§ 58", "available": True},
+        {"lov": LOV, "paragraf": "56", "tittel": "§ 56", "available": True},
+        {"lov": LOV, "paragraf": "20", "tittel": "§ 20", "available": True},
+    ],
+},
+{
+    "number": "58",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Oppgjøret når utbygger hever kontrakten",
+    "description": "Du mistet lånet og snekkeren kansellerte hele husbyggingen. Her er reglene for hvem som rydder opp og hvordan sluttregningen din blir.",
+    "kort_svar": "Når entreprenøren avbryter (hever) avtalen fordi du ikke har betalt, regnes det økonomisk sett som om du har avbestilt frivillig. De skal ha betalt for arbeidet de har gjort pluss tapt fortjeneste, og de må sikre byggeplassen før de forlater den.",
+    "paragraftekst": "Blir avtalen heva, har entreprenøren krav på oppgjer som om forbrukaren hadde avbestilt på hevingstidspunktet (§ 52 eller § 53). Etter heving skal entreprenøren i rimeleg omfang sikre utført arbeid og materialar og utstyr som finst på byggjeplassen.",
+    "hva_betyr_html": _p(
+        "Paragraf 58 forteller hva som skjer i ruinene av en kollapset byggekontrakt når det er du som forbruker som har skylden.",
+        "Første ledd gjør oppgjøret ganske enkelt: Det håndteres nøyaktig som om du hadde ringt dem og sagt \"jeg avbestiller\". Det betyr at reglene i § 52 eller § 53 gjelder. Utbyggeren sender deg en faktura som inneholder verdien av alt de har bygget til nå, og i tillegg et krav om erstatning for overskuddet de gikk glipp av.",
+        "Andre ledd krever at snekkerne opptrer voksent. Selv om de er sinte fordi du ikke betaler, kan de ikke bare slenge fra seg verktøyet og la det nye taket ditt regne i stykker.",
+        "Tredje ledd er viktig hvis du bygger på din egen tomt: Har de skrudd opp gipsplater eller montert et kjøkken i huset ditt, har de som hovedregel ikke lov til å komme med brekkjern og skru det ned igjen.",
+    ),
+    "eksempler": [
+        {"navn": "Tom", "tekst": "Tom bygger tilbygg. Han mister jobben og slutter å betale regningene til tømrerfirmaet. Tømrerfirmaet stanser arbeidet, hever avtalen, og reiser derfra. Før de drar, legger de en vanntett presenning over det åpne taket. De krever deretter at Tom betaler 200 000 kr for reisverket som står der, og 50 000 kr for tapt fortjeneste. Reisverket og vinduene som er montert forblir Toms eiendom på hans tomt, men Tom er skyldig firmaet de 250 000 kronene."},
+    ],
+    "vanlige_feil": [
+        "Entreprenører som i sinne begynner å demontere vinduer og dører fra kundens hus.",
+        "Å la være å sjekke om utbyggeren faktisk tjente inn igjen det tapte overskuddet sitt.",
+    ],
+    "hva_bor_du_html": _p(
+        "Når du får sluttregningen etter at entreprenøren har hevet, må du kreve fullt innsyn i utregningene deres. De må dokumentere utgiftene sine og det forventede overskuddet sitt.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får de erstatning hvis avbestillingsgebyr var avtalt i kontrakten?", "a": "Hvis dere hadde fylt inn et fast avbestillingsgebyr i kontrakten etter § 54, er det dette beløpet som gjelder."},
+        {"q": "De ødela hagen min da de kjørte vekk gravemaskinen. Hvem betaler?", "a": "Sikringsplikten gjelder utført arbeid, men den dekker også at de ikke skal påføre unødig skade på eiendommen din. Har de utført tingskade på tomten din i hevn eller uforsiktighet, kan du rette et motkrav."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "57", "tittel": "§ 57", "available": True},
+        {"lov": LOV, "paragraf": "52", "tittel": "§ 52", "available": True},
+        {"lov": LOV, "paragraf": "21", "tittel": "§ 21", "available": True},
+    ],
+},
+{
+    "number": "59",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": "gjeld",
+    "title": "Forsinkelsesrenter når regningen ikke betales",
+    "description": "Betaler du sluttoppgjøret to uker for sent, kan utbyggeren legge på strenge forsinkelsesrenter (morarenter) på toppen av regningen.",
+    "kort_svar": "Betaler du ikke fakturaen fra utbyggeren innen forfallsdatoen, kan de kreve forsinkelsesrenter for hver dag som går frem til du betaler. Hvis du har en ekstremt god grunn (force majeure) til at du ikke kunne betale, fryses imidlertid renten.",
+    "paragraftekst": "Ved forseinka betaling kan entreprenøren krevje rente og skadebot for rentetap etter lov 17. desember 1976 nr. 100 om renter ved forsinket betaling m.m.",
+    "hva_betyr_html": _p(
+        "Penger har en pris. Når utbyggeren bygger for deg, regner de med å få pengene inn på konto til avtalt tid slik at de kan betale sine egne regninger og ansatte. Når du betaler for sent, tvinger du entreprenøren til å ta opp kreditt.",
+        "Paragraf 59 viser ganske enkelt til \"forsinkelsesrenteloven\". Denne loven har en standardrentesats som fastsettes av staten to ganger i året. Den er veldig høy, ofte mellom 8 og 13 prosent i året. Skylder du entreprenøren 2 millioner kroner, og er en måned forsinket med betalingen, kan forsinkelsesrenten fort beløpe seg til nærmere 20 000 kroner bare i renter.",
+    ),
+    "eksempler": [
+        {"navn": "Eva", "tekst": "Eva og banken hennes roter med papirene. Sluttoppgjøret for leiligheten på 4 000 000 kroner forfaller 1. juni. Banken får ikke overført pengene før 15. juni. Entreprenøren mottar pengene to uker for sent. I slutten av måneden får Eva en ny, liten faktura fra entreprenøren på 15 000 kroner. Dette er lovpålagte forsinkelsesrenter for de 14 dagene pengene uteble."},
+    ],
+    "vanlige_feil": [
+        "Å tro at utbyggeren må gi deg et \"nåderom\" før de kan legge på forsinkelsesrenter.",
+        "Holde tilbake penger for en byggefeil, og glemme å sende et skriftlig varsel om at man utøver tilbakeholdsrett.",
+    ],
+    "hva_bor_du_html": _p(
+        "Dersom du må utsette en regning fordi du mangler finansiering, si fra til entreprenøren før fakturaen forfaller. Hvis du holder tilbake 50 000 kroner fra sluttoppgjøret fordi vasken lekker, må du umiddelbart sende e-post og presisere: \"Dette beløpet holdes lovlig tilbake, og forsinkelsesrenter skal ikke beregnes av beløpet.\"",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg forsinkelsesrenter hvis utbyggeren er forsinket med å betale tilbake penger de skylder meg?", "a": "Ja. Forsinkelsesrenteloven gjelder begge veier."},
+        {"q": "Hva om nettbanken var nede for hele landet, og det ikke var min feil?", "a": "Hvis det var force majeure, har du lovfestet rett på fristforlengelse. Da stopper forsinkelsesrenten å løpe i de dagene nettet var nede."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "55", "tittel": "§ 55", "available": True},
+        {"lov": LOV, "paragraf": "46", "tittel": "§ 46", "available": True},
+    ],
+},
+{
+    "number": "60",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Langvarig avbrudd",
+    "description": "Et jordskred raserer tomten og arbeidet må stanses i et halvt år. Slik kan du komme deg ut av kontrakten uten å betale erstatning.",
+    "kort_svar": "Hvis en ekstrem og uforutsett hendelse (force majeure) gjør at byggearbeidet må avbrytes over svært lang tid, slik at forutsetningene for hele avtalen endres, kan både du og entreprenøren bryte kontrakten (seie seg løyst) uten å betale erstatning til den andre.",
+    "paragraftekst": "Kvar av partane kan seie seg løyst frå avtalen dersom arbeidet må avbrytast eller ikkje kan kome i gang på grunn av omstende som nemnde i § 11 første ledd bokstav c eller § 51 første ledd bokstav b, i så lang tid at føresetnadene for avtalen blir vesentleg endra.",
+    "hva_betyr_html": _p(
+        "Noen ganger rammer ulykken hardt. Vi snakker ikke om noen dager med dårlig vær. Vi snakker om ras, krig, globale pandemier som stenger alle grenser i månedsvis, eller et langvarig statlig inngrep.",
+        "Paragraf 11 og 51 beskytter dere mot forsinkelser fra \"force majeure\". Men hva skjer hvis kommunen finner en fredet fugl på tomten din, og nedlegger byggeforbud i ett helt år? Det er urimelig at snekkeren skal holde avtalen varm og maskinene klare i et år. Det er også urimelig at du skal være låst til akkurat dette firmaet.",
+        "Paragraf 60 sier at når avbruddet varer \"så lenge at forutsetningene for avtalen er vesentlig endret\", kan begge parter si opp avtalen.",
+        "Konsekvensen? \"Partane har ikkje krav på skadebot.\" Dere skiller lag, ingen er sure, du betaler for det som faktisk er bygget til nå, og ingen betaler erstatning til den andre for tapt fortjeneste.",
+    ),
+    "eksempler": [
+        {"navn": "Sara", "tekst": "Sara bygger et hus ved en bratt skråning. Halvveis i grunnarbeidet går det et kvikkleireskred på nabotomten. Kommunen evakuerer området, og legger ned et forbud mot all byggevirksomhet i ni måneder. Entreprenøren kan ikke binde opp gravemaskinene og folkene sine så lenge. Entreprenøren sier seg \"løyst frå avtalen\" etter § 60. Sara aksepterer at forutsetningene er borte. Entreprenøren får betalt 150 000 for det de allerede har gravd, avtalen oppløses, og ingen må betale erstatning."},
+    ],
+    "vanlige_feil": [
+        "Å forsøke å bruke § 60 ved vanlige trege perioder.",
+        "At entreprenøren krever tapt fortjeneste i det endelige sluttoppgjøret ved bruk av § 60.",
+    ],
+    "hva_bor_du_html": _p(
+        "Dersom prosjektet ditt blir stoppet på ubestemt tid av kommunen, politiet, eller ekstrem natur, bør dere ta et formelt møte. Bli enige om en status, og dersom dere beslutter å kansellere, skriv en protokoll som sier: \"Partene sier seg løst fra avtalen i henhold til bustadoppføringslova § 60 grunnet force majeure.\"",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Hvor lenge må det vare for å være \"langvarig avbrot\"?", "a": "Loven har ingen fast grense i antall dager. Det vurderes i hvert enkelt prosjekt. En uke er for lite. Et halvt år er som oftest mer enn nok."},
+        {"q": "Gjelder det hvis underleverandøren gikk konkurs?", "a": "Nei, at en bedrift går konkurs, anses å ligge innenfor entreprenørens kontrollsfære. De må bare skaffe en ny underleverandør."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "11", "tittel": "§ 11", "available": True},
+        {"lov": LOV, "paragraf": "51", "tittel": "§ 51", "available": True},
+        {"lov": LOV, "paragraf": "52", "tittel": "§ 52", "available": True},
+    ],
+},
+{
+    "number": "61",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Loven gjelder også for arkitekter og konsulenter",
+    "description": "Du har leid inn en ingeniør eller arkitekt til å tegne huset ditt. Loven beskytter deg også når planleggerne gjør grove feil.",
+    "kort_svar": "Kapittel 9 i bustadoppføringsloven gjelder når du leier inn en uavhengig profesjonell konsulent (for eksempel en arkitekt eller ingeniør) til å tegne eller planlegge huset før snekkerne begynner å bygge.",
+    "paragraftekst": "Føresegnene i dette kapitlet gjeld konsulentavtalar med forbrukar. Med konsulentavtale er det meint ein avtale mellom ein sjølvstendig oppdragstakar (konsulenten) og ein oppdragsgjevar (forbrukaren) om planlegging av oppføring av bygning til bustadføremål.",
+    "hva_betyr_html": _p(
+        "Hittil har vi snakket mye om entreprenøren (snekkerne, graverne). Men veldig ofte hyrer du en arkitekt for å tegne huset først. Arkitekten slår ikke inn en eneste spiker, men de leverer tegningene og beregningene som huset hviler på.",
+        "Paragraf 61 drar disse planleggerne, konsulentene og arkitektene inn under lovens beskyttende paraply.",
+        "Vilkårene er de samme som for selve byggingen: Det må gjelde planlegging av en bolig eller hytte, du må være privatperson (forbruker), og arkitekten må drive med dette som en profesjonell næring.",
+        "At loven gjelder, betyr at du som forbruker har strenge, ufravikelige rettigheter hvis arkitekten tegner trappa i feil etasje, eller glemmer å tegne inn bæreveggen slik at taket klapper sammen.",
+    ),
+    "eksempler": [
+        {"navn": "Marius", "tekst": "Marius vil bygge drømmehuset sitt på en skrå tomt. Han leier inn det uavhengige firmaet \"Topp Arkitekter AS\" for å tegne huset og beregne hvor tykk grunnmuren må være. Firmaet fakturerer ham for 150 000 kroner. Da snekkeren (som Marius har hyret separat) begynner å bygge ut fra tegningene, viser det seg at takvinkelen er regnet feil. Tegne-avtalen med \"Topp Arkitekter AS\" styres av reglene i lovens kapittel 9."},
+    ],
+    "vanlige_feil": [
+        "Å tro at arkitekter ikke kan holdes ansvarlige for feil fordi de \"bare lager papirer\".",
+        "Å la naboen (som tegner litt på si som hobby) lage de tekniske tegningene.",
+    ],
+    "hva_bor_du_html": _p(
+        "Be om kontrakt med arkitekten før de starter tegnearbeidet. Sjekk at de har en ansvarsforsikring. Prosjekteringsfeil er noe av det aller dyreste å rette opp i når huset først står der.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Jeg leide inn et firma som hjalp meg med å fylle ut selve bygge-søknad-skjemaet til kommunen. Gjelder loven?", "a": "Ja. Utfylling av byggesøknad for bygning til boligformål inngår i begrepet \"planlegging\". Gjør de en tabbe slik at du får millionbøter fra kommunen, fanger paragraf 61 dem i garnet."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "62", "tittel": "§ 62", "available": True},
+        {"lov": LOV, "paragraf": "63", "tittel": "§ 63", "available": True},
+        {"lov": LOV, "paragraf": "1", "tittel": "§ 1", "available": True},
+    ],
+},
+{
+    "number": "62",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Arkitekten kan ikke nekte ansvar",
+    "description": "Står det med liten skrift i kontrakten at arkitekten ikke betaler erstatning hvis de regner feil? Glem det. Denne regelen er ugyldig.",
+    "kort_svar": "En konsulent, ingeniør eller arkitekt har forbud mot å putte vilkår inn i kontrakten som fjerner deres ansvar for feil og tabber de gjør i planleggingen av huset ditt.",
+    "paragraftekst": "Konsulenten kan ikkje fråskrive seg skadebotansvar som han eller ho har etter allmenne reglar på grunn av feil.",
+    "hva_betyr_html": _p(
+        "Feil i byggetegninger koster ofte ufattelig mye penger å reparere i virkeligheten. En arkitekt som glemmer å tegne inn et rør-sjakt gjennom to etasjer, kan tvinge snekkeren til å rive hele badet og bygge det på nytt når rørene endelig skal på plass.",
+        "Mange arkitekt- og konsulentfirmaer har i sine standardkontrakter klausuler som: \"Vårt maksimale erstatningsansvar er begrenset til honoraret for oppdraget\". Det ville betydd at hvis du betalte dem 50 000 kr, ville de aldri måtte betale mer enn 50 000 kr, selv om feilen deres kostet deg 500 000 kr.",
+        "Paragraf 62 gjør dette klinkende klart: Ulovlig. Konsulenten har absolutt forbud mot å fraskrive seg, eller redusere, det erstatningsansvaret de har etter \"alminnelige regler\".",
+    ),
+    "eksempler": [
+        {"navn": "Eva", "tekst": "Eva leier inn \"Sol-Arkitekter AS\" for å tegne påbygget til huset sitt. I kontrakten står det: \"Selskapet fraskriver seg ethvert erstatningsansvar for prosjekteringsfeil oppdaget etter byggeperiodens slutt\". Snekkeren bygger etter tegningen. Et år etter innflytting knekker bærekonstruksjonen i taket, fordi snølasten var beregnet feil av arkitekten. Eva krever 400 000 kr i erstatning. Sol-Arkitekter viser til kontrakten. Takket være § 62 kan Eva se bort ifra denne kontraktslinjen."},
+    ],
+    "vanlige_feil": [
+        "Å ikke ta en konflikt med arkitekten fordi de viser til en klausul om \"ansvarsbegrensning\" i kontrakten.",
+        "At entreprenøren du engasjerer sier: \"Det var arkitekten din som tegnet feil, du må betale oss for å rive veggen.\"",
+    ],
+    "hva_bor_du_html": _p(
+        "Dersom entreprenøren oppdager en grov feil i tegningene på byggeplassen, krev at det sendes et såkalt \"avviksvarsel\" umiddelbart. Kontakt arkitekten og si at de må komme opp med en ny løsning straks.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg erstatning hvis tegningen bare ble stygg, og ikke slik jeg egentlig ville ha den?", "a": "Estetikk er en vanskelig sak. Du får sjelden erstatning bare fordi huset føles upraktisk hvis de har holdt seg til teknisk standard."},
+        {"q": "Hva om arkitekten skylder på konsulenten han hyret inn til å regne på rørene?", "a": "Du har kontrakt med hovedarkitekten. Du sender hele kravet til arkitekten."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "61", "tittel": "§ 61", "available": True},
+        {"lov": LOV, "paragraf": "63", "tittel": "§ 63", "available": True},
+        {"lov": LOV, "paragraf": "3", "tittel": "§ 3", "available": True},
+    ],
+},
+{
+    "number": "63",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Tidsfrist for å klage på arkitekt",
+    "description": "Du har også en femårsfrist på deg for å avsløre feil i arkitekttegningene. Sender du klagen for sent, slipper de unna.",
+    "kort_svar": "Du har en absolutt grense på fem år fra bygget er ferdig til å klage på tabber gjort av arkitekten eller bygningsingeniøren. Du må også klage innen rimelig tid (ca. to måneder) etter at du oppdaget feilen.",
+    "paragraftekst": "Forbrukaren mistar retten til å krevje skadebot på grunn av feil dersom det ikkje er gjeve melding til konsulenten om kravet innan rimeleg tid etter at forbrukaren oppdaga eller burde ha oppdaga feilen. Kravet kan ikkje meldast seinare enn fem år etter overtakinga av den ytinga som oppdraget knyter seg til.",
+    "hva_betyr_html": _p(
+        "Paragraf 63 gjør nøyaktig det samme for arkitekter (konsulenter) som paragraf 30 gjør for snekkere (entreprenører). Den setter strenge frister.",
+        "For at arkitekter ikke skal bli saksøkt i evig tid for hus de tegnet på 80-tallet, stenges døren fem år etter at du har overtatt huset. Går det 5 år og én dag før du merker at vinduene de tegnet inn var for store for bæringen, mister du alle rettigheter til å få penger fra dem.",
+        "Du har også en kortere frist. Så snart du, eller snekkeren din, oppdager en feil i tegningen, må du gi arkitekten beskjed \"innen rimelig tid\". Domstolene i Norge pleier å sette denne grensen ved omtrent to måneder.",
+        "Siste ledd er den klassiske nødventilen: Har konsulenten forfalsket beregningene sine med viten og vilje, eller vært grovt uaktsom, kan de ikke gjemme seg bak femårsfristen.",
+    ),
+    "eksempler": [
+        {"navn": "Kari", "tekst": "Kari engasjerte \"Rask Strek AS\" som ansvarlig søker og arkitekt for eneboligen sin. Tegningene ble levert i 2023. Huset sto ferdig og Kari fikk nøkkelen 1. oktober 2024. Høsten fire år senere oppdager hun fuktskader fordi arkitekten glemte å tegne inn nødvendig fuktsikring for kjelleren. Siden det bare har gått fire år siden 1. oktober 2024, er hun godt innenfor den absolutte 5-årsfristen."},
+    ],
+    "vanlige_feil": [
+        "Å sende klagen til snekkerfirmaet, og tro at de fikser problemet med din uavhengige arkitekt for deg.",
+        "Å glemme å ta tak i saken fordi huset ennå ikke er ferdigbygget, selv om snekkeren avdekket arkitektfeilen i fjor.",
+    ],
+    "hva_bor_du_html": _p(
+        "Dersom håndverkeren stanser opp og sier \"Det er en krasj i tegningene her, rørene kan ikke gå der arkitekten har tegnet dem\", send en e-post med én gang: \"Til arkitekt. Tømreren har påpekt en prosjekteringsfeil. Jeg gir herved formell melding om at dette utgjør en feil (reklamasjon etter § 63).\"",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Får jeg snekker-regningen for feilen dekket automatisk?", "a": "Du må kreve det skriftlig som skadebot (erstatning). Det er dette § 63 gjelder – selve varselet om at du kommer til å kreve utlegget."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "61", "tittel": "§ 61", "available": True},
+        {"lov": LOV, "paragraf": "62", "tittel": "§ 62", "available": True},
+        {"lov": LOV, "paragraf": "30", "tittel": "§ 30", "available": True},
+    ],
+},
+{
+    "number": "64",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Gratis og rask hjelp mot utbygger",
+    "description": "Du trenger ikke hyre en dyr advokat og gå i tingretten for å krangle om vinduet. Loven har etablert en egen gratisløsning for slike konflikter.",
+    "kort_svar": "Hvis du og entreprenøren blir uenige om penger, feil eller forsinkelser, kan saken meldes inn til en offisiell nemnd for boligtvister (som Boligtvistnemnda). Mens saken ligger til behandling der, har entreprenøren forbud mot å trekke deg for domstolen.",
+    "paragraftekst": "Dersom det på grunnlag av avtale mellom entreprenørane eller konsulentane sine organisasjonar og Forbrukarrådet er skipa ei nemnd for tvistar om avtalar som går inn under lova her, og som er godkjend etter godkjenningslova, kan kvar av partane leggje fram for nemnda ein tvist der nemnda er kompetent. Så lenge tvisten er til førehaving i nemnda, kan ikkje entreprenøren reise søksmål om same tvisteemnet.",
+    "hva_betyr_html": _p(
+        "En konflikt med en entreprenør om et skjevt tak kan fort koste hundretusener av kroner i advokatutgifter hvis saken går til tingretten. Loven har derfor godkjent en enklere, raskere og nesten gratis utvei.",
+        "\"Nemnd for tvistar\" refererer i dag vanligvis til Boligtvistnemnda. Dette er uavhengige organer hvor eksperter sitter rundt et bord og avgjør hvem av dere som har rett, basert på papirer, e-poster og takstrapporter.",
+        "Det viktigste her er siste setning. Entreprenører liker ofte å skremme forbrukere ved å si: \"Betaler du ikke de siste 100 000 kronene, sender jeg advokaten min på deg.\" Paragraf 64 er ditt skjold. Hvis du sender saken inn til Boligtvistnemnda, fryses prosessen. Entreprenøren har bokstavelig talt forbud mot å dra deg i tingretten så lenge saken behandles av nemnda.",
+    ),
+    "eksempler": [
+        {"navn": "Jonas", "tekst": "Jonas og snekkeren krangler om en regning. Jonas holder tilbake 50 000 kroner for en feilmontert trapp. Snekkeren sender et brev fra et dyrt advokatfirma med trussel om stevning til forliksrådet og tingretten hvis Jonas ikke betaler i morgen. Jonas går inn på nettsidene til Boligtvistnemnda og registrerer klagen sin der. Han sender kvitteringen for saken til snekkerens advokat. Advokaten må da pent lukke saken sin midlertidig."},
+    ],
+    "vanlige_feil": [
+        "Å bli skremt av advokatbrev til å betale for en byggefeil man åpenbart ikke burde betale for.",
+        "Å tro at nemndas avgjørelse ikke gjelder for noe.",
+        "Mangle dokumentasjon. Nemnda kommer ikke hjem til deg for å se på trappen.",
+    ],
+    "hva_bor_du_html": _p(
+        "Står saken bom fast, og entreprenøren nekter å gi deg prisavslag eller rette mangelen: Sjekk om entreprenøren din er medlem av Boligprodusentenes Forening eller lignende. Melder du saken inn til Boligtvistnemnda, skjer hele saksbehandlingen skriftlig.",
+    ),
+    "dumme_sporsmal": [
+        {"q": "Hva koster det å bruke en slik nemnd?", "a": "Det er normalt helt gratis eller innebærer bare et veldig lite saksgebyr for privatpersoner."},
+        {"q": "Kan jeg reise søksmål mot snekkeren mens nemnda ser på saken?", "a": "Ja. Loven sier \"kan ikkje entreprenøren reise søksmål\". Forbrukeren har teknisk sett lov, men det gir sjelden mening."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "31", "tittel": "§ 31", "available": True},
+        {"lov": LOV, "paragraf": "29", "tittel": "§ 29", "available": True},
+    ],
+},
+{
+    "number": "65",
+    "lov": LOV, "lov_display": LOV_DISPLAY, "kategori": KAT,
+    "title": "Når loven gjelder fra",
+    "description": "Kjøpte du hus på 90-tallet? Bustadoppføringsloven beskytter alle byggekontrakter som ble inngått etter sommeren 1998.",
+    "kort_svar": "Bustadoppføringslova er gjeldende lov for avtaler om å bygge bolig. Den ble satt i kraft 1. juli 1998 og har tilbakevirkende kraft kun for tekniske foreldelsesregler.",
+    "paragraftekst": "§ 65: Endringar i andre lover. § 66: Lova gjeld frå den tid Kongen fastset. Lova får berre verknad for avtalar som blir gjorde etter at ho tek til å gjelde. Frå 1. juli 1998 iflg. res. 3 okt 1997 nr. 1072.",
+    "hva_betyr_html": _p(
+        "De to siste paragrafene er rene administrative formaliteter. Paragraf 65 inneholdt tekniske oppdateringer i andre lovbøker. Paragraf 66 bestemte når loven trådte i kraft. Knappen ble trykket på 1. juli 1998.",
+        "Loven gjelder alle byggekontrakter du inngår i dag. Eneste viktig: Den gjelder ikke bakover i tid for selve byggingen. Men dette har liten betydning – alle 5-årsfrister på hus fra 90-tallet er uansett utløpt.",
+    ),
+    "eksempler": [
+        {"navn": "Kari", "tekst": "Kari skal kjøpe rehabilitert hus. Byggebedriften sier de bygger etter \"gamle regler fra før loven kom\". Kari ser i § 66 at loven gjelder alle avtaler etter 1998. Hun krever kontrakt som refererer til dagens bustadoppføringslov."},
+    ],
+    "vanlige_feil": [
+        "Ingen vanlige forbrukerfeil. Loven er inngrodd i bransjen. Alt som bygges nytt i dag, omfattes.",
+    ],
+    "dumme_sporsmal": [
+        {"q": "Endrer loven seg aldri?", "a": "Jo. Stortinget har lagt inn mange nye paragrafer senere (som § 1a, § 1b, § 6a). Avtalen du signerer i dag styres av sist oppdaterte regler."},
+    ],
+    "related": [
+        {"lov": LOV, "paragraf": "1", "tittel": "§ 1", "available": True},
+        {"lov": LOV, "paragraf": "4", "tittel": "§ 4", "available": True},
+    ],
+},
+
 ]
