@@ -1780,6 +1780,32 @@ form.contact-form.hide { display: none; }
   max-width: 540px;
 }
 
+/* ---------- Lover rows with metadata (X paragrafer) ---------- */
+.tk-row-with-meta {
+  grid-template-columns: 1fr auto auto;
+  column-gap: 16px;
+}
+.tk-row-with-meta .tk-row-meta {
+  grid-column: 2; grid-row: 1 / span 2;
+  align-self: center;
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--ink-mute);
+  white-space: nowrap;
+  letter-spacing: 0.005em;
+}
+.tk-row-with-meta .tk-row-arrow { grid-column: 3; }
+@media (max-width: 720px) {
+  .tk-row-with-meta {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+  }
+  .tk-row-with-meta .tk-row-name { grid-column: 1; grid-row: 1; }
+  .tk-row-with-meta .tk-row-desc { grid-column: 1; grid-row: 2; }
+  .tk-row-with-meta .tk-row-meta { grid-column: 1; grid-row: 3; align-self: start; }
+  .tk-row-with-meta .tk-row-arrow { grid-column: 2; grid-row: 1 / span 3; }
+}
+
 """
 
 # ============================================================
@@ -2392,62 +2418,94 @@ def render_lov_index(lov_name, lov_display, paragraphs):
 {site_footer(depth=2)}"""
 
 def render_lover_index():
-    """Lov-oversikt — samme typografiske indeks som verktøy-hub."""
+    """Lover-indeks — kompakt header, søk, intent-kategorier, progressive disclosure."""
 
-    # (slug, display name, kort beskrivelse)
+    # Map lov_slug -> (display_name, kategori_slug, beskrivelse)
     LOV_INFO = {
-        "angrerettloven": ("Angrerettloven", "Angrerett ved netthandel og kjøp utenfor butikk."),
-        "kjopsloven": ("Kjøpsloven", "Kjøp og salg — privat og bedrift."),
-        "forbrukerkjopsloven": ("Forbrukerkjøpsloven", "Kjøp som forbruker — strengeste forbrukervern."),
-        "husleieloven": ("Husleieloven", "Leie av bolig — rettigheter for begge parter."),
-        "avhendingslova": ("Avhendingslova", "Kjøp og salg av bolig, hytte, tomt."),
-        "naboloven": ("Naboloven", "Konflikter og avstander til naboer."),
-        "bustadoppforingslova": ("Bustadoppføringslova", "Bygging av ny bolig eller hytte."),
-        "navneloven": ("Navneloven", "Navnevalg og navneendring."),
-        "arveloven": ("Arveloven", "Arv, testament og pliktdel."),
+        # Bolig
+        "husleieloven": ("Husleieloven", "bolig", "Leie av bolig og rettigheter ved leie."),
+        "avhendingslova": ("Avhendingslova", "bolig", "Kjøp og salg av bolig, hytte og tomt."),
+        "naboloven": ("Naboloven", "bolig", "Grenser, trær, støy og naboforhold."),
+        "bustadoppforingslova": ("Bustadoppføringslova", "bolig", "Bygging av ny bolig eller hytte."),
+        # Kjøp og klage
+        "angrerettloven": ("Angrerettloven", "kjop-og-klage", "Angrerett ved netthandel og kjøp utenfor butikk."),
+        "kjopsloven": ("Kjøpsloven", "kjop-og-klage", "Kjøp og salg — privat og bedrift."),
+        "forbrukerkjopsloven": ("Forbrukerkjøpsloven", "kjop-og-klage", "Kjøp som forbruker — strengeste forbrukervern."),
+        # Arv og familie
+        "arveloven": ("Arveloven", "arv-og-familie", "Arv, testament og pliktdel."),
+        "navneloven": ("Navneloven", "arv-og-familie", "Navnevalg og navneendring."),
     }
 
-    # Tell paragrafer per lov
+    # All categories — order matters. Empty ones will be excluded from nav and sections.
+    KATEGORIER = [
+        ("bolig", "Bolig"),
+        ("kjop-og-klage", "Kjøp og klage"),
+        ("arbeid", "Arbeid"),
+        ("arv-og-familie", "Arv og familie"),
+        ("selskap", "Selskap"),
+        ("personvern", "Personvern"),
+        ("okonomi-og-skatt", "Økonomi og skatt"),
+        ("straff-og-politi", "Straff og politi"),
+        ("helse", "Helse"),
+    ]
+
+    # Count paragrafer per lov
     counts = {}
     for p in PARAGRAPHS:
         lov = p["lov"]
         counts[lov] = counts.get(lov, 0) + 1
+
+    # Group laws by category, only including those with paragraph content
+    by_kat = {}
+    for slug, (display, kat, desc) in LOV_INFO.items():
+        antall = counts.get(slug, 0)
+        if antall == 0:
+            continue
+        by_kat.setdefault(kat, []).append((slug, display, desc, antall))
+
+    total_lover = sum(len(v) for v in by_kat.values())
     total_paragrafer = sum(counts.values())
+    VISIBLE = 8
 
-    # Categories
-    KATEGORIER = [
-        ("bolig", "Bolig", ["husleieloven", "avhendingslova", "naboloven", "bustadoppforingslova"]),
-        ("kjop", "Kjøp og forbruk", ["angrerettloven", "kjopsloven", "forbrukerkjopsloven"]),
-        ("arv", "Arv og familie", ["arveloven", "navneloven"]),
-    ]
-
+    # Build category nav — only categories with content + "Alle"
+    active_kategorier = [(s, t) for s, t in KATEGORIER if s in by_kat]
     nav_items = ""
-    for slug, tittel, _ in KATEGORIER:
+    for slug, tittel in active_kategorier:
         nav_items += f'    <a href="#{slug}" class="tk-cat" data-cat="{slug}">{tittel}</a>\n'
     nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle lover</a>\n'
 
+    # Build sections
     sections = ""
-    for slug, tittel, lov_slugs in KATEGORIER:
+    for slug, tittel in active_kategorier:
+        lover_i_kat = by_kat[slug]
+        collapsed_attr = ' data-collapsed' if len(lover_i_kat) > VISIBLE else ''
         rows = ""
-        for lov_slug in lov_slugs:
-            if lov_slug not in LOV_INFO:
-                continue
-            display, desc = LOV_INFO[lov_slug]
-            antall = counts.get(lov_slug, 0)
-            full_desc = f"{desc} {antall} paragrafer."
+        for i, (lov_slug, display, desc, antall) in enumerate(lover_i_kat):
+            extra_cls = ' tk-row-extra' if i >= VISIBLE else ''
+            meta_label = "paragraf" if antall == 1 else "paragrafer"
+            search_data = f"{display.lower()} {desc.lower()}"
             rows += (
-                f'      <a href="{lov_slug}/" class="tk-row">\n'
+                f'      <a href="{lov_slug}/" class="tk-row tk-row-with-meta{extra_cls}" data-search="{search_data}">\n'
                 f'        <span class="tk-row-name">{display}</span>\n'
-                f'        <span class="tk-row-desc">{full_desc}</span>\n'
+                f'        <span class="tk-row-desc">{desc}</span>\n'
+                f'        <span class="tk-row-meta">{antall} {meta_label}</span>\n'
                 f'        <span class="tk-row-arrow" aria-hidden="true">→</span>\n'
                 f'      </a>\n'
             )
+        show_all = ""
+        if len(lover_i_kat) > VISIBLE:
+            show_all = (
+                f'    <a href="#" class="tk-show-all" data-section="{slug}">'
+                f'Vis alle {len(lover_i_kat)} lover i {tittel} '
+                f'<span class="tk-show-all-arrow" aria-hidden="true">→</span></a>\n'
+            )
         sections += (
-            f'  <section class="tk-section" id="{slug}">\n'
+            f'  <section class="tk-section" id="{slug}"{collapsed_attr}>\n'
             f'    <h2 class="tk-section-title">{tittel}</h2>\n'
             f'    <div class="tk-grid">\n'
             f'{rows}'
             f'    </div>\n'
+            f'{show_all}'
             f'  </section>\n\n'
         )
 
@@ -2455,23 +2513,28 @@ def render_lover_index():
 
     return f"""{shared_head(
         'Lover — alle norske lover forklart på vanlig norsk | Rettsregel',
-        f'{len(LOV_INFO)} norske lover, {total_paragrafer} paragrafer forklart på vanlig norsk. Husleieloven, arveloven, kjøpsloven, og flere.',
+        f'{total_lover} norske lover, {total_paragrafer} paragrafer forklart på vanlig norsk. Husleieloven, arveloven, kjøpsloven og flere.',
         depth=1, canonical_path='/lover/'
     )}
 {site_nav(depth=1, active='lover')}
 
 <main class="tk-page">
 
-  <section class="tk-hero">
+  <section class="tk-hero-compact" id="alle">
     <p class="tk-hero-label">Lover</p>
-    <h1>Loven, paragraf for paragraf.</h1>
-    <p class="tk-hero-lead">Norske lover på vanlig norsk — bla deg gjennom paragraf for paragraf og finn ut hva som faktisk gjelder.</p>
-    <p class="tk-hero-meta">
-      {len(LOV_INFO)} lover<span class="tk-hero-meta-sep">·</span>{total_paragrafer} paragrafer<span class="tk-hero-meta-sep">·</span>på vanlig norsk
-    </p>
+    <h1>Finn loven som gjelder deg.</h1>
+    <p class="tk-hero-compact-lead">Norske lover forklart på vanlig språk.</p>
   </section>
 
-  <nav class="tk-cat-bar" id="alle" aria-label="Lovkategorier">
+  <div class="tk-search-wrap">
+    <span class="tk-search-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    </span>
+    <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter lov, paragraf eller situasjon …" aria-label="Søk i lover">
+    <span class="tk-search-hint">Trykk Enter for å søke</span>
+  </div>
+
+  <nav class="tk-cat-bar" aria-label="Kategorier">
 {nav_items}  </nav>
 
 {sections}
@@ -2482,32 +2545,68 @@ def render_lover_index():
 
 <script>
 (function() {{
+  document.querySelectorAll('.tk-show-all').forEach(function(link) {{
+    link.addEventListener('click', function(e) {{
+      e.preventDefault();
+      var section = link.closest('.tk-section');
+      if (section) section.removeAttribute('data-collapsed');
+    }});
+  }});
   var cats = document.querySelectorAll('.tk-cat');
   var sections = document.querySelectorAll('.tk-section');
-  if (!('IntersectionObserver' in window) || cats.length === 0 || sections.length === 0) return;
   function setActive(slug) {{
     cats.forEach(function(c) {{
       if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
       else c.classList.remove('is-active');
     }});
   }}
-  var observer = new IntersectionObserver(function(entries) {{
-    var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
-    if (visible.length === 0) return;
-    visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
-    setActive(visible[0].target.id);
-  }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
-  sections.forEach(function(s) {{ observer.observe(s); }});
-  if (cats[0]) setActive(cats[0].getAttribute('data-cat'));
+  if ('IntersectionObserver' in window && cats.length > 0 && sections.length > 0) {{
+    var observer = new IntersectionObserver(function(entries) {{
+      var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
+      if (visible.length === 0) return;
+      visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
+      setActive(visible[0].target.id);
+    }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
+    sections.forEach(function(s) {{ observer.observe(s); }});
+  }}
+  var input = document.getElementById('tk-search');
+  if (!input) return;
+  var allRows = Array.from(document.querySelectorAll('.tk-row'));
+  var allSections = Array.from(document.querySelectorAll('.tk-section'));
+  var allShowAll = Array.from(document.querySelectorAll('.tk-show-all'));
+  function applyFilter() {{
+    var q = input.value.trim().toLowerCase();
+    if (q === '') {{
+      allRows.forEach(function(r) {{ r.removeAttribute('data-hidden-by-search'); }});
+      allSections.forEach(function(s) {{
+        s.removeAttribute('data-hidden-by-search');
+        var rows = s.querySelectorAll('.tk-row');
+        if (rows.length > 8) s.setAttribute('data-collapsed', '');
+      }});
+      allShowAll.forEach(function(a) {{ a.style.display = ''; }});
+      return;
+    }}
+    allSections.forEach(function(section) {{
+      var rows = section.querySelectorAll('.tk-row');
+      var anyVisible = false;
+      rows.forEach(function(r) {{
+        var hay = r.getAttribute('data-search') || '';
+        if (hay.indexOf(q) === -1) r.setAttribute('data-hidden-by-search', '');
+        else {{ r.removeAttribute('data-hidden-by-search'); anyVisible = true; }}
+      }});
+      section.removeAttribute('data-collapsed');
+      if (anyVisible) section.removeAttribute('data-hidden-by-search');
+      else section.setAttribute('data-hidden-by-search', '');
+    }});
+    allShowAll.forEach(function(a) {{ a.style.display = 'none'; }});
+  }}
+  input.addEventListener('input', applyFilter);
 }})();
 </script>
 
 {chat}
 </body>
 </html>"""
-
-
-
 
 
 def render_personvern():
@@ -2941,54 +3040,83 @@ def render_sporsmal_page(s):
 
 
 def render_sporsmal_hub():
-    """Spørsmål-hub — samme typografiske indeks som verktøy og lover."""
+    """Spørsmål-hub — kompakt header, søk, intent-kategorier, progressive disclosure."""
 
-    # Group by kategori
-    KAT_LABEL = {
-        "bolig": "Bolig og leie",
-        "forbruk": "Kjøp og klage",
-        "arbeid": "Arbeid",
-        "familie": "Familie",
-        "arv": "Arv og familie",
-        "gjeld": "Gjeld og penger",
-        "tjenester": "Selskap",
+    # Map current kategori -> new intent-based category
+    # Bolig items also split: "nabo" in title -> nabo-og-eiendom
+    KAT_MAP_BOLIG_DEFAULT = "bolig-og-leie"
+    KAT_MAP = {
+        "bolig": KAT_MAP_BOLIG_DEFAULT,  # split below
+        "forbruk": "kjop-og-klage",
+        "arbeid": "arbeid-og-oppsigelse",
+        "familie": "familie-og-samliv",
+        "arv": "arv-og-testament",
+        "gjeld": "penger-og-gjeld",
+        "tjenester": "selskap",
     }
 
+    KATEGORIER = [
+        ("bolig-og-leie", "Bolig og leie"),
+        ("kjop-og-klage", "Kjøp og klage"),
+        ("arbeid-og-oppsigelse", "Arbeid og oppsigelse"),
+        ("familie-og-samliv", "Familie og samliv"),
+        ("arv-og-testament", "Arv og testament"),
+        ("penger-og-gjeld", "Penger og gjeld"),
+        ("nabo-og-eiendom", "Nabo og eiendom"),
+        ("bil-og-kjoretoy", "Bil og kjøretøy"),
+    ]
+
+    # Group sporsmal under new categories
     by_kat = {}
     for s in SPORSMAL:
-        kat = s.get("kategori", "annet")
-        by_kat.setdefault(kat, []).append(s)
+        old_kat = s.get("kategori", "annet")
+        new_kat = KAT_MAP.get(old_kat, KAT_MAP_BOLIG_DEFAULT)
+        # Heuristic: bolig items with "nabo" in title -> nabo-og-eiendom
+        if old_kat == "bolig" and "nabo" in s.get("title", "").lower():
+            new_kat = "nabo-og-eiendom"
+        by_kat.setdefault(new_kat, []).append(s)
 
-    # Order categories by size (largest first) for natural reading order
-    kat_sorted = sorted(by_kat.items(), key=lambda x: -len(x[1]))
+    total = sum(len(v) for v in by_kat.values())
+    VISIBLE = 8
 
+    active_kategorier = [(s, t) for s, t in KATEGORIER if s in by_kat]
     nav_items = ""
-    for kat, items in kat_sorted:
-        label = KAT_LABEL.get(kat, kat.capitalize())
-        nav_items += f'    <a href="#{kat}" class="tk-cat" data-cat="{kat}">{label}</a>\n'
+    for slug, tittel in active_kategorier:
+        nav_items += f'    <a href="#{slug}" class="tk-cat" data-cat="{slug}">{tittel}</a>\n'
     nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle spørsmål</a>\n'
 
     sections = ""
-    for kat, items in kat_sorted:
-        label = KAT_LABEL.get(kat, kat.capitalize())
+    for slug, tittel in active_kategorier:
+        items = by_kat[slug]
+        collapsed_attr = ' data-collapsed' if len(items) > VISIBLE else ''
         rows = ""
-        for s in items:
-            slug = s.get("slug", "")
-            tittel = s.get("title", "")
+        for i, s in enumerate(items):
+            extra_cls = ' tk-row-extra' if i >= VISIBLE else ''
+            url = s.get("slug", "")
+            tittel_s = s.get("title", "")
             desc = s.get("description", "")
+            search_data = f"{tittel_s.lower()} {desc.lower()}"
             rows += (
-                f'      <a href="{slug}/" class="tk-row">\n'
-                f'        <span class="tk-row-name">{tittel}</span>\n'
+                f'      <a href="{url}/" class="tk-row{extra_cls}" data-search="{search_data}">\n'
+                f'        <span class="tk-row-name">{tittel_s}</span>\n'
                 f'        <span class="tk-row-desc">{desc}</span>\n'
                 f'        <span class="tk-row-arrow" aria-hidden="true">→</span>\n'
                 f'      </a>\n'
             )
+        show_all = ""
+        if len(items) > VISIBLE:
+            show_all = (
+                f'    <a href="#" class="tk-show-all" data-section="{slug}">'
+                f'Vis alle {len(items)} spørsmål i {tittel} '
+                f'<span class="tk-show-all-arrow" aria-hidden="true">→</span></a>\n'
+            )
         sections += (
-            f'  <section class="tk-section" id="{kat}">\n'
-            f'    <h2 class="tk-section-title">{label}</h2>\n'
+            f'  <section class="tk-section" id="{slug}"{collapsed_attr}>\n'
+            f'    <h2 class="tk-section-title">{tittel}</h2>\n'
             f'    <div class="tk-grid">\n'
             f'{rows}'
             f'    </div>\n'
+            f'{show_all}'
             f'  </section>\n\n'
         )
 
@@ -2996,23 +3124,27 @@ def render_sporsmal_hub():
 
     return f"""{shared_head(
         'Spørsmål og svar — vanlige juridiske spørsmål forklart | Rettsregel',
-        f'{len(SPORSMAL)} spørsmål om norsk lov, med konkrete svar. Husleie, boligkjøp, naboforhold og mer.',
+        f'{total} spørsmål om norsk lov, med konkrete svar. Husleie, boligkjøp, naboforhold, arbeid og mer.',
         depth=1, canonical_path='/sporsmal/'
     )}
 {site_nav(depth=1, active='sporsmal')}
 
 <main class="tk-page">
 
-  <section class="tk-hero">
-    <p class="tk-hero-label">Spørsmål</p>
-    <h1>Det folk faktisk lurer på.</h1>
-    <p class="tk-hero-lead">Korte svar på konkrete spørsmål — basert på norsk rett, ikke generelle floskler.</p>
-    <p class="tk-hero-meta">
-      {len(SPORSMAL)} spørsmål<span class="tk-hero-meta-sep">·</span>klare svar<span class="tk-hero-meta-sep">·</span>basert på norsk rett
-    </p>
+  <section class="tk-hero-compact" id="alle">
+    <h1>Hva lurer du på?</h1>
+    <p class="tk-hero-compact-lead">Finn svar på juridiske spørsmål.</p>
   </section>
 
-  <nav class="tk-cat-bar" id="alle" aria-label="Spørsmål-kategorier">
+  <div class="tk-search-wrap">
+    <span class="tk-search-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    </span>
+    <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter spørsmål, situasjon eller tema …" aria-label="Søk i spørsmål">
+    <span class="tk-search-hint">Trykk Enter for å søke</span>
+  </div>
+
+  <nav class="tk-cat-bar" aria-label="Kategorier">
 {nav_items}  </nav>
 
 {sections}
@@ -3023,32 +3155,68 @@ def render_sporsmal_hub():
 
 <script>
 (function() {{
+  document.querySelectorAll('.tk-show-all').forEach(function(link) {{
+    link.addEventListener('click', function(e) {{
+      e.preventDefault();
+      var section = link.closest('.tk-section');
+      if (section) section.removeAttribute('data-collapsed');
+    }});
+  }});
   var cats = document.querySelectorAll('.tk-cat');
   var sections = document.querySelectorAll('.tk-section');
-  if (!('IntersectionObserver' in window) || cats.length === 0 || sections.length === 0) return;
   function setActive(slug) {{
     cats.forEach(function(c) {{
       if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
       else c.classList.remove('is-active');
     }});
   }}
-  var observer = new IntersectionObserver(function(entries) {{
-    var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
-    if (visible.length === 0) return;
-    visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
-    setActive(visible[0].target.id);
-  }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
-  sections.forEach(function(s) {{ observer.observe(s); }});
-  if (cats[0]) setActive(cats[0].getAttribute('data-cat'));
+  if ('IntersectionObserver' in window && cats.length > 0 && sections.length > 0) {{
+    var observer = new IntersectionObserver(function(entries) {{
+      var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
+      if (visible.length === 0) return;
+      visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
+      setActive(visible[0].target.id);
+    }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
+    sections.forEach(function(s) {{ observer.observe(s); }});
+  }}
+  var input = document.getElementById('tk-search');
+  if (!input) return;
+  var allRows = Array.from(document.querySelectorAll('.tk-row'));
+  var allSections = Array.from(document.querySelectorAll('.tk-section'));
+  var allShowAll = Array.from(document.querySelectorAll('.tk-show-all'));
+  function applyFilter() {{
+    var q = input.value.trim().toLowerCase();
+    if (q === '') {{
+      allRows.forEach(function(r) {{ r.removeAttribute('data-hidden-by-search'); }});
+      allSections.forEach(function(s) {{
+        s.removeAttribute('data-hidden-by-search');
+        var rows = s.querySelectorAll('.tk-row');
+        if (rows.length > 8) s.setAttribute('data-collapsed', '');
+      }});
+      allShowAll.forEach(function(a) {{ a.style.display = ''; }});
+      return;
+    }}
+    allSections.forEach(function(section) {{
+      var rows = section.querySelectorAll('.tk-row');
+      var anyVisible = false;
+      rows.forEach(function(r) {{
+        var hay = r.getAttribute('data-search') || '';
+        if (hay.indexOf(q) === -1) r.setAttribute('data-hidden-by-search', '');
+        else {{ r.removeAttribute('data-hidden-by-search'); anyVisible = true; }}
+      }});
+      section.removeAttribute('data-collapsed');
+      if (anyVisible) section.removeAttribute('data-hidden-by-search');
+      else section.setAttribute('data-hidden-by-search', '');
+    }});
+    allShowAll.forEach(function(a) {{ a.style.display = 'none'; }});
+  }}
+  input.addEventListener('input', applyFilter);
 }})();
 </script>
 
 {chat}
 </body>
 </html>"""
-
-
-
 
 
 def render_homepage():
