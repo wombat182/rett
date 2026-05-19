@@ -2908,257 +2908,303 @@ def render_sporsmal_hub():
 
 
 def render_homepage():
-    """Forsiden — minimalistisk, slide-basert. Ingen søk."""
+    """Forsiden — minimalistisk. Optima gjennomgående. R-logo, sitat, tre fliser.
+    Bygges som en selvstendig side med innebygde stiler og chat-widget."""
 
-    total_paragrafer = len(PARAGRAPHS)
-    total_lover = len(set(p["lov"] for p in PARAGRAPHS))
+    chat = chat_widget()
 
-    # Slide 2 — viktige kontrakter og maler
-    KONTRAKTER = [
-        ("tjenester/testament-mal/", "📜", "Testament", "Skriv testament med vitnefelt, klart for signering."),
-        ("kontrakter/samboeravtale/", "🤝", "Samboeravtale", "Hvem eier hva ved brudd? Beskytt deg i dag."),
-        ("kontrakter/husleiekontrakt/", "🔑", "Husleiekontrakt", "Tidsubestemt eller tidsbestemt. Husleieloven."),
-        ("kontrakter/arbeidsavtale/", "✍️", "Arbeidsavtale", "Alle aml. § 14-6-krav. Fyll ut og signer."),
-        ("kontrakter/fremtidsfullmakt/", "🤲", "Fremtidsfullmakt", "Hvem ivaretar deg ved sviktende helse."),
-        ("tjenester/reklamasjon/", "✉️", "Reklamasjonsbrev", "Juridisk korrekt klage på et kjøp."),
-    ]
-    kontrakter_html = ""
-    for url, em, navn, beskr in KONTRAKTER:
-        kontrakter_html += f'''      <a href="{url}" class="sl-kort">
-        <div class="sl-em">{em}</div>
-        <div class="sl-info">
-          <div class="sl-navn">{navn}</div>
-          <div class="sl-beskr">{beskr}</div>
-        </div>
-        <div class="sl-pil">→</div>
-      </a>
-'''
-
-    # Slide 3 — viktige lover
-    counts = {}
-    displays = {}
-    for p in PARAGRAPHS:
-        counts[p["lov"]] = counts.get(p["lov"], 0) + 1
-        displays[p["lov"]] = p["lov_display"]
-    LOV_DESC = {
-        "arveloven": "Arv, testament og pliktdel",
-        "husleieloven": "Rettigheter ved leie av bolig",
-        "kjopsloven": "Kjøp privat — privatperson til privatperson",
-        "forbrukerkjopsloven": "Kjøp som forbruker — strengeste vern",
-        "avhendingslova": "Kjøp og salg av bolig, hytte, tomt",
-        "angrerettloven": "Angre kjøp gjort på nett og utenfor butikk",
-    }
-    TOP_LOVER = ["arveloven", "husleieloven", "kjopsloven", "forbrukerkjopsloven", "avhendingslova", "angrerettloven"]
-    lover_html = ""
-    for lov in TOP_LOVER:
-        if lov in counts:
-            lover_html += f'''      <a href="lover/{lov}/" class="sl-kort">
-        <div class="sl-info">
-          <div class="sl-navn">{displays[lov]}</div>
-          <div class="sl-beskr">{LOV_DESC.get(lov, "")}</div>
-        </div>
-        <div class="sl-tall">{counts[lov]}</div>
-        <div class="sl-pil">→</div>
-      </a>
-'''
-
-    return f"""{shared_head('rettsregel.no — Norske lover på vanlig norsk', 'Lover er ikke vanskelige. De er bare dårlig forklart. Bla i norske lover, paragraf for paragraf.', depth=0, canonical_path='/')}
-{site_nav(depth=0)}
-
+    return f"""<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rettsregel.no — Norske lover på vanlig norsk</title>
+<meta name="description" content="Loven er ikke vanskelig. Den er bare dårlig forklart. Norske lovparagrafer på vanlig språk, gratis verktøy og svar på vanlige spørsmål.">
+<link rel="canonical" href="{SITE_URL}/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="rettsregel.no — Norske lover på vanlig norsk">
+<meta property="og:description" content="Loven er ikke vanskelig. Den er bare dårlig forklart. Norske lovparagrafer på vanlig språk.">
+<meta property="og:url" content="{SITE_URL}/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="rettsregel.no — Norske lover på vanlig norsk">
+<meta name="twitter:description" content="Loven er ikke vanskelig. Den er bare dårlig forklart.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="alternate icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 <style>
-/* === SLIDE-FORSIDE — Apple-raffinert === */
-.home-slide {{
-  padding: 128px 24px;
-  border-bottom: 1px solid var(--line);
-}}
-.home-slide-inner {{ max-width: 1080px; margin: 0 auto; }}
+body.home {{ background: var(--bg); }}
+body.home::before {{ opacity: 0.14; }}
 
-/* HERO */
-.sl-hero {{
-  min-height: calc(100vh - 80px);
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 100px 24px 80px;
-  border-bottom: 1px solid var(--line);
+.home-header {{
+  max-width: 1100px; margin: 0 auto;
+  padding: 32px 32px 0;
+  display: flex; justify-content: space-between; align-items: center;
   position: relative;
-  background: #E8E1D5;
 }}
-.sl-hero-inner {{ max-width: 1080px; margin: 0 auto; width: 100%; }}
-.sl-hero h1 {{
-  font-family: var(--serif); font-weight: 300;
-  font-size: clamp(36px, 6.4vw, 84px); line-height: 1.05;
-  letter-spacing: -0.018em; margin: 0;
+.home-logo {{
+  display: inline-flex; align-items: center;
+  text-decoration: none; color: var(--ink);
+  transition: opacity 0.2s ease;
 }}
-.sl-hero h1 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
-.sl-hero .sl-hero-meta {{
-  font-family: var(--sans); font-size: 13px;
-  color: var(--ink-mute); letter-spacing: 0.06em;
-  margin-top: 56px;
-  display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
+.home-logo:hover {{ opacity: 0.7; }}
+.home-logo svg {{ width: 32px; height: 42px; display: block; color: var(--ink); }}
+
+.home-nav {{
+  display: flex; gap: 30px; align-items: center;
+  list-style: none; margin: 0; padding: 0;
 }}
-.sl-hero .sl-hero-meta .dot {{ opacity: 0.3; }}
-.sl-hero .sl-hero-scroll {{
-  position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  font-family: var(--sans); font-size: 10.5px;
-  color: var(--ink-mute); letter-spacing: 0.2em; text-transform: uppercase;
-  text-decoration: none; font-weight: 500;
-  animation: sl-bob 2.6s ease-in-out infinite;
+.home-nav a {{
+  font-family: var(--serif);
+  font-size: 14px; font-weight: 500;
+  color: var(--ink-mute); text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.18s ease;
 }}
-.sl-hero .sl-hero-scroll svg {{ stroke: var(--ink-mute); }}
-@keyframes sl-bob {{
-  0%, 100% {{ transform: translate(-50%, 0); opacity: 0.55; }}
-  50% {{ transform: translate(-50%, 6px); opacity: 1; }}
+.home-nav a:hover {{ color: var(--ink); }}
+.home-nav a.home-nav-cta {{
+  color: var(--accent);
+  display: inline-flex; align-items: center; gap: 5px;
+}}
+.home-nav a.home-nav-cta:hover {{ color: var(--accent-deep); }}
+
+.home-nav-toggle {{ display: none; }}
+.home-nav-toggle-label {{
+  display: none; cursor: pointer;
+  padding: 8px; margin: -8px;
+}}
+.home-nav-toggle-label svg {{ width: 22px; height: 22px; color: var(--ink); display: block; }}
+
+.home-main {{ max-width: 1100px; margin: 0 auto; padding: 0 32px; }}
+
+.home-hero {{ text-align: center; margin: 96px auto; max-width: 600px; }}
+.home-hero-headline {{
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(24px, 3.4vw, 34px);
+  line-height: 1.22; letter-spacing: -0.012em;
+  margin: 0; color: var(--ink);
+}}
+.home-hero-line {{ display: block; }}
+.home-hero-italic {{ font-style: italic; color: var(--accent); margin-top: 2px; }}
+.home-hero-divider {{ width: 24px; height: 1px; background: var(--accent); margin: 36px auto 18px; }}
+.home-hero-sub {{
+  font-family: var(--serif); font-size: 15px;
+  font-style: italic; color: var(--ink-soft);
+  margin: 0; letter-spacing: 0.005em;
 }}
 
-/* GENERELL SLIDE */
-.sl-kicker {{
-  font-family: var(--sans); font-size: 11px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;
-  color: var(--accent); margin-bottom: 20px; display: block;
+.home-tiles {{
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; margin-bottom: 96px;
 }}
-.sl-h2 {{
-  font-family: var(--serif); font-weight: 300;
-  font-size: clamp(26px, 3.6vw, 42px); line-height: 1.1;
-  letter-spacing: -0.016em; margin: 0 0 20px 0; max-width: 760px;
+.home-tile {{
+  background: var(--bg-card); border-radius: 14px;
+  padding: 32px 22px 24px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; min-height: 260px;
+  text-decoration: none; color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }}
-.sl-lead {{
-  font-size: 18px; color: var(--ink-soft); line-height: 1.55;
-  max-width: 580px; margin: 0 0 56px 0;
-  font-weight: 400;
-}}
-
-/* KORT-GRID */
-.sl-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }}
-.sl-kort {{
-  background: var(--bg-card); border: 1px solid var(--line); border-radius: 22px;
-  padding: 28px 28px; text-decoration: none; color: var(--ink);
-  display: flex; align-items: center; gap: 20px;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s;
-}}
-.sl-kort:hover {{
-  border-color: var(--accent-soft);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.05);
+.home-tile:hover {{
   transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(28, 23, 16, 0.06);
 }}
-.sl-kort:hover .sl-pil {{ transform: translateX(5px); color: var(--accent); }}
-.sl-em {{
-  font-size: 26px; width: 52px; height: 52px;
-  background: linear-gradient(135deg, rgba(177,74,42,0.10), rgba(177,74,42,0.04));
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+.home-tile-icon {{
+  height: 70px; display: flex;
+  align-items: center; justify-content: center;
+  margin-bottom: 6px; color: var(--ink);
 }}
-.sl-info {{ flex: 1; min-width: 0; }}
-.sl-navn {{ font-family: var(--serif); font-size: 17px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 5px; }}
-.sl-beskr {{ font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }}
-.sl-tall {{ font-family: var(--serif); font-size: 28px; color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 400; letter-spacing: -0.02em; }}
-.sl-pil {{ font-size: 18px; color: var(--ink-mute); transition: transform 0.2s, color 0.2s; flex-shrink: 0; }}
+.home-tile-paragraf {{
+  font-family: var(--serif); font-size: 62px;
+  font-style: italic; color: var(--ink);
+  line-height: 1; font-weight: 400;
+}}
+.home-tile-divider {{ width: 20px; height: 1px; background: var(--accent); margin: 12px 0 16px; }}
+.home-tile-title {{
+  font-family: var(--serif); font-size: 17px;
+  font-weight: 500; color: var(--ink);
+  margin: 0 0 8px; line-height: 1.3;
+  letter-spacing: -0.005em;
+}}
+.home-tile-desc {{
+  font-family: var(--serif); font-size: 13px;
+  color: var(--ink-soft); margin: 0 0 20px;
+  line-height: 1.5;
+}}
+.home-tile-arrow {{
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--accent);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--accent); margin-top: auto;
+  transition: background 0.2s ease, color 0.2s ease;
+}}
+.home-tile:hover .home-tile-arrow {{ background: var(--accent); color: var(--bg-card); }}
 
-.sl-cta-rad {{ margin-top: 56px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }}
-.sl-cta {{
-  font-family: var(--sans); font-size: 14px; font-weight: 600;
-  text-decoration: none; padding: 14px 26px; border-radius: 100px;
-  transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px;
+.home-footer {{
+  max-width: 1100px; margin: 0 auto;
+  padding: 24px 32px 32px;
+  border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--serif); font-size: 13px;
+  color: var(--ink-mute);
 }}
-.sl-cta-primary {{ background: var(--ink); color: var(--bg); }}
-.sl-cta-primary:hover {{ background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(177,74,42,0.25); }}
-.sl-cta-ghost {{ color: var(--ink-soft); border: 1px solid var(--line); }}
-.sl-cta-ghost:hover {{ border-color: var(--accent); color: var(--accent); }}
+.home-footer-links {{ display: inline-flex; gap: 24px; }}
+.home-footer a {{ color: var(--ink-mute); text-decoration: none; transition: color 0.18s ease; }}
+.home-footer a:hover {{ color: var(--ink); }}
 
-/* SLIDE 4 — KATEGORIER */
-.sl-kat-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }}
-.sl-kat {{
-  background: var(--bg-card); border: 1px solid var(--line); border-radius: 24px;
-  padding: 40px 32px; text-decoration: none; color: var(--ink); display: block;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+@media (max-width: 900px) {{
+  .home-tile {{ padding: 28px 16px 20px; }}
+  .home-tile-paragraf {{ font-size: 54px; }}
 }}
-.sl-kat:hover {{
-  border-color: var(--accent-soft);
-  transform: translateY(-3px);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.06);
-}}
-.sl-kat-em {{
-  font-size: 40px; line-height: 1; margin-bottom: 22px;
-  width: 72px; height: 72px;
-  background: linear-gradient(135deg, rgba(177,74,42,0.10), rgba(177,74,42,0.04));
-  border-radius: 18px;
-  display: flex; align-items: center; justify-content: center;
-}}
-.sl-kat-navn {{ font-family: var(--serif); font-size: 20px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 8px; }}
-.sl-kat-beskr {{ font-size: 13.5px; color: var(--ink-soft); line-height: 1.55; }}
 
-@media (max-width: 700px) {{
-  .home-slide {{ padding: 80px 24px; }}
-  .sl-hero {{ padding: 70px 24px 50px; min-height: calc(100vh - 60px); }}
-  .sl-hero-scroll {{ bottom: 28px; }}
-  .sl-kort {{ padding: 22px 22px; border-radius: 18px; }}
-  .sl-kat {{ padding: 30px 24px; border-radius: 20px; }}
+@media (max-width: 640px) {{
+  .home-header {{ padding: 24px 20px 0; }}
+  .home-logo svg {{ width: 28px; height: 36px; }}
+  .home-nav-toggle-label {{ display: inline-flex; align-items: center; justify-content: center; }}
+  .home-nav {{
+    display: none; position: absolute;
+    top: calc(100% + 8px); right: 20px;
+    background: var(--bg-card); flex-direction: column;
+    align-items: flex-start; gap: 14px;
+    padding: 22px 28px; border-radius: 12px;
+    box-shadow: 0 10px 36px rgba(28, 23, 16, 0.10);
+    z-index: 50; border: 1px solid var(--line);
+  }}
+  .home-nav-toggle:checked ~ .home-nav {{ display: flex; }}
+  .home-nav a {{ font-size: 15px; }}
+  .home-main {{ padding: 0 20px; }}
+  .home-hero {{ margin: 64px auto; }}
+  .home-hero-divider {{ margin: 28px auto 14px; }}
+  .home-tiles {{ grid-template-columns: 1fr; gap: 12px; margin-bottom: 64px; }}
+  .home-tile {{ min-height: auto; padding: 30px 24px 22px; }}
+  .home-tile-icon {{ height: 60px; }}
+  .home-tile-paragraf {{ font-size: 52px; }}
+  .home-footer {{ padding: 20px 20px 24px; font-size: 12.5px; flex-wrap: wrap; gap: 8px; }}
+  .home-footer-links {{ gap: 18px; }}
 }}
 </style>
+</head>
+<body class="home">
 
-<main>
+<header class="home-header">
+  <a href="/" class="home-logo" aria-label="Rettsregel forside">
+    <svg viewBox="0 0 76 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="32" y1="14" x2="32" y2="80"/>
+      <line x1="32" y1="14" x2="50" y2="14"/>
+      <path d="M50 14 C66 14, 66 48, 50 48"/>
+      <line x1="32" y1="48" x2="50" y2="48"/>
+      <line x1="44" y1="48" x2="62" y2="80"/>
+      <line x1="18" y1="48" x2="18" y2="80"/>
+    </svg>
+  </a>
 
-  <section class="sl-hero">
-    <div class="sl-hero-inner">
-      <h1>Lover er ikke vanskelige.<br><em>De er bare dårlig forklart.</em></h1>
-      <div class="sl-hero-meta">
-        <span>{total_paragrafer} paragrafer</span>
-        <span class="dot">·</span>
-        <span>{total_lover} lover</span>
-        <span class="dot">·</span>
-        <span>92 verktøy</span>
-        <span class="dot">·</span>
-        <span>på vanlig norsk</span>
+  <input type="checkbox" id="home-nav-toggle" class="home-nav-toggle" aria-hidden="true">
+  <label for="home-nav-toggle" class="home-nav-toggle-label" aria-label="Åpne meny">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+      <line x1="4" y1="7" x2="20" y2="7"/>
+      <line x1="4" y1="12" x2="20" y2="12"/>
+      <line x1="4" y1="17" x2="20" y2="17"/>
+    </svg>
+  </label>
+
+  <ul class="home-nav">
+    <li><a href="lover/">Lover</a></li>
+    <li><a href="sporsmal/">Spørsmål</a></li>
+    <li><a href="tjenester/">Verktøy</a></li>
+    <li><a href="om/">Om</a></li>
+    <li><a href="kontakt/" class="home-nav-cta">Send inn sak <span aria-hidden="true">→</span></a></li>
+  </ul>
+</header>
+
+<main class="home-main">
+
+  <section class="home-hero">
+    <h1 class="home-hero-headline">
+      <span class="home-hero-line">Loven er ikke vanskelig.</span>
+      <span class="home-hero-line home-hero-italic">Den er bare dårlig forklart.</span>
+    </h1>
+    <div class="home-hero-divider" aria-hidden="true"></div>
+    <p class="home-hero-sub">Vi hjelper deg med tre ting.</p>
+  </section>
+
+  <section class="home-tiles" aria-label="Tre tjenester">
+
+    <a href="lover/" class="home-tile">
+      <div class="home-tile-icon" aria-hidden="true">
+        <span class="home-tile-paragraf">§</span>
       </div>
-    </div>
-    <a href="#begynn" class="sl-hero-scroll">
-      <span>Bla</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <div class="home-tile-divider" aria-hidden="true"></div>
+      <h2 class="home-tile-title">Forklarer lovparagrafer</h2>
+      <p class="home-tile-desc">Norske lovparagrafer, på vanlig språk.</p>
+      <span class="home-tile-arrow" aria-hidden="true">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 6h8M7 3l3 3-3 3"/>
+        </svg>
+      </span>
     </a>
-  </section>
 
-  <section class="home-slide" id="begynn">
-    <div class="home-slide-inner">
-      <span class="sl-kicker">Begynn her</span>
-      <h2 class="sl-h2">Viktige kontrakter og maler</h2>
-      <p class="sl-lead">Seks dokumenter de fleste nordmenn trenger en eller annen gang i livet. Fyll ut og signer — gratis, basert på norsk lov.</p>
-      <div class="sl-grid">
-{kontrakter_html}      </div>
-      <div class="sl-cta-rad">
-        <a href="tjenester/" class="sl-cta sl-cta-primary">Se alle 92 verktøy <span>→</span></a>
+    <a href="tjenester/" class="home-tile">
+      <div class="home-tile-icon" aria-hidden="true">
+        <svg width="46" height="58" viewBox="0 0 56 70" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M6 4h32l10 10v52H6z"/>
+          <path d="M38 4v10h10"/>
+          <line x1="14" y1="26" x2="40" y2="26"/>
+          <line x1="14" y1="33" x2="40" y2="33"/>
+          <line x1="14" y1="40" x2="32" y2="40"/>
+          <path d="M14 54 C20 50, 26 56, 34 53"/>
+        </svg>
       </div>
-    </div>
-  </section>
+      <div class="home-tile-divider" aria-hidden="true"></div>
+      <h2 class="home-tile-title">Lager verktøy og maler</h2>
+      <p class="home-tile-desc">Gratis dokumenter, kontrakter og brev.</p>
+      <span class="home-tile-arrow" aria-hidden="true">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 6h8M7 3l3 3-3 3"/>
+        </svg>
+      </span>
+    </a>
 
-  <section class="home-slide" style="background:var(--bg-alt)">
-    <div class="home-slide-inner">
-      <span class="sl-kicker">Lovsamling</span>
-      <h2 class="sl-h2">{total_paragrafer} paragrafer, forklart</h2>
-      <p class="sl-lead">Lovteksten slik den står — og hva den faktisk betyr. På vanlig norsk.</p>
-      <div class="sl-grid">
-{lover_html}      </div>
-      <div class="sl-cta-rad">
-        <a href="lover/" class="sl-cta sl-cta-primary">Se alle lover <span>→</span></a>
+    <a href="sporsmal/" class="home-tile">
+      <div class="home-tile-icon" aria-hidden="true">
+        <svg width="60" height="52" viewBox="0 0 74 64" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M4 8h66v36h-38l-14 12v-12H4z"/>
+          <circle cx="25" cy="26" r="1.8" fill="currentColor" stroke="none"/>
+          <circle cx="37" cy="26" r="1.8" fill="currentColor" stroke="none"/>
+          <circle cx="49" cy="26" r="1.8" fill="currentColor" stroke="none"/>
+        </svg>
       </div>
-    </div>
-  </section>
+      <div class="home-tile-divider" aria-hidden="true"></div>
+      <h2 class="home-tile-title">Svarer på vanlige spørsmål</h2>
+      <p class="home-tile-desc">Det folk faktisk lurer på.</p>
+      <span class="home-tile-arrow" aria-hidden="true">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 6h8M7 3l3 3-3 3"/>
+        </svg>
+      </span>
+    </a>
 
-  <section class="home-slide">
-    <div class="home-slide-inner">
-      <span class="sl-kicker">Spørsmål</span>
-      <h2 class="sl-h2">Har du et konkret spørsmål?</h2>
-      <p class="sl-lead">Roy svarer på vanlig norsk og peker deg til paragrafen som gjelder. Eller bla i {len(SPORSMAL)} ferdige spørsmål-og-svar.</p>
-      <div class="sl-cta-rad">
-        <a href="sporsmal/" class="sl-cta sl-cta-primary">Bla i spørsmål <span>→</span></a>
-        <a href="#" onclick="document.getElementById('chat-toggle').click();return false;" class="sl-cta sl-cta-ghost">💬 Spør Roy nå</a>
-      </div>
-    </div>
   </section>
-
-{contact_form(depth=0)}
 
 </main>
 
-{site_footer(depth=0)}"""
+<footer class="home-footer">
+  <span>© 2026 Walrus AS</span>
+  <span class="home-footer-links">
+    <a href="om/">Om</a>
+    <a href="personvern/">Personvern</a>
+    <a href="kontakt/">Kontakt</a>
+  </span>
+</footer>
+
+{chat}
+</body>
+</html>"""
+
+
+
 
 
 def render_tjenester_hub():
@@ -6495,6 +6541,13 @@ Sitemap: {SITE_URL}/sitemap.xml
     # CNAME (forteller GitHub Pages om custom domain)
     with open(f"{out}/CNAME", "w", encoding="utf-8") as f:
         f.write("rettsregel.no\n")
+    
+    # Logo-assets (kopieres fra repo-roten — kreves av forsiden som favicon og fallback)
+    src_dir = os.path.dirname(os.path.abspath(__file__))
+    for asset in ("logo.svg", "logo.png"):
+        src_path = os.path.join(src_dir, asset)
+        if os.path.exists(src_path):
+            shutil.copy(src_path, os.path.join(out, asset))
     
     # paragraphs-index.json — kompakt indeks for søk og chatbot
     # Inneholder både paragrafer og spørsmål-artikler
