@@ -1873,8 +1873,7 @@ def site_nav(depth=1, active=None):
       <a href="{prefix}lover/"{cls('lover')}>Lover</a>
       <a href="{prefix}sporsmal/"{cls('sporsmal')}>Spørsmål</a>
       <a href="{prefix}tjenester/"{cls('tjenester')}>Verktøy/maler</a>
-      <a href="{prefix}om/"{cls('om')}>Om</a>
-      <a href="{prefix}om/#kontakt" class="rr-nav-cta">Send inn sak →</a>
+      <a href="{prefix}kontakt/" class="rr-nav-cta">Send inn sak →</a>
     </nav>
   </div>
 </div>
@@ -2608,6 +2607,98 @@ def render_lover_index():
 </html>"""
 
 
+def render_kontakt():
+    """Egen side — kun kontaktskjema. Sender til rettsregel@gmail.com via Formspree."""
+    return f"""{shared_head('Send inn sak | Rettsregel', 'Beskriv saken din, så tar vi kontakt og forteller deg hva du kan gjøre videre.', depth=1, canonical_path='/kontakt/')}
+{site_nav(depth=1)}
+
+<style>
+.kt-page {{
+  max-width: 540px; margin: 0 auto;
+  padding: 96px 32px 104px;
+}}
+.kt-head {{
+  text-align: center;
+  margin-bottom: 48px;
+}}
+.kt-head h1 {{
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  margin: 0 0 16px 0;
+}}
+.kt-head p {{
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0 auto;
+  max-width: 380px;
+}}
+@media (max-width: 720px) {{
+  .kt-page {{ padding: 64px 22px 80px; }}
+}}
+</style>
+
+<main class="kt-page">
+  <div class="kt-head">
+    <h1>Send inn sak</h1>
+    <p>Beskriv kort hva det gjelder. Du trenger ikke bruke juridiske ord.</p>
+  </div>
+
+  <form class="contact-form" id="kontaktskjema" action="https://formspree.io/f/mvzldpwj" method="POST">
+    <div class="form-field">
+      <label for="beskrivelse">Beskriv saken din</label>
+      <textarea id="beskrivelse" name="beskrivelse" placeholder="Skriv kort hva det gjelder." required></textarea>
+    </div>
+    <div class="form-field">
+      <label for="telefon">Telefonnummer</label>
+      <input type="tel" id="telefon" name="telefon" placeholder="12 34 56 78" required>
+    </div>
+    <div class="form-field">
+      <label for="epost">E-post</label>
+      <input type="email" id="epost" name="epost" placeholder="navn@eksempel.no" required>
+    </div>
+    <button type="submit" class="form-submit">
+      Send inn
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <p class="form-note">Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan. Ved å sende godtar du vår <a href="../personvern/">personvernerklæring</a>.</p>
+  </form>
+  <div id="form-success" class="form-success">
+    <h3>Takk!</h3>
+    <p>Vi har mottatt saken din og tar kontakt så snart vi kan.</p>
+  </div>
+</main>
+
+{site_footer(depth=1)}
+
+<script>
+document.getElementById('kontaktskjema').addEventListener('submit', async function(e) {{
+  const form = e.target;
+  e.preventDefault();
+  try {{
+    const res = await fetch(form.action, {{
+      method: 'POST', body: new FormData(form),
+      headers: {{ 'Accept': 'application/json' }}
+    }});
+    if (res.ok) {{
+      form.classList.add('hide');
+      document.getElementById('form-success').classList.add('show');
+    }} else {{
+      alert('Noe gikk galt. Prøv igjen, eller send oss en e-post på rettsregel@gmail.com');
+    }}
+  }} catch (err) {{
+    console.error(err);
+    alert('Noe gikk galt. Prøv igjen, eller send oss en e-post på rettsregel@gmail.com');
+  }}
+}});
+</script>"""
+
+
 def render_personvern():
     """Personvern — visuelt refinet, i stil med om-siden."""
     return f"""{shared_head('Personvern | Rettsregel', 'Personvernerklæring for Rettsregel.no — Walrus AS.', depth=1, canonical_path='/personvern/')}
@@ -2786,7 +2877,8 @@ def render_om():
 
   <div class="om-statements">
     <p class="om-statement">Loven gjelder for alle. Den er skrevet for jurister.</p>
-    <p class="om-statement">Hver paragraf — ordrett, forklart, med eksempler.</p>
+    <p class="om-statement">Vi lager forståelig juridisk innhold — forklaringer av lover, ferdige kontrakter og maler, og svar på vanlige spørsmål.</p>
+    <p class="om-statement">Alt er bygget med moderne språkteknologi og dyp tekstanalyse, som gjør tungt lovspråk om til klar norsk.</p>
   </div>
 
   <div class="om-foot" id="kontakt">
@@ -3117,7 +3209,7 @@ def render_homepage():
 .home-title {{
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(38px, 6.2vw, 76px);
+  font-size: clamp(30px, 4.6vw, 57px);
   line-height: 1.02;
   letter-spacing: -0.03em;
   color: var(--ink);
@@ -3195,7 +3287,7 @@ def render_homepage():
     gap: 56px;
   }}
   .home-title {{
-    font-size: clamp(38px, 11vw, 56px);
+    font-size: clamp(30px, 8.5vw, 42px);
     line-height: 1.04;
   }}
   .home-navlink-title {{ font-size: 21px; }}
@@ -3250,7 +3342,7 @@ def render_homepage():
 
 <footer class="home-foot">
   <div class="home-foot-row">
-    <span>© 2026 Rettsregel</span>
+    <span>© 2026 Walrus AS</span>
     <div class="home-foot-links">
       <a href="personvern/">Personvern</a>
       <a href="om/#kontakt">Kontakt</a>
@@ -6553,6 +6645,11 @@ def build():
     with open(f"{out}/om/index.html", "w", encoding="utf-8") as f:
         f.write(render_om())
     
+    # Kontakt page (kun skjema)
+    os.makedirs(f"{out}/kontakt", exist_ok=True)
+    with open(f"{out}/kontakt/index.html", "w", encoding="utf-8") as f:
+        f.write(render_kontakt())
+    
     # Lover index
     os.makedirs(f"{out}/lover", exist_ok=True)
     with open(f"{out}/lover/index.html", "w", encoding="utf-8") as f:
@@ -6630,6 +6727,7 @@ def build():
         ("/", "1.0"),
         ("/lover/", "0.9"),
         ("/om/", "0.5"),
+        ("/kontakt/", "0.7"),
         ("/personvern/", "0.3"),
     ]
     for lov_name, items in by_lov.items():
