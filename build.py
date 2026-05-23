@@ -54,7 +54,12 @@ try:
 except ImportError:
     _P_TOMTEFESTELOVEN = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN
+try:
+    from paragraphs_ekteskapsloven import PARAGRAPHS as _P_EKTESKAP
+except ImportError:
+    _P_EKTESKAP = []
+
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -2159,7 +2164,7 @@ def render_paragraph_page(p):
         "husleieloven": "Husleieloven", "forbrukerkjopsloven": "Forbrukerkjøpsloven",
         "avhendingslova": "Avhendingslova", "bustadoppforingslova": "Bustadoppføringslova",
         "naboloven": "Naboloven", "navneloven": "Navneloven", "arveloven": "Arveloven",
-        "tomtefesteloven": "Tomtefesteloven",
+        "tomtefesteloven": "Tomtefesteloven", "ekteskapsloven": "Ekteskapsloven",
     }
 
     # ── Eksempler ────────────────────────────────────────────────────────────
@@ -2380,6 +2385,7 @@ def render_lov_index(lov_name, lov_display, paragraphs):
         "arveloven": {"desc": "Hvem som arver hva — pliktdel, testament, uskifte og arvegangsrekkefølge.", "cat": "Arv", "featured": ["2", "29", "50", "8"]},
         "bustadoppforingslova": {"desc": "Når du bygger nytt eller kjøper bolig under oppføring — garanti, dagmulkt og overtakelse.", "cat": "Bolig", "featured": ["12", "14", "18", "30"]},
         "tomtefesteloven": {"desc": "Når du leier tomt til hus du eier — festeavgift, regulering, innløsning og lenging.", "cat": "Bolig", "featured": ["1", "7", "32", "37"]},
+        "ekteskapsloven": {"desc": "Hvem kan gifte seg, og hvordan — vilkår, prøvingsattest, vigsling og ugyldighet.", "cat": "Familie", "featured": ["1", "1a", "1b", "11"]},
     }
     meta = LOV_META.get(lov_name, {"desc": f"{lov_display} paragraf for paragraf, på vanlig norsk.", "cat": "Lov", "featured": []})
 
@@ -2607,6 +2613,7 @@ def render_lover_index():
         # Arv og familie
         "arveloven": ("Arveloven", "arv-og-familie", "Arv, testament og pliktdel."),
         "navneloven": ("Navneloven", "arv-og-familie", "Navnevalg og navneendring."),
+        "ekteskapsloven": ("Ekteskapsloven", "arv-og-familie", "Vilkår for ekteskap, vigsling og ugyldighet."),
     }
 
     # All categories — order matters. Empty ones will be excluded from nav and sections.
@@ -3088,6 +3095,7 @@ def render_sporsmal_page(s):
         "avhendingslova": "Avhendingslova", "navneloven": "Navneloven",
         "arveloven": "Arveloven",
         "tomtefesteloven": "Tomtefesteloven",
+        "ekteskapsloven": "Ekteskapsloven",
     }
 
     KAT_LABEL = {
