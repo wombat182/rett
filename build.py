@@ -2141,120 +2141,221 @@ def paragraf_sort_key(p):
 def render_paragraph_page(p):
     lov_url = p["lov"].replace("ø", "o").replace("æ", "ae").replace("å", "aa")
     title_tag = f'{p["lov_display"]} § {p["number"]} — {p["title"]} | Rettsregel'
-    depth = 3  # /lover/[lov]/[n]/index.html
+    depth = 3
     prefix = "../" * depth
-    
-    # Auto-compute which related paragraphs actually exist
+
     available_set = set()
     for ap in PARAGRAPHS:
         ap_lov_url = ap["lov"].replace("ø", "o").replace("æ", "ae").replace("å", "aa")
         available_set.add(f"{ap_lov_url}/{ap['number']}")
-    
-    # Build sections
+
+    LOV_DISPLAY_MAP = {
+        "angrerettloven": "Angrerettloven", "kjopsloven": "Kjøpsloven",
+        "husleieloven": "Husleieloven", "forbrukerkjopsloven": "Forbrukerkjøpsloven",
+        "avhendingslova": "Avhendingslova", "bustadoppforingslova": "Bustadoppføringslova",
+        "naboloven": "Naboloven", "navneloven": "Navneloven", "arveloven": "Arveloven",
+    }
+
+    # ── Eksempler ────────────────────────────────────────────────────────────
     examples_html = ""
     for ex in p["eksempler"]:
-        examples_html += f'<div class="example"><div class="example-name">{ex["navn"]}</div><p>{ex["tekst"]}</p></div>\n'
-    
-    vanlige_feil_html = '<ul>' + ''.join(f'<li>{vf}</li>' for vf in p["vanlige_feil"]) + '</ul>'
-    
+        examples_html += (f'<div class="lap-ex"><p class="lap-ex-label">Eksempel '
+                          f'<span class="lap-ex-dot">·</span> {ex["navn"]}</p>'
+                          f'<p class="lap-ex-txt">{ex["tekst"]}</p></div>')
+
+    # ── Vanlige feil ───────────────────────────────────────────────────────
+    vanlige_feil_html = '<ul class="lap-list">' + "".join(f"<li>{vf}</li>" for vf in p["vanlige_feil"]) + "</ul>"
+
+    # ── Dumme spørsmål (beholdt) ─────────────────────────────────────────────
     faq_html = ""
     if p["dumme_sporsmal"]:
-        faq_html = '<h2>Dumme spørsmål</h2>\n<div class="faq">\n'
+        faq_items = ""
         for qa in p["dumme_sporsmal"]:
-            faq_html += f'<div class="faq-item">\n<div class="faq-q">{qa["q"]}</div>\n<div class="faq-a">{qa["a"]}</div>\n</div>\n'
-        faq_html += '</div>\n'
-    
-    related_html = '<div class="related-cards">\n'
+            faq_items += f'<div class="lap-faq-item"><p class="lap-faq-q">{qa["q"]}</p><p class="lap-faq-a">{qa["a"]}</p></div>'
+        faq_html = f'<h2 class="lap-h2">Dumme spørsmål</h2><div class="lap-faq">{faq_items}</div>'
+
+    # ── Relaterte (sidebar-rader) ────────────────────────────────────────────
+    related_rows = ""
     for r in p["related"]:
         r_lov_url = r["lov"].replace("ø", "o").replace("æ", "ae").replace("å", "aa")
-        # Auto-detect availability based on actual PARAGRAPHS list
-        is_available = f"{r_lov_url}/{r['paragraf']}" in available_set
-        cls = "related-card" if is_available else "related-card unavailable"
-        href = f'{prefix}lover/{r_lov_url}/{r["paragraf"]}/' if is_available else '#'
-        lov_display_map = {
-            "angrerettloven": "Angrerettloven",
-            "kjopsloven": "Kjøpsloven",
-            "husleieloven": "Husleieloven",
-            "forbrukerkjopsloven": "Forbrukerkjøpsloven",
-            "avhendingslova": "Avhendingslova",
-            "bustadoppforingslova": "Bustadoppføringslova",
-            "haandverkertjenesteloven": "Håndverkertjenesteloven",
-            "pakkereiseloven": "Pakkereiseloven",
-            "ehandelsloven": "Ehandelsloven",
-            "finansavtaleloven": "Finansavtaleloven",
-            "forsikringsavtaleloven": "Forsikringsavtaleloven",
-            "skatteloven": "Skatteloven",
-            "markedsforingsloven": "Markedsføringsloven",
-        }
-        lov_display = lov_display_map.get(r["lov"], r["lov"].capitalize())
-        related_html += f'<a href="{href}" class="{cls}"><div class="related-card-meta">{lov_display} § {r["paragraf"]}</div><div class="related-card-title">{r["tittel"]}</div></a>\n'
-    related_html += '</div>'
-    
-    # Auto-link paragraph references in the prose (depth=3 for paragraph pages)
+        if f"{r_lov_url}/{r['paragraf']}" not in available_set:
+            continue
+        related_rows += (f'<a class="lap-rel-row" href="{prefix}lover/{r_lov_url}/{r["paragraf"]}/">'
+                         f'<span class="lap-rel-num">§ {r["paragraf"]}</span>'
+                         f'<span class="lap-rel-title">{r["tittel"]}</span>'
+                         f'<span class="lap-rel-arrow" aria-hidden="true">&rarr;</span></a>')
+    related_block = ""
+    if related_rows:
+        related_block = (f'<div class="lap-side-block"><p class="lap-side-label">Relaterte paragrafer</p>'
+                         f'<div class="lap-rel">{related_rows}</div>'
+                         f'<a class="lap-side-more" href="{prefix}lover/{lov_url}/">Se alle paragrafer i {p["lov_display"]} &rarr;</a></div>')
+
+    # ── Prosa (auto-lenket) ──────────────────────────────────────────────────
     hva_betyr = auto_link_paragraphs(p["hva_betyr_html"], p["lov"], depth=3)
     hva_bor_du = auto_link_paragraphs(p.get("hva_bor_du_html", ""), p["lov"], depth=3) if p.get("hva_bor_du_html") else ""
-    
-    lov_url = p["lov"].replace("ø", "o").replace("æ", "ae").replace("å", "aa")
+
     canonical = f"/lover/{lov_url}/{p['number']}/"
-    return f"""{shared_head(title_tag, p["description"], depth=3, canonical_path=canonical)}
-{site_nav(depth=3)}
+    head = shared_head(title_tag, p["description"], depth=3, canonical_path=canonical)
+    nav = site_nav(depth=3, active="lover")
+    footer = site_footer(depth=3)
 
-<div class="container">
-  <nav class="breadcrumbs" aria-label="Brødsmuler">
-    <a href="{prefix}">Hjem</a>
-    <span class="sep">/</span>
-    <a href="{prefix}lover/">Lover</a>
-    <span class="sep">/</span>
-    <a href="{prefix}lover/{lov_url}/">{p["lov_display"]}</a>
-    <span class="sep">/</span>
-    <span class="current">§ {p["number"]}</span>
+    STYLE = """<style>
+.lap-page { max-width: 1140px; margin: 0 auto; padding: 32px 48px 40px; }
+
+.lap-crumb { font-family: var(--serif); font-size: 13px; color: var(--ink-mute); margin-bottom: 40px; letter-spacing: 0.01em; }
+.lap-crumb a { color: var(--ink-mute); text-decoration: none; }
+.lap-crumb a:hover { color: var(--ink); }
+.lap-crumb .sep { margin: 0 9px; opacity: 0.45; }
+.lap-crumb .cur { color: var(--accent); }
+
+.lap-layout { display: grid; grid-template-columns: minmax(0, 720px) 300px; gap: 0; justify-content: center; align-items: start; }
+.lap-main { min-width: 0; max-width: 720px; }
+
+/* Header */
+.lap-eyebrow { font-family: var(--serif); font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+.lap-title { font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 3.3vw, 36px); line-height: 1.12; letter-spacing: -0.024em; color: var(--ink); margin: 0 0 18px; }
+.lap-title .num { color: var(--accent); }
+.lap-intro { font-family: var(--serif-prose); font-size: 18px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 44px; }
+
+/* Kort svar — rust venstrelinje, nesten usynlig cream */
+.lap-kort { border-left: 2px solid var(--accent); background: rgba(192,74,38,0.035); padding: 18px 24px; margin: 0 0 48px; border-radius: 0 4px 4px 0; }
+.lap-kort-label { font-family: var(--serif); font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+.lap-kort p { font-family: var(--serif-prose); font-size: 17px; line-height: 1.6; color: var(--ink); margin: 0; }
+
+/* Seksjonsoverskrifter */
+.lap-h2 { font-family: var(--serif); font-weight: 500; font-size: 21px; line-height: 1.2; letter-spacing: -0.018em; color: var(--ink); margin: 48px 0 18px; }
+
+/* Lovtekst — kildetekst, ikke kort */
+.lap-lovtekst { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0; margin: 0; font-family: var(--serif-prose); font-size: 16px; line-height: 1.75; color: var(--ink-soft); }
+.lap-lovtekst p { margin: 0 0 14px; }
+.lap-lovtekst p:last-of-type { margin-bottom: 0; }
+.lap-lovtekst ol, .lap-lovtekst ul { margin: 0 0 14px 22px; }
+.lap-lovtekst li { margin-bottom: 8px; }
+.lap-kilde { display: block; margin-top: 16px; font-family: var(--serif); font-size: 12.5px; color: var(--ink-mute); letter-spacing: 0.01em; }
+
+/* Prosa */
+.lap-prose { font-family: var(--serif-prose); font-size: 18px; line-height: 1.7; color: var(--ink); }
+.lap-prose p { margin: 0 0 18px; }
+.lap-prose p:last-child { margin-bottom: 0; }
+.lap-prose strong { font-weight: 600; color: var(--ink); }
+.lap-prose ul, .lap-prose ol { margin: 18px 0 18px 24px; }
+.lap-prose li { margin-bottom: 9px; }
+.lap-prose h3 { font-family: var(--serif); font-weight: 500; font-size: 17px; color: var(--ink); margin: 28px 0 12px; }
+.lap-prose a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(192,74,38,0.3); }
+.lap-prose a:hover { border-bottom-color: var(--accent); }
+
+/* Eksempler — svak cream, ikke kort */
+.lap-ex { background: rgba(28,23,16,0.025); border-radius: 6px; padding: 18px 22px; margin: 0 0 14px; }
+.lap-ex:last-child { margin-bottom: 0; }
+.lap-ex-label { font-family: var(--serif); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--accent); margin: 0 0 8px; }
+.lap-ex-dot { opacity: 0.55; margin: 0 2px; }
+.lap-ex-txt { font-family: var(--serif-prose); font-size: 16.5px; line-height: 1.6; color: var(--ink); margin: 0; }
+
+/* Vanlige feil — enkel liste */
+.lap-list { font-family: var(--serif-prose); font-size: 17px; line-height: 1.6; color: var(--ink); margin: 0; padding-left: 22px; }
+.lap-list li { margin-bottom: 10px; }
+.lap-list li:last-child { margin-bottom: 0; }
+
+/* Dumme spørsmål */
+.lap-faq { display: flex; flex-direction: column; }
+.lap-faq-item { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.lap-faq-item:last-child { border-bottom: none; }
+.lap-faq-q { font-family: var(--serif); font-weight: 500; font-size: 16.5px; color: var(--ink); margin: 0 0 7px; }
+.lap-faq-a { font-family: var(--serif-prose); font-size: 16.5px; line-height: 1.6; color: var(--ink-soft); margin: 0; }
+
+/* Sidebar */
+.lap-side { padding-left: 48px; border-left: 1px solid var(--line); position: sticky; top: 32px; }
+.lap-side-block { margin-bottom: 40px; }
+.lap-side-block:last-child { margin-bottom: 0; }
+.lap-side-label { font-family: var(--serif); font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+
+.lap-rel { display: flex; flex-direction: column; }
+.lap-rel-row { display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.lap-rel-row:first-child { padding-top: 0; }
+.lap-rel-num { font-family: var(--serif); font-size: 13px; color: var(--accent); white-space: nowrap; }
+.lap-rel-title { font-family: var(--serif); font-size: 14px; color: var(--ink-soft); line-height: 1.35; transition: color .15s; }
+.lap-rel-arrow { font-family: var(--serif); font-size: 14px; color: var(--ink-mute); transition: color .18s, transform .22s; }
+.lap-rel-row:hover .lap-rel-title { color: var(--ink); }
+.lap-rel-row:hover .lap-rel-arrow { color: var(--accent); transform: translateX(4px); }
+.lap-side-more { display: inline-block; margin-top: 16px; font-family: var(--serif); font-size: 13px; color: var(--ink-mute); text-decoration: none; line-height: 1.4; transition: color .15s; }
+.lap-side-more:hover { color: var(--accent); }
+
+.lap-disc { border-left: 2px solid var(--accent); padding-left: 16px; }
+.lap-disc p { font-family: var(--serif); font-size: 13px; line-height: 1.55; color: var(--ink-mute); margin: 0; }
+.lap-disc a { color: var(--accent); text-decoration: none; }
+.lap-disc a:hover { color: var(--accent-deep); }
+
+.lap-cta-title { font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--ink); margin: 0 0 8px; line-height: 1.3; }
+.lap-cta-txt { font-family: var(--serif); font-size: 14px; line-height: 1.5; color: var(--ink-mute); margin: 0 0 12px; }
+.lap-cta-link { font-family: var(--serif); font-size: 15px; color: var(--accent); text-decoration: none; }
+.lap-cta-link:hover { color: var(--accent-deep); }
+
+@media (max-width: 920px) {
+  .lap-page { padding: 26px 22px 48px; }
+  .lap-crumb { margin-bottom: 30px; }
+  .lap-layout { grid-template-columns: 1fr; }
+  .lap-main { max-width: 100%; }
+  .lap-side { padding-left: 0; border-left: none; position: static; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }
+}
+</style>"""
+
+    BODY = f"""{STYLE}
+<main class="lap-page">
+  <nav class="lap-crumb" aria-label="Brødsmuler">
+    <a href="{prefix}">Hjem</a><span class="sep">/</span><a href="{prefix}lover/">Lover</a><span class="sep">/</span><a href="{prefix}lover/{lov_url}/">{p["lov_display"]}</a><span class="sep">/</span><span class="cur">§ {p["number"]}</span>
   </nav>
-</div>
 
-<div class="narrow">
-  <header class="article-header">
-    <div class="article-eyebrow">{p["lov_display"]}</div>
-    <h1 class="article-title"><span class="paragraf-num">§ {p["number"]}</span> — {p["title"]}</h1>
-    <p class="article-description">{p["description"]}</p>
-  </header>
+  <div class="lap-layout">
+    <article class="lap-main">
+      <header>
+        <p class="lap-eyebrow">{p["lov_display"]}</p>
+        <h1 class="lap-title"><span class="num">§ {p["number"]}</span> — {p["title"]}</h1>
+        <p class="lap-intro">{p["description"]}</p>
+      </header>
 
-  <div class="kort-svar">
-    <div class="kort-svar-label">Kort svar</div>
-    <p>{p["kort_svar"]}</p>
+      <div class="lap-kort">
+        <p class="lap-kort-label">Kort svar</p>
+        <p>{p["kort_svar"]}</p>
+      </div>
+
+      <h2 class="lap-h2">Paragraftekst</h2>
+      <div class="lap-lovtekst">{p["paragraftekst"]}<span class="lap-kilde">— Kilde: Lovdata</span></div>
+
+      <h2 class="lap-h2">Hva betyr dette på vanlig norsk?</h2>
+      <div class="lap-prose">{hva_betyr}</div>
+
+      <h2 class="lap-h2">Eksempel{"er" if len(p["eksempler"]) > 1 else ""}</h2>
+      {examples_html}
+
+      <h2 class="lap-h2">Vanlige feil</h2>
+      {vanlige_feil_html}
+
+      <h2 class="lap-h2">Hva bør du gjøre?</h2>
+      <div class="lap-prose">{hva_bor_du}</div>
+
+      {faq_html}
+    </article>
+
+    <aside class="lap-side">
+      {related_block}
+
+      <div class="lap-side-block">
+        <div class="lap-disc">
+          <p>Juridisk informasjon, ikke rådgivning. Innholdet bygger på gjeldende norsk lov. Ved tvil — kontakt advokat. <a href="{prefix}om/">Mer om Rettsregel &rarr;</a></p>
+        </div>
+      </div>
+
+      <div class="lap-side-block">
+        <p class="lap-cta-title">Trenger du hjelp med en konkret sak?</p>
+        <p class="lap-cta-txt">Beskriv kort hva det gjelder, så kan vi peke deg videre.</p>
+        <a class="lap-cta-link" href="{prefix}kontakt/">Send inn sak &rarr;</a>
+      </div>
+    </aside>
   </div>
+</main>
+"""
 
-  <article class="article-body">
-    <h2>Paragraftekst</h2>
-    <div class="lovtekst">{p["paragraftekst"]}<div class="lovtekst-attr">Kilde: Lovdata</div></div>
-
-    <h2>Hva betyr dette på vanlig norsk?</h2>
-    {hva_betyr}
-
-    <h2>Eksempel{"er" if len(p["eksempler"]) > 1 else ""}</h2>
-    {examples_html}
-
-    <h2>Vanlige feil</h2>
-    {vanlige_feil_html}
-
-    <h2>Hva bør du gjøre?</h2>
-    {hva_bor_du}
-
-    {faq_html}
-  </article>
-
-  <div class="related-section">
-    <div class="related-label">Relaterte paragrafer</div>
-    {related_html}
-  </div>
-</div>
-
-
-<div class="innhold-attest">
-  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../../om/">Mer om Rettsregel →</a></span>
-</div>
-
-{contact_form(depth=3)}
-{site_footer(depth=3)}"""
+    return head + "\n" + nav + "\n" + BODY + "\n" + footer
 
 def render_lov_index(lov_name, lov_display, paragraphs):
     """Lov-oversikt — varm, navigerbar innholdsfortegnelse."""
