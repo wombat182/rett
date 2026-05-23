@@ -1424,6 +1424,63 @@ form.contact-form.hide { display: none; }
 @media (max-width: 480px) {
   .av-float-cta { bottom: 16px; right: 16px; padding: 13px 18px 13px 16px; font-size: 13px; gap: 8px; }
 }
+
+/* ---------- Advokatvurdering: skjema + resultatkort ---------- */
+.av-wrap { max-width: 920px; margin: 0 auto; padding: 56px 24px 80px; }
+.av-result-card { display: none; background: linear-gradient(180deg, var(--bg-card) 0%, rgba(253,250,245,.7) 100%); border: 1px solid var(--line-strong); border-radius: 28px; padding: clamp(26px, 4vw, 48px); box-shadow: 0 30px 80px rgba(35,30,25,.12), 0 2px 8px rgba(35,30,25,.04); }
+.av-result-card.show { display: block; }
+.av-result-card.show > * { opacity: 0; animation: avRise .55s cubic-bezier(.22,1,.36,1) forwards; }
+.av-result-card.show > *:nth-child(1) { animation-delay: .02s; }
+.av-result-card.show > *:nth-child(2) { animation-delay: .10s; }
+.av-result-card.show > *:nth-child(3) { animation-delay: .18s; }
+.av-result-card.show > *:nth-child(4) { animation-delay: .26s; }
+.av-result-card.show > *:nth-child(5) { animation-delay: .32s; }
+.av-result-card.show > *:nth-child(6) { animation-delay: .38s; }
+.av-result-card.show > *:nth-child(7) { animation-delay: .44s; }
+@keyframes avRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .av-result-card.show > * { animation: none; opacity: 1; } }
+.av-kicker { font-size: 12px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .18em; margin-bottom: 14px; }
+.av-result-top { display: flex; justify-content: space-between; gap: 22px; align-items: flex-start; margin-bottom: 18px; }
+.av-result-top h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 42px); line-height: 1.04; letter-spacing: -.04em; max-width: 620px; }
+.av-badge { white-space: nowrap; padding: 9px 15px; border-radius: 999px; background: rgba(194,84,52,.10); color: var(--accent-deep); font-size: 12px; font-weight: 700; letter-spacing: .02em; border: 1px solid rgba(192,74,38,.18); display: inline-flex; align-items: center; gap: 7px; }
+.av-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: none; }
+.av-disclaimer { display: flex; gap: 11px; align-items: flex-start; background: var(--bg-alt); border-radius: 14px; padding: 13px 17px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 24px; max-width: 820px; }
+.av-disclaimer::before { content: "\\2696"; font-size: 16px; line-height: 1.3; opacity: .55; flex: none; }
+.av-short-box { position: relative; background: var(--ink); color: #F0E9DD; border-radius: 20px; padding: clamp(26px, 3vw, 36px) clamp(24px, 3vw, 34px) clamp(22px, 3vw, 30px); margin: 0 0 28px; overflow: hidden; }
+.av-short-box::before { content: "\\201C"; position: absolute; top: 44px; right: 24px; font-family: var(--serif-prose); font-size: 110px; line-height: 1; color: rgba(232,196,180,.10); pointer-events: none; }
+.av-short-attr { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; position: relative; }
+.av-short-attr .av-roy-dot { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #FDFAF5; font-family: var(--serif); font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.av-short-attr .av-roy-name { font-size: 13px; font-weight: 700; color: #F0E9DD; letter-spacing: .01em; }
+.av-short-attr .av-roy-role { font-size: 11.5px; color: rgba(240,233,221,.55); }
+.av-short-box p { position: relative; font-family: var(--serif-prose); font-size: clamp(17px, 1.7vw, 21px); line-height: 1.5; letter-spacing: 0; color: #F0E9DD; }
+.av-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0 0 16px; }
+.av-result-section { background: var(--bg-card); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; }
+.av-result-section.good { border-left: 3px solid #4E8060; }
+.av-result-section.warn { border-left: 3px solid #C28A2E; }
+.av-result-section h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .15em; color: var(--ink-mute); margin-bottom: 13px; font-weight: 700; display: flex; align-items: center; gap: 7px; }
+.av-result-section.good h4 { color: #3C6B4E; }
+.av-result-section.warn h4 { color: #9A6B1E; }
+.av-result-section ul, .av-result-section ol { padding-left: 4px; list-style: none; color: var(--ink); font-size: 14.5px; line-height: 1.6; }
+.av-result-section ol { counter-reset: avstep; }
+.av-result-section li { margin-bottom: 10px; padding-left: 24px; position: relative; }
+.av-result-section ul li::before { content: ""; position: absolute; left: 4px; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .4; }
+.av-result-section.good ul li::before { background: #4E8060; opacity: 1; }
+.av-result-section.warn ul li::before { background: #C28A2E; opacity: 1; }
+.av-result-section ol li { counter-increment: avstep; }
+.av-result-section ol li::before { content: counter(avstep); position: absolute; left: 0; top: 1px; width: 19px; height: 19px; border-radius: 50%; background: var(--accent); color: #FDFAF5; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.av-result-section.next { margin-top: 16px; background: rgba(194,84,52,.04); border-color: rgba(192,74,38,.14); }
+.av-result-section.next h4 { color: var(--accent-deep); }
+.av-result-section.missing { margin-top: 16px; background: rgba(78,110,128,.06); border-color: rgba(78,110,128,.18); }
+.av-result-section.missing h4 { color: #44606E; }
+.av-result-section.missing li::before { background: #4E6E80; opacity: 1; }
+.av-result-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+.av-btn { font-family: var(--sans); font-size: 15px; font-weight: 600; padding: 13px 24px; border-radius: 999px; border: 1px solid var(--line-strong); cursor: pointer; text-decoration: none; transition: background .15s ease, transform .15s ease; }
+.av-btn.primary { background: var(--ink); color: var(--bg-card); border-color: var(--ink); }
+.av-btn.primary:hover { transform: translateY(-1px); }
+.av-btn.secondary { background: transparent; color: var(--ink); }
+.av-btn.secondary:hover { background: var(--bg-alt); }
+@media (max-width: 680px) { .av-result-grid { grid-template-columns: 1fr; } .av-result-top { flex-direction: column; } }
+
 /* ---------- Typographic index pages (lover, sporsmal, verktoy) ---------- */
 .tk-page { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
 
@@ -1569,30 +1626,52 @@ form.contact-form.hide { display: none; }
 
 /* ---------- Unified site header (homepage + all subpages) ---------- */
 .rr-header {
-  max-width: 1280px; margin: 0 auto;
-  padding: 32px 48px 0 48px;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 40px;
 }
 .rr-header-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding-bottom: 24px;
+  display: flex; align-items: center; gap: 20px;
+  height: 78px;
   border-bottom: 1px solid var(--line);
   position: relative;
 }
 .rr-logo {
-  display: inline-flex; align-items: center;
+  display: inline-flex; align-items: center; flex: none;
   text-decoration: none; color: var(--ink);
 }
 .rr-logo svg { display: block; }
+.rr-search {
+  flex: 1 1 360px; max-width: 400px;
+  position: relative; display: flex; align-items: center;
+}
+.rr-search input {
+  width: 100%; height: 42px;
+  padding: 0 42px 0 17px;
+  border: 1px solid var(--line-strong); border-radius: 12px;
+  background: var(--bg-card); color: var(--ink);
+  font-family: var(--sans); font-size: 14px;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.rr-search input::placeholder { color: var(--ink-mute); }
+.rr-search input:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(192,74,38,.10);
+}
+.rr-search-icon {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--ink-mute); pointer-events: none; display: flex;
+}
+.rr-search-icon svg { display: block; }
 .rr-nav {
-  display: flex; align-items: center;
-  gap: 48px;
-  font-family: var(--serif);
-  font-size: 15px; font-weight: 400;
-  letter-spacing: 0.002em;
+  flex: none; margin-left: auto; display: flex; align-items: center;
+  gap: 26px;
+  font-family: var(--sans);
+  font-size: 14px; font-weight: 500;
+  letter-spacing: -0.005em;
 }
 .rr-nav a {
   color: var(--ink); text-decoration: none;
-  transition: color 0.18s ease;
+  transition: color 0.15s ease; white-space: nowrap;
 }
 .rr-nav a:hover { color: var(--accent); }
 .rr-nav-cta { color: var(--accent) !important; }
@@ -1603,9 +1682,13 @@ form.contact-form.hide { display: none; }
 .rr-burger { display: none; }
 .rr-burger-toggle { display: none; }
 
-@media (max-width: 760px) {
-  .rr-header { padding: 22px 20px 0 20px; }
-  .rr-header-row { padding-bottom: 18px; }
+@media (max-width: 860px) {
+  .rr-header { padding: 0 20px; }
+  .rr-header-row { flex-wrap: wrap; height: auto; padding: 14px 0; gap: 12px; }
+  .rr-logo { order: 1; flex: none; }
+  .rr-burger { order: 2; margin-left: auto; }
+  .rr-search { order: 3; flex-basis: 100%; max-width: none; }
+  .rr-nav { order: 4; margin-left: 0; }
 
   .rr-burger {
     display: inline-flex; flex-direction: column;
@@ -1617,12 +1700,9 @@ form.contact-form.hide { display: none; }
   }
   .rr-nav {
     display: none;
-    position: absolute; top: calc(100% + 4px); right: 0; left: 0;
-    background: var(--card, #FDFAF5); border: 1px solid var(--line);
-    border-radius: 8px; padding: 22px;
+    width: 100%;
     flex-direction: column; gap: 18px;
     align-items: flex-start;
-    z-index: 50;
   }
   .rr-burger-toggle:checked ~ .rr-nav { display: flex; }
 }
@@ -1759,7 +1839,7 @@ def shared_head(title, description, depth=0, canonical_path=""):
 <body>"""
 
 def site_nav(depth=1, active=None):
-    """Unified header — same look as homepage. Path prefix from depth.
+    """Unified header med søk — brukes på alle sider. Path prefix from depth.
     active: 'lover' | 'sporsmal' | 'tjenester' | 'om' | None
     """
     if depth == 0:
@@ -1773,12 +1853,18 @@ def site_nav(depth=1, active=None):
     return f"""<div class="rr-header">
   <div class="rr-header-row">
     <a href="{prefix or '/'}" class="rr-logo" aria-label="Rettsregel forside">
-      <svg width="42" height="56" viewBox="0 0 135 180" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="30" height="40" viewBox="0 0 135 180" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="10" y1="70" x2="10" y2="170"/>
         <path d="M10 10 L65 10 C105 10 125 30 95 70 L34 70"/>
         <line x1="63" y1="70" x2="103" y2="170"/>
       </svg>
     </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+    </form>
     <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
     <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
       <span></span><span></span><span></span>
@@ -1787,8 +1873,7 @@ def site_nav(depth=1, active=None):
       <a href="{prefix}lover/"{cls('lover')}>Lover</a>
       <a href="{prefix}sporsmal/"{cls('sporsmal')}>Spørsmål</a>
       <a href="{prefix}tjenester/"{cls('tjenester')}>Verktøy/maler</a>
-      <a href="{prefix}advokatvurdering/">Advokatvurdering</a>
-      <a href="{prefix}kontakt/" class="rr-nav-cta">Send inn sak →</a>
+      <a href="{prefix}advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
     </nav>
   </div>
 </div>
@@ -3200,7 +3285,7 @@ def render_homepage():
 }}
 .hp-hero-title {{
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(40px, 5.2vw, 68px); line-height: 1.0;
+  font-size: clamp(34px, 4.2vw, 54px); line-height: 1.02;
   letter-spacing: -0.035em; color: var(--ink); margin: 0;
 }}
 .hp-hero-title .accent {{ color: var(--accent); }}
@@ -3221,7 +3306,7 @@ def render_homepage():
 .hp-stat:first-child {{ border-left: none; }}
 .hp-stat-num {{
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(30px, 3.4vw, 42px); line-height: 1;
+  font-size: clamp(26px, 2.7vw, 34px); line-height: 1;
   color: var(--accent); letter-spacing: -0.02em;
 }}
 .hp-stat-label {{
@@ -3250,14 +3335,20 @@ def render_homepage():
 .hp-cols {{
   display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
   margin-bottom: 80px;
+  align-items: stretch;
 }}
+.hp-col {{ display: flex; flex-direction: column; }}
 
 /* List rows (laws + questions) */
-.hp-list {{ border-top: 1px solid var(--line); margin-top: 14px; }}
+.hp-list {{
+  border-top: 1px solid var(--line); margin-top: 14px;
+  flex: 1; display: flex; flex-direction: column;
+}}
 .hp-row {{
   display: flex; align-items: center; gap: 18px;
   padding: 17px 2px; border-bottom: 1px solid var(--line);
   text-decoration: none; color: inherit;
+  flex: 1;
 }}
 .hp-row-body {{ flex: 1; min-width: 0; }}
 .hp-row-title {{
@@ -3379,60 +3470,40 @@ def render_homepage():
 }}
 </style>
 
-<div class="hp-header">
-  <div class="hp-header-row">
-    <a href="/" class="hp-logo" aria-label="Rettsregel forside">
-      <svg width="34" height="45" viewBox="0 0 135 180" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="10" y1="70" x2="10" y2="170"/>
-        <path d="M10 10 L65 10 C105 10 125 30 95 70 L34 70"/>
-        <line x1="63" y1="70" x2="103" y2="170"/>
-      </svg>
-    </a>
-    <form class="hp-search" role="search" onsubmit="return false;">
-      <input type="search" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk">
-      <span class="hp-search-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </span>
-    </form>
-    <nav class="hp-nav" aria-label="Hovedmeny">
-      <a href="lover/">Lover</a>
-      <a href="sporsmal/">Spørsmål</a>
-      <a href="tjenester/">Verktøy/maler</a>
-      <a href="kontakt/" class="hp-nav-cta">Send inn sak →</a>
-    </nav>
-  </div>
-</div>
+{site_nav(depth=0)}
 
 <main class="hp-main">
 
   <section class="hp-hero">
     <h1 class="hp-hero-title">Norsk rett,<br><span class="accent">på vanlig språk.</span></h1>
     <div class="hp-hero-art" aria-hidden="true">
-      <svg viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.32">
-        <path d="M170 70 C140 52 90 48 56 58 L56 196 C90 186 140 190 170 208"/>
-        <path d="M170 70 C200 52 250 48 284 58 L284 196 C250 186 200 190 170 208"/>
-        <line x1="170" y1="70" x2="170" y2="208"/>
-        <path d="M78 86 C96 80 128 80 150 90" opacity="0.7"/>
-        <path d="M78 112 C96 106 128 106 150 116" opacity="0.7"/>
-        <path d="M78 138 C96 132 122 132 142 140" opacity="0.7"/>
-        <path d="M190 90 C212 80 244 80 262 86" opacity="0.7"/>
-        <path d="M190 116 C212 106 244 106 262 112" opacity="0.7"/>
-        <path d="M198 140 C218 132 244 132 262 138" opacity="0.7"/>
-        <text x="170" y="44" font-family="Palatino, Georgia, serif" font-size="52" fill="var(--accent)" stroke="none" text-anchor="middle" opacity="0.55">§</text>
+      <svg viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M150 150 C120 90 175 55 215 75 C245 50 320 70 305 130 C355 145 330 220 270 205 C260 250 175 245 165 195 C115 200 110 150 150 150 Z" fill="var(--accent-soft)" opacity="0.30"/>
+        <g fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.62">
+          <path d="M190 240 C150 218 100 214 64 224 L64 132 C100 122 150 126 190 148 C230 126 280 122 316 132 L316 224 C280 214 230 218 190 240 Z"/>
+          <line x1="190" y1="148" x2="190" y2="240"/>
+          <path d="M84 152 C108 146 140 148 170 160" opacity="0.7"/>
+          <path d="M84 174 C108 168 140 170 170 182" opacity="0.7"/>
+          <path d="M84 196 C104 191 130 192 158 200" opacity="0.7"/>
+          <path d="M210 160 C240 148 272 146 296 152" opacity="0.7"/>
+          <path d="M210 182 C240 170 272 168 296 174" opacity="0.7"/>
+          <path d="M222 200 C250 192 276 191 296 196" opacity="0.7"/>
+        </g>
+        <path d="M214 56 C200 50 184 56 184 70 C184 82 196 86 206 84 C198 96 192 108 196 122 C200 134 216 138 230 132" fill="none" stroke="var(--accent)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
       </svg>
     </div>
   </section>
 
   <section class="hp-stats" aria-label="Nøkkeltall">
-    <div class="hp-stat"><div class="hp-stat-num">842</div><div class="hp-stat-label">Spørsmål</div></div>
-    <div class="hp-stat"><div class="hp-stat-num">237</div><div class="hp-stat-label">Lover</div></div>
-    <div class="hp-stat"><div class="hp-stat-num">23 451</div><div class="hp-stat-label">Lovparagrafer</div></div>
-    <div class="hp-stat"><div class="hp-stat-num">184</div><div class="hp-stat-label">Verktøy/maler</div></div>
+    <div class="hp-stat"><div class="hp-stat-num">56</div><div class="hp-stat-label">Spørsmål</div></div>
+    <div class="hp-stat"><div class="hp-stat-num">10</div><div class="hp-stat-label">Lover</div></div>
+    <div class="hp-stat"><div class="hp-stat-num">649</div><div class="hp-stat-label">Lovparagrafer</div></div>
+    <div class="hp-stat"><div class="hp-stat-num">91</div><div class="hp-stat-label">Verktøy/maler</div></div>
   </section>
 
   <div class="hp-cols">
 
-    <div>
+    <div class="hp-col">
       <div class="hp-sec-head">
         <h2 class="hp-sec-title">Mest brukte lover</h2>
         <a href="lover/" class="hp-sec-link">Se alle lover →</a>
@@ -3476,7 +3547,7 @@ def render_homepage():
       </div>
     </div>
 
-    <div>
+    <div class="hp-col">
       <div class="hp-sec-head">
         <h2 class="hp-sec-title">Mest leste spørsmål</h2>
         <a href="sporsmal/" class="hp-sec-link">Se alle spørsmål →</a>
@@ -3513,14 +3584,14 @@ def render_homepage():
       <a href="tjenester/" class="hp-sec-link">Se alle verktøy og maler →</a>
     </div>
     <div class="hp-tools">
-      {hp_tool('kontrakter/husleiekontrakt/', 'file-text', 'Leieavtale', 'Enkel mal for leieavtale til bolig og lokale')}
-      {hp_tool('tjenester/arbeid-oppsigelse/', 'log-out', 'Oppsigelsesbrev', 'Mal for oppsigelse av arbeidsforhold')}
-      {hp_tool('tjenester/', 'mail', 'Kravbrev', 'Mal for krav om betaling eller oppgjør')}
-      {hp_tool('tjenester/fullmakt-mal/', 'key', 'Fullmakt', 'Gi noen rett til å handle på dine vegne')}
-      {hp_tool('tjenester/reklamasjon/', 'alert-circle', 'Reklamasjonsbrev', 'Mal for reklamasjon til butikk eller selger')}
-      {hp_tool('kontrakter/arbeidsavtale/', 'briefcase', 'Arbeidsavtale', 'Mal for arbeidsavtale mellom arbeidsgiver og arbeidstaker')}
-      {hp_tool('tjenester/testament-mal/', 'scroll', 'Testament', 'Mal for testament og fordeling av arv')}
-      {hp_tool('kontrakter/samboeravtale/', 'users', 'Samboeravtale', 'Mal for samboeravtale om økonomi og eiendeler')}
+      {hp_tool('kontrakter/husleiekontrakt/', 'home', 'Husleiekontrakt', 'Leieavtale for bolig — klar til å fylle ut')}
+      {hp_tool('tjenester/arbeid-oppsigelse/', 'log-out', 'Oppsigelse av jobb', 'Mal for å si opp arbeidsforholdet ditt')}
+      {hp_tool('tjenester/inkasso/', 'mail', 'Kravbrev', 'Krev betaling for noe noen skylder deg')}
+      {hp_tool('tjenester/reklamasjon/', 'message', 'Reklamasjon', 'Klage på vare eller tjeneste med mangel')}
+      {hp_tool('kontrakter/arbeidsavtale/', 'briefcase', 'Arbeidsavtale', 'Avtale mellom arbeidsgiver og arbeidstaker')}
+      {hp_tool('tjenester/testament-mal/', 'feather', 'Testament', 'Bestem hvordan arven din skal fordeles')}
+      {hp_tool('kontrakter/samboeravtale/', 'users', 'Samboeravtale', 'Avklar økonomi og eiendeler som samboere')}
+      {hp_tool('kontrakter/fremtidsfullmakt/', 'shield', 'Fremtidsfullmakt', 'Bestem hvem som styrer for deg senere i livet')}
     </div>
   </section>
 
@@ -3556,14 +3627,15 @@ def render_homepage():
 def hp_tool(href, icon, title, desc):
     """En verktøy-kort på forsiden."""
     icons = {
-        'file-text': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/>',
+        'home': '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M9.5 21v-6h5v6"/>',
         'log-out': '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
-        'mail': '<rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/>',
-        'key': '<path d="M21 2l-2 2m-7.6 7.6a5 5 0 1 0-7 7 5 5 0 0 0 7-7zm0 0L15 8m0 0l3 3m-3-3l2-2"/>',
-        'alert-circle': '<circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12" y2="16"/>',
+        'mail': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+        'message': '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
         'briefcase': '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
-        'scroll': '<path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/>',
+        'feather': '<path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/>',
         'users': '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+        'shield': '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+        'file-text': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/>',
     }
     path = icons.get(icon, icons['file-text'])
     return f"""<a href="{href}" class="hp-tool">
