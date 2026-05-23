@@ -67,6 +67,7 @@
         <div class="av-result-section good"><h4>Dette taler for saken</h4><ul id="av-pros"></ul></div>
         <div class="av-result-section warn"><h4>Dette kan svekke saken</h4><ul id="av-cons"></ul></div>
       </div>
+      <div class="av-result-section missing" id="av-missing-wrap" style="display:none"><h4>Dette mangler for en bedre vurdering</h4><ul id="av-missing"></ul></div>
       <div class="av-result-section next"><h4>Hva du bør gjøre nå</h4><ol id="av-steps"></ol></div>
       <div class="av-result-actions"><button type="button" class="av-btn primary" id="av-show-send">Send saken til vurdering</button><button type="button" class="av-btn secondary" id="av-back-edit">Endre svar</button></div>
     </div>
@@ -84,9 +85,12 @@
 
 <script>
 (function(){
-  // Sett denne til den publiserte Cloudflare Worker-URL-en når workeren er deployet.
-  // Eksempel: https://rettsregel-case-assessment.dittnavn.workers.dev
+  // ============================================================
+  // 👇 LIM INN CLOUDFLARE WORKER-URL HER NÅR DEN ER DEPLOYET 👇
+  //    Tom = Roy bruker enkel fallback-vurdering (ikke ekte AI).
+  //    Eksempel: "https://advokatvurdering.dittnavn.workers.dev"
   const ASSESSMENT_WORKER_URL = "";
+  // ============================================================
 
   const form = document.getElementById('av-form'), steps = [...document.querySelectorAll('.av-step')], dots = [...document.querySelectorAll('.av-dot')], prev = document.getElementById('av-prev'), next = document.getElementById('av-next'), summary = document.getElementById('av-summary'), result = document.getElementById('av-result'), sendBox = document.getElementById('av-send'), showSend = document.getElementById('av-show-send'), stepNumber = document.getElementById('av-step-number'), progressLabel = document.getElementById('av-progress-label'), backEdit = document.getElementById('av-back-edit'); let current = 0;
   function val(id){ return (document.getElementById(id)?.value || '').trim(); }
@@ -121,6 +125,7 @@
       strengths: Array.isArray(raw.strengths) && raw.strengths.length ? raw.strengths : fallback.strengths,
       weaknesses: Array.isArray(raw.weaknesses) && raw.weaknesses.length ? raw.weaknesses : fallback.weaknesses,
       nextSteps: Array.isArray(raw.nextSteps) && raw.nextSteps.length ? raw.nextSteps : fallback.nextSteps,
+      missingInformation: Array.isArray(raw.missingInformation) ? raw.missingInformation : (Array.isArray(raw.missingInfo) ? raw.missingInfo : []),
       handoffSummary: raw.handoffSummary || fallback.handoffSummary
     };
   }
@@ -143,6 +148,13 @@
     document.getElementById('av-pros').innerHTML = a.strengths.map(x => `<li>${esc(x)}</li>`).join('');
     document.getElementById('av-cons').innerHTML = a.weaknesses.map(x => `<li>${esc(x)}</li>`).join('');
     document.getElementById('av-steps').innerHTML = a.nextSteps.map(x => `<li>${esc(x)}</li>`).join('');
+    var missingWrap = document.getElementById('av-missing-wrap');
+    if (a.missingInformation && a.missingInformation.length) {
+      document.getElementById('av-missing').innerHTML = a.missingInformation.map(x => `<li>${esc(x)}</li>`).join('');
+      missingWrap.style.display = '';
+    } else {
+      missingWrap.style.display = 'none';
+    }
     document.getElementById('av-hidden-assessment').value = JSON.stringify(a, null, 2);
     result.classList.add('show');
     document.getElementById('av-output').scrollIntoView({behavior:'smooth', block:'start'});
