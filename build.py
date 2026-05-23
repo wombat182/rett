@@ -68,7 +68,7 @@ CSS = """
   --bg-card: #FDFAF5;
   --ink: #1C1710;
   --ink-soft: #5C5146;
-  --ink-mute: #9B8E82;
+  --ink-mute: #6B5F52;
   --accent: #C04A26;
   --accent-deep: #A03B1A;
   --accent-soft: #E8C4B4;
@@ -2521,7 +2521,6 @@ def render_lover_index():
 <main class="tk-page">
 
   <section class="tk-hero-compact" id="alle">
-    <p class="tk-hero-label">Lover</p>
     <h1>Finn loven som gjelder deg.</h1>
     <p class="tk-hero-compact-lead">Norske lover forklart på vanlig språk.</p>
   </section>
@@ -2531,7 +2530,7 @@ def render_lover_index():
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
     </span>
     <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter lov, paragraf eller situasjon …" aria-label="Søk i lover">
-    <span class="tk-search-hint">Trykk Enter for å søke</span>
+    <span class="tk-search-hint">Filtreres mens du skriver</span>
   </div>
 
   <nav class="tk-cat-bar" aria-label="Kategorier">
@@ -2610,330 +2609,201 @@ def render_lover_index():
 
 
 def render_personvern():
+    """Personvern — visuelt refinet, i stil med om-siden."""
     return f"""{shared_head('Personvern | Rettsregel', 'Personvernerklæring for Rettsregel.no — Walrus AS.', depth=1, canonical_path='/personvern/')}
 {site_nav(depth=1)}
-<main class="page">
-  <div style="max-width: 740px; padding: 64px 0 80px;">
-    <div class="article-eyebrow">Personvern</div>
-    <h1 class="article-title">Personvernerklæring</h1>
-    <div class="article-body">
-      <p>Rettsregel.no drives av Walrus AS, org.nr. [ORG.NR — fyll inn]. Vi tar personvern på alvor og behandler ikke mer data enn nødvendig.</p>
-      <h2>Hva vi samler inn</h2>
-      <p>Når du sender inn kontaktskjema samler vi inn navn, telefonnummer og e-postadresse. Denne informasjonen brukes utelukkende for å besvare henvendelsen din.</p>
-      <p>Nettstedet bruker ingen tracking-cookies, ingen annonse-nettverk og ingen tredjeparts analyse utover det som er nødvendig for drift.</p>
-      <h2>Tredjeparter</h2>
-      <p>Kontaktskjema behandles via Formspree (formspree.io). Formsprees personvernerklæring gjelder for denne databehandlingen. Vi har databehandleravtale med Formspree.</p>
-      <h2>Dine rettigheter</h2>
-      <p>Du har rett til innsyn, retting og sletting av personopplysninger vi har om deg. Ta kontakt på rettsregel@gmail.com for å utøve disse rettighetene.</p>
-      <h2>Kontakt</h2>
-      <p>Behandlingsansvarlig: Walrus AS · rettsregel@gmail.com</p>
-    </div>
+
+<style>
+.pv-page {{
+  max-width: 680px; margin: 0 auto;
+  padding: 96px 32px 104px;
+}}
+.pv-header {{
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}}
+.pv-eyebrow {{
+  font-family: var(--serif);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 22px 0;
+}}
+.pv-title {{
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  margin: 0;
+}}
+.pv-body {{
+  font-family: var(--serif);
+  font-size: 16.5px;
+  line-height: 1.7;
+  color: var(--ink);
+}}
+.pv-body h2 {{
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 52px 0 18px 0;
+}}
+.pv-body p {{
+  margin: 0 0 18px 0;
+  max-width: 600px;
+}}
+.pv-body p:last-child {{ margin-bottom: 0; }}
+.pv-body a {{
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: color 0.15s ease;
+}}
+.pv-body a:hover {{ color: var(--accent-deep); }}
+
+@media (max-width: 720px) {{
+  .pv-page {{ padding: 64px 22px 80px; }}
+  .pv-header {{ margin-bottom: 44px; padding-bottom: 32px; }}
+  .pv-body h2 {{ margin-top: 44px; }}
+}}
+</style>
+
+<main class="pv-page">
+  <header class="pv-header">
+    <p class="pv-eyebrow">Personvern</p>
+    <h1 class="pv-title">Personvernerklæring</h1>
+  </header>
+
+  <div class="pv-body">
+    <!-- TODO: legg til org.nr når klart: Walrus AS, org.nr. XXX XXX XXX -->
+    <p>Rettsregel.no drives av Walrus AS. Vi behandler ikke mer data enn nødvendig, og selger aldri informasjon videre.</p>
+
+    <h2>Hva vi samler inn</h2>
+    <p>Når du sender inn kontaktskjemaet, lagrer vi navn, telefonnummer og e-postadresse. Det brukes utelukkende til å svare på henvendelsen.</p>
+    <p>Nettstedet bruker ingen sporings-cookies, ingen annonsenettverk og ingen tredjeparts analyse utover det som trengs for ren drift.</p>
+
+    <h2>Tredjeparter</h2>
+    <p>Kontaktskjemaet behandles via Formspree. Deres personvernerklæring gjelder for den databehandlingen, og vi har databehandleravtale med dem.</p>
+
+    <h2>Dine rettigheter</h2>
+    <p>Du har rett til innsyn, retting og sletting av opplysningene vi har om deg. Skriv til <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a> for å bruke rettighetene.</p>
+
+    <h2>Kontakt</h2>
+    <p>Behandlingsansvarlig: Walrus AS · <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a></p>
   </div>
 </main>
+
 {site_footer(depth=1)}"""
 
 
 def render_om():
-    """Om-side i samme Apple-slide-stil som forsiden."""
-    total_paragrafer = len(PARAGRAPHS)
-    total_lover = len(set(p["lov"] for p in PARAGRAPHS))
-    total_sporsmal = len(SPORSMAL)
+    """Om-side v5 — Jony Ive minimal, site-skala."""
+    chat = chat_widget()
 
     return f"""{shared_head(
-        'Om Rettsregel — norske lover på vanlig norsk',
-        'Vi gjør norske lover forståelige — paragraf for paragraf. Bygd av Walrus AS for å gi alle tilgang til hva loven faktisk sier.',
+        'Om Rettsregel',
+        'Norske lover, oversatt til vanlig norsk.',
         depth=1, canonical_path='/om/'
     )}
 {site_nav(depth=1, active='om')}
 
 <style>
-.om-slide {{ padding: 128px 24px; border-bottom: 1px solid var(--line); }}
-.om-slide-inner {{ max-width: 1080px; margin: 0 auto; }}
-.om-slide.tight {{ padding: 96px 24px; }}
-.om-slide.alt {{ background: var(--bg-alt); }}
-
-/* HERO */
-.om-hero {{
-  min-height: calc(75vh - 80px);
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 120px 24px 100px;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-  background: #E8E1D5;
-}}
-.om-hero-inner {{ max-width: 1080px; margin: 0 auto; width: 100%; }}
-.om-kicker {{
-  font-family: var(--sans); font-size: 11px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;
-  color: var(--accent); margin-bottom: 24px; display: block;
-}}
-.om-h1 {{
-  font-family: var(--serif); font-weight: 300;
-  font-size: clamp(32px, 5.6vw, 70px); line-height: 1.05;
-  letter-spacing: -0.016em; margin: 0 0 28px 0; max-width: 920px;
-}}
-.om-h1 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
-.om-lead-hero {{
-  font-family: var(--serif-prose);
-  font-size: clamp(20px, 2.2vw, 26px); line-height: 1.45; color: var(--ink-soft);
-  max-width: 720px; margin: 0; font-weight: 400;
+.om-page {{
+  max-width: 680px; margin: 0 auto;
+  padding: 120px 32px 128px;
+  text-align: center;
 }}
 
-.om-h2 {{
-  font-family: var(--serif); font-weight: 300;
-  font-size: clamp(26px, 3.6vw, 42px); line-height: 1.1;
-  letter-spacing: -0.016em; margin: 0 0 24px 0; max-width: 800px;
+/* Hero — site-skala, samme som tk-hero-compact */
+.om-hero h1 {{
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.14;
+  letter-spacing: -0.024em;
+  color: var(--ink);
+  margin: 0 auto;
+  max-width: 460px;
 }}
-.om-h2 em {{ font-style: italic; color: var(--accent); font-weight: 400; }}
-.om-lead {{
-  font-family: var(--serif-prose);
-  font-size: 19px; color: var(--ink-soft); line-height: 1.55;
-  max-width: 620px; margin: 0 0 56px 0; font-weight: 400;
-}}
+.om-hero h1 em {{ font-style: italic; font-weight: 500; }}
 
-/* STORE TALL */
-.om-stats {{
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1px; background: var(--line);
-  border: 1px solid var(--line); border-radius: 24px; overflow: hidden;
-  margin-top: 8px;
+/* Stille statements — descending hierarki via størrelse + farge */
+.om-statements {{ margin-top: 112px; }}
+.om-statement {{
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 auto;
+  max-width: 420px;
 }}
-.om-stat {{ background: var(--bg-card); padding: 44px 32px; }}
-.om-stat-num {{
-  font-family: var(--serif); font-size: clamp(48px, 6vw, 76px);
-  font-weight: 400; line-height: 1; letter-spacing: -0.028em;
-  color: var(--ink); margin-bottom: 12px;
-  font-variant-numeric: tabular-nums;
-}}
-.om-stat-lbl {{
-  font-family: var(--sans); font-size: 12px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-mute);
-}}
+.om-statement + .om-statement {{ margin-top: 60px; }}
 
-/* PRINSIPP-KORT */
-.om-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }}
-.om-prinsipp {{
-  background: var(--bg-card); border: 1px solid var(--line); border-radius: 24px;
-  padding: 36px 32px; display: flex; flex-direction: column;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+/* Foten — stille kontakt */
+.om-foot {{ margin-top: 112px; }}
+.om-foot-rule {{
+  width: 40px; height: 1px;
+  background: var(--ink-mute);
+  opacity: 0.4;
+  margin: 0 auto 44px;
 }}
-.om-prinsipp:hover {{
-  border-color: var(--accent-soft); transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.04);
-}}
-.om-prinsipp-em {{
-  font-size: 32px; line-height: 1; margin-bottom: 18px;
-  width: 60px; height: 60px;
-  background: linear-gradient(135deg, rgba(177,74,42,0.10), rgba(177,74,42,0.04));
-  border-radius: 16px;
-  display: flex; align-items: center; justify-content: center;
-}}
-.om-prinsipp h3 {{
-  font-family: var(--serif); font-size: 22px; font-weight: 400;
-  letter-spacing: -0.012em; line-height: 1.2; margin: 0 0 10px 0;
-}}
-.om-prinsipp p {{
-  font-family: var(--serif-prose); font-size: 15.5px; line-height: 1.55;
-  color: var(--ink-soft); margin: 0;
-}}
-
-/* QUOTE / LARGE STATEMENT */
-.om-quote {{
-  font-family: var(--serif); font-weight: 300; font-style: italic;
-  font-size: clamp(22px, 3.2vw, 36px); line-height: 1.25;
-  letter-spacing: -0.012em; color: var(--ink);
-  max-width: 900px; margin: 0;
-}}
-.om-quote-attr {{
-  font-family: var(--sans); font-size: 13px; font-weight: 500;
-  color: var(--ink-mute); letter-spacing: 0.04em; margin-top: 32px;
-}}
-
-/* METODE-RAD */
-.om-metode {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }}
-.om-steg {{ background: var(--bg-card); padding: 36px 30px; }}
-.om-steg-tall {{
-  font-family: var(--serif); font-size: 48px; font-weight: 400;
-  line-height: 1; color: var(--accent); margin-bottom: 16px;
-  letter-spacing: -0.02em;
-}}
-.om-steg h4 {{
-  font-family: var(--serif); font-size: 19px; font-weight: 400;
-  letter-spacing: -0.01em; margin: 0 0 8px 0; line-height: 1.25;
-}}
-.om-steg p {{
-  font-family: var(--serif-prose); font-size: 14.5px; line-height: 1.55;
-  color: var(--ink-soft); margin: 0;
-}}
-
-/* INFO-BOKS */
-.om-info-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }}
-.om-info-rad {{ background: var(--bg-card); padding: 32px 30px; }}
-.om-info-lbl {{
-  font-family: var(--sans); font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-mute);
-  margin-bottom: 12px;
-}}
-.om-info-val {{
-  font-family: var(--serif); font-size: 22px; font-weight: 400;
-  letter-spacing: -0.012em; line-height: 1.25; color: var(--ink);
+.om-foot p {{
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--ink-mute);
   margin: 0;
 }}
-.om-info-val a {{ color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color 0.15s; }}
-.om-info-val a:hover {{ border-bottom-color: var(--accent); }}
-
-/* CTA */
-.om-cta-rad {{ display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-top: 48px; }}
-.om-cta {{
-  font-family: var(--sans); font-size: 14.5px; font-weight: 600;
-  text-decoration: none; padding: 14px 28px; border-radius: 100px;
-  transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px;
+.om-foot a {{
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: color 0.15s ease;
 }}
-.om-cta-primary {{ background: var(--ink); color: var(--bg); }}
-.om-cta-primary:hover {{ background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(177,74,42,0.25); }}
-.om-cta-ghost {{ color: var(--ink-soft); border: 1px solid var(--line); }}
-.om-cta-ghost:hover {{ border-color: var(--accent); color: var(--accent); }}
+.om-foot a:hover {{ color: var(--accent-deep); }}
 
-@media (max-width: 700px) {{
-  .om-slide {{ padding: 80px 24px; }}
-  .om-slide.tight {{ padding: 64px 24px; }}
-  .om-hero {{ padding: 80px 24px 60px; min-height: auto; }}
-  .om-prinsipp {{ padding: 28px 24px; border-radius: 20px; }}
-  .om-stats, .om-info-grid, .om-metode {{ border-radius: 20px; }}
-  .om-stat {{ padding: 30px 24px; }}
+@media (max-width: 720px) {{
+  .om-page {{ padding: 80px 22px 88px; }}
+  .om-statements {{ margin-top: 80px; }}
+  .om-statement + .om-statement {{ margin-top: 48px; }}
+  .om-foot {{ margin-top: 80px; }}
 }}
 </style>
 
-<main>
+<main class="om-page">
 
   <section class="om-hero">
-    <div class="om-hero-inner">
-      <span class="om-kicker">Om Rettsregel</span>
-      <h1 class="om-h1">Lover er ikke vanskelige.<br><em>De er bare dårlig forklart.</em></h1>
-      <p class="om-lead-hero">Vi tar lovteksten slik den står og oversetter den til vanlig norsk — paragraf for paragraf. Gratis, uten registrering. Bygd for alle som trenger å vite hva loven faktisk sier.</p>
-    </div>
+    <h1>Norske lover, oversatt til <em>vanlig norsk</em>.</h1>
   </section>
 
-  <section class="om-slide">
-    <div class="om-slide-inner">
-      <span class="om-kicker">Innholdet</span>
-      <h2 class="om-h2">Et helt jus-bibliotek.<br>Oversatt til folkemunne.</h2>
-      <div class="om-stats">
-        <div class="om-stat"><div class="om-stat-num">{total_paragrafer}</div><div class="om-stat-lbl">Paragrafer</div></div>
-        <div class="om-stat"><div class="om-stat-num">{total_lover}</div><div class="om-stat-lbl">Lover</div></div>
-        <div class="om-stat"><div class="om-stat-num">92</div><div class="om-stat-lbl">Verktøy</div></div>
-        <div class="om-stat"><div class="om-stat-num">{total_sporsmal}</div><div class="om-stat-lbl">Spørsmål</div></div>
-      </div>
-    </div>
-  </section>
+  <div class="om-statements">
+    <p class="om-statement">Loven gjelder for alle. Den er skrevet for jurister.</p>
+    <p class="om-statement">Hver paragraf — ordrett, forklart, med eksempler.</p>
+  </div>
 
-  <section class="om-slide alt">
-    <div class="om-slide-inner">
-      <span class="om-kicker">Hvorfor</span>
-      <h2 class="om-h2">For mange faller mellom to stoler</h2>
-      <p class="om-lead">Lovverket gjelder for alle — men er skrevet for jurister. Du skal egentlig kunne lese loven selv. I praksis betyr ord som "<em>rimelig tid</em>", "<em>vesentlig mangel</em>" og "<em>særskilt tilfelle</em>" at de fleste gir opp før de er ferdig med første setning.</p>
-      <blockquote class="om-quote">«Det er ikke nok at loven er gratis. Den må også være forståelig.»</blockquote>
-      <div class="om-quote-attr">— Rettsregels grunntese</div>
-    </div>
-  </section>
-
-  <section class="om-slide">
-    <div class="om-slide-inner">
-      <span class="om-kicker">Slik jobber vi</span>
-      <h2 class="om-h2">Fra lovtekst til hverdagsnorsk</h2>
-      <p class="om-lead">Hver paragraf gjennomgår samme prosess — strukturert, transparent, gjennomtenkt.</p>
-      <div class="om-metode">
-        <div class="om-steg">
-          <div class="om-steg-tall">01</div>
-          <h4>Original</h4>
-          <p>Vi viser deg lovteksten ordrett. Ingen skjult omskriving.</p>
-        </div>
-        <div class="om-steg">
-          <div class="om-steg-tall">02</div>
-          <h4>Oversettelse</h4>
-          <p>Forklart på vanlig norsk — uten å miste det juridisk essensielle.</p>
-        </div>
-        <div class="om-steg">
-          <div class="om-steg-tall">03</div>
-          <h4>Konkret</h4>
-          <p>Hverdagseksempler som viser hvordan paragrafen faktisk slår ut.</p>
-        </div>
-        <div class="om-steg">
-          <div class="om-steg-tall">04</div>
-          <h4>Kontroll</h4>
-          <p>Gjennomgått av jurist før publisering. Oppdateres ved lovendring.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="om-slide alt">
-    <div class="om-slide-inner">
-      <span class="om-kicker">Prinsipper</span>
-      <h2 class="om-h2">Det vi ikke gjør</h2>
-      <p class="om-lead">Like viktig som hva Rettsregel er — er hva Rettsregel ikke er.</p>
-      <div class="om-grid">
-        <div class="om-prinsipp">
-          <div class="om-prinsipp-em">🚫</div>
-          <h3>Ingen registrering</h3>
-          <p>Du trenger ikke konto. Du trenger ikke e-post. Du bare bruker det.</p>
-        </div>
-        <div class="om-prinsipp">
-          <div class="om-prinsipp-em">📭</div>
-          <h3>Ingen reklame</h3>
-          <p>Ingen tracking, ingen ad-nettverk, ingen popups. Bare lov.</p>
-        </div>
-        <div class="om-prinsipp">
-          <div class="om-prinsipp-em">⚖️</div>
-          <h3>Ikke rådgivning</h3>
-          <p>Vi forklarer hva loven sier — men erstatter ikke en advokat ved konkrete saker.</p>
-        </div>
-        <div class="om-prinsipp">
-          <div class="om-prinsipp-em">🤖</div>
-          <h3>Ikke et chatbot-bibliotek</h3>
-          <p>Hver paragraf er menneskelig redigert. Roy er bonus, ikke grunnlaget.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="om-slide">
-    <div class="om-slide-inner">
-      <span class="om-kicker">Bak siden</span>
-      <h2 class="om-h2">Walrus AS</h2>
-      <p class="om-lead">Rettsregel.no driftes av <strong>Walrus AS</strong>, et lite norsk selskap som tror at åpen kunnskap er en samfunnsoppgave. Vi har ingen investorer, ingen sponsoravtaler og ingen lojalitet utenfor brukeren.</p>
-      <div class="om-info-grid">
-        <div class="om-info-rad">
-          <div class="om-info-lbl">Selskap</div>
-          <p class="om-info-val">Walrus AS</p>
-        </div>
-        <div class="om-info-rad">
-          <div class="om-info-lbl">Kontakt</div>
-          <p class="om-info-val"><a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a></p>
-        </div>
-        <div class="om-info-rad">
-          <div class="om-info-lbl">Beliggenhet</div>
-          <p class="om-info-val">Dønna, Nordland</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="om-slide alt">
-    <div class="om-slide-inner">
-      <span class="om-kicker">Kom i gang</span>
-      <h2 class="om-h2">Begynn å bla.</h2>
-      <p class="om-lead">Lovverket er åpent. Du har lov til å vite hva som gjelder.</p>
-      <div class="om-cta-rad">
-        <a href="../tjenester/" class="om-cta om-cta-primary">Se alle 92 verktøy <span>→</span></a>
-        <a href="../lover/" class="om-cta om-cta-ghost">Bla i lovene</a>
-      </div>
-    </div>
-  </section>
+  <div class="om-foot" id="kontakt">
+    <div class="om-foot-rule" aria-hidden="true"></div>
+    <p>
+      <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a><br>
+      Walrus AS
+    </p>
+  </div>
 
 </main>
 
-{site_footer(depth=1)}"""
+{site_footer(depth=1)}
+
+{chat}
+</body>
+</html>"""
 
 
 def render_sporsmal_page(s):
@@ -3141,7 +3011,7 @@ def render_sporsmal_hub():
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
     </span>
     <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter spørsmål, situasjon eller tema …" aria-label="Søk i spørsmål">
-    <span class="tk-search-hint">Trykk Enter for å søke</span>
+    <span class="tk-search-hint">Filtreres mens du skriver</span>
   </div>
 
   <nav class="tk-cat-bar" aria-label="Kategorier">
@@ -3570,7 +3440,7 @@ def render_tjenester_hub():
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
     </span>
     <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter dokument, brev eller situasjon …" aria-label="Søk i verktøy">
-    <span class="tk-search-hint">Trykk Enter for å søke</span>
+    <span class="tk-search-hint">Filtreres mens du skriver</span>
   </div>
 
   <nav class="tk-cat-bar" aria-label="Kategorier">
