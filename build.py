@@ -2257,164 +2257,229 @@ def render_paragraph_page(p):
 {site_footer(depth=3)}"""
 
 def render_lov_index(lov_name, lov_display, paragraphs):
-    """Overview page for a single law — redesignet mai 2026."""
+    """Lov-oversikt — varm, navigerbar innholdsfortegnelse."""
+    import re as _re
     depth = 2
     prefix = "../" * depth
 
-    # Law-specific metadata (description + most important paragraphs)
     LOV_META = {
-        "angrerettloven": {
-            "desc": "Du har 14 dagers angrerett ved netthandel og kjøp utenfor butikk. Her er alle rettighetene dine forklart på vanlig norsk.",
-            "cat": "Forbruk", "featured": ["16", "20"],
-        },
-        "kjopsloven": {
-            "desc": "Kjøpsloven gjelder alle kjøp mellom privatpersoner og bedrifter. Her er reglene om mangel, reklamasjon og heving.",
-            "cat": "Forbruk", "featured": ["17", "32"],
-        },
-        "forbrukerkjopsloven": {
-            "desc": "Forbrukerkjøpsloven gir deg sterke rettigheter når du kjøper varer fra en næringsdrivende. Her er alt du trenger å vite.",
-            "cat": "Forbruk", "featured": ["16", "26"],
-        },
-        "husleieloven": {
-            "desc": "Husleieloven regulerer alle leieforhold for bolig — rettigheter for leietaker og plikter for utleier. Fra depositum til oppsigelse.",
-            "cat": "Bolig", "featured": ["3-5", "9-5"],
-        },
-        "avhendingslova": {
-            "desc": "Avhendingslova regulerer kjøp og salg av bolig, hytte og tomt. Her er reglene om mangler, selgers opplysningsplikt og reklamasjon.",
-            "cat": "Bolig", "featured": ["3-7", "4-19"],
-        },
-        "naboloven": {
-            "desc": "Naboloven setter grenser for hva du kan gjøre på din eiendom. Her er reglene om trær, gjerde, støy, graving og tålegrensen.",
-            "cat": "Bolig", "featured": ["2", "3"],
-        },
-        "navneloven": {
-            "desc": "Navneloven regulerer fornavn, etternavn og navnebytte for deg og familien. Her er reglene forklart.",
-            "cat": "Familie", "featured": ["2", "7"],
-        },
-        "arveloven": {
-            "desc": "Arveloven bestemmer hvem som arver hva. Her er reglene om pliktdel, testament, uskifte og arvegangsrekkefølge.",
-            "cat": "Arv", "featured": ["2", "29"],
-        },
-        "bustadoppforingslova": {
-            "desc": "Bustadoppføringslova beskytter deg når du bygger nytt hus eller kjøper bolig under oppføring. Bankgaranti, dagmulkt og overtakelse forklart.",
-            "cat": "Bolig", "featured": ["12", "14"],
-        },
+        "angrerettloven": {"desc": "Angrerett ved netthandel og kjøp utenfor butikk — frister, unntak og hvordan du går fram.", "cat": "Forbruk", "featured": ["16", "20", "21", "22"]},
+        "kjopsloven": {"desc": "Kjøp mellom private og mellom bedrifter — mangel, reklamasjon, forsinkelse og heving.", "cat": "Forbruk", "featured": ["17", "32", "39", "30"]},
+        "forbrukerkjopsloven": {"desc": "Dine rettigheter når du kjøper varer fra en næringsdrivende — mangel, retting, omlevering og heving.", "cat": "Forbruk", "featured": ["16", "26", "27", "33"]},
+        "husleieloven": {"desc": "Leie av bolig — depositum, vedlikehold, leieforhøyelse, oppsigelse og tilbakelevering.", "cat": "Bolig", "featured": ["3-5", "9-5", "10-2", "2-10", "5-3"]},
+        "avhendingslova": {"desc": "Kjøp og salg av bolig, hytte og tomt — mangler, selgers opplysningsplikt og reklamasjon.", "cat": "Bolig", "featured": ["3-7", "4-19", "3-9", "4-8"]},
+        "naboloven": {"desc": "Grenser for hva naboer kan gjøre — trær, gjerde, støy, graving og tålegrensen.", "cat": "Bolig", "featured": ["2", "3", "6", "10"]},
+        "navneloven": {"desc": "Fornavn, etternavn og navnebytte for deg og familien.", "cat": "Familie", "featured": ["2", "7", "8", "9"]},
+        "arveloven": {"desc": "Hvem som arver hva — pliktdel, testament, uskifte og arvegangsrekkefølge.", "cat": "Arv", "featured": ["2", "29", "50", "8"]},
+        "bustadoppforingslova": {"desc": "Når du bygger nytt eller kjøper bolig under oppføring — garanti, dagmulkt og overtakelse.", "cat": "Bolig", "featured": ["12", "14", "18", "30"]},
     }
-
-    meta = LOV_META.get(lov_name, {
-        "desc": f"{lov_display} forklart paragraf for paragraf på vanlig norsk.",
-        "cat": "Lov", "featured": [],
-    })
+    meta = LOV_META.get(lov_name, {"desc": f"{lov_display} paragraf for paragraf, på vanlig norsk.", "cat": "Lov", "featured": []})
 
     n = len(paragraphs)
-    featured_nums = set(meta.get("featured", []))
     by_num = {p["number"]: p for p in paragraphs}
 
-    # ── Featured cards ───────────────────────────────────────────────────────
-    feat_cards = ""
+    def pkey(num):
+        out = []
+        for part in num.split("-"):
+            m = _re.match(r"(\d+)([a-z]*)", part)
+            out.append((int(m.group(1)), m.group(2)) if m else (0, part))
+        return out
+
+    def excerpt_of(p, lim=92):
+        e = p.get("kort_svar") or p.get("description") or ""
+        e = e.replace("\n", " ").strip()
+        if len(e) > lim:
+            e = e[:lim].rsplit(" ", 1)[0] + "…"
+        return e
+
+    def row_html(p):
+        d = excerpt_of(p)
+        desc = f'<span class="lovx-row-desc">{d}</span>' if d else ""
+        return (f'<a class="lovx-row" href="{prefix}lover/{lov_name}/{p["number"]}/">'
+                f'<span class="lovx-row-num">§ {p["number"]}</span>'
+                f'<span class="lovx-row-body"><span class="lovx-row-title">{p["title"]}</span>{desc}</span>'
+                f'<span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a>')
+
+    chaptered = n > 0 and all("-" in p["number"] for p in paragraphs)
+
+    if chaptered:
+        chaps = {}
+        for p in sorted(paragraphs, key=lambda x: pkey(x["number"])):
+            chaps.setdefault(p["number"].split("-")[0], []).append(p)
+        chap_keys = sorted(chaps, key=lambda k: int(k))
+        main_sections = ""
+        chap_links = ""
+        for k in chap_keys:
+            rows = "".join(row_html(p) for p in chaps[k])
+            main_sections += (f'<section class="lovx-chapter" id="kap-{k}">'
+                              f'<h2 class="lovx-chapter-h">Kapittel {k}</h2>'
+                              f'<div class="lovx-rows">{rows}</div></section>')
+            chap_links += f'<a class="lovx-chap" href="#kap-{k}">Kapittel {k}</a>'
+        innhold_block = (f'<div class="lovx-side-block"><p class="lovx-side-label">Innhold</p>'
+                         f'<nav class="lovx-chaplist">{chap_links}</nav></div>')
+    else:
+        rows = "".join(row_html(p) for p in sorted(paragraphs, key=lambda x: pkey(x["number"])))
+        main_sections = f'<section class="lovx-chapter"><div class="lovx-rows">{rows}</div></section>'
+        innhold_block = ""
+
+    mest_items = ""
     for fn in meta.get("featured", []):
         fp = by_num.get(fn)
         if not fp:
             continue
-        excerpt = fp.get("kort_svar", fp.get("description", ""))
-        if len(excerpt) > 140:
-            excerpt = excerpt[:140].rsplit(" ", 1)[0] + "…"
-        feat_cards += f'''<a href="{prefix}lover/{lov_name}/{fp["number"]}/" class="lov-feat-kort">
-  <div class="lov-feat-num">§ {fp["number"]}</div>
-  <h3 class="lov-feat-tittel">{fp["title"]}</h3>
-  <p class="lov-feat-txt">{excerpt}</p>
-  <div class="lov-feat-cta">Les paragrafen →</div>
-</a>'''
+        mest_items += (f'<a class="lovx-mest-item" href="{prefix}lover/{lov_name}/{fp["number"]}/">'
+                       f'<span class="lovx-mest-num">§ {fp["number"]}</span>'
+                       f'<span class="lovx-mest-title">{fp["title"]}</span></a>')
+    mest_block = ""
+    if mest_items:
+        mest_block = (f'<div class="lovx-side-block"><p class="lovx-side-label">Mest lest</p>'
+                      f'<div class="lovx-mest">{mest_items}</div>'
+                      f'<a class="lovx-side-more" href="#lovx-list">Se alle paragrafer &rarr;</a></div>')
 
-    feat_html = ""
-    if feat_cards:
-        feat_html = f'''<div class="lov-feat-sek">
-  <span class="lov-sek-lbl">Viktigst å kjenne til</span>
-  <div class="lov-feat-grid">{feat_cards}</div>
-</div>'''
+    head = shared_head(
+        f"{lov_display} forklart på vanlig norsk | Rettsregel",
+        meta["desc"], depth=2, canonical_path=f"/lover/{lov_name}/")
+    nav = site_nav(depth=2, active="lover")
+    footer = site_footer(depth=2)
 
-    # ── Paragraph grid ───────────────────────────────────────────────────────
-    grid_html = ""
-    for p in paragraphs:
-        excerpt = p.get("kort_svar", p.get("description", ""))
-        if len(excerpt) > 110:
-            excerpt = excerpt[:110].rsplit(" ", 1)[0] + "…"
-        flagg = "plist-flagg" if p["number"] in featured_nums else ""
-        grid_html += f'''<a href="{prefix}lover/{lov_name}/{p["number"]}/" class="plist-kort {flagg}">
-  <div class="plist-kort-num">§ {p["number"]}</div>
-  <div class="plist-kort-body">
-    <div class="plist-kort-tittel">{p["title"]}</div>
-    {f'<div class="plist-kort-excerpt">{excerpt}</div>' if excerpt else ""}
-  </div>
-  <div class="plist-kort-pil">→</div>
-</a>'''
+    STYLE = """<style>
+.lovx-page { max-width: 1080px; margin: 0 auto; padding: 36px 48px 72px; }
 
-    return f"""{shared_head(f'{lov_display} — Forklart paragraf for paragraf | Rettsregel',
-        f'{meta["desc"]}', depth=2, canonical_path=f'/lover/{lov_name}/')}
-{site_nav(depth=2)}
+.lovx-crumb { font-family: var(--serif); font-size: 13px; color: var(--ink-mute); margin-bottom: 44px; letter-spacing: 0.01em; }
+.lovx-crumb a { color: var(--ink-mute); text-decoration: none; }
+.lovx-crumb a:hover { color: var(--ink); }
+.lovx-crumb .sep { margin: 0 9px; opacity: 0.45; }
+.lovx-crumb .cur { color: var(--accent); }
 
-<div class="container">
-  <nav class="breadcrumbs" aria-label="Brødsmuler">
-    <a href="{prefix}">Hjem</a><span class="sep">/</span>
-    <a href="{prefix}lover/">Lover</a><span class="sep">/</span>
-    <span class="current">{lov_display}</span>
+.lovx-head { margin-bottom: 30px; }
+.lovx-title { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.4vw, 38px); line-height: 1.06; letter-spacing: -0.026em; color: var(--ink); margin: 0 0 16px; }
+.lovx-desc { font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--ink-soft); margin: 0 0 16px; max-width: 580px; }
+.lovx-meta { font-family: var(--serif); font-size: 14px; color: var(--ink-mute); letter-spacing: 0.01em; }
+.lovx-meta .dot { margin: 0 10px; opacity: 0.45; }
+
+.lovx-search-wrap { position: relative; margin-bottom: 4px; }
+.lovx-search { width: 100%; box-sizing: border-box; font-family: var(--serif); font-size: 16px; color: var(--ink); background: transparent; border: none; border-bottom: 1px solid var(--ink); padding: 13px 4px 13px 28px; outline: none; }
+.lovx-search::placeholder { color: var(--ink-mute); }
+.lovx-search:focus { border-bottom-color: var(--accent); }
+.lovx-search-icon { position: absolute; left: 2px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-mute); pointer-events: none; }
+
+.lovx-layout { display: grid; grid-template-columns: 232px 1fr; gap: 0; margin-top: 48px; align-items: start; }
+
+.lovx-side { position: sticky; top: 32px; padding-right: 40px; }
+.lovx-side-block { margin-bottom: 40px; }
+.lovx-side-block:last-child { margin-bottom: 0; }
+.lovx-side-label { font-family: var(--serif); font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+.lovx-chaplist { display: flex; flex-direction: column; }
+.lovx-chap { font-family: var(--serif); font-size: 14.5px; color: var(--ink-soft); text-decoration: none; padding: 7px 0 7px 14px; border-left: 2px solid transparent; line-height: 1.3; transition: color .15s, border-color .15s; }
+.lovx-chap:hover { color: var(--ink); border-left-color: var(--accent); }
+
+.lovx-mest { display: flex; flex-direction: column; }
+.lovx-mest-item { display: block; text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.lovx-mest-item:first-child { padding-top: 0; }
+.lovx-mest-item:last-child { border-bottom: none; }
+.lovx-mest-num { font-family: var(--serif); font-size: 13px; color: var(--accent); }
+.lovx-mest-title { font-family: var(--serif); font-size: 14px; color: var(--ink-soft); display: block; margin-top: 3px; line-height: 1.35; transition: color .15s; }
+.lovx-mest-item:hover .lovx-mest-title { color: var(--ink); }
+.lovx-side-more { display: inline-block; margin-top: 16px; font-family: var(--serif); font-size: 13px; color: var(--ink-mute); text-decoration: none; transition: color .15s; }
+.lovx-side-more:hover { color: var(--accent); }
+
+.lovx-main { min-width: 0; border-left: 1px solid var(--line); padding-left: 48px; }
+.lovx-chapter { margin-bottom: 40px; }
+.lovx-chapter:last-child { margin-bottom: 0; }
+.lovx-chapter-h { font-family: var(--serif); font-weight: 500; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-mute); margin: 0; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+
+.lovx-rows { display: flex; flex-direction: column; }
+.lovx-row { display: grid; grid-template-columns: 60px 1fr 24px; align-items: baseline; gap: 16px; padding: 19px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.lovx-row-num { font-family: var(--serif); font-size: 14px; color: var(--accent); white-space: nowrap; }
+.lovx-row-body { min-width: 0; }
+.lovx-row-title { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.25; letter-spacing: -0.012em; display: block; transition: color .15s; }
+.lovx-row-desc { font-family: var(--serif); font-size: 14.5px; color: var(--ink-mute); line-height: 1.45; margin-top: 5px; display: block; }
+.lovx-row-arrow { font-family: var(--serif); font-size: 17px; color: var(--ink-mute); line-height: 1; text-align: right; transition: color .18s, transform .22s; }
+.lovx-row:hover .lovx-row-arrow { color: var(--accent); transform: translateX(6px); }
+.lovx-row:hover .lovx-row-title { color: var(--ink); }
+
+.lovx-empty { display: none; font-family: var(--serif); font-size: 16px; color: var(--ink-mute); padding: 28px 0; }
+
+.lovx-attest { max-width: 1080px; margin: 56px auto 0; padding: 0 48px; }
+.lovx-attest-inner { border-top: 1px solid var(--line); padding-top: 20px; font-family: var(--serif); font-size: 12.5px; color: var(--ink-mute); line-height: 1.55; max-width: 640px; }
+.lovx-attest-inner a { color: var(--accent); text-decoration: none; }
+.lovx-attest-inner a:hover { color: var(--accent-deep); }
+
+@media (max-width: 860px) {
+  .lovx-page { padding: 26px 22px 56px; }
+  .lovx-crumb { margin-bottom: 32px; }
+  .lovx-layout { grid-template-columns: 1fr; margin-top: 36px; }
+  .lovx-side { position: static; padding-right: 0; margin-bottom: 8px; }
+  .lovx-side-block { margin-bottom: 32px; }
+  .lovx-chaplist { flex-direction: row; overflow-x: auto; gap: 22px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .lovx-chap { border-left: none; padding: 4px 0; white-space: nowrap; }
+  .lovx-chap:hover { border-left: none; }
+  .lovx-main { border-left: none; padding-left: 0; }
+  .lovx-attest { padding: 0 22px; }
+}
+</style>"""
+
+    SCRIPT = """<script>
+(function(){
+  var inp = document.getElementById('lovxSearch');
+  if(!inp) return;
+  var rows = [].slice.call(document.querySelectorAll('.lovx-row'));
+  var chapters = [].slice.call(document.querySelectorAll('.lovx-chapter'));
+  var empty = document.getElementById('lovxEmpty');
+  inp.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var visible = 0;
+    rows.forEach(function(r){
+      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.style.display = m ? '' : 'none';
+      if(m) visible++;
+    });
+    chapters.forEach(function(c){
+      var any = false;
+      var rs = c.querySelectorAll('.lovx-row');
+      for(var i=0;i<rs.length;i++){ if(rs[i].style.display !== 'none'){ any = true; break; } }
+      c.style.display = any ? '' : 'none';
+    });
+    if(empty) empty.style.display = (visible === 0 && q) ? 'block' : 'none';
+  });
+})();
+</script>"""
+
+    BODY = f"""{STYLE}
+<main class="lovx-page">
+  <nav class="lovx-crumb" aria-label="Brødsmuler">
+    <a href="{prefix}">Hjem</a><span class="sep">/</span><a href="{prefix}lover/">Lover</a><span class="sep">/</span><span class="cur">{lov_display}</span>
   </nav>
 
-  <header class="lov-side-hero">
-    <span class="lov-hero-mark">§</span>
-    <h1 class="lov-hero-h1">{lov_display} — <em>forklart</em></h1>
-    <p class="lov-hero-desc">{meta["desc"]}</p>
-    <div class="lov-hero-pills">
-      <span class="lov-hero-pill">📋 {n} paragrafer</span>
-      <span class="lov-hero-pill">📂 {meta["cat"]}</span>
-      <span class="lov-hero-pill">✓ Oppdatert 2026</span>
-    </div>
+  <header class="lovx-head">
+    <h1 class="lovx-title">{lov_display}</h1>
+    <p class="lovx-desc">{meta["desc"]}</p>
+    <p class="lovx-meta">{n} paragrafer<span class="dot">·</span>{meta["cat"]}<span class="dot">·</span>Oppdatert 2026</p>
   </header>
 
-  {feat_html}
-
-  <div class="lov-sok-wrap">
-    <svg class="lov-sok-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-    </svg>
-    <input type="text" class="lov-sok-input" id="lovSok"
-      placeholder="Søk blant {n} paragrafer…" autocomplete="off">
+  <div class="lovx-search-wrap">
+    <svg class="lovx-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="lovx-search" id="lovxSearch" placeholder="Søk i {lov_display} …" autocomplete="off">
   </div>
-  <div class="lov-sok-count" id="lovSokCount">{n} paragrafer</div>
 
-  <div class="plist-grid" id="plistGrid">
-    {grid_html}
-    <div class="plist-ingen" id="plistIngen">Ingen paragrafer matcher søket.</div>
+  <div class="lovx-layout">
+    <aside class="lovx-side">
+      {innhold_block}
+      {mest_block}
+    </aside>
+    <div class="lovx-main" id="lovx-list">
+      {main_sections}
+      <p class="lovx-empty" id="lovxEmpty">Ingen paragrafer matcher søket.</p>
+    </div>
   </div>
+</main>
+
+<div class="lovx-attest">
+  <p class="lovx-attest-inner">Juridisk informasjon, ikke rådgivning. Innholdet bygger på gjeldende norsk lov. Ved en konkret sak — kontakt advokat. <a href="{prefix}om/">Mer om Rettsregel &rarr;</a></p>
 </div>
+"""
 
-<div class="innhold-attest">
-  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
-</div>
-
-<script>
-(function(){{
-  var inp=document.getElementById('lovSok');
-  var items=document.querySelectorAll('.plist-kort');
-  var cnt=document.getElementById('lovSokCount');
-  var ingen=document.getElementById('plistIngen');
-  var total=items.length;
-  inp.addEventListener('input',function(){{
-    var q=this.value.toLowerCase().trim();
-    var vis=0;
-    items.forEach(function(el){{
-      var match=!q||el.textContent.toLowerCase().includes(q);
-      el.classList.toggle('plist-hidden',!match);
-      if(match)vis++;
-    }});
-    cnt.textContent=q?(vis+' av '+total+' paragrafer'):(total+' paragrafer');
-    ingen.classList.toggle('vis',vis===0&&q.length>0);
-  }});
-}})();
-</script>
-
-{contact_form(depth=2)}
-{site_footer(depth=2)}"""
+    return head + "\n" + nav + "\n" + BODY + "\n" + SCRIPT + "\n" + footer
 
 def render_lover_index():
     """Lover-indeks — kompakt header, søk, intent-kategorier, progressive disclosure."""
