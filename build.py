@@ -1398,20 +1398,31 @@ form.contact-form.hide { display: none; }
    Chat widget
    ============================================================ */
 .av-float-cta {
-  position: fixed; bottom: 24px; right: 24px; z-index: 1000;
-  background: var(--accent); color: white;
+  position: fixed; bottom: 26px; right: 26px; z-index: 1000;
+  background: var(--accent); color: #FDFAF5;
   border: none; border-radius: 999px;
-  padding: 14px 22px; font-family: var(--sans);
-  font-size: 15px; font-weight: 600; text-decoration: none;
-  box-shadow: 0 4px 16px rgba(31,26,20,0.18);
-  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
-  display: inline-flex; align-items: center; gap: 8px;
+  padding: 15px 24px 15px 20px; font-family: var(--sans);
+  font-size: 15px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none;
+  box-shadow: 0 6px 22px rgba(192,74,38,0.32), 0 2px 6px rgba(31,26,20,0.12);
+  transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease, background .2s ease;
+  display: inline-flex; align-items: center; gap: 10px;
+  animation: avCtaIn .5s cubic-bezier(.34,1.56,.64,1) .4s both;
 }
-.av-float-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(31,26,20,0.22); background: #A8451F; color: white; }
-.av-float-cta:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
-.av-float-cta .av-float-cta-icon { font-size: 17px; line-height: 1; }
+.av-float-cta::before {
+  content: ""; width: 9px; height: 9px; border-radius: 50%;
+  background: #FDFAF5; flex: none;
+  box-shadow: 0 0 0 0 rgba(253,250,245,0.7);
+  animation: avPulse 2.4s ease-out infinite;
+}
+.av-float-cta:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 30px rgba(192,74,38,0.42), 0 3px 8px rgba(31,26,20,0.16); background: var(--accent-deep); color: #FDFAF5; }
+.av-float-cta:active { transform: translateY(-1px) scale(.99); }
+.av-float-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.av-float-cta .av-float-cta-icon { display: none; }
+@keyframes avCtaIn { from { opacity: 0; transform: translateY(20px) scale(.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes avPulse { 0% { box-shadow: 0 0 0 0 rgba(253,250,245,0.6); } 70% { box-shadow: 0 0 0 7px rgba(253,250,245,0); } 100% { box-shadow: 0 0 0 0 rgba(253,250,245,0); } }
+@media (prefers-reduced-motion: reduce) { .av-float-cta, .av-float-cta::before { animation: none; } }
 @media (max-width: 480px) {
-  .av-float-cta { bottom: 16px; right: 16px; padding: 12px 18px; font-size: 13px; }
+  .av-float-cta { bottom: 16px; right: 16px; padding: 13px 18px 13px 16px; font-size: 13px; gap: 8px; }
 }
 /* ---------- Typographic index pages (lover, sporsmal, verktoy) ---------- */
 .tk-page { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
@@ -1786,9 +1797,8 @@ def site_nav(depth=1, active=None):
 def chat_widget():
     """Returns a floating CTA button linking to the guided case assessment (advokatvurdering)."""
     return """<!-- Rettsregel advokatvurdering CTA -->
-<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Få en gratis advokatvurdering">
-  <span class="av-float-cta-icon">⚖️</span>
-  <span>Få en gratis advokatvurdering</span>
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
 </a>"""
 
 def site_footer(depth=0):
