@@ -3090,7 +3090,7 @@ def render_sporsmal_hub():
 
 
 def render_homepage():
-    """Forside — editorial, minimal: spørsmål + tre rader."""
+    """Forside — editorial venstre/høyre-splitt."""
     chat = chat_widget()
 
     return f"""{shared_head(
@@ -3101,69 +3101,78 @@ def render_homepage():
 <style>
 .home-body {{ background: var(--bg); }}
 
-/* Header — generøs, hairline under */
-/* Main */
 .home-main {{
-  max-width: 1280px; margin: 0 auto;
-  padding: 140px 48px 80px 48px;
+  max-width: 1240px; margin: 0 auto;
+  padding: 132px 48px 96px 48px;
 }}
 
-.home-question {{
+.home-hero {{
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 96px;
+  align-items: center;
+}}
+
+/* Venstre — heading */
+.home-title {{
   font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(24px, 3vw, 34px);
-  line-height: 1.08;
-  letter-spacing: -0.022em;
+  font-weight: 400;
+  font-size: clamp(38px, 6.2vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
   color: var(--ink);
-  margin: 0 0 96px 0;
+  margin: 0;
 }}
 
-.home-rows {{
-  margin: 0;
+/* Høyre — navigasjon */
+.home-nav {{
   border-top: 1px solid var(--line);
 }}
-.home-rowlink {{
-  display: grid;
-  grid-template-columns: 1fr 1.2fr auto;
-  align-items: baseline;
-  gap: 40px;
-  padding: 40px 0;
+.home-navlink {{
+  display: block;
+  padding: 26px 0;
   border-bottom: 1px solid var(--line);
   text-decoration: none;
   color: inherit;
-  transition: padding 0.2s ease;
 }}
-.home-rowlink:hover .home-rowlink-arrow {{
-  color: var(--accent);
-  transform: translateX(6px);
+.home-navlink-head {{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
 }}
-.home-rowlink:hover .home-rowlink-title {{ color: var(--ink); }}
-.home-rowlink-title {{
+.home-navlink-title {{
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(18px, 1.8vw, 22px);
+  font-size: 22px;
   letter-spacing: -0.018em;
   color: var(--ink);
   line-height: 1.1;
 }}
-.home-rowlink-desc {{
+.home-navlink-arrow {{
   font-family: var(--serif);
-  font-size: clamp(15px, 1.3vw, 18px);
+  font-size: 20px;
+  color: var(--ink-mute);
+  line-height: 1;
+  transition: color 0.18s ease, transform 0.22s ease;
+}}
+.home-navlink:hover .home-navlink-arrow {{
+  color: var(--accent);
+  transform: translateX(6px);
+}}
+.home-navlink-desc {{
+  font-family: var(--serif);
+  font-size: 15.5px;
   color: var(--ink-soft);
   line-height: 1.45;
   letter-spacing: 0.003em;
-}}
-.home-rowlink-arrow {{
-  font-family: var(--serif);
-  font-size: 22px;
-  color: var(--ink-mute);
-  transition: color 0.18s ease, transform 0.22s ease;
-  line-height: 1;
+  margin-top: 7px;
+  max-width: 360px;
 }}
 
 /* Footer */
 .home-foot {{
-  max-width: 1280px; margin: 0 auto;
+  max-width: 1240px; margin: 0 auto;
   padding: 64px 48px 36px 48px;
 }}
 .home-foot-row {{
@@ -3179,25 +3188,17 @@ def render_homepage():
 .home-foot a {{ color: var(--ink-mute); text-decoration: none; }}
 .home-foot a:hover {{ color: var(--ink); }}
 
-/* Mobile hamburger toggle */
-@media (max-width: 760px) {{
-      /* Hamburger */
-        .home-burger-toggle:checked ~   .home-main {{ padding: 64px 22px 40px 22px; }}
-  .home-question {{ margin-bottom: 56px; font-size: clamp(28px, 7vw, 36px); }}
-
-  .home-rowlink {{
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    gap: 6px 16px;
-    padding: 26px 0;
+@media (max-width: 860px) {{
+  .home-main {{ padding: 72px 22px 48px 22px; }}
+  .home-hero {{
+    grid-template-columns: 1fr;
+    gap: 56px;
   }}
-  .home-rowlink-title {{ grid-column: 1; grid-row: 1; font-size: 22px; }}
-  .home-rowlink-desc {{ grid-column: 1; grid-row: 2; font-size: 15px; }}
-  .home-rowlink-arrow {{
-    grid-column: 2; grid-row: 1 / span 2;
-    align-self: center;
+  .home-title {{
+    font-size: clamp(38px, 11vw, 56px);
+    line-height: 1.04;
   }}
-
+  .home-navlink-title {{ font-size: 21px; }}
   .home-foot {{ padding: 40px 22px 28px 22px; }}
   .home-foot-row {{
     flex-direction: column; gap: 14px; align-items: flex-start;
@@ -3211,27 +3212,37 @@ def render_homepage():
 
 <main class="home-main">
 
-  <h1 class="home-question">Hva trenger du hjelp med?</h1>
+  <div class="home-hero">
 
-  <div class="home-rows" role="list">
+    <h1 class="home-title">Norsk rett,<br>på vanlig språk.</h1>
 
-    <a href="lover/" class="home-rowlink" role="listitem">
-      <span class="home-rowlink-title">Lovparagrafer</span>
-      <span class="home-rowlink-desc">Norske lover, paragraf for paragraf.</span>
-      <span class="home-rowlink-arrow" aria-hidden="true">→</span>
-    </a>
+    <nav class="home-nav" aria-label="Hovedseksjoner">
 
-    <a href="tjenester/" class="home-rowlink" role="listitem">
-      <span class="home-rowlink-title">Verktøy og maler</span>
-      <span class="home-rowlink-desc">Dokumenter, kontrakter og brev.</span>
-      <span class="home-rowlink-arrow" aria-hidden="true">→</span>
-    </a>
+      <a href="lover/" class="home-navlink">
+        <span class="home-navlink-head">
+          <span class="home-navlink-title">Lovparagrafer</span>
+          <span class="home-navlink-arrow" aria-hidden="true">→</span>
+        </span>
+        <span class="home-navlink-desc">Norske lover, paragraf for paragraf.</span>
+      </a>
 
-    <a href="sporsmal/" class="home-rowlink" role="listitem">
-      <span class="home-rowlink-title">Vanlige spørsmål</span>
-      <span class="home-rowlink-desc">Korte svar på juridiske problemer.</span>
-      <span class="home-rowlink-arrow" aria-hidden="true">→</span>
-    </a>
+      <a href="tjenester/" class="home-navlink">
+        <span class="home-navlink-head">
+          <span class="home-navlink-title">Verktøy og maler</span>
+          <span class="home-navlink-arrow" aria-hidden="true">→</span>
+        </span>
+        <span class="home-navlink-desc">Dokumenter, kontrakter og brev.</span>
+      </a>
+
+      <a href="sporsmal/" class="home-navlink">
+        <span class="home-navlink-head">
+          <span class="home-navlink-title">Vanlige spørsmål</span>
+          <span class="home-navlink-arrow" aria-hidden="true">→</span>
+        </span>
+        <span class="home-navlink-desc">Korte svar på juridiske problemer.</span>
+      </a>
+
+    </nav>
 
   </div>
 
@@ -3250,15 +3261,6 @@ def render_homepage():
 {chat}
 </body>
 </html>"""
-
-
-
-
-
-
-
-
-
 
 
 def render_tjenester_hub():
