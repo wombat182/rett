@@ -12,6 +12,10 @@
 <link rel="stylesheet" href="../styles.css">
 <style>
 .va-shell { max-width: 600px; margin: 0 auto; padding: 80px 24px 120px; min-height: 60vh; }
+.va-intro { display: flex; gap: 13px; align-items: flex-start; background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin-bottom: 36px; }
+.va-intro-dot { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #FDFAF5; font-family: var(--serif); font-size: 16px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex: none; }
+.va-intro p { font-family: var(--sans); font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); margin: 0; }
+.va-intro strong { color: var(--ink); font-weight: 700; }
 .va-progress { height: 2px; background: var(--line); border-radius: 2px; margin-bottom: 64px; overflow: hidden; }
 .va-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 20%; transition: width .5s cubic-bezier(.22,1,.36,1); }
 .va-step { display: none; animation: vaIn .45s cubic-bezier(.22,1,.36,1); }
@@ -28,13 +32,14 @@
   padding: 16px 18px; transition: border-color .15s ease, box-shadow .15s ease;
 }
 .va-input:focus, .va-select:focus, .va-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(192,74,38,.10); }
+.va-input:hover, .va-select:hover, .va-textarea:hover { border-color: var(--ink-mute); }
 .va-textarea { min-height: 160px; resize: vertical; line-height: 1.55; }
-.va-select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B5F52' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 18px center; padding-right: 44px; }
-.va-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.va-option { display: flex; align-items: center; gap: 11px; padding: 15px 17px; border: 1px solid var(--line-strong); border-radius: 14px; cursor: pointer; font-family: var(--sans); font-size: 15px; color: var(--ink); transition: border-color .15s ease, background .15s ease; }
-.va-option:hover { border-color: var(--accent-soft); }
-.va-option input { accent-color: var(--accent); width: 18px; height: 18px; flex: none; }
-.va-option:has(input:checked) { border-color: var(--accent); background: rgba(192,74,38,.05); }
+.va-select { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23C04A26' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 18px center; padding-right: 48px; }
+.va-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.va-option { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; cursor: pointer; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink); transition: border-color .18s ease, background .18s ease, box-shadow .18s ease; }
+.va-option:hover { border-color: var(--accent-soft); box-shadow: 0 2px 10px rgba(35,30,25,.04); }
+.va-option input { accent-color: var(--accent); width: 19px; height: 19px; flex: none; cursor: pointer; }
+.va-option:has(input:checked) { border-color: var(--accent); background: rgba(192,74,38,.06); box-shadow: 0 2px 12px rgba(192,74,38,.10); }
 .va-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 44px; }
 .va-back { font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-mute); background: none; border: none; cursor: pointer; padding: 8px 0; transition: color .15s ease; }
 .va-back:hover { color: var(--ink); }
@@ -46,7 +51,13 @@
   transition: transform .15s ease, background .15s ease;
 }
 .va-next:hover { transform: translateY(-1px); background: #2A2018; }
-.va-next:disabled { opacity: .55; cursor: default; transform: none; }
+.va-next:disabled { opacity: 1; cursor: default; transform: none; background: var(--accent); }
+.va-next.thinking { background: var(--accent); }
+.va-thinking-dots { display: inline-flex; gap: 4px; align-items: center; }
+.va-thinking-dots span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: vaDot 1.2s ease-in-out infinite; }
+.va-thinking-dots span:nth-child(2) { animation-delay: .2s; }
+.va-thinking-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes vaDot { 0%, 60%, 100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
 .va-next svg { display: block; }
 .va-result { display: none; animation: vaIn .5s cubic-bezier(.22,1,.36,1); }
 .va-result.show { display: block; }
@@ -82,6 +93,9 @@
 .va-consent { display: flex; align-items: flex-start; gap: 11px; font-family: var(--sans); font-size: 14px; color: var(--ink-soft); line-height: 1.5; margin: 20px 0; }
 .va-consent input { accent-color: var(--accent); margin-top: 3px; flex: none; }
 .va-success { display: none; text-align: center; padding: 40px 0; }
+.va-fineprint { font-family: var(--sans); font-size: 12px; line-height: 1.5; color: var(--ink-mute); margin: 14px 2px 0; }
+.va-fineprint a { color: var(--ink-soft); text-decoration: underline; }
+.va-fineprint a:hover { color: var(--accent); }
 .va-success.show { display: block; }
 .va-success h3 { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--ink); margin: 0 0 10px; }
 .va-success p { font-family: var(--sans); font-size: 16px; color: var(--ink-soft); }
@@ -101,6 +115,11 @@
     <input type="hidden" name="type" value="Advokatvurdering">
     <input type="hidden" id="av-hidden-summary" name="sammendrag">
     <input type="hidden" id="av-hidden-assessment" name="forelopig_vurdering">
+
+    <div class="va-intro">
+      <span class="va-intro-dot">R</span>
+      <p>Hei, jeg er <strong>Roy</strong> — Rettsregels AI-assistent. Svar på noen korte spørsmål, så gir jeg deg en foreløpig vurdering av saken din. Det tar ett minutt.</p>
+    </div>
 
     <div class="va-progress" aria-hidden="true"><div class="va-progress-fill" id="va-fill"></div></div>
 
@@ -187,7 +206,7 @@
       <span class="va-roy-dot">R</span>
       <div>
         <div class="va-roy-name">Roy</div>
-        <div class="va-roy-role">AI-assistent hos Rettsregel</div>
+        <div class="va-roy-role">Rettsregels AI-assistent · gir en foreløpig vurdering, ikke endelig juridisk råd</div>
       </div>
     </div>
     <div class="va-badge" id="av-badge">Bør vurderes manuelt</div>
@@ -230,6 +249,7 @@
       </div>
       <label class="va-consent"><input type="checkbox" id="av-consent"> <span>Jeg samtykker til at Rettsregel behandler opplysningene for å vurdere saken og ta kontakt.</span></label>
       <button type="button" class="va-cta primary" id="av-send-btn">Send inn saken</button>
+      <p class="va-fineprint">Når du sender saken godtar du at Rettsregel lagrer og behandler opplysningene du oppgir for å vurdere henvendelsen og kontakte deg. Vi deler ikke opplysningene med andre. Les mer i <a href="../personvern/">personvernerklæringen</a>.</p>
     </div>
 
     <div class="va-success" id="av-success">
@@ -326,7 +346,8 @@
   async function assess(){
     const d = data();
     next.disabled = true;
-    next.textContent = 'Roy ser på saken …';
+    next.classList.add('thinking');
+    next.innerHTML = 'Roy ser på saken <span class="va-thinking-dots"><span></span><span></span><span></span></span>';
     try {
       renderAssessment(await getAssessment(d), d);
     } catch(e) {
@@ -335,6 +356,7 @@
       renderAssessment(a, d);
     } finally {
       next.disabled = false;
+      next.classList.remove('thinking');
     }
   }
 
