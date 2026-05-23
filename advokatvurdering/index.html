@@ -84,15 +84,87 @@
 
 <script>
 (function(){
+  // Sett denne til den publiserte Cloudflare Worker-URL-en når workeren er deployet.
+  // Eksempel: https://rettsregel-case-assessment.dittnavn.workers.dev
+  const ASSESSMENT_WORKER_URL = "";
+
   const form = document.getElementById('av-form'), steps = [...document.querySelectorAll('.av-step')], dots = [...document.querySelectorAll('.av-dot')], prev = document.getElementById('av-prev'), next = document.getElementById('av-next'), summary = document.getElementById('av-summary'), result = document.getElementById('av-result'), sendBox = document.getElementById('av-send'), showSend = document.getElementById('av-show-send'), stepNumber = document.getElementById('av-step-number'), progressLabel = document.getElementById('av-progress-label'), backEdit = document.getElementById('av-back-edit'); let current = 0;
   function val(id){ return (document.getElementById(id)?.value || '').trim(); }
   function docs(){ return [...form.querySelectorAll('input[name="dokumentasjon"]:checked')].map(x => x.value); }
   function data(){ return { kategori: val('category'), beskrivelse: val('description'), tidspunkt: val('when'), motpart: val('counterparty'), maal: val('goal'), dokumentasjon: docs(), navn: val('name'), epost: val('email'), telefon: val('phone') }; }
-  function esc(str){ return String(str).replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s])); }
+  function esc(str){ return String(str || '').replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s])); }
   function renderSummary(){ const d = data(); const items = [['Kategori', d.kategori || 'Ikke valgt'], ['Mål', d.maal || 'Ikke valgt'], ['Tidspunkt', d.tidspunkt || 'Ikke fylt ut'], ['Motpart', d.motpart || 'Ikke valgt'], ['Dokumentasjon', d.dokumentasjon.length ? d.dokumentasjon.join(', ') : 'Ikke valgt'], ['Beskrivelse', d.beskrivelse ? d.beskrivelse.slice(0, 180) + (d.beskrivelse.length > 180 ? '…' : '') : 'Ikke fylt ut']]; summary.innerHTML = items.map(([k,v]) => `<div class="av-summary-item"><strong>${k}</strong>${esc(v)}</div>`).join(''); document.getElementById('av-hidden-summary').value = JSON.stringify(d, null, 2); }
   function showStep(i){ current = Math.max(0, Math.min(i, steps.length-1)); steps.forEach((s, idx) => s.classList.toggle('active', idx === current)); dots.forEach((d, idx) => d.classList.toggle('done', idx <= current)); prev.disabled = current === 0; next.textContent = current === steps.length-1 ? 'Lag foreløpig vurdering' : 'Neste'; stepNumber.textContent = String(current + 1); progressLabel.textContent = Math.round(((current + 1) / steps.length) * 100) + ' %'; renderSummary(); }
   function validStep(){ for (const el of [...steps[current].querySelectorAll('[required]')]) { if (!el.checkValidity()) { el.reportValidity(); return false; } } return true; }
-  function assess(){ const d = data(); const hasDocs = d.dokumentasjon.length && !d.dokumentasjon.includes('Ingen foreløpig'); const urgentWords = /oppsigelse|frist|inkasso|forliksråd|retten|nams|utkastelse|varsel/i.test(d.beskrivelse + ' ' + d.maal); let short = `Saken ser foreløpig ut til å gjelde ${d.kategori.toLowerCase()}. Basert på det du har skrevet kan det være grunnlag for å se nærmere på saken, særlig hvis du kan dokumentere hva som er avtalt og hva som har skjedd.`; if (!hasDocs) short += ' Dokumentasjon ser ut til å være det viktigste svake punktet akkurat nå.'; if (urgentWords) short += ' Det kan også være en frist eller et pågående krav her, så du bør ikke vente lenge.'; const pros = []; if (hasDocs) pros.push('Du oppgir at du har dokumentasjon som kan støtte forklaringen din.'); if (d.tidspunkt) pros.push('Du har angitt tidspunkt, som gjør det lettere å vurdere frister.'); if (d.beskrivelse.length > 120) pros.push('Beskrivelsen gir nok informasjon til en første sortering av saken.'); if (!pros.length) pros.push('Saken er beskrevet nok til at den kan sorteres videre, men mer dokumentasjon bør innhentes.'); const cons = []; if (!hasDocs) cons.push('Det er uklart hvilken dokumentasjon som finnes.'); if (d.beskrivelse.length < 120) cons.push('Beskrivelsen er kort. En advokat vil trolig trenge flere detaljer.'); cons.push('Motpartens versjon og eventuelle avtaler er ikke vurdert her.'); const stepsNow = ['Samle kontrakter, kvitteringer, meldinger, bilder og krav/varsler.', 'Skriv ned en kort tidslinje med datoer og hva som skjedde.', 'Ikke ring motparten alene hvis saken er konfliktfylt. Svar skriftlig.', 'Send saken videre hvis du ønsker at noen skal se konkret på dokumentene.']; document.getElementById('av-short').textContent = short; document.getElementById('av-pros').innerHTML = pros.map(x => `<li>${esc(x)}</li>`).join(''); document.getElementById('av-cons').innerHTML = cons.map(x => `<li>${esc(x)}</li>`).join(''); document.getElementById('av-steps').innerHTML = stepsNow.map(x => `<li>${esc(x)}</li>`).join(''); document.getElementById('av-hidden-assessment').value = ['FORELØPIG VURDERING', short, 'Taler for: ' + pros.join(' | '), 'Kan svekke: ' + cons.join(' | '), 'Neste steg: ' + stepsNow.join(' | ')].join('\n\n'); result.classList.add('show'); document.getElementById('av-output').scrollIntoView({behavior:'smooth', block:'start'}); }
+
+  function fallbackAssessment(d){
+    const hasDocs = d.dokumentasjon.length && !d.dokumentasjon.includes('Ingen foreløpig');
+    const urgentWords = /oppsigelse|frist|inkasso|forliksråd|retten|nams|utkastelse|varsel/i.test(d.beskrivelse + ' ' + d.maal);
+    let shortAssessment = `Saken ser foreløpig ut til å gjelde ${String(d.kategori || 'et juridisk spørsmål').toLowerCase()}. Basert på det du har skrevet kan det være grunnlag for å se nærmere på saken, særlig hvis du kan dokumentere hva som er avtalt og hva som har skjedd.`;
+    if (!hasDocs) shortAssessment += ' Dokumentasjon ser ut til å være det viktigste svake punktet akkurat nå.';
+    if (urgentWords) shortAssessment += ' Det kan også være en frist eller et pågående krav her, så du bør ikke vente lenge.';
+    return {
+      badge: urgentWords ? 'Kan haste' : 'Bør vurderes manuelt',
+      shortAssessment,
+      strengths: [hasDocs ? 'Du oppgir at du har dokumentasjon som kan støtte forklaringen din.' : 'Saken er beskrevet nok til at den kan sorteres videre.', d.tidspunkt ? 'Du har angitt tidspunkt, som gjør det lettere å vurdere frister.' : 'Du har forklart hovedproblemet.'],
+      weaknesses: [!hasDocs ? 'Det er uklart hvilken dokumentasjon som finnes.' : 'Dokumentene er ikke gjennomgått i denne foreløpige vurderingen.', 'Motpartens versjon og eventuelle avtaler er ikke vurdert her.'],
+      nextSteps: ['Samle kontrakter, kvitteringer, meldinger, bilder og krav/varsler.', 'Skriv ned en kort tidslinje med datoer og hva som skjedde.', 'Ikke ring motparten alene hvis saken er konfliktfylt. Svar skriftlig.', 'Send saken videre hvis du ønsker at noen skal se konkret på dokumentene.'],
+      handoffSummary: shortAssessment
+    };
+  }
+
+  function normalizeAssessment(raw, d){
+    const fallback = fallbackAssessment(d);
+    return {
+      badge: raw.badge || raw.recommendationLabel || fallback.badge,
+      shortAssessment: raw.shortAssessment || raw.kortVurdering || fallback.shortAssessment,
+      strengths: Array.isArray(raw.strengths) && raw.strengths.length ? raw.strengths : fallback.strengths,
+      weaknesses: Array.isArray(raw.weaknesses) && raw.weaknesses.length ? raw.weaknesses : fallback.weaknesses,
+      nextSteps: Array.isArray(raw.nextSteps) && raw.nextSteps.length ? raw.nextSteps : fallback.nextSteps,
+      handoffSummary: raw.handoffSummary || fallback.handoffSummary
+    };
+  }
+
+  async function getAssessment(d){
+    if (!ASSESSMENT_WORKER_URL) return fallbackAssessment(d);
+    const response = await fetch(ASSESSMENT_WORKER_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(d)
+    });
+    if (!response.ok) throw new Error('Kunne ikke hente vurdering');
+    const json = await response.json();
+    return normalizeAssessment(json, d);
+  }
+
+  function renderAssessment(a){
+    document.getElementById('av-badge').textContent = a.badge;
+    document.getElementById('av-short').textContent = a.shortAssessment;
+    document.getElementById('av-pros').innerHTML = a.strengths.map(x => `<li>${esc(x)}</li>`).join('');
+    document.getElementById('av-cons').innerHTML = a.weaknesses.map(x => `<li>${esc(x)}</li>`).join('');
+    document.getElementById('av-steps').innerHTML = a.nextSteps.map(x => `<li>${esc(x)}</li>`).join('');
+    document.getElementById('av-hidden-assessment').value = JSON.stringify(a, null, 2);
+    result.classList.add('show');
+    document.getElementById('av-output').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  async function assess(){
+    const d = data();
+    next.disabled = true;
+    next.textContent = 'Lager vurdering …';
+    try {
+      const assessment = await getAssessment(d);
+      renderAssessment(assessment);
+    } catch (e) {
+      const assessment = fallbackAssessment(d);
+      assessment.shortAssessment = 'Vi fikk ikke kontakt med AI-vurderingen akkurat nå. Her er en enkel foreløpig sortering basert på svarene dine: ' + assessment.shortAssessment;
+      renderAssessment(assessment);
+    } finally {
+      next.disabled = false;
+      next.textContent = 'Lag foreløpig vurdering';
+    }
+  }
+
   next.addEventListener('click', () => { if (!validStep()) return; if (current < steps.length-1) showStep(current+1); else assess(); }); prev.addEventListener('click', () => showStep(current-1)); showSend.addEventListener('click', () => { sendBox.classList.add('show'); sendBox.scrollIntoView({behavior:'smooth', block:'start'}); }); backEdit.addEventListener('click', () => { document.getElementById('av-form').scrollIntoView({behavior:'smooth', block:'start'}); }); form.addEventListener('input', renderSummary); form.addEventListener('change', renderSummary); showStep(0);
 })();
 </script>

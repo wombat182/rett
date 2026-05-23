@@ -2258,3 +2258,1352 @@ Er du pÃ¥rÃ¸rende til en sterkt dementskadet person i et ekteskap som Ã¥pe
 **Hvorfor avgjÃ¸r domstolen dette og ikke Statsforvalteren?**
 
 Fordi det er et massivt inngrep i folks frihet Ã¥ skille noen uten at de kanskje en gang klarer Ã¥ uttrykke om de vil det selv eller ikke. Et slikt dramatisk inngrep krever den dype bevisfÃ¸rselen og rettssikkerheten bare en dommer i en rettssal kan gi.
+---
+title: Ekteskapsloven § 29 — Slik behandler Statsforvalteren skilsmissen din
+slug: ekteskapsloven-29
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 29
+paragraf: 29
+kategori: familie
+description: Når du søker om skilsmisse på nett, starter et byråkrati i bakgrunnen. Denne regelen gir deg tre ukers klagefrist på vedtaket, og lar deg trekke det for retten hvis det er feil.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-20, ekteskapsloven-21, ekteskapsloven-25]
+---
+
+## Kort svar
+
+Paragrafen beskriver hvordan saksbehandlingen skjer når du søker om separasjon eller skilsmisse hos Statsforvalteren. Den viktigste regelen for deg: Du har nøyaktig tre ukers klagefrist fra den dagen du mottok vedtaket.
+
+## Paragraftekst
+
+> Når begjæring om separasjon eller skilsmisse er mottatt hos statsforvalteren, kan partene innkalles til et personlig møte dersom statsforvalteren mener det er hensiktsmessig.
+>
+> Departementet gir nærmere forskrifter om hvilke opplysninger statsforvalteren bør kreve før det blir gitt separasjon eller skilsmisse.
+>
+> Statsforvalterens vedtak om separasjon etter § 20 og skilsmisse etter § 21 og § 22, jf § 27, skal forkynnes for partene hvis de ikke har frafalt forkynnelse. Fristen for klage over vedtaket er tre uker, og regnes for hver av partene fra det tidspunktet vedtaket blir forkynt for ham eller henne. Begjæring om oppreisning for oversittelse av klagefristen må settes fram så snart som mulig, og senest én måned etter at klagefristen løp ut. Er det gitt skilsmissebevilling, er oppreisning utelukket dersom en av ektefellene i mellomtiden har inngått nytt ekteskap. Partene kan på forhånd frafalle retten til å påklage vedtaket.
+>
+> Søksmål om gyldigheten av et vedtak om separasjon eller skilsmisse kan bare reises når parten fullt ut har benyttet sin adgang til å klage over avgjørelsen. Søksmål må reises innen én måned etter det endelige vedtaket ble forkynt for parten, og må rettes både mot staten ved departementet og den andre ektefellen. Er det gitt skilsmissebevilling, kan det ikke gis oppfriskning for oversittelse av søksmålsfristen dersom den ene av ektefellene i mellomtiden har inngått nytt ekteskap.
+
+## Hva betyr dette på vanlig norsk?
+
+Søker du om skilsmisse, er det stort sett en papirprosess. Men i noen sjeldne tilfeller der papirene er uklare eller mistenkelige, kan Statsforvalteren be dere komme til et fysisk møte for å oppklare situasjonen.
+
+**Klagefristen:**
+Det viktigste her er de tre ukene. Får du et vedtak om separasjon eller skilsmisse i innboksen din, har du akkurat tre uker på deg til å klage hvis du mener vedtaket er lovstridig. En vanlig grunn til å klage er for eksempel at du mener signaturen din var forfalsket, eller at dere slett ikke har bodd fra hverandre i to år, slik partneren din har påstått.
+
+Misser du disse tre ukene, er det normalt for sent. Du kan be om "oppreisning" (et ekstra forsøk) hvis du lå på sykehus og ikke kunne svare, men absolutt senest en måned etter at de første tre ukene gikk ut.
+
+**Hva om saksbehandleren gjorde feil?**
+Hvis du klaget på Statsforvalterens vedtak, og staten fortsatt sier at skilsmissen gjelder, men du er helt uenig og mener de har misforstått loven totalt — da sier loven i siste avsnitt at du kan reise sak (saksøke staten og eksen din) i domstolen. Du har da én måned på deg. Men hvis eksen din i mellomtiden har rukket å gifte seg lovlig på nytt med en annen, stenger loven døren.
+
+## Eksempel: Ola
+
+Ola og kona har kranglet, og kona søker om skilsmisse direkte fordi hun mener de har brutt samlivet i to år (§ 22). Hun sender en fake adressehistorikk til staten. Ola får vedtaket om skilsmisse på Altinn den 1. oktober. Ola vet at dette er løgn — de dro på sydentur sammen og delte seng i februar! Han skriver en formell klage den 10. oktober (godt innenfor fristen på tre uker), og legger ved bildene fra ferien og kontoutskrifter. Siden han overholdt fristen i § 29, sjekker klageorganet saken. De innser at samlivet ikke var brutt i to år, og de kjenner skilsmissen ugyldig.
+
+## Vanlige feil
+
+- Å logge inn i Altinn, se vedtaket, bli sint, og vente i fem uker med å svare (da er skilsmissen endelig uansett hva du mener om det)
+- Å gå rett til advokat for å saksøke staten før du har prøvd den vanlige klageretten først (loven krever at du klager til Statsforvalteren først)
+- Å glemme å svare skriftlig — en sint telefon er ikke en formell klage
+
+## Hva bør du gjøre?
+
+For de fleste som er enige om å skilles, er § 29 uproblematisk. Vil dere fremskynde prosessen for å bli helt fri raskere, kan dere sende en kort melding til saksbehandleren hos Statsforvalteren og skrive: "Vi frafaller klageretten på vedtaket". Da stempler de vedtaket som "endelig" med en gang, og dere slipper å vente ut de tre ukene.
+
+## Dumme spørsmål
+
+**Hvorfor forkynnes det? Betyr det at lensmannen kommer på døra?**
+
+At et vedtak "forkynnes" betyr bare at staten må ha bevis for at du faktisk har sett det. I gamle dager kunne det bety at politiet eller lensmannen leverte det på døra for at du skulle kvittere. I dag betyr forkynnelse som regel at du får en lenke i SMS/e-post og må logge inn i Altinn for å "kvittere" for mottaket.
+
+---
+title: Ekteskapsloven § 29 a — Folkeregisteret deler informasjon med Statsforvalteren
+slug: ekteskapsloven-29a
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 29a
+paragraf: 29 a
+kategori: familie
+description: Statsforvalteren trenger ikke å be om din tillatelse for å dobbeltsjekke informasjonen du oppgir om skilsmisse. De kan hente alt de trenger direkte fra Folkeregisteret.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-29, ekteskapsloven-22]
+---
+
+## Kort svar
+
+Denne paragrafen fjerner taushetsplikten Folkeregisteret (Skatteetaten) vanligvis har. Den gjør at Statsforvalteren lovlig kan sjekke folkeregisteropplysningene dine for å verifisere at det du skriver på skilsmissesøknaden stemmer.
+
+## Paragraftekst
+
+> Folkeregistermyndigheten skal, uten hinder av taushetsplikt, gi de opplysningene som er nødvendige for utførelsen av oppgaver etter loven her.
+
+## Hva betyr dette på vanlig norsk?
+
+Staten bryr seg mye om personvern. Normalt har Skatteetaten streng taushetsplikt om hvor du bor og hvem du er gift med. Men når du søker Statsforvalteren om separasjon eller skilsmisse, må saksbehandleren vite om det du hevder er sant.
+
+Spesielt når du krever skilsmisse fordi dere har bodd fra hverandre i to år (§ 22), er det avgjørende å se historikken for adresser. Paragraf 29 a gir Statsforvalteren direkte lov til å hente ut navn, fødselsnummer og full adressehistorikk direkte fra Folkeregisteret. Taushetsplikten viker for at staten skal få gjort skilsmissejobben sin.
+
+Du trenger ikke å bry deg om dette i praksis — det er kun en lovhjemmel som sørger for at IT-systemene til staten har lov til å snakke sammen.
+
+---
+title: Ekteskapsloven § 30 — Hvem kan reise en ekteskapssak i retten?
+slug: ekteskapsloven-30
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 30
+paragraf: 30
+kategori: familie
+description: En rettssak for å oppløse et ekteskap er en dyp privat sak. Det er bare du selv eller partneren din som har lov til å saksøke hverandre. (Og iblant Statsforvalteren).
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-27, ekteskapsloven-30a]
+---
+
+## Kort svar
+
+En ekteskapssak for domstolen (som ugyldighet, tvang, eller manglende bevis på samlivsbrudd) kan som hovedregel bare reises av paret selv. Familiemedlemmer, naboer eller sinte svigermødre har ikke rett til å dra ekteskapet ditt for retten for å få dere skilt.
+
+## Paragraftekst
+
+> Ekteskapssak kan bare reises for domstolene av en av ektefellene selv eller av den som påstår å være eller ikke være saksøktes ektefelle, når ikke annet framgår av loven.
+>
+> Reises slik sak av den ene ektefellen, stevnes den andre ektefellen som motpart. Blir saken reist av andre, stevnes begge ektefeller som motparter. Blir sak om oppløsning reist på grunn av tidligere ekteskap, skal også ektefellen i det tidligere ekteskapet stevnes som motpart.
+
+## Hva betyr dette på vanlig norsk?
+
+Rettssystemet har en streng regel om "partsevne og søksmålskompetanse". Man kan bare gå til sak hvis man faktisk er innblandet i problemet. Paragraf 30 slår fast dette for ekteskap: Det er bare de to som har ring på fingeren (og den som nekter for at de giftet seg) som har lov til å be dommeren om å oppløse, skille eller erklære ekteskapet ugyldig.
+
+Loven forklarer også hvem som blir "motparten" i retten. Vil du ut av tvangsekteskapet? Da saksøker du mannen eller kona di. Gifter partneren din seg med en annen person (bigami)? Da kan Statsforvalteren (eller du) reise sak — da blir både "din" mann og den "nye" kona stevnet som motparter i samme sak.
+
+## Eksempel: Nysgjerrige naboer
+
+Ingrid mistenker sterkt at naboen ble giftet bort mot sin vilje, og prøver å reise en ekteskapssak for å kjenne naboens ekteskap ugyldig. Tingretten vil umiddelbart avvise saken. Ingrid er verken gift med mannen eller med naboen. Hun mangler retten til å saksøke etter § 30. Bare naboen selv kan reise sak (eller Statsforvalteren kan gripe inn).
+
+## Vanlige feil
+
+- Svigerforeldre som prøver å saksøke svigersønnen i datterens sted for å få ekteskapet oppløst (de har ikke lov, datteren må saksøke)
+
+## Dumme spørsmål
+
+**Hva hvis partneren min er forhindret fra å reise sak fordi de ligger i koma?**
+
+Da går man over i reglene om vergemål. En oppnevnt verge kan i ekstreme tilfeller, når det er "påtrengende nødvendig", reise en ekteskapssak på vegne av den som ligger i koma, jf. reglene i § 28.
+
+---
+title: Ekteskapsloven § 30 a — Når staten (Statsforvalteren) blir part i saken din
+slug: ekteskapsloven-30a
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 30a
+paragraf: 30 a
+kategori: familie
+description: Gjelder ekteskapssaken din noe alvorlig, som om ekteskapet er ulovlig? Da har Statsforvalteren lov til å blande seg inn i rettssaken og tale statens sak.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-30, ekteskapsloven-24, ekteskapsloven-16a]
+---
+
+## Kort svar
+
+Selv om det er dere som saksøker hverandre i retten om et ekteskap er gyldig eller ikke, kan dommeren gi beskjed til Statsforvalteren. Statsforvalteren kan da tre inn i rettssalen som en part for å sikre at loven ikke brytes.
+
+## Paragraftekst
+
+> I saker som anlegges for å få dom for at et ekteskap består eller ikke består, eller for å få det oppløst etter § 24 første ledd, kan statsforvalteren opptre for å ivareta offentlige interesser. Retten skal gi ham melding om saken. Statsforvalteren kan erklære anke og begjære gjenåpning.
+
+## Hva betyr dette på vanlig norsk?
+
+Når en sak handler om *eksistensen* av ekteskapet — at en part påstår at bryllupet var en bløff, at de var under 18 år, at det var bigami (§ 24), eller tvang — da sier staten at dette er for viktig til at privatpersonene kan avtale seg imellom.
+
+Staten vil ikke at to personer skal sitte i retten og lyve til dommeren for å få et ugyldig ekteskap godkjent for å jukse til seg oppholdstillatelse. Derfor har dommeren plikt til å varsle Statsforvalteren om slike saker. Statsforvalteren kan da sende en advokat til rettssalen, stille spørsmål, føre egne bevis, og i verste fall anke saken.
+
+Dette gjelder *ikke* for en vanlig krangel om hvem som skal ha huset, eller en standard skilsmissesak for overgrep (§ 23). Det gjelder bare når man diskuterer om et ekteskap juridisk eksisterer og er lovlig inngått.
+
+---
+title: Ekteskapsloven § 30 b — Kan saken din gå for en norsk domstol (Jurisdiksjon)?
+slug: ekteskapsloven-30b
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 30b
+paragraf: 30 b
+kategori: familie
+description: Norske domstoler behandler ikke ekteskapssaker fra hele verden. Paret må ha en viss tilknytning til Norge, for eksempel at en bor her eller er norsk borger.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-30c, ekteskapsloven-30]
+---
+
+## Kort svar
+
+Før en norsk dommer kan ta en ekteskapssak, må retten ha myndighet ("verneting/jurisdiksjon"). Det får de vanligvis hvis en av dere bor i Norge, har bodd her lenge nylig, eller er norsk statsborger og ikke kan reise sak i utlandet.
+
+## Paragraftekst
+
+> Dersom ikke annet er fastsatt ved overenskomst med fremmed stat, kan ekteskapssak reises ved norsk domstol:
+> a. når saksøkte har bopel i riket, eller
+> b. når saksøkeren har bopel i riket og enten har bodd her de siste to år eller tidligere har hatt bopel her, eller
+> c. når saksøkeren er norsk statsborger og det godtgjøres at hun eller han på grunn av sitt statsborgerskap ikke vil kunne reise sak i det land hvor vedkommende har bopel, eller
+> d. når begge ektefeller er norske statsborgere og saksøkte ikke motsetter seg at saken reises for norsk domstol, eller
+> e. når det blir søkt om skilsmisse på grunnlag av separasjon som er meddelt her i riket, i løpet av de fem foregående år, eller
+> f. når ekteskap er inngått her i landet, og det godtgjøres at saksøkeren ikke vil kunne reise sak i det landet han eller hun er statsborger eller har bopel.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 30 b løser internasjonale floker. Saken kan bare føres i Norge hvis ett av punktene a–f treffer:
+
+**(a)** Du kan saksøke en person (saksøkt) som bor i Norge, uansett hvor du selv bor. **(b)** Du (saksøker) bor i Norge nå, og har enten vært her sammenhengende i to år, eller har bodd her en lengre periode tidligere. **(c)** Du er norsk i utlandet, men landet du bor i vil ikke behandle skilsmissen fordi du ikke er borger der. Da ordner Norge det for deg som et nødnett. **(d)** Begge er norske, bor i utlandet, men synes det er enklere å føre saken hjemme, og dere er enige om det. **(e)** Dere fikk separasjonsbevilling av Statsforvalteren mens dere bodde i Norge, og vil nå bruke den til å få norsk skilsmisse. **(f)** Dere giftet dere i Norge på en ferie, dro hjem, men nå får dere ikke annullert det ulovlige bryllupet i hjemlandet fordi de nekter å ta saken.
+
+## Eksempel: Jens og Sara
+
+Jens og Sara var norske statsborgere som giftet seg og bodde i Oslo. I fjor flyttet Sara til Spania, mens Jens ble i Norge. Sara vil nå ha ekteskapet kjent ugyldig. Siden Jens (saksøkte) bor i Norge (bokstav a), har Sara full rett til å saksøke ham i Oslo tingrett.
+
+## Hva bør du gjøre?
+
+Hvis du og partneren din er nordmenn bosatt i Norge, kan du ignorere denne paragrafen fullstendig. Er derimot en av dere bosatt i utlandet, bør du sjekke bokstavene a–f før du betaler en advokat for å ta ut stevning i en norsk domstol.
+
+---
+title: Ekteskapsloven § 30 c — Hvilken domstol i Norge skal du saksøke i (Verneting)?
+slug: ekteskapsloven-30c
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 30c
+paragraf: 30 c
+kategori: familie
+description: Når du skal reise en ekteskapssak, kan du ikke velge tingrett fritt. Saken skal som hovedregel sendes til den domstolen som dekker området der motparten din bor.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-30b, ekteskapsloven-27]
+---
+
+## Kort svar
+
+Når en ekteskapssak skal for retten (for eksempel ved ugyldighet eller tvangsoppløsning), skal saken sendes til tingretten der motparten (saksøkte) har folkeregistrert adresse. Bor de i utlandet, er det deres siste felles adresse som gjelder.
+
+## Paragraftekst
+
+> Ekteskapssak anlegges ved saksøktes alminnelige verneting etter tvisteloven § 4-4. I saker som nevnt i § 30 annet ledd annet og tredje punktum, anlegges saken der en av de saksøkte har alminnelig verneting.
+>
+> Hører saken under norsk domsmyndighet uten at saksøkte har alminnelig verneting i riket, kan saken anlegges i den rettskrets hvor ektefellene hadde sin siste felles bopel eller saksøkeren har bopel.
+>
+> Blir saken reist av statsforvalteren, kan den anlegges i den rettskretsen hvor en av ektefellene kunne vært saksøkt.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 30 b sjekket om dere i det hele tatt fikk lov til å bruke en norsk domstol. Paragraf 30 c er neste steg: Hvilken by i Norge skal behandle saken?
+
+Hovedregelen er: Man skal saksøkes der man bor. Hvis du bor i Tromsø og vil saksøke mannen din som har flyttet til Kristiansand, må du sende stevningen til Agder tingrett. Du "reiser til ham" juridisk sett. Hva hvis mannen din har flyttet til Thailand og ikke har verneting i Norge? Da tillater andre avsnitt at du saksøker ham der dere sist bodde sammen som par, eller rett og slett der du bor i dag.
+
+## Vanlige feil
+
+- Å sende stevningen til tingretten i din egen by, når motparten bor et helt annet sted (da vil dommeren bruke tid på å sende saken videre, og alt forsinkes)
+
+---
+title: Ekteskapsloven § 30 d — Hva mer kan domstolen ordne i en ekteskapssak?
+slug: ekteskapsloven-30d
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 30d
+paragraf: 30 d
+kategori: familie
+description: En rettssak om ekteskapet er i utgangspunktet bare et ja/nei-spørsmål om ekteskapet består. Men loven tillater at dommeren i samme sak også fikser spørsmål om penger, bidrag og barn.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-30a, ekteskapsloven-80]
+---
+
+## Kort svar
+
+Når dere først er i retten for en "ekteskapssak" (for eksempel for å få direkte skilsmisse eller annullere ekteskapet), sier § 30 d at dere har lov til å legge andre konflikter inn i samme sak. Da kan dommeren avgjøre krangler om bidrag, hvor barna skal bo, og fordeling av tingene deres samtidig.
+
+## Paragraftekst
+
+> I ekteskapssak kan også behandles:
+> a. spørsmål om bidrag,
+> b. spørsmål etter barnelova om felles barn,
+> c. spørsmål etter ekteskapslovens øvrige bestemmelser med mindre det er begjært offentlig skifte, og
+> d. krav som er en følge av søksmålet.
+>
+> Hvis ikke spørsmål som nevnt i første ledd bokstav a og b er trukket inn i saken, skal retten av eget tiltak undersøke om partene er uenige om slike spørsmål, og i tilfelle treffe avgjørelse i saken.
+
+## Hva betyr dette på vanlig norsk?
+
+Juridiske prosesser koster penger og tar tid. Paragraf 30 d er "handlekurven" din i retten: Du kan slenge inn krav om ektefellebidrag, krav om barnefordeling (hvem som skal ha fast bosted), og pengekrav fra det økonomiske oppgjøret i samme stevning.
+
+Spesielt interessant er at dommeren faktisk har en plikt til å spørre dere om dere er uenige om barn eller bidrag, selv om dere glemte å nevne det i papirene. Sier dere "ja, vi krangler om datteren vår også", vil dommeren ta seg av det — med mindre dere uttrykkelig blir enige om at dere vil ordne opp i det selv.
+
+## Eksempel: Eva og ektemannen
+
+Eva saksøker ektemannen sin for å få ekteskapet kjent ugyldig på grunn av tvang. Hun er livredd for at han skal ta barnet ut av landet. Fordi § 30 d tillater det, legger Eva sin advokat ned en påstand i samme stevning om at Eva skal få eneansvaret for barnet etter barneloven. Dommeren avsier en dom som både annullerer ekteskapet og gir Eva foreldreansvaret alene, alt i ett dokument.
+
+## Vanlige feil
+
+- Å tro at du *må* krangle om fordeling av sofaen når dere er i retten for å skille dere (det er en mulighet, ikke en plikt)
+
+## Hva bør du gjøre?
+
+Hører du hjemme i en ekteskapssak for retten? La advokaten din vite om *alle* uenighetene dere har som par (spesielt om barn, bidrag og viktige eiendeler). Det er mye billigere å la dommeren avgjøre de andre konfliktene som "et vedheng" til den store ekteskapssaken.
+
+---
+title: Ekteskapsloven § 30 e — Virkningen av en ekteskapsdom (Rettskraft)
+slug: ekteskapsloven-30e
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 30e
+paragraf: 30 e
+kategori: familie
+description: Når en dommer har sagt at dere er lovlig skilt, eller at ekteskapet var ugyldig, er dommen gjeldende for alle andre saker og etater. Og har eksen rukket å gifte seg på nytt, er toget gått for å klage.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-30a, ekteskapsloven-24]
+---
+
+## Kort svar
+
+Faller det en dom i en ekteskapssak (som en annullering), gjelder den for "alle" — NAV, Skatteetaten og Folkeregisteret. Dessuten: Du har ikke lov til å kreve saken gjenåpnet for å få omgjort en skilsmisse, dersom den andre parten allerede har giftet seg på nytt med noen andre.
+
+## Paragraftekst
+
+> En rettskraftig dom om spørsmål som nevnt i § 25 a første ledd bokstav b (ekteskapssak), virker for og mot alle og legges til grunn i alle forhold hvor spørsmålet har betydning.
+>
+> Er et ekteskap erklært for ikke å bestå, eller er det oppløst, er oppfriskning for oversittelse av ankefristen og gjenåpning utelukket hvis en av ektefellene har inngått nytt ekteskap før avgjørelsen om oppfriskning eller henvisning til hovedforhandling er forkynt for ham eller henne.
+
+## Hva betyr dette på vanlig norsk?
+
+En dom i en ekteskapssak er en av de sterkeste dommene vi har. Siden ekteskapsstatusen din bestemmer skatt, arv, pensjon og folkeregisteropplysninger, sier første avsnitt at dommen virker "for og mot alle" (erga omnes på jusspråket). Ingen etat kan se bort fra dommen.
+
+**Den lukkede døren:**
+Vanligvis kan du be om at ankefristen "oppfriskes" (du får ny sjanse) hvis du ikke rakk å klage i tide. Men i ekteskapssaker settes det en knallhard grense: Hvis dommeren sa dere var skilt og eksen din har rukket å gifte seg på nytt — da kan du ikke komme og kreve dommen opphevet. Beskyttelsen av eksens nye ekteskap veier tyngre.
+
+## Eksempel: Rettskraft mot NAV
+
+Tingretten har slettet Mettes ekteskap fra utlandet. Et år senere søker Mette NAV om stønad som enslig forsørger. NAV avslår fordi en saksbehandler mistenker at hun er gift. Siden Mette har en dom på at ekteskapet "ikke består", sier § 30 e at dommen virker mot "alle". NAV må pent legge dommen til grunn.
+
+---
+title: Ekteskapsloven § 30 f — Hva skjer med rettssaken hvis du eller eksen din dør?
+slug: ekteskapsloven-30f
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 30f
+paragraf: 30 f
+kategori: familie
+description: Dør en av dere mens rettssaken om skilsmisse pågår, avsluttes rettssaken. Men hvis saken gjaldt en ulovlig inngåelse av ekteskap, kan arvingene fortsette krangelen i retten.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-30e, ekteskapsloven-16]
+---
+
+## Kort svar
+
+Hvis en av dere dør før dommeren har avgjort en skilsmissesak, heves saken. Da er dere fortsatt gift idet dødsfallet inntreffer (og den gjenlevende arver). Gjelder saken derimot annullering eller oppløsning av bigami, kan barna/arvingene til den avdøde få tre inn i saken og kjempe den til slutt.
+
+## Paragraftekst
+
+> Dør en part før dom er avsagt i en sak om hans eller hennes eget ekteskap, heves saken. Gjelder saken oppløsning av ekteskap etter § 24 første ledd eller spørsmålet om et ekteskap består, eller om en separasjon er uten rettsvirkning etter § 20 annet ledd, kan den likevel fortsettes så vel av som mot den avdødes barn eller arvinger hvis avgjørelsen har rettslig betydning.
+>
+> Dør parten etter at dom er avsagt, kan under samme betingelse anke og gjenåpning anvendes av eller mot barna eller arvingene hvis dommen går ut på oppløsning av ekteskapet eller på separasjon, eller saken gjelder spørsmålet om ekteskapet består.
+
+## Hva betyr dette på vanlig norsk?
+
+Hvis den ene parten dør, faller grunnen for en vanlig skilsmissesak bort — saken heves. I arveoppgjøret etterpå blir det behandlet som om de fortsatt var gift, siden skilsmissen aldri ble vedtatt.
+
+Men loven gjør et viktig unntak. Tenk deg at Ola saksøker Kari fordi han mener hun var gift fra før og vil ha ekteskapet annullert. Under rettssaken dør Ola. Hvis saken da bare ble hevet, ville Kari stått igjen som Olas lovlige enke og stukket av med all arven. For å forhindre dette, tillater staten at Olas barn fortsetter rettssaken og sikrer arven sin.
+
+## Eksempel: Barna overtar saken
+
+Pappa saksøker sin nye kone for å kjenne ekteskapet ugyldig fordi han manglet rettslig handleevne da de giftet seg. Han dør før saken kommer opp. Barna hans trer inn i saken etter § 30 f. Barna vinner frem, ekteskapet slettes, og den "nye kona" mister all rett på arv.
+
+---
+title: Ekteskapsloven § 31 — Du bestemmer over dine egne penger og eiendeler
+slug: ekteskapsloven-31
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 31
+paragraf: 31
+kategori: familie
+description: At du gifter deg betyr ikke at du mister kontrollen over tingene dine. Du styrer fremdeles din egen økonomi, og husarbeid gir rettigheter.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-32, ekteskapsloven-40, ekteskapsloven-58]
+---
+
+## Kort svar
+
+Selv om du er gift, bestemmer du over dine egne ting. Bilen du eide før bryllupet, er fortsatt din å selge. Men ting dere kjøper sammen, eier dere sammen. Loven sier også at husarbeid er like mye verdt som en inntekt når man skal vurdere hvem som eier hva.
+
+## Paragraftekst
+
+> Ekteskapet medfører ingen begrensning i en ektefelles rett til å råde over det han eller hun eier når ekteskapet blir inngått eller senere erverver, dersom ikke noe annet er bestemt.
+>
+> Eiendeler som erverves av begge ektefellene, blir sameie mellom dem.
+>
+> Ved vurderingen av hvem som har ervervet eiendeler som har tjent til ektefellenes felles personlige bruk, som felles bolig og vanlig innbo, skal det legges vekt på en ektefelles arbeid i hjemmet.
+
+## Hva betyr dette på vanlig norsk?
+
+Mange tror at alt automatisk blir "vårt" idet man sier ja i kirken, og at man må spørre partneren om lov til å bruke egne penger. Slik er det ikke. Første avsnitt i paragraf 31 slår fast regelen om fri råderett: Det du eier, styrer du.
+
+Andre avsnitt gjelder det dere skaffer dere *sammen*. Kjøper dere en bil og betaler halvparten hver, eier dere den sammen (sameie). Da kan ikke den ene selge hele bilen uten at den andre er enig.
+
+**Husarbeid gir eierskap:**
+Tredje avsnittet er et av de viktigste i hele loven. Loven sier at husarbeid og barnepass regnes som et direkte økonomisk bidrag. Uten innsatsen hjemme hadde ikke den andre hatt mulighet til å jobbe så mye og tjene de pengene. Derfor regnes den "hjemmeværende" for å ha bidratt til kjøpet av huset, og vil normalt bli ansett som medeier (ofte kalt husmorsameie).
+
+## Eksempel: Kari og Ola
+
+Ola jobber som direktør og tjener mye penger. Kari jobber 50 prosent for å ta seg av de tre barna deres. Ola kjøper en hytte på fjellet og setter bare sitt eget navn på skjøtet. Et par år senere skal de skilles. Ola mener hytta er hans, siden det var hans penger. Kari viser til ekteskapsloven § 31. Siden hennes arbeid i hjemmet gjorde det mulig for Ola å tjene pengene og bruke dem på felles goder, blir Kari ansett som medeier i hytta.
+
+## Vanlige feil
+
+- Å tro at du automatisk eier halvparten av partnerens gamle sportsbil bare fordi dere er gift
+- Å tro at man ikke eier noe i huset fordi man bare har stått for matinnkjøp og barnepass
+- Å blande råderett med "felleseie" (Råderett handler om hvem som bestemmer underveis. Felleseie handler om hvordan verdien deles hvis dere skilles)
+
+## Hva bør du gjøre?
+
+For å unngå krangler om hvem som eier hva, bør dere alltid føre opp begge to som eiere på skjøtet og i lånepapirene når dere kjøper bolig eller hytte sammen.
+
+## Dumme spørsmål
+
+**Kan jeg tømme min egen bankkonto uten å spørre kona?**
+
+Ja. Så lenge pengene på kontoen er din egen lønn eller sparepenger, har du full styringsrett over dem. (Unntaket er hvis du gir bort så store gaver at du ruinerer det fremtidige skilsmisseoppgjøret deres).
+
+**Gjelder regelen om husarbeid for alle ting?**
+
+Nei, den gjelder bare for ting dere bruker i fellesskap i privatlivet, som familiens hus, bil, hytte og møbler. Kjøper partneren din aksjer eller en ren investeringseiendom, gir ikke ditt husarbeid deg rett til å bli medeier i de aksjene.
+
+---
+title: Ekteskapsloven § 32 — Du kan ikke selge eller pantsette felles bolig uten lov
+slug: ekteskapsloven-32
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 32
+paragraf: 32
+kategori: bolig
+description: Eier du huset dere bor i alene? Selv om du eier det 100 prosent, forbyr loven deg å selge, leie ut, eller ta opp lån med pant i det uten partnerens skriftlige underskrift.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-31, ekteskapsloven-33, ekteskapsloven-35]
+---
+
+## Kort svar
+
+Selv om du står som eneeier av huset eller leiligheten dere bor i, kan du ikke selge boligen, leie den ut, eller ta opp nytt lån på den uten at ektefellen din har signert og godkjent det. Hjemmet har et ekstra sterkt juridisk vern.
+
+## Paragraftekst
+
+> En ektefelle kan ikke uten skriftlig samtykke fra den andre ektefellen:
+> a. Overdra, pantsette, forpakte bort, eller inngå eller si opp en leie- eller framleieavtale for en eiendom som brukes som felles bolig.
+> b. Overdra, pantsette en andel, aksje eller obligasjon som leieretten til felles bolig er knyttet til.
+>
+> Dersom samtykke blir nektet eller ikke kan skaffes innen rimelig tid, kan ektefellen eller den andre parten i avtalen kreve at tingretten avgjør spørsmålet om disposisjonen skal tillates. Tillatelse skal gis hvis retten finner at det ikke foreligger rimelig grunn for den andre ektefellen til å nekte samtykke.
+
+## Hva betyr dette på vanlig norsk?
+
+Hovedregelen i jussen er at du bestemmer over dine egne ting (§ 31). Men når det gjelder taket over hodet deres, slår loven på en streng sikkerhetsbrems.
+
+Paragraf 32 sier at hjemmet deres er fredet. Det spiller ingen rolle om du eide huset før dere møttes, om du har betalt hver eneste krone på lånet alene, eller om huset er ditt formelle særeie. Hvis huset brukes som deres "felles bolig", kan du ikke røre det juridisk uten at partneren din sier ja skriftlig.
+
+Dette gjelder ved salg, pantsetting av huset (refinansiering), utleie til noen andre, og oppsigelse av leiekontrakt. Samtykket fra partneren din *må* være skriftlig. Banken og eiendomsmegleren har plikt til å sjekke at dette dokumentet finnes.
+
+**Hva hvis partneren nekter å signere?**
+Av og til nekter en partner å signere bare for å være vanskelig. Da tillater loven deg å gå til tingretten. Hvis dommeren mener at ektefellen din ikke har noen god, logisk grunn til å nekte, kan retten overstyre partneren din og gi tillatelse i stedet.
+
+## Eksempel: Marius og Anne
+
+Marius eier huset de bor i. Det er hans særeie fra før de giftet seg. Marius har fått økonomiske problemer og ønsker i all hemmelighet å ta opp et nytt lån på 500 000 kr med pant i huset. Han kontakter banken. Siden banken ser at Marius er gift i Folkeregisteret, krever de at Anne signerer en samtykkeerklæring etter ekteskapsloven § 32. Anne visste ingenting om gjelden og nekter å signere. Banken avslår lånesøknaden. Loven beskyttet Annes hjem.
+
+## Vanlige feil
+
+- Å tro at særeie betyr at man kan gjøre absolutt hva man vil med huset
+- Å la en eiendomsmegler legge ut felles bolig for salg uten at ektefellen har signert samtykkeskjemaet
+- Å tro at regelen gjelder for familiehytta (loven gjelder kun boligen der dere har deres daglige liv)
+
+## Hva bør du gjøre?
+
+Når du skal selge felles bolig eller refinansiere lånet, vil megler eller bank be deg fylle ut et eget skjema for "Samtykke fra ektefelle etter ekteskapsloven § 32". Pass på at partneren din leser og signerer dette dokumentet skriftlig og formelt.
+
+## Dumme spørsmål
+
+**Kan kjæresten min nekte meg å selge huset bare for å skade meg økonomisk?**
+
+Ja, de kan nekte, men de kommer ikke til å vinne i lengden. Hvis de nekter helt uten rimelig grunn, må du sende en begjæring til tingretten for å få tillatelse til å selge. Dette forsinker salget, men retten vil nesten alltid gi deg lov hvis salget er nødvendig og forsvarlig.
+
+**Gjelder dette for samboere også?**
+
+Husstandsfellesskapsloven har en nesten identisk regel for samboere. Eier du leiligheten alene, kan du ikke selge den over hodet på samboeren din uten skriftlig samtykke der heller.
+
+---
+title: Ekteskapsloven § 33 — Du kan ikke selge eller pantsette felles møbler
+slug: ekteskapsloven-33
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 33
+paragraf: 33
+kategori: bolig
+description: Kjøpte du den dyre sofaen og barnevognen alene? Loven forbyr deg likevel å selge familiens faste møbler og barnas ting uten at ektefellen din samtykker.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-32, ekteskapsloven-35]
+---
+
+## Kort svar
+
+Du har ikke lov til å selge, pantsette eller leie ut de vanlige møblene deres, eller ting som barna trenger, uten at ektefellen din er enig. Hvem av dere som opprinnelig kjøpte eller arvet tingene, spiller ingen rolle.
+
+## Paragraftekst
+
+> En ektefelle kan ikke uten samtykke fra den andre ektefellen overdra, leie bort eller pantsette vanlig innbo i det felles hjemmet eller gjenstander som er bestemt til bruk for barna.
+>
+> Bestemmelsen i § 32 andre ledd gjelder tilsvarende.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 33 gir den samme beskyttelsen til møblene i huset som paragraf 32 gir til selve husveggene. Målet er at ingen skal komme hjem til en helt tom stue fordi partneren trengte raske penger og solgte alt på Finn.no.
+
+"Vanlig innbo" betyr alt som hører med i et normalt hjem: TV-en, vaskemaskinen, sofaen, sengene og kjøkkenbordet. Det gjelder også barneutstyr som barnevogner, barnesenger og klær.
+
+Selv om du betalte for TV-en fra din egen konto, eller arvet sofaen fra din farfar, er det forbudt for deg å pantsette eller selge dem bak ryggen på ektefellen din, så lenge gjenstandene brukes av familien til vanlig. Merk at det ikke står "skriftlig samtykke" her slik som for boligen — et muntlig ja er nok for å selge sofaen. Men hvis partneren sier nei, er det nei.
+
+## Eksempel: Petter og Anne
+
+Petter eier en verdifull vaskemaskin og tørketrommel som han kjøpte før han giftet seg. Maskinene brukes av familien hver dag. Petter mangler penger og legger maskinene ut på Finn.no. En kjøper kommer for å hente dem. Anne oppdager dette og protesterer. Siden dette er vanlig innbo, bryter Petter ekteskapsloven § 33. Han har ingen rett til å selge dem uten Annes samtykke, selv om han eier dem.
+
+## Vanlige feil
+
+- Å tro at du fritt kan selge designermøbler du har betalt for selv, hvis de er i daglig bruk i hjemmet
+- Å selge barnas sykler til naboen fordi du mener de er for små, selv om ektefellen sa nei
+
+## Hva bør du gjøre?
+
+Skal du selge noe av betydning fra hjemmet deres, spør ektefellen din først. Er det konflikt og dere skal gå fra hverandre, må innboet stå i fred til dere har blitt enige om hvordan verdiene skal fordeles.
+
+## Dumme spørsmål
+
+**Hva med dyre kunstverk eller samleobjekter?**
+
+Kunst, dyre frimerkesamlinger eller en vintage veteranbil regnes ikke som "vanlig innbo". Dette er rene verdiobjekter eller hobbyting. Eier du et Munch-maleri alene, kan du selge det uten å spørre ektefellen din (etter § 31). Det er de praktiske tingene som gjør at hjemmet fungerer som et hjem, loven beskytter.
+
+**Hva skjer hvis jeg selger sofaen likevel?**
+
+Hvis du selger sofaen mot konas vilje, kan hun gå til kjøperen og kreve å få den levert tilbake (omstøtelse, se § 35). Du kan også bli ansvarlig for å erstatte tapet.
+
+---
+title: Ekteskapsloven § 34 — Beskyttelsen gjelder helt til skilsmissen er ferdig
+slug: ekteskapsloven-34
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 34
+paragraf: 34
+kategori: bolig
+description: Du kan ikke selge felleshuset uten lov dagen etter at dere bestemte dere for å skilles. Fredningen av hjemmet gjelder til alt er formelt delt.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-32, ekteskapsloven-33]
+---
+
+## Kort svar
+
+Forbudet mot å selge felles hus og møbler gjelder selv om dere har gått fra hverandre og har fått separasjonsbrev. Regelen varer helt til det er bestemt hvem av dere som skal ha de spesifikke tingene.
+
+## Paragraftekst
+
+> Inntil det er avgjort hva som skal skje med den enkelte eiendel eller rettighet i oppgjøret mellom ektefellene, gjelder bestemmelsene i dette kapitlet også etter separasjon og skilsmisse.
+>
+> Er eiendelene særeie, gjelder bestemmelsene fram til ektefellene er separert eller skilt.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 34 hindrer at en part selger ting i panikk eller sinne etter bruddet. Den sier at den strenge regelen om at du må ha partnerens samtykke for å selge hus eller møbler (§ 32 og § 33) gjelder fullt ut i den kaotiske fasen *etter* at bruddet er et faktum. Forbudet varer helt frem til dere skriftlig har avtalt og underskrevet en fordelingsavtale (et skifte) hvor det står hvem som får hva.
+
+Det er imidlertid et logisk unntak i andre ledd: Er huset ditt formelle *særeie* gjennom en ektepakt, forsvinner denne beskyttelsen det sekundet dere blir formelt separert. Da kan du selge særeiehuset ditt uten eksens underskrift.
+
+## Eksempel: Jonas og Eva
+
+Jonas og Eva skal skilles. De eier huset 50/50 som felleseie. Jonas flytter til en hybel mens Eva blir boende. To uker senere, før de har fordelt verdiene, legger Eva huset ut for salg. Dette er et brudd på § 34. Selv om de har gått fra hverandre, kreves det fortsatt samtykke inntil oppgjøret mellom dem er ferdig. Megleren vil måtte stoppe salget inntil Jonas signerer papirene.
+
+## Vanlige feil
+
+- Å kaste eller selge eksens møbler i sinne uken etter utflytting
+- Å tro at man kan selge fellesboligen man er eneeier av alene, bare fordi separasjonen har gått i orden
+- Å glemme at hvis boligen faktisk er tinglyst særeie, forsvinner vernet på datoen separasjonen er formelt innvilget
+
+## Hva bør du gjøre?
+
+Bruk tid og lag en formell, skriftlig skifteavtale med eksen din så fort som mulig etter bruddet. Avtalen bør vise hvem som beholder huset, og hvem som overtar de store møblene. Når den avtalen er signert av begge, er det avgjort "hva som skal skje med den enkelte eiendel".
+
+## Dumme spørsmål
+
+**Kan eksen min nekte meg å selge felleseie-huset i fem år for å straffe meg?**
+
+Nei. Hvis dere er separert og skal dele felleseiet, kan partneren ikke stoppe et nødvendig hussalg permanent. Kan dere ikke bli enige, kan du kreve at tingretten bestemmer at huset må tvangsselges.
+
+---
+title: Ekteskapsloven § 35 — Hva skjer hvis eksen selger huset uten lov? (Omstøtelse)
+slug: ekteskapsloven-35
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 35
+paragraf: 35
+kategori: bolig
+description: Solgte partneren din felles hus eller møbler bak ryggen din? Loven lar deg gå til domstolen og kreve salget annullert. Da må kjøperen levere alt tilbake.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-32, ekteskapsloven-33]
+---
+
+## Kort svar
+
+Hvis ektefellen din ulovlig har solgt huset eller møblene deres uten ditt samtykke, kan du kreve avtalen "omstøtt". Det betyr at salget nullstilles, og gjenstandene skal leveres tilbake til hjemmet. Du må handle raskt — du har bare seks måneder på deg.
+
+## Paragraftekst
+
+> Har en ektefelle handlet i strid med § 32 eller § 33, kan den andre ektefellen kreve avtalen omstøtt ved dom. En avtale som omfattes av § 33, kan likevel ikke omstøtes dersom den andre parten ved overleveringen hadde rimelig grunn til å tro at ektefellen hadde rett til å inngå avtalen.
+>
+> Søksmål må reises innen seks måneder etter at ektefellen fikk kunnskap om avtalen, og senest innen ett år etter tinglysingen dersom avtalen gjelder fast eiendom, eller etter overleveringen dersom den gjelder andre eiendeler.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 35 er konsekvensen av forbudene i §§ 32 og 33. Hvis mannen din i hemmelighet selger huset dere bor i, kan du saksøke ham og kjøperen i domstolen og kreve "omstøtelse". Vinner du, slettes salget. Det er som om det aldri skjedde. For hus (fast eiendom) er denne regelen absolutt — kjøperen vinner aldri frem mot din rett til bolig.
+
+**Unntaket for møbler (God tro):**
+For sofaer og TV-er (§ 33) er det litt annerledes. Hvis kona di solgte spisebordet til en student som handlet i "god tro", og studenten ikke hadde grunn til å tro at kona di brøt ekteskapsloven, får studenten beholde bordet. Salget er gyldig. Du må i stedet kreve erstatning fra kona di.
+
+**Kritiske frister:**
+Du kan ikke vente evig. Du har seks måneder fra den dagen du *oppdaget* at huset eller sofaen var solgt. Uansett når du oppdager det, er det en absolutt maksgrense: ett år etter at huset ble tinglyst på ny eier, eller ett år etter at bordet ble bært ut.
+
+## Eksempel: Kari og hyttenaboen
+
+Ola låner en halv million av naboen sin, og signerer et hemmelig pantebrev med pant i familiens hus. Han forfalsker Karis skriftlige samtykke. Syv måneder senere forteller Ola Kari hva han har gjort. Kari tar umiddelbart kontakt med en advokat. Siden Kari reiser sak innen seks måneder etter hun *fikk kunnskap* om avtalen, kjenner retten pantet for omstøtt. Pantet slettes fra huset, og naboen mister sikkerheten sin.
+
+## Vanlige feil
+
+- Å vente over seks måneder med å reise sak fordi du forsøker å prate partneren din til fornuft (fristen er nådeløs)
+- Å tro at god tro hjelper en boligkjøper (reglene for hus er strenge — megleren/kjøperen skulle sjekket om selgeren var gift)
+
+## Hva bør du gjøre?
+
+Hvis du oppdager at boligen din er overdratt eller pantsatt i det skjulte: Ta kontakt med advokat på dagen. Be advokaten sende en stevning med krav om omstøtelse. Du må handle raskt for at fristen på seks måneder ikke skal løpe ut.
+
+## Dumme spørsmål
+
+**Hva skjer med kjøperen hvis huskjøpet omstøtes? Får de ingen penger tilbake?**
+
+Kjøperen (som mister huset) har et økonomisk krav mot din svikefulle ektefelle. De kan kreve å få tilbakebetalt kjøpesummen og kreve erstatning for tapet. Men det blir en tvist mellom dem, og går ikke utover din rett til å bo i hjemmet ditt.
+
+---
+title: Ekteskapsloven § 36 — Forkjøpsrett hvis ektefellen selger sin halve bolig
+slug: ekteskapsloven-36
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 36
+paragraf: 36
+kategori: bolig
+description: Prøver ektefellen din å selge sin halvpart av hjemmet deres til en fremmed? Du har forkjøpsrett og kan kjøpe ut andelen til takstpris for å beholde huset selv.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-31, ekteskapsloven-32]
+---
+
+## Kort svar
+
+Eier dere boligen eller møblene sammen, og partneren din vil selge sin andel? Da har du rett til å kjøpe den andelen (forkjøpsrett) før den blir solgt til noen andre. Prisen settes av en uavhengig verdivurdering (skiftetakst).
+
+## Paragraftekst
+
+> Når eiendeler som omfattes av § 32 eller § 33 er sameie mellom ektefellene, gjelder reglene i dette kapitlet tilsvarende for en ektefelles andel i sameiet.
+>
+> Overdrar en ektefelle sin sameieandel i eiendeler som har tjent til felles personlig bruk, har den andre ektefellen rett til å løse inn andelen etter skiftetakst. Det samme gjelder når en ektefelle har krevd sameiet oppløst. Krav om innløsning må settes fram uten ugrunnet opphold og senest innen seks uker etter at ektefellen har fått slik melding som fastsatt i sameieloven § 11 fjerde ledd første punktum. Innen samme frist må skiftetakst være krevd. Når endelig takst foreligger, må ektefellen innen to uker tilby oppgjør.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 36 beskytter deg mot å plutselig dele hus eller stue med en vilt fremmed kjøper. Den gir deg innløsningsrett (forkjøpsrett). Hvis partneren din prøver å overdra andelen sin, eller krever hele sameiet oppløst (tvangssalg), kan du strekke opp hånden og si: "Jeg vil kjøpe din andel."
+
+Prisen du skal betale fastsettes etter "skiftetakst" — en offisiell og nøytral verdivurdering foretatt via tingretten, som sikrer at du kjøper ham ut til en rettferdig markedspris.
+
+**Strenge tidsfrister:**
+Du har maksimalt seks uker på deg til å kreve innløsning og bestille skiftetakst. Deretter to uker til å betale etter at taksten er fastsatt.
+
+## Eksempel: Huset til Ola og Kari
+
+Ola og Kari skal skilles. Ola er utålmodig og krever sameiet i leiligheten oppløst (tvangssalg). Kari vil bo der med barna. Innen tre uker svarer Karis advokat at hun benytter seg av ekteskapsloven § 36 og krever å kjøpe ut Olas andel. Advokaten bestiller samtidig skiftetakst. Tingretten fastsetter verdien av leiligheten til 4 millioner kroner. Olas andel er verdt 2 millioner. Kari betaler Ola 2 millioner og overtar leiligheten alene.
+
+## Vanlige feil
+
+- Å overse den seks uker korte fristen og miste retten til å kjøpe ut boligen (da går den til tvangssalg for høystbydende, og du må flytte)
+- Å tro at man bare kan avtale pris på e-post uten å bestille formell takst hvis dere er rykende uenige
+
+## Dumme spørsmål
+
+**Hva om jeg ikke får lån i banken til å kjøpe ut ektefellen min?**
+
+Da kan du dessverre ikke benytte deg av innløsningsretten. Hvis du ikke kan tilby oppgjør innen to uker etter at taksten er ferdig, faller retten din bort. Da må huset selges på det åpne markedet.
+
+---
+title: Ekteskapsloven § 37 — Kan vi velge at reglene for felles bolig ikke skal gjelde for oss?
+slug: ekteskapsloven-37
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 37
+paragraf: 37
+kategori: bolig
+description: Du kan ikke inngå en enkel, privat avtale som fjerner partnerens rett til å beskytte felles bolig og innbo. Det kan kun gjøres gjennom en strengt formell ektepakt.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-32, ekteskapsloven-42, ekteskapsloven-54]
+---
+
+## Kort svar
+
+Loven tillater som hovedregel ikke at ektefeller skrur av sikkerhetsreglene for felles hjem. Den eneste måten å unngå forbudet mot fritt boligsalg på, er hvis huset er gjort til særeie gjennom en formell ektepakt, og dere i den samme ektepakten har avtalt at beskyttelsen i loven ikke skal gjelde.
+
+## Paragraftekst
+
+> De innskrenkningene i råderetten som er fastsatt i dette kapitlet, kan som hovedregel ikke fravikes ved avtale mellom ektefellene.
+>
+> Ektefellene kan likevel avtale at innskrenkningene ikke skal gjelde for eiendeler som etter bestemmelsene i kapittel 9 er særeie. En slik avtale må inngås i ektepakts form.
+
+## Hva betyr dette på vanlig norsk?
+
+Staten stoler ikke alltid på at en ekteskapelig avtale inngås rettferdig over kjøkkenbordet. Noen ganger kan en dominerende part overtale den andre til å signere vekk rettighetene sine på et blankt ark.
+
+Derfor sier loven her at dere *ikke* har lov til å kaste ut reglene i § 32 med en vanlig, privat skriftlig avtale. Du kan altså ikke få kona di til å skrive under på et ark hvor det står: "Jeg, Kari, lover at Ola kan ta opp så mye boliglån han vil og selge huset når han vil." En slik avtale er juridisk verdiløs.
+
+Det finnes bare ett unntak: Dersom du og partneren din tinglyser en offentlig **ektepakt** der dere bestemmer at boligen skal være mannens fullstendige **særeie**, og dere i denne ektepakten spesifikt legger til at "reglene om råderettsbegrensninger i ekteskapsloven kapittel 6 ikke skal gjelde", da og bare da, vil mannen få lov til å selge huset i fremtiden uten konas underskrift.
+
+## Vanlige feil
+
+- Å stole på en privat e-post eller et vanlig ark hvor partneren sier at du kan pantsette huset når du vil
+- Å tro at bare fordi et hus er særeie, er reglene om felles bolig slått av (de må slås av eksplisitt i selve ektepakten)
+
+## Hva bør du gjøre?
+
+Hvis du vil sikre deg absolutt makt til å selge og pantsette boligen din uten at partneren din kan blokkere deg, må dere opprette en ektepakt. Ektepakten velger særeie, og dere formulerer at ekteskapsloven § 32 ikke skal gjelde for denne eiendommen. Ektepakten må signeres foran to vitner og sendes til Brønnøysundregistrene (Ektepaktregisteret).
+
+---
+title: Ekteskapsloven § 38 — Ektefeller har plikt til å forsørge hverandre
+slug: ekteskapsloven-38
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 38
+paragraf: 38
+kategori: familie
+description: I et ekteskap er dere et økonomisk team. Hvis den ene tjener millioner og den andre jobber deltid for å passe barna, har den rike parten plikt til å dele med den andre.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-31, ekteskapsloven-39, ekteskapsloven-79]
+---
+
+## Kort svar
+
+Som gift har du og partneren din felles ansvar for familiens økonomi og husholdning. Du har et lovpålagt krav på å få penger fra ektefellen din for å dekke dine nødvendige behov, hvis du ikke tjener nok selv. Å vaske huset og passe barn regnes som et like viktig bidrag som å tjene penger.
+
+## Paragraftekst
+
+> Ektefellene har sammen ansvaret for de utgiftene og det arbeidet som kreves for det felles hushold og til dekning av andre felles behov, oppfostringen av barna og hver ektefelles særlige behov. Ektefellene bidrar ved tilskudd av penger, ved virksomhet i hjemmet eller på annen måte.
+>
+> En ektefelle kan i rimelig utstrekning kreve penger av den andre ektefellen til å dekke utgifter som nevnt i første ledd. En ektefelle som ikke oppfyller plikten til å stille nødvendige midler til rådighet for den andre, kan pålegges å betale bestemte beløp.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 38 er selve ryggraden i ekteskapet som et økonomisk fellesskap. Loven sier at dere begge skal bidra til potten, enten ved å tjene penger og betale regninger, eller ved "virksomhet i hjemmet" (vaske, lage mat, passe barn, vedlikeholde bolig). En hjemmeværende partner gjør akkurat like mye av sin plikt som den som jobber 60 timer i uken.
+
+**Forsørgelsesplikten:**
+Hvis du vasker huset og henter barna hver dag, og partneren din tjener en million i året, men nekter å gi deg penger til å kjøpe vinterklær eller betale tannlegeregningen, bryter partneren loven. Du kan "i rimelig utstrekning kreve penger". Gir ikke partneren penger frivillig, kan du kontakte domstolen/Statsforvalteren som kan gi deg et tvangsvedtak der partneren din pålegges å betale deg.
+
+## Eksempel: Kari og direktøren
+
+Kari er gift med en sykehusdirektør. Kari jobber 40 % for at familien skal få hverdagen til å gå opp. Direktøren krever at alle ferier, klær og boutgifter skal deles strengt i to. Resultatet er at Kari går i null hver måned og ikke kan kjøpe seg briller, mens direktøren fyller opp sparekontoen sin. Dette er i strid med ekteskapsloven § 38. Kari bidrar i hjemmet og har direkte krav på penger fra direktøren til å dekke sine personlige og familiens felles behov.
+
+## Vanlige feil
+
+- Å tro at den som tjener pengene, "eier" familien og bestemmer at den andre må klare seg selv
+- Å se på lommepenger til hjemmeværende partner som en "gave" (det er en juridisk plikt)
+- Å kreve urimelig luksus fra partneren sin bare fordi de tjener godt (det må være en "rimelig utstrekning")
+
+## Hva bør du gjøre?
+
+Har dere stor forskjell i inntekt? Opprett felleskontoer for husholdning og faste utgifter. Begge betaler inn i forhold til sin egen inntektsevne. Hvis du er i et ekteskap der du blir nektet tilgang til penger for nødvendige utgifter, utsettes du for økonomisk vold og lovbrudd.
+
+## Dumme spørsmål
+
+**Hva om ektefellen min bruker alle sine egne penger på dyr vin og hest, mens vi mangler penger til strøm?**
+
+Din partner er forpliktet til å bidra til det felles husholdet *før* de dekker sine egne ekstravagante hobbyer. Gjør de ikke det, kan de holdes ansvarlig.
+
+**Må vi dele alt likt når vi er gift?**
+
+Nei. Paragraf 38 er ikke en regel om at alle penger skal helles i én felles pott og deles på midten. Paragraf 31 sier du styrer din egen lønn. Men paragraf 38 sier at du må gi av lønnen din for å sikre at familien og partneren din har et anstendig, rimelig liv.
+
+---
+title: Ekteskapsloven § 39 — Du har krav på å vite alt om ektefellens økonomi
+slug: ekteskapsloven-39
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 39
+paragraf: 39
+kategori: familie
+description: Tror du ektefellen din har skjult gjeld eller en hemmelig bankkonto? I et ekteskap har du krav på å vite alt, og banken har plikt til å gi deg utskrifter av konas eller mannens konto.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-38, ekteskapsloven-40]
+---
+
+## Kort svar
+
+Som gift har dere ingen økonomiske hemmeligheter for hverandre. Du har en lovfestet plikt til å fortelle ektefellen din om din økonomiske situasjon. Får du ikke svar, har du rett til å kreve utskrift av ektefellens bankkontoer, forsikringer og skattemeldinger direkte fra banken og Skatteetaten.
+
+## Paragraftekst
+
+> Ektefeller har plikt til å gi hverandre de opplysningene som er nødvendige for å vurdere deres økonomiske stilling.
+>
+> For dette formålet kan en ektefelle kreve at den andre ektefellen og skattemyndighetene gir opplysninger om eller kopi av den felles eller den andre ektefellens skattemelding og fastsetting av formues- og inntektsskatt. En ektefelle kan også kreve opplysninger av selskaper, foretak eller andre institusjoner som driver finansieringsvirksomhet eller forsikringsvirksomhet, og av andre som har midler til forvaltning.
+
+## Hva betyr dette på vanlig norsk?
+
+Et ekteskap er et åpent, økonomisk samarbeid. Ekteskapsloven aksepterer ikke "økonomisk utroskap" — at noen skjuler forbruksgjeld eller en stor arv for ektefellen sin.
+
+Paragraf 39 fjerner taushetsplikten i ekteskapet på to nivåer. For det første har du plikt til å vise partneren din hva du tjener, hva du skylder, og hva du har på sparekonto, hvis partneren ber om det. For det andre, hvis mannen din nekter å fortelle deg om han har kredittkortgjeld, kan du ringe banken hans. Banken *må* gi deg kontoutskriftene hans hvis du viser frem en vigselsattest. Det samme gjelder Skatteetaten — du kan kreve å få se konas eller mannens skattemelding og skatteoppgjør.
+
+## Eksempel: Sara mistenker spillgjeld
+
+Sara og mannen har vært gift i ti år. Sara mistenker at han spiller på nett og har tatt opp dyre lån. Hun ber om å se kontoutskriften hans, men han nekter. Sara går ned til bankfilialen, legger frem vigselsattesten og henviser til ekteskapsloven § 39. Banken gir Sara en komplett oversikt over mannens forbrukslån og overføringer. Mannen kan ikke stoppe det.
+
+## Vanlige feil
+
+- En bankansatt som avviser en ektefelle med "beklager, vi har personvern" (de har ikke lov til å skjule dette for en ektefelle)
+- Å tro at du kan nekte å fortelle kona hva du fikk i bonus på jobben
+
+## Hva bør du gjøre?
+
+Ta med deg vigselsattesten og legitimasjon. Send et skriftlig krav til banken(e) der du skriver: "Som lovlig ektefelle krever jeg innsyn i [Navn, fødselsnummer] sine innskuddskonti, lånekontoer og kredittkort i medhold av ekteskapsloven § 39 andre ledd." For skattemeldinger tar du kontakt med Skatteetaten.
+
+## Dumme spørsmål
+
+**Får mannen min beskjed fra banken hvis jeg snoker i kontoen hans?**
+
+Som regel ja. Banken har ikke lov til å nekte deg informasjonen, men de har vanlige rutiner for å varsle kunden sin om at noen har bedt om og fått utlevert bankutskriftene hans.
+
+**Gjelder dette også for samboere?**
+
+Nei. Dette er en ekstremt viktig forskjell mellom ekteskap og samboerskap. Banken og Skatteetaten vil blankt avvise deg på grunn av taushetsplikt hvis dere ikke er gift.
+
+---
+title: Ekteskapsloven § 40 — Din gjeld er din egen (ikke ektefellens)
+slug: ekteskapsloven-40
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 40
+paragraf: 40
+kategori: gjeld
+description: Du arver ikke ektefellens gjeld bare fordi dere er gift. I norsk lov er du kun ansvarlig for lån og regninger du selv har skrevet under på.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-41, ekteskapsloven-31, ekteskapsloven-58]
+---
+
+## Kort svar
+
+Du blir ikke ansvarlig for ektefellens gjeld bare fordi dere har giftet dere. Hver person har ansvar for sine egne lån, regninger og kredittkort. Kreditorer kan ikke kreve deg for penger ektefellen din har lånt.
+
+## Paragraftekst
+
+> En ektefelle kan ikke stifte gjeld med virkning for den andre ektefellen hvis det ikke er særskilt hjemmel for det.
+
+## Hva betyr dette på vanlig norsk?
+
+En av de største mytene om ekteskap er at man automatisk deler all gjeld. Ekteskapsloven § 40 slår fast et krystallklart prinsipp: Gjelden din er din. Gjelden til ektefellen din er deres.
+
+Hvis mannen din tar opp et forbrukslån på 500 000 kroner for å kjøpe seg en sportsbil, er det hans lån. Banken kan bare gå til ham for å få tilbake pengene. Inkassoselskapet kan ikke ta pant i din bankkonto eller kreve at du betaler regningen hans. Du har ikke signert lånedokumentet, og da er du ikke bundet.
+
+Loven åpner for et lite unntak ("særskilt hjemmel"). Dette gjelder vanlige daglige utgifter til mat og bolig, som du kan lese mer om i neste paragraf (§ 41). Men for alle store, personlige lån er du 100 prosent beskyttet.
+
+## Eksempel: Kari og forbrukslånet
+
+Kari og Per er gift. Per har en hemmelig spillegjeld på 300 000 kroner fordelt på flere kredittkort. Per mister jobben og slutter å betale. Inkassoselskapene sender aggressive brev i posten, også til Kari, og krever at hun, som hans ektefelle, må rydde opp. Kari viser til ekteskapsloven § 40 og avviser kravet. Inkassoselskapet har ingen rett til å røre Karis lønnskonto eller kreve penger av henne. Gjelden forblir Pers alene.
+
+## Vanlige feil
+
+- Å betale ektefellens regninger i panikk fordi man tror inkassoselskapet kan ta ens egne ting
+- Å la være å gifte seg fordi partneren har studielån
+- Å signere som "medlåntaker" for å være snill, og tro at det ikke er farlig (hvis du signerer, blir gjelden din også)
+
+## Hva bør du gjøre?
+
+Hvis partneren din sliter med gjeld, hold din egen økonomi helt atskilt fra gjelden. Aldri signer på lånepapirer, kredittkort eller kausjonsavtaler sammen med en ektefelle som ikke har kontroll. Så lenge du ikke har skrevet under på papiret, kan ikke banken ta deg.
+
+## Dumme spørsmål
+
+**Hva skjer med gjelden hans hvis vi skilles?**
+
+Den forblir hans. Ved en skilsmisse skal han trekke fra sin egen gjeld på sin egen formue før dere eventuelt deler overskuddet. Du overtar aldri hans gjeld under skilsmisseoppgjøret.
+
+**Kan namsmannen ta min bil for å dekke hennes gjeld?**
+
+Nei. Namsmannen kan bare ta pant i ting som den som skylder penger, faktisk eier. Eier du bilen 100 prosent, kan ikke namsmannen røre den for å dekke konas inkassokrav.
+
+---
+title: Ekteskapsloven § 41 — Felles ansvar for daglige utgifter (Husleie og mat)
+slug: ekteskapsloven-41
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 41
+paragraf: 41
+kategori: gjeld
+description: Selv om du ikke har signert, kan du bli ansvarlig for regninger som gjelder familiens faste overlevelse — som mat, strøm, barnehage og husleie.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-40, ekteskapsloven-38]
+---
+
+## Kort svar
+
+For store lån svarer du bare for deg selv. Men for vanlige hverdagsutgifter — som husleie, strøm, matinnkjøp og barneutstyr — hefter du og ektefellen din i fellesskap. Hvis han ikke betaler for strømmen, kan strømselskapet kreve pengene fra deg.
+
+## Paragraftekst
+
+> En ektefelle kan under samlivet med ansvar for begge ektefellene inngå vanlige avtaler om det daglige husholdet og oppfostringen av barna og vanlige avtaler for å dekke den enkelte ektefellens nødvendige behov. Dette gjelder også leie av felles bolig. Slike avtaler anses å være inngått med ansvar for begge ektefellene hvis ikke noe annet går fram av forholdene.
+>
+> Hvis den andre parten forsto eller burde ha forstått at avtalen gikk ut over det ektefellen hadde rett til etter første ledd, blir bare denne ektefellen forpliktet.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 40 sier at dere har separat ansvar for egen gjeld. Paragraf 41 er unntaket som gjør at en familie fungerer i hverdagen.
+
+Begge ektefeller er fullt ansvarlige for å betale de faste utgiftene som familien trenger for å overleve (solidaransvar). Dette inkluderer leie av felles bolig (selv om bare kona di signerte leiekontrakten), regninger for mat, strøm, internett og innboforsikring, barnehageregning, SFO og vanlige klær til barna.
+
+Dette gjelder *ikke* for kjøp som går ut over et vanlig dagsbehov. Tar ektefellen din opp et lån for å kjøpe en hytte, en Rolex-klokke eller en dyr ferietur, er du ikke ansvarlig. Og regelen gjelder bare "under samlivet" — flytter dere fra hverandre, opphører din plikt til å betale de nye regningene for strøm og mat som hun pådrar seg på sin egen adresse.
+
+## Eksempel: Husleien til Petter og Maria
+
+Petter og Maria er gift og leier et hus. Det var bare Petter som skrev under på husleiekontrakten. Petter blir sykmeldt og slutter å betale leien i tre måneder. Huseieren sender et inkassovarsel direkte til Maria og krever henne for 45 000 kroner. Maria sier: "Jeg har ikke skrevet under på noe kontrakt!" Dessverre for Maria gjør ekteskapsloven § 41 henne juridisk ansvarlig. Leie av felles bolig er et felles ansvar uansett hvem som signerte. Hun må betale regningen.
+
+## Vanlige feil
+
+- Å tro at huseieren ikke kan kreve deg for leie bare fordi eksen sto på leiekontrakten
+- Å tro at denne regelen gjør deg ansvarlig for konas kredittkortgjeld (kredittkortgjeld faller nesten aldri inn under "det daglige husholdet")
+
+## Hva bør du gjøre?
+
+For å ha kontroll på faste utgifter som strøm, husleie og barnehage, opprett en felles regningskonto hvor dere begge setter inn penger hver måned.
+
+## Dumme spørsmål
+
+**Hun brukte kredittkortet på matbutikken. Er jeg da ansvarlig for kredittkortet hennes?**
+
+Nei, som utgangspunkt. Et kredittkort er et personlig lån du *ikke* er ansvarlig for (§ 40). At hun i ettertid valgte å bruke de lånte pengene på mat, gjør ikke at kredittkortselskapet kan saksøke deg. Banken inngikk en låneavtale med henne, ikke en avtale om daglige innkjøp.
+
+---
+title: Ekteskapsloven § 42 — Slik oppretter dere særeie (Ektepakt)
+slug: ekteskapsloven-42
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 42
+paragraf: 42
+kategori: familie
+description: Felleseie betyr at alt deles likt ved skilsmisse. Hvis dere ikke vil det, må dere skrive en ektepakt og avtale særeie. Det gjør at dere beholder deres egne ting.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-43, ekteskapsloven-44, ekteskapsloven-54]
+---
+
+## Kort svar
+
+Hvis dere skal skilles, sier loven at alle verdiene deres skal deles i to. Ønsker dere å unngå dette, må dere avtale "særeie". Dette må gjøres i et strengt formelt dokument som kalles en ektepakt. Særeie betyr at den som eier tingen, får beholde hele verdien selv.
+
+## Paragraftekst
+
+> Ektefeller kan ved ektepakt avtale at det de eier eller senere erverver, skal være unntatt fra deling (særeie). En slik avtale kan også inngås med sikte på et forestående ekteskap.
+>
+> Avtalen kan begrenses til å gjelde den ene ektefellens formue eller deler av den enes eller begge ektefellenes formue. Avtalen kan også gjøres tidsbegrenset eller betinget av at ektefellene ikke får felles livsarvinger.
+>
+> Ektefeller kan ved ektepakt avtale at særeie ikke skal gjelde ved oppgjør etter den ene ektefellens død.
+
+## Hva betyr dette på vanlig norsk?
+
+Hovedregelen i Norge er at ektefeller har "felleseie". Felleseie betyr ikke at dere eier tingene sammen mens dere er gift (det styrer du selv etter § 31), men det betyr at den totale pengeverdien av alt dere eier skal deles 50/50 den dagen dere skilles.
+
+Paragraf 42 gir dere lov til å bygge en mur rundt økonomien deres. Dere kan inngå en skriftlig avtale (ektepakt) hvor dere bestemmer at verdiene skal holdes utenfor delingen. Dette kalles særeie — "Mitt er mitt, og det skal du ikke ha halvparten av hvis vi skilles."
+
+Loven er veldig fleksibel: dere kan avtale fullstendig særeie (absolutt alt er adskilt), delvis særeie (bare hytta han arvet er særeie), tidsbegrenset særeie (særeie de første ti årene, deretter felleseie), eller betinget særeie (faller bort hvis dere får barn).
+
+**Hva skjer når noen dør?**
+Tredje avsnittet lar dere skrive i ektepakten at særeiet bare gjelder "i live", men blir felleseie igjen hvis ekteskapet oppløses ved død. Da sikrer dere hverandre som eldre.
+
+## Eksempel: Håkon og bedriften hans
+
+Håkon eier et rørleggerfirma som er verdt flere millioner. Han skal gifte seg med Ingrid. Håkon og Ingrid går til en advokat og lager en ektepakt. I ektepakten avtaler de "delvis særeie" — rørleggerfirmaet er Håkons særeie i sin helhet. Alt annet de kjøper i fremtiden (hus, bil og sparepenger) er felleseie. Hvis de skilles, beholder Håkon firmaet 100 prosent, mens huset og bilen deles likt.
+
+## Vanlige feil
+
+- Å skrive særeieavtalen på en serviett i stua (den er verdiløs — det må gjøres som en formell ektepakt med to vitner)
+- Å tro at særeie betyr at man ikke arver hverandre (særeie gjelder ved skilsmisse; ved død har du fortsatt krav på lovbestemt ektefellearv)
+
+## Hva bør du gjøre?
+
+Skal dere ha særeie? Ta gjerne en prat med en advokat for å sikre at dere tenker på alle konsekvensene. Bruk statens faste skjema for Ektepakt. Dette må fylles ut, signeres av dere begge foran to myndige vitner, og deretter tinglyses (sendes inn til registeret) for å være hundre prosent sikkert.
+
+## Dumme spørsmål
+
+**Hva er forskjellen på skjevdeling og særeie?**
+
+*Skjevdeling* (§ 59) gjelder automatisk uten at dere gjør noe som helst. Det betyr at du kan kreve å holde utenfor de verdiene du hadde *før* dere giftet deg, eller ting du får i arv. *Særeie* (§ 42) er en avtale dere lager. Særeie er mye sterkere. Med særeie er verdiene beskyttet uansett, også avkastningen, og det skjermer penger du *tjener* mens du er gift, noe skjevdeling ikke gjør.
+
+---
+title: Ekteskapsloven § 43 — Avtale om å sitte i uskiftet bo med særeie
+slug: ekteskapsloven-43
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 43
+paragraf: 43
+kategori: arv
+description: Vanligvis må man betale ut arvingene hvis den som døde hadde særeie. Men gjennom en ektepakt kan dere avtale at den som lever lengst, får beholde særeiet uskiftet.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-42, ekteskapsloven-54]
+---
+
+## Kort svar
+
+"Uskiftet bo" betyr at du som gjenlevende ektefelle kan utsette arveoppgjøret med barna og fortsette å bo i huset og bruke pengene. Arveloven sier at dette bare gjelder automatisk for felles verdier (felleseie). Paragraf 43 lar dere opprette en ektepakt som gir dere den samme retten overfor hverandres særeie.
+
+## Paragraftekst
+
+> Ektefeller kan ved ektepakt avtale at den lengstlevende skal ha rett til å sitte i uskiftet bo med særeie, eller med deler av særeie, jf § 42.
+>
+> Bruker den lengstlevende ektefellen retten til uskifte etter denne paragrafen, går også hans eller hennes egen formue som er særeie, inn i uskifteboet dersom ikke annet er avtalt ved ektepakt.
+>
+> Ved opphør av uskiftet skal delingen skje etter reglene i arveloven § 29 tredje ledd dersom det ikke i ektepakten er bestemt en mer lik fordeling av formuen.
+
+## Hva betyr dette på vanlig norsk?
+
+Når vi bygger økonomiske murer rundt oss i ekteskapet (særeie), kan det skape problemer den dagen en av oss dør. Hadde ektemannen din hundre prosent særeie på boligen deres, krever loven at skiftet skjer umiddelbart etter dødsfallet, og barna skal ha sin arv. Da risikerer du å måtte selge huset.
+
+For å unngå dette, finnes § 43. Dere kan inngå en ektepakt som sier: "Selv om huset er mitt særeie hvis vi skilles, skal du få lov til å sitte i uskiftet bo med det hvis jeg dør." Loven legger inn en byttehandel: Hvis kona takker ja til å sitte uskiftet med *hans* særeie, kastes også *hennes* egne særeiepenger automatisk inn i potten.
+
+## Eksempel: Eva og Håkon
+
+Håkon eier en gård som er hans særeie. Han ønsker at barna til slutt skal få gården, men vil ikke at Eva skal tvinges til å selge den hvis han dør ung. I ektepakten avtaler de (etter § 43) at Eva har rett til å sitte i uskiftet bo med særeiegården. Når Håkon dør, overtar Eva driften av gården. Barna får ingen arv før Eva velger å skifte, eller hun selv dør.
+
+## Vanlige feil
+
+- Å glemme særkullsbarn: Paragrafen gjelder bare rettighetene dere to i mellom. Har partneren din barn fra et tidligere forhold (særkullsbarn), må særkullsbarn alltid gi samtykke til uskifte.
+- Å skrive særeie i ektepakten for å beskytte seg mot skilsmisse, men glemme å tenke på hva som skjer ved død.
+
+## Dumme spørsmål
+
+**Får barna noe å si på dette?**
+
+Hvis barna er deres *felles* barn, har de ingenting de skulle ha sagt. Deres ektepakt overstyrer barnas krav på umiddelbar arv. Er barna fra et tidligere forhold, har barna rett til å si "nei, vi vil ha arven vår nå". Da må du betale dem ut.
+
+---
+title: Ekteskapsloven § 44 — Avtale om å dele alt likt (gi avkall på skjevdeling)
+slug: ekteskapsloven-44
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 44
+paragraf: 44
+kategori: familie
+description: Loven sier du har rett til å beholde det du eide før du giftet deg (skjevdeling). Vil dere i stedet dele absolutt alt 50/50? Da må dere opprette en ektepakt.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-59, ekteskapsloven-42, ekteskapsloven-54]
+---
+
+## Kort svar
+
+Skjevdelingsregelen sier at verdier du tok med deg inn i ekteskapet, eller arvet underveis, kan holdes utenfor deling ved en skilsmisse. Hvis du derimot ønsker at alt du og ektefellen eier skal deles nøyaktig i to uansett, må dere lage en ektepakt og avtale dette.
+
+## Paragraftekst
+
+> Ektefeller kan ved ektepakt avtale at reglene om skjevdeling i § 59 første og/eller tredje ledd ikke skal gjelde ved et senere skifteoppgjør.
+>
+> Avtalen kan begrenses til å gjelde den ene ektefellens formue eller deler av den enes eller begge ektefellenes formue. Avtalen kan også gjøres betinget av at skifte skjer etter et bestemt tidspunkt eller av at ektefellene får felles livsarvinger.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 44 gjør det mulig å slå av statens innebygde "skjevdelingsregel". Når to personer med standard felleseie skiller seg, er hovedregelen at alt skal deles i to. Men (§ 59) sier at du kan kreve å holde utenfor de tingene du eide den dagen dere møttes, pluss ting du har arvet.
+
+Men hva hvis dere ikke vil ha det slik? Mange par føler at ekteskapet er et komplett fellesskap og vil dele alt 50/50 uansett hvem som tjente det eller arvet det. Siden skjevdelingsretten ligger dypt forankret i loven, kan du ikke bare gi fra deg denne retten med et muntlig løfte. Det krever en formell **ektepakt** der dere skriver: "Vi gir avkall på skjevdeling."
+
+Akkurat som med særeie (§ 42), er denne avtalen fleksibel. Dere kan avtale det for begge to, bare for den ene, tidsbegrenset, eller betinget av barn.
+
+## Eksempel: Peder og Inger
+
+Peder gifter seg og tar med seg 3 millioner i egenkapital inn i ekteskapet. Inger tar med seg null. De kjøper et hus sammen og er enige om at de er et team og alt skal være felles. For at Peder ikke skal kunne komme om ti år ved en skilsmisse og kreve de 3 millionene holdt utenfor, fyller de ut en ektepakt der de avtaler å fravike § 59 (skjevdeling). Når de skilles fem år senere, deles alt de eier, inkludert Peders opprinnelige 3 millioner, nøyaktig på midten.
+
+## Vanlige feil
+
+- Å tro at å krysse av for "Felleseie" på et skjema automatisk betyr at alt deles likt (skjevdeling ligger latent i felleseiet og må avtales bort eksplisitt med ektepakt)
+
+## Dumme spørsmål
+
+**Hvorfor gjelder dette ved død?**
+
+Siste avsnitt sier at avtalen kan begrenses til bare å gjelde hvis en av dere dør. Dette brukes ofte for å sikre at kona di får en større andel av kaka og at særkullsbarn ikke kan kreve skjevdeling på vegne av deg.
+
+---
+title: Ekteskapsloven § 45 — Avtale om å dele verdiene mens dere fortsatt er gift
+slug: ekteskapsloven-45
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 45
+paragraf: 45
+kategori: familie
+description: Dere trenger ikke å skilles for å dele penger. Ektefeller har lov til å dele hele formuen mellom seg mens de er lykkelig gift, hvis de oppretter en ektepakt om dette.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-42, ekteskapsloven-54]
+---
+
+## Kort svar
+
+Det er fullt mulig å gjennomføre en full økonomisk fordeling (et skifte) av alt dere eier som felleseie, selv om dere fortsatt er gift. Loven krever at dere lager en ektepakt for å gjøre dette lovlig.
+
+## Paragraftekst
+
+> Ektefeller kan ved ektepakt avtale at felleseie skal deles.
+
+## Hva betyr dette på vanlig norsk?
+
+Vanligvis deler vi ikke formuen (felleseiet) før noen dør eller paret krever separasjon og skilsmisse. Men av og til oppstår det situasjoner hvor man ønsker å trykke på "nullstill"-knappen midt i ekteskapet — kanskje den ene har drevet med massiv spillegjeld og rotet til sin egen økonomi, mens den andre vil redde sine egne verdier og starte med blanke ark.
+
+Da tillater § 45 at dere gjennomfører et skifteoppgjør akkurat som om dere skulle skilles, uten at dere rent faktisk gjør det. For å gjøre dette, krever staten at det skjer via en formell ektepakt. Gjøres det på denne måten, unngår dere at delingen anses som en "ulovlig gave" som kreditorene kan ta beslag i.
+
+## Eksempel: Gjelden til Ola
+
+Ola og Kari er lykkelig gift. Kari arver uventet tre millioner kroner. Ola starter et firma som går fryktelig dårlig, og kreditorene banker på døren. Paret lager en ektepakt etter § 45 og krever felleseiet delt *nå*. Ola gjør opp sin gjeld på sin side, mens Kari får sin rene halvpart av nettoverdiene trygt plassert på sin konto.
+
+## Vanlige feil
+
+- Å bare overføre halvparten av pengene til hverandres kontoer (hvis dette gjøres uten ektepakt, regnes det som en gave, og kreditorer kan kreve pengene tilbakekalt)
+
+## Dumme spørsmål
+
+**Betyr dette at vi skiller oss papirmessig?**
+
+Nei, sivilstanden deres forblir "gift". Det er bare økonomien (felleseiet) som blir revet i to og utdelt mens dere fortsetter hverdagen.
+
+---
+title: Ekteskapsloven § 46 — En urimelig ektepakt kan settes til side
+slug: ekteskapsloven-46
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 46
+paragraf: 46
+kategori: familie
+description: Signerte du en ektepakt som ga partneren din absolutt alt, og deg ingenting? Hvis ektepakten er grovt urimelig, kan en domstol kaste avtalen i søpla eller endre den.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-42, ekteskapsloven-54, ekteskapsloven-65]
+---
+
+## Kort svar
+
+Har du og partneren skrevet en ektepakt om særeie, er den i utgangspunktet bindende. Men hvis den ene parten utnyttet den andre, eller ektepakten over tid har blitt sjokkerende urettferdig, har domstolen makt til å endre den eller slette den helt. Dette kalles "lemping".
+
+## Paragraftekst
+
+> Avtaler mellom ektefeller etter reglene i §§ 42 til 44 kan oppheves eller endres ved ny ektepakt.
+>
+> En avtale mellom ektefeller etter reglene i §§ 42 til 44 kan helt eller delvis settes ut av kraft hvis den vil virke urimelig overfor en av partene. I stedet for å sette avtalen ut av kraft, kan retten bestemme at ektefellen som blir urimelig dårlig stilt, blir tilkjent et beløp fra den andre ektefellen. Dersom begge ektefellene har fullstendig særeie, må krav om lemping settes fram innen tre år etter at ektefellene ble skilt.
+
+## Hva betyr dette på vanlig norsk?
+
+Norge har frihet til å inngå kontrakter, men staten tillater ikke at ekteskapet brukes til å plyndre noen fullstendig.
+
+Første avsnitt er enkelt: Har dere en ektepakt (for eksempel om særeie) og vil slette den fordi dere har angret, kan dere gjøre det — men ikke ved å kaste dokumentet i peisen. Dere må skrive og tinglyse en *ny* ektepakt for å avlyse den gamle.
+
+Andre avsnitt er "angreknappen" for ofre for dårlige avtaler. Dommeren kan se på hvordan avtalen ble til (var det manipulasjon eller trusler?) og hvordan den slår ut i dag. Hvis resultatet er urimelig urettferdig, kan dommeren gjøre to ting: skrote hele særeie-ektepakten og si at pengene skal deles 50/50, eller la særeiet bestå men dømme mannen til å overføre en engangskompensasjon.
+
+Du har ikke all verdens tid til å kreve dette. Har dere fullstendig særeie begge to, må du reise sak senest tre år etter at skilsmissen er endelig.
+
+## Eksempel: Maria
+
+Maria (20) ble stormforelsket i den 25 år eldre forretningsmannen Petter. Før bryllupet krevde Petter at Maria signerte en ektepakt der alt i ekteskapet var hans særeie, og hun ga opp all skjevdeling. Maria stolte på ham og signerte. Femten år og tre barn senere skal de skilles. Petter har 50 millioner i formue. Maria har vært hjemme med tre barn og har null kroner på konto. Domstolen setter ektepakten til side i medhold av § 46. Maria blir tilkjent 15 millioner kroner.
+
+## Vanlige feil
+
+- Å tro at domstolen vil redde deg fra "litt dårlige" avtaler (terskelen er svært høy — du må sitte igjen genuint dårlig stilt)
+- Å vente i fire år etter skilsmissen før du reiser krav (da blir avvist fordi treårs-fristen er utløpt)
+
+## Dumme spørsmål
+
+**Hva om jeg visste nøyaktig hva jeg skrev under på, gjelder § 46 da?**
+
+Ja. Selv om mannen din har e-poster som viser at han forklarte at du ville bli sittende uten penger, ser retten på *resultatet* i dag. Hvis resultatet etter et langt ekteskap er at en part står på bar bakke, kan ektepakten ryke.
+
+---
+title: Ekteskapsloven § 47 — Personer med verge må ha godkjenning for å inngå ektepakt
+slug: ekteskapsloven-47
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 47
+paragraf: 47
+kategori: familie
+description: En ektepakt er en juridisk kontrakt. Er du fratatt den rettslige handleevnen på grunn av sykdom, er det vergen din som må godkjenne en avtale om for eksempel særeie.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-42, ekteskapsloven-2, ekteskapsloven-9]
+---
+
+## Kort svar
+
+Hvis en person er fratatt kontrollen over egen økonomi og har en lovoppnevnt verge, kan ikke personen alene skrive under på en ektepakt om særeie eller fordeling. Vergen må samtykke skriftlig for at avtalen skal være gyldig.
+
+## Paragraftekst
+
+> En ektefelle som er mindreårig eller fratatt rettslig handleevne på det økonomiske området, må ha samtykke av verge for å inngå avtaler i samsvar med reglene i §§ 42 til 46. Det samme gjelder en ektefelle som er satt under vergemål uten å være fratatt rettslig handleevne, dersom det faller innenfor vergens oppdrag å gi slikt samtykke.
+
+## Hva betyr dette på vanlig norsk?
+
+Å skrive en ektepakt (§§ 42–46) er det farligste papiret du kan signere i ekteskapet, fordi det flytter store verdier, oppretter særeie, eller gir avkall på sikkerhetsnett som skjevdeling.
+
+For at mennesker med demens, alvorlig psykisk utviklingshemming eller alvorlig psykisk sykdom ikke skal bli utnyttet, krever loven at vergen kobles inn. De som formelt er *fratatt rettslig handleevne* (staten har tatt fra dem retten til å inngå egne økonomiske avtaler) må *alltid* ha vergens skriftlige samtykke. De som har et vanlig frivillig vergemål kan i utgangspunktet signere ektepakter selv — men hvis vergemålet er spesifikt skrevet slik at vergen skal håndtere slike ekteskapsavtaler, må vergen samtykke.
+
+## Eksempel: Nils
+
+Nils er 75 år og har demens. Han er fratatt rettslig handleevne for økonomi. Kona ønsker at de skal skrive en ektepakt hvor alt gjøres til hennes særeie. Hun legger ektepakten foran Nils, han signerer, og de får to vitner til å signere. Ektepaktregisteret avviser dokumentet umiddelbart fordi Nils mangler handleevne og signaturen til vergen hans mangler. Vergen sier nei til avtalen fordi den setter Nils i fare.
+
+## Vanlige feil
+
+- Å tro at hvis en person forstår dokumentet der og da, så trengs ikke vergen (hvis personen formelt er fratatt handleevnen, er kravet om vergens signatur absolutt og ufravikelig)
+
+## Hva bør du gjøre?
+
+Sjekk mandatet fra Statsforvalteren. Hva står det i vedtaket om vergemål? Står det "Fratatt rettslig handleevne i økonomiske spørsmål", må vergen være med på ektepakten. Vergen fyller ut sitt samtykke på selve ektepaktskjemaet.
+
+## Dumme spørsmål
+
+**Hvorfor nevner loven "mindreårig"? Det er jo 18-årsgrense for ekteskap.**
+
+Dette er i all hovedsak et historisk spor fra før 18-årsgrensen ble absolutt, og fra tilfeller der personer inngikk ekteskap i utlandet før de var 18. I dag er det praktisk talt umulig å inngå lovlig ektepakt i Norge som mindreårig, nettopp fordi du ikke får gifte deg.
+
+---
+title: Ekteskapsloven § 48 — Foreldre kan kreve at arven din blir særeie
+slug: ekteskapsloven-48
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 48
+paragraf: 48
+kategori: arv
+description: Skal du gi en stor gave eller arv til barna dine? Du kan sette som et urokkelig vilkår at gaven skal være barnets særeie, for å sikre at svigerbarnet aldri får tak i det ved skilsmisse.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-42, ekteskapsloven-59]
+---
+
+## Kort svar
+
+En person som gir en gave eller etterlater seg arv i testament, kan bestemme at verdiene skal være mottakerens særeie. Det betyr at mottakerens ektefelle ikke har krav på halvparten hvis de senere skiller seg. Mottakeren kan ikke overstyre dette kravet selv.
+
+## Paragraftekst
+
+> En giver eller arvelater kan bestemme en ordning som nevnt i §§ 42 til 44 som vilkår for arven eller gaven. For arv må dette bestemmes ved testament. Mottakeren kan ikke endre slike bestemmelser hvis det ikke er særskilt hjemlet eller klart forutsatt av giveren eller arvelateren.
+
+## Hva betyr dette på vanlig norsk?
+
+Paragraf 42 slår fast at to ektefeller kan avtale særeie mellom seg. Paragraf 48 gir derimot en utenforstående part (en forelder eller gavegiver) makten til å tvinge frem et særeie for dem.
+
+Mange foreldre bekymrer seg for hva som skjer med familiehytta hvis barna gifter seg og senere går gjennom en bitter skilsmisse. For å beskytte slektsverdiene, kan mor og far ta kontrollen. Når mor skriver testamentet sitt, kan hun skrive: "De 2 millionene datteren min arver, skal være hennes fullstendige særeie." Arven blir da automatisk særeie for datteren, uavhengig av hva datterens ektemann mener. Det kreves ingen ektepakt. Det samme gjelder for store pengegaver gitt mens foreldrene lever, så lenge vilkåret om særeie settes idet gaven gis.
+
+**Ufravikelig klausul:**
+Arvingen kan ikke angre. Datteren kan ikke finne ut ti år senere at hun vil omgjøre arven til felleseie. Mors krav om særeie står fast og kan ikke endres av ekteparet.
+
+## Eksempel: Foreldrene til Ola
+
+Foreldrene til Ola overfører familiehytta til ham som forskudd på arv. I gavebrevet skriver foreldrene at "Hytta skal i enhver henseende være Olas særeie". Tolv år senere skal Ola og Kari skilles. Kari mener hun har krav på halvparten av hytteverdien. Ola henter frem gavebrevet. Siden foreldrene krevde at gaven var særeie etter § 48, holdes hytta 100 prosent utenfor delingen.
+
+## Vanlige feil
+
+- Å overføre 500 000 kr i forskudd på arv, og be om særeie i en e-post *to uker senere* (kravet om særeie må stilles før eller samtidig som gaven gis)
+- Å gi muntlig beskjed om at arven skal være særeie (hvis det er arv etter død, *krever* loven at særeiet står nedskrevet i et gyldig testament)
+
+## Hva bør du gjøre?
+
+Vil du beskytte verdiene du gir barna dine? Skriv et testament med formuleringen: "Arv etter meg, inkludert gjenstander som trer i stedet for arven, og avkastning av den, skal være mottakerens særeie." Gir du gaver mens du lever, lag et enkelt "Gavebrev" der du spesifiserer at "Gaven gis på det vilkår at den skal være mottakers særeie."
+
+## Dumme spørsmål
+
+**Fungerer ikke skjevdelingsregelen for dette uansett?**
+
+Jo, normalt kan arv holdes utenfor deling ved skilsmisse gjennom § 59 (skjevdeling). Men særeie er en mur av stål. Den hindrer dessuten datteren i å *frivillig* rote vekk beskyttelsen sin ved å skrive en uvettig ektepakt med mannen.
+
+---
+title: Ekteskapsloven § 49 — Særeiet smitter (Bytting av gjenstander og renter)
+slug: ekteskapsloven-49
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 49
+paragraf: 49
+kategori: familie
+description: Selger du en hytte som var ditt særeie, og kjøper aksjer for pengene, blir aksjene automatisk særeie. Særeie-statusen følger alltid med over i de nye tingene du skaffer.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-42, ekteskapsloven-48, ekteskapsloven-59]
+---
+
+## Kort svar
+
+Hvis du har særeie på penger eller en gjenstand, beholder verdien statusen sin selv om du selger eller bytter den. Penger som kommer fra et særeie (avkastning, renter, leieinntekter) er også særeie, med mindre noe annet er avtalt i ektepakten.
+
+## Paragraftekst
+
+> Det som trer i stedet for eiendom som er særeie, blir særeie hvis ikke ektefellene ved ektepakt har bestemt noe annet, eller det er fastsatt av giver eller arvelater. Det samme gjelder avkastning av slik eiendom.
+
+## Hva betyr dette på vanlig norsk?
+
+Ekteskapsloven § 49 fastsetter regelen om surrogasjon ("å tre i stedet for"). Det betyr at særeie-egenskapen kleber seg til pengene uansett hvilken fysisk form de tar. Kjøper du en båt for særeie-pengene, blir båten særeie. Selger du båten og kjøper en Tesla, er Teslaen særeie. Det er den opprinnelige pengepotten som er beskyttet.
+
+Det andre loven slår fast er at "avkastning" av særeiet også er særeie. Avkastning betyr at pengene yngler: utbytte fra aksjer som er ditt særeie, leieinntekter fra et hus som er særeie, og renter du tjener på en særeie-konto er alle særeie.
+
+Dette skiller seg sterkt fra den andre regelen, *skjevdeling* (§ 59). Med vanlig skjevdeling er huset holdt utenfor, men renteinntektene du får fra det blir ofte felleseie. Særeie er derimot fullstendig isolert — alt som vokser ut av det tilhører deg alene, hvis ikke du bevisst velger å avtale med kona i en ektepakt at leieinntektene skal deles.
+
+## Eksempel: Hytta og Peder
+
+Peder har en hytte som er hans formelle særeie. Peder selger den for tre millioner kroner, og kjøper tre små utleieleiligheter for pengene. De leies ut for 15 000 kroner hver i måneden. Ved skilsmisse fem år senere er de tre leilighetene 100 prosent Peders særeie, og leieinntektene på bankkontoen er avkastning av særeiet og er også 100 prosent Peders særeie.
+
+## Vanlige feil
+
+- Å blande særeiepenger med konas felleseiepenger på en felles bankkonto for å betale mat og lån (hvis pengene blandes til et uoversiktlig rot, mister de sin "særeie-identitet" og omgjøres i praksis til felleseie)
+
+## Hva bør du gjøre?
+
+Hvis du selger en bil eller hytte som er ditt særeie, la pengene gå inn på en konto som bare står i ditt navn. Når du kjøper den nye tingen, betal direkte fra denne lukkede kontoen. Hvis du kan bevise akkurat hvor pengene kom fra, er det aldri noen tvil om at den nye tingen er beskyttet av særeiet.
+
+## Dumme spørsmål
+
+**Hva skjer hvis jeg kjøper en båt der halvparten betales med særeie-penger og halvparten betales med felles lønn?**
+
+Da blir båten en blanding ("brøksæreie"). Koster båten én million, og du brukte 500 000 i særeie og 500 000 av lønnskontoen, vil eierskapet under en skilsmisse settes til at båten er 50 prosent ditt særeie og 50 prosent felleseie.
+
+---
+title: Ekteskapsloven § 50 — Store gaver mellom dere må sikres med ektepakt
+slug: ekteskapsloven-50
+lov: ekteskapsloven
+lov_display: Ekteskapsloven
+number: 50
+paragraf: 50
+kategori: gjeld
+description: Gir du mannen din halve huset ditt, eller en svært dyr bil? For at gaven skal være juridisk gyldig og vernet mot kreditorer, krever loven at dere inngår en ektepakt. Vanlige julegaver er unntatt.
+sist_oppdatert: 2026-05-12
+related: [ekteskapsloven-54, ekteskapsloven-51, ekteskapsloven-42]
+---
+
+## Kort svar
+
+Større gaver mellom ektefeller er ikke lovlige uten at gaven skrives ned i en formell ektepakt og tinglyses. Målet med regelen er å hindre at folk "gjemmer" eiendeler ved å gi dem i gave til kona rett før de går konkurs.
+
+## Paragraftekst
+
+> Gaver mellom ektefeller må skje ved ektepakt for å være gyldige. Dette gjelder likevel ikke gaver som må anses som vanlige, og heller ikke gaver som består i pensjon, livsforsikring, livrente, føderåd eller lignende ytelser som sikrer den andre ektefellen.
+>
+> Det kan ikke gyldig avtales at det som en ektefelle erverver i fremtiden, skal tilfalle den andre uten vederlag. En slik avtale kan likevel inngås om vanlig innbo i det felles hjemmet.
+
+## Hva betyr dette på vanlig norsk?
+
+Hvis du er ugift, kan du gi bort huset ditt til en venn med et enkelt håndtrykk. Men i et ekteskap sier loven nei. Større formuesoverføringer (gaver) mellom mann og kone må skje ved en "ektepakt" — et tinglyst skjema med to vitner.
+
+Dette kalles ekteskapslovens gaveforbud. Hvorfor? Fordi Olav som driver et rørleggerfirma som snart går konkurs, ellers kunne gitt familiehytta, båten og 500 000 kr i "gave" til kona, slik at banken ikke kunne ta det. Ved å kreve tinglyst ektepakt tvinges alt frem i lyset.
+
+**Hva med bursdager og jul?**
+Du trenger selvfølgelig ikke ektepakt for å gi kona et perlekjede til bryllupsdagen eller en iPad til jul. Loven unntar "gaver som må anses som vanlige". Hva som er vanlig avhenger av økonomien deres. Overføring av fast eiendom regnes *alltid* som en uvanlig og stor gave — det krever ektepakt og nytt skjøte.
+
+**Ingen fremtidige gaver:**
+Andre ledd forbyr "alt jeg tjener i fremtiden skal være ditt". Du kan ikke gi bort en million kroner du ikke har tjent ennå. Det eneste du kan avtale at skal gå direkte til kona i fremtiden, er nye møbler dere kjøper (vanlig innbo).
+
+## Eksempel: Overføring av hytta
+
+Kari vil gjøre ektemannen Ola til medeier i hytta sin som en kjærlighetserklæring, uten at han betaler for sin del. Hun logger inn på Kartverket og endrer eierandelen til 50/50. Ett år senere skilles de. Karis advokat påpeker at gaven til Ola manglet en tinglyst ektepakt. Gaven til Ola kjennes ugyldig. Hytta er fortsatt 100 prosent Karis eiendom i delingsoppgjøret.
+
+## Vanlige feil
+
+- Å tro at å tinglyse et skjøte på Kartverket alene er nok (det flytter bare navnet; hvis ingen penger ble betalt, er det en gave, og da er *ektepakten* beviset som må til først)
+
+## Hva bør du gjøre?
+
+Har du tenkt å gi en bil, en del av et hus, eller store aksjeposter til ektefellen din? Bruk statens faste skjema for "Ektepakt", kryss av for "Gave" og spesifiser nøyaktig hva det gjelder. Få skjemaet signert av dere begge foran to vitner, og send det til tinglysing.
+
+## Dumme spørsmål
+
+**Får vi skattesmell for gaver?**
+
+Nei, dokumentavgiften gjelder ikke når man overfører felles bolig til en ektefelle. Mellom ektefeller er dette i praksis skattefritt, men sjekk detaljene med Kartverket for hytter eller utleieboliger.
+
+**Må gaven være særeie?**
+
+Nei, du kan gi henne bilen som "felleseie". Da er gaven hennes og kreditorer kan ikke ta den fra henne. Forskjellen er bare at ved en fremtidig skilsmisse vil verdien av bilen likevel gå i den store felleseie-potten som deles i to. Vil du at bilen bare skal være hennes ved skilsmisse, må du gi den med vilkår om *særeie*.

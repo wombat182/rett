@@ -1883,7 +1883,7 @@ def site_nav(depth=1, active=None):
       <a href="{prefix}lover/"{cls('lover')}>Lover</a>
       <a href="{prefix}sporsmal/"{cls('sporsmal')}>Spørsmål</a>
       <a href="{prefix}tjenester/"{cls('tjenester')}>Verktøy/maler</a>
-      <a href="{prefix}advokatvurdering/"{cls('advokatvurdering')}>Advokatvurdering</a>
+      <a href="{prefix}advokatvurdering/">Advokatvurdering</a>
       <a href="{prefix}kontakt/" class="rr-nav-cta">Send inn sak →</a>
     </nav>
   </div>
@@ -6930,6 +6930,7 @@ def build():
     urls.append(("/tjenester/reklamasjon-bil/", "0.8"))
     urls.append(("/kontrakter/", "0.8"))
     urls.append(("/kontrakter/husleiekontrakt/", "0.8"))
+    urls.append(("/advokatvurdering/", "0.9"))
     
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for path, priority in urls:
@@ -6951,6 +6952,13 @@ Sitemap: {SITE_URL}/sitemap.xml
     with open(f"{out}/CNAME", "w", encoding="utf-8") as f:
         f.write("rettsregel.no\n")
     
+    # advokatvurdering — statisk side, kopieres direkte til dist
+    _src_dir = os.path.dirname(os.path.abspath(__file__))
+    _av_src = os.path.join(_src_dir, "advokatvurdering", "index.html")
+    if os.path.exists(_av_src):
+        os.makedirs(f"{out}/advokatvurdering", exist_ok=True)
+        shutil.copy(_av_src, f"{out}/advokatvurdering/index.html")
+
     # Logo-assets (kopieres fra repo-roten — kreves av forsiden som favicon og fallback)
     src_dir = os.path.dirname(os.path.abspath(__file__))
     for asset in ("logo.svg", "logo.png"):
