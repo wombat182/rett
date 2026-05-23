@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verktøy og maler — juridiske dokumenter, kontrakter og kalkulatorer | Rettsregel</title>
+<meta name="description" content="91 ferdige juridiske verktøy, kontrakter, brev og kalkulatorer — basert på norsk rett. Klar til bruk, gratis.">
+<link rel="canonical" href="https://rettsregel.no/tjenester/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Verktøy og maler — juridiske dokumenter, kontrakter og kalkulatorer">
+<meta property="og:description" content="91 ferdige juridiske verktøy, kontrakter, brev og kalkulatorer — basert på norsk rett. Klar til bruk, gratis.">
+<meta property="og:url" content="https://rettsregel.no/tjenester/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Verktøy og maler — juridiske dokumenter, kontrakter og kalkulatorer">
+<meta name="twitter:description" content="91 ferdige juridiske verktøy, kontrakter, brev og kalkulatorer — basert på norsk rett. Klar til bruk, gratis.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../lover/">Lover</a>
+      <a href="../sporsmal/">Spørsmål</a>
+      <a href="../tjenester/" class="rr-nav-active">Verktøy/maler</a>
+      <a href="../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+
+<main class="tk-page">
+
+  <section class="tk-hero-compact" id="alle">
+    <h1>Hva skal du lage?</h1>
+    <p class="tk-hero-compact-lead">Kontrakter, brev, skjemaer og sjekker — klare til bruk.</p>
+  </section>
+
+  <div class="tk-search-wrap">
+    <span class="tk-search-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    </span>
+    <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter dokument, brev eller situasjon …" aria-label="Søk i verktøy">
+    <span class="tk-search-hint">Filtreres mens du skriver</span>
+  </div>
+
+  <nav class="tk-cat-bar" aria-label="Kategorier">
+    <a href="#klage-og-krav" class="tk-cat" data-cat="klage-og-krav">Klage og krav</a>
+    <a href="#arbeid-og-oppsigelse" class="tk-cat" data-cat="arbeid-og-oppsigelse">Arbeid og oppsigelse</a>
+    <a href="#bolig-og-leie" class="tk-cat" data-cat="bolig-og-leie">Bolig og leie</a>
+    <a href="#avtaler-og-fullmakter" class="tk-cat" data-cat="avtaler-og-fullmakter">Avtaler og fullmakter</a>
+    <a href="#arv-og-testament" class="tk-cat" data-cat="arv-og-testament">Arv og testament</a>
+    <a href="#frister-og-kalkulatorer" class="tk-cat" data-cat="frister-og-kalkulatorer">Frister og kalkulatorer</a>
+    <a href="#alle" class="tk-cat" data-cat="alle">Alle</a>
+  </nav>
+
+  <section class="tk-section" id="klage-og-krav" data-collapsed>
+    <h2 class="tk-section-title">Klage og krav</h2>
+    <div class="tk-grid">
+      <a href="../tjenester/reklamasjon/" class="tk-row" data-search="reklamasjonsbrev klage med riktige lovhenvisninger.">
+        <span class="tk-row-name">Reklamasjonsbrev</span>
+        <span class="tk-row-desc">Klage med riktige lovhenvisninger.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/heving/" class="tk-row" data-search="heving av kjøp få pengene tilbake ved vesentlig feil.">
+        <span class="tk-row-name">Heving av kjøp</span>
+        <span class="tk-row-desc">Få pengene tilbake ved vesentlig feil.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/prisavslag/" class="tk-row" data-search="prisavslag hvor mye kan du kreve i avslag?">
+        <span class="tk-row-name">Prisavslag</span>
+        <span class="tk-row-desc">Hvor mye kan du kreve i avslag?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/mangel/" class="tk-row" data-search="mangel-sjekker er feilen juridisk mangel — eller bare slitasje?">
+        <span class="tk-row-name">Mangel-sjekker</span>
+        <span class="tk-row-desc">Er feilen juridisk mangel — eller bare slitasje?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/angreskjema/" class="tk-row" data-search="angrerettskjema eu-standardskjema, klart til utfylling.">
+        <span class="tk-row-name">Angrerettskjema</span>
+        <span class="tk-row-desc">EU-standardskjema, klart til utfylling.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/inkasso/" class="tk-row" data-search="inkasso-sjekk er kravet lovlig? foreldelse og gebyrer.">
+        <span class="tk-row-name">Inkasso-sjekk</span>
+        <span class="tk-row-desc">Er kravet lovlig? Foreldelse og gebyrer.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/forsikringsavslag/" class="tk-row" data-search="forsikringsavslag grunnlag for klage? finansklagenemnda.">
+        <span class="tk-row-name">Forsikringsavslag</span>
+        <span class="tk-row-desc">Grunnlag for klage? Finansklagenemnda.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/handverker-reklamasjon/" class="tk-row" data-search="håndverker-reklamasjon brev ved dårlig håndverkertjeneste.">
+        <span class="tk-row-name">Håndverker-reklamasjon</span>
+        <span class="tk-row-desc">Brev ved dårlig håndverkertjeneste.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/reklamasjon-bil/" class="tk-row tk-row-extra" data-search="reklamasjon bil brev ved feil på bilen du kjøpte.">
+        <span class="tk-row-name">Reklamasjon bil</span>
+        <span class="tk-row-desc">Brev ved feil på bilen du kjøpte.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/kredittkjop/" class="tk-row tk-row-extra" data-search="kredittkjøp-sjekker er banken medansvarlig når selger svikter?">
+        <span class="tk-row-name">Kredittkjøp-sjekker</span>
+        <span class="tk-row-desc">Er banken medansvarlig når selger svikter?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/klagefrist/" class="tk-row tk-row-extra" data-search="klagefrist forvaltning 3 uker etter vedtak. utløpt?">
+        <span class="tk-row-name">Klagefrist forvaltning</span>
+        <span class="tk-row-desc">3 uker etter vedtak. Utløpt?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/pakkereis/" class="tk-row tk-row-extra" data-search="pakkereise-kalkulator 250–600 eur ved forsinkelse. eu 261/2004.">
+        <span class="tk-row-name">Pakkereise-kalkulator</span>
+        <span class="tk-row-desc">250–600 EUR ved forsinkelse. EU 261/2004.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/gdpr-innsyn/" class="tk-row tk-row-extra" data-search="gdpr-innsynskrav be selskaper om å vise dine data.">
+        <span class="tk-row-name">GDPR-innsynskrav</span>
+        <span class="tk-row-desc">Be selskaper om å vise dine data.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/misligholdsvarsel/" class="tk-row tk-row-extra" data-search="misligholdsvarsel siste varsel før inkasso.">
+        <span class="tk-row-name">Misligholdsvarsel</span>
+        <span class="tk-row-desc">Siste varsel før inkasso.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <a href="#" class="tk-show-all" data-section="klage-og-krav">Vis alle 14 i Klage og krav <span class="tk-show-all-arrow" aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="tk-section" id="arbeid-og-oppsigelse" data-collapsed>
+    <h2 class="tk-section-title">Arbeid og oppsigelse</h2>
+    <div class="tk-grid">
+      <a href="../tjenester/arbeid-oppsigelse/" class="tk-row" data-search="oppsigelsestid lovlig varsel basert på ansettelsestid og alder.">
+        <span class="tk-row-name">Oppsigelsestid</span>
+        <span class="tk-row-desc">Lovlig varsel basert på ansettelsestid og alder.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/usaklig-oppsigelse/" class="tk-row" data-search="usaklig oppsigelse saklig grunn, saksbehandling, sykevern.">
+        <span class="tk-row-name">Usaklig oppsigelse</span>
+        <span class="tk-row-desc">Saklig grunn, saksbehandling, sykevern.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/arbeidskontrakt/" class="tk-row" data-search="arbeidskontrakt-sjekker alle lovpålagte minimumsopplysninger?">
+        <span class="tk-row-name">Arbeidskontrakt-sjekker</span>
+        <span class="tk-row-desc">Alle lovpålagte minimumsopplysninger?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/arbeidsavtale/" class="tk-row" data-search="arbeidsavtale fast ansettelse — alle aml. § 14-6-krav.">
+        <span class="tk-row-name">Arbeidsavtale</span>
+        <span class="tk-row-desc">Fast ansettelse — alle aml. § 14-6-krav.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/sykmelding-vern/" class="tk-row" data-search="sykmelding-vern er du vernet de første 12 månedene?">
+        <span class="tk-row-name">Sykmelding-vern</span>
+        <span class="tk-row-desc">Er du vernet de første 12 månedene?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/permittering/" class="tk-row" data-search="permittering-sjekker lovlig varsel og arbeidsgiverperiode?">
+        <span class="tk-row-name">Permittering-sjekker</span>
+        <span class="tk-row-desc">Lovlig varsel og arbeidsgiverperiode?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/konkurranse-klausul/" class="tk-row" data-search="konkurranse-/kundeklausul gyldig? kompensasjon og maksvarighet.">
+        <span class="tk-row-name">Konkurranse-/kundeklausul</span>
+        <span class="tk-row-desc">Gyldig? Kompensasjon og maksvarighet.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/sluttavtale/" class="tk-row" data-search="sluttavtale frivillig avslutning av arbeidsforhold.">
+        <span class="tk-row-name">Sluttavtale</span>
+        <span class="tk-row-desc">Frivillig avslutning av arbeidsforhold.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/arbeidsavtale-deltid/" class="tk-row tk-row-extra" data-search="arbeidsavtale (deltid) stillingsprosent og fortrinnsrett.">
+        <span class="tk-row-name">Arbeidsavtale (deltid)</span>
+        <span class="tk-row-desc">Stillingsprosent og fortrinnsrett.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/arbeidsavtale-midlertidig/" class="tk-row tk-row-extra" data-search="arbeidsavtale (midlertidig) vikariat, prosjekt og sesong.">
+        <span class="tk-row-name">Arbeidsavtale (midlertidig)</span>
+        <span class="tk-row-desc">Vikariat, prosjekt og sesong.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/taushetserklaring/" class="tk-row tk-row-extra" data-search="taushetserklæring (nda) for ansatte, konsulenter, samarbeidspartnere.">
+        <span class="tk-row-name">Taushetserklæring (NDA)</span>
+        <span class="tk-row-desc">For ansatte, konsulenter, samarbeidspartnere.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/arbeidsattest/" class="tk-row tk-row-extra" data-search="arbeidsattest alle ansatte har rett på attest. aml. § 15-15.">
+        <span class="tk-row-name">Arbeidsattest</span>
+        <span class="tk-row-desc">Alle ansatte har rett på attest. Aml. § 15-15.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <a href="#" class="tk-show-all" data-section="arbeid-og-oppsigelse">Vis alle 12 i Arbeid og oppsigelse <span class="tk-show-all-arrow" aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="tk-section" id="bolig-og-leie" data-collapsed>
+    <h2 class="tk-section-title">Bolig og leie</h2>
+    <div class="tk-grid">
+      <a href="../kontrakter/husleiekontrakt/" class="tk-row" data-search="husleiekontrakt tidsubestemt eller tidsbestemt.">
+        <span class="tk-row-name">Husleiekontrakt</span>
+        <span class="tk-row-desc">Tidsubestemt eller tidsbestemt.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/depositum-tilbake/" class="tk-row" data-search="depositum tilbake depositum og renter du har krav på.">
+        <span class="tk-row-name">Depositum tilbake</span>
+        <span class="tk-row-desc">Depositum og renter du har krav på.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/husleie-oppsigelse/" class="tk-row" data-search="oppsigelsestid leie lovlig oppsigelsestid for utleier og leietaker.">
+        <span class="tk-row-name">Oppsigelsestid leie</span>
+        <span class="tk-row-desc">Lovlig oppsigelsestid for utleier og leietaker.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/leie-okning/" class="tk-row" data-search="leieøkning maks lovlig økning etter kpi, med varselbrev.">
+        <span class="tk-row-name">Leieøkning</span>
+        <span class="tk-row-desc">Maks lovlig økning etter KPI, med varselbrev.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/vedlikehold/" class="tk-row" data-search="vedlikeholdsansvar utleier eller leietaker — hvem fikser hva?">
+        <span class="tk-row-name">Vedlikeholdsansvar</span>
+        <span class="tk-row-desc">Utleier eller leietaker — hvem fikser hva?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/boligkjoper-sjekkliste/" class="tk-row" data-search="boligkjøper-sjekkliste 8 punkter — ivareta undersøkelsesplikten.">
+        <span class="tk-row-name">Boligkjøper-sjekkliste</span>
+        <span class="tk-row-desc">8 punkter — ivareta undersøkelsesplikten.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/vesentlig-mangel-bolig/" class="tk-row" data-search="vesentlig mangel bolig over høyesteretts 3–6 %-terskel?">
+        <span class="tk-row-name">Vesentlig mangel bolig</span>
+        <span class="tk-row-desc">Over Høyesteretts 3–6 %-terskel?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/selger-opplysningsplikt/" class="tk-row" data-search="selgers opplysningsplikt holdt selger tilbake info? §§ 3-7 og 3-8.">
+        <span class="tk-row-name">Selgers opplysningsplikt</span>
+        <span class="tk-row-desc">Holdt selger tilbake info? §§ 3-7 og 3-8.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/fremleiekontrakt/" class="tk-row tk-row-extra" data-search="fremleiekontrakt fremleie hele eller deler av boligen din.">
+        <span class="tk-row-name">Fremleiekontrakt</span>
+        <span class="tk-row-desc">Fremleie hele eller deler av boligen din.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/fremleie/" class="tk-row tk-row-extra" data-search="fremleie-sjekker kan du fremleie? kan utleier nekte?">
+        <span class="tk-row-name">Fremleie-sjekker</span>
+        <span class="tk-row-desc">Kan du fremleie? Kan utleier nekte?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/depositumavtale/" class="tk-row tk-row-extra" data-search="depositumavtale sperret konto, maks 6 mnd. husleieloven § 3-5.">
+        <span class="tk-row-name">Depositumavtale</span>
+        <span class="tk-row-desc">Sperret konto, maks 6 mnd. Husleieloven § 3-5.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/prisavslag-bolig/" class="tk-row tk-row-extra" data-search="prisavslag bolig beregn krav basert på utbedringskostnad.">
+        <span class="tk-row-name">Prisavslag bolig</span>
+        <span class="tk-row-desc">Beregn krav basert på utbedringskostnad.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/overtakelsesprotokoll/" class="tk-row tk-row-extra" data-search="overtakelsesprotokoll målere, nøkler, feil. avgjørende dokumentasjon.">
+        <span class="tk-row-name">Overtakelsesprotokoll</span>
+        <span class="tk-row-desc">Målere, nøkler, feil. Avgjørende dokumentasjon.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/nabovarsel/" class="tk-row tk-row-extra" data-search="nabovarsel påkrevd før byggesøknad. 2 ukers merknadsfrist.">
+        <span class="tk-row-name">Nabovarsel</span>
+        <span class="tk-row-desc">Påkrevd før byggesøknad. 2 ukers merknadsfrist.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/kjopekontrakthytte/" class="tk-row tk-row-extra" data-search="kjøpekontrakt hytte fritidseiendom og tomt.">
+        <span class="tk-row-name">Kjøpekontrakt hytte</span>
+        <span class="tk-row-desc">Fritidseiendom og tomt.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/leiekontrakt-naring/" class="tk-row tk-row-extra" data-search="leiekontrakt næring kontor, butikk, lager. kpi-regulering.">
+        <span class="tk-row-name">Leiekontrakt næring</span>
+        <span class="tk-row-desc">Kontor, butikk, lager. KPI-regulering.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/sameieandel/" class="tk-row tk-row-extra" data-search="sameieerklæring hvem eier hva? dokumentér sameieandeler.">
+        <span class="tk-row-name">Sameieerklæring</span>
+        <span class="tk-row-desc">Hvem eier hva? Dokumentér sameieandeler.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <a href="#" class="tk-show-all" data-section="bolig-og-leie">Vis alle 17 i Bolig og leie <span class="tk-show-all-arrow" aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="tk-section" id="avtaler-og-fullmakter" data-collapsed>
+    <h2 class="tk-section-title">Avtaler og fullmakter</h2>
+    <div class="tk-grid">
+      <a href="../tjenester/fullmakt-mal/" class="tk-row" data-search="fullmakt-mal fullmakt for nav, bank, eiendom.">
+        <span class="tk-row-name">Fullmakt-mal</span>
+        <span class="tk-row-desc">Fullmakt for Nav, bank, eiendom.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/kjopekontraktbil/" class="tk-row" data-search="kjøpekontrakt bil privatbilsalg, basert på kjøpsloven.">
+        <span class="tk-row-name">Kjøpekontrakt bil</span>
+        <span class="tk-row-desc">Privatbilsalg, basert på kjøpsloven.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/kvittering/" class="tk-row" data-search="kvittering kontantbetaling, depositum og håndverk.">
+        <span class="tk-row-name">Kvittering</span>
+        <span class="tk-row-desc">Kontantbetaling, depositum og håndverk.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/gjeldsbrev/" class="tk-row" data-search="gjeldsbrev privatlån mellom venner og familie.">
+        <span class="tk-row-name">Gjeldsbrev</span>
+        <span class="tk-row-desc">Privatlån mellom venner og familie.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/kausjonsavtale/" class="tk-row" data-search="kausjonsavtale simpel eller selvskyldnerkausjon.">
+        <span class="tk-row-name">Kausjonsavtale</span>
+        <span class="tk-row-desc">Simpel eller selvskyldnerkausjon.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/betalingsplan/" class="tk-row" data-search="betalingsplan nedbetaling av gjeld i avdrag.">
+        <span class="tk-row-name">Betalingsplan</span>
+        <span class="tk-row-desc">Nedbetaling av gjeld i avdrag.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/konsulentavtale/" class="tk-row" data-search="konsulentavtale for frilansere og selvstendige konsulenter.">
+        <span class="tk-row-name">Konsulentavtale</span>
+        <span class="tk-row-desc">For frilansere og selvstendige konsulenter.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/aksjonaravtale2/" class="tk-row" data-search="aksjonæravtale forkjøpsrett, tag-along, utbytte, exit.">
+        <span class="tk-row-name">Aksjonæravtale</span>
+        <span class="tk-row-desc">Forkjøpsrett, tag-along, utbytte, exit.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/kjopekontraktbat/" class="tk-row tk-row-extra" data-search="kjøpekontrakt båt privat båtsalg med tilstandsklausul.">
+        <span class="tk-row-name">Kjøpekontrakt båt</span>
+        <span class="tk-row-desc">Privat båtsalg med tilstandsklausul.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/kjopekontraktgjenstand/" class="tk-row tk-row-extra" data-search="kjøpekontrakt eiendeler finn.no-kjøp: møbler, elektronikk, mer.">
+        <span class="tk-row-name">Kjøpekontrakt eiendeler</span>
+        <span class="tk-row-desc">Finn.no-kjøp: møbler, elektronikk, mer.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/panteavtale/" class="tk-row tk-row-extra" data-search="panteavtale sikre lån med pant i bil eller løsøre.">
+        <span class="tk-row-name">Panteavtale</span>
+        <span class="tk-row-desc">Sikre lån med pant i bil eller løsøre.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/bruksrettsavtale/" class="tk-row tk-row-extra" data-search="bruksrettsavtale gi rett til å bruke noe uten å overdra eierskap.">
+        <span class="tk-row-name">Bruksrettsavtale</span>
+        <span class="tk-row-desc">Gi rett til å bruke noe uten å overdra eierskap.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/stiftelsesdokument/" class="tk-row tk-row-extra" data-search="stiftelsesdokument as stift as med vedtekter.">
+        <span class="tk-row-name">Stiftelsesdokument AS</span>
+        <span class="tk-row-desc">Stift AS med vedtekter.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/aksjekjopekontrakt/" class="tk-row tk-row-extra" data-search="aksjekjøpekontrakt overdragelse av aksjer med garantier.">
+        <span class="tk-row-name">Aksjekjøpekontrakt</span>
+        <span class="tk-row-desc">Overdragelse av aksjer med garantier.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/opsjonsavtale/" class="tk-row tk-row-extra" data-search="opsjonsavtale ansatte vesting-periode og innløsningspris.">
+        <span class="tk-row-name">Opsjonsavtale ansatte</span>
+        <span class="tk-row-desc">Vesting-periode og innløsningspris.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/styreprotokoll/" class="tk-row tk-row-extra" data-search="styreprotokoll protokollér styremøtet riktig. asl. § 6-29.">
+        <span class="tk-row-name">Styreprotokoll</span>
+        <span class="tk-row-desc">Protokollér styremøtet riktig. Asl. § 6-29.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/generalforsamlingsprotokoll/" class="tk-row tk-row-extra" data-search="gf-protokoll protokollér gf riktig. asl. § 5-16.">
+        <span class="tk-row-name">GF-protokoll</span>
+        <span class="tk-row-desc">Protokollér GF riktig. Asl. § 5-16.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/leverandoravtale/" class="tk-row tk-row-extra" data-search="leverandøravtale kjøp av varer og tjenester over tid.">
+        <span class="tk-row-name">Leverandøravtale</span>
+        <span class="tk-row-desc">Kjøp av varer og tjenester over tid.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/samarbeidsavtale/" class="tk-row tk-row-extra" data-search="samarbeidsavtale strategisk samarbeid mellom virksomheter.">
+        <span class="tk-row-name">Samarbeidsavtale</span>
+        <span class="tk-row-desc">Strategisk samarbeid mellom virksomheter.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/overdragelsesavtale/" class="tk-row tk-row-extra" data-search="overdragelsesavtale salg av virksomhet. goodwill, kunder, inventar.">
+        <span class="tk-row-name">Overdragelsesavtale</span>
+        <span class="tk-row-desc">Salg av virksomhet. Goodwill, kunder, inventar.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/tjenesteavtale/" class="tk-row tk-row-extra" data-search="tjenesteavtale for malere, vaskehjelp, håndverkere.">
+        <span class="tk-row-name">Tjenesteavtale</span>
+        <span class="tk-row-desc">For malere, vaskehjelp, håndverkere.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/consignmentavtale/" class="tk-row tk-row-extra" data-search="consignmentavtale selg kunst eller varer på vegne av en annen.">
+        <span class="tk-row-name">Consignmentavtale</span>
+        <span class="tk-row-desc">Selg kunst eller varer på vegne av en annen.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <a href="#" class="tk-show-all" data-section="avtaler-og-fullmakter">Vis alle 22 i Avtaler og fullmakter <span class="tk-show-all-arrow" aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="tk-section" id="arv-og-testament" data-collapsed>
+    <h2 class="tk-section-title">Arv og testament</h2>
+    <div class="tk-grid">
+      <a href="../tjenester/arv/" class="tk-row" data-search="arvefordeling visuell oversikt basert på familiesituasjonen.">
+        <span class="tk-row-name">Arvefordeling</span>
+        <span class="tk-row-desc">Visuell oversikt basert på familiesituasjonen.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/testament-mal/" class="tk-row" data-search="testament-mal generer testament-utkast med vitnefelt.">
+        <span class="tk-row-name">Testament-mal</span>
+        <span class="tk-row-desc">Generer testament-utkast med vitnefelt.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/pliktdel/" class="tk-row" data-search="pliktdel hva kan du testamentere bort? 2/3-regelen.">
+        <span class="tk-row-name">Pliktdel</span>
+        <span class="tk-row-desc">Hva kan du testamentere bort? 2/3-regelen.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/uskifte/" class="tk-row" data-search="uskifte-sjekker kan gjenlevende sitte i uskifte?">
+        <span class="tk-row-name">Uskifte-sjekker</span>
+        <span class="tk-row-desc">Kan gjenlevende sitte i uskifte?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/samboer-arverett/" class="tk-row" data-search="samboer-arverett arver samboeren din uten testament?">
+        <span class="tk-row-name">Samboer-arverett</span>
+        <span class="tk-row-desc">Arver samboeren din uten testament?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/fremtidsfullmakt/" class="tk-row" data-search="fremtidsfullmakt hvem ivaretar deg ved sviktende helse.">
+        <span class="tk-row-name">Fremtidsfullmakt</span>
+        <span class="tk-row-desc">Hvem ivaretar deg ved sviktende helse.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/samboeravtale/" class="tk-row" data-search="samboeravtale hvem eier hva ved brudd?">
+        <span class="tk-row-name">Samboeravtale</span>
+        <span class="tk-row-desc">Hvem eier hva ved brudd?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/ektepakt/" class="tk-row" data-search="ektepakt (særeie) gjør formue til særeie.">
+        <span class="tk-row-name">Ektepakt (særeie)</span>
+        <span class="tk-row-desc">Gjør formue til særeie.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/arvegjeld/" class="tk-row tk-row-extra" data-search="arvegjeld-sjekker overtar du avdødes gjeld?">
+        <span class="tk-row-name">Arvegjeld-sjekker</span>
+        <span class="tk-row-desc">Overtar du avdødes gjeld?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/gavebrev/" class="tk-row tk-row-extra" data-search="gavebrev med særeie-klausul og arveforskudd.">
+        <span class="tk-row-name">Gavebrev</span>
+        <span class="tk-row-desc">Med særeie-klausul og arveforskudd.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/ektepakt-felleseie/" class="tk-row tk-row-extra" data-search="ektepakt (arv som særeie) felleseie, men arv og gaver beskyttes.">
+        <span class="tk-row-name">Ektepakt (arv som særeie)</span>
+        <span class="tk-row-desc">Felleseie, men arv og gaver beskyttes.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/samvaersavtale/" class="tk-row tk-row-extra" data-search="samværsavtale barnets hverdag etter samlivsbrudd.">
+        <span class="tk-row-name">Samværsavtale</span>
+        <span class="tk-row-desc">Barnets hverdag etter samlivsbrudd.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../kontrakter/skifteavtale/" class="tk-row tk-row-extra" data-search="skifteavtale bolig, bil, gjeld ved samlivsbrudd.">
+        <span class="tk-row-name">Skifteavtale</span>
+        <span class="tk-row-desc">Bolig, bil, gjeld ved samlivsbrudd.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <a href="#" class="tk-show-all" data-section="arv-og-testament">Vis alle 13 i Arv og testament <span class="tk-show-all-arrow" aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="tk-section" id="frister-og-kalkulatorer" data-collapsed>
+    <h2 class="tk-section-title">Frister og kalkulatorer</h2>
+    <div class="tk-grid">
+      <a href="../tjenester/reklamasjonsfrist/" class="tk-row" data-search="reklamasjonsfrist har du fortsatt rett til å klage?">
+        <span class="tk-row-name">Reklamasjonsfrist</span>
+        <span class="tk-row-desc">Har du fortsatt rett til å klage?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/angrefrist/" class="tk-row" data-search="angrefrist har du fortsatt rett til å angre kjøpet?">
+        <span class="tk-row-name">Angrefrist</span>
+        <span class="tk-row-desc">Har du fortsatt rett til å angre kjøpet?</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/feriepenger/" class="tk-row" data-search="feriepenger-kalkulator standard, tariff og over 60.">
+        <span class="tk-row-name">Feriepenger-kalkulator</span>
+        <span class="tk-row-desc">Standard, tariff og over 60.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/overtid/" class="tk-row" data-search="overtid-kalkulator beregn overtid med lovpålagt tillegg.">
+        <span class="tk-row-name">Overtid-kalkulator</span>
+        <span class="tk-row-desc">Beregn overtid med lovpålagt tillegg.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/depositum/" class="tk-row" data-search="depositum-kalkulator maks lovlig depositum basert på månedsleien.">
+        <span class="tk-row-name">Depositum-kalkulator</span>
+        <span class="tk-row-desc">Maks lovlig depositum basert på månedsleien.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/enk-eller-as/" class="tk-row" data-search="enk eller as? optimal selskapsform med skatteillustrasjon.">
+        <span class="tk-row-name">ENK eller AS?</span>
+        <span class="tk-row-desc">Optimal selskapsform med skatteillustrasjon.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/utbytte-skatt/" class="tk-row" data-search="utbytte-skatt effektiv sats 37,84 %. netto utbytte.">
+        <span class="tk-row-name">Utbytte-skatt</span>
+        <span class="tk-row-desc">Effektiv sats 37,84 %. Netto utbytte.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/omdanning-enk-as/" class="tk-row" data-search="omdanning enk→as er det lønnsomt? skattesammenligning.">
+        <span class="tk-row-name">Omdanning ENK→AS</span>
+        <span class="tk-row-desc">Er det lønnsomt? Skattesammenligning.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/reklamasjonsfrist-bolig/" class="tk-row tk-row-extra" data-search="reklamasjonsfrist bolig 5-årsregel og 2-månedersfrist.">
+        <span class="tk-row-name">Reklamasjonsfrist bolig</span>
+        <span class="tk-row-desc">5-årsregel og 2-månedersfrist.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/dagmulkt/" class="tk-row tk-row-extra" data-search="dagmulkt dagmulkt ved forsinket boligovertakelse.">
+        <span class="tk-row-name">Dagmulkt</span>
+        <span class="tk-row-desc">Dagmulkt ved forsinket boligovertakelse.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/styreansvar/" class="tk-row tk-row-extra" data-search="styreansvar-sjekker personlig ansvar? handleplikt og insolvens.">
+        <span class="tk-row-name">Styreansvar-sjekker</span>
+        <span class="tk-row-desc">Personlig ansvar? Handleplikt og insolvens.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/aksjekapital/" class="tk-row tk-row-extra" data-search="aksjekapital-sjekker handleplikt og utbytteregler.">
+        <span class="tk-row-name">Aksjekapital-sjekker</span>
+        <span class="tk-row-desc">Handleplikt og utbytteregler.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="../tjenester/aksjonaravtale/" class="tk-row tk-row-extra" data-search="aksjonæravtale-sjekker 10-punkts sjekkliste.">
+        <span class="tk-row-name">Aksjonæravtale-sjekker</span>
+        <span class="tk-row-desc">10-punkts sjekkliste.</span>
+        <span class="tk-row-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <a href="#" class="tk-show-all" data-section="frister-og-kalkulatorer">Vis alle 13 i Frister og kalkulatorer <span class="tk-show-all-arrow" aria-hidden="true">→</span></a>
+  </section>
+
+
+
+</main>
+
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../om/">Om</a>
+    <a href="../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+
+<script>
+(function() {
+  // Progressive disclosure
+  document.querySelectorAll('.tk-show-all').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var section = link.closest('.tk-section');
+      if (section) section.removeAttribute('data-collapsed');
+    });
+  });
+
+  // Scrollspy
+  var cats = document.querySelectorAll('.tk-cat');
+  var sections = document.querySelectorAll('.tk-section');
+  function setActive(slug) {
+    cats.forEach(function(c) {
+      if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
+      else c.classList.remove('is-active');
+    });
+  }
+  if ('IntersectionObserver' in window && cats.length > 0 && sections.length > 0) {
+    var observer = new IntersectionObserver(function(entries) {
+      var visible = entries.filter(function(e) { return e.isIntersecting; });
+      if (visible.length === 0) return;
+      visible.sort(function(a, b) { return a.target.offsetTop - b.target.offsetTop; });
+      setActive(visible[0].target.id);
+    }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+    sections.forEach(function(s) { observer.observe(s); });
+  }
+
+  // Search
+  var input = document.getElementById('tk-search');
+  if (!input) return;
+  var allRows = Array.from(document.querySelectorAll('.tk-row'));
+  var allSections = Array.from(document.querySelectorAll('.tk-section'));
+  var allShowAll = Array.from(document.querySelectorAll('.tk-show-all'));
+
+  function applyFilter() {
+    var q = input.value.trim().toLowerCase();
+    if (q === '') {
+      // Reset to default view
+      allRows.forEach(function(r) { r.removeAttribute('data-hidden-by-search'); });
+      allSections.forEach(function(s) {
+        s.removeAttribute('data-hidden-by-search');
+        // Restore collapsed state if it had >8 rows
+        var rows = s.querySelectorAll('.tk-row');
+        if (rows.length > 8) s.setAttribute('data-collapsed', '');
+      });
+      allShowAll.forEach(function(a) { a.style.display = ''; });
+      return;
+    }
+    // Filter rows
+    allSections.forEach(function(section) {
+      var rows = section.querySelectorAll('.tk-row');
+      var anyVisible = false;
+      rows.forEach(function(r) {
+        var hay = r.getAttribute('data-search') || '';
+        if (hay.indexOf(q) === -1) {
+          r.setAttribute('data-hidden-by-search', '');
+        } else {
+          r.removeAttribute('data-hidden-by-search');
+          anyVisible = true;
+        }
+      });
+      // Expand section (show all rows) during search
+      section.removeAttribute('data-collapsed');
+      if (anyVisible) section.removeAttribute('data-hidden-by-search');
+      else section.setAttribute('data-hidden-by-search', '');
+    });
+    // Hide show-all links during search
+    allShowAll.forEach(function(a) { a.style.display = 'none'; });
+  }
+  input.addEventListener('input', applyFilter);
+})();
+</script>
+
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
