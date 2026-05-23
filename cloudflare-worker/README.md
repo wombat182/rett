@@ -17,7 +17,7 @@ I Worker → Settings → Variables → Secrets:
 Valgfrie variabler:
 
 - `ALLOWED_ORIGIN` = `https://rettsregel.no`
-- `CLAUDE_MODEL` = `claude-sonnet-4-5-20250929`
+- `CLAUDE_MODEL` = `claude-sonnet-4-6`
 
 ## 3. Deploy
 

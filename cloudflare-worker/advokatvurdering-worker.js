@@ -34,7 +34,7 @@ export default {
         "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
-        model: env.CLAUDE_MODEL || "claude-sonnet-4-5-20250929",
+        model: env.CLAUDE_MODEL || "claude-sonnet-4-6",
         max_tokens: 1400,
         temperature: 0.2,
         system: systemPrompt(),
