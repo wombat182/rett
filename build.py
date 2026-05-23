@@ -1662,6 +1662,24 @@ form.contact-form.hide { display: none; }
   color: var(--ink-mute); pointer-events: none; display: flex;
 }
 .rr-search-icon svg { display: block; }
+.rr-search-results {
+  display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+  background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(35,30,25,.14); padding: 6px; z-index: 100;
+  max-height: 420px; overflow-y: auto;
+}
+.rr-search-results.show { display: block; }
+.rr-search-hit {
+  display: flex; flex-direction: column; gap: 3px; padding: 10px 13px;
+  border-radius: 9px; text-decoration: none; transition: background .12s ease;
+}
+.rr-search-hit:hover { background: var(--bg-alt); }
+.rr-search-tag {
+  font-family: var(--sans); font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--accent);
+}
+.rr-search-label { font-family: var(--sans); font-size: 14px; color: var(--ink); line-height: 1.35; }
+.rr-search-empty { padding: 14px; font-family: var(--sans); font-size: 14px; color: var(--ink-mute); text-align: center; }
 .rr-nav {
   flex: none; margin-left: auto; display: flex; align-items: center;
   gap: 26px;
@@ -1823,14 +1841,19 @@ def shared_head(title, description, depth=0, canonical_path=""):
 <title>{title}</title>
 <meta name="description" content="{description}">
 <link rel="canonical" href="{canonical_url}">
+<link rel="icon" type="image/svg+xml" href="{prefix}favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="{prefix}favicon-32.png">
+<link rel="apple-touch-icon" href="{prefix}apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rettsregel">
 <meta property="og:title" content="{og_title}">
 <meta property="og:description" content="{description}">
 <meta property="og:url" content="{canonical_url}">
+<meta property="og:image" content="{SITE_URL}/favicon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="{og_title}">
 <meta name="twitter:description" content="{description}">
+<meta name="twitter:image" content="{SITE_URL}/favicon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1853,17 +1876,17 @@ def site_nav(depth=1, active=None):
     return f"""<div class="rr-header">
   <div class="rr-header-row">
     <a href="{prefix or '/'}" class="rr-logo" aria-label="Rettsregel forside">
-      <svg width="30" height="40" viewBox="0 0 135 180" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="10" y1="70" x2="10" y2="170"/>
-        <path d="M10 10 L65 10 C105 10 125 30 95 70 L34 70"/>
-        <line x1="63" y1="70" x2="103" y2="170"/>
+      <svg width="38" height="38" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="512" cy="512" r="470" fill="#C84A28"/>
+        <text x="512" y="650" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="560" font-weight="400" letter-spacing="-20" fill="#FFF9F0">R</text>
       </svg>
     </a>
     <form class="rr-search" role="search" onsubmit="return false;">
-      <input type="search" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
       <span class="rr-search-icon" aria-hidden="true">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
     </form>
     <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
     <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
@@ -1877,6 +1900,47 @@ def site_nav(depth=1, active=None):
     </nav>
   </div>
 </div>
+<script>
+(function(){{
+  var PREFIX = "{prefix}";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){{
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){{ return r.json(); }}).then(function(d){{ index = d; render(input.value); }}).catch(function(){{}});
+  }}
+  function urlFor(item){{
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }}
+  function label(item){{
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }}
+  function render(q){{
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){{ box.classList.remove('show'); box.innerHTML = ''; return; }}
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){{
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }}
+    if (!hits.length){{ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }}
+    box.innerHTML = hits.map(function(it){{
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }}).join('');
+    box.classList.add('show');
+  }}
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){{ render(input.value); }});
+  document.addEventListener('click', function(e){{ if (!e.target.closest('.rr-search')) box.classList.remove('show'); }});
+}})();
+</script>
 """
 
 def chat_widget():
@@ -3280,38 +3344,38 @@ def render_homepage():
 /* ---------- Hero ---------- */
 .hp-hero {{
   display: grid; grid-template-columns: 1.1fr 0.9fr;
-  align-items: center; gap: 48px;
-  padding: 76px 0 64px;
+  align-items: center; gap: 40px;
+  padding: 52px 0 44px;
 }}
 .hp-hero-title {{
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(34px, 4.2vw, 54px); line-height: 1.02;
+  font-size: clamp(30px, 3.6vw, 46px); line-height: 1.03;
   letter-spacing: -0.035em; color: var(--ink); margin: 0;
 }}
 .hp-hero-title .accent {{ color: var(--accent); }}
 .hp-hero-art {{ display: flex; justify-content: center; align-items: center; }}
-.hp-hero-art svg {{ width: 100%; max-width: 340px; height: auto; display: block; }}
+.hp-hero-art svg {{ width: 100%; max-width: 240px; height: auto; display: block; }}
 
 /* ---------- Stats ---------- */
 .hp-stats {{
   display: grid; grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--line-strong); border-radius: 20px;
+  border: 1px solid var(--line-strong); border-radius: 18px;
   background: var(--bg-card);
-  overflow: hidden; margin-bottom: 80px;
+  overflow: hidden; margin-bottom: 64px;
 }}
 .hp-stat {{
-  padding: 30px 28px; text-align: center;
+  padding: 22px 24px; text-align: center;
   border-left: 1px solid var(--line);
 }}
 .hp-stat:first-child {{ border-left: none; }}
 .hp-stat-num {{
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(22px, 2.2vw, 28px); line-height: 1;
+  font-size: clamp(20px, 1.9vw, 26px); line-height: 1;
   color: var(--accent); letter-spacing: -0.02em;
 }}
 .hp-stat-label {{
-  margin-top: 10px; font-family: var(--sans);
-  font-size: 11.5px; font-weight: 700; letter-spacing: 0.13em;
+  margin-top: 8px; font-family: var(--sans);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.13em;
   text-transform: uppercase; color: var(--ink-soft);
 }}
 
@@ -3477,19 +3541,22 @@ def render_homepage():
   <section class="hp-hero">
     <h1 class="hp-hero-title">Norsk rett,<br><span class="accent">på vanlig språk.</span></h1>
     <div class="hp-hero-art" aria-hidden="true">
-      <svg viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg">
-        <path d="M150 150 C120 90 175 55 215 75 C245 50 320 70 305 130 C355 145 330 220 270 205 C260 250 175 245 165 195 C115 200 110 150 150 150 Z" fill="var(--accent-soft)" opacity="0.30"/>
-        <g fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.62">
-          <path d="M190 240 C150 218 100 214 64 224 L64 132 C100 122 150 126 190 148 C230 126 280 122 316 132 L316 224 C280 214 230 218 190 240 Z"/>
-          <line x1="190" y1="148" x2="190" y2="240"/>
-          <path d="M84 152 C108 146 140 148 170 160" opacity="0.7"/>
-          <path d="M84 174 C108 168 140 170 170 182" opacity="0.7"/>
-          <path d="M84 196 C104 191 130 192 158 200" opacity="0.7"/>
-          <path d="M210 160 C240 148 272 146 296 152" opacity="0.7"/>
-          <path d="M210 182 C240 170 272 168 296 174" opacity="0.7"/>
-          <path d="M222 200 C250 192 276 191 296 196" opacity="0.7"/>
+      <svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="150" cy="118" r="86" fill="var(--accent-soft)" opacity="0.22"/>
+        <g fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M150 92 C124 76 92 74 66 80 L66 174 C92 168 124 170 150 186"/>
+          <path d="M150 92 C176 76 208 74 234 80 L234 174 C208 168 176 170 150 186"/>
+          <line x1="150" y1="92" x2="150" y2="186"/>
+          <path d="M82 100 C100 96 122 97 138 104" opacity="0.5"/>
+          <path d="M82 118 C100 114 122 115 138 122" opacity="0.5"/>
+          <path d="M82 136 C98 132 118 133 132 139" opacity="0.5"/>
+          <path d="M162 104 C178 97 200 96 218 100" opacity="0.5"/>
+          <path d="M162 122 C178 115 200 114 218 118" opacity="0.5"/>
+          <path d="M168 139 C182 133 202 132 218 136" opacity="0.5"/>
         </g>
-        <path d="M214 56 C200 50 184 56 184 70 C184 82 196 86 206 84 C198 96 192 108 196 122 C200 134 216 138 230 132" fill="none" stroke="var(--accent)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+        <path d="M163 40 C155 33 140 33 134 41 C129 48 132 57 142 60 C150 62 158 64 160 70 C162 77 156 84 147 85 C139 86 132 83 128 77" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="145" y1="28" x2="145" y2="34" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+        <line x1="145" y1="86" x2="145" y2="92" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
       </svg>
     </div>
   </section>
@@ -7066,9 +7133,9 @@ Sitemap: {SITE_URL}/sitemap.xml
         os.makedirs(f"{out}/advokatvurdering", exist_ok=True)
         shutil.copy(_av_src, f"{out}/advokatvurdering/index.html")
 
-    # Logo-assets (kopieres fra repo-roten — kreves av forsiden som favicon og fallback)
+    # Logo-assets + favicons (kopieres fra repo-roten)
     src_dir = os.path.dirname(os.path.abspath(__file__))
-    for asset in ("logo.svg", "logo.png"):
+    for asset in ("logo.svg", "logo.png", "favicon.svg", "favicon-32.png", "favicon-180.png", "favicon-512.png", "apple-touch-icon.png"):
         src_path = os.path.join(src_dir, asset)
         if os.path.exists(src_path):
             shutil.copy(src_path, os.path.join(out, asset))
