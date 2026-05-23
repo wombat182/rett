@@ -1883,6 +1883,7 @@ def site_nav(depth=1, active=None):
       <a href="{prefix}lover/"{cls('lover')}>Lover</a>
       <a href="{prefix}sporsmal/"{cls('sporsmal')}>Spørsmål</a>
       <a href="{prefix}tjenester/"{cls('tjenester')}>Verktøy/maler</a>
+      <a href="{prefix}advokatvurdering/"{cls('advokatvurdering')}>Advokatvurdering</a>
       <a href="{prefix}kontakt/" class="rr-nav-cta">Send inn sak →</a>
     </nav>
   </div>
