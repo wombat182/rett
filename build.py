@@ -3306,7 +3306,7 @@ def render_homepage():
 .hp-stat:first-child {{ border-left: none; }}
 .hp-stat-num {{
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(26px, 2.7vw, 34px); line-height: 1;
+  font-size: clamp(22px, 2.2vw, 28px); line-height: 1;
   color: var(--accent); letter-spacing: -0.02em;
 }}
 .hp-stat-label {{
