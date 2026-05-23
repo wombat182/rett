@@ -49,7 +49,12 @@ try:
 except ImportError:
     _P_BUSTAD = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD
+try:
+    from paragraphs_tomtefesteloven import PARAGRAPHS as _P_TOMTEFESTELOVEN
+except ImportError:
+    _P_TOMTEFESTELOVEN = []
+
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -2154,6 +2159,7 @@ def render_paragraph_page(p):
         "husleieloven": "Husleieloven", "forbrukerkjopsloven": "Forbrukerkjøpsloven",
         "avhendingslova": "Avhendingslova", "bustadoppforingslova": "Bustadoppføringslova",
         "naboloven": "Naboloven", "navneloven": "Navneloven", "arveloven": "Arveloven",
+        "tomtefesteloven": "Tomtefesteloven",
     }
 
     # ── Eksempler ────────────────────────────────────────────────────────────
@@ -2226,7 +2232,7 @@ def render_paragraph_page(p):
 .lap-h2 { font-family: var(--serif); font-weight: 500; font-size: 21px; line-height: 1.2; letter-spacing: -0.018em; color: var(--ink); margin: 48px 0 18px; }
 
 /* Lovtekst — kildetekst, ikke kort */
-.lap-lovtekst { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0; margin: 0; font-family: var(--serif-prose); font-size: 16px; line-height: 1.75; color: var(--ink-soft); }
+.lap-lovtekst { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0; margin: 0; font-family: var(--serif-prose); font-size: 16px; line-height: 1.75; color: var(--ink-soft); white-space: pre-line; }
 .lap-lovtekst p { margin: 0 0 14px; }
 .lap-lovtekst p:last-of-type { margin-bottom: 0; }
 .lap-lovtekst ol, .lap-lovtekst ul { margin: 0 0 14px 22px; }
@@ -2373,6 +2379,7 @@ def render_lov_index(lov_name, lov_display, paragraphs):
         "navneloven": {"desc": "Fornavn, etternavn og navnebytte for deg og familien.", "cat": "Familie", "featured": ["2", "7", "8", "9"]},
         "arveloven": {"desc": "Hvem som arver hva — pliktdel, testament, uskifte og arvegangsrekkefølge.", "cat": "Arv", "featured": ["2", "29", "50", "8"]},
         "bustadoppforingslova": {"desc": "Når du bygger nytt eller kjøper bolig under oppføring — garanti, dagmulkt og overtakelse.", "cat": "Bolig", "featured": ["12", "14", "18", "30"]},
+        "tomtefesteloven": {"desc": "Når du leier tomt til hus du eier — festeavgift, regulering, innløsning og lenging.", "cat": "Bolig", "featured": ["1", "7", "32", "37"]},
     }
     meta = LOV_META.get(lov_name, {"desc": f"{lov_display} paragraf for paragraf, på vanlig norsk.", "cat": "Lov", "featured": []})
 
@@ -2592,6 +2599,7 @@ def render_lover_index():
         "avhendingslova": ("Avhendingslova", "bolig", "Kjøp og salg av bolig, hytte og tomt."),
         "naboloven": ("Naboloven", "bolig", "Grenser, trær, støy og naboforhold."),
         "bustadoppforingslova": ("Bustadoppføringslova", "bolig", "Bygging av ny bolig eller hytte."),
+        "tomtefesteloven": ("Tomtefesteloven", "bolig", "Leie av tomt til hus du eier — festeavgift og innløsning."),
         # Kjøp og klage
         "angrerettloven": ("Angrerettloven", "kjop-og-klage", "Angrerett ved netthandel og kjøp utenfor butikk."),
         "kjopsloven": ("Kjøpsloven", "kjop-og-klage", "Kjøp og salg — privat og bedrift."),
@@ -3079,6 +3087,7 @@ def render_sporsmal_page(s):
         "ferieloven": "Ferieloven", "inkassoloven": "Inkassoloven",
         "avhendingslova": "Avhendingslova", "navneloven": "Navneloven",
         "arveloven": "Arveloven",
+        "tomtefesteloven": "Tomtefesteloven",
     }
 
     KAT_LABEL = {
