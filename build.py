@@ -2543,8 +2543,10 @@ def render_lover_index():
         "forbrukerkjopsloven": ("Forbrukerkjøpsloven", "kjop-og-klage", "Kjøp som forbruker — strengeste forbrukervern."),
         # Arv og familie
         "arveloven": ("Arveloven", "arv-og-familie", "Arv, testament og pliktdel."),
-        "navneloven": ("Navneloven", "arv-og-familie", "Navnevalg og navneendring."),
+        "navneloven": ("Navneloven", "arv-og-famille", "Navnevalg og navneendring."),
         "ekteskapsloven": ("Ekteskapsloven", "arv-og-familie", "Vilkår for ekteskap, vigsling og ugyldighet."),
+        # Erstatning
+        "voldserstatningsloven": ("Voldserstatningsloven", "erstatning", "Erstatning fra staten ved vold og seksuallovbrudd."),
     }
 
     # All categories — order matters. Empty ones will be excluded from nav and sections.
@@ -2553,6 +2555,7 @@ def render_lover_index():
         ("kjop-og-klage", "Kjøp og klage"),
         ("arbeid", "Arbeid"),
         ("arv-og-familie", "Arv og familie"),
+        ("erstatning", "Erstatning"),
         ("selskap", "Selskap"),
         ("personvern", "Personvern"),
         ("okonomi-og-skatt", "Økonomi og skatt"),
