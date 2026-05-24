@@ -59,7 +59,12 @@ try:
 except ImportError:
     _P_EKTESKAP = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP
+try:
+    from paragraphs_voldserstatningsloven import PARAGRAPHS as _P_VOLDSERSTATNING
+except ImportError:
+    _P_VOLDSERSTATNING = []
+
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:

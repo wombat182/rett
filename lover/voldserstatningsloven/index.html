@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voldserstatningsloven forklart på vanlig norsk | Rettsregel</title>
+<meta name="description" content="Voldserstatningsloven paragraf for paragraf, på vanlig norsk.">
+<link rel="canonical" href="https://rettsregel.no/lover/voldserstatningsloven/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Voldserstatningsloven forklart på vanlig norsk">
+<meta property="og:description" content="Voldserstatningsloven paragraf for paragraf, på vanlig norsk.">
+<meta property="og:url" content="https://rettsregel.no/lover/voldserstatningsloven/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Voldserstatningsloven forklart på vanlig norsk">
+<meta name="twitter:description" content="Voldserstatningsloven paragraf for paragraf, på vanlig norsk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/" class="rr-nav-active">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<style>
+.lovx-page { max-width: 1080px; margin: 0 auto; padding: 36px 48px 72px; }
+
+.lovx-crumb { font-family: var(--serif); font-size: 13px; color: var(--ink-mute); margin-bottom: 44px; letter-spacing: 0.01em; }
+.lovx-crumb a { color: var(--ink-mute); text-decoration: none; }
+.lovx-crumb a:hover { color: var(--ink); }
+.lovx-crumb .sep { margin: 0 9px; opacity: 0.45; }
+.lovx-crumb .cur { color: var(--accent); }
+
+.lovx-head { margin-bottom: 30px; }
+.lovx-title { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.4vw, 38px); line-height: 1.06; letter-spacing: -0.026em; color: var(--ink); margin: 0 0 16px; }
+.lovx-desc { font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--ink-soft); margin: 0 0 16px; max-width: 580px; }
+.lovx-meta { font-family: var(--serif); font-size: 14px; color: var(--ink-mute); letter-spacing: 0.01em; }
+.lovx-meta .dot { margin: 0 10px; opacity: 0.45; }
+
+.lovx-search-wrap { position: relative; margin-bottom: 4px; }
+.lovx-search { width: 100%; box-sizing: border-box; font-family: var(--serif); font-size: 16px; color: var(--ink); background: transparent; border: none; border-bottom: 1px solid var(--ink); padding: 13px 4px 13px 28px; outline: none; }
+.lovx-search::placeholder { color: var(--ink-mute); }
+.lovx-search:focus { border-bottom-color: var(--accent); }
+.lovx-search-icon { position: absolute; left: 2px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-mute); pointer-events: none; }
+
+.lovx-layout { display: grid; grid-template-columns: 232px 1fr; gap: 0; margin-top: 48px; align-items: start; }
+
+.lovx-side { position: sticky; top: 32px; padding-right: 40px; }
+.lovx-side-block { margin-bottom: 40px; }
+.lovx-side-block:last-child { margin-bottom: 0; }
+.lovx-side-label { font-family: var(--serif); font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+.lovx-chaplist { display: flex; flex-direction: column; }
+.lovx-chap { font-family: var(--serif); font-size: 14.5px; color: var(--ink-soft); text-decoration: none; padding: 7px 0 7px 14px; border-left: 2px solid transparent; line-height: 1.3; transition: color .15s, border-color .15s; }
+.lovx-chap:hover { color: var(--ink); border-left-color: var(--accent); }
+
+.lovx-mest { display: flex; flex-direction: column; }
+.lovx-mest-item { display: block; text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.lovx-mest-item:first-child { padding-top: 0; }
+.lovx-mest-item:last-child { border-bottom: none; }
+.lovx-mest-num { font-family: var(--serif); font-size: 13px; color: var(--accent); }
+.lovx-mest-title { font-family: var(--serif); font-size: 14px; color: var(--ink-soft); display: block; margin-top: 3px; line-height: 1.35; transition: color .15s; }
+.lovx-mest-item:hover .lovx-mest-title { color: var(--ink); }
+.lovx-side-more { display: inline-block; margin-top: 16px; font-family: var(--serif); font-size: 13px; color: var(--ink-mute); text-decoration: none; transition: color .15s; }
+.lovx-side-more:hover { color: var(--accent); }
+
+.lovx-main { min-width: 0; border-left: 1px solid var(--line); padding-left: 48px; }
+.lovx-chapter { margin-bottom: 40px; }
+.lovx-chapter:last-child { margin-bottom: 0; }
+.lovx-chapter-h { font-family: var(--serif); font-weight: 500; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-mute); margin: 0; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+
+.lovx-rows { display: flex; flex-direction: column; }
+.lovx-row { display: grid; grid-template-columns: 60px 1fr 24px; align-items: baseline; gap: 16px; padding: 19px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.lovx-row-num { font-family: var(--serif); font-size: 14px; color: var(--accent); white-space: nowrap; }
+.lovx-row-body { min-width: 0; }
+.lovx-row-title { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.25; letter-spacing: -0.012em; display: block; transition: color .15s; }
+.lovx-row-desc { font-family: var(--serif); font-size: 14.5px; color: var(--ink-mute); line-height: 1.45; margin-top: 5px; display: block; }
+.lovx-row-arrow { font-family: var(--serif); font-size: 17px; color: var(--ink-mute); line-height: 1; text-align: right; transition: color .18s, transform .22s; }
+.lovx-row:hover .lovx-row-arrow { color: var(--accent); transform: translateX(6px); }
+.lovx-row:hover .lovx-row-title { color: var(--ink); }
+
+.lovx-empty { display: none; font-family: var(--serif); font-size: 16px; color: var(--ink-mute); padding: 28px 0; }
+
+.lovx-attest { max-width: 1080px; margin: 56px auto 0; padding: 0 48px; }
+.lovx-attest-inner { border-top: 1px solid var(--line); padding-top: 20px; font-family: var(--serif); font-size: 12.5px; color: var(--ink-mute); line-height: 1.55; max-width: 640px; }
+.lovx-attest-inner a { color: var(--accent); text-decoration: none; }
+.lovx-attest-inner a:hover { color: var(--accent-deep); }
+
+@media (max-width: 860px) {
+  .lovx-page { padding: 26px 22px 56px; }
+  .lovx-crumb { margin-bottom: 32px; }
+  .lovx-layout { grid-template-columns: 1fr; margin-top: 36px; }
+  .lovx-side { position: static; padding-right: 0; margin-bottom: 8px; }
+  .lovx-side-block { margin-bottom: 32px; }
+  .lovx-chaplist { flex-direction: row; overflow-x: auto; gap: 22px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .lovx-chap { border-left: none; padding: 4px 0; white-space: nowrap; }
+  .lovx-chap:hover { border-left: none; }
+  .lovx-main { border-left: none; padding-left: 0; }
+  .lovx-attest { padding: 0 22px; }
+}
+</style>
+<main class="lovx-page">
+  <nav class="lovx-crumb" aria-label="Brødsmuler">
+    <a href="../../">Hjem</a><span class="sep">/</span><a href="../../lover/">Lover</a><span class="sep">/</span><span class="cur">Voldserstatningsloven</span>
+  </nav>
+
+  <header class="lovx-head">
+    <h1 class="lovx-title">Voldserstatningsloven</h1>
+    <p class="lovx-desc">Voldserstatningsloven paragraf for paragraf, på vanlig norsk.</p>
+    <p class="lovx-meta">5 paragrafer<span class="dot">·</span>Lov<span class="dot">·</span>Oppdatert 2026</p>
+  </header>
+
+  <div class="lovx-search-wrap">
+    <svg class="lovx-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="lovx-search" id="lovxSearch" placeholder="Søk i Voldserstatningsloven …" autocomplete="off">
+  </div>
+
+  <div class="lovx-layout">
+    <aside class="lovx-side">
+      
+      
+    </aside>
+    <div class="lovx-main" id="lovx-list">
+      <section class="lovx-chapter"><div class="lovx-rows"><a class="lovx-row" href="../../lover/voldserstatningsloven/1/"><span class="lovx-row-num">§ 1</span><span class="lovx-row-body"><span class="lovx-row-title">Voldserstatningsloven § 1 — Hvilke handlinger kan gi voldserstatning?</span><span class="lovx-row-desc">Du kan bare få voldserstatning hvis handlingen du ble utsatt for, er en av handlingene som…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/voldserstatningsloven/2/"><span class="lovx-row-num">§ 2</span><span class="lovx-row-body"><span class="lovx-row-title">Voldserstatningsloven § 2 — Når andre erstatningsordninger går foran</span><span class="lovx-row-desc">Du får ikke voldserstatning for skader som allerede dekkes av bilansvarslova eller for…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/voldserstatningsloven/3/"><span class="lovx-row-num">§ 3</span><span class="lovx-row-body"><span class="lovx-row-title">Voldserstatningsloven § 3 — Hvor voldshandlingen må ha skjedd</span><span class="lovx-row-desc">Voldserstatningsloven gjelder når både skadevolderen og den voldsutsatte var i Norge eller…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/voldserstatningsloven/4/"><span class="lovx-row-num">§ 4</span><span class="lovx-row-body"><span class="lovx-row-title">Voldserstatningsloven § 4 — Hva staten kan erstatte</span><span class="lovx-row-desc">Du kan kreve erstatning for personskade, menerstatning, erstatning ved dødsfall og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/voldserstatningsloven/5/"><span class="lovx-row-num">§ 5</span><span class="lovx-row-body"><span class="lovx-row-title">Voldserstatningsloven § 5 — Erstatningens øvre grense</span><span class="lovx-row-desc">Staten betaler som hovedregel ikke mer enn 60 ganger grunnbeløpet i folketrygden per person…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section>
+      <p class="lovx-empty" id="lovxEmpty">Ingen paragrafer matcher søket.</p>
+    </div>
+  </div>
+</main>
+
+<div class="lovx-attest">
+  <p class="lovx-attest-inner">Juridisk informasjon, ikke rådgivning. Innholdet bygger på gjeldende norsk lov. Ved en konkret sak — kontakt advokat. <a href="../../om/">Mer om Rettsregel &rarr;</a></p>
+</div>
+
+<script>
+(function(){
+  var inp = document.getElementById('lovxSearch');
+  if(!inp) return;
+  var rows = [].slice.call(document.querySelectorAll('.lovx-row'));
+  var chapters = [].slice.call(document.querySelectorAll('.lovx-chapter'));
+  var empty = document.getElementById('lovxEmpty');
+  inp.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var visible = 0;
+    rows.forEach(function(r){
+      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.style.display = m ? '' : 'none';
+      if(m) visible++;
+    });
+    chapters.forEach(function(c){
+      var any = false;
+      var rs = c.querySelectorAll('.lovx-row');
+      for(var i=0;i<rs.length;i++){ if(rs[i].style.display !== 'none'){ any = true; break; } }
+      c.style.display = any ? '' : 'none';
+    });
+    if(empty) empty.style.display = (visible === 0 && q) ? 'block' : 'none';
+  });
+})();
+</script>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
