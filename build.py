@@ -74,7 +74,32 @@ try:
 except ImportError:
     _P_INKASSO = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO + _P_INKASSO
+try:
+    from paragraphs_pasientskadeloven import PARAGRAPHS as _P_PASIENTSKADE
+except ImportError:
+    _P_PASIENTSKADE = []
+
+try:
+    from paragraphs_yrkesskadeforsikringsloven import PARAGRAPHS as _P_YRKESSKADE
+except ImportError:
+    _P_YRKESSKADE = []
+
+try:
+    from paragraphs_oreigningslova import PARAGRAPHS as _P_OREIGNING
+except ImportError:
+    _P_OREIGNING = []
+
+try:
+    from paragraphs_foreldelsesloven import PARAGRAPHS as _P_FORELDELSE
+except ImportError:
+    _P_FORELDELSE = []
+
+try:
+    from paragraphs_universitetsloven import PARAGRAPHS as _P_UHL
+except ImportError:
+    _P_UHL = []
+
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO + _P_INKASSO + _P_PASIENTSKADE + _P_YRKESSKADE + _P_OREIGNING + _P_FORELDELSE + _P_UHL
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -2557,17 +2582,27 @@ def render_lover_index():
         "ekteskapsloven": ("Ekteskapsloven", "arv-og-familie", "Vilkår for ekteskap, vigsling og ugyldighet."),
         # Erstatning
         "voldserstatningsloven": ("Voldserstatningsloven", "erstatning", "Erstatning fra staten ved vold og seksuallovbrudd."),
+        "pasientskadeloven": ("Pasientskadeloven", "erstatning", "Erstatning ved skade i helsevesenet."),
+        "yrkesskadeforsikringsloven": ("Yrkesskadeforsikringsloven", "erstatning", "Erstatning ved skade eller sykdom påført i arbeid."),
         # Økonomi og gjeld
-        "inkassoloven": ("Inkassoloven", "okonomi-og-skatt", "Inkasso, inkassovarsel, gebyrer og dine rettigheter som skyldner."),
+        "inkassoloven": ("Inkassoloven", "gjeld", "Inkasso, inkassovarsel, gebyrer og dine rettigheter som skyldner."),
+        "foreldelsesloven": ("Foreldelsesloven", "gjeld", "Når et krav blir foreldet — frister for gjeld og andre krav."),
+        # Eiendom
+        "oreigningslova": ("Oreigningslova", "eiendom", "Ekspropriasjon — når det offentlige kan ta eiendom mot erstatning."),
+        # Utdanning
+        "universitets-og-hoyskoleloven": ("Universitets- og høyskoleloven", "utdanning", "Rettigheter som student — eksamen, klage og utestenging."),
     }
 
     # All categories — order matters. Empty ones will be excluded from nav and sections.
     KATEGORIER = [
         ("bolig", "Bolig"),
+        ("eiendom", "Eiendom"),
         ("kjop-og-klage", "Kjøp og klage"),
         ("arbeid", "Arbeid"),
+        ("utdanning", "Utdanning"),
         ("arv-og-familie", "Arv og familie"),
         ("erstatning", "Erstatning"),
+        ("gjeld", "Gjeld"),
         ("selskap", "Selskap"),
         ("personvern", "Personvern"),
         ("okonomi-og-skatt", "Økonomi og skatt"),
