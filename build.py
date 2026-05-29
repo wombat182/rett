@@ -69,7 +69,12 @@ try:
 except ImportError:
     _P_ARBEIDSMILJO = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO
+try:
+    from paragraphs_inkassoloven import PARAGRAPHS as _P_INKASSO
+except ImportError:
+    _P_INKASSO = []
+
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO + _P_INKASSO
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -2552,6 +2557,8 @@ def render_lover_index():
         "ekteskapsloven": ("Ekteskapsloven", "arv-og-familie", "Vilkår for ekteskap, vigsling og ugyldighet."),
         # Erstatning
         "voldserstatningsloven": ("Voldserstatningsloven", "erstatning", "Erstatning fra staten ved vold og seksuallovbrudd."),
+        # Økonomi og gjeld
+        "inkassoloven": ("Inkassoloven", "okonomi-og-skatt", "Inkasso, inkassovarsel, gebyrer og dine rettigheter som skyldner."),
     }
 
     # All categories — order matters. Empty ones will be excluded from nav and sections.

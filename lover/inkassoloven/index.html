@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inkassoloven forklart på vanlig norsk | Rettsregel</title>
+<meta name="description" content="Inkassoloven paragraf for paragraf, på vanlig norsk.">
+<link rel="canonical" href="https://rettsregel.no/lover/inkassoloven/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Inkassoloven forklart på vanlig norsk">
+<meta property="og:description" content="Inkassoloven paragraf for paragraf, på vanlig norsk.">
+<meta property="og:url" content="https://rettsregel.no/lover/inkassoloven/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Inkassoloven forklart på vanlig norsk">
+<meta name="twitter:description" content="Inkassoloven paragraf for paragraf, på vanlig norsk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/" class="rr-nav-active">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<style>
+.lovx-page { max-width: 1080px; margin: 0 auto; padding: 36px 48px 72px; }
+
+.lovx-crumb { font-family: var(--serif); font-size: 13px; color: var(--ink-mute); margin-bottom: 44px; letter-spacing: 0.01em; }
+.lovx-crumb a { color: var(--ink-mute); text-decoration: none; }
+.lovx-crumb a:hover { color: var(--ink); }
+.lovx-crumb .sep { margin: 0 9px; opacity: 0.45; }
+.lovx-crumb .cur { color: var(--accent); }
+
+.lovx-head { margin-bottom: 30px; }
+.lovx-title { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.4vw, 38px); line-height: 1.06; letter-spacing: -0.026em; color: var(--ink); margin: 0 0 16px; }
+.lovx-desc { font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--ink-soft); margin: 0 0 16px; max-width: 580px; }
+.lovx-meta { font-family: var(--serif); font-size: 14px; color: var(--ink-mute); letter-spacing: 0.01em; }
+.lovx-meta .dot { margin: 0 10px; opacity: 0.45; }
+
+.lovx-search-wrap { position: relative; margin-bottom: 4px; }
+.lovx-search { width: 100%; box-sizing: border-box; font-family: var(--serif); font-size: 16px; color: var(--ink); background: transparent; border: none; border-bottom: 1px solid var(--ink); padding: 13px 4px 13px 28px; outline: none; }
+.lovx-search::placeholder { color: var(--ink-mute); }
+.lovx-search:focus { border-bottom-color: var(--accent); }
+.lovx-search-icon { position: absolute; left: 2px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-mute); pointer-events: none; }
+
+.lovx-layout { display: grid; grid-template-columns: 232px 1fr; gap: 0; margin-top: 48px; align-items: start; }
+
+.lovx-side { position: sticky; top: 32px; padding-right: 40px; }
+.lovx-side-block { margin-bottom: 40px; }
+.lovx-side-block:last-child { margin-bottom: 0; }
+.lovx-side-label { font-family: var(--serif); font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+.lovx-chaplist { display: flex; flex-direction: column; }
+.lovx-chap { font-family: var(--serif); font-size: 14.5px; color: var(--ink-soft); text-decoration: none; padding: 7px 0 7px 14px; border-left: 2px solid transparent; line-height: 1.3; transition: color .15s, border-color .15s; }
+.lovx-chap:hover { color: var(--ink); border-left-color: var(--accent); }
+
+.lovx-mest { display: flex; flex-direction: column; }
+.lovx-mest-item { display: block; text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.lovx-mest-item:first-child { padding-top: 0; }
+.lovx-mest-item:last-child { border-bottom: none; }
+.lovx-mest-num { font-family: var(--serif); font-size: 13px; color: var(--accent); }
+.lovx-mest-title { font-family: var(--serif); font-size: 14px; color: var(--ink-soft); display: block; margin-top: 3px; line-height: 1.35; transition: color .15s; }
+.lovx-mest-item:hover .lovx-mest-title { color: var(--ink); }
+.lovx-side-more { display: inline-block; margin-top: 16px; font-family: var(--serif); font-size: 13px; color: var(--ink-mute); text-decoration: none; transition: color .15s; }
+.lovx-side-more:hover { color: var(--accent); }
+
+.lovx-main { min-width: 0; border-left: 1px solid var(--line); padding-left: 48px; }
+.lovx-chapter { margin-bottom: 40px; }
+.lovx-chapter:last-child { margin-bottom: 0; }
+.lovx-chapter-h { font-family: var(--serif); font-weight: 500; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-mute); margin: 0; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+
+.lovx-rows { display: flex; flex-direction: column; }
+.lovx-row { display: grid; grid-template-columns: 60px 1fr 24px; align-items: baseline; gap: 16px; padding: 19px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.lovx-row-num { font-family: var(--serif); font-size: 14px; color: var(--accent); white-space: nowrap; }
+.lovx-row-body { min-width: 0; }
+.lovx-row-title { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.25; letter-spacing: -0.012em; display: block; transition: color .15s; }
+.lovx-row-desc { font-family: var(--serif); font-size: 14.5px; color: var(--ink-mute); line-height: 1.45; margin-top: 5px; display: block; }
+.lovx-row-arrow { font-family: var(--serif); font-size: 17px; color: var(--ink-mute); line-height: 1; text-align: right; transition: color .18s, transform .22s; }
+.lovx-row:hover .lovx-row-arrow { color: var(--accent); transform: translateX(6px); }
+.lovx-row:hover .lovx-row-title { color: var(--ink); }
+
+.lovx-empty { display: none; font-family: var(--serif); font-size: 16px; color: var(--ink-mute); padding: 28px 0; }
+
+.lovx-attest { max-width: 1080px; margin: 56px auto 0; padding: 0 48px; }
+.lovx-attest-inner { border-top: 1px solid var(--line); padding-top: 20px; font-family: var(--serif); font-size: 12.5px; color: var(--ink-mute); line-height: 1.55; max-width: 640px; }
+.lovx-attest-inner a { color: var(--accent); text-decoration: none; }
+.lovx-attest-inner a:hover { color: var(--accent-deep); }
+
+@media (max-width: 860px) {
+  .lovx-page { padding: 26px 22px 56px; }
+  .lovx-crumb { margin-bottom: 32px; }
+  .lovx-layout { grid-template-columns: 1fr; margin-top: 36px; }
+  .lovx-side { position: static; padding-right: 0; margin-bottom: 8px; }
+  .lovx-side-block { margin-bottom: 32px; }
+  .lovx-chaplist { flex-direction: row; overflow-x: auto; gap: 22px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .lovx-chap { border-left: none; padding: 4px 0; white-space: nowrap; }
+  .lovx-chap:hover { border-left: none; }
+  .lovx-main { border-left: none; padding-left: 0; }
+  .lovx-attest { padding: 0 22px; }
+}
+</style>
+<main class="lovx-page">
+  <nav class="lovx-crumb" aria-label="Brødsmuler">
+    <a href="../../">Hjem</a><span class="sep">/</span><a href="../../lover/">Lover</a><span class="sep">/</span><span class="cur">Inkassoloven</span>
+  </nav>
+
+  <header class="lovx-head">
+    <h1 class="lovx-title">Inkassoloven</h1>
+    <p class="lovx-desc">Inkassoloven paragraf for paragraf, på vanlig norsk.</p>
+    <p class="lovx-meta">37 paragrafer<span class="dot">·</span>Lov<span class="dot">·</span>Oppdatert 2026</p>
+  </header>
+
+  <div class="lovx-search-wrap">
+    <svg class="lovx-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="lovx-search" id="lovxSearch" placeholder="Søk i Inkassoloven …" autocomplete="off">
+  </div>
+
+  <div class="lovx-layout">
+    <aside class="lovx-side">
+      
+      
+    </aside>
+    <div class="lovx-main" id="lovx-list">
+      <section class="lovx-chapter"><div class="lovx-rows"><a class="lovx-row" href="../../lover/inkassoloven/1/"><span class="lovx-row-num">§ 1</span><span class="lovx-row-body"><span class="lovx-row-title">Hvilke saker gjelder inkassoloven for?</span><span class="lovx-row-desc">Inkassoloven gjelder bare når noen skal kreve inn penger du skylder etter at…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/2/"><span class="lovx-row-num">§ 2</span><span class="lovx-row-body"><span class="lovx-row-title">Hva er egentlig et inkassoselskap?</span><span class="lovx-row-desc">Paragrafen definerer de viktigste begrepene i inkassobransjen. Den skiller mellom selskaper…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/3/"><span class="lovx-row-num">§ 3</span><span class="lovx-row-body"><span class="lovx-row-title">Loven er ufravikelig for forbrukere</span><span class="lovx-row-desc">Inkassoloven beskytter deg som er privatperson (forbruker). Det betyr at ingen kan lage en…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/3a/"><span class="lovx-row-num">§ 3a</span><span class="lovx-row-body"><span class="lovx-row-title">Kan inkassovarselet sendes på e-post eller SMS?</span><span class="lovx-row-desc">Ja, et inkassovarsel eller en betalingsoppfordring kan sendes elektronisk. Det betyr at du…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/4/"><span class="lovx-row-num">§ 4</span><span class="lovx-row-body"><span class="lovx-row-title">Hvem har lov til å drive inkassoselskap?</span><span class="lovx-row-desc">For å drive et inkassoselskap i Norge må firmaet være registrert i Foretaksregisteret og ha…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/5/"><span class="lovx-row-num">§ 5</span><span class="lovx-row-body"><span class="lovx-row-title">Personlige krav til den som driver inkasso</span><span class="lovx-row-desc">Folkene som leder et inkassobyrå må være til å stole på. Denne paragrafen slår fast at…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/6/"><span class="lovx-row-num">§ 6</span><span class="lovx-row-body"><span class="lovx-row-title">Sjefen har ansvaret for at alt går lovlig for seg</span><span class="lovx-row-desc">Den som har fått bevilling til å drive inkassoselskap, eller advokaten som styrer det, har…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/7/"><span class="lovx-row-num">§ 7</span><span class="lovx-row-body"><span class="lovx-row-title">Inndriving av egne pengekrav</span><span class="lovx-row-desc">Et selskap trenger vanligvis ikke inkassobevilling for å kreve inn sine egne penger. Men §…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/8/"><span class="lovx-row-num">§ 8</span><span class="lovx-row-body"><span class="lovx-row-title">God inkassoskikk — din viktigste beskyttelse mot inkasso</span><span class="lovx-row-desc">Inkassoselskapet har lov til å kreve inn penger du skylder. De har ikke lov til å true,…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/9/"><span class="lovx-row-num">§ 9</span><span class="lovx-row-body"><span class="lovx-row-title">Inkassovarsel og betalingsfrist — du skal alltid få 14 dager</span><span class="lovx-row-desc">Før inkasso kan settes i verk mot deg, må du ha fått et skriftlig inkassovarsel — og du må…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/10/"><span class="lovx-row-num">§ 10</span><span class="lovx-row-body"><span class="lovx-row-title">Betalingsoppfordringen — hva den skal inneholde og hvilke rettigheter du har</span><span class="lovx-row-desc">Etter at inkassovarsel-fristen er løpt ut, skal inkassoselskapet sende deg en…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/11/"><span class="lovx-row-num">§ 11</span><span class="lovx-row-body"><span class="lovx-row-title">Plikter før rettslig inndriving — hva som må skje før saken kan gå til retten</span><span class="lovx-row-desc">Inkassoselskapet kan ikke bare gå til namsmannen eller ta ut stevning i tingretten. Før de…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/12/"><span class="lovx-row-num">§ 12</span><span class="lovx-row-body"><span class="lovx-row-title">Unntak fra varslingsplikten — når kan inkasso hoppe over de vanlige reglene?</span><span class="lovx-row-desc">Normalt gjelder alltid varslingsplikt og betalingsfrister i §§ 9 til 11. Det er tre unntak:…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/13/"><span class="lovx-row-num">§ 13</span><span class="lovx-row-body"><span class="lovx-row-title">Inkassatorens legitimasjon — du kan trygt betale til inkassoselskapet</span><span class="lovx-row-desc">Du kan betale trygt til inkassoselskapet — betalingen er gyldig selv om du normalt skylder…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/14/"><span class="lovx-row-num">§ 14</span><span class="lovx-row-body"><span class="lovx-row-title">Inkassatorens rett til å handle på vegne av fordringshaveren</span><span class="lovx-row-desc">Inkassatoren kan gjøre vanlige og naturlige inkassotiltak på vegne av den du skylder…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/15/"><span class="lovx-row-num">§ 15</span><span class="lovx-row-body"><span class="lovx-row-title">Inkassatoren må holde fordringshaveren orientert</span><span class="lovx-row-desc">Inkassatoren skal holde fordringshaveren oppdatert om hvordan inkassosaken utvikler seg.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/16/"><span class="lovx-row-num">§ 16</span><span class="lovx-row-body"><span class="lovx-row-title">Inkassatoren må skille klientpenger fra egne penger</span><span class="lovx-row-desc">Når inkassatoren får inn penger fra skyldneren, skal pengene raskt betales videre til…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/17/"><span class="lovx-row-num">§ 17</span><span class="lovx-row-body"><span class="lovx-row-title">Når skyldneren må betale inkassokostnader</span><span class="lovx-row-desc">Du må som hovedregel betale nødvendige kostnader ved inkasso hvis kravet er riktig og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/18/"><span class="lovx-row-num">§ 18</span><span class="lovx-row-body"><span class="lovx-row-title">Gebyr for regning etter forfall i forbrukerforhold</span><span class="lovx-row-desc">I forbrukerforhold kan den som krever betaling ikke fritt legge på nye fakturagebyrer etter…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/19/"><span class="lovx-row-num">§ 19</span><span class="lovx-row-body"><span class="lovx-row-title">Forskrift om faste beløp ved purring og egeninkasso</span><span class="lovx-row-desc">§ 19 sier ikke selv nøyaktig hvor mange kroner du må betale. Den gir myndighetene rett til…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/20/"><span class="lovx-row-num">§ 20</span><span class="lovx-row-body"><span class="lovx-row-title">Maksgrense for inkassokostnader</span><span class="lovx-row-desc">Det finnes grenser for hvor mye du kan kreves for i inkassokostnader. § 20 gir myndighetene…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/21/"><span class="lovx-row-num">§ 21</span><span class="lovx-row-body"><span class="lovx-row-title">Kostnader når inkassosaken går til rettslig inndriving</span><span class="lovx-row-desc">Når saken går over til rettslig inndriving, gjelder ikke de vanlige inkassokostnadsreglene…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/22/"><span class="lovx-row-num">§ 22</span><span class="lovx-row-body"><span class="lovx-row-title">Du kan kreve nemndsbehandling i inkassotvister</span><span class="lovx-row-desc">Du kan i visse inkassotvister kreve at saken behandles i en nemnd. En nemnd er et…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/23/"><span class="lovx-row-num">§ 23</span><span class="lovx-row-body"><span class="lovx-row-title">Når saken er i nemnda, kan den som hovedregel ikke gå til domstolen samtidig</span><span class="lovx-row-desc">Når en inkassotvist er til behandling i nemnda, kan den som hovedregel ikke samtidig tas…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/24/"><span class="lovx-row-num">§ 24</span><span class="lovx-row-body"><span class="lovx-row-title">Nemnda skal rapportere brudd på inkassoloven til Finanstilsynet</span><span class="lovx-row-desc">Hvis nemnda uttaler at inkassoloven er brutt, skal nemnda sende uttalelsen til…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/25/"><span class="lovx-row-num">§ 25</span><span class="lovx-row-body"><span class="lovx-row-title">Inkassator kan måtte betale nemndas kostnader ved brudd på god inkassoskikk</span><span class="lovx-row-desc">Hvis inkassatoren bryter kravet til god inkassoskikk, kan nemnda pålegge inkassatoren å…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/26/"><span class="lovx-row-num">§ 26</span><span class="lovx-row-body"><span class="lovx-row-title">Klage til nemnda kan avbryte foreldelse for inkassotvisten</span><span class="lovx-row-desc">Når en tvist som nemnda kan behandle bringes inn for nemnda, avbrytes foreldelse for den…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/27/"><span class="lovx-row-num">§ 27</span><span class="lovx-row-body"><span class="lovx-row-title">Forskrifter om nemndsbehandling i inkassosaker</span><span class="lovx-row-desc">§ 27 gir myndighetene rett til å lage mer detaljerte regler om nemndsbehandling i…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/28/"><span class="lovx-row-num">§ 28</span><span class="lovx-row-body"><span class="lovx-row-title">Taushetsplikt og utlevering av opplysninger fra Folkeregisteret</span><span class="lovx-row-desc">Inkassatorer, ansatte, hjelpere og nemndsmedlemmer må holde taushet om personlige forhold…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/29/"><span class="lovx-row-num">§ 29</span><span class="lovx-row-body"><span class="lovx-row-title">Inkassator må stille sikkerhet</span><span class="lovx-row-desc">Et inkassoforetak som driver ervervsmessig og stadig innkreving av forfalte pengekrav for…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/30/"><span class="lovx-row-num">§ 30</span><span class="lovx-row-body"><span class="lovx-row-title">Finanstilsynet fører tilsyn med inkassovirksomhet</span><span class="lovx-row-desc">Finanstilsynet fører tilsyn med inkassoforetak som driver med inkassobevilling. De kan gi…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/30a/"><span class="lovx-row-num">§ 30a</span><span class="lovx-row-body"><span class="lovx-row-title">Klager på Finanstilsynets vedtak kan behandles av klagenemnd</span><span class="lovx-row-desc">Departementet kan bestemme i forskrift at en klagenemnd skal avgjøre klager på…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/31/"><span class="lovx-row-num">§ 31</span><span class="lovx-row-body"><span class="lovx-row-title">Når inkassobevilling kan inndras</span><span class="lovx-row-desc">Finanstilsynet kan inndra en inkassobevilling hvis det er utilrådelig å la virksomheten…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/32/"><span class="lovx-row-num">§ 32</span><span class="lovx-row-body"><span class="lovx-row-title">Straff ved brudd på inkassoloven</span><span class="lovx-row-desc">Alvorlige brudd på inkassoloven kan straffes med bøter eller fengsel i inntil tre måneder.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/33/"><span class="lovx-row-num">§ 33</span><span class="lovx-row-body"><span class="lovx-row-title">Når inkassoloven trer i kraft</span><span class="lovx-row-desc">§ 33 er ikrafttredelsesregelen. Den sier at loven begynner å gjelde fra det tidspunktet…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/34/"><span class="lovx-row-num">§ 34</span><span class="lovx-row-body"><span class="lovx-row-title">Hvilke krav inkassoloven gjelder for</span><span class="lovx-row-desc">§ 34 sier hvilke krav inkassoloven gjelder for i overgangen fra gamle regler til ny lov.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/inkassoloven/35/"><span class="lovx-row-num">§ 35</span><span class="lovx-row-body"><span class="lovx-row-title">Oppheving og endring i andre lover</span><span class="lovx-row-desc">§ 35 er en teknisk sluttbestemmelse. Den sier at fra loven begynner å gjelde, gjøres…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section>
+      <p class="lovx-empty" id="lovxEmpty">Ingen paragrafer matcher søket.</p>
+    </div>
+  </div>
+</main>
+
+<div class="lovx-attest">
+  <p class="lovx-attest-inner">Juridisk informasjon, ikke rådgivning. Innholdet bygger på gjeldende norsk lov. Ved en konkret sak — kontakt advokat. <a href="../../om/">Mer om Rettsregel &rarr;</a></p>
+</div>
+
+<script>
+(function(){
+  var inp = document.getElementById('lovxSearch');
+  if(!inp) return;
+  var rows = [].slice.call(document.querySelectorAll('.lovx-row'));
+  var chapters = [].slice.call(document.querySelectorAll('.lovx-chapter'));
+  var empty = document.getElementById('lovxEmpty');
+  inp.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var visible = 0;
+    rows.forEach(function(r){
+      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.style.display = m ? '' : 'none';
+      if(m) visible++;
+    });
+    chapters.forEach(function(c){
+      var any = false;
+      var rs = c.querySelectorAll('.lovx-row');
+      for(var i=0;i<rs.length;i++){ if(rs[i].style.display !== 'none'){ any = true; break; } }
+      c.style.display = any ? '' : 'none';
+    });
+    if(empty) empty.style.display = (visible === 0 && q) ? 'block' : 'none';
+  });
+})();
+</script>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
