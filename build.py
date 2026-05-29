@@ -64,7 +64,12 @@ try:
 except ImportError:
     _P_VOLDSERSTATNING = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING
+try:
+    from paragraphs_arbeidsmiljoloven import PARAGRAPHS as _P_ARBEIDSMILJO
+except ImportError:
+    _P_ARBEIDSMILJO = []
+
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -2351,7 +2356,7 @@ def render_lov_index(lov_name, lov_display, paragraphs):
         chaps = {}
         for p in sorted(paragraphs, key=lambda x: pkey(x["number"])):
             chaps.setdefault(p["number"].split("-")[0], []).append(p)
-        chap_keys = sorted(chaps, key=lambda k: int(k))
+        chap_keys = sorted(chaps, key=lambda k: (int(re.match(r"\d+", k).group()), k))
         main_sections = ""
         chap_links = ""
         for k in chap_keys:

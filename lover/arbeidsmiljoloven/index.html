@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arbeidsmiljøloven forklart på vanlig norsk | Rettsregel</title>
+<meta name="description" content="Arbeidsmiljøloven paragraf for paragraf, på vanlig norsk.">
+<link rel="canonical" href="https://rettsregel.no/lover/arbeidsmiljoloven/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Arbeidsmiljøloven forklart på vanlig norsk">
+<meta property="og:description" content="Arbeidsmiljøloven paragraf for paragraf, på vanlig norsk.">
+<meta property="og:url" content="https://rettsregel.no/lover/arbeidsmiljoloven/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Arbeidsmiljøloven forklart på vanlig norsk">
+<meta name="twitter:description" content="Arbeidsmiljøloven paragraf for paragraf, på vanlig norsk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/" class="rr-nav-active">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<style>
+.lovx-page { max-width: 1080px; margin: 0 auto; padding: 36px 48px 72px; }
+
+.lovx-crumb { font-family: var(--serif); font-size: 13px; color: var(--ink-mute); margin-bottom: 44px; letter-spacing: 0.01em; }
+.lovx-crumb a { color: var(--ink-mute); text-decoration: none; }
+.lovx-crumb a:hover { color: var(--ink); }
+.lovx-crumb .sep { margin: 0 9px; opacity: 0.45; }
+.lovx-crumb .cur { color: var(--accent); }
+
+.lovx-head { margin-bottom: 30px; }
+.lovx-title { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.4vw, 38px); line-height: 1.06; letter-spacing: -0.026em; color: var(--ink); margin: 0 0 16px; }
+.lovx-desc { font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--ink-soft); margin: 0 0 16px; max-width: 580px; }
+.lovx-meta { font-family: var(--serif); font-size: 14px; color: var(--ink-mute); letter-spacing: 0.01em; }
+.lovx-meta .dot { margin: 0 10px; opacity: 0.45; }
+
+.lovx-search-wrap { position: relative; margin-bottom: 4px; }
+.lovx-search { width: 100%; box-sizing: border-box; font-family: var(--serif); font-size: 16px; color: var(--ink); background: transparent; border: none; border-bottom: 1px solid var(--ink); padding: 13px 4px 13px 28px; outline: none; }
+.lovx-search::placeholder { color: var(--ink-mute); }
+.lovx-search:focus { border-bottom-color: var(--accent); }
+.lovx-search-icon { position: absolute; left: 2px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-mute); pointer-events: none; }
+
+.lovx-layout { display: grid; grid-template-columns: 232px 1fr; gap: 0; margin-top: 48px; align-items: start; }
+
+.lovx-side { position: sticky; top: 32px; padding-right: 40px; }
+.lovx-side-block { margin-bottom: 40px; }
+.lovx-side-block:last-child { margin-bottom: 0; }
+.lovx-side-label { font-family: var(--serif); font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+.lovx-chaplist { display: flex; flex-direction: column; }
+.lovx-chap { font-family: var(--serif); font-size: 14.5px; color: var(--ink-soft); text-decoration: none; padding: 7px 0 7px 14px; border-left: 2px solid transparent; line-height: 1.3; transition: color .15s, border-color .15s; }
+.lovx-chap:hover { color: var(--ink); border-left-color: var(--accent); }
+
+.lovx-mest { display: flex; flex-direction: column; }
+.lovx-mest-item { display: block; text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.lovx-mest-item:first-child { padding-top: 0; }
+.lovx-mest-item:last-child { border-bottom: none; }
+.lovx-mest-num { font-family: var(--serif); font-size: 13px; color: var(--accent); }
+.lovx-mest-title { font-family: var(--serif); font-size: 14px; color: var(--ink-soft); display: block; margin-top: 3px; line-height: 1.35; transition: color .15s; }
+.lovx-mest-item:hover .lovx-mest-title { color: var(--ink); }
+.lovx-side-more { display: inline-block; margin-top: 16px; font-family: var(--serif); font-size: 13px; color: var(--ink-mute); text-decoration: none; transition: color .15s; }
+.lovx-side-more:hover { color: var(--accent); }
+
+.lovx-main { min-width: 0; border-left: 1px solid var(--line); padding-left: 48px; }
+.lovx-chapter { margin-bottom: 40px; }
+.lovx-chapter:last-child { margin-bottom: 0; }
+.lovx-chapter-h { font-family: var(--serif); font-weight: 500; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-mute); margin: 0; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+
+.lovx-rows { display: flex; flex-direction: column; }
+.lovx-row { display: grid; grid-template-columns: 60px 1fr 24px; align-items: baseline; gap: 16px; padding: 19px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.lovx-row-num { font-family: var(--serif); font-size: 14px; color: var(--accent); white-space: nowrap; }
+.lovx-row-body { min-width: 0; }
+.lovx-row-title { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.25; letter-spacing: -0.012em; display: block; transition: color .15s; }
+.lovx-row-desc { font-family: var(--serif); font-size: 14.5px; color: var(--ink-mute); line-height: 1.45; margin-top: 5px; display: block; }
+.lovx-row-arrow { font-family: var(--serif); font-size: 17px; color: var(--ink-mute); line-height: 1; text-align: right; transition: color .18s, transform .22s; }
+.lovx-row:hover .lovx-row-arrow { color: var(--accent); transform: translateX(6px); }
+.lovx-row:hover .lovx-row-title { color: var(--ink); }
+
+.lovx-empty { display: none; font-family: var(--serif); font-size: 16px; color: var(--ink-mute); padding: 28px 0; }
+
+.lovx-attest { max-width: 1080px; margin: 56px auto 0; padding: 0 48px; }
+.lovx-attest-inner { border-top: 1px solid var(--line); padding-top: 20px; font-family: var(--serif); font-size: 12.5px; color: var(--ink-mute); line-height: 1.55; max-width: 640px; }
+.lovx-attest-inner a { color: var(--accent); text-decoration: none; }
+.lovx-attest-inner a:hover { color: var(--accent-deep); }
+
+@media (max-width: 860px) {
+  .lovx-page { padding: 26px 22px 56px; }
+  .lovx-crumb { margin-bottom: 32px; }
+  .lovx-layout { grid-template-columns: 1fr; margin-top: 36px; }
+  .lovx-side { position: static; padding-right: 0; margin-bottom: 8px; }
+  .lovx-side-block { margin-bottom: 32px; }
+  .lovx-chaplist { flex-direction: row; overflow-x: auto; gap: 22px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .lovx-chap { border-left: none; padding: 4px 0; white-space: nowrap; }
+  .lovx-chap:hover { border-left: none; }
+  .lovx-main { border-left: none; padding-left: 0; }
+  .lovx-attest { padding: 0 22px; }
+}
+</style>
+<main class="lovx-page">
+  <nav class="lovx-crumb" aria-label="Brødsmuler">
+    <a href="../../">Hjem</a><span class="sep">/</span><a href="../../lover/">Lover</a><span class="sep">/</span><span class="cur">Arbeidsmiljøloven</span>
+  </nav>
+
+  <header class="lovx-head">
+    <h1 class="lovx-title">Arbeidsmiljøloven</h1>
+    <p class="lovx-desc">Arbeidsmiljøloven paragraf for paragraf, på vanlig norsk.</p>
+    <p class="lovx-meta">70 paragrafer<span class="dot">·</span>Lov<span class="dot">·</span>Oppdatert 2026</p>
+  </header>
+
+  <div class="lovx-search-wrap">
+    <svg class="lovx-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="lovx-search" id="lovxSearch" placeholder="Søk i Arbeidsmiljøloven …" autocomplete="off">
+  </div>
+
+  <div class="lovx-layout">
+    <aside class="lovx-side">
+      <div class="lovx-side-block"><p class="lovx-side-label">Innhold</p><nav class="lovx-chaplist"><a class="lovx-chap" href="#kap-1">Kapittel 1</a><a class="lovx-chap" href="#kap-2">Kapittel 2</a><a class="lovx-chap" href="#kap-2A">Kapittel 2A</a><a class="lovx-chap" href="#kap-3">Kapittel 3</a><a class="lovx-chap" href="#kap-4">Kapittel 4</a><a class="lovx-chap" href="#kap-6">Kapittel 6</a><a class="lovx-chap" href="#kap-7">Kapittel 7</a><a class="lovx-chap" href="#kap-8">Kapittel 8</a><a class="lovx-chap" href="#kap-9">Kapittel 9</a><a class="lovx-chap" href="#kap-10">Kapittel 10</a><a class="lovx-chap" href="#kap-12">Kapittel 12</a><a class="lovx-chap" href="#kap-13">Kapittel 13</a><a class="lovx-chap" href="#kap-14">Kapittel 14</a><a class="lovx-chap" href="#kap-15">Kapittel 15</a><a class="lovx-chap" href="#kap-16">Kapittel 16</a><a class="lovx-chap" href="#kap-17">Kapittel 17</a><a class="lovx-chap" href="#kap-18">Kapittel 18</a><a class="lovx-chap" href="#kap-19">Kapittel 19</a><a class="lovx-chap" href="#kap-20">Kapittel 20</a></nav></div>
+      
+    </aside>
+    <div class="lovx-main" id="lovx-list">
+      <section class="lovx-chapter" id="kap-1"><h2 class="lovx-chapter-h">Kapittel 1</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/1-1/"><span class="lovx-row-num">§ 1-1</span><span class="lovx-row-body"><span class="lovx-row-title">Hva er formålet med arbeidsmiljøloven?</span><span class="lovx-row-desc">Arbeidsmiljølovens formål er å sikre at du har det trygt og bra på jobb, både fysisk og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/1-2/"><span class="lovx-row-num">§ 1-2</span><span class="lovx-row-body"><span class="lovx-row-title">Hvem gjelder arbeidsmiljøloven for?</span><span class="lovx-row-desc">Arbeidsmiljøloven gjelder for alle virksomheter som har ansatte. Er du ansatt for å gjøre…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/1-3/"><span class="lovx-row-num">§ 1-3</span><span class="lovx-row-body"><span class="lovx-row-title">Gjelder loven på plattformer og vindmøller til havs?</span><span class="lovx-row-desc">Ja, arbeidsmiljøloven gjelder for deg som jobber med olje, gass og fornybar energi på den…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/1-4/"><span class="lovx-row-num">§ 1-4</span><span class="lovx-row-body"><span class="lovx-row-title">Hva med virksomheter uten egne ansatte?</span><span class="lovx-row-desc">Vanligvis gjelder arbeidsmiljøloven bare hvis en virksomhet har ansatte. Men paragraf 1-4…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/1-5/"><span class="lovx-row-num">§ 1-5</span><span class="lovx-row-body"><span class="lovx-row-title">Gjelder loven for arbeid på hjemmekontor?</span><span class="lovx-row-desc">Ja, men med noen særregler. Paragraf 1-5 gir regjeringen mulighet til å bestemme hvordan…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/1-6/"><span class="lovx-row-num">§ 1-6</span><span class="lovx-row-body"><span class="lovx-row-title">Regler for utenlandske arbeidstakere på oppdrag i Norge</span><span class="lovx-row-desc">Når en utenlandsk bedrift sender deg til Norge for å utføre et oppdrag i en begrenset…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/1-8/"><span class="lovx-row-num">§ 1-8</span><span class="lovx-row-body"><span class="lovx-row-title">Hvem er egentlig arbeidstaker og arbeidsgiver?</span><span class="lovx-row-desc">En arbeidstaker er en som jobber for en annen og må følge deres ordre. Fra 2024 ble reglene…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/1-9/"><span class="lovx-row-num">§ 1-9</span><span class="lovx-row-body"><span class="lovx-row-title">Kan man avtale dårligere vilkår enn loven?</span><span class="lovx-row-desc">Du kan aldri inngå en avtale med arbeidsgiveren din som gir deg dårligere rettigheter enn…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-2"><h2 class="lovx-chapter-h">Kapittel 2</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/2-1/"><span class="lovx-row-num">§ 2-1</span><span class="lovx-row-body"><span class="lovx-row-title">Hva er arbeidsgiverens plikter?</span><span class="lovx-row-desc">Det er alltid arbeidsgiver som har hovedansvaret for at reglene i arbeidsmiljøloven følges.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/2-2/"><span class="lovx-row-num">§ 2-2</span><span class="lovx-row-body"><span class="lovx-row-title">Arbeidsgivers ansvar for innleid hjelp og selvstendige</span><span class="lovx-row-desc">Arbeidsgiveren har ansvar for at *alle* som jobber på arbeidsplassen har et trygt miljø.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/2-3/"><span class="lovx-row-num">§ 2-3</span><span class="lovx-row-body"><span class="lovx-row-title">Din plikt til å medvirke på jobb</span><span class="lovx-row-desc">Du har en lovfestet plikt til å bidra til et trygt og godt arbeidsmiljø. Du må bruke…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-2A"><h2 class="lovx-chapter-h">Kapittel 2A</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/2A-1/"><span class="lovx-row-num">§ 2A-1</span><span class="lovx-row-body"><span class="lovx-row-title">Din rett til å varsle om kritikkverdige forhold</span><span class="lovx-row-desc">Du har en lovfestet rett til å si ifra hvis du oppdager noe som er ulovlig, farlig eller…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/2A-2/"><span class="lovx-row-num">§ 2A-2</span><span class="lovx-row-body"><span class="lovx-row-title">Hvordan skal du gå frem når du varsler?</span><span class="lovx-row-desc">Du kan alltid velge å varsle internt (til sjefen din eller via verneombudet), eller direkte…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/2A-4/"><span class="lovx-row-num">§ 2A-4</span><span class="lovx-row-body"><span class="lovx-row-title">Forbud mot å straffe noen som har varslet</span><span class="lovx-row-desc">Det er strengt ulovlig for arbeidsgiver å utsette deg for noen form for "gjengjeldelse"…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-3"><h2 class="lovx-chapter-h">Kapittel 3</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/3-1/"><span class="lovx-row-num">§ 3-1</span><span class="lovx-row-body"><span class="lovx-row-title">Kravet til systematisk HMS-arbeid (internkontroll)</span><span class="lovx-row-desc">Alle norske bedrifter er pålagt å jobbe systematisk med HMS. Sjefen skal ha full oversikt…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-4"><h2 class="lovx-chapter-h">Kapittel 4</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/4-1/"><span class="lovx-row-num">§ 4-1</span><span class="lovx-row-body"><span class="lovx-row-title">Generelle krav til et trygt arbeidsmiljø</span><span class="lovx-row-desc">Arbeidsplassen din skal være organisert og innredet slik at du ikke blir fysisk eller…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/4-3/"><span class="lovx-row-num">§ 4-3</span><span class="lovx-row-body"><span class="lovx-row-title">Vernet mot mobbing og helsefarlig stress (psykososialt arbeidsmiljø)</span><span class="lovx-row-desc">Loven krever at sjefen og kollegene dine oppfører seg skikkelig mot deg. Du har krav på å…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/4-4/"><span class="lovx-row-num">§ 4-4</span><span class="lovx-row-body"><span class="lovx-row-title">Krav til støy, inneklima og det fysiske arbeidsmiljøet</span><span class="lovx-row-desc">Det fysiske arbeidsmiljøet ditt skal være trygt. Arbeidsgiver plikter å sørge for at…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/4-6/"><span class="lovx-row-num">§ 4-6</span><span class="lovx-row-body"><span class="lovx-row-title">Arbeidsgivers plikt til å tilrettelegge når du blir syk</span><span class="lovx-row-desc">Hvis du får problemer med helsen, plikter arbeidsgiveren din å strekke seg langt for å…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-6"><h2 class="lovx-chapter-h">Kapittel 6</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/6-1/"><span class="lovx-row-num">§ 6-1</span><span class="lovx-row-body"><span class="lovx-row-title">Plikt til å velge verneombud</span><span class="lovx-row-desc">Verneombudet er de ansattes talerør i alle saker som handler om helse og sikkerhet. Fra og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/6-2/"><span class="lovx-row-num">§ 6-2</span><span class="lovx-row-body"><span class="lovx-row-title">Hva er egentlig verneombudets oppgaver?</span><span class="lovx-row-desc">Verneombudet er de ansattes vaktbikkje. Deres oppgave er å overvåke arbeidsmiljøet og sikre…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/6-3/"><span class="lovx-row-num">§ 6-3</span><span class="lovx-row-body"><span class="lovx-row-title">Verneombudets makt til å stanse farlig arbeid</span><span class="lovx-row-desc">Hvis det oppstår en akutt og umiddelbar fare for liv eller helse på arbeidsplassen, og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-7"><h2 class="lovx-chapter-h">Kapittel 7</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/7-1/"><span class="lovx-row-num">§ 7-1</span><span class="lovx-row-body"><span class="lovx-row-title">Plikt til å opprette arbeidsmiljøutvalg (AMU)</span><span class="lovx-row-desc">Et arbeidsmiljøutvalg (AMU) er et formelt møtested der representanter fra både de ansatte…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/7-2/"><span class="lovx-row-num">§ 7-2</span><span class="lovx-row-body"><span class="lovx-row-title">Hvilke saker skal arbeidsmiljøutvalget (AMU) behandle?</span><span class="lovx-row-desc">Arbeidsmiljøutvalget (AMU) skal behandle alle de store og viktige sakene som handler om de…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-8"><h2 class="lovx-chapter-h">Kapittel 8</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/8-1/"><span class="lovx-row-num">§ 8-1</span><span class="lovx-row-body"><span class="lovx-row-title">Sjefens plikt til å informere og drøfte med de ansatte</span><span class="lovx-row-desc">Hvis bedriften din har 50 ansatte eller mer, er sjefen lovpålagt å holde de tillitsvalgte…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-9"><h2 class="lovx-chapter-h">Kapittel 9</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/9-1/"><span class="lovx-row-num">§ 9-1</span><span class="lovx-row-body"><span class="lovx-row-title">Kan sjefen overvåke deg på jobb?</span><span class="lovx-row-desc">Arbeidsgiveren din har som hovedregel ikke lov til å overvåke eller kontrollere deg. Hvis…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-10"><h2 class="lovx-chapter-h">Kapittel 10</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-1/"><span class="lovx-row-num">§ 10-1</span><span class="lovx-row-body"><span class="lovx-row-title">Begrepene: Hva er egentlig arbeidstid og hva er pause?</span><span class="lovx-row-desc">Regelen er krystallklar: Den tiden du står til arbeidsgivers disposisjon, er arbeidstid. Du…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-2/"><span class="lovx-row-num">§ 10-2</span><span class="lovx-row-body"><span class="lovx-row-title">Dine rettigheter til en levelig turnus, fleksitid og redusert stilling</span><span class="lovx-row-desc">Turnusen og arbeidstiden din skal legges opp slik at du ikke blir fysisk eller psykisk syk…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-4/"><span class="lovx-row-num">§ 10-4</span><span class="lovx-row-body"><span class="lovx-row-title">Hva er alminnelig arbeidstid?</span><span class="lovx-row-desc">Alminnelig arbeidstid er grensen for hvor mye du normalt kan jobbe uten at det regnes som…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-5/"><span class="lovx-row-num">§ 10-5</span><span class="lovx-row-body"><span class="lovx-row-title">Gjennomsnittsberegning (lovlig turnus og lange vakter)</span><span class="lovx-row-desc">Gjennomsnittsberegning betyr at du kan jobbe ekstremt mye én uke (for eksempel 12 timer om…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-6/"><span class="lovx-row-num">§ 10-6</span><span class="lovx-row-body"><span class="lovx-row-title">Overtid og meirarbeid (når du må jobbe ekstra)</span><span class="lovx-row-desc">Overtid skal være unntaket, ikke regelen. Sjefen kan bare pålegge deg overtid hvis det er…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-8/"><span class="lovx-row-num">§ 10-8</span><span class="lovx-row-body"><span class="lovx-row-title">Reglene for daglig og ukentlig hviletid</span><span class="lovx-row-desc">Du kan ikke sendes frem og tilbake på jobb i ett kjør. Mellom hver vakt må du ha minst 11…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-9/"><span class="lovx-row-num">§ 10-9</span><span class="lovx-row-body"><span class="lovx-row-title">Reglene for pauser og matpakke</span><span class="lovx-row-desc">Du har krav på minst én pause hvis du jobber mer enn fem og en halv time. Hvis du jobber…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-10/"><span class="lovx-row-num">§ 10-10</span><span class="lovx-row-body"><span class="lovx-row-title">Reglene for søndagsarbeid</span><span class="lovx-row-desc">Du skal i utgangspunktet ha fri på søndager. Sjefen kan ikke be deg jobbe søndag bare for å…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-11/"><span class="lovx-row-num">§ 10-11</span><span class="lovx-row-body"><span class="lovx-row-title">Reglene for nattarbeid</span><span class="lovx-row-desc">Nattarbeid er alt arbeid som skjer mellom klokken 21.00 på kvelden og 06.00 om morgenen. I…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/10-12/"><span class="lovx-row-num">§ 10-12</span><span class="lovx-row-body"><span class="lovx-row-title">Har du mistet retten til overtid? Unntaket for ledende og uavhengige stillinger</span><span class="lovx-row-desc">Hvis du har en ekte sjefsstilling eller styrer din egen arbeidsdag hundre prosent, er du…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-12"><h2 class="lovx-chapter-h">Kapittel 12</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-1/"><span class="lovx-row-num">§ 12-1</span><span class="lovx-row-body"><span class="lovx-row-title">Rett til permisjon ved svangerskap</span><span class="lovx-row-desc">Som gravid har du en absolutt rett til å ta permisjon fra jobben din inntil 12 uker før…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-2/"><span class="lovx-row-num">§ 12-2</span><span class="lovx-row-body"><span class="lovx-row-title">Rett til to ukers fri ved fødselen (Omsorgspermisjon for partner)</span><span class="lovx-row-desc">Som partner (far eller medmor) har du rett til å ta ut to uker fri fra jobben akkurat når…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-3/"><span class="lovx-row-num">§ 12-3</span><span class="lovx-row-body"><span class="lovx-row-title">Mor må ta fødselspermisjon de første seks ukene</span><span class="lovx-row-desc">Mor skal ha permisjon fra jobben de første seks ukene etter at barnet er født. Denne…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-4/"><span class="lovx-row-num">§ 12-4</span><span class="lovx-row-body"><span class="lovx-row-title">Retten til foreldrepermisjon og det ulønnede året</span><span class="lovx-row-desc">Du har rett til å være borte fra jobben mens du mottar foreldrepenger fra NAV (vanligvis…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-5/"><span class="lovx-row-num">§ 12-5</span><span class="lovx-row-body"><span class="lovx-row-title">Vil du bygge på kompetansen? Retten til utdanningspermisjon</span><span class="lovx-row-desc">Du har krav på ulønnet permisjon i inntil tre år for å utdanne deg. For å få dette må du ha…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-9/"><span class="lovx-row-num">§ 12-9</span><span class="lovx-row-body"><span class="lovx-row-title">Rett til fri ved barns og barnepassers sykdom (sykt barn-dager)</span><span class="lovx-row-desc">Når barnet ditt (under 12 år) blir sykt, har du rett til å ta fri fra jobben for å være…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-10/"><span class="lovx-row-num">§ 12-10</span><span class="lovx-row-body"><span class="lovx-row-title">Retten til permisjon for å hjelpe syke foreldre eller ektefelle</span><span class="lovx-row-desc">Hvis en i nær familie – som foreldre, ektefelle, samboer eller funksjonshemmede barn over…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-11/"><span class="lovx-row-num">§ 12-11</span><span class="lovx-row-body"><span class="lovx-row-title">Retten til permisjon ved pleie i livets sluttfase</span><span class="lovx-row-desc">Hvis en som står deg nær er alvorlig syk og legene mener personen er i livets sluttfase,…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/12-15/"><span class="lovx-row-num">§ 12-15</span><span class="lovx-row-body"><span class="lovx-row-title">Rett til fri ved religiøse høytider</span><span class="lovx-row-desc">Tilhører du et trossamfunn utenfor Den norske kirke, har du rett til å ta fri inntil to…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-13"><h2 class="lovx-chapter-h">Kapittel 13</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/13-1/"><span class="lovx-row-num">§ 13-1</span><span class="lovx-row-body"><span class="lovx-row-title">Forbud mot diskriminering på arbeidsplassen</span><span class="lovx-row-desc">Arbeidsgiver har ikke lov til å diskriminere deg på grunn av alder, fagforeningsmedlemskap…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-14"><h2 class="lovx-chapter-h">Kapittel 14</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/14-9/"><span class="lovx-row-num">§ 14-9</span><span class="lovx-row-body"><span class="lovx-row-title">Retten til fast ansettelse (og strenge regler for vikarer)</span><span class="lovx-row-desc">Du skal ha fast jobb. Det er hovedregelen i norsk arbeidsliv. Arbeidsgiver kan bare ansette…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/14-15/"><span class="lovx-row-num">§ 14-15</span><span class="lovx-row-body"><span class="lovx-row-title">Reglene om lønnsutbetaling og trekk i lønn</span><span class="lovx-row-desc">Lønnen din skal overføres til bankkontoen din på en fast dato. Arbeidsgiver har et absolutt…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-15"><h2 class="lovx-chapter-h">Kapittel 15</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/15-1/"><span class="lovx-row-num">§ 15-1</span><span class="lovx-row-body"><span class="lovx-row-title">Drøftingsmøtet: Sjefen må snakke med deg før du får sparken</span><span class="lovx-row-desc">Før sjefen din kan si deg opp, plikter de å innkalle deg til et møte for å drøfte…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/15-3/"><span class="lovx-row-num">§ 15-3</span><span class="lovx-row-body"><span class="lovx-row-title">Hvor lang er oppsigelsestiden din?</span><span class="lovx-row-desc">Som hovedregel er oppsigelsestiden én måned. Hvis du er i prøvetid, er den 14 dager. Har du…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/15-4/"><span class="lovx-row-num">§ 15-4</span><span class="lovx-row-body"><span class="lovx-row-title">Strenge formkrav: Slik skal oppsigelsen se ut</span><span class="lovx-row-desc">Når sjefen sier deg opp, må de levere det skriftlig på papir (enten personlig eller…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/15-7/"><span class="lovx-row-num">§ 15-7</span><span class="lovx-row-body"><span class="lovx-row-title">Kjerneparagrafen: Vern mot usaklig oppsigelse</span><span class="lovx-row-desc">Sjefen kan ikke si deg opp bare fordi de ikke liker deg eller fordi du gjorde en liten…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/15-8/"><span class="lovx-row-num">§ 15-8</span><span class="lovx-row-body"><span class="lovx-row-title">Kan sjefen gi deg sparken mens du er sykmeldt?</span><span class="lovx-row-desc">Du kan ikke få sparken *på grunn av* sykefraværet ditt i løpet av de første 12 månedene du…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/15-9/"><span class="lovx-row-num">§ 15-9</span><span class="lovx-row-body"><span class="lovx-row-title">Kan man få sparken mens man er gravid eller i foreldrepermisjon?</span><span class="lovx-row-desc">Du kan absolutt ikke sies opp *fordi* du er gravid eller *fordi* du er i foreldrepermisjon.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/15-11/"><span class="lovx-row-num">§ 15-11</span><span class="lovx-row-body"><span class="lovx-row-title">Retten til å beholde jobben mens du saksøker sjefen</span><span class="lovx-row-desc">Hvis du og sjefen er uenige om en oppsigelse, og du tar saken til retten, har du som…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/15-14/"><span class="lovx-row-num">§ 15-14</span><span class="lovx-row-body"><span class="lovx-row-title">Avskjed: Forskjellen på oppsigelse og å få sparken på dagen</span><span class="lovx-row-desc">"Avskjed" er arbeidslivets strengeste straff. Mens en vanlig oppsigelse gir deg…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-16"><h2 class="lovx-chapter-h">Kapittel 16</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/16-1/"><span class="lovx-row-num">§ 16-1</span><span class="lovx-row-body"><span class="lovx-row-title">Hva skjer med jobben din når bedriften blir solgt?</span><span class="lovx-row-desc">Når bedriften du jobber i selges til en ny eier, eller kommunen setter tjenesten din ut på…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-17"><h2 class="lovx-chapter-h">Kapittel 17</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/17-3/"><span class="lovx-row-num">§ 17-3</span><span class="lovx-row-body"><span class="lovx-row-title">Slik krever du forhandlinger hvis du har fått sparken</span><span class="lovx-row-desc">Hvis du har fått en oppsigelse eller avskjed, gir loven deg rett til å kreve et formelt…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-18"><h2 class="lovx-chapter-h">Kapittel 18</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/18-1/"><span class="lovx-row-num">§ 18-1</span><span class="lovx-row-body"><span class="lovx-row-title">Arbeidstilsynet: Norsk arbeidslivs egne politi</span><span class="lovx-row-desc">Det er Arbeidstilsynet som har ansvaret for å sjekke at arbeidsgivere følger loven. De kan…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/18-2/"><span class="lovx-row-num">§ 18-2</span><span class="lovx-row-body"><span class="lovx-row-title">Arbeidstilsynets strenge taushetsplikt</span><span class="lovx-row-desc">Når du tipser Arbeidstilsynet om lovbrudd på jobben din, har de streng taushetsplikt. De…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/18-6/"><span class="lovx-row-num">§ 18-6</span><span class="lovx-row-body"><span class="lovx-row-title">Arbeidstilsynets makt til å gi pålegg og stenge driften</span><span class="lovx-row-desc">Hvis Arbeidstilsynet finner lovbrudd, vil de gi bedriften et formelt pålegg om å rydde opp…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/18-7/"><span class="lovx-row-num">§ 18-7</span><span class="lovx-row-body"><span class="lovx-row-title">Tvangsmulkt: Dagbøter når sjefen ignorerer loven</span><span class="lovx-row-desc">Hvis Arbeidstilsynet har gitt bedriften en tidsfrist for å fikse et ulovlig forhold, og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-19"><h2 class="lovx-chapter-h">Kapittel 19</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/19-1/"><span class="lovx-row-num">§ 19-1</span><span class="lovx-row-body"><span class="lovx-row-title">Straff og fengsel for arbeidsgivere som bryter loven</span><span class="lovx-row-desc">Kapittel 19 flytter saken fra advarsler og pålegg, over til politi og straff. Arbeidsgivere…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/19-2/"><span class="lovx-row-num">§ 19-2</span><span class="lovx-row-body"><span class="lovx-row-title">Kan du som ansatt straffes for å bryte HMS-reglene?</span><span class="lovx-row-desc">Ja, som vanlig ansatt kan du faktisk straffes av politiet hvis du bryter arbeidsmiljøloven.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/19-3/"><span class="lovx-row-num">§ 19-3</span><span class="lovx-row-body"><span class="lovx-row-title">Når hele bedriften får straff (foretaksstraff)</span><span class="lovx-row-desc">Når en alvorlig feil skjer på arbeidsplassen, er det ikke bare enkeltmennesker som kan få…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/19-4/"><span class="lovx-row-num">§ 19-4</span><span class="lovx-row-body"><span class="lovx-row-title">Forbudet mot å sabotere Arbeidstilsynet</span><span class="lovx-row-desc">Du har ikke lov til å hindre Arbeidstilsynet når de kommer for å sjekke bedriften din. Hvis…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/19-5/"><span class="lovx-row-num">§ 19-5</span><span class="lovx-row-body"><span class="lovx-row-title">Arbeidstilsynet har vern som offentlig tjenestemann</span><span class="lovx-row-desc">Enhver som jobber i Arbeidstilsynet regnes i lovens øyne som en "offentlig tjenestemann".…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/19-6/"><span class="lovx-row-num">§ 19-6</span><span class="lovx-row-body"><span class="lovx-row-title">Lovbrudd på jobben er en sak for politiet (offentlig påtale)</span><span class="lovx-row-desc">Hvis det skjer et straffbart brudd på arbeidsmiljøloven (for eksempel en alvorlig…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section><section class="lovx-chapter" id="kap-20"><h2 class="lovx-chapter-h">Kapittel 20</h2><div class="lovx-rows"><a class="lovx-row" href="../../lover/arbeidsmiljoloven/20-1/"><span class="lovx-row-num">§ 20-1</span><span class="lovx-row-body"><span class="lovx-row-title">Når begynte egentlig arbeidsmiljøloven å gjelde?</span><span class="lovx-row-desc">Den arbeidsmiljøloven vi bruker i dag (loven fra 2005) trådte formelt i kraft den 1. januar…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/arbeidsmiljoloven/20-2/"><span class="lovx-row-num">§ 20-2</span><span class="lovx-row-body"><span class="lovx-row-title">Overgangsbestemmelser (Hva skjedde med de gamle reglene?)</span><span class="lovx-row-desc">Når en gammel lov kastes og en ny en innføres, finnes det hundrevis av forskrifter…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section>
+      <p class="lovx-empty" id="lovxEmpty">Ingen paragrafer matcher søket.</p>
+    </div>
+  </div>
+</main>
+
+<div class="lovx-attest">
+  <p class="lovx-attest-inner">Juridisk informasjon, ikke rådgivning. Innholdet bygger på gjeldende norsk lov. Ved en konkret sak — kontakt advokat. <a href="../../om/">Mer om Rettsregel &rarr;</a></p>
+</div>
+
+<script>
+(function(){
+  var inp = document.getElementById('lovxSearch');
+  if(!inp) return;
+  var rows = [].slice.call(document.querySelectorAll('.lovx-row'));
+  var chapters = [].slice.call(document.querySelectorAll('.lovx-chapter'));
+  var empty = document.getElementById('lovxEmpty');
+  inp.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var visible = 0;
+    rows.forEach(function(r){
+      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.style.display = m ? '' : 'none';
+      if(m) visible++;
+    });
+    chapters.forEach(function(c){
+      var any = false;
+      var rs = c.querySelectorAll('.lovx-row');
+      for(var i=0;i<rs.length;i++){ if(rs[i].style.display !== 'none'){ any = true; break; } }
+      c.style.display = any ? '' : 'none';
+    });
+    if(empty) empty.style.display = (visible === 0 && q) ? 'block' : 'none';
+  });
+})();
+</script>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
