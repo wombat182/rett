@@ -2576,6 +2576,8 @@ def render_lover_index():
         "angrerettloven": ("Angrerettloven", "kjop-og-klage", "Angrerett ved netthandel og kjøp utenfor butikk."),
         "kjopsloven": ("Kjøpsloven", "kjop-og-klage", "Kjøp og salg — privat og bedrift."),
         "forbrukerkjopsloven": ("Forbrukerkjøpsloven", "kjop-og-klage", "Kjøp som forbruker — strengeste forbrukervern."),
+        # Arbeid
+        "arbeidsmiljoloven": ("Arbeidsmiljøloven", "arbeid", "Rettigheter på jobben — arbeidstid, oppsigelse, permisjon og varsling."),
         # Arv og familie
         "arveloven": ("Arveloven", "arv-og-familie", "Arv, testament og pliktdel."),
         "navneloven": ("Navneloven", "arv-og-famille", "Navnevalg og navneendring."),
@@ -3348,6 +3350,9 @@ def render_sporsmal_hub():
 def render_homepage():
     """Forside — premium, rolig, nyttig. Egen header med søk (kun forsiden)."""
     chat = chat_widget()
+    n_paragrafer = len(PARAGRAPHS)
+    n_lover = len(set(p["lov"] for p in PARAGRAPHS))
+    n_sporsmal = len(SPORSMAL)
 
     return f"""{shared_head(
         'Rettsregel — norske lover, forklart på vanlig norsk',
@@ -3616,9 +3621,9 @@ def render_homepage():
   </section>
 
   <section class="hp-stats" aria-label="Nøkkeltall">
-    <div class="hp-stat"><div class="hp-stat-num">56</div><div class="hp-stat-label">Spørsmål</div></div>
-    <div class="hp-stat"><div class="hp-stat-num">10</div><div class="hp-stat-label">Lover</div></div>
-    <div class="hp-stat"><div class="hp-stat-num">649</div><div class="hp-stat-label">Lovparagrafer</div></div>
+    <div class="hp-stat"><div class="hp-stat-num">{n_sporsmal}</div><div class="hp-stat-label">Spørsmål</div></div>
+    <div class="hp-stat"><div class="hp-stat-num">{n_lover}</div><div class="hp-stat-label">Lover</div></div>
+    <div class="hp-stat"><div class="hp-stat-num">{n_paragrafer}</div><div class="hp-stat-label">Lovparagrafer</div></div>
     <div class="hp-stat"><div class="hp-stat-num">91</div><div class="hp-stat-label">Verktøy/maler</div></div>
   </section>
 
