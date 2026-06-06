@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer med pensjon ved skilsmisse? — Rettsregel</title>
+<meta name="description" content="Opptjente pensjonsrettigheter holdes som hovedregel utenfor delingen ved skilsmisse. Men allerede utbetalt pensjon deles. Slik fungerer unntaket – og når du kan få kompensasjon.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-med-pensjon-ved-skilsmisse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer med pensjon ved skilsmisse?">
+<meta property="og:description" content="Opptjente pensjonsrettigheter holdes som hovedregel utenfor delingen ved skilsmisse. Men allerede utbetalt pensjon deles. Slik fungerer unntaket – og når du kan få kompensasjon.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-med-pensjon-ved-skilsmisse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer med pensjon ved skilsmisse?">
+<meta name="twitter:description" content="Opptjente pensjonsrettigheter holdes som hovedregel utenfor delingen ved skilsmisse. Men allerede utbetalt pensjon deles. Slik fungerer unntaket – og når du kan få kompensasjon.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva skjer med pensjon ved skilsmisse?</h1>
+      <p class="article-description">Opptjente pensjonsrettigheter holdes som hovedregel utenfor delingen ved skilsmisse. Men allerede utbetalt pensjon deles. Slik fungerer unntaket – og når du kan få kompensasjon.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Opptjente pensjonsrettigheter holdes som hovedregel utenfor delingen ved skilsmisse – både offentlige og private pensjonsordninger (ekteskapsloven § 61 bokstav b). Hver beholder altså sin pensjon. Men pensjon som allerede er utbetalt, er felleseie og deles likt. Blir den ene urimelig dårlig stilt, kan vedkommende tilkjennes et beløp.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Pensjon er et viktig unntak fra hovedregelen om likedeling. Etter forloddsregelen kan en ektefelle holde rettigheter i offentlige trygdeordninger og offentlige eller private pensjonsordninger utenfor delingen (<a href="/lover/ekteskapsloven/61">§ 61 bokstav b</a>). I motsetning til skjevdeling, der bare verdien holdes utenfor, holdes her hele rettigheten ute – den regnes ikke med i delingsgrunnlaget i det hele tatt.</p>
+<h2>To viktige unntak fra unntaket</h2>
+<ul>
+<li><strong>Allerede utbetalt pensjon deles.</strong> Det er bare <em>opptjente, ikke utbetalte</em> rettigheter som holdes utenfor. Penger som alt er utbetalt og spart opp, er vanlig felleseie (<a href="/lover/ekteskapsloven/58">§ 58</a>).</li>
+<li><strong>Produkter med gjenkjøpsverdi deles.</strong> Har en pensjons- eller forsikringsavtale en gjenkjøpsverdi som kan realiseres uten å vente til pensjonsalder, regnes verdien som felleseie og inngår i delingen.</li>
+</ul>
+<h2>Når kan du få kompensasjon?</h2>
+<p>Blir den ene ektefellen urimelig dårlig stilt av at den andre holder pensjonsrettigheter utenfor, kan vedkommende tilkjennes et beløp fra den andre (<a href="/lover/ekteskapsloven/61">§ 61</a>). Terskelen er høy. Regelen ble laget for å beskytte særlig den som har lav pensjonsopptjening etter et langt ekteskap – typisk fordi vedkommende har vært hjemme med barn. I forarbeidene regnes et ekteskap som langvarig ved minst 15 år med felles barn, ellers minst 25 år. Det legges også vekt på pensjonsrettighetenes størrelse, partenes alder og muligheten til å bygge opp egen pensjon.</p>
+<h2>Du har rett til innsyn</h2>
+<p>Du har rett til å få vite hva den andre har opptjent i pensjon under ekteskapet (<a href="/lover/ekteskapsloven/39">§ 39</a>). En samlet oversikt over egen pensjon finner du på norskpensjon.no.</p>
+<h2>Praktisk eksempel</h2>
+<p>Grete var hjemme med barna i 18 år mens Tor jobbet fulltid og bygde opp en god tjenestepensjon. Ved skilsmissen beholder Tor sine opptjente pensjonsrettigheter – de holdes utenfor delingen. Men fordi ekteskapet var langt og Grete kommer urimelig dårlig ut pensjonsmessig, kan hun kreve å bli tilkjent et beløp fra Tor etter <a href="/lover/ekteskapsloven/61">§ 61</a>. Beløpet kan betales i avdrag.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li><strong>Skaff oversikt</strong> over begges pensjon – be om innsyn (<a href="/lover/ekteskapsloven/39">§ 39</a>) og sjekk norskpensjon.no.</li>
+<li><strong>Skill mellom opptjente rettigheter</strong> (holdes utenfor) og <strong>utbetalt eller realiserbar verdi</strong> (deles).</li>
+<li><strong>Vurder kompensasjonskrav</strong> hvis ekteskapet var langt og du kommer markant dårligere ut – men vit at terskelen er høy.</li>
+<li><strong>Tenk fremover:</strong> en ektepakt kan regulere pensjon, eller dere kan spare målrettet til den som får lavere opptjening.</li>
+</ol>
+<hr />
+<p><strong>Relaterte paragrafer</strong>
+- <a href="/lover/ekteskapsloven/61">Ekteskapsloven § 61 – forlodds uttak, pensjonsrettigheter</a>
+- <a href="/lover/ekteskapsloven/39">Ekteskapsloven § 39 – rett til innsyn</a>
+- <a href="/lover/ekteskapsloven/58">Ekteskapsloven § 58 – likedeling</a></p>
+<p><strong>Relaterte spørsmål</strong>
+- <a href="/sporsmal/hva-deles-ved-skilsmisse">Hva deles ved skilsmisse?</a>
+- <a href="/sporsmal/hva-skjer-med-sparepenger-ved-skilsmisse">Hva skjer med sparepenger ved skilsmisse?</a>
+- <a href="/sporsmal/kan-jeg-kreve-penger-for-arbeid-i-hjemmet">Kan jeg kreve penger for arbeid i hjemmet?</a></p>
+<p><em>Dette er generell informasjon, ikke individuell juridisk rådgivning.</em></p>
+<hr />
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/61/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 61</div>
+  <div class="related-card-title">Ting du eier som er for personlige til å deles</div>
+</a><a href="../../lover/ekteskapsloven/39/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 39</div>
+  <div class="related-card-title">Du har krav på å vite alt om ektefellens økonomi</div>
+</a><a href="../../lover/ekteskapsloven/58/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 58</div>
+  <div class="related-card-title">Slik regner dere ut hvem som får hva (Likedeling og gjeldsfradrag)</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

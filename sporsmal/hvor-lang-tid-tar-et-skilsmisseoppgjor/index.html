@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor lang tid tar et skilsmisseoppgjør? — Rettsregel</title>
+<meta name="description" content="Et privat skifte kan være ferdig på noen uker hvis dere er enige. Et offentlig skifte tar gjerne måneder eller år. Slik avhenger tiden av enighet, kompleksitet og konflikt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-lang-tid-tar-et-skilsmisseoppgjor/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor lang tid tar et skilsmisseoppgjør?">
+<meta property="og:description" content="Et privat skifte kan være ferdig på noen uker hvis dere er enige. Et offentlig skifte tar gjerne måneder eller år. Slik avhenger tiden av enighet, kompleksitet og konflikt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-lang-tid-tar-et-skilsmisseoppgjor/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor lang tid tar et skilsmisseoppgjør?">
+<meta name="twitter:description" content="Et privat skifte kan være ferdig på noen uker hvis dere er enige. Et offentlig skifte tar gjerne måneder eller år. Slik avhenger tiden av enighet, kompleksitet og konflikt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvor lang tid tar et skilsmisseoppgjør?</h1>
+      <p class="article-description">Et privat skifte kan være ferdig på noen uker hvis dere er enige. Et offentlig skifte tar gjerne måneder eller år. Slik avhenger tiden av enighet, kompleksitet og konflikt.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det varierer kraftig. Et privat skifte der dere er enige, kan være ferdig på noen uker. Et offentlig skifte med bobestyrer tar gjerne måneder, og ved hard konflikt eller komplisert økonomi kan det dra ut i år. Tiden styres først og fremst av hvor enige dere er.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>To tidslinjer du må skille mellom</h2>
+<ul>
+<li><strong>Selve skilsmissen (bevillingen):</strong> her gjelder fristene – ett års separasjon (<a href="/lover/ekteskapsloven/21">ekteskapsloven § 21</a>) eller to års samlivsbrudd (<a href="/lover/ekteskapsloven/22">§ 22</a>).</li>
+<li><strong>Det økonomiske oppgjøret (delingen):</strong> dette kan du kreve allerede ved separasjon (<a href="/lover/ekteskapsloven/57">§ 57</a>) – du trenger ikke vente på selve skilsmissen.</li>
+</ul>
+<p>Disse to går ofte parallelt, men de er ikke det samme.</p>
+<h2>Hva som styrer tiden</h2>
+<ul>
+<li><strong>Enighet:</strong> er dere enige om verdier og fordeling, går det fort.</li>
+<li><strong>Kompleksitet:</strong> bolig, næringsvirksomhet, skjevdeling og uklare eierforhold tar tid å nøste opp.</li>
+<li><strong>Konflikt:</strong> uenighet, taushet eller mistanke om skjulte verdier forlenger prosessen betydelig.</li>
+<li><strong>Skifteform:</strong> privat skifte er raskt; offentlig skifte med meklingsmøte, bobestyrer og booppgjør tar lengre tid.</li>
+</ul>
+<h2>Praktisk eksempel</h2>
+<p>Tone og Erik er enige om det meste og gjennomfører et privat skifte på tre uker. Naboparet deres, derimot, er dypt uenige om verdsettelse og skjevdeling, ender i offentlig skifte, og bruker halvannet år før booppgjøret er fastsatt. Samme type oppgjør, vidt forskjellig tidsbruk.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ul>
+<li><strong>Bli enige om mest mulig tidlig</strong> – hver uenighet koster tid.</li>
+<li><strong>Skaff dokumentasjon raskt</strong> (verdier, gjeld, skjevdeling), så slipper dere ventetid senere.</li>
+<li><strong>Velg privat skifte hvis dere klarer det</strong> – det er den klart raskeste veien.</li>
+</ul>
+<hr />
+<p><strong>Relaterte paragrafer</strong>
+- <a href="/lover/ekteskapsloven/57">Ekteskapsloven § 57 – når deling kan kreves</a>
+- <a href="/lover/ekteskapsloven/96">Ekteskapsloven § 96 – offentlig skifte</a></p>
+<p><strong>Relaterte spørsmål</strong>
+- <a href="/sporsmal/hva-er-privat-skifte-ved-skilsmisse">Hva er privat skifte ved skilsmisse?</a>
+- <a href="/sporsmal/hva-er-offentlig-skifte-ved-skilsmisse">Hva er offentlig skifte ved skilsmisse?</a>
+- <a href="/sporsmal/hvor-lenge-maa-man-vaere-separert-for-skilsmisse">Hvor lenge må man være separert før skilsmisse?</a></p>
+<p><em>Dette er generell informasjon, ikke individuell juridisk rådgivning.</em></p>
+<hr />
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/57/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 57</div>
+  <div class="related-card-title">Når kan du kreve at formuen deles?</div>
+</a><a href="../../lover/ekteskapsloven/96/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 96</div>
+  <div class="related-card-title">Slik tvinger du frem et offentlig skifte</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

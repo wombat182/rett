@@ -137,7 +137,12 @@ try:
 except ImportError:
     _SP_KJOPSLOVEN = []
 
-SPORSMAL = _SP_BASE + _SP_KJOPSLOVEN
+try:
+    from sporsmal_ekteskapsloven import SPORSMAL as _SP_EKTESKAPSLOVEN
+except ImportError:
+    _SP_EKTESKAPSLOVEN = []
+
+SPORSMAL = _SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN
 
 # ============================================================
 # SHARED CSS (same look as homepage)

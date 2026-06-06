@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan gave holdes utenfor skilsmisseoppgjøret? — Rettsregel</title>
+<meta name="description" content="Gaver fra andre enn ektefellen kan holdes utenfor skilsmisseoppgjøret ved skjevdeling. Gaver fra ektefellen følger egne regler. Slik skiller du dem.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-gave-holdes-utenfor-skilsmisseoppgjoret/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan gave holdes utenfor skilsmisseoppgjøret?">
+<meta property="og:description" content="Gaver fra andre enn ektefellen kan holdes utenfor skilsmisseoppgjøret ved skjevdeling. Gaver fra ektefellen følger egne regler. Slik skiller du dem.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-gave-holdes-utenfor-skilsmisseoppgjoret/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan gave holdes utenfor skilsmisseoppgjøret?">
+<meta name="twitter:description" content="Gaver fra andre enn ektefellen kan holdes utenfor skilsmisseoppgjøret ved skjevdeling. Gaver fra ektefellen følger egne regler. Slik skiller du dem.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Kan gave holdes utenfor skilsmisseoppgjøret?</h1>
+      <p class="article-description">Gaver fra andre enn ektefellen kan holdes utenfor skilsmisseoppgjøret ved skjevdeling. Gaver fra ektefellen følger egne regler. Slik skiller du dem.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja – men det avhenger av hvem gaven kom fra. Gaver fra andre enn ektefellen, som foreldre, slekt eller venner, kan du holde utenfor ved skjevdeling (ekteskapsloven § 59). Gaver fra ektefellen din gir derimot ikke skjevdelingsrett, og store gaver mellom ektefeller må gis ved ektepakt for i det hele tatt å være gyldige (§ 50).</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Skjevdelingsregelen nevner uttrykkelig «gave fra andre enn ektefellen» (<a href="/lover/ekteskapsloven/59">§ 59</a>). Fikk du en gave fra foreldrene dine, en tante eller en venn, kan verdien holdes utenfor delingen – på samme vilkår som for arv: klar dokumentasjon og at verdien er i behold.</p>
+<h2>Gaver fra ektefellen er noe helt annet</h2>
+<p>Her ligger den store fellen. En gave <em>fra</em> ektefellen din gir deg ikke skjevdelingsrett etter § 59 – kravet gjelder bare gaver fra <em>andre</em>.</p>
+<p>I tillegg har loven en streng formregel: gaver mellom ektefeller må gis ved ektepakt for å være gyldige (<a href="/lover/ekteskapsloven/50">§ 50</a>). Vanlige gaver som ikke står i misforhold til økonomien – bursdags- og julegaver og lignende – er unntatt. Men gir den ene den andre en bil eller en større pengesum uten ektepakt, kan gaven være ugyldig.</p>
+<h2>Giveren kan bestemme at gaven skal være særeie</h2>
+<p>På samme måte som ved arv kan den som gir deg en gave, bestemme at den skal være ditt særeie (<a href="/lover/ekteskapsloven/48">§ 48</a>). Da er gaven helt unntatt fra deling, og du slipper å føre et skjevdelingskrav. For større gaver fra foreldre er dette en vanlig og trygg løsning.</p>
+<h2>Praktisk eksempel</h2>
+<p>Emmas foreldre gir henne 600 000 kroner i 2019 som bidrag til boligkjøp, og skriver i gavebrevet at beløpet skal være Emmas særeie. Da hun og Daniel skiller seg i 2026, holdes hele beløpet utenfor oppgjøret – det er Emmas særeie, og Daniel har ikke krav på noen del.</p>
+<p>Hadde foreldrene ikke skrevet noe om særeie, ville Emma fortsatt kunne kreve skjevdeling for beløpet, så lenge hun kunne dokumentere gaven og spore den inn i boligen.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ul>
+<li><strong>Ta vare på gavebrevet.</strong> Et skriftlig gavebrev med dato og beløp er den beste dokumentasjonen.</li>
+<li><strong>Skal en større gave være sikret, be giveren om en særeieklausul</strong> i gavebrevet (<a href="/lover/ekteskapsloven/48">§ 48</a>).</li>
+<li><strong>Får du noe stort fra ektefellen din,</strong> vær klar over ektepaktkravet (<a href="/lover/ekteskapsloven/50">§ 50</a>) – uten ektepakt kan gaven være ugyldig.</li>
+<li><strong>Hold gavemidler atskilt fra felles økonomi</strong> for å bevare et eventuelt skjevdelingskrav.</li>
+</ul>
+<h2>Vanlige misforståelser</h2>
+<blockquote>
+<p>«Alt jeg har fått i gave er mitt og deles ikke.»</p>
+</blockquote>
+<p>Bare delvis riktig. Gaver fra andre enn ektefellen kan skjevdeles. Men gaver fra ektefellen gir ikke skjevdelingsrett – og kan til og med være ugyldige hvis de er store og ikke gitt ved ektepakt.</p>
+<hr />
+<p><strong>Relaterte paragrafer</strong>
+- <a href="/lover/ekteskapsloven/59">Ekteskapsloven § 59 – skjevdeling</a>
+- <a href="/lover/ekteskapsloven/50">Ekteskapsloven § 50 – gaver mellom ektefeller</a>
+- <a href="/lover/ekteskapsloven/48">Ekteskapsloven § 48 – giver kan bestemme særeie</a></p>
+<p><strong>Relaterte spørsmål</strong>
+- <a href="/sporsmal/hva-er-skjevdeling">Hva er skjevdeling?</a>
+- <a href="/sporsmal/kan-arv-holdes-utenfor-skilsmisseoppgjoret">Kan arv holdes utenfor skilsmisseoppgjøret?</a>
+- <a href="/sporsmal/hva-er-saereie">Hva er særeie?</a></p>
+<p><em>Dette er generell informasjon, ikke individuell juridisk rådgivning.</em></p>
+<hr />
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/59/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 59</div>
+  <div class="related-card-title">Behold det du tok med inn i ekteskapet (Skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/50/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 50</div>
+  <div class="related-card-title">Store gaver mellom dere må sikres med ektepakt</div>
+</a><a href="../../lover/ekteskapsloven/48/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 48</div>
+  <div class="related-card-title">Foreldre kan kreve at arven din blir særeie</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

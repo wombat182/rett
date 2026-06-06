@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er offentlig skifte ved skilsmisse? — Rettsregel</title>
+<meta name="description" content="Offentlig skifte betyr at tingretten oppnevner en bobestyrer som gjennomfører delingen etter ekteskapslovens regler. Slik foregår det, og når det lønner seg.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-offentlig-skifte-ved-skilsmisse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er offentlig skifte ved skilsmisse?">
+<meta property="og:description" content="Offentlig skifte betyr at tingretten oppnevner en bobestyrer som gjennomfører delingen etter ekteskapslovens regler. Slik foregår det, og når det lønner seg.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-offentlig-skifte-ved-skilsmisse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er offentlig skifte ved skilsmisse?">
+<meta name="twitter:description" content="Offentlig skifte betyr at tingretten oppnevner en bobestyrer som gjennomfører delingen etter ekteskapslovens regler. Slik foregår det, og når det lønner seg.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva er offentlig skifte ved skilsmisse?</h1>
+      <p class="article-description">Offentlig skifte betyr at tingretten oppnevner en bobestyrer som gjennomfører delingen etter ekteskapslovens regler. Slik foregår det, og når det lønner seg.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Offentlig skifte betyr at tingretten tar over oppgjøret og oppnevner en bobestyrer som gjennomfører delingen etter ekteskapslovens regler (ekteskapsloven § 96). Det brukes når dere ikke klarer å bli enige selv. Prosessen er tryggere ved konflikt, men også dyrere og mer tidkrevende enn privat skifte.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Reglene om offentlig skifte for ektefeller ligger i ekteskapsloven kapittel 18 (<a href="/lover/ekteskapsloven/96">§ 96</a> flg.). Skifteloven (1930), som tidligere regulerte dette, ble opphevet fra 1. januar 2021 – så eldre henvisninger til skifteloven gjelder ikke lenger.</p>
+<h2>Slik foregår det</h2>
+<ol>
+<li><strong>Begjæring til tingretten.</strong> En av dere (ved felleseie) ber retten om offentlig skifte.</li>
+<li><strong>Meklingsmøte.</strong> Tingretten innkaller dere til et møte. Mange blir faktisk enige her, og da kan skiftet løses uten full bobehandling.</li>
+<li><strong>Åpning og bobestyrer.</strong> Blir dere ikke enige, åpner retten offentlig skifte og oppnevner en bobestyrer – som regel en advokat.</li>
+<li><strong>Booppgjør.</strong> Bobestyreren skaffer oversikt over eiendeler og gjeld, fastsetter verdier (ved behov skiftetakst), og lager et utkast til booppgjør som viser fordelingen.</li>
+<li><strong>Uttalelse og avslutning.</strong> Dere får minst to uker til å påpeke feil i utkastet, før booppgjøret fastsettes.</li>
+</ol>
+<p>Særeie og midler som skal holdes utenfor deling, holdes utenfor boet. Også under offentlig skifte kan dere avtale en annen fordeling enn lovens, hvis dere blir enige (<a href="/lover/ekteskapsloven/65">§ 65</a>).</p>
+<h2>Når lønner det seg?</h2>
+<p>Offentlig skifte er fornuftig når konflikten er fastlåst, når den ene saboterer eller skjuler verdier, eller når økonomien er komplisert. Da overlates fordelingen til en nøytral tredjepart. Ulempen er kostnad og tid – derfor anbefales privat skifte når det er mulig.</p>
+<h2>Praktisk eksempel</h2>
+<p>Etter et år med fastlåst konflikt begjærer Mari offentlig skifte. På meklingsmøtet i tingretten kommer de ikke videre, så retten åpner skiftet og oppnevner en advokat som bobestyrer. Bobestyreren innhenter dokumentasjon, får boligen taksert, og setter opp et booppgjør. Mari og eksmannen får to uker til å kommentere før fordelingen fastsettes.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li><strong>Prøv privat skifte eller mekling</strong> først – offentlig skifte bør være siste utvei.</li>
+<li><strong>Send begjæring til tingretten</strong> der dere hadde felles bopel hvis dere står fast.</li>
+<li><strong>Forbered dokumentasjon</strong> på eiendeler, gjeld og skjevdelingskrav, så bobestyreren har et godt grunnlag.</li>
+</ol>
+<hr />
+<p><strong>Relaterte paragrafer</strong>
+- <a href="/lover/ekteskapsloven/96">Ekteskapsloven § 96 – offentlig skifte</a>
+- <a href="/lover/ekteskapsloven/65">Ekteskapsloven § 65 – skifteavtale</a></p>
+<p><strong>Relaterte spørsmål</strong>
+- <a href="/sporsmal/kan-jeg-kreve-offentlig-skifte">Kan jeg kreve offentlig skifte?</a>
+- <a href="/sporsmal/hva-koster-offentlig-skifte">Hva koster offentlig skifte?</a>
+- <a href="/sporsmal/hva-er-privat-skifte-ved-skilsmisse">Hva er privat skifte ved skilsmisse?</a></p>
+<p><em>Dette er generell informasjon, ikke individuell juridisk rådgivning.</em></p>
+<hr />
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/96/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 96</div>
+  <div class="related-card-title">Slik tvinger du frem et offentlig skifte</div>
+</a><a href="../../lover/ekteskapsloven/65/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 65</div>
+  <div class="related-card-title">Kan vi gjøre akkurat det vi vil med oppgjøret (Avtalefrihet)?</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

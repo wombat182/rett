@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er særeie? — Rettsregel</title>
+<meta name="description" content="Særeie er verdier som holdes helt utenfor delingen ved skilsmisse – eieren beholder alt. Slik oppstår særeie, og slik skiller det seg fra felleseie.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-saereie/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er særeie?">
+<meta property="og:description" content="Særeie er verdier som holdes helt utenfor delingen ved skilsmisse – eieren beholder alt. Slik oppstår særeie, og slik skiller det seg fra felleseie.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-saereie/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er særeie?">
+<meta name="twitter:description" content="Særeie er verdier som holdes helt utenfor delingen ved skilsmisse – eieren beholder alt. Slik oppstår særeie, og slik skiller det seg fra felleseie.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva er særeie?</h1>
+      <p class="article-description">Særeie er verdier som holdes helt utenfor delingen ved skilsmisse – eieren beholder alt. Slik oppstår særeie, og slik skiller det seg fra felleseie.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Særeie er verdier som er holdt helt utenfor delingen ved skilsmisse – den som eier særeiet beholder det fullt ut, uten å dele med ektefellen. Særeie oppstår ikke automatisk; det må enten avtales mellom ektefellene i en ektepakt, eller være bestemt av den som har gitt arven eller gaven. Motsatsen er felleseie, som deles likt.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Særeie er den ene av de to formuesordningene loven åpner for (<a href="/lover/ekteskapsloven/42">ekteskapsloven § 42</a>). Har dere særeie, skal disse verdiene ikke inngå i delingen – de tildeles eieren «som om dere aldri hadde vært gift».</p>
+<p>Loven lar dere avtale at det dere eier eller senere erverver, helt eller delvis skal være unntatt fra deling (<a href="/lover/ekteskapsloven/42">§ 42</a>). En slik avtale må gjøres i <strong>ektepakt</strong> for å være gyldig (<a href="/lover/ekteskapsloven/54">§ 54</a>).</p>
+<h2>Hvordan oppstår særeie?</h2>
+<p>Det finnes to veier til særeie:</p>
+<ol>
+<li><strong>Ektepakt mellom ektefellene.</strong> Dere avtaler selv at noe – eller alt – skal være særeie. Dette må følge ektepaktens strenge formkrav (<a href="/lover/ekteskapsloven/54">§ 54</a>).</li>
+<li><strong>Bestemmelse fra giver eller arvelater.</strong> Den som gir deg en gave eller testamenterer arv til deg, kan bestemme at verdien skal være ditt særeie (<a href="/lover/ekteskapsloven/48">§ 48</a>). Da trenger dere ingen ektepakt – betingelsen følger gaven eller testamentet.</li>
+</ol>
+<h2>Særeie kan være helt eller delvis – og tidsbegrenset</h2>
+<p>Særeie trenger ikke være «alt eller ingenting». Dere kan gjøre én bestemt eiendel til særeie (for eksempel en hytte eller en bedrift) og la resten være felleseie. Dere kan også avtale at noe er særeie ved skilsmisse, men felleseie hvis den ene dør – eller at særeiet faller bort etter et visst antall år.</p>
+<h2>Praktisk eksempel</h2>
+<p>Marte driver et aksjeselskap hun bygde opp før hun møtte Lars. Da de gifter seg i 2020, skriver de ektepakt der aksjene i selskapet gjøres til Martes særeie. Resten – bolig, bil, sparepenger – forblir felleseie.</p>
+<p>Da de skiller seg i 2026, holdes hele selskapet utenfor oppgjøret. Lars har ikke krav på noen del av verdien, fordi aksjene er Martes særeie. Boligen og sparepengene deles derimot likt som felleseie.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ul>
+<li><strong>Vil du opprette særeie?</strong> Det krever en gyldig ektepakt med to vitner (<a href="/lover/ekteskapsloven/54">§ 54</a>). For å få vern mot kreditorer og ved salg bør ektepakten tinglyses i Ektepaktregisteret hos Brønnøysundregistrene (<a href="/lover/ekteskapsloven/55">§ 55</a>).</li>
+<li><strong>Fikk du en gave eller arv som skal være særeie?</strong> Sørg for at betingelsen står skriftlig i gavebrevet eller testamentet, og ta vare på dokumentet.</li>
+<li><strong>Usikker på om du trenger særeie eller om skjevdeling holder?</strong> Særeie er en sterkere og sikrere ordning enn skjevdeling, men krever ektepakt. <a href="/sporsmal/hva-er-skjevdeling">Skjevdeling</a> kan gi liknende resultat uten avtale, men er mer usikkert og må dokumenteres.</li>
+</ul>
+<h2>Vanlige misforståelser</h2>
+<blockquote>
+<p>«Det jeg eide fra før er automatisk særeie.»</p>
+</blockquote>
+<p>Nei. Det du eide fra før er felleseie med mulighet for skjevdeling – ikke særeie. Særeie krever en aktiv handling: ektepakt eller en bestemmelse fra giver/arvelater.</p>
+<hr />
+<p><strong>Relaterte paragrafer</strong>
+- <a href="/lover/ekteskapsloven/42">Ekteskapsloven § 42 – avtale om særeie</a>
+- <a href="/lover/ekteskapsloven/43">Ekteskapsloven § 43 – tidsbegrenset særeie</a>
+- <a href="/lover/ekteskapsloven/44">Ekteskapsloven § 44 – særeie som blir felleseie ved død</a>
+- <a href="/lover/ekteskapsloven/54">Ekteskapsloven § 54 – ektepakt og formkrav</a></p>
+<p><strong>Relaterte spørsmål</strong>
+- <a href="/sporsmal/hva-er-felleseie">Hva er felleseie?</a>
+- <a href="/sporsmal/hva-er-skjevdeling">Hva er skjevdeling?</a>
+- <a href="/sporsmal/maa-ektepakt-tinglyses">Må ektepakt tinglyses?</a></p>
+<p><em>Dette er generell informasjon, ikke individuell juridisk rådgivning.</em></p>
+<hr />
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/42/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 42</div>
+  <div class="related-card-title">Slik oppretter dere særeie (Ektepakt)</div>
+</a><a href="../../lover/ekteskapsloven/43/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 43</div>
+  <div class="related-card-title">Avtale om å sitte i uskiftet bo med særeie</div>
+</a><a href="../../lover/ekteskapsloven/44/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 44</div>
+  <div class="related-card-title">Avtale om å dele alt likt (gi avkall på skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/54/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 54</div>
+  <div class="related-card-title">Formkravene: Slik må en ektepakt se ut for å være gyldig</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
