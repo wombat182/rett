@@ -99,7 +99,12 @@ try:
 except ImportError:
     _P_UHL = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO + _P_INKASSO + _P_PASIENTSKADE + _P_YRKESSKADE + _P_OREIGNING + _P_FORELDELSE + _P_UHL
+try:
+    from paragraphs_barnelova import PARAGRAPHS as _P_BARNELOVA
+except ImportError:
+    _P_BARNELOVA = []
+
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO + _P_INKASSO + _P_PASIENTSKADE + _P_YRKESSKADE + _P_OREIGNING + _P_FORELDELSE + _P_UHL + _P_BARNELOVA
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -2579,6 +2584,7 @@ def render_lover_index():
         # Arbeid
         "arbeidsmiljoloven": ("Arbeidsmiljøloven", "arbeid", "Rettigheter på jobben — arbeidstid, oppsigelse, permisjon og varsling."),
         # Arv og familie
+        "barnelova": ("Barnelova", "arv-og-familie", "Foreldreansvar, fast bosted, samvær og farskap."),
         "arveloven": ("Arveloven", "arv-og-familie", "Arv, testament og pliktdel."),
         "navneloven": ("Navneloven", "arv-og-famille", "Navnevalg og navneendring."),
         "ekteskapsloven": ("Ekteskapsloven", "arv-og-familie", "Vilkår for ekteskap, vigsling og ugyldighet."),
