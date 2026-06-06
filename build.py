@@ -128,9 +128,16 @@ PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
-    from sporsmal_data import SPORSMAL
+    from sporsmal_data import SPORSMAL as _SP_BASE
 except ImportError:
-    SPORSMAL = []
+    _SP_BASE = []
+
+try:
+    from sporsmal_kjopsloven import SPORSMAL as _SP_KJOPSLOVEN
+except ImportError:
+    _SP_KJOPSLOVEN = []
+
+SPORSMAL = _SP_BASE + _SP_KJOPSLOVEN
 
 # ============================================================
 # SHARED CSS (same look as homepage)
@@ -3125,9 +3132,11 @@ def render_sporsmal_page(s):
     description = s.get("description", "")
     kategori = s.get("kategori", "")
     kat_label = KAT_LABEL.get(kategori, kategori.capitalize())
-    content_raw = s.get("content", "")
+    content_raw = s.get("body_md") or s.get("content", "")
     kort_svar = s.get("kort_svar", "")
-    related = s.get("related", [])
+    related = s.get("related_paragrafer") or s.get("related", [])
+    related_sp = s.get("related_sporsmal", [])
+    avail_paras = {(p["lov"], p["number"]) for p in PARAGRAPHS}
 
     body_html = md.markdown(content_raw, extensions=["tables"]) if content_raw else ""
 
@@ -3137,9 +3146,9 @@ def render_sporsmal_page(s):
         related_cards = []
         for r in related:
             lov = r.get("lov", "")
-            paragraf = r.get("paragraf", "")
-            tittel = r.get("tittel", "")
-            available = r.get("available", False)
+            paragraf = r.get("paragraf") or r.get("nummer", "")
+            tittel = r.get("tittel") or r.get("beskrivelse", "")
+            available = r.get("available", (lov, paragraf) in avail_paras)
             lov_display = LOV_DISPLAY.get(lov, lov)
             unavail_class = "" if available else " unavailable"
             href = f"../../lover/{lov}/{paragraf}/"
@@ -3157,6 +3166,20 @@ def render_sporsmal_page(s):
         kort_svar_html = f"""<div class="kort-svar">
   <div class="kort-svar-label">Kort svar</div>
   <p>{kort_svar}</p>
+</div>"""
+
+    related_sp_html = ""
+    if related_sp:
+        sp_cards = []
+        for r in related_sp:
+            rslug = r.get("slug", "")
+            rtitle = r.get("title", "")
+            sp_cards.append(f"""<a href="../../sporsmal/{rslug}/" class="related-card">
+  <div class="related-card-title">{rtitle}</div>
+</a>""")
+        related_sp_html = f"""<div class="related-section">
+  <div class="related-label">Relaterte spørsmål</div>
+  <div class="related-cards">{"".join(sp_cards)}</div>
 </div>"""
 
     return f"""{shared_head(
@@ -3189,6 +3212,7 @@ def render_sporsmal_page(s):
     </div>
   </article>
   {related_html}
+  {related_sp_html}
 </div>
 </main>
 <div class="innhold-attest">
