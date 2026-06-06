@@ -385,6 +385,21 @@ main.page { max-width: 1100px; margin: 0 auto; padding: 0 32px; min-height: calc
   text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 24px;
 }
 .related-cards { display: grid; gap: 12px; }
+.om-takk {
+  margin: 2.6rem 0 0.5rem; padding: 22px 26px;
+  background: var(--bg-card); border: 1px solid var(--accent-soft);
+  border-left: 4px solid var(--accent); border-radius: 12px;
+}
+.om-takk h2 {
+  font-family: var(--serif); font-weight: 500; font-size: 22px;
+  color: var(--ink); margin: 0 0 8px;
+}
+.om-takk p { color: var(--ink-soft); margin: 0 0 12px; line-height: 1.55; }
+.om-takk a {
+  display: inline-block; font-weight: 600; color: var(--accent);
+  text-decoration: none; transition: color 0.2s;
+}
+.om-takk a:hover { color: var(--accent-deep); text-decoration: underline; }
 .related-card {
   background: white; border: 1px solid var(--line); border-radius: 12px;
   padding: 20px 24px; text-decoration: none; color: inherit; display: block;
@@ -3228,7 +3243,7 @@ def render_sporsmal_page(s):
     <div class="om-takk">
       <h2>Har du en sak du lurer på?</h2>
       <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
-      <a href="../../#skjema">Send inn saken din →</a>
+      <a href="/kontakt/">Send inn saken din →</a>
     </div>
   </article>
   {related_html}
