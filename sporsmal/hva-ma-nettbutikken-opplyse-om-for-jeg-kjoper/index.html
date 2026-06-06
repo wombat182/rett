@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva må nettbutikken opplyse om før jeg kjøper? — Rettsregel</title>
+<meta name="description" content="Nettbutikken skal før kjøpet gi klare og forståelige opplysninger om blant annet varen eller tjenesten, samlet pris, tilleggskostnader, levering,…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-ma-nettbutikken-opplyse-om-for-jeg-kjoper/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva må nettbutikken opplyse om før jeg kjøper?">
+<meta property="og:description" content="Nettbutikken skal før kjøpet gi klare og forståelige opplysninger om blant annet varen eller tjenesten, samlet pris, tilleggskostnader, levering,…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-ma-nettbutikken-opplyse-om-for-jeg-kjoper/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva må nettbutikken opplyse om før jeg kjøper?">
+<meta name="twitter:description" content="Nettbutikken skal før kjøpet gi klare og forståelige opplysninger om blant annet varen eller tjenesten, samlet pris, tilleggskostnader, levering,…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva må nettbutikken opplyse om før jeg kjøper?</h1>
+      <p class="article-description">Nettbutikken skal før kjøpet gi klare og forståelige opplysninger om blant annet varen eller tjenesten, samlet pris, tilleggskostnader, levering,…</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nettbutikken skal før kjøpet gi klare og forståelige opplysninger om blant annet varen eller tjenesten, samlet pris, tilleggskostnader, levering, betaling, angrerett, returkostnader, bindingstid og klageordninger. Hvis opplysninger mangler, kan det få betydning for hva du må betale, angrefristen og om du er bundet.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 8 gir en omfattende liste over opplysninger den næringsdrivende skal gi før avtaleinngåelse ved fjernsalg og salg utenom faste forretningslokaler. Opplysningene skal gis på en klar og forståelig måte.</p>
+<p>For netthandel suppleres dette av § 14 om fjernsalgsavtaler, § 16 om elektronisk bestilling og § 18 om bekreftelse på inngått avtale.</p>
+<p>Den næringsdrivende har bevisbyrden for at opplysningsplikten i blant annet §§ 8 til 16 og § 18 er oppfylt, jf. § 7.</p>
+<h2>Hvilke opplysninger er viktigst for deg som kjøper?</h2>
+<p>Nettbutikken skal opplyse om varens eller tjenestens viktigste egenskaper. Den skal også opplyse om identiteten sin, som foretaksnavn, geografisk adresse, telefonnummer, e-postadresse og eventuelle kommunikasjonsmidler som lar deg lagre skriftlig korrespondanse.</p>
+<p>Du skal få den samlede prisen med avgifter. Hvis prisen ikke kan beregnes på forhånd, skal metoden for beregning forklares. Nettbutikken skal også opplyse om tilleggskostnader til frakt, levering, porto eller annet, eller at slike kostnader kan forekomme hvis de ikke kan forhåndsberegnes.</p>
+<p>Ved abonnementer og avtaler uten tidsbegrensning skal opplysningene om pris omfatte kostnadene per avregningsperiode og, ved betaling med fast beløp, de samlede månedlige kostnadene.</p>
+<h2>Hva må nettbutikken si om angrerett?</h2>
+<p>Etter § 8 første ledd bokstav h skal nettbutikken opplyse om at det foreligger angrerett, vilkårene, tidsfristene og fremgangsmåten for å bruke angreretten. Den skal også gi deg et standardisert angreskjema.</p>
+<p>Etter bokstav i skal den opplyse om at du må bære returkostnadene hvis angreretten brukes. Hvis varen normalt ikke kan returneres med post, skal kostnadene ved retur opplyses.</p>
+<p>Hvis avtalen omfattes av unntakene fra angreretten i § 22, skal nettbutikken opplyse om dette etter bokstav k. Den skal også opplyse om når angreretten eventuelt kan tapes.</p>
+<h2>Hva skjer hvis kostnader ikke er opplyst?</h2>
+<p>Etter § 9 skal du ikke bære tilleggskostnader eller andre kostnader som nevnt i § 8 første ledd bokstav e og i hvis den næringsdrivende ikke har opplyst om dem.</p>
+<p>Dette betyr blant annet at selgeren kan få problem med å kreve returkostnader hvis du ikke fikk opplysning om at du skulle betale dem.</p>
+<p>Manglende informasjon om angreretten kan også forlenge angrefristen etter § 21. Hvis du ikke fikk opplysninger etter § 8 første ledd bokstav h, utløper fristen først 12 måneder etter den opprinnelige fristen. Hvis opplysningene gis senere innen 12 måneder, får du 14 dager fra du mottar dem.</p>
+<h2>Hva må vises rett før du trykker bestill?</h2>
+<p>Når bestillingen skjer elektronisk og du forplikter deg til å betale, krever § 16 at nettbutikken tydelig og fremhevet gjør deg oppmerksom på varens eller tjenestens viktigste egenskaper, samlet pris og relevant varighet eller bindingstid umiddelbart før du bestiller.</p>
+<p>Nettbutikken må også sørge for at du uttrykkelig erkjenner betalingsplikten. Hvis bestillingen skjer med en knapp, skal knappen være merket med «bestilling med forpliktelse til å betale» eller tilsvarende. Hvis dette ikke overholdes, blir du ikke bundet.</p>
+<h2>Praktisk eksempel</h2>
+<p>Mina bestiller et abonnement på en treningsapp 1. januar. På bestillingssiden står det stort «Start gratis», men det står ikke tydelig at abonnementet koster 299 kr per måned etter 7 dager. Knappen sier bare «Fortsett». Hun får heller ikke informasjon om angrerett eller angreskjema.</p>
+<p>Her kan flere regler være aktuelle. Hvis Mina ikke tydelig erkjente betalingsplikten, kan hun vise til § 16 og si at hun ikke er bundet. Hvis hun ikke fikk angrerettsinformasjon, kan angrefristen også være forlenget etter § 21.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Ta skjermbilder før og etter kjøpet hvis noe virker uklart. Lagre ordrebekreftelse, vilkår, kvittering og e-poster.</p>
+<p>Hvis nettbutikken krever kostnader du ikke fikk opplyst om, vis til § 9. Hvis problemet gjelder manglende angrerettsinformasjon, vis til §§ 8 og 21. Hvis problemet gjelder uklar betalingsknapp, vis til § 16.</p>
+<p>Klag skriftlig til nettbutikken først. Hvis dere ikke kommer videre, kan du kontakte Forbrukerrådet for veiledning og eventuell mekling.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Det er ikke nok at viktig informasjon finnes et sted i lange vilkår hvis loven krever at den gis klart, forståelig og på riktig tidspunkt.</p>
+<p>Det er også feil at nettbutikken alltid kan kreve gebyrer, returfrakt eller tillegg hvis det står i vilkårene. Enkelte kostnader må være opplyst på forhånd for at du skal måtte betale dem.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/7/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 7</div>
+  <div class="related-card-title">Det er selgeren som må bevise</div>
+</a><a href="../../lover/angrerettloven/8/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 8</div>
+  <div class="related-card-title">Hva selgeren må fortelle deg før du kjøper</div>
+</a><a href="../../lover/angrerettloven/9/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 9</div>
+  <div class="related-card-title">Skjulte kostnader trenger du ikke å betale</div>
+</a><a href="../../lover/angrerettloven/14/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 14</div>
+  <div class="related-card-title">Krav til avtaler ved netthandel</div>
+</a><a href="../../lover/angrerettloven/16/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 16</div>
+  <div class="related-card-title">"Bestilling med forpliktelse til å betale" — den viktigste knappen på nett</div>
+</a><a href="../../lover/angrerettloven/18/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 18</div>
+  <div class="related-card-title">Bekreftelsen du skal få etter kjøpet</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

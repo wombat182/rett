@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når starter angrefristen ved nettkjøp? — Rettsregel</title>
+<meta name="description" content="Angrefristen ved nettkjøp starter normalt dagen etter at du får varen i fysisk besittelse.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-starter-angrefristen-ved-nettkjop/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når starter angrefristen ved nettkjøp?">
+<meta property="og:description" content="Angrefristen ved nettkjøp starter normalt dagen etter at du får varen i fysisk besittelse.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-starter-angrefristen-ved-nettkjop/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når starter angrefristen ved nettkjøp?">
+<meta name="twitter:description" content="Angrefristen ved nettkjøp starter normalt dagen etter at du får varen i fysisk besittelse.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Når starter angrefristen ved nettkjøp?</h1>
+      <p class="article-description">Angrefristen ved nettkjøp starter normalt dagen etter at du får varen i fysisk besittelse.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Angrefristen ved nettkjøp starter normalt dagen etter at du får varen i fysisk besittelse. Kjøper du en tjeneste, starter fristen dagen etter at avtalen ble inngått. Ved flere leveranser kan fristen starte først når du får siste vare, siste del eller første vare i en regelmessig levering.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 21 regulerer når angrefristen utløper. Hovedregelen er 14 dager fra den dagen avtalen om tjeneste ble inngått, eller fra den dagen du får varen i fysisk besittelse.</p>
+<p>Samtidig må § 6 brukes for å regne fristen riktig. Når en frist i dager skal beregnes fra en hendelse, skal dagen hendelsen skjer ikke telle med. Hvis du får varen på mandag, er tirsdag første dag i fristen.</p>
+<p>Alle kalenderdager teller. Lørdager og søndager teller altså med. Men hvis siste dag i fristen faller på en lørdag, helligdag eller høytidsdag, flyttes fristen til nærmeste virkedag.</p>
+<h2>Hva betyr «fysisk besittelse»?</h2>
+<p>For varer starter fristen når du, eller en annen person du har utpekt, faktisk får varen. Hvis varen leveres til deg hjemme, starter fristen fra leveringsdagen. Hvis du henter varen på et hentested, er det naturlig å regne fra dagen du henter den.</p>
+<p>Fraktføreren regnes ikke som en slik tredjeperson. Det betyr at fristen ikke starter bare fordi pakken er overlevert til transportøren.</p>
+<h2>Hva hvis varene kommer i flere pakker?</h2>
+<p>Angrerettloven § 21 har egne regler for flere leveranser.</p>
+<p>Hvis du bestiller flere varer samlet, og de leveres i flere forsendelser, starter fristen når du får den siste varen. Hvis en vare består av flere partier eller deler, starter fristen når du får det siste partiet eller den siste delen.</p>
+<p>Ved avtaler om regelmessig levering av varer starter fristen når du får den første varen. Et eksempel kan være en abonnementsordning der samme type vare leveres fast.</p>
+<h2>Hva med tjenester?</h2>
+<p>For tjenester starter angrefristen den dagen avtalen ble inngått. Fristberegningen i § 6 gjør at avtaledagen ikke teller med. Du får altså 14 kalenderdager fra dagen etter avtaleinngåelsen.</p>
+<p>Dette kan ha stor betydning hvis tjenesten starter raskt. Etter §§ 12 og 19 må den næringsdrivende kreve at du uttrykkelig ber om oppstart før angrefristen går ut, hvis avtalen innebærer en betalingsforpliktelse. Den næringsdrivende skal også be deg erkjenne at angreretten kan gå tapt når avtalen er fullt ut oppfylt.</p>
+<h2>Praktisk eksempel</h2>
+<p>Jon bestiller en kontorstol og en lampe fra samme nettbutikk 4. april. Lampen kommer 8. april, men kontorstolen kommer 12. april. Fordi varene ble bestilt samlet og levert i flere forsendelser, starter fristen først når Jon får den siste varen, altså 12. april.</p>
+<p>Dagen 12. april teller ikke med. Første fristdag er 13. april. Den ordinære 14-dagersfristen går da ut 26. april, med mindre siste dag faller på lørdag, helligdag eller høytidsdag.</p>
+<p>Hvis Jon i stedet hadde kjøpt et digitalt treningsprogram som tjeneste 4. april, ville fristen normalt startet fra avtaleinngåelsen, altså med 5. april som første fristdag.</p>
+<h2>Hva hvis fristen er beregnet feil av selgeren?</h2>
+<p>Selgeren kan ikke gi deg dårligere rettigheter enn loven. Angrerettloven er ufravikelig til ulempe for forbrukeren etter § 3.</p>
+<p>Hvis nettbutikken skriver at fristen startet da varen ble sendt, er det ikke riktig etter hovedregelen i § 21. For varer er utgangspunktet når du får varen i fysisk besittelse, ikke når selgeren sender den.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn leveringsdatoen i sporingen, hentemeldingen eller kvitteringen. Regn 14 dager fra dagen etter at du mottok varen. Hvis du fikk flere pakker fra samme samlede bestilling, finn datoen for siste vare eller siste del.</p>
+<p>Send angrerettmeldingen skriftlig før fristen går ut. Bruk gjerne e-post eller selgerens angrerettsløsning, men lagre dokumentasjon. Etter § 20 har du bevisbyrden for at meldingen er gitt.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/3/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 3</div>
+  <div class="related-card-title">Selgeren kan ikke ta fra deg rettighetene dine</div>
+</a><a href="../../lover/angrerettloven/6/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 6</div>
+  <div class="related-card-title">Slik regnes angrefristen</div>
+</a><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

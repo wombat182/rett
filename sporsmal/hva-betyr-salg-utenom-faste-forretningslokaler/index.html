@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr salg utenom faste forretningslokaler? — Rettsregel</title>
+<meta name="description" content="Salg utenom faste forretningslokaler betyr at avtalen inngås et annet sted enn der selgeren vanligvis driver salg, for eksempel hjemme hos deg, på stand,…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-salg-utenom-faste-forretningslokaler/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr salg utenom faste forretningslokaler?">
+<meta property="og:description" content="Salg utenom faste forretningslokaler betyr at avtalen inngås et annet sted enn der selgeren vanligvis driver salg, for eksempel hjemme hos deg, på stand,…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-salg-utenom-faste-forretningslokaler/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr salg utenom faste forretningslokaler?">
+<meta name="twitter:description" content="Salg utenom faste forretningslokaler betyr at avtalen inngås et annet sted enn der selgeren vanligvis driver salg, for eksempel hjemme hos deg, på stand,…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva betyr salg utenom faste forretningslokaler?</h1>
+      <p class="article-description">Salg utenom faste forretningslokaler betyr at avtalen inngås et annet sted enn der selgeren vanligvis driver salg, for eksempel hjemme hos deg, på stand,…</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Salg utenom faste forretningslokaler betyr at avtalen inngås et annet sted enn der selgeren vanligvis driver salg, for eksempel hjemme hos deg, på stand, på messe eller rett etter at selgeren har oppsøkt deg personlig. Slike avtaler gir normalt angrerett når selgeren er næringsdrivende og du er forbruker.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 5 bokstav c og d forklarer forskjellen mellom faste forretningslokaler og avtaler utenom faste forretningslokaler.</p>
+<p>Faste forretningslokaler er et sted for detaljsalg der den næringsdrivende utøver sin faste virksomhet. Det kan også være flyttbare forretningslokaler for detaljsalg der den næringsdrivende vanligvis utøver sin virksomhet.</p>
+<p>Avtale inngått utenom faste forretningslokaler er blant annet en avtale der du inngår avtale eller fremsetter tilbud i nærvær av den næringsdrivende på et annet sted enn selgerens faste forretningslokaler. Det kan være hjemme hos deg, på arbeidsplassen din, på gaten, på stand eller i en midlertidig salgssituasjon.</p>
+<p>Definisjonen omfatter også noen situasjoner der avtalen formelt inngås senere i selgerens lokaler eller gjennom fjernkommunikasjon, hvis det skjer umiddelbart etter en personlig og individuelt rettet henvendelse til deg i en situasjon utenom faste forretningslokaler.</p>
+<h2>Hvorfor har loven egne regler for dette?</h2>
+<p>Salg utenom faste forretningslokaler kan gjøre det vanskeligere for forbrukeren å tenke seg om. Du kan bli oppsøkt uventet, få lite tid til å sammenligne priser, eller føle sosialt press til å si ja.</p>
+<p>Derfor gir angrerettloven rettigheter i slike situasjoner. Etter § 20 har du rett til å gå fra avtalen ved å gi melding før angrefristen går ut. Etter § 21 er fristen normalt 14 dager.</p>
+<p>Selgeren må også gi deg omfattende opplysninger før avtalen inngås, jf. § 8. Ved avtaler utenom faste forretningslokaler skal opplysningene være en del av avtalen, og du skal få et eksemplar av undertegnet avtale eller bekreftelse, jf. § 11.</p>
+<h2>Eksempler på salg utenom faste forretningslokaler</h2>
+<p>Et klassisk eksempel er dørsalg. En selger banker på hjemme hos deg, presenterer et produkt og får deg til å signere der og da. Det er normalt salg utenom faste forretningslokaler.</p>
+<p>Et annet eksempel er salg på stand utenfor et kjøpesenter, hvis dette ikke er selgerens faste eller vanlige salgssted. Også avtaler inngått på messer, arrangementer eller midlertidige salgssteder kan etter omstendighetene være utenom faste forretningslokaler.</p>
+<p>Det kan også være salg utenom faste forretningslokaler hvis selgeren først stopper deg personlig på gaten, gir deg et individuelt tilbud, og avtalen deretter inngås umiddelbart via nettbrett, telefon eller i et lokale.</p>
+<h2>Hva er forskjellen fra vanlig butikkjøp?</h2>
+<p>Ved vanlig kjøp i fysisk butikk har du normalt ikke angrerett etter angrerettloven. Da kjøper du i selgerens faste forretningslokaler.</p>
+<p>Det betyr ikke at du er uten rettigheter. Du kan fortsatt ha reklamasjonsrett hvis varen har en mangel. Men angrerett er noe annet: det er retten til å gå fra avtalen uten å måtte vise at noe er feil.</p>
+<p>Hvis en butikk frivillig tilbyr åpent kjøp eller bytterett, er det butikkens egne vilkår. Det er ikke det samme som lovbestemt angrerett.</p>
+<h2>Gjelder loven alltid utenfor butikk?</h2>
+<p>Nei. Angrerettloven § 2 har unntak. Ett praktisk unntak står i § 2 bokstav g: Loven gjelder ikke for avtaler om salg av varer og tjenester utenom faste forretningslokaler når den samlede kontraktssummen, inkludert frakt og tilleggskostnader du skal betale, er 300 kr eller mindre.</p>
+<p>Loven gjelder heller ikke hvis du kjøper fra en privatperson. Etter § 1 må selgeren opptre i næringsvirksomhet.</p>
+<p>I tillegg har § 22 unntak fra selve angreretten, selv om loven ellers gjelder. For eksempel finnes det unntak for visse varer som raskt blir dårlige, enkelte forseglede hygienevarer og bestemte datofestede tjenester.</p>
+<h2>Praktisk eksempel</h2>
+<p>Lina blir stoppet av en selger på et kjøpesenter 10. juni. Selgeren står på en midlertidig stand og tilbyr et strømrelatert abonnement. Lina signerer avtalen på et nettbrett mens selgeren står ved siden av henne.</p>
+<p>Hvis standen ikke er selgerens faste forretningslokale, og selgeren opptrer næringsdrivende overfor Lina som forbruker, kan dette være salg utenom faste forretningslokaler. Lina har da normalt 14 dagers angrerett fra avtalen ble inngått, fordi det gjelder en tjeneste.</p>
+<p>Hun sender e-post 17. juni og skriver at hun bruker angreretten. Meldingen er sendt i tide.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Noter hvor og hvordan avtalen ble inngått. Var du i en vanlig butikk, eller ble du oppsøkt hjemme, på stand, på gaten eller på et arrangement?</p>
+<p>Finn avtalen eller ordrebekreftelsen. Sjekk om du fikk opplysninger om angrerett og angreskjema. Hvis du ikke fikk det, kan angrefristen være forlenget.</p>
+<p>Vil du angre, send en tydelig skriftlig melding til selgeren. Ikke vent på at selgeren sender riktig skjema hvis fristen nærmer seg. En vanlig e-post kan være nok hvis den tydelig sier at du bruker angreretten.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Mange tror at angrerett bare gjelder netthandel. Det stemmer ikke. Angrerettloven gjelder også mange avtaler inngått utenom faste forretningslokaler.</p>
+<p>Andre tror at en stand alltid er det samme som butikk. Det er ikke sikkert. Spørsmålet er om stedet er et fast eller vanlig forretningslokale for den næringsdrivende, og hvordan henvendelsen til deg skjedde.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/1/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 1</div>
+  <div class="related-card-title">Hvilke kjøp loven gjelder for</div>
+</a><a href="../../lover/angrerettloven/2/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 2</div>
+  <div class="related-card-title">Når loven likevel ikke gjelder</div>
+</a><a href="../../lover/angrerettloven/5/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 5</div>
+  <div class="related-card-title">Definisjoner av begrepene i loven</div>
+</a><a href="../../lover/angrerettloven/8/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 8</div>
+  <div class="related-card-title">Hva selgeren må fortelle deg før du kjøper</div>
+</a><a href="../../lover/angrerettloven/11/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 11</div>
+  <div class="related-card-title">Hva avtalen må inneholde ved hjemmesalg</div>
+</a><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a><a href="../../lover/angrerettloven/22/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 22</div>
+  <div class="related-card-title">Når du IKKE har angrerett</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må nettbutikken bekrefte at de har mottatt angringen min? — Rettsregel</title>
+<meta name="description" content="Nettbutikken må bekrefte mottak umiddelbart hvis den selv gir deg adgang til å angre elektronisk. Dette følger av angrerettloven § 20.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-nettbutikken-bekrefte-at-de-har-mottatt-angringen-min/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må nettbutikken bekrefte at de har mottatt angringen min?">
+<meta property="og:description" content="Nettbutikken må bekrefte mottak umiddelbart hvis den selv gir deg adgang til å angre elektronisk. Dette følger av angrerettloven § 20.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-nettbutikken-bekrefte-at-de-har-mottatt-angringen-min/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må nettbutikken bekrefte at de har mottatt angringen min?">
+<meta name="twitter:description" content="Nettbutikken må bekrefte mottak umiddelbart hvis den selv gir deg adgang til å angre elektronisk. Dette følger av angrerettloven § 20.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Må nettbutikken bekrefte at de har mottatt angringen min?</h1>
+      <p class="article-description">Nettbutikken må bekrefte mottak umiddelbart hvis den selv gir deg adgang til å angre elektronisk. Dette følger av angrerettloven § 20.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nettbutikken må bekrefte mottak umiddelbart hvis den selv gir deg adgang til å angre elektronisk. Dette følger av angrerettloven § 20. Har du sendt angremelding på annen måte, sier ikke § 20 generelt at selger alltid må bekrefte, men du bør uansett be om bekreftelse og sikre bevis.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 20 sier at forbrukeren kan bruke angreretten ved å gi melding til den næringsdrivende før angrefristen går ut. Dersom den næringsdrivende gir forbrukeren adgang til å gi melding elektronisk, skal den næringsdrivende umiddelbart bekrefte på et varig medium at meldingen er mottatt.</p>
+<p>Bestemmelsen er altså tydeligst når nettbutikken tilbyr en elektronisk angrerettløsning. Da skal bekreftelse komme umiddelbart og på varig medium.</p>
+<h2>Gjelder plikten ved vanlig e-post også?</h2>
+<p>Ordlyden i § 20 retter seg mot situasjonen der den næringsdrivende gir adgang til å gi melding elektronisk. En e-postadresse kan i praksis være en elektronisk måte å gi beskjed på, men den klare regelen om umiddelbar bekreftelse er særlig knyttet til at selgeren tilbyr en elektronisk meldingsadgang.</p>
+<p>Uansett bør du ikke basere deg på muntlige beskjeder eller udokumenterte meldinger. Hvis du sender e-post og ikke får svar, har du fortsatt sendt melding, men du bør sikre dokumentasjon på innhold og tidspunkt.</p>
+<h2>Hva er poenget med bekreftelsen?</h2>
+<p>Bekreftelsen gjør det lettere å bevise at du har angret innen fristen. Dette er viktig fordi § 20 sier at bevisbyrden for at melding er gitt, ligger på forbrukeren.</p>
+<p>En bekreftelse kan også gjøre den videre prosessen enklere, fordi selgeren ofte samtidig opplyser hvordan varen skal returneres.</p>
+<h2>Hva hvis nettbutikken ikke bekrefter?</h2>
+<p>Hvis du har brukt en elektronisk angrerettløsning og ikke får bekreftelse, bør du sende en ny melding på e-post. Skriv at du bruker angreretten, og at du ikke har mottatt bekreftelse på den elektroniske meldingen.</p>
+<p>Ta skjermbilder hvis du kan. Lagre også eventuelle feilmeldinger, kvitteringssider eller innsendingsbekreftelser.</p>
+<p>Manglende bekreftelse betyr ikke automatisk at angringen din er ugyldig. Det avgjørende er om du har gitt melding innen fristen og kan bevise det.</p>
+<h2>Praktisk eksempel</h2>
+<p>Nora kjøper en lampe på nett 2. september. Hun mottar lampen 5. september. Den 15. september bruker hun nettbutikkens returportal, velger «angrerett» og sender inn skjemaet. Nettsiden viser bare «takk», men hun får ingen e-post og kan ikke laste ned kvittering.</p>
+<p>Nora bør da sende en e-post samme dag:</p>
+<blockquote>
+<p>Jeg viser til ordre 9912. Jeg har i dag brukt angreretten via returportalen, men har ikke fått bekreftelse. Jeg bekrefter derfor skriftlig at jeg bruker angreretten.</p>
+</blockquote>
+<p>Da reduserer hun risikoen for bevisproblemer.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Se om du har fått e-post, SMS, melding i kundekonto eller annen bekreftelse som kan lagres. Hvis ikke, send en ny tydelig angremelding på e-post.</p>
+<p>Ikke vent til fristen har gått ut. Siden du har bevisbyrden, bør du sikre dokumentasjon med én gang.</p>
+<p>Hvis selgeren senere nekter for å ha mottatt meldingen, kan du vise til e-posten, skjermbilder og eventuelle tekniske bekreftelser.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Noen tror at angringen ikke gjelder før nettbutikken har svart. Det er ikke riktig. Etter § 20 er fristen overholdt når meldingen er sendt før fristen går ut.</p>
+<p>Andre tror at muntlig bekreftelse på telefon er nok bevis. Det kan være vanskelig å dokumentere senere. Skriftlig dokumentasjon er tryggere.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

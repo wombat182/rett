@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg angrerett hvis prisen var personlig tilpasset? — Rettsregel</title>
+<meta name="description" content="Ja, personlig tilpasset pris fjerner ikke i seg selv angreretten. Angrerettloven krever at selgeren før avtalen opplyser når prisen er personlig tilpasset…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-angrerett-hvis-prisen-var-personlig-tilpasset/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg angrerett hvis prisen var personlig tilpasset?">
+<meta property="og:description" content="Ja, personlig tilpasset pris fjerner ikke i seg selv angreretten. Angrerettloven krever at selgeren før avtalen opplyser når prisen er personlig tilpasset…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-angrerett-hvis-prisen-var-personlig-tilpasset/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg angrerett hvis prisen var personlig tilpasset?">
+<meta name="twitter:description" content="Ja, personlig tilpasset pris fjerner ikke i seg selv angreretten. Angrerettloven krever at selgeren før avtalen opplyser når prisen er personlig tilpasset…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Har jeg angrerett hvis prisen var personlig tilpasset?</h1>
+      <p class="article-description">Ja, personlig tilpasset pris fjerner ikke i seg selv angreretten. Angrerettloven krever at selgeren før avtalen opplyser når prisen er personlig tilpasset…</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, personlig tilpasset pris fjerner ikke i seg selv angreretten. Angrerettloven krever at selgeren før avtalen opplyser når prisen er personlig tilpasset basert på automatiserte beslutninger. Om du har angrerett avgjøres likevel av de vanlige reglene: om loven gjelder, om du er forbruker, og om kjøpet faller inn under et unntak.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 8 første ledd bokstav q sier at den næringsdrivende, der det er relevant, skal opplyse om at prisen er personlig tilpasset basert på automatiserte beslutninger.</p>
+<p>Dette er en opplysningsplikt. Den gjør ikke personlig pris til et eget unntak fra angreretten.</p>
+<p>Unntakene fra angreretten står i § 22. Der er ikke personlig tilpasset pris nevnt som et selvstendig unntak. Derfor må spørsmålet vurderes etter de vanlige reglene.</p>
+<h2>Hva betyr personlig tilpasset pris?</h2>
+<p>Personlig tilpasset pris betyr at prisen du får, er tilpasset deg basert på automatiserte beslutninger. Det kan for eksempel bygge på data, profilering, tidligere bruk, etterspørsel eller andre automatiserte vurderinger.</p>
+<p>Angrerettloven sier ikke i den opplastede lovteksten nøyaktig hvilke modeller som omfattes. Det viktige for artikkelen er at selgeren skal opplyse om personlig tilpasning når dette er relevant.</p>
+<p>Forbrukeren skal vite om prisen er et generelt tilbud, eller om prisen er individuelt tilpasset gjennom automatiserte beslutninger.</p>
+<h2>Når har jeg fortsatt angrerett?</h2>
+<p>Du har normalt angrerett hvis avtalen omfattes av angrerettloven: Du er forbruker, selgeren opptrer i næringsvirksomhet, og avtalen er fjernsalg eller salg utenom faste forretningslokaler.</p>
+<p>I tillegg må kjøpet ikke være omfattet av unntakene i § 22 eller unntakene fra lovens virkeområde i § 2.</p>
+<p>Hvis du for eksempel kjøper en vanlig vare i en nettbutikk fra en næringsdrivende, og prisen var personlig tilpasset, vil personlig pris alene ikke ta bort angreretten.</p>
+<h2>Når kan angreretten likevel mangle?</h2>
+<p>Angreretten kan mangle av andre grunner. Varen kan være spesiallaget etter dine spesifikasjoner, raskt gå ut på dato, være en brutt forseglet hygienevare, eller avtalen kan gjelde en tjeneste som er levert fullt ut med riktig samtykke og erkjennelse.</p>
+<p>Det kan også være at avtalen ikke omfattes av angrerettloven i det hele tatt, for eksempel fordi selgeren er privatperson eller fordi avtalen faller inn under unntakene i § 2.</p>
+<p>Poenget er at personlig tilpasset pris og personlig tilpasset vare ikke er det samme. En pris kan være personlig uten at varen er spesialfremstilt.</p>
+<h2>Hva hvis selgeren ikke opplyste om personlig pris?</h2>
+<p>Da kan det være brudd på opplysningsplikten i § 8 første ledd bokstav q, hvis opplysningen var relevant. Angrerettloven § 7 sier at selgeren har bevisbyrden for at opplysningsplikten i blant annet § 8 er oppfylt.</p>
+<p>Den opplastede lovteksten sier uttrykkelig at manglende opplysninger om tilleggskostnader og returkostnader kan føre til at forbrukeren ikke skal bære disse kostnadene, jf. § 9. Den sier også at manglende opplysninger om angreretten kan forlenge angrefristen etter § 21.</p>
+<p>For personlig tilpasset pris er det tryggest å beskrive dette som brudd på opplysningsplikt, ikke automatisk som en bestemt økonomisk konsekvens for den enkelte avtalen uten mer rettskildegrunnlag.</p>
+<h2>Praktisk eksempel</h2>
+<p>Eirik kjøper joggesko i en nettbutikk 6. august. Prisen han får, er 1 099 kr. Etterpå ser han at en venn får samme sko vist til 949 kr. Nettbutikken opplyste ikke noe om personlig tilpasset pris.</p>
+<p>Hvis prisen faktisk var personlig tilpasset basert på automatiserte beslutninger, kan nettbutikken ha brutt opplysningsplikten i § 8 bokstav q. Men Eiriks angrerett avgjøres fortsatt av de vanlige reglene. Hvis kjøpet er et vanlig nettkjøp fra næringsdrivende og ingen unntak gjelder, har han normalt 14 dagers angrerett.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Sjekk ordresiden, vilkårene og informasjonen du fikk før du kjøpte. Se om selgeren opplyste at prisen var personlig tilpasset.</p>
+<p>Hvis du vil bruke angreretten, send en vanlig angremelding innen fristen. Ikke vent på en diskusjon om prisalgoritmer hvis angrefristen løper.</p>
+<p>Hvis du mener opplysningsplikten er brutt, kan du klage skriftlig til selgeren og vise til § 8 første ledd bokstav q og § 7 om bevisbyrde. Ved mer prinsipielle eller systematiske forhold kan Forbrukertilsynet være relevant.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Personlig tilpasset pris er ikke det samme som spesialbestilt vare. En spesialbestilt vare kan være unntatt angrerett etter § 22 bokstav e. En personlig tilpasset pris er en opplysning selgeren må gi der det er relevant.</p>
+<p>En annen misforståelse er at brudd på alle opplysningsplikter automatisk gir utvidet angrefrist. I lovteksten som er brukt her, er den utvidede fristen knyttet til manglende opplysninger om angreretten etter § 8 bokstav h.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/7/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 7</div>
+  <div class="related-card-title">Det er selgeren som må bevise</div>
+</a><a href="../../lover/angrerettloven/8/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 8</div>
+  <div class="related-card-title">Hva selgeren må fortelle deg før du kjøper</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a><a href="../../lover/angrerettloven/22/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 22</div>
+  <div class="related-card-title">Når du IKKE har angrerett</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

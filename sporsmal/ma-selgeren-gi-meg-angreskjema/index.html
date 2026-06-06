@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må selgeren gi meg angreskjema? — Rettsregel</title>
+<meta name="description" content="Ja, når angrerettloven gjelder og det finnes angrerett, skal selgeren gi deg et standardisert angreskjema sammen med opplysninger om angreretten.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-selgeren-gi-meg-angreskjema/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må selgeren gi meg angreskjema?">
+<meta property="og:description" content="Ja, når angrerettloven gjelder og det finnes angrerett, skal selgeren gi deg et standardisert angreskjema sammen med opplysninger om angreretten.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-selgeren-gi-meg-angreskjema/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må selgeren gi meg angreskjema?">
+<meta name="twitter:description" content="Ja, når angrerettloven gjelder og det finnes angrerett, skal selgeren gi deg et standardisert angreskjema sammen med opplysninger om angreretten.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Må selgeren gi meg angreskjema?</h1>
+      <p class="article-description">Ja, når angrerettloven gjelder og det finnes angrerett, skal selgeren gi deg et standardisert angreskjema sammen med opplysninger om angreretten.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, når angrerettloven gjelder og det finnes angrerett, skal selgeren gi deg et standardisert angreskjema sammen med opplysninger om angreretten. Du må likevel ikke bruke akkurat skjemaet for å angre. Det holder å sende en annen tydelig melding om at du vil bruke angreretten.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 8 første ledd bokstav h sier at den næringsdrivende før avtalen skal gi opplysninger om at det foreligger angrerett, vilkårene for angreretten, tidsfristene og fremgangsmåten for å bruke den. Selgeren skal også gi forbrukeren et standardisert skjema for bruk av angrerett.</p>
+<p>Dette gjelder før avtaleinngåelse ved fjernsalg og salg utenom faste forretningslokaler, så lenge avtalen faller inn under loven. Hvis selgeren retter markedsføringen mot norske forbrukere, skal opplysningene etter § 8 gis på norsk.</p>
+<p>Ved fjernsalgsavtaler skal opplysningene etter § 14 være i avtalen eller gjøres tilgjengelige for deg på et enkelt og forståelig språk på en måte som passer fjernkommunikasjonsmiddelet. Etter § 18 skal du innen rimelig tid etter avtaleinngåelsen få skriftlig bekreftelse på avtalen på et varig medium, senest ved levering av varer eller før tjenesten begynner.</p>
+<p>Ved avtaler utenom faste forretningslokaler skal avtalen etter § 11 inneholde opplysningene fra § 8, og du skal få et eksemplar av avtalen eller bekreftelsen.</p>
+<h2>Må du bruke angreskjemaet?</h2>
+<p>Nei. Etter § 20 kan melding om angrerett gis ved utfylt angreskjema eller ved en annen utvetydig erklæring. Det betyr at en e-post, et brev eller en melding via selgerens returportal kan være nok, så lenge det er klart at du vil bruke angreretten.</p>
+<p>Det viktigste er at meldingen sendes før angrefristen går ut. Etter § 20 er fristen overholdt hvis meldingen er sendt før fristens utløp.</p>
+<p>Du har bevisbyrden for at melding er gitt. Derfor bør du bruke en løsning som gir dokumentasjon, for eksempel e-post, kontaktskjema med kvittering, eller returportal som bekrefter innsendingen.</p>
+<h2>Hva hvis selgeren ikke ga angreskjema?</h2>
+<p>Manglende angreskjema kan være et tegn på at selgeren ikke har oppfylt opplysningsplikten. Det viktigste for fristen er om selgeren har gitt opplysninger om angreretten etter § 8 første ledd bokstav h.</p>
+<p>Hvis den næringsdrivende ikke har gitt disse opplysningene, sier § 21 at angrefristen utløper 12 måneder etter den opprinnelige angrefristen. Hvis selgeren gir opplysningene senere, men innen 12 måneder fra den dagen fristen normalt skulle begynne å løpe, utløper fristen 14 dager etter at du mottok opplysningene.</p>
+<p>Manglende informasjon kan også få betydning for returkostnader. Etter § 8 første ledd bokstav i skal selgeren opplyse om at du må bære kostnadene ved retur dersom angreretten brukes. Etter § 25 må selgeren dekke returkostnadene hvis selgeren ikke har opplyst deg om at du skal betale dem.</p>
+<h2>Kan selgeren nekte angrerett fordi skjemaet ikke er brukt?</h2>
+<p>Nei. Selgeren kan ikke kreve at du bruker et bestemt skjema hvis du ellers har sendt en tydelig erklæring innen fristen. § 20 sier uttrykkelig at du kan bruke angreskjema eller annen utvetydig erklæring.</p>
+<p>En melding som bare sier «jeg vil returnere varen» kan i praksis være nok hvis sammenhengen viser at du angrer kjøpet. Men for å unngå diskusjon bør du skrive helt tydelig: «Jeg bruker angreretten på ordre [nummer].»</p>
+<h2>Praktisk eksempel</h2>
+<p>Jon kjøper hodetelefoner på nett 2. september for 2 490 kr. Han får varen 5. september. I pakken ligger det ikke angreskjema, og ordrebekreftelsen sier ingenting om angrerett.</p>
+<p>Jon angrer 25. september. Nettbutikken svarer at 14 dager er gått. Jon bør da be nettbutikken dokumentere at han fikk opplysninger om angrerett etter § 8 første ledd bokstav h. Hvis slike opplysninger ikke ble gitt, kan fristen være forlenget etter § 21.</p>
+<p>Jon trenger heller ikke et skjema for å angre. Han kan sende e-post der han tydelig skriver at han bruker angreretten.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Søk i e-post, ordrebekreftelse, kvittering, leveringsbekreftelse og nettbutikkens konto-side. Se om du faktisk fikk angrerettsopplysninger og angreskjema.</p>
+<p>Vil du angre, send en skriftlig melding med én gang. Skriv tydelig at du bruker angreretten, og ta med ordrenummer og varen det gjelder.</p>
+<p>Hvis selgeren nekter fordi du ikke brukte riktig skjema, vis til at § 20 godtar både angreskjema og annen utvetydig erklæring. Hvis selgeren aldri ga opplysninger om angreretten, vis til § 21 om forlenget frist.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Du mister ikke angreretten bare fordi du ikke finner angreskjemaet. Skjemaet er en mulighet, ikke den eneste lovlige måten å angre på.</p>
+<p>Samtidig bør du ikke vente med å gi beskjed fordi skjemaet mangler. Send en tydelig melding først. Diskusjonen om manglende skjema kan tas etterpå.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/8/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 8</div>
+  <div class="related-card-title">Hva selgeren må fortelle deg før du kjøper</div>
+</a><a href="../../lover/angrerettloven/11/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 11</div>
+  <div class="related-card-title">Hva avtalen må inneholde ved hjemmesalg</div>
+</a><a href="../../lover/angrerettloven/14/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 14</div>
+  <div class="related-card-title">Krav til avtaler ved netthandel</div>
+</a><a href="../../lover/angrerettloven/18/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 18</div>
+  <div class="related-card-title">Bekreftelsen du skal få etter kjøpet</div>
+</a><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a><a href="../../lover/angrerettloven/25/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 25</div>
+  <div class="related-card-title">Slik returnerer du varen riktig</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

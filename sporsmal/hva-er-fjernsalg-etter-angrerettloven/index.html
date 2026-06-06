@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er fjernsalg etter angrerettloven? — Rettsregel</title>
+<meta name="description" content="Fjernsalg er kjøp som inngås gjennom en organisert ordning for salg eller tjenester, uten at du og selgeren er fysisk til stede samtidig, og der avtalen…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-fjernsalg-etter-angrerettloven/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er fjernsalg etter angrerettloven?">
+<meta property="og:description" content="Fjernsalg er kjøp som inngås gjennom en organisert ordning for salg eller tjenester, uten at du og selgeren er fysisk til stede samtidig, og der avtalen…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-fjernsalg-etter-angrerettloven/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er fjernsalg etter angrerettloven?">
+<meta name="twitter:description" content="Fjernsalg er kjøp som inngås gjennom en organisert ordning for salg eller tjenester, uten at du og selgeren er fysisk til stede samtidig, og der avtalen…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er fjernsalg etter angrerettloven?</h1>
+      <p class="article-description">Fjernsalg er kjøp som inngås gjennom en organisert ordning for salg eller tjenester, uten at du og selgeren er fysisk til stede samtidig, og der avtalen…</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Fjernsalg er kjøp som inngås gjennom en organisert ordning for salg eller tjenester, uten at du og selgeren er fysisk til stede samtidig, og der avtalen inngås bare ved bruk av fjernkommunikasjon. Netthandel er det vanligste eksempelet, men avtaler via telefon, app, e-post eller chat kan også være fjernsalg.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 5 bokstav b definerer fjernsalg. Tre vilkår må normalt være oppfylt:</p>
+<p>For det første må avtalen være inngått ved en organisert ordning for salg eller tjenesteyting. For det andre må den næringsdrivende og forbrukeren ikke være fysisk til stede samtidig. For det tredje må avtalen inngås utelukkende ved bruk av fjernkommunikasjonsmidler.</p>
+<p>Det holder derfor ikke bare at du og selgeren sender én melding til hverandre. Det må være en salgsordning som er lagt opp slik at avtaler kan inngås på avstand.</p>
+<p>Etter § 1 gjelder loven når en forbruker kjøper varer eller tjenester fra en næringsdrivende, og avtalen inngås ved fjernsalg eller salg utenom faste forretningslokaler. Fjernsalg er derfor en av hovedinngangene til angrerettloven.</p>
+<h2>Er netthandel fjernsalg?</h2>
+<p>Ja, vanlig netthandel er som regel fjernsalg. Nettbutikken har en organisert salgsordning, du og selgeren møtes ikke fysisk, og avtalen inngås via nettsiden eller appen.</p>
+<p>Det samme kan gjelde kjøp via en nettbasert markedsplass. Men da må du i tillegg se på hvem selgeren er. Angrerettloven gjelder for salg fra næringsdrivende til forbruker. Hvis du kjøper fra en privatperson, gjelder normalt ikke angrerettloven selv om kjøpet skjer på nett.</p>
+<p>Ved nettbaserte markedsplasser har tilbyderen særlige opplysningsplikter etter § 9 a. Plattformen skal blant annet opplyse om selgeren er næringsdrivende eller ikke, basert på selgerens erklæring til plattformen, og om forbrukerrettigheter ikke gjelder dersom selgeren ikke er næringsdrivende.</p>
+<h2>Kan telefon og e-post være fjernsalg?</h2>
+<p>Ja. Fjernkommunikasjon kan være mer enn nettsider. Telefon, e-post, SMS, chat, app eller andre digitale løsninger kan inngå i fjernsalg hvis avtalen blir inngått uten fysisk møte og som del av en organisert salgsordning.</p>
+<p>Ved uanmodet telefonsalg har angrerettloven en egen regel i § 10. Når den næringsdrivende uanmodet gir deg et tilbud på telefon, må tilbudet bekreftes skriftlig på et varig medium etter at samtalen er avsluttet. Du blir ikke bundet før du har akseptert tilbudet skriftlig. Denne særregelen gjelder likevel ikke ved salg av avisabonnement eller salg fra frivillige organisasjoner.</p>
+<h2>Hva er ikke fjernsalg?</h2>
+<p>Et kjøp i en fysisk butikk er normalt ikke fjernsalg, selv om du senere får kvittering på e-post. Da var du og selgeren fysisk til stede samtidig da avtalen ble inngått.</p>
+<p>Et kjøp kan også falle utenfor hvis det ikke skjer gjennom en organisert ordning for fjernsalg. Hvis en privatperson selger en brukt stol til deg etter noen meldinger, er det vanligvis ikke fjernsalg etter angrerettloven. Da mangler både næringsdrivende selger og ofte en organisert salgsordning.</p>
+<p>Det kan oppstå grensetilfeller. Hvis du besøker en butikk, ser på en vare, går hjem og bestiller den via nettbutikken, må man se på hvordan avtalen faktisk ble inngått. Blir avtalen inngått i nettbutikkens ordinære bestillingsløsning, er den normalt fjernsalg.</p>
+<h2>Hvorfor betyr det noe om kjøpet er fjernsalg?</h2>
+<p>Hvis kjøpet er fjernsalg og loven ellers gjelder, får du de rettighetene angrerettloven gir. Det viktigste er angreretten etter § 20 og angrefristen etter § 21.</p>
+<p>Den næringsdrivende får også opplysningsplikter. Etter § 8 skal selgeren før avtalen gi deg blant annet informasjon om varen eller tjenesten, samlet pris, leveringsordninger, reklamasjonshåndtering, angrerett og angreskjema.</p>
+<p>Ved elektronisk bestilling med betalingsplikt skal selgeren etter § 16 sørge for at du uttrykkelig erkjenner at bestillingen medfører betalingsplikt. Hvis bestillingen skjer ved knapp eller lignende, skal knappen være merket på en lett leselig måte med «bestilling med forpliktelse til å betale» eller tilsvarende. Hvis dette ikke overholdes, blir du ikke bundet av avtalen eller bestillingen.</p>
+<h2>Praktisk eksempel</h2>
+<p>Sara kjøper en lampe fra en nettbutikk 12. mai for 1 200 kr. Hun legger lampen i handlekurven, trykker på betalingsknappen og får ordrebekreftelse på e-post. Hun og selgeren har aldri møttes fysisk.</p>
+<p>Dette er fjernsalg. Nettbutikken driver en organisert ordning for salg på avstand, og avtalen inngås bare via nettsiden. Sara har derfor normalt angrerett hvis ingen unntak i § 22 gjelder.</p>
+<p>Hvis Sara derimot kjøper en brukt lampe fra naboen etter en privat melding, er det normalt ikke fjernsalg etter angrerettloven. Da er selgeren ikke næringsdrivende.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Sjekk først hvem du kjøpte fra. Er selgeren en næringsdrivende, eller en privatperson? Se på ordrebekreftelse, organisasjonsnummer, butikkprofil og vilkår.</p>
+<p>Sjekk deretter hvordan avtalen ble inngått. Ble alt gjort på nett, telefon, e-post, app eller chat, uten fysisk møte? Var det en organisert salgsordning? Da er det mye som taler for fjernsalg.</p>
+<p>Hvis du vil angre, send en tydelig skriftlig melding til selgeren før fristen går ut. Be om angrerettsopplysninger hvis du ikke fikk dem.</p>
+<h2>Vanlige misforståelser</h2>
+<p>«Kjøpt på nett» og «fjernsalg» er ofte det samme, men ikke alltid nok alene. Angrerettloven krever også at selgeren er næringsdrivende og at kjøpet faller innenfor lovens virkeområde.</p>
+<p>Du har heller ikke automatisk angrerett bare fordi du betalte med Vipps eller sendte meldinger digitalt. Det avgjørende er om vilkårene i angrerettloven er oppfylt.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/1/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 1</div>
+  <div class="related-card-title">Hvilke kjøp loven gjelder for</div>
+</a><a href="../../lover/angrerettloven/5/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 5</div>
+  <div class="related-card-title">Definisjoner av begrepene i loven</div>
+</a><a href="../../lover/angrerettloven/8/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 8</div>
+  <div class="related-card-title">Hva selgeren må fortelle deg før du kjøper</div>
+</a><a href="../../lover/angrerettloven/10/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 10</div>
+  <div class="related-card-title">Du er ikke bundet av telefonsalg før du har akseptert skriftlig</div>
+</a><a href="../../lover/angrerettloven/16/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 16</div>
+  <div class="related-card-title">"Bestilling med forpliktelse til å betale" — den viktigste knappen på nett</div>
+</a><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

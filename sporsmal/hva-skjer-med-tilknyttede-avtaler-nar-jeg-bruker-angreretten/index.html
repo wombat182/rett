@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer med tilknyttede avtaler når jeg bruker angreretten? — Rettsregel</title>
+<meta name="description" content="Når du bruker angreretten, faller tilknyttede avtaler bort uten kostnad for deg.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-med-tilknyttede-avtaler-nar-jeg-bruker-angreretten/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer med tilknyttede avtaler når jeg bruker angreretten?">
+<meta property="og:description" content="Når du bruker angreretten, faller tilknyttede avtaler bort uten kostnad for deg.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-med-tilknyttede-avtaler-nar-jeg-bruker-angreretten/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer med tilknyttede avtaler når jeg bruker angreretten?">
+<meta name="twitter:description" content="Når du bruker angreretten, faller tilknyttede avtaler bort uten kostnad for deg.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva skjer med tilknyttede avtaler når jeg bruker angreretten?</h1>
+      <p class="article-description">Når du bruker angreretten, faller tilknyttede avtaler bort uten kostnad for deg.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Når du bruker angreretten, faller tilknyttede avtaler bort uten kostnad for deg. Det kan for eksempel gjelde en tilleggsavtale som er inngått i forbindelse med hovedkjøpet. Den næringsdrivende skal straks gi beskjed til tredjepersonen som har inngått den tilknyttede avtalen med deg.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 27 sier at dersom forbrukeren bruker sin angrerett, faller alle tilknyttede avtaler bort uten kostnad for forbrukeren. Reglene i §§ 24 til 26 gjelder tilsvarende.</p>
+<p>En tilknyttet avtale er definert i § 5. Det er en avtale der du mottar varer eller tjenester i forbindelse med en fjernsalgsavtale eller en avtale inngått utenom faste forretningslokaler, og der varene eller tjenestene leveres av den næringsdrivende eller en tredjeperson på grunnlag av en ordning mellom tredjepersonen og den næringsdrivende.</p>
+<h2>Hva er en tilknyttet avtale?</h2>
+<p>En tilknyttet avtale er ikke bare en helt tilfeldig avtale du inngår samtidig. Den må ha en forbindelse med hovedavtalen.</p>
+<p>Eksempler kan være en serviceavtale, montering, forsikring, abonnement eller annen tilleggstjeneste som tilbys som del av samme kjøpsopplegg. Hvis tredjepersonen leverer ytelsen på grunnlag av en ordning med selgeren, kan avtalen være tilknyttet.</p>
+<p>Poenget er at du ikke skal bli sittende igjen med en tilleggskostnad når hovedavtalen faller bort ved angrerett.</p>
+<h2>Hvem skal varsle tredjepersonen?</h2>
+<p>Etter § 27 andre ledd skal den næringsdrivende straks gi beskjed til tredjepersonen som har inngått en tilknyttet avtale med deg, etter å ha mottatt din melding om bruk av angreretten.</p>
+<p>Du bør likevel selv sende kopi eller egen melding til tredjepersonen hvis du vil være sikker. Da unngår du at en tilleggsleverandør fortsetter å fakturere fordi de ikke har fått beskjed.</p>
+<h2>Hva betyr «uten kostnad»?</h2>
+<p>Når den tilknyttede avtalen faller bort etter § 27, skal det skje uten kostnad for deg. Selgeren eller tredjepersonen kan altså ikke kreve et avbestillingsgebyr bare fordi du bruker angreretten på hovedavtalen.</p>
+<p>Samtidig viser § 27 til §§ 24 til 26. Det betyr at reglene om tilbakebetaling, retur av varer og eventuell betaling for tjenester som faktisk er levert, kan få betydning der det passer.</p>
+<h2>Praktisk eksempel</h2>
+<p>Sara kjøper en robotstøvsuger på nett 1. april for 6 000 kr. I samme bestilling tegner hun en serviceavtale til 79 kr per måned, levert av et samarbeidende selskap. Hun angrer på kjøpet 8. april.</p>
+<p>Når Sara bruker angreretten på robotstøvsugeren, faller den tilknyttede serviceavtalen også bort uten kostnad etter § 27. Nettbutikken skal straks gi beskjed til selskapet som står for serviceavtalen.</p>
+<p>Sara bør likevel sende en kopi av angrerettsmeldingen til serviceselskapet og be dem bekrefte at avtalen er avsluttet.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Når du sender angrerettsmelding, skriv uttrykkelig at du også anser tilknyttede avtaler som bortfalt etter angrerettloven § 27. List opp eventuelle tilleggstjenester, abonnementer eller forsikringer du mener er knyttet til kjøpet.</p>
+<p>Send kopi til tredjepersonen hvis du har kontaktinformasjon. Be om skriftlig bekreftelse på at fakturering stoppes og at eventuelle betalinger tilbakeføres.</p>
+<p>Hvis du fortsatt får faktura, bestrid den skriftlig. Skriv at hovedavtalen er angret, og at tilknyttet avtale faller bort uten kostnad etter § 27.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Det er feil at du alltid må si opp tilleggstjenesten separat etter vanlige oppsigelsesregler. Hvis avtalen faktisk er tilknyttet hovedkjøpet, faller den bort når angreretten brukes.</p>
+<p>Det er likevel lurt å varsle alle involverte skriftlig. Praktiske feil hos selgeren eller tredjepersonen kan ellers føre til unødvendige fakturaer.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/5/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 5</div>
+  <div class="related-card-title">Definisjoner av begrepene i loven</div>
+</a><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/24/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 24</div>
+  <div class="related-card-title">Selgeren har 14 dager på å betale deg tilbake</div>
+</a><a href="../../lover/angrerettloven/25/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 25</div>
+  <div class="related-card-title">Slik returnerer du varen riktig</div>
+</a><a href="../../lover/angrerettloven/26/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 26</div>
+  <div class="related-card-title">Hva du betaler hvis du angrer på en delvis levert tjeneste</div>
+</a><a href="../../lover/angrerettloven/27/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 27</div>
+  <div class="related-card-title">Tilknyttede avtaler faller automatisk bort</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

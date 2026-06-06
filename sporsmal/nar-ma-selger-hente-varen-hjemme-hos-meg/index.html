@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når må selger hente varen hjemme hos meg? — Rettsregel</title>
+<meta name="description" content="Selger må hente varen for egen regning i noen tilfeller ved salg utenom faste forretningslokaler.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-ma-selger-hente-varen-hjemme-hos-meg/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når må selger hente varen hjemme hos meg?">
+<meta property="og:description" content="Selger må hente varen for egen regning i noen tilfeller ved salg utenom faste forretningslokaler.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-ma-selger-hente-varen-hjemme-hos-meg/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når må selger hente varen hjemme hos meg?">
+<meta name="twitter:description" content="Selger må hente varen for egen regning i noen tilfeller ved salg utenom faste forretningslokaler.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Når må selger hente varen hjemme hos meg?</h1>
+      <p class="article-description">Selger må hente varen for egen regning i noen tilfeller ved salg utenom faste forretningslokaler.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Selger må hente varen for egen regning i noen tilfeller ved salg utenom faste forretningslokaler. Etter angrerettloven § 24 fjerde ledd gjelder dette når varen ble levert til hjemmet ditt på avtaletidspunktet, og varen etter sin art normalt ikke kan returneres med vanlig post.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 24 fjerde ledd sier at ved avtaler inngått utenom faste forretningslokaler, og der varene er levert til forbrukerens hjem på avtaletidspunktet, skal den næringsdrivende for egen regning hente varene dersom de etter sin art normalt ikke kan returneres med alminnelig postgang.</p>
+<p>Dette er en snevrere regel enn mange tror. Den gjelder ikke automatisk for alle store varer kjøpt på nett.</p>
+<h2>Når gjelder regelen?</h2>
+<p>Tre forhold må være på plass etter ordlyden:</p>
+<p>For det første må avtalen være inngått utenom faste forretningslokaler. Dette kan for eksempel være avtale inngått hjemme hos deg, hvis situasjonen ellers omfattes av angrerettloven.</p>
+<p>For det andre må varen være levert til hjemmet ditt på avtaletidspunktet.</p>
+<p>For det tredje må varen etter sin art normalt ikke kunne returneres med vanlig post.</p>
+<p>Hvis disse vilkårene er oppfylt, skal selgeren hente varen for egen regning.</p>
+<h2>Gjelder dette ved vanlig netthandel?</h2>
+<p>Ikke etter denne regelen alene. Vanlig netthandel er normalt fjernsalg, ikke salg utenom faste forretningslokaler. § 24 fjerde ledd er uttrykkelig knyttet til avtaler inngått utenom faste forretningslokaler.</p>
+<p>Ved netthandel må du i stedet se på de vanlige returreglene i § 25. Der står det at forbrukeren som hovedregel skal sende varen tilbake eller overlevere den, med mindre selgeren har tilbudt seg å hente varen.</p>
+<h2>Hva hvis selger har avtalt å hente varen?</h2>
+<p>Da blir § 24 femte ledd viktig. Den sier at hvis det er avtalt at varene skal hentes hos forbrukeren, og dette ikke skjer innen tre måneder fra den dagen selgeren fikk angremelding, tilfaller varen forbrukeren vederlagsfritt.</p>
+<p>Det betyr at selgeren ikke kan la en avtalt henting bli hengende uavklart i det uendelige.</p>
+<h2>Praktisk eksempel</h2>
+<p>Anne får besøk hjemme av en selger 10. april og inngår avtale om kjøp av en stor massasjestol. Stolen leveres hjemme hos henne samme dag. Den er så stor og tung at den normalt ikke kan returneres med vanlig post. Anne bruker angreretten 15. april.</p>
+<p>Hvis avtalen er inngått utenom faste forretningslokaler og vilkårene i § 24 fjerde ledd er oppfylt, skal selgeren hente stolen for egen regning.</p>
+<p>Hvis selgeren i tillegg avtaler å hente stolen, men ikke gjør det innen tre måneder fra angremeldingen, kan § 24 femte ledd føre til at stolen tilfaller Anne vederlagsfritt.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn ut hvordan avtalen ble inngått. Var det netthandel, telefonsalg, messe, dørsalg eller avtale hjemme hos deg?</p>
+<p>Skriv til selgeren og vis til § 24 fjerde ledd hvis avtalen ble inngått utenom faste forretningslokaler, varen ble levert hjem på avtaletidspunktet, og den normalt ikke kan sendes med vanlig post.</p>
+<p>Hvis selgeren sier de skal hente varen, få avtalen skriftlig. Noter datoen de mottok angremeldingen, fordi tre måneders-regelen i § 24 femte ledd regnes fra den dagen.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Noen tror at selger alltid må hente store varer ved angrerett. Det stemmer ikke. § 24 fjerde ledd gjelder bare en bestemt situasjon.</p>
+<p>Andre tror at forbrukeren må oppbevare varen for selgeren ubegrenset lenge hvis henting er avtalt. Det stemmer heller ikke. § 24 femte ledd gir en grense på tre måneder fra angremeldingen.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/25/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 25</div>
+  <div class="related-card-title">Slik returnerer du varen riktig</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

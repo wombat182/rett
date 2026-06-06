@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor mye overtid kan arbeidsgiver pålegge? — Rettsregel</title>
+<meta name="description" content="Arbeidsgiver kan bare pålegge overtid når det er et særlig og tidsavgrenset behov.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-mye-overtid-kan-arbeidsgiver-palegge/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor mye overtid kan arbeidsgiver pålegge?">
+<meta property="og:description" content="Arbeidsgiver kan bare pålegge overtid når det er et særlig og tidsavgrenset behov.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-mye-overtid-kan-arbeidsgiver-palegge/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor mye overtid kan arbeidsgiver pålegge?">
+<meta name="twitter:description" content="Arbeidsgiver kan bare pålegge overtid når det er et særlig og tidsavgrenset behov.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hvor mye overtid kan arbeidsgiver pålegge?</h1>
+      <p class="article-description">Arbeidsgiver kan bare pålegge overtid når det er et særlig og tidsavgrenset behov.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Arbeidsgiver kan bare pålegge overtid når det er et særlig og tidsavgrenset behov. Uten utvidet avtale kan arbeidsgiver pålegge inntil 10 timer overtid i løpet av 7 dager, 25 timer i løpet av 4 sammenhengende uker og 200 timer i løpet av 52 uker. Overtid skal ikke være en fast ordning.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Arbeidsmiljøloven § 10-6 sier at overtid ikke må gjennomføres uten at det foreligger et særlig og tidsavgrenset behov.</p>
+<p>Det betyr at arbeidsgiver ikke kan bruke overtid som en permanent løsning på for lav bemanning. Overtid skal dekke ekstraordinære eller midlertidige behov.</p>
+<h2>Når kan arbeidsgiver bruke overtid?</h2>
+<p>Overtid kan være lovlig ved uventet arbeidspress, sykdomsfravær, sesongtopper, tekniske problemer eller andre forhold som gjør at virksomheten midlertidig trenger ekstra arbeid.</p>
+<p>Det holder ikke at arbeidsgiver synes det er praktisk. Behovet må være særlig og tidsavgrenset.</p>
+<h2>Hvor mye overtid kan arbeidsgiver pålegge?</h2>
+<p>Arbeidsgiver kan som hovedregel pålegge inntil:</p>
+<ul>
+<li>10 timer overtid i løpet av 7 dager</li>
+<li>25 timer overtid i løpet av 4 sammenhengende uker</li>
+<li>200 timer overtid i løpet av 52 uker</li>
+</ul>
+<p>Dette er grensene uten utvidet avtale eller tillatelse.</p>
+<h2>Hva hvis arbeidsplassen har tariffavtale?</h2>
+<p>I virksomhet med tariffavtale kan arbeidsgiver og tillitsvalgte skriftlig avtale utvidede rammer.</p>
+<p>Da kan rammene blant annet økes til 20 timer i løpet av 7 dager, 50 timer i løpet av 4 sammenhengende uker og 300 timer i løpet av 52 uker.</p>
+<p>Selv da må vilkåret om særlig og tidsavgrenset behov være oppfylt.</p>
+<h2>Finnes det grenser for samlet arbeidstid?</h2>
+<p>Ja. Samlet arbeidstid må fortsatt holde seg innenfor lovens grenser.</p>
+<p>Som utgangspunkt kan samlet arbeidstid ikke overstige 13 timer i løpet av 24 timer. I tillegg kan gjennomsnittlig samlet arbeidstid over 8 uker ikke overstige 48 timer per uke.</p>
+<h2>Praktisk eksempel</h2>
+<p>Marius jobber på lager. I uke 12 blir tre ansatte syke samtidig, og en stor levering må ut før helgen. Arbeidsgiver ber Marius jobbe to timer ekstra mandag til fredag, totalt 10 timer overtid.</p>
+<p>Dette kan være lovlig hvis fraværet skaper et særlig og tidsavgrenset behov. Marius skal ha overtidsbetaling.</p>
+<p>Hvis Marius derimot blir pålagt 10 timer overtid hver uke i tre måneder fordi bedriften ikke vil ansette flere, er situasjonen en annen. Da ligner overtiden en fast ordning.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Be arbeidsgiver forklare hvilket særlig og tidsavgrenset behov som begrunner overtiden.</p>
+<p>Før oversikt over datoer, timer, pauser og hvem som påla overtiden.</p>
+<p>Sjekk lønnsslippen for overtidstillegg. Ved overtid skal du som hovedregel ha minst 40 prosent tillegg.</p>
+<p>Ved gjentatte brudd kan du kontakte verneombud, tillitsvalgt eller Arbeidstilsynet.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Det er feil at arbeidsgiver alltid kan kreve overtid fordi “jobben må gjøres”.</p>
+<p>Det er også feil at pålagt overtid betyr at du mister retten til overtidstillegg.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

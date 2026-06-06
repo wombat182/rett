@@ -142,7 +142,22 @@ try:
 except ImportError:
     _SP_EKTESKAPSLOVEN = []
 
-SPORSMAL = _SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN
+try:
+    from sporsmal_arbeidsmiljoloven import SPORSMAL as _SP_AML
+except ImportError:
+    _SP_AML = []
+
+try:
+    from sporsmal_forbrukerkjopsloven import SPORSMAL as _SP_FKJL
+except ImportError:
+    _SP_FKJL = []
+
+try:
+    from sporsmal_angrerettloven import SPORSMAL as _SP_ANGRE
+except ImportError:
+    _SP_ANGRE = []
+
+SPORSMAL = _SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL + _SP_ANGRE
 
 # ============================================================
 # SHARED CSS (same look as homepage)

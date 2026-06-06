@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg angrerett når jeg kjøper brukt vare på nett? — Rettsregel</title>
+<meta name="description" content="Du kan ha angrerett når du kjøper en brukt vare på nett, men bare hvis selgeren er næringsdrivende og avtalen er fjernsalg eller salg utenom faste…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-angrerett-nar-jeg-kjoper-brukt-vare-pa-nett/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg angrerett når jeg kjøper brukt vare på nett?">
+<meta property="og:description" content="Du kan ha angrerett når du kjøper en brukt vare på nett, men bare hvis selgeren er næringsdrivende og avtalen er fjernsalg eller salg utenom faste…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-angrerett-nar-jeg-kjoper-brukt-vare-pa-nett/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg angrerett når jeg kjøper brukt vare på nett?">
+<meta name="twitter:description" content="Du kan ha angrerett når du kjøper en brukt vare på nett, men bare hvis selgeren er næringsdrivende og avtalen er fjernsalg eller salg utenom faste…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Har jeg angrerett når jeg kjøper brukt vare på nett?</h1>
+      <p class="article-description">Du kan ha angrerett når du kjøper en brukt vare på nett, men bare hvis selgeren er næringsdrivende og avtalen er fjernsalg eller salg utenom faste…</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du kan ha angrerett når du kjøper en brukt vare på nett, men bare hvis selgeren er næringsdrivende og avtalen er fjernsalg eller salg utenom faste forretningslokaler. Kjøper du en brukt vare av en privatperson, har du normalt ikke angrerett etter angrerettloven.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 1 gjelder salg av varer og tjenester til forbruker når den næringsdrivende opptrer i næringsvirksomhet, forbrukeren betaler eller påtar seg å betale en pris, og avtalen inngås ved fjernsalg eller salg utenom faste forretningslokaler.</p>
+<p>§ 20 gir forbrukeren rett til å gå fra avtalen ved å gi melding til den næringsdrivende før angrefristen går ut.</p>
+<p>§ 21 sier at angrefristen normalt er 14 dager fra den dagen forbrukeren får varen i fysisk besittelse.</p>
+<h2>Spiller det noen rolle at varen er brukt?</h2>
+<p>Nei, ikke som hovedregel. Angrerettloven skiller ikke i § 20 mellom nye og brukte varer. Det avgjørende er hvem du kjøper fra, hvordan avtalen inngås, og om det finnes et unntak.</p>
+<p>En brukt vare kjøpt fra en bruktbutikk på nett kan derfor være omfattet. En brukt vare kjøpt av en privatperson på en markedsplass er normalt ikke omfattet av angrerettloven.</p>
+<h2>Når har du angrerett på brukt vare?</h2>
+<p>Du kan ha angrerett hvis:</p>
+<ul>
+<li>du er forbruker</li>
+<li>selgeren er næringsdrivende</li>
+<li>avtalen er fjernsalg eller salg utenom faste forretningslokaler</li>
+<li>varen ikke omfattes av et unntak i § 22</li>
+<li>du sender melding innen angrefristen</li>
+</ul>
+<p>Eksempel: Du kjøper en brukt klokke fra en profesjonell nettbutikk som selger brukte klokker. Da kan angrerettloven gjelde.</p>
+<h2>Når har du normalt ikke angrerett?</h2>
+<p>Du har normalt ikke angrerett etter angrerettloven hvis du kjøper en brukt vare direkte fra en privatperson. Det gjelder selv om dere finner hverandre på nett, sender meldinger digitalt og bruker en digital betalingsløsning.</p>
+<p>Du kan likevel ha andre rettigheter hvis varen ikke er som avtalt, men det er et annet spørsmål enn angrerett.</p>
+<h2>Kan selgeren trekke fra for bruk eller slitasje?</h2>
+<p>Hvis angreretten gjelder, sier § 25 at selgeren kan kreve erstatning for verdireduksjon som skyldes håndtering som ikke var nødvendig for å fastslå varens art, egenskaper og funksjon. Dette gjelder bare hvis du har fått opplysninger om angreretten etter § 8 første ledd bokstav h.</p>
+<p>Du kan altså undersøke varen, men ikke bruke den som din egen i angreperioden uten risiko for trekk.</p>
+<h2>Praktisk eksempel</h2>
+<p>Kari kjøper en brukt designlampe fra en nettbutikk 1. oktober for 3 500 kroner. Lampen leveres 5. oktober. Hun angrer 12. oktober og sender e-post til butikken.</p>
+<p>Hvis butikken er næringsdrivende og kjøpet er fjernsalg, er meldingen sendt innen fristen. Kari skal sende lampen tilbake innen 14 dager etter at hun ga melding, jf. § 25.</p>
+<p>Ole kjøper en lik lampe av en privatperson på en plattform. Han angrer dagen etter. Ole har normalt ikke angrerett etter angrerettloven, fordi selgeren ikke er næringsdrivende.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn ut hvem selgeren er. Er det butikk, firma eller profesjonell bruktforhandler, bør du sende en skriftlig angremelding innen fristen. Er det privatperson, må du ikke basere deg på angrerett.</p>
+<p>Ta vare på annonse, ordrebekreftelse, leveringsdato og melding om angring. Hvis selgeren nekter, kan du kontakte Forbrukerrådet for veiledning.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Noen tror at brukte varer aldri kan returneres med angrerett. Det stemmer ikke hvis varen er kjøpt av en næringsdrivende og lovens vilkår er oppfylt.</p>
+<p>Andre tror at alle bruktkjøp på nett gir angrerett. Det stemmer heller ikke. Private salg faller normalt utenfor angrerettloven.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/1/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 1</div>
+  <div class="related-card-title">Hvilke kjøp loven gjelder for</div>
+</a><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a><a href="../../lover/angrerettloven/22/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 22</div>
+  <div class="related-card-title">Når du IKKE har angrerett</div>
+</a><a href="../../lover/angrerettloven/25/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 25</div>
+  <div class="related-card-title">Slik returnerer du varen riktig</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

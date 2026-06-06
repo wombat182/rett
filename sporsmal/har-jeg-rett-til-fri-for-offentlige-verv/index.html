@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg rett til fri for offentlige verv? — Rettsregel</title>
+<meta name="description" content="Ja, du har rett til permisjon fra arbeidet i det omfanget som er nødvendig for å oppfylle lovbestemt møteplikt i offentlige organer.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-rett-til-fri-for-offentlige-verv/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg rett til fri for offentlige verv?">
+<meta property="og:description" content="Ja, du har rett til permisjon fra arbeidet i det omfanget som er nødvendig for å oppfylle lovbestemt møteplikt i offentlige organer.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-rett-til-fri-for-offentlige-verv/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg rett til fri for offentlige verv?">
+<meta name="twitter:description" content="Ja, du har rett til permisjon fra arbeidet i det omfanget som er nødvendig for å oppfylle lovbestemt møteplikt i offentlige organer.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Har jeg rett til fri for offentlige verv?</h1>
+      <p class="article-description">Ja, du har rett til permisjon fra arbeidet i det omfanget som er nødvendig for å oppfylle lovbestemt møteplikt i offentlige organer.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, du har rett til permisjon fra arbeidet i det omfanget som er nødvendig for å oppfylle lovbestemt møteplikt i offentlige organer. Retten gjelder selve fraværet fra jobb. Om du får lønn fra arbeidsgiver, avhenger av avtale, tariffavtale eller reglene for vervet.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Arbeidsmiljøloven § 12-13 gir rett til permisjon for å oppfylle lovbestemt møteplikt i offentlige organer. Det kan for eksempel være møteplikt i kommunestyre, fylkesting, utvalg, nemnder eller andre offentlige organer der du har plikt til å møte.</p>
+<p>Retten gjelder så langt fraværet er nødvendig for å utføre vervet.</p>
+<h2>Hva betyr lovbestemt møteplikt?</h2>
+<p>Lovbestemt møteplikt betyr at du ikke bare er invitert eller frivillig deltaker, men har en plikt etter lov eller formelt verv til å møte.</p>
+<p>Vanlige frivillige organisasjonsmøter, partimøter eller private styremøter gir ikke automatisk rett til permisjon etter denne regelen.</p>
+<h2>Må arbeidsgiver betale lønn?</h2>
+<p>Arbeidsmiljøloven gir rett til permisjon, men ikke nødvendigvis rett til lønn fra arbeidsgiver. Mange offentlige verv har egne regler om godtgjørelse, tapt arbeidsfortjeneste eller møtegodtgjørelse.</p>
+<p>Sjekk innkallingen, reglene for organet du møter i, og arbeidsavtalen eller tariffavtalen din.</p>
+<h2>Hvor mye fri kan jeg kreve?</h2>
+<p>Du kan kreve fri i det omfanget som er nødvendig. Det kan omfatte selve møtet og nødvendig reisetid.</p>
+<p>Du bør ikke kreve mer fri enn du faktisk trenger. Arbeidsgiver kan be om dokumentasjon, for eksempel møteinnkalling.</p>
+<h2>Praktisk eksempel</h2>
+<p>Erik sitter i kommunestyret. Han får innkalling til møte tirsdag 14. april klokken 12.00. Han jobber normalt fra 08.00 til 16.00 og trenger fri fra klokken 11.00 for å rekke møtet.</p>
+<p>Erik har rett til permisjon for den nødvendige tiden. Om han får lønn fra arbeidsgiver for fraværet, må avklares etter avtale, tariffavtale eller reglene for kommunestyregodtgjørelse.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Gi arbeidsgiver beskjed så tidlig som mulig. Send møteinnkalling og forklar hvor lenge du trenger fri.</p>
+<p>Avklar samtidig om fraværet registreres som permisjon med eller uten lønn, og om du skal kreve tapt arbeidsfortjeneste fra organet du møter for.</p>
+<p>Hvis arbeidsgiver nekter permisjon selv om du har lovbestemt møteplikt, bør du be om skriftlig begrunnelse.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Det er feil at alle politiske eller frivillige møter gir rett til fri fra jobben. Retten gjelder lovbestemt møteplikt i offentlige organer.</p>
+<p>Det er også feil at permisjonsretten automatisk betyr full lønn fra arbeidsgiver.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må nettbutikken opplyse om bindingstid og oppsigelse? — Rettsregel</title>
+<meta name="description" content="Ja, hvis det er relevant, skal nettbutikken før avtalen inngås opplyse om avtalens varighet, eventuell minste bindingstid og vilkårene for å si opp…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-nettbutikken-opplyse-om-bindingstid-og-oppsigelse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må nettbutikken opplyse om bindingstid og oppsigelse?">
+<meta property="og:description" content="Ja, hvis det er relevant, skal nettbutikken før avtalen inngås opplyse om avtalens varighet, eventuell minste bindingstid og vilkårene for å si opp…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-nettbutikken-opplyse-om-bindingstid-og-oppsigelse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må nettbutikken opplyse om bindingstid og oppsigelse?">
+<meta name="twitter:description" content="Ja, hvis det er relevant, skal nettbutikken før avtalen inngås opplyse om avtalens varighet, eventuell minste bindingstid og vilkårene for å si opp…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Må nettbutikken opplyse om bindingstid og oppsigelse?</h1>
+      <p class="article-description">Ja, hvis det er relevant, skal nettbutikken før avtalen inngås opplyse om avtalens varighet, eventuell minste bindingstid og vilkårene for å si opp…</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, hvis det er relevant, skal nettbutikken før avtalen inngås opplyse om avtalens varighet, eventuell minste bindingstid og vilkårene for å si opp avtalen. For betalingspliktige nettkjøp skal slike opplysninger også fremheves rett før bestillingen når de omfattes av angrerettloven § 16.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 8 første ledd bokstav n sier at den næringsdrivende, der dette er relevant, skal gi opplysninger om avtalens varighet og eventuell minste bindingstid. For avtaler uten tidsbegrensning eller avtaler som forlenges automatisk, skal det opplyses om vilkårene for å si opp avtalen.</p>
+<p>For elektroniske avtaler med betalingsforpliktelse er § 16 også viktig. Den sier at den næringsdrivende tydelig og i fremhevet form skal gjøre forbrukeren oppmerksom på opplysninger etter § 8 første ledd bokstav a, e og n umiddelbart før bestillingen.</p>
+<p>Bindingstid og oppsigelse skal altså ikke gjemmes bort hvis opplysningene er relevante for avtalen.</p>
+<h2>Når er dette relevant?</h2>
+<p>Dette er særlig relevant ved abonnementer, medlemskap, digitale tjenester, løpende leveranser og avtaler som fornyes automatisk.</p>
+<p>Hvis du bare kjøper én enkelt vare uten løpende avtale, er bindingstid normalt ikke et tema. Men hvis avtalen innebærer månedlige betalinger, automatisk forlengelse eller en periode du ikke kan si opp, er opplysningene sentrale.</p>
+<p>Forbrukeren skal kunne se hva avtalen faktisk koster og hvor lenge den varer før bestilling.</p>
+<h2>Må opplysningene vises rett før betaling?</h2>
+<p>Ved elektroniske avtaler som forplikter forbrukeren til å betale, sier § 16 at visse opplysninger skal gis tydelig og i fremhevet form umiddelbart før forbrukeren foretar bestillingen. Dette inkluderer § 8 første ledd bokstav n.</p>
+<p>Det betyr at bindingstid, varighet og oppsigelsesvilkår ikke bare bør ligge langt nede i vilkårene hvis de er relevante. De skal fremheves rett før bestillingen.</p>
+<p>I tillegg skal forbrukeren uttrykkelig erkjenne at bestillingen medfører betalingsforpliktelse. Hvis bestillingen skjer med en knapp, må knappen være merket med «bestilling med forpliktelse til å betale» eller tilsvarende.</p>
+<h2>Hva hvis nettbutikken ikke opplyste om bindingstiden?</h2>
+<p>Da kan det være brudd på opplysningsplikten etter § 8 og eventuelt § 16. Etter § 7 har den næringsdrivende bevisbyrden for at opplysningsplikten i §§ 8 til 16 og § 18 er oppfylt.</p>
+<p>Hvis § 16 annet ledd ikke er overholdt, sier § 16 tredje ledd at forbrukeren ikke blir bundet av avtalen eller bestillingen.</p>
+<p>Det betyr at en uklar betalingsknapp eller manglende uttrykkelig erkjennelse av betalingsplikt kan få svært stor betydning.</p>
+<h2>Praktisk eksempel</h2>
+<p>Emilie registrerer seg for en treningsapp 1. januar. På forsiden står det «prøv i dag», men rett før betaling står det ikke tydelig at avtalen har 12 måneders bindingstid og automatisk fornyelse. Etter to måneder oppdager hun at hun er bundet for resten av året.</p>
+<p>Hvis bindingstid og oppsigelsesvilkår var relevante for avtalen, skulle de vært opplyst etter § 8 første ledd bokstav n. Ved elektronisk bestilling med betalingsplikt skulle opplysningene også vært tydelig fremhevet rett før bestillingen etter § 16.</p>
+<p>Hvis selgeren hevder at Emilie ble bundet, må selgeren kunne dokumentere at opplysningsplikten er oppfylt.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn frem skjermbilder, ordrebekreftelse, vilkår og all informasjon du fikk før bestillingen. Se spesielt på hva som stod rett før du trykket på bestillingsknappen.</p>
+<p>Skriv til selgeren at du bestrider bindingstiden hvis den ikke ble opplyst klart før avtalen. Be dem dokumentere hvordan § 8 første ledd bokstav n og § 16 ble oppfylt.</p>
+<p>Hvis bestillingsknappen ikke gjorde betalingsforpliktelsen tydelig, vis til § 16 tredje ledd.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Noen tror at bindingstid alltid er gyldig hvis den står et sted i vilkårene. Angrerettloven krever klare opplysninger før avtalen, og ved elektronisk betaling skal relevante opplysninger fremheves rett før bestillingen.</p>
+<p>Andre tror at automatisk fornyelse ikke trenger forklaring. § 8 bokstav n sier uttrykkelig at vilkårene for å si opp avtaler uten tidsbegrensning eller avtaler som forlenges automatisk skal opplyses.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/7/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 7</div>
+  <div class="related-card-title">Det er selgeren som må bevise</div>
+</a><a href="../../lover/angrerettloven/8/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 8</div>
+  <div class="related-card-title">Hva selgeren må fortelle deg før du kjøper</div>
+</a><a href="../../lover/angrerettloven/14/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 14</div>
+  <div class="related-card-title">Krav til avtaler ved netthandel</div>
+</a><a href="../../lover/angrerettloven/16/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 16</div>
+  <div class="related-card-title">"Bestilling med forpliktelse til å betale" — den viktigste knappen på nett</div>
+</a><a href="../../lover/angrerettloven/18/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 18</div>
+  <div class="related-card-title">Bekreftelsen du skal få etter kjøpet</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

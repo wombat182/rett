@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr at angrerettloven er ufravikelig? — Rettsregel</title>
+<meta name="description" content="At angrerettloven er ufravikelig betyr at selgeren ikke kan avtale dårligere rettigheter for forbrukeren enn det loven gir.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-at-angrerettloven-er-ufravikelig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr at angrerettloven er ufravikelig?">
+<meta property="og:description" content="At angrerettloven er ufravikelig betyr at selgeren ikke kan avtale dårligere rettigheter for forbrukeren enn det loven gir.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-at-angrerettloven-er-ufravikelig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr at angrerettloven er ufravikelig?">
+<meta name="twitter:description" content="At angrerettloven er ufravikelig betyr at selgeren ikke kan avtale dårligere rettigheter for forbrukeren enn det loven gir.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva betyr at angrerettloven er ufravikelig?</h1>
+      <p class="article-description">At angrerettloven er ufravikelig betyr at selgeren ikke kan avtale dårligere rettigheter for forbrukeren enn det loven gir.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>At angrerettloven er ufravikelig betyr at selgeren ikke kan avtale dårligere rettigheter for forbrukeren enn det loven gir. Etter angrerettloven § 3 kan loven ikke fravikes ved avtale til ulempe for en forbruker. En avtale som begrenser angreretten i strid med loven, kan derfor ikke brukes mot deg.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 3 sier: Loven kan ikke fravikes ved avtale til ulempe for en forbruker.</p>
+<p>Dette kalles ofte at loven er preseptorisk eller tvingende til fordel for forbrukeren. I praksis betyr det at den næringsdrivende ikke kan skrive seg bort fra lovens minimumsrettigheter.</p>
+<h2>Hva betyr «til ulempe for en forbruker»?</h2>
+<p>Det betyr at avtalen ikke kan gi deg dårligere rettigheter enn angrerettloven gir. Selgeren kan for eksempel ikke gjøre angrefristen kortere enn lovens frist hvis loven gjelder.</p>
+<p>Selgeren kan derimot gi deg bedre rettigheter enn loven krever. For eksempel kan en butikk frivillig gi lengre returrett, så lenge dette ikke brukes til å svekke lovens angrerett.</p>
+<h2>Gjelder ufravikeligheten alltid?</h2>
+<p>Ufravikeligheten gjelder når angrerettloven gjelder. Først må du derfor sjekke om avtalen faller innenfor lovens virkeområde etter § 1, og om den ikke er unntatt etter § 2.</p>
+<p>Hvis avtalen er unntatt fra loven, hjelper det ikke å vise til § 3. Da gjelder ikke angrerettloven for avtalen.</p>
+<h2>Kan selger skrive «ingen angrerett» i vilkårene?</h2>
+<p>Selger kan bare gjøre det hvis det faktisk stemmer etter loven. Det kan for eksempel være fordi avtalen er unntatt etter § 2, eller fordi et unntak fra angreretten i § 22 gjelder.</p>
+<p>Hvis loven gir deg angrerett, kan ikke selger fjerne den ved å skrive «ingen angrerett» i salgsbetingelsene.</p>
+<h2>Hva hvis vilkårene sier 7 dagers angrefrist?</h2>
+<p>Hvis angrerettloven gjelder og ingen unntak slår inn, er den ordinære fristen etter § 21 14 dager. En avtale som gir bare 7 dager, vil være dårligere for forbrukeren og kan ikke gå foran loven.</p>
+<p>Da bør du vise til § 3 og § 21 i meldingen til selgeren.</p>
+<h2>Praktisk eksempel</h2>
+<p>Ida kjøper en lampe i en nettbutikk 1. mars. I vilkårene står det: «Angrefrist: 5 dager. Etter dette er kjøpet bindende.» Ida mottar lampen 4. mars og sender angremelding 14. mars.</p>
+<p>Hvis angrerettloven gjelder og ingen unntak gjelder, kan nettbutikken ikke forkorte lovens 14-dagersfrist til 5 dager. Angrefristen etter § 21 løper fra dagen Ida fikk varen i fysisk besittelse, og § 3 hindrer avtalevilkår til ulempe for henne.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Les vilkårene, men sammenlign dem med loven. Hvis vilkårene gir deg dårligere rettigheter enn angrerettloven, skriv til selgeren og vis til § 3.</p>
+<p>Send angremelding skriftlig innen fristen. Ta vare på kopi av meldingen, tidspunktet den ble sendt, ordrebekreftelse og vilkår. Etter § 20 er det du som har bevisbyrden for at melding om angrerett er gitt.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Noen tror at «avtale er avtale» alltid slår loven. I forbrukerforhold er det ofte feil. Angrerettloven § 3 gjør loven ufravikelig til fordel for forbrukeren.</p>
+<p>Andre tror at bedre returvilkår erstatter angreretten. En frivillig returordning kan komme i tillegg, men kan ikke ta bort lovens rettigheter der loven gjelder.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/1/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 1</div>
+  <div class="related-card-title">Hvilke kjøp loven gjelder for</div>
+</a><a href="../../lover/angrerettloven/2/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 2</div>
+  <div class="related-card-title">Når loven likevel ikke gjelder</div>
+</a><a href="../../lover/angrerettloven/3/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 3</div>
+  <div class="related-card-title">Selgeren kan ikke ta fra deg rettighetene dine</div>
+</a><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a><a href="../../lover/angrerettloven/22/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 22</div>
+  <div class="related-card-title">Når du IKKE har angrerett</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

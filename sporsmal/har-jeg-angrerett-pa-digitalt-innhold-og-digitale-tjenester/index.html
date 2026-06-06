@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg angrerett på digitalt innhold og digitale tjenester? — Rettsregel</title>
+<meta name="description" content="Du kan ha angrerett på digitalt innhold og digitale tjenester, men angreretten kan gå tapt hvis leveringen har begynt og lovens vilkår er oppfylt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-angrerett-pa-digitalt-innhold-og-digitale-tjenester/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg angrerett på digitalt innhold og digitale tjenester?">
+<meta property="og:description" content="Du kan ha angrerett på digitalt innhold og digitale tjenester, men angreretten kan gå tapt hvis leveringen har begynt og lovens vilkår er oppfylt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-angrerett-pa-digitalt-innhold-og-digitale-tjenester/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg angrerett på digitalt innhold og digitale tjenester?">
+<meta name="twitter:description" content="Du kan ha angrerett på digitalt innhold og digitale tjenester, men angreretten kan gå tapt hvis leveringen har begynt og lovens vilkår er oppfylt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Har jeg angrerett på digitalt innhold og digitale tjenester?</h1>
+      <p class="article-description">Du kan ha angrerett på digitalt innhold og digitale tjenester, men angreretten kan gå tapt hvis leveringen har begynt og lovens vilkår er oppfylt.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du kan ha angrerett på digitalt innhold og digitale tjenester, men angreretten kan gå tapt hvis leveringen har begynt og lovens vilkår er oppfylt. For betalt digitalt innhold uten fysisk medium kreves blant annet uttrykkelig forhåndssamtykke, erkjennelse av at angreretten går tapt og bekreftelse fra selgeren.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven gjelder også i flere tilfeller der forbrukeren får digitalt innhold eller digitale tjenester. § 5 definerer digitalt innhold som data som fremstilles og leveres i digital form. Digital tjeneste er blant annet en tjeneste som gjør det mulig å frembringe, behandle, lagre eller få tilgang til data i digital form, eller dele og samhandle med slike data.</p>
+<p>Hovedregelen om angrerett står i § 20, og fristen i § 21. Men § 22 har et viktig unntak for digitalt innhold som ikke leveres på et fysisk medium.</p>
+<h2>Når kan angreretten gå tapt?</h2>
+<p>For digitalt innhold som ikke leveres på fysisk medium, sier § 22 bokstav n at angreretten ikke gjelder dersom leveringen er begynt og fire vilkår er oppfylt.</p>
+<p>For det første må avtalen forplikte deg til å betale. For det andre må du uttrykkelig ha forhåndssamtykket til at levering begynner før angrefristen utløper. For det tredje må du ha erkjent at angreretten dermed går tapt. For det fjerde må den næringsdrivende ha gitt bekreftelse etter § 11 eller § 18.</p>
+<p>Hvis disse vilkårene ikke er oppfylt, er det ikke nok at selgeren bare skriver «ingen angrerett på digitale produkter».</p>
+<h2>Hva med digitale tjenester?</h2>
+<p>For tjenester som starter før angrefristen er ute, stiller §§ 12 og 19 krav om at forbrukeren uttrykkelig ber om dette når avtalen innebærer betalingsforpliktelse. Den næringsdrivende skal også be forbrukeren erkjenne at angreretten vil gå tapt når avtalen er fullt ut oppfylt.</p>
+<p>Hvis du angrer på en tjeneste som du uttrykkelig har bedt om at skal starte, kan du etter § 26 måtte betale et forholdsmessig beløp for det som er levert frem til du gir angrerettsmelding. Men betalingsplikten kan falle bort hvis selgeren ikke har gitt riktige opplysninger eller du ikke uttrykkelig har bedt om oppstart innen angrefristen.</p>
+<h2>Hva må selgeren informere om?</h2>
+<p>Før avtalen skal selgeren gi informasjon etter § 8. For digitale produkter kan det blant annet være relevant med informasjon om funksjonalitet, kompatibilitet og samvirkingsevne. Selgeren skal også informere om angreretten, fremgangsmåten for å bruke den, og eventuelle unntak eller omstendigheter der angreretten kan tapes.</p>
+<p>Etter § 18 skal selgeren innen rimelig tid etter avtalen, og senest før levering av tjenesten begynner eller ved leveringstidspunktet for varen, gi skriftlig bekreftelse på varig medium. Bekreftelsen skal inneholde opplysninger etter § 8 hvis de ikke allerede er gitt på varig medium.</p>
+<h2>Praktisk eksempel</h2>
+<p>Lina kjøper et digitalt fotokurs på nett 1. november for 2 900 kr. Før hun betaler, må hun krysse av for: «Jeg samtykker til at leveringen starter nå, før angrefristen er ute, og jeg forstår at angreretten går tapt når det digitale innholdet leveres.» Hun får også bekreftelse på e-post.</p>
+<p>Hvis kurset leveres som digitalt innhold uten fysisk medium og leveringen starter, kan angreretten være tapt etter § 22 bokstav n.</p>
+<p>Hvis nettbutikken derimot bare ga tilgang uten å innhente uttrykkelig forhåndssamtykke og uten at Lina erkjente tap av angrerett, er det ikke sikkert at selgeren kan nekte angrerett.</p>
+<h2>Hva skjer med innholdet ditt hvis du angrer?</h2>
+<p>§ 24 a gir egne regler om digitalt innhold eller digitale tjenester. Hovedregelen er at den næringsdrivende skal avstå fra å bruke innhold som du har oppgitt eller laget ved bruk av tjenesten, med flere unntak.</p>
+<p>Hvis du ber om det, skal den næringsdrivende i visse tilfeller gjøre slikt innhold tilgjengelig for deg gratis, innen rimelig frist og i et vanlig brukt og maskinlesbart format.</p>
+<p>Etter § 26 skal du som forbruker avstå fra å bruke det digitale innholdet eller den digitale tjenesten og fra å gjøre det tilgjengelig for andre når angreretten brukes.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn ut om kjøpet gjelder digitalt innhold, en digital tjeneste eller en vanlig tjeneste levert digitalt. Sjekk hva du samtykket til før betaling, og om du fikk bekreftelse på varig medium.</p>
+<p>Hvis selgeren nekter angrerett, be om dokumentasjon på alle vilkårene i § 22 bokstav n, eller kravene i §§ 12, 18, 19 og 26 hvis det gjelder en tjeneste.</p>
+<p>Send angrerettsmelding skriftlig hvis du mener fristen fortsatt løper. Ta vare på skjermbilder av avkrysningsbokser, kjøpsflyt, vilkår og ordrebekreftelse.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/5/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 5</div>
+  <div class="related-card-title">Definisjoner av begrepene i loven</div>
+</a><a href="../../lover/angrerettloven/8/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 8</div>
+  <div class="related-card-title">Hva selgeren må fortelle deg før du kjøper</div>
+</a><a href="../../lover/angrerettloven/18/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 18</div>
+  <div class="related-card-title">Bekreftelsen du skal få etter kjøpet</div>
+</a><a href="../../lover/angrerettloven/22/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 22</div>
+  <div class="related-card-title">Når du IKKE har angrerett</div>
+</a><a href="../../lover/angrerettloven/26/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 26</div>
+  <div class="related-card-title">Hva du betaler hvis du angrer på en delvis levert tjeneste</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

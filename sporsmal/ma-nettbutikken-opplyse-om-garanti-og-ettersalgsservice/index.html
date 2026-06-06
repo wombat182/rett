@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må nettbutikken opplyse om garanti og ettersalgsservice? — Rettsregel</title>
+<meta name="description" content="Ja, hvis det finnes ettersalgsservice eller kommersielle garantier, skal nettbutikken opplyse om dette og vilkårene før du kjøper.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-nettbutikken-opplyse-om-garanti-og-ettersalgsservice/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må nettbutikken opplyse om garanti og ettersalgsservice?">
+<meta property="og:description" content="Ja, hvis det finnes ettersalgsservice eller kommersielle garantier, skal nettbutikken opplyse om dette og vilkårene før du kjøper.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-nettbutikken-opplyse-om-garanti-og-ettersalgsservice/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må nettbutikken opplyse om garanti og ettersalgsservice?">
+<meta name="twitter:description" content="Ja, hvis det finnes ettersalgsservice eller kommersielle garantier, skal nettbutikken opplyse om dette og vilkårene før du kjøper.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Må nettbutikken opplyse om garanti og ettersalgsservice?</h1>
+      <p class="article-description">Ja, hvis det finnes ettersalgsservice eller kommersielle garantier, skal nettbutikken opplyse om dette og vilkårene før du kjøper.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, hvis det finnes ettersalgsservice eller kommersielle garantier, skal nettbutikken opplyse om dette og vilkårene før du kjøper. Dette følger av angrerettloven § 8 første ledd bokstav r. Opplysningen skal være klar og forståelig, slik at du vet hva garantien faktisk gir deg utover lovens vanlige rettigheter.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 8 første ledd bokstav r sier at den næringsdrivende, der dette er relevant, skal opplyse om eventuell ettersalgsservice og eventuelle kommersielle garantier, samt vilkårene for disse.</p>
+<p>Dette er en del av opplysningsplikten før avtaleinngåelse. Ved netthandel skal opplysningene etter § 14 inngå i avtalen eller gjøres tilgjengelige på en enkel og forståelig måte tilpasset fjernsalget.</p>
+<p>Hvis opplysningene først kommer etter at du har bestilt, er det ikke nødvendigvis godt nok. Poenget med § 8 er at du skal få informasjonen før du binder deg.</p>
+<h2>Hva er forskjellen på garanti og lovfestede rettigheter?</h2>
+<p>En garanti er vanligvis noe selgeren, produsenten eller en annen aktør lover i tillegg til de rettighetene du allerede har etter loven. Den kan for eksempel gi gratis reparasjon i en bestemt periode, utvidet service eller raskere hjelp.</p>
+<p>Lovfestede rettigheter, som reklamasjonsrett etter andre regler, gjelder uavhengig av om selgeren kaller noe en garanti. Angrerettloven § 8 bokstav r handler ikke om å skape selve garantien, men om at selgeren må opplyse om garantien og vilkårene hvis den brukes i avtalen eller markedsføringen.</p>
+<h2>Hva må nettbutikken forklare?</h2>
+<p>Nettbutikken bør forklare hvem som gir garantien, hvor lenge den varer, hva den dekker, hva den ikke dekker, og hva du må gjøre for å bruke den. Hvis det finnes ettersalgsservice, bør det fremgå hva servicen består i, om den koster noe, og hvordan du får tilgang til den.</p>
+<p>En garanti som bare markedsføres som «trygg handel» eller «ekstra sikkerhet» uten vilkår, kan være lite nyttig for forbrukeren. Du skal kunne forstå hva du faktisk får.</p>
+<h2>Praktisk eksempel</h2>
+<p>Nora kjøper 12. mai en robotstøvsuger på nett for 6 490 kroner. På produktsiden står det «3 års premiumgaranti», men det står ikke hvem som gir garantien, om batteriet er dekket, eller hvordan hun bruker garantien.</p>
+<p>Når støvsugeren slutter å lade etter 18 måneder, sier nettbutikken at batteriet ikke var omfattet. Da kan Nora be nettbutikken vise hvor vilkårene for garantien ble opplyst før kjøpet. Hvis garantien var relevant for kjøpsbeslutningen, skulle vilkårene vært opplyst klart etter § 8 første ledd bokstav r.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn frem produktsiden, ordrebekreftelsen og garantivilkårene. Ta skjermbilder hvis informasjonen fortsatt ligger ute.</p>
+<p>Skriv til nettbutikken og be om dokumentasjon på hvilke garantiopplysninger som ble gitt før kjøpet. Vis til angrerettloven § 8 første ledd bokstav r.</p>
+<p>Hvis garantien er uklar, bør du også skille mellom garantikrav og andre krav du kan ha etter forbrukerregler. Du mister ikke nødvendigvis lovfestede rettigheter bare fordi selgeren mener garantien ikke dekker feilen.</p>
+<h2>Vanlige misforståelser</h2>
+<p>Noen tror at «garanti» alltid betyr bedre rettigheter enn loven. Slik er det ikke alltid. En garanti må leses etter vilkårene sine.</p>
+<p>Andre tror at nettbutikken kan forklare garantien først når noe går galt. Angrerettloven krever at relevante garantiopplysninger gis før avtalen inngås.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/14/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 14</div>
+  <div class="related-card-title">Krav til avtaler ved netthandel</div>
+</a><a href="../../lover/angrerettloven/18/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 18</div>
+  <div class="related-card-title">Bekreftelsen du skal få etter kjøpet</div>
+</a><a href="../../lover/angrerettloven/7/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 7</div>
+  <div class="related-card-title">Det er selgeren som må bevise</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

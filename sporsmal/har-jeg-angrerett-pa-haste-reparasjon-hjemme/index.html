@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg angrerett på haste-reparasjon hjemme? — Rettsregel</title>
+<meta name="description" content="Du har normalt ikke angrerett på reparasjoner eller tjenester som haster, når du uttrykkelig ber den næringsdrivende komme hjem til deg for å utføre dem.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-angrerett-pa-haste-reparasjon-hjemme/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg angrerett på haste-reparasjon hjemme?">
+<meta property="og:description" content="Du har normalt ikke angrerett på reparasjoner eller tjenester som haster, når du uttrykkelig ber den næringsdrivende komme hjem til deg for å utføre dem.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-angrerett-pa-haste-reparasjon-hjemme/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg angrerett på haste-reparasjon hjemme?">
+<meta name="twitter:description" content="Du har normalt ikke angrerett på reparasjoner eller tjenester som haster, når du uttrykkelig ber den næringsdrivende komme hjem til deg for å utføre dem.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Har jeg angrerett på haste-reparasjon hjemme?</h1>
+      <p class="article-description">Du har normalt ikke angrerett på reparasjoner eller tjenester som haster, når du uttrykkelig ber den næringsdrivende komme hjem til deg for å utføre dem.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du har normalt ikke angrerett på reparasjoner eller tjenester som haster, når du uttrykkelig ber den næringsdrivende komme hjem til deg for å utføre dem. Unntaket gjelder bare det hasteoppdraget du ba om. Tilleggstjenester eller ekstra varer som ikke omfattes av hastebehovet, kan fortsatt være omfattet av angrerett.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Angrerettloven § 22 bokstav i gjør unntak fra angreretten for reparasjoner eller tjenester som det haster å få utført, der forbrukeren uttrykkelig ber den næringsdrivende om å besøke forbrukeren.</p>
+<p>Bestemmelsen er praktisk ved akutte situasjoner hjemme, for eksempel låsesmed, rørlegger eller elektriker der problemet må løses raskt.</p>
+<p>Men unntaket er avgrenset. § 22 bokstav i sier også at tilleggstjenester eller tilleggsvarer som ytes samtidig, og som ikke dekkes av første punktum, ikke omfattes av unntaket fra angreretten.</p>
+<h2>Hva betyr at det «haster»?</h2>
+<p>Loven bruker uttrykket «haster å få utført». Det peker på situasjoner der du trenger rask hjelp, ikke vanlige planlagte oppdrag.</p>
+<p>Et sprukket vannrør, en ytterdør du ikke får låst, eller strømfeil som må håndteres raskt, kan være typiske eksempler. En planlagt oppussing, montering eller service noen uker frem i tid er noe annet.</p>
+<p>Det er også et vilkår at du uttrykkelig ber den næringsdrivende besøke deg. Hvis selgeren uoppfordret oppsøker deg og selger en tjeneste, er det ikke samme situasjon.</p>
+<h2>Gjelder unntaket hele regningen?</h2>
+<p>Ikke nødvendigvis. Unntaket gjelder reparasjonen eller tjenesten som haster og som du ba om. Hvis den næringsdrivende samtidig selger deg ekstra varer eller tilleggstjenester som ikke er nødvendige for hasteoppdraget, kan disse falle utenfor unntaket.</p>
+<p>Eksempel: Du ber en låsesmed komme fordi ytterdøren ikke kan låses. Selve akuttoppdraget kan være unntatt fra angrerett. Hvis låsesmeden samtidig selger deg en dyr, ekstra sikkerhetspakke som ikke var nødvendig for å løse hasteproblemet, må det vurderes om den delen likevel kan angrerettes.</p>
+<p>Denne avgrensningen står direkte i § 22 bokstav i.</p>
+<h2>Hva hvis tjenesten ikke hastet?</h2>
+<p>Hvis tjenesten ikke hastet, må man vurdere hovedreglene. Ved fjernsalg eller avtale utenom faste forretningslokaler har du normalt angrerett etter § 20, med 14 dagers frist etter § 21.</p>
+<p>Hvis du ber om at en tjeneste skal starte før angrefristen er ute, gjelder §§ 12 og 19. Selgeren skal da kreve at du uttrykkelig ber om oppstart. Selgeren skal også be deg erkjenne at angreretten vil gå tapt når avtalen er fullt oppfylt.</p>
+<p>Hvis du bruker angreretten etter at tjenesten har startet, kan du etter § 26 måtte betale et forholdsmessig beløp for det som er levert frem til du angrer. Betalingsplikten kan falle bort hvis selgeren ikke har gitt riktige opplysninger eller ikke har innhentet riktig uttrykkelig anmodning om oppstart.</p>
+<h2>Hva med små reparasjoner under 1500 kr?</h2>
+<p>Angrerettloven § 13 har en særregel for tjenesteavtaler utenom faste forretningslokaler som ikke overstiger 1500 kr. Den gjelder når du uttrykkelig ber om reparasjoner eller vedlikehold, partene umiddelbart utfører sine forpliktelser, og kontraktssummen ikke overstiger 1500 kr.</p>
+<p>I slike tilfeller er det tilstrekkelig at den næringsdrivende gir visse grunnopplysninger, blant annet identitet, pris eller prisberegning og anslag over samlet pris. Noen opplysninger kan gis muntlig hvis du uttrykkelig samtykker.</p>
+<p>Dette er en regel om forenklet opplysningsplikt i små, umiddelbare reparasjons- og vedlikeholdsoppdrag. Den betyr ikke automatisk at alle slike oppdrag er uten angrerett; man må fortsatt se på unntakene i § 22 og reglene om tjenestestart.</p>
+<h2>Praktisk eksempel</h2>
+<p>Anne oppdager 14. desember kl. 22.30 at et rør lekker kraftig under kjøkkenvasken. Hun ringer en rørlegger og ber ham komme med en gang. Rørleggeren stanser lekkasjen og bytter en nødvendig del.</p>
+<p>Dette er en haste-tjeneste som Anne uttrykkelig ba rørleggeren komme hjem for å utføre. Selve akuttoppdraget vil normalt være unntatt fra angrerett etter § 22 bokstav i.</p>
+<p>Hvis rørleggeren samtidig selger Anne en omfattende oppgradering av hele kjøkkenopplegget som ikke var nødvendig for å stanse lekkasjen, kan den delen måtte vurderes separat.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Se på hva du faktisk ba om. Var det en akutt reparasjon eller tjeneste som hastet, eller et vanlig planlagt oppdrag?</p>
+<p>Gå gjennom fakturaen. Skill mellom akuttarbeidet, nødvendige deler og eventuelle ekstra tjenester eller varer.</p>
+<p>Hvis du mener selgeren uriktig nekter angrerett på tilleggstjenester eller ekstra varer, klag skriftlig. Be selgeren forklare hvorfor hele kravet omfattes av § 22 bokstav i.</p>
+<h2>Vanlige misforståelser</h2>
+<p>At en håndverker kom hjem til deg, betyr ikke alene at angreretten er borte. Unntaket krever at det gjaldt reparasjoner eller tjenester som hastet, og at du uttrykkelig ba om besøket.</p>
+<p>Samtidig kan du ikke bruke angreretten til å slippe å betale for et akuttoppdrag du selv ba om og som faktisk ble utført, hvis vilkårene i § 22 bokstav i er oppfylt.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="../../#skjema">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/angrerettloven/12/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 12</div>
+  <div class="related-card-title">Hvis du vil at tjenesten starter før angrefristen er ute</div>
+</a><a href="../../lover/angrerettloven/13/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 13</div>
+  <div class="related-card-title">Forenklede regler for små reparasjoner under 1500 kr</div>
+</a><a href="../../lover/angrerettloven/19/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 19</div>
+  <div class="related-card-title">Hvis du vil at en nettjeneste starter umiddelbart</div>
+</a><a href="../../lover/angrerettloven/20/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 20</div>
+  <div class="related-card-title">Slik bruker du angreretten</div>
+</a><a href="../../lover/angrerettloven/21/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 21</div>
+  <div class="related-card-title">Når starter angrefristen og hvor lenge varer den?</div>
+</a><a href="../../lover/angrerettloven/22/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 22</div>
+  <div class="related-card-title">Når du IKKE har angrerett</div>
+</a><a href="../../lover/angrerettloven/26/" class="related-card">
+  <div class="related-card-meta">Angrerettloven § 26</div>
+  <div class="related-card-title">Hva du betaler hvis du angrer på en delvis levert tjeneste</div>
+</a></div>
+</div>
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
