@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eierseksjonsloven forklart på vanlig norsk | Rettsregel</title>
+<meta name="description" content="Eierseksjonsloven paragraf for paragraf, på vanlig norsk.">
+<link rel="canonical" href="https://rettsregel.no/lover/eierseksjonsloven/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Eierseksjonsloven forklart på vanlig norsk">
+<meta property="og:description" content="Eierseksjonsloven paragraf for paragraf, på vanlig norsk.">
+<meta property="og:url" content="https://rettsregel.no/lover/eierseksjonsloven/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Eierseksjonsloven forklart på vanlig norsk">
+<meta name="twitter:description" content="Eierseksjonsloven paragraf for paragraf, på vanlig norsk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/" class="rr-nav-active">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<style>
+.lovx-page { max-width: 1080px; margin: 0 auto; padding: 36px 48px 72px; }
+
+.lovx-crumb { font-family: var(--serif); font-size: 13px; color: var(--ink-mute); margin-bottom: 44px; letter-spacing: 0.01em; }
+.lovx-crumb a { color: var(--ink-mute); text-decoration: none; }
+.lovx-crumb a:hover { color: var(--ink); }
+.lovx-crumb .sep { margin: 0 9px; opacity: 0.45; }
+.lovx-crumb .cur { color: var(--accent); }
+
+.lovx-head { margin-bottom: 30px; }
+.lovx-title { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.4vw, 38px); line-height: 1.06; letter-spacing: -0.026em; color: var(--ink); margin: 0 0 16px; }
+.lovx-desc { font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--ink-soft); margin: 0 0 16px; max-width: 580px; }
+.lovx-meta { font-family: var(--serif); font-size: 14px; color: var(--ink-mute); letter-spacing: 0.01em; }
+.lovx-meta .dot { margin: 0 10px; opacity: 0.45; }
+
+.lovx-search-wrap { position: relative; margin-bottom: 4px; }
+.lovx-search { width: 100%; box-sizing: border-box; font-family: var(--serif); font-size: 16px; color: var(--ink); background: transparent; border: none; border-bottom: 1px solid var(--ink); padding: 13px 4px 13px 28px; outline: none; }
+.lovx-search::placeholder { color: var(--ink-mute); }
+.lovx-search:focus { border-bottom-color: var(--accent); }
+.lovx-search-icon { position: absolute; left: 2px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-mute); pointer-events: none; }
+
+.lovx-layout { display: grid; grid-template-columns: 232px 1fr; gap: 0; margin-top: 48px; align-items: start; }
+
+.lovx-side { position: sticky; top: 32px; padding-right: 40px; }
+.lovx-side-block { margin-bottom: 40px; }
+.lovx-side-block:last-child { margin-bottom: 0; }
+.lovx-side-label { font-family: var(--serif); font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
+.lovx-chaplist { display: flex; flex-direction: column; }
+.lovx-chap { font-family: var(--serif); font-size: 14.5px; color: var(--ink-soft); text-decoration: none; padding: 7px 0 7px 14px; border-left: 2px solid transparent; line-height: 1.3; transition: color .15s, border-color .15s; }
+.lovx-chap:hover { color: var(--ink); border-left-color: var(--accent); }
+
+.lovx-mest { display: flex; flex-direction: column; }
+.lovx-mest-item { display: block; text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.lovx-mest-item:first-child { padding-top: 0; }
+.lovx-mest-item:last-child { border-bottom: none; }
+.lovx-mest-num { font-family: var(--serif); font-size: 13px; color: var(--accent); }
+.lovx-mest-title { font-family: var(--serif); font-size: 14px; color: var(--ink-soft); display: block; margin-top: 3px; line-height: 1.35; transition: color .15s; }
+.lovx-mest-item:hover .lovx-mest-title { color: var(--ink); }
+.lovx-side-more { display: inline-block; margin-top: 16px; font-family: var(--serif); font-size: 13px; color: var(--ink-mute); text-decoration: none; transition: color .15s; }
+.lovx-side-more:hover { color: var(--accent); }
+
+.lovx-main { min-width: 0; border-left: 1px solid var(--line); padding-left: 48px; }
+.lovx-chapter { margin-bottom: 40px; }
+.lovx-chapter:last-child { margin-bottom: 0; }
+.lovx-chapter-h { font-family: var(--serif); font-weight: 500; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-mute); margin: 0; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+
+.lovx-rows { display: flex; flex-direction: column; }
+.lovx-row { display: grid; grid-template-columns: 60px 1fr 24px; align-items: baseline; gap: 16px; padding: 19px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.lovx-row-num { font-family: var(--serif); font-size: 14px; color: var(--accent); white-space: nowrap; }
+.lovx-row-body { min-width: 0; }
+.lovx-row-title { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.25; letter-spacing: -0.012em; display: block; transition: color .15s; }
+.lovx-row-desc { font-family: var(--serif); font-size: 14.5px; color: var(--ink-mute); line-height: 1.45; margin-top: 5px; display: block; }
+.lovx-row-arrow { font-family: var(--serif); font-size: 17px; color: var(--ink-mute); line-height: 1; text-align: right; transition: color .18s, transform .22s; }
+.lovx-row:hover .lovx-row-arrow { color: var(--accent); transform: translateX(6px); }
+.lovx-row:hover .lovx-row-title { color: var(--ink); }
+
+.lovx-empty { display: none; font-family: var(--serif); font-size: 16px; color: var(--ink-mute); padding: 28px 0; }
+
+.lovx-attest { max-width: 1080px; margin: 56px auto 0; padding: 0 48px; }
+.lovx-attest-inner { border-top: 1px solid var(--line); padding-top: 20px; font-family: var(--serif); font-size: 12.5px; color: var(--ink-mute); line-height: 1.55; max-width: 640px; }
+.lovx-attest-inner a { color: var(--accent); text-decoration: none; }
+.lovx-attest-inner a:hover { color: var(--accent-deep); }
+
+@media (max-width: 860px) {
+  .lovx-page { padding: 26px 22px 56px; }
+  .lovx-crumb { margin-bottom: 32px; }
+  .lovx-layout { grid-template-columns: 1fr; margin-top: 36px; }
+  .lovx-side { position: static; padding-right: 0; margin-bottom: 8px; }
+  .lovx-side-block { margin-bottom: 32px; }
+  .lovx-chaplist { flex-direction: row; overflow-x: auto; gap: 22px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .lovx-chap { border-left: none; padding: 4px 0; white-space: nowrap; }
+  .lovx-chap:hover { border-left: none; }
+  .lovx-main { border-left: none; padding-left: 0; }
+  .lovx-attest { padding: 0 22px; }
+}
+</style>
+<main class="lovx-page">
+  <nav class="lovx-crumb" aria-label="Brødsmuler">
+    <a href="../../">Hjem</a><span class="sep">/</span><a href="../../lover/">Lover</a><span class="sep">/</span><span class="cur">Eierseksjonsloven</span>
+  </nav>
+
+  <header class="lovx-head">
+    <h1 class="lovx-title">Eierseksjonsloven</h1>
+    <p class="lovx-desc">Eierseksjonsloven paragraf for paragraf, på vanlig norsk.</p>
+    <p class="lovx-meta">71 paragrafer<span class="dot">·</span>Lov<span class="dot">·</span>Oppdatert 2026</p>
+  </header>
+
+  <div class="lovx-search-wrap">
+    <svg class="lovx-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="lovx-search" id="lovxSearch" placeholder="Søk i Eierseksjonsloven …" autocomplete="off">
+  </div>
+
+  <div class="lovx-layout">
+    <aside class="lovx-side">
+      
+      
+    </aside>
+    <div class="lovx-main" id="lovx-list">
+      <section class="lovx-chapter"><div class="lovx-rows"><a class="lovx-row" href="../../lover/eierseksjonsloven/1/"><span class="lovx-row-num">§ 1</span><span class="lovx-row-body"><span class="lovx-row-title">Formålet med loven</span><span class="lovx-row-desc">Eierseksjonsloven er laget for å skape en god balanse i et sameie. Den skal sikre at du som…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/2/"><span class="lovx-row-num">§ 2</span><span class="lovx-row-body"><span class="lovx-row-title">Hvilke boliger gjelder loven for?</span><span class="lovx-row-desc">Eierseksjonsloven gjelder for eiendommer som er formelt delt opp (seksjonert) slik at flere…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/3/"><span class="lovx-row-num">§ 3</span><span class="lovx-row-body"><span class="lovx-row-title">Forbud mot å dele opp boliger uformelt</span><span class="lovx-row-desc">Loven forbyr deg å kjøpe en bygning sammen med andre og lage en privat, uformell avtale om…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/4/"><span class="lovx-row-num">§ 4</span><span class="lovx-row-body"><span class="lovx-row-title">Hva betyr fagordene i loven? (Definisjoner)</span><span class="lovx-row-desc">Paragraf 4 er lovens ordbok. Den forklarer nøyaktig hva de forskjellige faguttrykkene…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/5/"><span class="lovx-row-num">§ 5</span><span class="lovx-row-body"><span class="lovx-row-title">Loven gjelder uansett (fravikelighet)</span><span class="lovx-row-desc">Eierseksjonsloven er en streng lov. Du, styret, eller årsmøtet kan ikke vedta regler eller…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/6/"><span class="lovx-row-num">§ 6</span><span class="lovx-row-body"><span class="lovx-row-title">Forbud mot diskriminering</span><span class="lovx-row-desc">Styret eller vedtektene kan ikke sette regler som stenger folk ute på grunn av hvem de er.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/6a/"><span class="lovx-row-num">§ 6a</span><span class="lovx-row-body"><span class="lovx-row-title">Digital og skriftlig kommunikasjon med styret</span><span class="lovx-row-desc">Styret bestemmer om sameiet skal bruke e-post, Vibbo, Bate-portalen eller papir for å sende…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/6b/"><span class="lovx-row-num">§ 6b</span><span class="lovx-row-body"><span class="lovx-row-title">Sikker oppbevaring av styrepapirer</span><span class="lovx-row-desc">Styret må passe godt på sameiets viktige papirer. De skal lagres på en trygg måte, for…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/7/"><span class="lovx-row-num">§ 7</span><span class="lovx-row-body"><span class="lovx-row-title">Syv strenge krav for å dele opp et hus</span><span class="lovx-row-desc">For å få tillatelse til å seksjonere et hus, må hver leilighet være en lovlig boenhet med…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/8/"><span class="lovx-row-num">§ 8</span><span class="lovx-row-body"><span class="lovx-row-title">Når i byggeprosessen kan du seksjonere?</span><span class="lovx-row-desc">Du kan søke om seksjonering både for ferdige hus og hus som ennå ikke er bygget. Skal du…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/9/"><span class="lovx-row-num">§ 9</span><span class="lovx-row-body"><span class="lovx-row-title">Din rett til å tvinge frem seksjonering</span><span class="lovx-row-desc">Hvis du bor i et "tingsrettslig sameie" — en bygning med flere leiligheter som dere eier…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/10/"><span class="lovx-row-num">§ 10</span><span class="lovx-row-body"><span class="lovx-row-title">Slik opprettes en eierseksjon formelt</span><span class="lovx-row-desc">En eierseksjon er formelt og lovlig opprettet først når kommunens vedtak om seksjonering er…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/11/"><span class="lovx-row-num">§ 11</span><span class="lovx-row-body"><span class="lovx-row-title">Dette må du ha med i søknaden om seksjonering</span><span class="lovx-row-desc">For å seksjonere må du fylle ut kommunens skjema med informasjon om eiendommen, en eierbrøk…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/12/"><span class="lovx-row-num">§ 12</span><span class="lovx-row-body"><span class="lovx-row-title">Hva gjør kommunen med søknaden din? (Avvisning og avslag)</span><span class="lovx-row-desc">Når du søker om å seksjonere boligen, kan kommunen gjøre to ting hvis noe er feil. Hvis du…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/13/"><span class="lovx-row-num">§ 13</span><span class="lovx-row-body"><span class="lovx-row-title">Hva inneholder kommunens vedtak?</span><span class="lovx-row-desc">Når kommunen godkjenner seksjoneringen, lager de et offisielt vedtak. Dette dokumentet…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/14/"><span class="lovx-row-num">§ 14</span><span class="lovx-row-body"><span class="lovx-row-title">Frist for kommunen og rabatt ved forsinkelse</span><span class="lovx-row-desc">Kommunen har nøyaktig 12 uker på seg til å behandle søknaden din om seksjonering og føre…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/15/"><span class="lovx-row-num">§ 15</span><span class="lovx-row-body"><span class="lovx-row-title">Hva koster det å seksjonere? (Gebyrer)</span><span class="lovx-row-desc">Å seksjonere koster penger. Kommunen tar betalt for den tiden de bruker på papirarbeidet,…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/16/"><span class="lovx-row-num">§ 16</span><span class="lovx-row-body"><span class="lovx-row-title">Du kan klage hvis kommunen sier nei</span><span class="lovx-row-desc">Får du avslag på seksjoneringen, eller setter kommunen vilkår du er uenig i, kan du klage.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/17/"><span class="lovx-row-num">§ 17</span><span class="lovx-row-body"><span class="lovx-row-title">Kommunens jobb med å sende saken til tinglysing</span><span class="lovx-row-desc">Når kommunen har sagt endelig ja til seksjoneringen, og ingen har klaget, må kommunen pakke…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/18/"><span class="lovx-row-num">§ 18</span><span class="lovx-row-body"><span class="lovx-row-title">Beviset ditt (Matrikkelbrevet)</span><span class="lovx-row-desc">Når Tinglysingen har ført leilighetene dine inn i grunnboken, gir de beskjed tilbake til…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/19/"><span class="lovx-row-num">§ 19</span><span class="lovx-row-body"><span class="lovx-row-title">Må sameiet ha et eget organisasjonsnummer?</span><span class="lovx-row-desc">Har sameiet ni eller flere leiligheter, er dere tvunget til å registrere sameiet i…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/20/"><span class="lovx-row-num">§ 20</span><span class="lovx-row-body"><span class="lovx-row-title">Slik deler eller slår du sammen leiligheter</span><span class="lovx-row-desc">Du har i utgangspunktet rett til å dele leiligheten din i to mindre boliger, eller slå to…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/21/"><span class="lovx-row-num">§ 21</span><span class="lovx-row-body"><span class="lovx-row-title">Andre endringer: Bygge på eller gjøre butikk til bolig?</span><span class="lovx-row-desc">Vil du endre formålet med seksjonen din fra butikk til bolig (eller omvendt), *må* du ha to…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/22/"><span class="lovx-row-num">§ 22</span><span class="lovx-row-body"><span class="lovx-row-title">Når kommunen tvinger deg til å rydde opp (Tvungen reseksjonering)</span><span class="lovx-row-desc">Hvis en utbygger bommet helt, og det ferdige bygget ikke ser ut som tegningene kommunen…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/22a/"><span class="lovx-row-num">§ 22a</span><span class="lovx-row-body"><span class="lovx-row-title">Sammenslåing av to sameier</span><span class="lovx-row-desc">To nabo-sameier kan velge å slå seg sammen til ett stort sameie. For å gjøre dette må minst…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/22b/"><span class="lovx-row-num">§ 22b</span><span class="lovx-row-body"><span class="lovx-row-title">Slik skal planen for sammenslåing se ut</span><span class="lovx-row-desc">Styret må lage en konkret plan før årsmøtet kan stemme over sammenslåing av to sameier.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/23/"><span class="lovx-row-num">§ 23</span><span class="lovx-row-body"><span class="lovx-row-title">Kan jeg eie tre leiligheter i samme sameie? (Begrensninger)</span><span class="lovx-row-desc">Loven forbyr deg å kjøpe eller eie mer enn to boligseksjoner i det samme…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/23a/"><span class="lovx-row-num">§ 23a</span><span class="lovx-row-body"><span class="lovx-row-title">Unntak for selskaper som tilbyr leie-til-eie og deleie</span><span class="lovx-row-desc">For å hjelpe folk inn på boligmarkedet, gjelder ikke forbudet mot å eie mer enn to…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/23b/"><span class="lovx-row-num">§ 23b</span><span class="lovx-row-body"><span class="lovx-row-title">Fristen (foreldelse) for å bruke leie-til-eie-retten din</span><span class="lovx-row-desc">Når du har en avtale om leie-til-eie, har du en spesiell rett til å kjøpe boligen. Loven…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/24/"><span class="lovx-row-num">§ 24</span><span class="lovx-row-body"><span class="lovx-row-title">Din rett til å selge og leie ut (og Airbnb-regelen)</span><span class="lovx-row-desc">Som utgangspunkt kan du selge, pantsette eller leie ut leiligheten din helt fritt, til hvem…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/25/"><span class="lovx-row-num">§ 25</span><span class="lovx-row-body"><span class="lovx-row-title">Hvor mye bråk må du tåle? (Bruk av bolig og fellesareal)</span><span class="lovx-row-desc">Du har full rett til å bruke leiligheten din og fellesområdene, men du må gjøre det uten å…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/25a/"><span class="lovx-row-num">§ 25a</span><span class="lovx-row-body"><span class="lovx-row-title">Din rett til å montere lader for elbil</span><span class="lovx-row-desc">Har du en egen parkeringsplass (eller rett til å parkere på sameiets område), kan du kreve…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/26/"><span class="lovx-row-num">§ 26</span><span class="lovx-row-body"><span class="lovx-row-title">HC-parkering og tilrettelegging i sameiet</span><span class="lovx-row-desc">Har du eller noen i familien din en nedsatt funksjonsevne, kan du kreve å gjøre små…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/27/"><span class="lovx-row-num">§ 27</span><span class="lovx-row-body"><span class="lovx-row-title">Krav til sameiets vedtekter</span><span class="lovx-row-desc">Alle sameier må ha vedtekter (husets "grunnlov"). De trenger bare å inneholde eiendommens…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/28/"><span class="lovx-row-num">§ 28</span><span class="lovx-row-body"><span class="lovx-row-title">Husordensregler og dyrehold i sameiet</span><span class="lovx-row-desc">Årsmøtet kan vedta vanlige husregler for ro og orden i bygget. Hovedregelen i Norge er at…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/29/"><span class="lovx-row-num">§ 29</span><span class="lovx-row-body"><span class="lovx-row-title">Slik skal felleskostnadene deles (Sameiebrøken)</span><span class="lovx-row-desc">Fellesutgifter (felleskostnader) skal normalt fordeles etter eierandelen din…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/30/"><span class="lovx-row-num">§ 30</span><span class="lovx-row-body"><span class="lovx-row-title">Er du ansvarlig hvis sameiet går konkurs?</span><span class="lovx-row-desc">Hvis sameiet som helhet skylder penger og ikke kan betale regningen sin (for eksempel for…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/31/"><span class="lovx-row-num">§ 31</span><span class="lovx-row-body"><span class="lovx-row-title">Hva skjer hvis naboen ikke betaler fellesutgiftene? (Legalpant)</span><span class="lovx-row-desc">Hvis du ikke betaler din andel av felleskostnadene, har sameiet automatisk en lovfestet…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/32/"><span class="lovx-row-num">§ 32</span><span class="lovx-row-body"><span class="lovx-row-title">Din plikt til å vedlikeholde egen bolig</span><span class="lovx-row-desc">Du har ansvaret for alt innvendig vedlikehold i din egen leilighet. Du må rense sluket,…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/33/"><span class="lovx-row-num">§ 33</span><span class="lovx-row-body"><span class="lovx-row-title">Sameiets ansvar for felles vedlikehold</span><span class="lovx-row-desc">Alt som du ikke har ansvar for inne i leiligheten din (jf. § 32), har sameiet ansvaret for.…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/34/"><span class="lovx-row-num">§ 34</span><span class="lovx-row-body"><span class="lovx-row-title">Skadet du naboens leilighet? Slik fungerer erstatningsansvaret</span><span class="lovx-row-desc">Hvis du forsømmer vedlikeholdet i din egen leilighet og dette skader naboens bolig eller…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/35/"><span class="lovx-row-num">§ 35</span><span class="lovx-row-body"><span class="lovx-row-title">Kan du saksøke sameiet for skader?</span><span class="lovx-row-desc">Hvis sameiet slurver med vedlikeholdet av fellesområdene (som tak og rørstammer) og dette…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/36/"><span class="lovx-row-num">§ 36</span><span class="lovx-row-body"><span class="lovx-row-title">Kan erstatningen bli satt ned? (Omfang av erstatning)</span><span class="lovx-row-desc">Når du krever erstatning av naboen eller styret for en skade, gjelder det tre…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/37/"><span class="lovx-row-num">§ 37</span><span class="lovx-row-body"><span class="lovx-row-title">Når avtalen ble inngått av noen andre (Krav mot tidligere avtalepart)</span><span class="lovx-row-desc">Hvis den forrige eieren av leiligheten din hyret inn en dårlig rørlegger, og røret sprekker…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/38/"><span class="lovx-row-num">§ 38</span><span class="lovx-row-body"><span class="lovx-row-title">Styrets mektigste våpen (Salgspålegg)</span><span class="lovx-row-desc">Hvis en boligeier gang på gang bryter reglene, ødelegger for naboene eller nekter å betale…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/39/"><span class="lovx-row-num">§ 39</span><span class="lovx-row-body"><span class="lovx-row-title">Nødknappen for å få naboen kastet ut i dag (Fravikelse)</span><span class="lovx-row-desc">Hvis en eier (eller leietakeren deres) oppfører seg ekstremt farlig eller ødeleggende for…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/40/"><span class="lovx-row-num">§ 40</span><span class="lovx-row-body"><span class="lovx-row-title">Årsmøtet er sjefen (Myndighet og mindretallsvern)</span><span class="lovx-row-desc">Årsmøtet er det aller høyeste organet i et eierseksjonssameie. De kan gjøre om på styrets…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/41/"><span class="lovx-row-num">§ 41</span><span class="lovx-row-body"><span class="lovx-row-title">Slik arrangerer du et lovlig ordinært årsmøte</span><span class="lovx-row-desc">Det ordinære årsmøtet skal alltid holdes innen utgangen av juni hvert år. Styret kan velge…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/42/"><span class="lovx-row-num">§ 42</span><span class="lovx-row-body"><span class="lovx-row-title">Slik kaller du inn til ekstraordinært årsmøte</span><span class="lovx-row-desc">Man trenger ikke alltid vente på vårens faste årsmøte. Hvis styret synes noe er akutt og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/43/"><span class="lovx-row-num">§ 43</span><span class="lovx-row-body"><span class="lovx-row-title">Slik kaller styret inn til årsmøte (Fristene)</span><span class="lovx-row-desc">Styret må kalle inn til det vanlige årsmøtet minst åtte dager før det holdes, men ikke mer…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/44/"><span class="lovx-row-num">§ 44</span><span class="lovx-row-body"><span class="lovx-row-title">Dette må årsmøtet alltid handle om</span><span class="lovx-row-desc">Det faste (ordinære) årsmøtet må alltid gjennomgå tre ting: Styrets årsmelding (hvis de har…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/45/"><span class="lovx-row-num">§ 45</span><span class="lovx-row-body"><span class="lovx-row-title">Kan vi stemme over ting som ikke står på sakslisten?</span><span class="lovx-row-desc">Nei. Årsmøtet kan som hovedregel bare diskutere og ta bindende valg i saker som allerede…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/46/"><span class="lovx-row-num">§ 46</span><span class="lovx-row-body"><span class="lovx-row-title">Hvem får være med på årsmøtet?</span><span class="lovx-row-desc">Alle eiere har full rett til å delta og stemme. Du kan også ta med deg en rådgiver,…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/47/"><span class="lovx-row-num">§ 47</span><span class="lovx-row-body"><span class="lovx-row-title">Hvem styrer showet på årsmøtet? (Møteleder)</span><span class="lovx-row-desc">Styrelederen har automatisk jobben med å lede årsmøtet og holde orden på sakene. Hvis…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/48/"><span class="lovx-row-num">§ 48</span><span class="lovx-row-body"><span class="lovx-row-title">Når du ikke får lov til å stemme (Inhabilitet)</span><span class="lovx-row-desc">Du har i utgangspunktet alltid stemmerett for leiligheten din. Men du blir "inhabil" — og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/52/"><span class="lovx-row-num">§ 52</span><span class="lovx-row-body"><span class="lovx-row-title">Hvordan teller dere stemmer på årsmøtet?</span><span class="lovx-row-desc">I rene boligsameier får hver leilighet (seksjon) én stemme, uansett hvor stor leiligheten…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/53/"><span class="lovx-row-num">§ 53</span><span class="lovx-row-body"><span class="lovx-row-title">Plikten til å skrive og signere en møteprotokoll</span><span class="lovx-row-desc">Møtelederen har et lovfestet ansvar for å skrive et referat (protokoll) fra årsmøtet. Dette…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/54/"><span class="lovx-row-num">§ 54</span><span class="lovx-row-body"><span class="lovx-row-title">Kravet om et styre og hvem som kan sitte der</span><span class="lovx-row-desc">Ethvert sameie *må* ha et styre, selv om dere bare er to naboer. Standardkravet er at…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/55/"><span class="lovx-row-num">§ 55</span><span class="lovx-row-body"><span class="lovx-row-title">Hvordan velges styret? (Tjenestetid og penger)</span><span class="lovx-row-desc">Styremedlemmer velges med vanlig flertall på årsmøtet, og de velges for to år av gangen…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/56/"><span class="lovx-row-num">§ 56</span><span class="lovx-row-body"><span class="lovx-row-title">Slik holder styret møter og treffer beslutninger</span><span class="lovx-row-desc">Styret fatter sine vedtak på styremøter. For at et vedtak skal være gyldig, må mer enn…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/57/"><span class="lovx-row-num">§ 57</span><span class="lovx-row-body"><span class="lovx-row-title">Hva er egentlig styrets jobb? (Styrets oppgaver)</span><span class="lovx-row-desc">Styret har som hovedoppgave å holde bygget forsvarlig ved like (bytte tak og rør), betale…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/58/"><span class="lovx-row-num">§ 58</span><span class="lovx-row-body"><span class="lovx-row-title">Hva kan styret bestemme på egenhånd? (Styrets beslutningsmyndighet)</span><span class="lovx-row-desc">Styret har enorm makt. De kan faktisk bestemme, kjøpe og gjøre *alt* i den daglige driften…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/59/"><span class="lovx-row-num">§ 59</span><span class="lovx-row-body"><span class="lovx-row-title">Når får du ikke stemme i styret? (Inhabilitet for styret)</span><span class="lovx-row-desc">Sitter du i styret, er det forbudt for deg å delta i behandlingen (diskusjonen) og…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/60/"><span class="lovx-row-num">§ 60</span><span class="lovx-row-body"><span class="lovx-row-title">Kan styrelederen undertegne avtaler for alle? (Signaturrett og ansvar)</span><span class="lovx-row-desc">Styrelederen har automatisk fullmakt (signaturrett) til å skrive under kontrakter og inngå…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/61/"><span class="lovx-row-num">§ 61</span><span class="lovx-row-body"><span class="lovx-row-title">Må vi ha en forretningsfører i sameiet?</span><span class="lovx-row-desc">Det er helt frivillig å ansette en forretningsfører (for eksempel OBOS, USBL eller et…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/62/"><span class="lovx-row-num">§ 62</span><span class="lovx-row-body"><span class="lovx-row-title">Hva kan egentlig forretningsføreren bestemme?</span><span class="lovx-row-desc">En forretningsfører kan bare fatte beslutninger hvis styret deres spesifikt har overført…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/63/"><span class="lovx-row-num">§ 63</span><span class="lovx-row-body"><span class="lovx-row-title">Når forretningsføreren må forlate rommet (Inhabilitet)</span><span class="lovx-row-desc">Forretningsføreren din kan aldri delta i å behandle eller avgjøre en sak hvis de (eller…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/63a/"><span class="lovx-row-num">§ 63a</span><span class="lovx-row-body"><span class="lovx-row-title">Eierskiftegebyr (Hva koster det å flytte inn og ut?)</span><span class="lovx-row-desc">Ja, et sameie kan kreve et gebyr (eierskiftegebyr) for alt papirarbeidet når en leilighet…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/64/"><span class="lovx-row-num">§ 64</span><span class="lovx-row-body"><span class="lovx-row-title">Kravet til et ryddig regnskap</span><span class="lovx-row-desc">Styret har ansvaret for at regnskapet holdes i orden. Regnskapet fra i fjor skal alltid…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/65/"><span class="lovx-row-num">§ 65</span><span class="lovx-row-body"><span class="lovx-row-title">Når er sameiet pålagt å ha revisor?</span><span class="lovx-row-desc">Har sameiet 21 leiligheter (seksjoner) eller flere, sier loven at dere *må* betale for en…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a><a class="lovx-row" href="../../lover/eierseksjonsloven/66/"><span class="lovx-row-num">§ 66</span><span class="lovx-row-body"><span class="lovx-row-title">Ikrafttredelse og overgangsregler</span><span class="lovx-row-desc">Dagens eierseksjonslov trådte i kraft 1. januar 2018 (paragraf 9 litt senere). Gamle…</span></span><span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a></div></section>
+      <p class="lovx-empty" id="lovxEmpty">Ingen paragrafer matcher søket.</p>
+    </div>
+  </div>
+</main>
+
+<div class="lovx-attest">
+  <p class="lovx-attest-inner">Juridisk informasjon, ikke rådgivning. Innholdet bygger på gjeldende norsk lov. Ved en konkret sak — kontakt advokat. <a href="../../om/">Mer om Rettsregel &rarr;</a></p>
+</div>
+
+<script>
+(function(){
+  var inp = document.getElementById('lovxSearch');
+  if(!inp) return;
+  var rows = [].slice.call(document.querySelectorAll('.lovx-row'));
+  var chapters = [].slice.call(document.querySelectorAll('.lovx-chapter'));
+  var empty = document.getElementById('lovxEmpty');
+  inp.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var visible = 0;
+    rows.forEach(function(r){
+      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.style.display = m ? '' : 'none';
+      if(m) visible++;
+    });
+    chapters.forEach(function(c){
+      var any = false;
+      var rs = c.querySelectorAll('.lovx-row');
+      for(var i=0;i<rs.length;i++){ if(rs[i].style.display !== 'none'){ any = true; break; } }
+      c.style.display = any ? '' : 'none';
+    });
+    if(empty) empty.style.display = (visible === 0 && q) ? 'block' : 'none';
+  });
+})();
+</script>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>

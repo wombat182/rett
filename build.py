@@ -104,7 +104,27 @@ try:
 except ImportError:
     _P_BARNELOVA = []
 
-PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO + _P_INKASSO + _P_PASIENTSKADE + _P_YRKESSKADE + _P_OREIGNING + _P_FORELDELSE + _P_UHL + _P_BARNELOVA
+try:
+    from paragraphs_ferieloven import PARAGRAPHS as _P_FERIE
+except ImportError:
+    _P_FERIE = []
+
+try:
+    from paragraphs_forvaltningsloven import PARAGRAPHS as _P_FORVALTNING
+except ImportError:
+    _P_FORVALTNING = []
+
+try:
+    from paragraphs_eierseksjonsloven import PARAGRAPHS as _P_EIERSEKSJON
+except ImportError:
+    _P_EIERSEKSJON = []
+
+try:
+    from paragraphs_burettslagslova import PARAGRAPHS as _P_BURETTSLAG
+except ImportError:
+    _P_BURETTSLAG = []
+
+PARAGRAPHS = _P_BASE + _P_KJOPSLOVEN + _P_HUSLEIELOVEN + _P_AVHENDINGSLOVA + _P_NABOLOVEN + _P_NAVNELOVEN + _P_FKL + _P_ARVELOVEN + _P_BUSTAD + _P_TOMTEFESTELOVEN + _P_EKTESKAP + _P_VOLDSERSTATNING + _P_ARBEIDSMILJO + _P_INKASSO + _P_PASIENTSKADE + _P_YRKESSKADE + _P_OREIGNING + _P_FORELDELSE + _P_UHL + _P_BARNELOVA + _P_FERIE + _P_FORVALTNING + _P_EIERSEKSJON + _P_BURETTSLAG
 
 # Spørsmål-artikler (lever på /sporsmal/[slug]/)
 try:
@@ -2583,6 +2603,7 @@ def render_lover_index():
         "forbrukerkjopsloven": ("Forbrukerkjøpsloven", "kjop-og-klage", "Kjøp som forbruker — strengeste forbrukervern."),
         # Arbeid
         "arbeidsmiljoloven": ("Arbeidsmiljøloven", "arbeid", "Rettigheter på jobben — arbeidstid, oppsigelse, permisjon og varsling."),
+        "ferieloven": ("Ferieloven", "arbeid", "Ferie, feriepenger og når du har rett til fri."),
         # Arv og familie
         "barnelova": ("Barnelova", "arv-og-familie", "Foreldreansvar, fast bosted, samvær og farskap."),
         "arveloven": ("Arveloven", "arv-og-familie", "Arv, testament og pliktdel."),
@@ -2597,8 +2618,12 @@ def render_lover_index():
         "foreldelsesloven": ("Foreldelsesloven", "gjeld", "Når et krav blir foreldet — frister for gjeld og andre krav."),
         # Eiendom
         "oreigningslova": ("Oreigningslova", "eiendom", "Ekspropriasjon — når det offentlige kan ta eiendom mot erstatning."),
+        "eierseksjonsloven": ("Eierseksjonsloven", "bolig", "Eierseksjoner — sameie, felleskostnader og vedtak på årsmøtet."),
+        "burettslagslova": ("Burettslagslova", "bolig", "Borettslag — andeler, borett, fellesgjeld og generalforsamling."),
         # Utdanning
         "universitets-og-hoyskoleloven": ("Universitets- og høyskoleloven", "utdanning", "Rettigheter som student — eksamen, klage og utestenging."),
+        # Forvaltning
+        "forvaltningsloven": ("Forvaltningsloven", "forvaltning", "Dine rettigheter i møte med det offentlige — vedtak, innsyn og klage."),
     }
 
     # All categories — order matters. Empty ones will be excluded from nav and sections.
@@ -2615,6 +2640,7 @@ def render_lover_index():
         ("personvern", "Personvern"),
         ("okonomi-og-skatt", "Økonomi og skatt"),
         ("straff-og-politi", "Straff og politi"),
+        ("forvaltning", "Forvaltning"),
         ("helse", "Helse"),
     ]
 
