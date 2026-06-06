@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr privat skifte? — Rettsregel</title>
+<meta name="description" content="Privat skifte betyr at arvingene selv gjennomfører arveoppgjøret, i stedet for at tingretten styrer et offentlig skifte.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-privat-skifte/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr privat skifte?">
+<meta property="og:description" content="Privat skifte betyr at arvingene selv gjennomfører arveoppgjøret, i stedet for at tingretten styrer et offentlig skifte.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-privat-skifte/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr privat skifte?">
+<meta name="twitter:description" content="Privat skifte betyr at arvingene selv gjennomfører arveoppgjøret, i stedet for at tingretten styrer et offentlig skifte.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva betyr privat skifte?</h1>
+      <p class="article-description">Privat skifte betyr at arvingene selv gjennomfører arveoppgjøret, i stedet for at tingretten styrer et offentlig skifte.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Privat skifte betyr at arvingene selv gjennomfører arveoppgjøret, i stedet for at tingretten styrer et offentlig skifte. Minst én myndig arving må som hovedregel påta seg ansvaret for avdødes forpliktelser overfor retten. Fristen for å kreve privat skifte er normalt 60 dager etter dødsfallet.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Arveloven regulerer både hvem som arver, hva som kan bestemmes i testament, og hvordan dødsboet skal behandles etter dødsfallet. For dette spørsmålet er særlig arveloven § 98, § 116, § 117, § 118, § 119, § 120 relevant. Paragrafene må leses sammen: én regel kan peke ut hvem som har arverett, mens en annen regel kan gi ektefelle, samboer, livsarving eller kreditor en rett som påvirker det praktiske oppgjøret.</p>
+<p>Privat skifte er den vanligste skifteformen når arvingene har oversikt, boet er håndterbart og arvingene kan samarbeide. Etter § 118 utsteder tingretten skifteattest når vilkårene er oppfylt. Skifteattesten viser hvem som kan råde over boet og gjennomføre oppgjøret.</p>
+<p>Privat skifte krever kontroll på gjeldsansvaret. Den eller de som påtar seg ansvaret etter § 116, blir fullt og solidarisk ansvarlige overfor kreditorene. Øvrige arvinger er som hovedregel bare ansvarlige inntil verdien av sin arv. Er boet lite, kan ansvaret være begrenset etter særlige regler.</p>
+<p>Når loven bruker folketrygdens grunnbeløp, ofte forkortet G, må beløpet beregnes etter grunnbeløpet ved arvefallet. Det betyr at man ikke bør bruke et gammelt kronebeløp fra en artikkel, et tidligere dødsfall eller et gammelt testament uten å kontrollere hvilket grunnbeløp som gjaldt da personen døde. I publisering på rettsregel.no bør G derfor enten kobles til en oppdatert sats eller omtales som «grunnbeløpet ved arvefallet».</p>
+<h2>Hvordan slår regelen ut i praksis?</h2>
+<p>Det første du må gjøre er å plassere saken riktig. Arv etter loven handler om hvilken rekkefølge arvingene kommer i, mens arv etter testament handler om hva avdøde selv har bestemt. Skifte handler om gjennomføringen: hvem som får skifteattest, hvem som betaler gjeld, hvem som kan selge eiendeler, og hvordan booppgjøret dokumenteres. Mange konflikter i arveoppgjør oppstår fordi disse spørsmålene blandes sammen.</p>
+<p>Du bør derfor starte med tre kontrollspørsmål. For det første: finnes det ektefelle eller samboer med arverett eller uskifterett? For det andre: finnes det barn, barnebarn eller andre livsarvinger som har pliktdelsvern? For det tredje: finnes det testament, gavebrev, ektepakt, samboeravtale eller dokumentasjon på forskudd på arv? Svarene på disse spørsmålene avgjør ofte om saken er enkel eller om den må vurderes mer nøye.</p>
+<p>Det er også viktig å skille mellom bruttoverdier og netto arv. Arv fordeles ikke bare ut fra hva boligen, bilen og bankkontoene er verdt. Boets forpliktelser må trekkes fra, og ved privat skifte må arvingene ta stilling til gjeldsansvar. Før arv deles ut, bør det være klarlagt hvilke krav kreditorene har, om det bør utstedes proklama, og om det er satt av nok til skatt, begravelse, skifteomkostninger og andre massekrav.</p>
+<p>Hvis arvingene er enige og boet er oversiktlig, kan løsningen ofte gjennomføres ved privat skifte. Hvis arvingene er uenige om rettigheter, verdier, testament, gaver, bolig eller gjeld, kan offentlig skifte være et ryddigere alternativ. Tingretten er skiftemyndighet og kan gi veiledning om skifteform, skifteattest, uskifteattest og videre prosess.</p>
+<h2>Frister du bør passe på</h2>
+<p>Ved privat skifte må en arving som hovedregel påta seg ansvaret for avdødes forpliktelser innen 60 dager etter dødsfallet, jf. § 117. Retten til å kreve offentlig skifte faller som hovedregel bort tre år etter dødsfallet, jf. § 130. Ved offentlig skifte skal mottakere av utkast til booppgjør få minst to uker til å påpeke feil etter § 160, og ankefristen over booppgjøret er én måned etter § 162.</p>
+<p>Frister bør dokumenteres skriftlig. Send viktige krav til tingretten eller bostyreren skriftlig, og ta vare på kvittering, e-post eller annen dokumentasjon som viser når kravet ble sendt. I arvesaker er det ofte ikke nok å ha sagt fra muntlig til en annen arving. Når loven krever varsel til tingretten, bør du følge dette presist.</p>
+<h2>Praktisk eksempel</h2>
+<p>Tre søsken arver moren sin. Boet består av bankinnskudd, bil og en leilighet. Eldste søster påtar seg gjeldsansvaret og får skifteattest. Søsknene lager oversikt over gjeld, betaler regninger, selger bilen og fordeler resten etter arvereglene.</p>
+<p>Eksempelet viser hvorfor arveoppgjør sjelden bør løses bare ved hoderegning. En liten endring i faktum kan gi et annet resultat: et testament, et særkullsbarn, et samboerforhold med felles barn, et krav fra kreditor, et gavebrev eller en uavklart boligverdi kan endre hele oppgjøret. Det tryggeste er derfor å skrive ned forutsetningene før arven fordeles.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Finn ut om boet skal være uskifte, privat skifte eller offentlig skifte.</li>
+<li>Skaff formuesfullmakt, kontoutskrifter og oversikt over gjeld før utdeling.</li>
+<li>Lag skriftlig avtale om hvem som gjør hva ved privat skifte.</li>
+<li>Krev offentlig skifte hvis samarbeidet stopper eller rettighetene dine ikke blir ivaretatt.</li>
+</ol>
+<p>Du kan kontakte tingretten for spørsmål om skifteattest, uskifteattest, offentlig skifte, testament som er oppbevart hos retten, og praktiske frister. Tingretten gir veiledning om prosessen, men løser ikke nødvendigvis private uenigheter uten at saken bringes inn på riktig måte. Ved tvist om krav, testament eller fordeling må arvingene ofte enten bli enige skriftlig, kreve offentlig skifte eller reise sak etter reglene som gjelder for skiftet.</p>
+<p>Ved fast eiendom bør Kartverket brukes når hjemmel skal overføres eller tinglyses. Ved skattespørsmål må Skatteetaten kontaktes. Ved vergemål, mindreårige arvinger eller arvinger som ikke kan ivareta egne interesser, kan statsforvalteren få en rolle. Hvis boet har mye gjeld eller ukjente krav, bør proklama vurderes tidlig.</p>
+<h2>Vanlige misforståelser</h2>
+<ul>
+<li>Privat skifte betyr ikke at én arving kan bestemme alt alene.</li>
+<li>Offentlig skifte er ikke en straff; det er en måte å få rettslig styring på.</li>
+<li>Skifteattest er ikke det samme som at arven er ferdig fordelt.</li>
+</ul>
+<p>En annen vanlig feil er å dele ut penger for tidlig. Selv om alle arvingene er enige om hvem som skal arve, kan for tidlig utdeling skape problemer hvis det senere dukker opp gjeld, et testament, en forbigått arving eller en innsigelse mot verdsettelsen. En ryddig prosess beskytter både den som får arv og den som står ansvarlig for boet.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

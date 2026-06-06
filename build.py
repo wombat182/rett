@@ -157,7 +157,23 @@ try:
 except ImportError:
     _SP_ANGRE = []
 
-SPORSMAL = _SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL + _SP_ANGRE
+try:
+    from sporsmal_avhendingslova import SPORSMAL as _SP_AVH
+except ImportError:
+    _SP_AVH = []
+
+try:
+    from sporsmal_arveloven import SPORSMAL as _SP_ARVE
+except ImportError:
+    _SP_ARVE = []
+
+try:
+    from sporsmal_barnelova import SPORSMAL as _SP_BARNE
+except ImportError:
+    _SP_BARNE = []
+
+SPORSMAL = (_SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL
+            + _SP_ANGRE + _SP_AVH + _SP_ARVE + _SP_BARNE)
 
 # ============================================================
 # SHARED CSS (same look as homepage)
