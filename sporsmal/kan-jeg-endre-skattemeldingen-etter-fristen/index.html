@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg endre skattemeldingen etter fristen? — Rettsregel</title>
+<meta name="description" content="Fristene er avgjørende i skattesaker. Egenretting, klage og endringssak er ulike spor, og du må bruke riktig spor for den feilen du vil rette.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-endre-skattemeldingen-etter-fristen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg endre skattemeldingen etter fristen?">
+<meta property="og:description" content="Fristene er avgjørende i skattesaker. Egenretting, klage og endringssak er ulike spor, og du må bruke riktig spor for den feilen du vil rette.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-endre-skattemeldingen-etter-fristen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg endre skattemeldingen etter fristen?">
+<meta name="twitter:description" content="Fristene er avgjørende i skattesaker. Egenretting, klage og endringssak er ulike spor, og du må bruke riktig spor for den feilen du vil rette.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Skatt</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Skatt</div>
+      <h1 class="article-title">Kan jeg endre skattemeldingen etter fristen?</h1>
+      <p class="article-description">Fristene er avgjørende i skattesaker. Egenretting, klage og endringssak er ulike spor, og du må bruke riktig spor for den feilen du vil rette.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Fristene er avgjørende i skattesaker. Egenretting, klage og endringssak er ulike spor, og du må bruke riktig spor for den feilen du vil rette.</p>
+</div>
+    <div class="article-body sp-body">
+      <p>Skatteforvaltningsloven regulerer hvordan skatter og avgifter fastsettes, endres, kontrolleres og påklages. Den er prosessloven for skattesaker. Når spørsmålet er «Kan jeg endre skattemeldingen etter fristen?», må man derfor først finne ut hvilken type sak det gjelder: ordinær fastsetting gjennom skattemelding, klage på et vedtak, egenretting av en tidligere levert melding, endringssak tatt opp av Skatteetaten, tilleggsskatt, tvangsmulkt, innsyn, kontroll eller domstolsprøving. De ulike sporene har ulike frister, ulike krav til dokumentasjon og ulike rettsvirkninger. En vanlig feil er å tro at «klage», «endring» og «retting» betyr det samme. Det gjør de ikke.</p>
+<p>Klage brukes når Skatteetaten har truffet et vedtak eller når skatteoppgjøret bygger på et standpunkt du vil angripe innenfor klagereglene. Klagefristen er normalt seks uker fra meldingen om vedtaket kom frem. Klagen må være skriftlig og bør forklare hva du mener er feil, hvilket resultat du ønsker, og hvilke dokumenter som støtter synet ditt. Skatteetaten vurderer først klagen på nytt. Hvis etaten ikke gir deg helt medhold, kan saken gå videre til riktig klageinstans, ofte Skatteklagenemnda. I mindre saker eller bestemte sakstyper kan andre interne klageorganer være aktuelle. Du bør alltid lese vedtaket nøye, fordi det normalt står hvor klagen skal sendes og hvilken frist som gjelder.</p>
+<p>Egenretting er noe annet. I egenfastsettingssystemet leverer den skattepliktige selv opplysninger og fastsetter i stor grad skattegrunnlaget gjennom skattemeldingen. Hvis du oppdager en feil i en tidligere levert skattemelding, kan du i mange tilfeller sende endringsmelding. Skatteforvaltningsloven gir adgang til å endre tidligere leverte meldinger innenfor bestemte frister og vilkår. Dette kan være aktuelt hvis du har glemt et fradrag, ført feil inntekt, glemt formue, rapportert feil gevinst eller oppdaget feil i næringsoppgaver. Egenretting bør være fullstendig og etterprøvbar. Det er ikke nok å skrive at «noe er feil»; du bør vise tall, år, poster, bilag og forklaring.</p>
+<p>Skatteetaten kan også ta opp en sak til endring. Den alminnelige fristen for å ta opp saker til endring er som hovedregel fem år etter utgangen av skattleggingsperioden. I enkelte tilfeller finnes særregler, og fristen kan være kortere eller lengre avhengig av sakstype. Når Skatteetaten varsler endring, har du rett til å uttale deg. Du bør bruke den retten. Svar på faktum, ikke bare på konklusjonen. Dersom Skatteetaten bygger på feil kontoutskrift, feil klassifisering, manglende bilag eller misforstått avtale, må du forklare det konkret og legge ved dokumentasjon.</p>
+<p>Tilleggsskatt er en administrativ reaksjon som kan ilegges når skattepliktige gir uriktige eller ufullstendige opplysninger, eller unnlater å gi pliktige opplysninger, og dette kan føre til skattemessige fordeler. Ordinær tilleggsskatt er normalt 20 prosent av den skattemessige fordelen. Skjerpet tilleggsskatt kan komme i tillegg ved forsett eller grov uaktsomhet, og satsene kan da være betydelig høyere. Samtidig finnes viktige unntak. Tilleggsskatt skal ikke brukes der forholdet er unnskyldelig, der feilen er åpenbar og lett kontrollerbar i bestemte situasjoner, eller der lovens øvrige unntak slår inn. Frivillig retting før kontroll kan også gi en annen vurdering, særlig ved tidligere uoppgitte forhold.</p>
+<p>Innsynsrett er en sentral rettssikkerhetsgaranti. Du kan normalt be om å se dokumentene i din egen skattesak, og du har rett til informasjon om personopplysninger Skatteetaten behandler om deg. Det finnes unntak, for eksempel for visse interne dokumenter, kontrollhensyn eller opplysninger om andre personer, men utgangspunktet er at du skal kunne forstå hva saken bygger på. Uten innsyn blir det vanskelig å klage effektivt. Derfor bør du be om innsyn tidlig dersom du ikke forstår grunnlaget for vedtaket, eller dersom saken bygger på tredjepartsopplysninger, kontrollrapport eller skjønn.</p>
+<p>Kontroll og bokettersyn kan være belastende, men Skatteetaten har vid adgang til å kontrollere opplysninger som har betydning for skattefastsettingen. Virksomheter kan bli bedt om regnskapsmateriale, bilag, avtaler, timelister, elektroniske data, kundedokumentasjon og annen informasjon. Privatpersoner kan også måtte gi relevante opplysninger. Samtidig skal kontrollen ha hjemmel, være saklig og holde seg innenfor rammene av loven. Ved mer inngripende tiltak, som bevissikring, gjelder strengere regler. Den som kontrolleres bør opptre ryddig, men trenger ikke akseptere uklare krav uten å be om hjemmel og presisering.</p>
+<p>Betalingsplikten er et eget spørsmål. Som hovedregel må skatt betales selv om du klager. Klage stanser ikke automatisk innkreving. I noen tilfeller kan du søke om utsatt betaling eller betalingsutsettelse, men det må vurderes særskilt. Dette er viktig fordi mange blander sammen skatteforvaltningsloven og skattebetalingsloven. Den ene regulerer fastsetting, klage og kontroll; den andre regulerer betaling og innkreving. I praksis henger de sammen, men rettighetene og fristene er ikke identiske.</p>
+<p>Det praktiske rådet er å handle raskt og skriftlig. Ta vare på vedtak, skatteoppgjør, varsler, kontoutskrifter, bilag, avtaler og korrespondanse. Skriv datoen du mottok vedtaket. Regn klagefristen. Be om innsyn hvis grunnlaget er uklart. Forklar faktum kronologisk. Skill mellom dokumenterte forhold og vurderinger. Dersom saken gjelder tilleggsskatt, bør du alltid vurdere om det finnes unnskyldelige forhold, om opplysningene faktisk var uriktige eller ufullstendige, og om feilen kunne føre til en skattemessig fordel.</p>
+<p>Kort sagt: Svaret på «Kan jeg endre skattemeldingen etter fristen?» avhenger av hvilket saksforvaltningsspor saken ligger i, hvilken frist som gjelder, og hvilken dokumentasjon du kan legge frem. I skattesaker vinner man sjelden frem med generelle protester. Man vinner frem ved å treffe riktig spor, overholde fristen, dokumentere faktum og forklare hvorfor loven gir et annet resultat enn Skatteetaten har lagt til grunn.</p>
+<p>I en praktisk sak bør du ikke bare spørre om hva hovedregelen er. Du bør også spørre hva NAV eller Skatteetaten faktisk har lagt til grunn, hvilke opplysninger som mangler, og om avgjørelsen bygger på riktig regel. Mange taper saker fordi de ikke dokumenterer faktum godt nok, ikke fordi de nødvendigvis mangler rettigheter. En ryddig tidslinje, kontoutskrifter, vedtak, avtaler, fakturaer og korte forklaringer gjør saken lettere å behandle og lettere å klage på. Det er også lurt å be om skriftlig bekreftelse på muntlige beskjeder, særlig når saken gjelder penger, bolig, frister eller sanksjoner.</p>
+<p>Husk også at disse reglene skal brukes på mennesker og konkrete situasjoner. Forvaltningen har skjønnsrom, men skjønnet er ikke fritt. Likebehandling, forholdsmessighet, forsvarlig utredning, begrunnelse og klageadgang er grunnleggende krav. Når et vedtak virker feil, bør du lese begrunnelsen nøye og kontrollere om alle relevante opplysninger er vurdert. Er noe utelatt, bør du peke på det i en klage eller anmodning om ny vurdering.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -267,13 +267,56 @@ try:
 except ImportError:
     _SP_DOMMER = []
 
+try:
+    from sporsmal_sameieloven import SPORSMAL as _SP_SAMEIE
+except ImportError:
+    _SP_SAMEIE = []
+try:
+    from sporsmal_planbygningsloven import SPORSMAL as _SP_PLANBYGG
+except ImportError:
+    _SP_PLANBYGG = []
+try:
+    from sporsmal_personopplysningsloven import SPORSMAL as _SP_PERSONVERN
+except ImportError:
+    _SP_PERSONVERN = []
+try:
+    from sporsmal_pasientrettighetsloven import SPORSMAL as _SP_PASIENTRETT
+except ImportError:
+    _SP_PASIENTRETT = []
+try:
+    from sporsmal_sosialtjenesteloven import SPORSMAL as _SP_SOSIAL
+except ImportError:
+    _SP_SOSIAL = []
+try:
+    from sporsmal_skatteforvaltningsloven import SPORSMAL as _SP_SKATTEFORV
+except ImportError:
+    _SP_SKATTEFORV = []
+try:
+    from sporsmal_statsborgerloven import SPORSMAL as _SP_STATSBORGER
+except ImportError:
+    _SP_STATSBORGER = []
+try:
+    from sporsmal_tvangsfullbyrdelsesloven import SPORSMAL as _SP_TVANG
+except ImportError:
+    _SP_TVANG = []
+try:
+    from sporsmal_utlendingsloven import SPORSMAL as _SP_UTLENDING
+except ImportError:
+    _SP_UTLENDING = []
+try:
+    from sporsmal_vergemalsloven import SPORSMAL as _SP_VERGEMAL
+except ImportError:
+    _SP_VERGEMAL = []
+
 SPORSMAL = (_SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL
             + _SP_ANGRE + _SP_AVH + _SP_ARVE + _SP_BARNE
             + _SP_STRAFF + _SP_INKASSO + _SP_VEGTRAFIKK
             + _SP_FERIE + _SP_BUSTAD + _SP_FORVALTNING
             + _SP_TOMTE + _SP_NABO + _SP_BORETT + _SP_EIER + _SP_FORELD + _SP_PASIENT
             + _SP_UNI + _SP_NAVN + _SP_VOLD + _SP_YRKE + _SP_EKSPRO + _SP_GRUNN
-            + _SP_DOMMER)
+            + _SP_DOMMER
+            + _SP_SAMEIE + _SP_PLANBYGG + _SP_PERSONVERN + _SP_PASIENTRETT + _SP_SOSIAL
+            + _SP_SKATTEFORV + _SP_STATSBORGER + _SP_TVANG + _SP_UTLENDING + _SP_VERGEMAL)
 
 # ============================================================
 # SHARED CSS (same look as homepage)
@@ -3395,6 +3438,11 @@ def render_sporsmal_hub():
         "utdanning": "utdanning-og-studier",
         "grunnlov": "grunnlov-og-rettigheter",
         "hoyesterettsdommer": "kjente-dommer",
+        "personvern": "personvern-og-data",
+        "helse": "helse-og-velferd",
+        "velferd": "helse-og-velferd",
+        "innvandring": "innvandring-og-statsborgerskap",
+        "skatt": "skatt-og-avgift",
         "tjenester": "selskap",
     }
 
@@ -3413,6 +3461,10 @@ def render_sporsmal_hub():
         ("utdanning-og-studier", "Utdanning"),
         ("grunnlov-og-rettigheter", "Grunnlov og rettigheter"),
         ("kjente-dommer", "Kjente dommer"),
+        ("personvern-og-data", "Personvern og data"),
+        ("helse-og-velferd", "Helse og velferd"),
+        ("innvandring-og-statsborgerskap", "Innvandring og statsborgerskap"),
+        ("skatt-og-avgift", "Skatt og avgift"),
     ]
 
     # Group sporsmal under new categories

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er vilkår for sosialhjelp? — Rettsregel</title>
+<meta name="description" content="NAV kan stille aktivitetskrav og andre vilkår, men bare når vilkåret er saklig, konkret, rimelig og tilpasset din situasjon.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-vilkar-for-sosialhjelp/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er vilkår for sosialhjelp?">
+<meta property="og:description" content="NAV kan stille aktivitetskrav og andre vilkår, men bare når vilkåret er saklig, konkret, rimelig og tilpasset din situasjon.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-vilkar-for-sosialhjelp/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er vilkår for sosialhjelp?">
+<meta name="twitter:description" content="NAV kan stille aktivitetskrav og andre vilkår, men bare når vilkåret er saklig, konkret, rimelig og tilpasset din situasjon.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Velferd</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Velferd</div>
+      <h1 class="article-title">Hva er vilkår for sosialhjelp?</h1>
+      <p class="article-description">NAV kan stille aktivitetskrav og andre vilkår, men bare når vilkåret er saklig, konkret, rimelig og tilpasset din situasjon.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>NAV kan stille aktivitetskrav og andre vilkår, men bare når vilkåret er saklig, konkret, rimelig og tilpasset din situasjon. Vilkår kan ikke brukes som straff eller som en snarvei til å nekte nødvendig livsopphold.</p>
+</div>
+    <div class="article-body sp-body">
+      <p>Sosialtjenesteloven bygger på et ganske enkelt utgangspunkt: kommunen, gjennom NAV-kontoret, skal gi hjelp når en person ikke kan sørge for sitt nødvendige livsopphold gjennom arbeid, egne midler, trygd, andre ytelser eller andre rettigheter. Økonomisk sosialhjelp er derfor ikke ment som en vanlig inntekt på linje med lønn, pensjon eller dagpenger. Den er et siste sikkerhetsnett. Det betyr samtidig at NAV må gjøre en konkret og individuell vurdering. NAV kan ikke bare slå opp i en tabell, se på én inntektspost og avslå uten å vurdere hele situasjonen. Utgifter, barn, bolig, helse, gjeldspress, akutt fare for strømstans, fare for utkastelse og muligheten til å skaffe inntekt selv er eksempler på forhold som kan ha betydning.</p>
+<p>Når spørsmålet er «Hva er vilkår for sosialhjelp?», er det viktig å skille mellom rettigheten og beløpet. Retten til hjelp følger av behovet for nødvendig livsopphold. Beløpet følger av en vurdering av hva du faktisk mangler etter at NAV har sett på inntekter, disponible midler og nødvendige utgifter. De statlige satsene for sosialhjelp er veiledende, ikke absolutte. Kommunen kan ha egne satser, og NAV kan både gi mer og mindre enn satsen når saken tilsier det. Satsene skal ikke brukes mekanisk dersom det gir et uforsvarlig resultat. Har du særskilte behov, for eksempel dokumenterte helseutgifter, barn med nødvendige aktiviteter, høye boutgifter som ikke kan reduseres raskt, eller en akutt situasjon, må NAV vurdere dette konkret.</p>
+<p>Søknaden bør være så praktisk og dokumentert som mulig. Du bør forklare hva du søker om, hvilken periode søknaden gjelder, hvilke regninger som haster, hva du har av inntekter, hva du har på konto, og hvorfor du ikke kan dekke utgiftene selv. Typiske vedlegg er kontoutskrifter, husleiekontrakt, strømregning, fakturaer, dokumentasjon på lønn eller ytelser, vedtak fra NAV stat, oversikt over gjeld og eventuelt dokumentasjon på helseforhold eller familiesituasjon. NAV kan be om nødvendige opplysninger, men skal ikke kreve mer enn det som trengs for å avgjøre saken. Hvis saken haster, bør du skrive det tydelig og be om akutt vurdering samme dag eller så raskt som mulig.</p>
+<p>NAV kan stille vilkår når vilkårene har saklig sammenheng med formålet med hjelpen og ikke er uforholdsmessig tyngende. Aktivitetskrav kan være aktuelt, særlig for personer som kan komme i arbeid eller aktivitet. Slike vilkår må være konkrete, forståelige og tilpasset din situasjon. NAV må vurdere helse, omsorgsoppgaver, språk, arbeidsevne, rusproblemer, boligproblemer og andre forhold før det settes krav. Hvis du ikke oppfyller et vilkår, kan NAV i noen tilfeller redusere stønaden, men NAV kan ikke kutte så langt ned at du står uten det helt nødvendige til mat, bolig, strøm og andre grunnleggende behov. Barns behov skal vurderes særskilt.</p>
+<p>Formue, bil, bolig og sparepenger kan påvirke vurderingen, men svaret er sjelden helt automatisk. Sosialhjelp er behovsprøvd, og NAV kan normalt kreve at du bruker tilgjengelige midler før kommunen betaler. Likevel må NAV vurdere om det er realistisk og forsvarlig å omsette eiendeler. En bil kan være nødvendig for arbeid, sykdom, barn, avstand til kollektivtransport eller andre tungtveiende forhold. En bolig kan ha stor verdi, men det betyr ikke nødvendigvis at den kan eller bør selges umiddelbart for å dekke en kortvarig krise. NAV kan gi midlertidig hjelp, stille vilkår eller vurdere lån i enkelte situasjoner, men må begrunne hvorfor løsningen er rimelig.</p>
+<p>Vedtaket fra NAV skal være skriftlig og begrunnet. Det skal stå hva du får, hvilken periode hjelpen gjelder for, hvilke utgifter NAV har lagt til grunn, hvilke inntekter som er regnet med, hvilke vilkår som gjelder, og hvordan du kan klage. Hvis du får avslag eller for lav stønad, bør du klage skriftlig. Klagen sendes til NAV-kontoret, som først vurderer saken på nytt. Hvis NAV ikke gir deg medhold, går saken videre til Statsforvalteren. I klagen bør du være konkret: vis hva som er feil i faktum, hvilke utgifter som ikke er tatt med, hvorfor et vilkår ikke passer, eller hvorfor stønaden ikke dekker nødvendig livsopphold. Legg ved dokumentasjon.</p>
+<p>For mange er sosialhjelp tett knyttet til andre tjenester. NAV-kontoret har også plikt til å gi opplysning, råd og veiledning, inkludert økonomisk rådgivning og gjeldsrådgivning. Har du ikke et sted å bo, kan kommunen ha plikt til å skaffe midlertidig botilbud i en nødssituasjon. Har du langvarige og sammensatte problemer, kan kvalifiseringsprogram, individuell plan eller tettere oppfølging være aktuelt. Poenget er at sosialtjenesteloven ikke bare handler om å overføre penger. Den handler også om hjelp til å komme ut av en vanskelig situasjon.</p>
+<p>Det praktiske rådet er å være presis, rask og skriftlig. Søk før situasjonen blir helt fastlåst. Meld fra om endringer i inntekt, arbeid, bosted eller familieforhold. Be om skriftlig vedtak hvis du får muntlig avslag eller beskjed om at du «ikke har krav». Be om samtale dersom saken er komplisert. Ta gjerne med en støtteperson. Dersom du mangler penger til mat, medisiner, strøm eller tak over hodet, må du skrive at saken gjelder nødhjelp eller akutt livsopphold. NAV kan fortsatt be om dokumentasjon, men kan ikke la en åpenbart akutt situasjon bli liggende som en vanlig søknad i lang tid.</p>
+<p>Kort sagt: Svaret på «Hva er vilkår for sosialhjelp?» beror på en konkret vurdering av behov, inntekter, utgifter, muligheter og dokumentasjon. Sosialhjelp er individuell, midlertidig og behovsprøvd. NAV har rett til å undersøke økonomien din, men du har også rett til en konkret vurdering, en forståelig begrunnelse og reell klageadgang. Det viktigste er ikke hva ordet «sats» eller «norm» sier alene, men om du faktisk har nok til et forsvarlig livsopphold i den situasjonen du står i.</p>
+<p>I en praktisk sak bør du ikke bare spørre om hva hovedregelen er. Du bør også spørre hva NAV eller Skatteetaten faktisk har lagt til grunn, hvilke opplysninger som mangler, og om avgjørelsen bygger på riktig regel. Mange taper saker fordi de ikke dokumenterer faktum godt nok, ikke fordi de nødvendigvis mangler rettigheter. En ryddig tidslinje, kontoutskrifter, vedtak, avtaler, fakturaer og korte forklaringer gjør saken lettere å behandle og lettere å klage på. Det er også lurt å be om skriftlig bekreftelse på muntlige beskjeder, særlig når saken gjelder penger, bolig, frister eller sanksjoner.</p>
+<p>Husk også at disse reglene skal brukes på mennesker og konkrete situasjoner. Forvaltningen har skjønnsrom, men skjønnet er ikke fritt. Likebehandling, forholdsmessighet, forsvarlig utredning, begrunnelse og klageadgang er grunnleggende krav. Når et vedtak virker feil, bør du lese begrunnelsen nøye og kontrollere om alle relevante opplysninger er vurdert. Er noe utelatt, bør du peke på det i en klage eller anmodning om ny vurdering.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
