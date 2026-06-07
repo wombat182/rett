@@ -278,7 +278,7 @@ except ImportError:
 try:
     from sporsmal_personopplysningsloven import SPORSMAL as _SP_PERSONVERN
 except ImportError:
-    _SP_PERSONVERN = []
+    _SP_PERSONVERN = []  # GDPR removed — content quality too low
 try:
     from sporsmal_pasientrettighetsloven import SPORSMAL as _SP_PASIENTRETT
 except ImportError:
@@ -4040,6 +4040,17 @@ def render_tjenester_hub():
     # Intent-based kategorier (slug, tittel, [(url, navn, beskrivelse), ...])
     # Order within each: most useful/most common first (first 8 shown by default)
     KATEGORIER = [
+        ("kalkulatorer-og-sjekkere", "Kalkulatorer og sjekkere", [
+            ("../verktoy/forsinkelsesrente.html", "Forsinkelsesrente", "Regn ut morarente på en ubetalt faktura."),
+            ("../verktoy/inkassosalaer.html", "Inkassosalær-sjekker", "Er inkassokostnaden lovlig?"),
+            ("../verktoy/foreldelse.html", "Foreldelse-sjekker", "Er kravet foreldet?"),
+            ("../verktoy/dokumentavgift.html", "Dokumentavgift", "2,5 % avgift ved boligkjøp."),
+            ("../verktoy/sykepenger.html", "Sykepenger", "Hvor mye får du i sykepenger?"),
+            ("../verktoy/foreldrepenger.html", "Foreldrepenger", "100 % eller 80 %? Se hva du får."),
+            ("../verktoy/husleieokning.html", "Husleieøkning (KPI)", "Hvor mye kan leia økes?"),
+            ("../verktoy/fri-rettshjelp.html", "Fri rettshjelp", "Kvalifiserer du til gratis advokat?"),
+            ("../verktoy/utrokontrakt.html", "Utroskapskontrakt", "Lag avtalen selv."),
+        ]),
         ("klage-og-krav", "Klage og krav", [
             ("../tjenester/reklamasjon/", "Reklamasjonsbrev", "Klage med riktige lovhenvisninger."),
             ("../tjenester/heving/", "Heving av kjøp", "Få pengene tilbake ved vesentlig feil."),
