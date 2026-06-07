@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva gjør jeg hvis naboens gjerde står på min tomt? — Rettsregel</title>
+<meta name="description" content="Du bør først avklare om naboen har lovlig rett til bruk av veien, grunnen eller adkomsten.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-naboens-gjerde-star-pa-min-tomt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva gjør jeg hvis naboens gjerde står på min tomt?">
+<meta property="og:description" content="Du bør først avklare om naboen har lovlig rett til bruk av veien, grunnen eller adkomsten.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-naboens-gjerde-star-pa-min-tomt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva gjør jeg hvis naboens gjerde står på min tomt?">
+<meta name="twitter:description" content="Du bør først avklare om naboen har lovlig rett til bruk av veien, grunnen eller adkomsten.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva gjør jeg hvis naboens gjerde står på min tomt?</h1>
+      <p class="article-description">Du bør først avklare om naboen har lovlig rett til bruk av veien, grunnen eller adkomsten.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du bør først avklare om naboen har lovlig rett til bruk av veien, grunnen eller adkomsten. Grannelova regulerer urimelig skade og ulempe, men selve retten til vei, parkering eller gjerde kan også følge av eiendomsgrense, avtale, tinglyst servitutt, hevd, jordskifte eller særlover. Reager skriftlig før konflikten låser seg.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Veier, parkering, gjerder og adkomst handler ofte om mer enn grannelova. Selve retten til å bruke grunn kan følge av eiendomsgrensen, avtale, tinglyst rett, hevd, jordskifte eller særregler om gjerde. Grannelova blir likevel viktig når bruken av naboeiendommen skaper urimelig eller unødvendig skade eller ulempe.</p>
+<p>Kjernen er grannelova § 2. Den sier at ingen må ha, gjøre eller sette i verk noe som urimelig eller unødvendig er til skade eller ulempe på naboeiendom. Ulempe omfatter også fare. Bestemmelsen er fleksibel, men ikke vag på den måten at alt blir synsing. Den peker på momenter: hva som teknisk og økonomisk er mulig å gjøre for å hindre eller begrense ulempen, om forholdet er ventelig på stedet, om det er verre enn vanlig bruk på slike steder, og om ulempen gir en markert forverring for en avgrenset krets.</p>
+<p>Grannelova § 1 sier at lovens regler gjelder så langt ikke annet følger av avtale eller særlige rettsforhold. Det betyr at tinglyste rettigheter, avtaler, reguleringsplaner, vedtekter i sameie eller borettslag og andre lover kan få betydning. En nabo kan for eksempel ha en veirett, en byggetillatelse eller en rett til å ha en ledning over eiendommen. Slike rettigheter fjerner ikke nødvendigvis alle naborettslige krav, men de påvirker vurderingen.</p>
+<p>Grannelova gir ikke i seg selv en generell rett til vei over naboens eiendom, og den avgjør ikke alltid hvem som eier en stripe grunn. Slike spørsmål må ofte løses ut fra matrikkel, skylddeling, tinglyste dokumenter, servitutter, hevd, jordskifterettsavgjørelser eller avtale. Likevel kan bruken av en vei, en parkeringsplass eller et gjerde være i strid med grannelova § 2 dersom den skaper urimelig eller unødvendig skade eller ulempe.</p>
+<p>For gjerder må du i tillegg være oppmerksom på at grannegjerdelova kan ha egne regler. Når spørsmålet handler om at et gjerde står inne på din tomt, er § 11 i grannelova relevant som sammenligningsregel for byggverk eller annet som ulovlig står inne på naboeiendom. Når spørsmålet handler om betaling, type gjerde eller plikt til å holde gjerde, ligger hovedsvaret ofte utenfor grannelova alene.</p>
+<h2>Hvordan vurderer du om dette er ulovlig?</h2>
+<p>Start med faktum: hvor går grensen, hvem eier veien, finnes det tinglyst veirett, har bruken pågått lenge, og hva sier eventuelle avtaler? Ikke steng en adkomst eller fjern et gjerde uten å ha avklart rettsgrunnlaget. Feil egenhjelp kan gjøre konflikten verre og i verste fall utløse ansvar. Send heller et skriftlig krav der du ber naboen dokumentere sin rett eller slutte med den konkrete bruken innen en rimelig frist.</p>
+<p>Et godt kontrollspørsmål er: Hva er den minst konfliktfylte endringen som vil redusere ulempen nok? Naboloven handler ikke bare om å vinne eller tape. Mange løsninger ligger i justeringer: flytte et tiltak, skjerme, drenere, klippe, varsle bedre, begrense tidspunkter eller fordele kostnader. Samtidig skal du ikke godta varige, alvorlige eller farlige ulemper bare fordi naboen mener tiltaket er praktisk for ham.</p>
+<h2>Praktisk eksempel</h2>
+<p>Lina oppdager at Ola har begynt å parkere på en grusplass som ligger innenfor Linas eiendom. Ola mener at tidligere eier alltid tillot dette. Lina sjekker grunnboken, kjøpekontrakten og gamle kart før hun gjør noe fysisk. Hun sender deretter et brev der hun ber Ola dokumentere eventuell rett til parkering eller slutte innen 14 dager. Hun skriver at hun ikke aksepterer fortsatt bruk, men lar være å blokkere bilen samme dag. Dermed unngår hun en unødvendig eskalering og står sterkere hvis saken må videre.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Dokumenter forholdet med dato, klokkeslett, bilder, video, kart, skjermbilder og korte notater. Ikke overdriv; presis dokumentasjon virker sterkere enn store ord.</li>
+<li>Skriv til naboen på en rolig måte. Forklar hva som skjer, hvorfor det er et problem, hvilke regler du viser til, og hvilken konkret løsning du ber om.</li>
+<li>Sett en rimelig frist for svar eller tiltak. I hastesaker kan fristen være kort, men i tre-, hekk- og byggesaker bør naboen få praktisk mulighet til å vurdere løsningen.</li>
+<li>Sjekk om saken også hører hjemme hos kommunen, styret i sameie/borettslag, politiet eller en annen instans. Grannelova løser ikke alle byggesaker, grensesaker, veiretter eller ordensregler alene.</li>
+<li>Vurder forliksrådet, tingretten eller granneskjønn hvis saken ikke løses. Granneskjønn er særlig aktuelt før eller under tiltak som kan skade eller ulempe naboeiendom, mens forliksrådet ofte brukes for pengekrav og enklere tvister.</li>
+</ol>
+<h2>Vanlige misforståelser</h2>
+<p><strong>Kommunal tillatelse betyr ikke alltid at naboen har vunnet mot deg privatrettslig.</strong> En byggetillatelse kan være viktig, men grannelova kan fortsatt gi krav dersom tiltaket skaper ulovlig skade eller ulempe.</p>
+<p><strong>Alt som irriterer deg er ikke ulovlig.</strong> Du må vanligvis tåle normal bruk av naboeiendom. Kravet blir sterkere når ulempen er langvarig, sterk, farlig, unødvendig eller klart verre enn vanlig på stedet.</p>
+<p><strong>Muntlige klager er nok sjelden det beste beviset.</strong> Snakk gjerne med naboen, men bekreft viktige punkter skriftlig etterpå. Det gjør saken enklere hvis den senere må vurderes av andre.</p>
+<p><strong>Naboloven er ikke det samme som eiendomsgrense.</strong> Hvis konflikten egentlig handler om hvor grensen går eller om en veirett finnes, må du undersøke grunnboken, kart, avtaler og eventuelt jordskifteretten.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

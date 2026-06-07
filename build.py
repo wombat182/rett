@@ -202,10 +202,41 @@ try:
 except ImportError:
     _SP_FORVALTNING = []
 
+try:
+    from sporsmal_tomtefesteloven import SPORSMAL as _SP_TOMTE
+except ImportError:
+    _SP_TOMTE = []
+
+try:
+    from sporsmal_naboloven import SPORSMAL as _SP_NABO
+except ImportError:
+    _SP_NABO = []
+
+try:
+    from sporsmal_borettslagsloven import SPORSMAL as _SP_BORETT
+except ImportError:
+    _SP_BORETT = []
+
+try:
+    from sporsmal_eierseksjonsloven import SPORSMAL as _SP_EIER
+except ImportError:
+    _SP_EIER = []
+
+try:
+    from sporsmal_foreldelsesloven import SPORSMAL as _SP_FORELD
+except ImportError:
+    _SP_FORELD = []
+
+try:
+    from sporsmal_pasientskadeloven import SPORSMAL as _SP_PASIENT
+except ImportError:
+    _SP_PASIENT = []
+
 SPORSMAL = (_SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL
             + _SP_ANGRE + _SP_AVH + _SP_ARVE + _SP_BARNE
             + _SP_STRAFF + _SP_INKASSO + _SP_VEGTRAFIKK
-            + _SP_FERIE + _SP_BUSTAD + _SP_FORVALTNING)
+            + _SP_FERIE + _SP_BUSTAD + _SP_FORVALTNING
+            + _SP_TOMTE + _SP_NABO + _SP_BORETT + _SP_EIER + _SP_FORELD + _SP_PASIENT)
 
 # ============================================================
 # SHARED CSS (same look as homepage)
@@ -3322,6 +3353,8 @@ def render_sporsmal_hub():
         "bil": "bil-og-kjoretoy",
         "straff": "straff-og-kriminalitet",
         "forvaltning": "det-offentlige",
+        "nabo": "nabo-og-eiendom",
+        "erstatning": "erstatning-og-skade",
         "tjenester": "selskap",
     }
 
@@ -3336,6 +3369,7 @@ def render_sporsmal_hub():
         ("bil-og-kjoretoy", "Bil og kjøretøy"),
         ("straff-og-kriminalitet", "Straff og kriminalitet"),
         ("det-offentlige", "Det offentlige"),
+        ("erstatning-og-skade", "Erstatning og skade"),
     ]
 
     # Group sporsmal under new categories

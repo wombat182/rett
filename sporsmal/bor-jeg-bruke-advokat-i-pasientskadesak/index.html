@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bør jeg bruke advokat i pasientskadesak? — Rettsregel</title>
+<meta name="description" content="Du trenger ikke alltid advokat i pasientskadesak, fordi NPE har plikt til å utrede saken.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/bor-jeg-bruke-advokat-i-pasientskadesak/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Bør jeg bruke advokat i pasientskadesak?">
+<meta property="og:description" content="Du trenger ikke alltid advokat i pasientskadesak, fordi NPE har plikt til å utrede saken.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/bor-jeg-bruke-advokat-i-pasientskadesak/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bør jeg bruke advokat i pasientskadesak?">
+<meta name="twitter:description" content="Du trenger ikke alltid advokat i pasientskadesak, fordi NPE har plikt til å utrede saken.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Erstatning</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Erstatning</div>
+      <h1 class="article-title">Bør jeg bruke advokat i pasientskadesak?</h1>
+      <p class="article-description">Du trenger ikke alltid advokat i pasientskadesak, fordi NPE har plikt til å utrede saken.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du trenger ikke alltid advokat i pasientskadesak, fordi NPE har plikt til å utrede saken. Advokat kan likevel være nyttig i kompliserte saker, ved stort inntektstap, avslag, uenighet om årsakssammenheng eller erstatningsutmåling. Be om forhåndsavklaring hvis du ønsker dekket advokatutgifter.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Pasientskadeloven § 1 bestemmer hvilke skader loven gjelder for. Loven dekker skader voldt i institusjoner i spesialisthelsetjenesten og den kommunale helse- og omsorgstjenesten, under ambulansetransport og av autorisert eller lisensiert helsepersonell som yter helsehjelp. Den omfatter blant annet veiledning, undersøkelse, diagnostisering, behandling, pleie, vaksinasjon, prøvetaking, røntgen, forebygging og ekspedisjon av legemidler fra apotek.</p>
+<p>Pasientskadeloven § 2 er hovedregelen om når erstatning kan gis. Pasienten og andre som har lidt tap på grunn av pasientskade, har krav på erstatning når skaden skyldes svikt ved helsehjelpen, teknisk svikt ved utstyr, smitte eller infeksjon som ikke i hovedsak skyldes pasientens tilstand eller sykdom, vaksinasjon, eller forhold som gir ansvar etter alminnelige erstatningsregler. Bestemmelsen sier også at det skal tas hensyn til hvilke krav skadelidte med rimelighet kan stille til virksomheten eller tjenesten på skadetidspunktet.</p>
+<p>Pasientskadeloven § 4 regulerer utmålingen og viser til skadeserstatningsloven og alminnelige erstatningsrettslige regler. Det betyr at erstatningen normalt skal dekke økonomisk tap som står i årsakssammenheng med pasientskaden. Samtidig har loven viktige begrensninger: oppreisning for ikke-økonomisk skade etter skadeserstatningsloven § 3-5 og tap under 10 000 kroner erstattes ikke etter pasientskadeloven.</p>
+<p>For spørsmålet «Bør jeg bruke advokat i pasientskadesak?» er det særlig viktig å skille mellom tre ting: om hendelsen faller innenfor pasientskadeloven, om det finnes et ansvarsgrunnlag etter § 2, og om skaden har gitt et tap som kan erstattes etter § 4. En pasient kan ha opplevd dårlig kommunikasjon, lang ventetid eller et svært belastende forløp uten at alle vilkårene for erstatning er oppfylt. Omvendt kan det foreligge erstatningsansvar selv om ingen enkeltperson får kritikk. Ordningen er laget for å vurdere skade og tap, ikke for å straffe helsepersonell.</p>
+<h2>Hva betyr dette i praksis?</h2>
+<p>Klagefasen handler om å angripe begrunnelsen, ikke bare resultatet. Les vedtaket og finn ut om avslaget gjelder ansvarsgrunnlag, årsakssammenheng, foreldelse, tapets størrelse eller dokumentasjon. Klagen bør struktureres etter disse punktene. Dersom du bare skriver at vedtaket er urettferdig, kan de viktigste juridiske og medisinske spørsmålene bli stående ubesvart. Send klagen innen tre uker, og be heller om mer tid til utfylling enn å la fristen gå ut.</p>
+<p>Det praktiske spørsmålet blir derfor ikke bare om noe gikk galt, men om det som gikk galt har juridisk betydning etter pasientskadeloven. Du bør beskrive hendelsen med datoer og konkrete opplysninger. Skriv heller «jeg ble undersøkt 14. februar, prøvesvaret forelå 16. februar, men jeg ble ikke kontaktet før 3. mars» enn «legen fulgte meg ikke opp». Tidslinjen gjør det mulig å vurdere om det var svikt, om svikten faktisk førte til skade, og hvilket tap som kan knyttes til skaden.</p>
+<h2>Frister og saksbehandling</h2>
+<p>Fristene er viktige. Pasientskadeloven § 5 sier at krav etter loven foreldes etter foreldelsesloven, og at foreldelsen avbrytes ved at kravet meldes etter § 9. Dette avbruddet gjelder overfor Norsk pasientskadeerstatning, ikke nødvendigvis overfor andre mulige ansvarlige. I praktisk veiledning brukes hovedregelen om at saken bør meldes senest tre år etter at du forsto eller burde forstått at behandlingen eller manglende behandling kan ha ført til skaden. Ved tvil bør du melde saken tidlig og heller ettersende dokumentasjon.</p>
+<p>Kravet meldes til Norsk pasientskadeerstatning etter pasientskadeloven § 9. NPE utreder saken etter § 10 og kan innhente nødvendige opplysninger, blant annet journaler, fra helsetjenesten og andre instanser etter § 10 a. Når saken er utredet, treffer NPE vedtak om erstatning skal ytes og eventuelt hvor stor erstatningen skal være etter § 12. Vedtaket skal begrunnes, og du skal få opplyst at det kan klages.</p>
+<p>Klagefristen er tre uker etter pasientskadeloven § 15. Klagen sendes til NPE, som først vurderer om vedtaket bør endres. Hvis NPE ikke endrer vedtaket, går saken videre til Pasientskadenemnda. Etter endelig vedtak i Pasientskadenemnda kan den som krever erstatning bringe saken inn for domstolene, men søksmål må reises innen seks måneder fra underretningen om det endelige vedtaket kom frem, jf. § 18.</p>
+<p>Det betyr at du bør reagere skriftlig og lagre dokumentasjon. Har du sendt krav, klage eller tilleggsopplysninger, bør du lagre kvittering, dato og kopi. Hvis du er nær en frist, bør du sende et kort krav eller en kort klage først, og skrive at utfyllende begrunnelse kommer. Det er bedre å avbryte fristen med en enkel melding enn å vente på en perfekt søknad og risikere at kravet blir for sent.</p>
+<h2>Praktisk eksempel</h2>
+<p>Lina får avslag fordi NPE mener årsakssammenhengen ikke er sannsynlig. Hun sender klage innen tre uker og skriver at hun vil ettersende utfyllende begrunnelse. Deretter går hun gjennom sakkyndigvurderingen, peker på feil dato for symptomstart og legger ved ny erklæring fra spesialist. Klagen angriper dermed det konkrete punktet avslaget bygger på.</p>
+<p>Eksempelet viser hvorfor pasientskadesaker ofte avgjøres på detaljer. En dato i journalen, et prøvesvar, en sykmelding eller en kvittering kan bli avgjørende. Det samme gjelder hva som faktisk er tapet. Hvis du har hatt utgifter, bør de dokumenteres. Hvis du har tapt inntekt, bør du dokumentere inntekten før og etter skaden. Hvis du mener skaden er varig, bør du dokumentere medisinsk status og funksjon over tid.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Skriv en kort tidslinje fra første kontakt med helsetjenesten til dagens situasjon.</li>
+<li>Be om innsyn i journal, prøvesvar, epikriser, henvisninger og relevante brev.</li>
+<li>Samle dokumentasjon på tap: kvitteringer, reiseutgifter, egenandeler, sykmeldinger, NAV-vedtak, lønnsslipper og skattemelding.</li>
+<li>Meld kravet skriftlig til Norsk pasientskadeerstatning hvis du mener skaden kan skyldes helsehjelpen.</li>
+<li>Les vedtaket nøye hvis du får avslag eller lav erstatning, og klag innen tre uker hvis du er uenig.</li>
+<li>Vurder separat klage til behandlingsstedet eller Statsforvalteren hvis målet også er tilsyn, kritikk eller forbedring av helsetjenesten.</li>
+</ol>
+<h2>Vanlige misforståelser</h2>
+<p>En vanlig misforståelse er at du bare kan få erstatning hvis en lege har gjort en klar personlig feil. Det stemmer ikke. Pasientskadeloven kan gi erstatning ved svikt selv om ingen kan lastes personlig. En annen misforståelse er at alle dårlige behandlingsresultater gir erstatning. Det stemmer heller ikke. Noen komplikasjoner er kjente risikoer som pasienten må tåle, særlig hvis behandlingen ellers var forsvarlig og informasjonen var tilstrekkelig.</p>
+<p>En tredje misforståelse er at en klage til Statsforvalteren automatisk gir penger. Tilsynsklage og erstatningskrav er to ulike spor. Statsforvalteren kan vurdere om helsehjelpen var uforsvarlig eller om pasientrettigheter er brutt. NPE vurderer om vilkårene for erstatning er oppfylt. Du kan bruke begge spor, men du bør vite hvilket resultat du ønsker.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr foreldelse av krav? — Rettsregel</title>
+<meta name="description" content="Foreldelse betyr at et krav faller bort fordi det ikke er gjort gjeldende innen fristen i foreldelsesloven.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-foreldelse-av-krav/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr foreldelse av krav?">
+<meta property="og:description" content="Foreldelse betyr at et krav faller bort fordi det ikke er gjort gjeldende innen fristen i foreldelsesloven.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-foreldelse-av-krav/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr foreldelse av krav?">
+<meta name="twitter:description" content="Foreldelse betyr at et krav faller bort fordi det ikke er gjort gjeldende innen fristen i foreldelsesloven.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Gjeld og penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Gjeld og penger</div>
+      <h1 class="article-title">Hva betyr foreldelse av krav?</h1>
+      <p class="article-description">Foreldelse betyr at et krav faller bort fordi det ikke er gjort gjeldende innen fristen i foreldelsesloven.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Foreldelse betyr at et krav faller bort fordi det ikke er gjort gjeldende innen fristen i foreldelsesloven. Når kravet er foreldet, mister kreditor retten til å kreve oppfyllelse. Hovedfristen er tre år, men lån, gjeldsbrev, erstatning, rettslig fastslåtte krav og enkelte andre krav har egne regler.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Foreldelsesloven § 1 sier at fordringer på penger eller andre ytelser foreldes etter loven når ikke annet er bestemt. § 2 gir hovedregelen om tre års foreldelsesfrist, mens § 3 forklarer når fristen starter. § 24 sier hva foreldelse gjør: kreditor taper retten til oppfyllelse. Disse bestemmelsene er utgangspunktet for nesten alle foreldelsesspørsmål.</p>
+<p>Det viktigste er å lese lovens frister som et system. Først finner du hovedfristen. Deretter finner du startpunktet. Så undersøker du om det finnes en særregel, en tilleggsfrist eller et fristavbrudd. Til slutt vurderer du virkningen: hvis kravet er foreldet og foreldelse blir påberopt, kan kreditor normalt ikke kreve oppfyllelse. Dette høres enkelt ut, men i praksis kan ett krav ha flere datoer og flere delkrav.</p>
+<h2>Hvordan vurderer du om kravet er foreldet?</h2>
+<p>Foreldelse er en fristregel, ikke en vurdering av om kravet var moralsk riktig. Loven setter en ytre ramme for hvor lenge et krav kan ligge uten at kreditor tar de skrittene loven krever. Poenget er forutsigbarhet: skyldneren skal ikke måtte leve med gamle krav i det uendelige, og kreditor må følge opp krav mens bevisene fortsatt er tilgjengelige. For den som mottar et krav, betyr dette at datoer er like viktige som beløpet. Et krav kan være ekte, men likevel ikke lenger rettslig inndrivbart.</p>
+<p>Foreldelsesloven gjelder for fordringer på penger og andre ytelser når ikke en annen lov har særregler. Den alminnelige fristen er tre år. Fristen løper normalt fra den dagen kreditor tidligst kunne kreve oppfyllelse. Det er ofte forfallsdatoen på fakturaen, lønningsdagen, dagen misligholdet skjedde eller et tidspunkt som følger av avtalen. Når du vurderer et gammelt krav, må du derfor finne både kravets rettslige grunnlag og den første dagen betaling faktisk kunne kreves.</p>
+<p>Fristen kan avbrytes. Det skjer ikke fordi kreditor sender mange purringer, men fordi loven peker på bestemte handlinger. Skyldneren kan erkjenne kravet, for eksempel ved å love betaling eller betale renter. Kreditor kan ta rettslige skritt, bringe saken inn for riktig nemnd eller forvaltningsorgan, begjære tvangsfullbyrdelse eller melde kravet i konkurs eller skifte. Etter avbrudd kan det løpe ny frist, ofte tre eller ti år avhengig av avbruddsmåten.</p>
+<p>Den praktiske testen er å stille tre spørsmål. Først: Hvilket krav er det egentlig tale om? Deretter: Når kunne kreditor tidligst kreve oppfyllelse? Til slutt: Har noe skjedd før fristen løp ut som avbrøt eller forlenget foreldelsen? Hvis du ikke kan svare på alle tre, er det for tidlig å konkludere. Mange konflikter oppstår fordi partene hopper rett til beløpet og glemmer tidslinjen.</p>
+<h2>Slik regner du fristen</h2>
+<p>Start med å finne den dagen kravet tidligst kunne kreves oppfylt. For en faktura er det ofte forfallsdatoen. For mislighold er det dagen misligholdet inntrer. For erstatning er det ofte kunnskapsdagen etter § 9. For lån og gjeldsbrev må du kontrollere § 5. Deretter legger du til riktig frist: normalt tre år, men ofte ti år ved pengelån, gjeldsbrev, dom, rettsforlik eller enkelte tvangsfullbyrdelsessituasjoner. Hvis siste fristdag faller på lørdag, helgedag eller likestilt dag, forlenges fristen til nærmeste virkedag etter § 29.</p>
+<p>Husk også at fristen ikke alltid er felles for hele beløpet. Hovedstol, renter, gebyrer, månedlige terminer og senere kostnader kan ha ulike startpunkter. Et inkassokrav kan derfor inneholde både poster som er foreldet og poster som fortsatt kan kreves. Be alltid om spesifikasjon. Den som bare ser på totalsaldoen, risikerer å betale for mye eller avvise for mye.</p>
+<h2>Praktisk eksempel</h2>
+<p>Anne får i 2026 et krav på 18 000 kroner for en faktura fra 2021. Fakturaen forfalt 15. mai 2021. Kreditor har sendt purringer, men kan ikke vise forliksklage, dom, utlegg eller at Anne har erkjent kravet. Da peker hovedregelen mot at kravet ble foreldet 15. mai 2024. Anne bør likevel be om dokumentasjon før hun konkluderer.</p>
+<p>Eksempelet viser hvorfor skriftlige datoer er avgjørende. Det er sjelden nok å spørre om kravet virker gammelt. Du må vite når kravet oppstod, når det forfalt, hva slags krav det er, og om det finnes handlinger som avbrøt eller forlenget fristen. Hvis motparten hevder at fristen er avbrutt, bør du be om dokumentet som viser det. En påstand om at 'saken har vært til behandling' er ikke like godt som kopi av forliksklage, dom, utlegg, betalingsavtale eller skriftlig erkjennelse.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ul>
+<li>Finn avtalen, fakturaen eller dokumentet som viser hva kravet bygger på.</li>
+<li>Noter datoen da kravet tidligst kunne kreves betalt eller oppfylt.</li>
+<li>Kontroller om kravet er et vanlig pengekrav, pengelån, gjeldsbrev, erstatningskrav eller annet særkrav.</li>
+<li>Sjekk om skyldner har erkjent kravet eller om kreditor har tatt rettslige skritt.</li>
+<li>Svar skriftlig. Som skyldner bør du ta forbehold; som kreditor bør du sikre fristavbrudd i tide.</li>
+</ul>
+<p>Hvis du er skyldner, er det gratis å sende en skriftlig innsigelse direkte til kreditor eller inkassoselskapet. Hvis saken går til forliksrådet, namsmannen eller tingretten, kan det påløpe gebyrer og sakskostnader. Hvis saken gjelder forbrukerforhold, kan Forbrukertilsynet eller en relevant klagenemnd være aktuelt i noen typer tvister. Gjelder saken bank, finans eller forsikring, kan Finansklagenemnda være relevant. Gjelder saken lønn eller feriepenger, bør du også vurdere Arbeidstilsynet for veiledning, men fristavbrudd må vurderes etter foreldelsesloven.</p>
+<h2>Vanlige misforståelser</h2>
+<p>En vanlig misforståelse er at kravet holdes i live bare fordi kreditor sender purring. Det stemmer normalt ikke. En annen misforståelse er at all gjeld foreldes etter tre år. Pengelån, gjeldsbrev og rettslig fastslåtte krav kan ha tiårsfrister. En tredje misforståelse er at du alltid kan få tilbake penger hvis du betaler et foreldet krav. Det er usikkert og bør ikke være strategien. Det tryggeste er å avklare foreldelse før betaling.</p>
+<p>En diskret huskeregel er: Ikke erkjenn gammel gjeld før du har fått dokumentasjon. Ikke vent med å avbryte fristen hvis du selv er kreditor. Og ikke bland reklamasjon, purring, inkasso og foreldelse. De kan henge sammen i samme sak, men de har ulike rettsvirkninger.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
