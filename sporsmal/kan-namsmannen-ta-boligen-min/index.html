@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan namsmannen ta boligen min? — Rettsregel</title>
+<meta name="description" content="Ja, namsmannen kan ta utleggspant i bolig dersom kravet og vilkårene er oppfylt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-namsmannen-ta-boligen-min/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan namsmannen ta boligen min?">
+<meta property="og:description" content="Ja, namsmannen kan ta utleggspant i bolig dersom kravet og vilkårene er oppfylt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-namsmannen-ta-boligen-min/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan namsmannen ta boligen min?">
+<meta name="twitter:description" content="Ja, namsmannen kan ta utleggspant i bolig dersom kravet og vilkårene er oppfylt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Gjeld og penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Gjeld og penger</div>
+      <h1 class="article-title">Kan namsmannen ta boligen min?</h1>
+      <p class="article-description">Ja, namsmannen kan ta utleggspant i bolig dersom kravet og vilkårene er oppfylt.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, namsmannen kan ta utleggspant i bolig dersom kravet og vilkårene er oppfylt. Det betyr ikke nødvendigvis at boligen selges med en gang, men pantet kan senere bli brukt som grunnlag for tvangssalg. Svar alltid skriftlig og søk gjeldsrådgivning tidlig.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Inkassoloven gjelder inndriving av forfalte pengekrav. Det betyr at utgangspunktet er et pengekrav som skulle vært betalt, men ikke er betalt innen forfallsdatoen. Loven gjelder både inkassoforetak og, på viktige punkter, egen inndriving. Den er særlig praktisk for deg som forbruker, fordi flere regler ikke kan fravikes til skade for deg.</p>
+<p>Den viktigste beskyttelsen er kombinasjonen av formelle frister og kravet til god inkassoskikk. Inkassoloven § 8 sier at inndriving skal skje i samsvar med god inkassoskikk, og at det er forbudt å bruke metoder som utsetter noen for urimelig påtrykk, skade eller ulempe. Det er en praktisk regel, ikke bare en høflighetsregel. Feilaktige trusler, uklare beløp, press mot tredjepersoner og ordinær inkasso av krav som faktisk er omtvistet, kan bli problematisk.</p>
+<p>Før vanlige inkassotiltak skal du normalt ha fått et inkassovarsel etter § 9. Varselet skal komme etter at kravet er forfalt, være skriftlig, varsle at inkasso kan bli satt i verk, og gi minst 14 dagers betalingsfrist regnet fra varselet ble sendt. Etter at kravet er mottatt til inkasso og fristen i inkassovarselet er løpt ut, skal inkassator sende betalingsoppfordring etter § 10. Den skal gi deg minst 14 dager til enten å betale eller komme med innsigelser. Den skal også forklare hvem som krever penger, hva kravet gjelder, hovedkrav, renter, kostnader og mulig rettslig inndriving.</p>
+<p>Inkassoloven § 17 er sentral for kostnadene. Du skal bare dekke nødvendige kostnader ved utenrettslig inndriving når vilkårene er oppfylt. Kostnader kan ikke kreves dersom du hadde innsigelser som det var rimelig grunn til å få vurdert før inndrivingen ble satt i verk. Kostnader kan også falle bort hvis reglene om varsel, betalingsoppfordring eller god inkassoskikk er brutt. Hovedkravet blir ikke automatisk borte av den grunn, men gebyrer og salærer kan bli ulovlige.</p>
+<p>Når saken går til namsmannen, er du utenfor den rene inkassoprosessen. Inkassoloven § 21 viser at kostnader ved rettslig inndriving følger rettergangslovgivningens regler. Forliksrådet og namsmannen bruker derfor andre regler enn de rene inkassoreglene. Det praktiske er likevel det samme for deg: du må svare innen fristen, dokumentere innsigelser og sende opplysninger om økonomien din.</p>
+<p>Namsmannen kan ikke bare ta «alt». Ved utlegg vurderes hva som finnes av inntekt og verdier, og det må tas hensyn til nødvendige utgifter. Likevel kan konsekvensene bli alvorlige: lønnstrekk, trekk i ytelser, utleggspant i bil, pant i bolig, eller beslag i penger som ikke er vernet til nødvendig livsopphold. Derfor er det viktigere å svare namsmannen enn å fortsette en e-postdiskusjon med inkassoselskapet alene.</p>
+<h2>Hva betyr dette i praksis?</h2>
+<p>Når namsmannen er involvert, må du skifte strategi. Det hjelper lite å bare diskutere med inkassoselskapet hvis fristen hos namsmannen løper. Les brevet nøye: står det krav om tilsvar, varsel om utlegg, begjæring om utlegg eller annen tvangsfullbyrdelse? Svar til riktig mottaker innen fristen, og legg ved dokumentasjon. Hvis du mener kravet er feil, må innsigelsen gjentas overfor namsmannen.</p>
+<p>Samtidig bør du gi et realistisk bilde av økonomien din. Ved lønnstrekk eller utlegg er det avgjørende at namsmannen vet om husleie, strøm, barn, samvær, medisiner, transport til arbeid og andre nødvendige utgifter. Uten dokumentasjon kan avgjørelsen bli basert på standardopplysninger som ikke passer din situasjon.</p>
+<h2>Frister og kostnader du må kontrollere</h2>
+<p>Fristene er ofte det som avgjør om inkassokostnadene er lovlige. Inkassovarselet skal ha minst 14 dagers betalingsfrist fra det ble sendt. Betalingsoppfordringen skal også ha minst 14 dagers frist. Hvis rettslig inndriving først settes i gang mer enn seks måneder etter betalingsoppfordringen, krever inkassoloven § 11 at betalingsfristen i en ny betalingsoppfordring etter § 10 er løpt ut. Betaling anses gjort innen fristen hvis betalingsoppdraget er mottatt av banken innen fristen. Det er derfor smart å lagre kvittering, særlig hvis du betaler sent på siste dag.</p>
+<p>Du bør skille mellom hovedkrav, renter, purregebyr, inkassovarselgebyr, lett salær, tungt salær og eventuelle rettslige kostnader. Hovedkravet er det opprinnelige beløpet. Renter er betaling for forsinkelsen. Inkassosalær er erstatning for utenrettslig inndriving. Rettslige kostnader kommer først når saken går til forliksråd, namsmann eller domstol, og følger andre regler.</p>
+<h2>Praktisk eksempel</h2>
+<p>Marte eier halvparten av en leilighet. Et inkassokrav ender hos namsmannen, og kreditor ber om utleggspant. Marte bør svare med opplysninger om boliglån, sameie, barn, inntekt og andre forhold. Utleggspant er alvorlig fordi det kan bli første steg mot senere tvangssalg.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Finn saksnummer, kreditor, hovedstol, forfallsdato og frist i brevet.</li>
+<li>Kontroller om kravet er riktig, betalt, foreldet, feil person, eller om du har en saklig innsigelse.</li>
+<li>Svar skriftlig før fristen. Betal riktig og ubestridt beløp hvis du kan, men skriv tydelig hva du eventuelt bestrider.</li>
+<li>Be om full kravsoppstilling: hovedkrav, renter, gebyrer, inkassosalær, rentestartdato og grunnlag.</li>
+<li>Lagre alt: brev, e-post, SMS, kontoutskrifter, skjermbilder og notater fra telefonsamtaler.</li>
+<li>Svar namsmannen direkte innen fristen i brevet, ikke bare inkassoselskapet. Legg ved dokumentasjon på inntekt, husleie, nødvendige utgifter og innsigelser. Kontakt NAV økonomisk rådgivning i kommunen hvis saken gjelder betalingsproblemer.</li>
+</ol>
+<h2>Vanlige misforståelser</h2>
+<p>Vanlige misforståelser er at inkasso betyr at kravet allerede er kontrollert av en domstol, at du automatisk får betalingsanmerkning, eller at du må betale alle gebyrer for å få lov til å klage. Det stemmer ikke. Inkasso er i utgangspunktet utenrettslig inndriving. Du kan bestride, be om dokumentasjon og klage på salær. Samtidig er det en farlig misforståelse at du kan ignorere et feil krav. Du bør reagere skriftlig, ellers kan saken gå videre uten at din innsigelse blir tydelig.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
