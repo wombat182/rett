@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sykepenger-kalkulator – Rettsregel</title>
+<meta name="description" content="Beregn sykepenger fra NAV ut fra årsinntekten din. Dekning opp til 6G (819 294 kr i 2026).">
+<link rel="canonical" href="https://rettsregel.no/verktoy/sykepenger/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="brand-dot"></span><a href="../">Rettsregel</a> &nbsp;/&nbsp; <a href="../">Verktøy</a></div>
+  <span class="tag">Folketrygdloven</span>
+  <h1>Sykepenger-kalkulator</h1>
+  <p class="lede">Regn ut hvor mye du får i sykepenger fra NAV. Sykepenger dekker inntekt opp til 6G – maks 819 294 kr i året.</p>
+
+  <div class="card">
+    <div class="field"><label>Hvem er du?</label>
+      <div class="seg" data-seg="type">
+        <button data-v="arb" aria-pressed="true">Arbeidstaker</button>
+        <button data-v="frilans">Frilanser</button>
+        <button data-v="selv">Selvstendig</button>
+      </div></div>
+    <div class="field"><label for="lonn">Årsinntekt (brutto)</label>
+      <div class="inputaffix"><input id="lonn" type="number" inputmode="decimal" placeholder="600 000"><span class="suffix">kr</span></div></div>
+    <button class="btn" onclick="calc()">Regn ut</button>
+  </div>
+  <div class="result" id="res">
+    <div class="biglabel" id="biglabel">Sykepenger per måned</div>
+    <div class="big" id="big">–</div>
+    <div class="lines" id="lines"></div>
+    <div class="note" id="note"></div>
+  </div>
+  <div class="lawbox" id="law"></div>
+ 
+  <p class="disclaimer">Verktøyet gir et veiledende estimat basert på gjeldende satser og regler (oppdatert juni 2026). Det er generell informasjon, ikke juridisk rådgivning, og erstatter ikke en konkret vurdering. Sjekk alltid mot offisielle kilder før du handler.</p>
+</div>
+<script>
+const nf = n => Math.round(n).toLocaleString('nb-NO');
+const nf2 = n => n.toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2});
+const val = id => parseFloat((document.getElementById(id).value||'').replace(/\s/g,'').replace(',','.'))||0;
+function seg(group, cb){
+  document.querySelectorAll('[data-seg="'+group+'"] button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-seg="'+group+'"] button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true'); cb && cb(b.dataset.v);
+    });
+  });
+}
+function segv(group){const b=document.querySelector('[data-seg="'+group+'"] button[aria-pressed=true]');return b?b.dataset.v:null;}
+
+const SEKSG=819294;
+seg('type', calc);
+function calc(){
+  const lonn=val('lonn'); if(!lonn)return;
+  const t=segv('type');
+  const dekn = (t==='selv')?0.8:1.0;       // selvstendig 80 %, ellers 100 %
+  const grunnlag=Math.min(lonn,SEKSG);
+  const aar=grunnlag*dekn;
+  const mnd=aar/12;
+  document.getElementById('big').textContent=nf(mnd)+' kr';
+  let h='<div class="ln"><span>Sykepengegrunnlag</span><span>'+nf(grunnlag)+' kr'+(lonn>SEKSG?' (kappet ved 6G)':'')+'</span></div>';
+  h+='<div class="ln"><span>Dekningsgrad</span><span>'+(dekn*100)+' %</span></div>';
+  h+='<div class="ln"><span>Per år</span><span>'+nf(aar)+' kr</span></div>';
+  h+='<div class="ln"><span>Per dag (5 dager/uke)</span><span>'+nf(aar/260)+' kr</span></div>';
+  if(lonn>SEKSG){const tap=(lonn-SEKSG)*dekn/12;h+='<div class="ln tot"><span>Inntekt over 6G som NAV ikke dekker</span><span>'+nf(tap)+' kr/mnd</span></div>';}
+  document.getElementById('lines').innerHTML=h;
+  let law='';
+  if(t==='arb'){
+    document.getElementById('note').textContent='Arbeidsgiver betaler de første 16 kalenderdagene (arbeidsgiverperioden), deretter overtar NAV i inntil 248 dager (ca. ett år).';
+    law='<b>Arbeidstaker:</b> 100 % av lønn opptil 6G. Mange arbeidsgivere dekker også inntekt over 6G – sjekk arbeidsavtalen eller tariffavtalen.';
+  } else if(t==='frilans'){
+    document.getElementById('note').textContent='Frilansere får sykepenger fra og med dag 17.';
+    law='<b>Frilanser:</b> 100 % av sykepengegrunnlaget fra dag 17, opptil 6G.';
+  } else {
+    document.getElementById('note').textContent='Selvstendig næringsdrivende får sykepenger fra og med dag 17.';
+    law='<b>Selvstendig næringsdrivende:</b> 80 % fra dag 17, opptil 6G. Du kan tegne frivillig tilleggsforsikring hos NAV for 80 % fra dag 1 eller 100 % dekning.';
+  }
+  document.getElementById('law').innerHTML=law;
+  document.getElementById('res').classList.add('show');
+}
+ 
+</script>
+</body>
+</html>

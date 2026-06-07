@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forsinkelsesrente-kalkulator – Rettsregel</title>
+<meta name="description" content="Beregn forsinkelsesrente (morarente) etter forsinkelsesrenteloven. Gjeldende sats 1. halvår 2026: 12,00 %.">
+<link rel="canonical" href="https://rettsregel.no/verktoy/forsinkelsesrente/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="brand-dot"></span><a href="../">Rettsregel</a> &nbsp;/&nbsp; <a href="../">Verktøy</a></div>
+  <span class="tag">Forsinkelsesrenteloven</span>
+  <h1>Forsinkelsesrente-kalkulator</h1>
+  <p class="lede">Regn ut hvor mye forsinkelsesrente du kan kreve på en ubetalt faktura eller et forfalt krav.</p>
+
+  <div class="card">
+    <div class="field"><label for="bel">Skyldig beløp (hovedstol)</label>
+      <div class="inputaffix"><input id="bel" type="number" inputmode="decimal" placeholder="10 000"><span class="suffix">kr</span></div></div>
+    <div class="row">
+      <div class="field"><label for="frd">Forfallsdato</label><input id="frd" type="date"></div>
+      <div class="field"><label for="tld">Betalt / regn til</label><input id="tld" type="date"></div>
+    </div>
+    <div class="field"><label for="sats">Rentesats</label>
+      <div class="hint">Standard 1. halvår 2026 er 12,00 %. Endre om kravet løper over en periode med annen sats.</div>
+      <div class="inputaffix"><input id="sats" type="text" inputmode="decimal" value="12,00"><span class="suffix">% p.a.</span></div></div>
+    <div class="field"><label class="check"><input id="b2b" type="checkbox"><span>Næringskrav (B2B) – legg til standardkompensasjon 460 kr</span></label></div>
+    <button class="btn" onclick="calc()">Regn ut</button>
+  </div>
+  <div class="result" id="res">
+    <div class="biglabel">Forsinkelsesrente</div>
+    <div class="big" id="big">–</div>
+    <div class="lines" id="lines"></div>
+    <div class="note" id="note"></div>
+  </div>
+  <div class="lawbox"><b>Slik fungerer det:</b> Renten løper fra dagen etter forfall til betaling skjer (forsinkelsesrenteloven § 2). Mot en forbruker kan du ikke avtale høyere sats enn den fastsatte. Standardkompensasjon (§ 3a) gjelder bare når skyldner er næringsdrivende/offentlig.</div>
+ 
+  <p class="disclaimer">Verktøyet gir et veiledende estimat basert på gjeldende satser og regler (oppdatert juni 2026). Det er generell informasjon, ikke juridisk rådgivning, og erstatter ikke en konkret vurdering. Sjekk alltid mot offisielle kilder før du handler.</p>
+</div>
+<script>
+const nf = n => Math.round(n).toLocaleString('nb-NO');
+const nf2 = n => n.toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2});
+const val = id => parseFloat((document.getElementById(id).value||'').replace(/\s/g,'').replace(',','.'))||0;
+function seg(group, cb){
+  document.querySelectorAll('[data-seg="'+group+'"] button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-seg="'+group+'"] button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true'); cb && cb(b.dataset.v);
+    });
+  });
+}
+function segv(group){const b=document.querySelector('[data-seg="'+group+'"] button[aria-pressed=true]');return b?b.dataset.v:null;}
+
+const today=new Date().toISOString().slice(0,10);
+document.getElementById('tld').value=today;
+function calc(){
+  const bel=val('bel'), sats=val('sats');
+  const f=document.getElementById('frd').value, t=document.getElementById('tld').value;
+  if(!bel||!f||!t){alert('Fyll inn beløp og datoer.');return;}
+  const d1=new Date(f), d2=new Date(t);
+  let days=Math.round((d2-d1)/86400000);
+  if(days<0){alert('Sluttdato er før forfall.');return;}
+  const rente=bel*(sats/100)*days/365;
+  const komp=document.getElementById('b2b').checked?460:0;
+  const total=bel+rente+komp;
+  document.getElementById('big').textContent=nf(rente)+' kr';
+  let h='<div class="ln"><span>Antall dager forsinket</span><span>'+days+' dager</span></div>';
+  h+='<div class="ln"><span>Rentesats</span><span>'+document.getElementById('sats').value+' % p.a.</span></div>';
+  h+='<div class="ln"><span>Daglig rente</span><span>'+nf2(bel*(sats/100)/365)+' kr</span></div>';
+  if(komp)h+='<div class="ln"><span>Standardkompensasjon</span><span>'+nf(komp)+' kr</span></div>';
+  h+='<div class="ln tot"><span>Totalt å kreve (hovedstol + rente'+(komp?' + komp.':'')+')</span><span>'+nf(total)+' kr</span></div>';
+  document.getElementById('lines').innerHTML=h;
+  document.getElementById('note').textContent= days>183 ? 'Kravet strekker seg over mer enn ett halvår – renten kan ha endret seg i perioden. Del eventuelt opp og bruk riktig sats for hver periode.' : '';
+  document.getElementById('res').classList.add('show');
+}
+ 
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inkassosalær-sjekker – Rettsregel</title>
+<meta name="description" content="Sjekk om inkassosalæret er lovlig. Maksimale satser etter inkassoforskriften for 2026.">
+<link rel="canonical" href="https://rettsregel.no/verktoy/inkassosalaer/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="brand-dot"></span><a href="../">Rettsregel</a> &nbsp;/&nbsp; <a href="../">Verktøy</a></div>
+  <span class="tag">Inkassoloven</span>
+  <h1>Inkassosalær-sjekker</h1>
+  <p class="lede">Er inkassokostnaden lovlig? Regn ut maksimalt inkassosalær etter inkassoforskriftens satser for 2026.</p>
+
+  <div class="card">
+    <div class="field"><label for="hs">Opprinnelig krav (hovedstol)</label>
+      <div class="inputaffix"><input id="hs" type="number" inputmode="decimal" placeholder="5 000"><span class="suffix">kr</span></div></div>
+    <div class="field"><label>Hvem er skyldner?</label>
+      <div class="seg" data-seg="skyld">
+        <button data-v="forb" aria-pressed="true">Forbruker (privatperson)</button>
+        <button data-v="nar">Næringsdrivende</button>
+      </div></div>
+    <div class="field"><label for="mva">Kreditorens momsstatus</label>
+      <div class="hint">Banker, forsikring, helse og undervisning har normalt ikke fradragsrett – da er salæret høyere.</div>
+      <select id="mva"><option value="fra">Har fradragsrett for mva (vanligst)</option><option value="ikke">Har ikke fradragsrett for mva</option></select></div>
+    <div class="field"><label>Hvor langt er saken kommet?</label>
+      <div class="seg" data-seg="trinn">
+        <button data-v="enkel" aria-pressed="true">Betalingsoppfordring (lett salær)</button>
+        <button data-v="tung">Etter tilleggsfrist (tungt salær)</button>
+      </div></div>
+    <div class="field"><label for="krevd">Salær du faktisk er krevd for <span class="hint" style="display:inline">(valgfritt)</span></label>
+      <div class="inputaffix"><input id="krevd" type="number" inputmode="decimal" placeholder="f.eks. 1 200"><span class="suffix">kr</span></div></div>
+    <button class="btn" onclick="calc()">Sjekk</button>
+  </div>
+  <div class="result" id="res">
+    <div class="biglabel">Lovlig maks inkassosalær</div>
+    <div class="big" id="big">–</div>
+    <div class="verdict" id="verdict"></div>
+    <div class="lines" id="lines"></div>
+    <div class="note" id="note"></div>
+  </div>
+  <div class="lawbox"><b>Gjeldende gebyrer 2026:</b> purregebyr og inkassovarsel 38 kr, betalingsoppfordring du selv sender (egeninkasso) 113 kr, standardkompensasjon ved næringskrav 460 kr. «Tungt salær» (dobbelt) kan tidligst kreves når betalingsfristen i betalingsoppfordringen er oversittet med mer enn 28 dager.</div>
+ 
+  <p class="disclaimer">Verktøyet gir et veiledende estimat basert på gjeldende satser og regler (oppdatert juni 2026). Det er generell informasjon, ikke juridisk rådgivning, og erstatter ikke en konkret vurdering. Sjekk alltid mot offisielle kilder før du handler.</p>
+</div>
+<script>
+const nf = n => Math.round(n).toLocaleString('nb-NO');
+const nf2 = n => n.toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2});
+const val = id => parseFloat((document.getElementById(id).value||'').replace(/\s/g,'').replace(',','.'))||0;
+function seg(group, cb){
+  document.querySelectorAll('[data-seg="'+group+'"] button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-seg="'+group+'"] button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true'); cb && cb(b.dataset.v);
+    });
+  });
+}
+function segv(group){const b=document.querySelector('[data-seg="'+group+'"] button[aria-pressed=true]');return b?b.dataset.v:null;}
+
+// Maksimalsatser inkassoforskriften 2026 (Finanstilsynet). [t.o.m. hovedstol, enkel, tung]
+const T={
+ forb_fra:[[500,187.5,375],[1000,262.5,525],[2500,300,600],[10000,600,1200],[50000,1200,2400],[250000,2700,5400],[Infinity,5400,10800]],
+ nar_fra :[[500,281.25,562.5],[1000,393.75,787.5],[2500,450,900],[10000,900,1800],[50000,1800,3600],[250000,4050,8100],[Infinity,8100,16200]],
+ forb_ikke:[[500,234.38,468.75],[1000,328.13,656.25],[2500,375,750],[10000,750,1500],[50000,1500,3000],[250000,3375,6750],[Infinity,6750,13500]],
+ nar_ikke :[[500,351.56,703.13],[1000,492.19,984.38],[2500,562.5,1125],[10000,1125,2250],[50000,2250,4500],[250000,5062.5,10125],[Infinity,10125,20250]]
+};
+seg('skyld', calc); seg('trinn', calc);
+function calc(){
+  const hs=val('hs'); if(!hs)return;
+  const key=(segv('skyld')==='forb'?'forb':'nar')+'_'+(document.getElementById('mva').value==='fra'?'fra':'ikke');
+  const tbl=T[key];
+  const row=tbl.find(r=>hs<=r[0]);
+  const enkel=row[1], tung=row[2];
+  const tungtrinn=segv('trinn')==='tung';
+  const maks=tungtrinn?tung:enkel;
+  document.getElementById('big').textContent=nf2(maks)+' kr';
+  let h='<div class="ln"><span>Lett salær (betalingsoppfordring)</span><span>'+nf2(enkel)+' kr</span></div>';
+  h+='<div class="ln"><span>Tungt salær (etter tilleggsfrist)</span><span>'+nf2(tung)+' kr</span></div>';
+  h+='<div class="ln"><span>Purregebyr / inkassovarsel</span><span>38 kr</span></div>';
+  document.getElementById('lines').innerHTML=h;
+  const krevd=val('krevd'); const v=document.getElementById('verdict');
+  if(krevd){
+    if(krevd<=maks+0.5){v.className='verdict ok';v.innerHTML='<span class="ic">✓</span><span>Salæret på '+nf2(krevd)+' kr er innenfor lovlig maks ('+nf2(maks)+' kr) på dette trinnet.</span>';}
+    else{v.className='verdict bad';v.innerHTML='<span class="ic">✕</span><span>'+nf2(krevd)+' kr er <b>høyere</b> enn lovlig maks ('+nf2(maks)+' kr). Du kan klage til inkassoselskapet og eventuelt Finanstilsynet / Inkassoklagenemnda.</span>';}
+  } else { v.className='';v.innerHTML='';v.style.display='none'; }
+  if(krevd) v.style.display='flex';
+  document.getElementById('note').textContent='Mva legges på salæret dersom kreditor ikke har fradragsrett – det er innbakt i tallene over. Flere krav mot samme kreditor skal slås sammen til én sak.';
+  document.getElementById('res').classList.add('show');
+}
+ 
+</script>
+</body>
+</html>

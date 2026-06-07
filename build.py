@@ -262,12 +262,18 @@ try:
 except ImportError:
     _SP_GRUNN = []
 
+try:
+    from sporsmal_hoyesterettsdommer import SPORSMAL as _SP_DOMMER
+except ImportError:
+    _SP_DOMMER = []
+
 SPORSMAL = (_SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL
             + _SP_ANGRE + _SP_AVH + _SP_ARVE + _SP_BARNE
             + _SP_STRAFF + _SP_INKASSO + _SP_VEGTRAFIKK
             + _SP_FERIE + _SP_BUSTAD + _SP_FORVALTNING
             + _SP_TOMTE + _SP_NABO + _SP_BORETT + _SP_EIER + _SP_FORELD + _SP_PASIENT
-            + _SP_UNI + _SP_NAVN + _SP_VOLD + _SP_YRKE + _SP_EKSPRO + _SP_GRUNN)
+            + _SP_UNI + _SP_NAVN + _SP_VOLD + _SP_YRKE + _SP_EKSPRO + _SP_GRUNN
+            + _SP_DOMMER)
 
 # ============================================================
 # SHARED CSS (same look as homepage)
@@ -3388,6 +3394,7 @@ def render_sporsmal_hub():
         "erstatning": "erstatning-og-skade",
         "utdanning": "utdanning-og-studier",
         "grunnlov": "grunnlov-og-rettigheter",
+        "hoyesterettsdommer": "kjente-dommer",
         "tjenester": "selskap",
     }
 
@@ -3405,6 +3412,7 @@ def render_sporsmal_hub():
         ("erstatning-og-skade", "Erstatning og skade"),
         ("utdanning-og-studier", "Utdanning"),
         ("grunnlov-og-rettigheter", "Grunnlov og rettigheter"),
+        ("kjente-dommer", "Kjente dommer"),
     ]
 
     # Group sporsmal under new categories

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lovlig husleieøkning (KPI) – Rettsregel</title>
+<meta name="description" content="Regn ut lovlig husleieøkning etter konsumprisindeksen (KPI), jf. husleieloven § 4-2.">
+<link rel="canonical" href="https://rettsregel.no/verktoy/husleieokning/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="brand-dot"></span><a href="../">Rettsregel</a> &nbsp;/&nbsp; <a href="../">Verktøy</a></div>
+  <span class="tag">Husleieloven</span>
+  <h1>Lovlig husleieøkning (KPI)</h1>
+  <p class="lede">Hvor mye kan utleier øke husleia? Husleieloven § 4-2 lar leia justeres med konsumprisindeksen én gang i året.</p>
+
+  <div class="card">
+    <div class="field"><label for="leie">Dagens månedsleie</label>
+      <div class="inputaffix"><input id="leie" type="number" inputmode="decimal" placeholder="12 000"><span class="suffix">kr</span></div></div>
+    <div class="row">
+      <div class="field"><label for="kg">KPI ved forrige justering</label>
+        <div class="hint">Indeks-tall fra SSB</div>
+        <input id="kg" type="number" inputmode="decimal" placeholder="128,5"></div>
+      <div class="field"><label for="kn">KPI nå</label>
+        <div class="hint">Nyeste indeks fra SSB</div>
+        <input id="kn" type="number" inputmode="decimal" placeholder="133,2"></div>
+    </div>
+    <div class="field"><label for="dato">Dato for forrige leiefastsetting/-økning</label>
+      <input id="dato" type="date"></div>
+    <button class="btn" onclick="calc()">Regn ut</button>
+  </div>
+  <div class="result" id="res">
+    <div class="biglabel">Ny lovlig maks månedsleie</div>
+    <div class="big" id="big">–</div>
+    <div class="lines" id="lines"></div>
+    <div class="verdict" id="verdict" style="margin-top:14px"></div>
+    <div class="note" id="note"></div>
+  </div>
+  <div class="lawbox"><b>To regler:</b> Etter <b>§ 4-2</b> kan leia KPI-justeres tidligst ett år etter forrige fastsetting, med minst én måneds skriftlig varsel. Etter <b>§ 4-3</b> kan hver part hvert tredje år kreve leia satt til «gjengs leie» (markedsnivå for liknende leieforhold), med seks måneders varsel.</div>
+ 
+  <p class="disclaimer">Verktøyet gir et veiledende estimat basert på gjeldende satser og regler (oppdatert juni 2026). Det er generell informasjon, ikke juridisk rådgivning, og erstatter ikke en konkret vurdering. Sjekk alltid mot offisielle kilder før du handler.</p>
+</div>
+<script>
+const nf = n => Math.round(n).toLocaleString('nb-NO');
+const nf2 = n => n.toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2});
+const val = id => parseFloat((document.getElementById(id).value||'').replace(/\s/g,'').replace(',','.'))||0;
+function seg(group, cb){
+  document.querySelectorAll('[data-seg="'+group+'"] button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-seg="'+group+'"] button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true'); cb && cb(b.dataset.v);
+    });
+  });
+}
+function segv(group){const b=document.querySelector('[data-seg="'+group+'"] button[aria-pressed=true]');return b?b.dataset.v:null;}
+
+function calc(){
+  const leie=val('leie'), kg=val('kg'), kn=val('kn');
+  if(!leie||!kg||!kn){alert('Fyll inn leie og begge KPI-tallene.');return;}
+  const faktor=kn/kg;
+  const ny=leie*faktor;
+  const pct=(faktor-1)*100;
+  document.getElementById('big').textContent=nf(ny)+' kr';
+  let h='<div class="ln"><span>KPI-endring i perioden</span><span>'+nf2(pct)+' %</span></div>';
+  h+='<div class="ln"><span>Tillatt økning</span><span>'+nf(ny-leie)+' kr/mnd</span></div>';
+  h+='<div class="ln tot"><span>Ny maks månedsleie</span><span>'+nf(ny)+' kr</span></div>';
+  document.getElementById('lines').innerHTML=h;
+  const v=document.getElementById('verdict');
+  const d=document.getElementById('dato').value;
+  if(d){
+    const months=(new Date()-new Date(d))/86400000/30.44;
+    if(months<12){v.className='verdict bad';v.innerHTML='<span class="ic">✕</span><span>Det er bare '+Math.floor(months)+' mnd siden forrige fastsetting. KPI-justering kan tidligst kreves etter 12 måneder.</span>';}
+    else{v.className='verdict ok';v.innerHTML='<span class="ic">✓</span><span>Det er over 12 måneder siden forrige justering – økningen er tillatt med minst én måneds skriftlig varsel.</span>';}
+  } else { v.className='verdict warn';v.innerHTML='<span class="ic">!</span><span>Husk: KPI-justering krever at det er gått minst 12 måneder, og minst én måneds skriftlig varsel.</span>'; }
+  document.getElementById('note').textContent='Negativ KPI-utvikling gir lavere maks. Leia kan aldri settes høyere enn KPI tilsier etter § 4-2.';
+  document.getElementById('res').classList.add('show');
+}
+ 
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fri rettshjelp – sjekk om du kvalifiserer – Rettsregel</title>
+<meta name="description" content="Sjekk om du har rett til fri rettshjelp etter den nye betalingsevne-modellen. Grense 5G (682 745 kr i 2026).">
+<link rel="canonical" href="https://rettsregel.no/verktoy/fri-rettshjelp/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="brand-dot"></span><a href="../">Rettsregel</a> &nbsp;/&nbsp; <a href="../">Verktøy</a></div>
+  <span class="tag">Rettshjelploven</span>
+  <h1>Fri rettshjelp – sjekk om du kvalifiserer</h1>
+  <p class="lede">Fra 15. oktober 2025 vurderes fri rettshjelp etter betalingsevne. Sjekk om du er under grensen på 5G (682 745 kr).</p>
+
+  <div class="card">
+    <div class="field"><label>Husstand</label>
+      <div class="seg" data-seg="hus">
+        <button data-v="en" aria-pressed="true">Enslig</button>
+        <button data-v="par">Par / felles økonomi</button>
+      </div></div>
+    <div class="field" id="f1"><label for="i1">Bruttoinntekt per år</label>
+      <div class="inputaffix"><input id="i1" type="number" inputmode="decimal" placeholder="400 000"><span class="suffix">kr</span></div></div>
+    <div class="field" id="f2" style="display:none"><label for="i2">Partnerens bruttoinntekt per år</label>
+      <div class="inputaffix"><input id="i2" type="number" inputmode="decimal" placeholder="350 000"><span class="suffix">kr</span></div></div>
+    <div class="field"><label for="form">Nettoformue</label>
+      <div class="hint">Verdi av og gjeld i egen bolig holdes utenfor.</div>
+      <div class="inputaffix"><input id="form" type="number" inputmode="decimal" placeholder="0"><span class="suffix">kr</span></div></div>
+    <button class="btn" onclick="calc()">Sjekk</button>
+  </div>
+  <div class="result" id="res">
+    <div class="verdict" id="verdict"></div>
+    <div class="lines" id="lines"></div>
+    <div class="note" id="note"></div>
+  </div>
+  <div class="lawbox"><b>Slik regnes det:</b> Betalingsevnen er bruttoinntekt pluss halvparten av nettoformuen (utenom egen bolig). For par legges inntektene sammen og det brukes en faktor på 0,6. Er betalingsevnen under 5G får du fri rettshjelp i utvalgte sakstyper. Det gis i tillegg fradrag for barn, og egenandelen avhenger av økonomien din – bruk <a href="https://www.statsforvalteren.no" target="_blank" rel="noopener">Statsforvalterens kalkulator</a> for nøyaktig beregning.</div>
+ 
+  <div class="cta">
+    <h3>Trenger du en advokat?</h3>
+    <p>Får du ikke fri rettshjelp, eller vil du ha en vurdering av saken din?</p>
+    <a href="https://rettsregel.no/kontakt/">Ta kontakt</a>
+  </div>
+  <p class="disclaimer">Verktøyet gir et veiledende estimat basert på gjeldende satser og regler (oppdatert juni 2026). Det er generell informasjon, ikke juridisk rådgivning, og erstatter ikke en konkret vurdering. Sjekk alltid mot offisielle kilder før du handler.</p>
+</div>
+<script>
+const nf = n => Math.round(n).toLocaleString('nb-NO');
+const nf2 = n => n.toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2});
+const val = id => parseFloat((document.getElementById(id).value||'').replace(/\s/g,'').replace(',','.'))||0;
+function seg(group, cb){
+  document.querySelectorAll('[data-seg="'+group+'"] button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-seg="'+group+'"] button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true'); cb && cb(b.dataset.v);
+    });
+  });
+}
+function segv(group){const b=document.querySelector('[data-seg="'+group+'"] button[aria-pressed=true]');return b?b.dataset.v:null;}
+
+const FEMG=682745, ENG_G=136549;
+seg('hus', v=>{document.getElementById('f2').style.display=(v==='par')?'block':'none';});
+function calc(){
+  const par=segv('hus')==='par';
+  const i1=val('i1'), i2=par?val('i2'):0, form=val('form');
+  if(!i1 && !i2){alert('Fyll inn inntekt.');return;}
+  let evne;
+  if(par) evne=0.6*((i1+i2)+0.5*form);
+  else    evne=i1+0.5*form;
+  const v=document.getElementById('verdict');
+  if(evne<=FEMG){
+    v.className='verdict ok';
+    v.innerHTML='<span class="ic">✓</span><span>Du er trolig <b>under grensen</b> og kan ha rett til fri rettshjelp i sakstypene ordningen dekker.</span>';
+  } else if(evne<=FEMG*1.15){
+    v.className='verdict warn';
+    v.innerHTML='<span class="ic">!</span><span>Du er litt over grensen. Med fradrag for barn kan du likevel kvalifisere – sjekk Statsforvalterens kalkulator.</span>';
+  } else {
+    v.className='verdict bad';
+    v.innerHTML='<span class="ic">✕</span><span>Betalingsevnen er over grensen. Du har trolig ikke rett til behovsprøvd fri rettshjelp, men enkelte saker gis uavhengig av inntekt.</span>';
+  }
+  let h='<div class="ln"><span>Beregnet betalingsevne</span><span>'+nf(evne)+' kr</span></div>';
+  h+='<div class="ln"><span>Grense (5G)</span><span>'+nf(FEMG)+' kr</span></div>';
+  h+='<div class="ln tot"><span>Egenandel</span><span>'+(evne<ENG_G?'Fritatt (under 1G)':'1–99 % etter økonomi')+'</span></div>';
+  document.getElementById('lines').innerHTML=h;
+  document.getElementById('note').textContent='Noen sakstyper (f.eks. barnevern og tvangssaker) gir fri rettshjelp uavhengig av inntekt og formue.';
+  document.getElementById('res').classList.add('show');
+}
+ 
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokumentavgift-kalkulator – Rettsregel</title>
+<meta name="description" content="Beregn dokumentavgift på 2,5 % av kjøpesummen pluss tinglysingsgebyr ved boligkjøp.">
+<link rel="canonical" href="https://rettsregel.no/verktoy/dokumentavgift/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="brand-dot"></span><a href="../">Rettsregel</a> &nbsp;/&nbsp; <a href="../">Verktøy</a></div>
+  <span class="tag">Boligkjøp</span>
+  <h1>Dokumentavgift-kalkulator</h1>
+  <p class="lede">Regn ut dokumentavgiften (2,5 %) og tinglysingsgebyret du må betale når du kjøper bolig.</p>
+
+  <div class="card">
+    <div class="field"><label for="kjop">Kjøpesum / markedsverdi</label>
+      <div class="inputaffix"><input id="kjop" type="number" inputmode="decimal" placeholder="4 000 000"><span class="suffix">kr</span></div></div>
+    <div class="field"><label>Type bolig</label>
+      <div class="seg" data-seg="type">
+        <button data-v="selveier" aria-pressed="true">Selveier / fast eiendom</button>
+        <button data-v="borettslag">Borettslag (andel)</button>
+      </div>
+      <div class="hint" style="margin-top:8px">Andel i borettslag har <b>ikke</b> dokumentavgift – kun et eierskiftegebyr til forretningsfører.</div>
+    </div>
+    <div class="field"><label for="ting">Tinglysing</label>
+      <select id="ting"><option value="585">Papir – 585 kr</option><option value="440">Elektronisk – 440 kr</option></select></div>
+    <button class="btn" onclick="calc()">Regn ut</button>
+  </div>
+  <div class="result" id="res">
+    <div class="biglabel">Dokumentavgift</div>
+    <div class="big" id="big">–</div>
+    <div class="lines" id="lines"></div>
+    <div class="note" id="note"></div>
+  </div>
+  <div class="lawbox"><b>Fritak finnes</b> bl.a. ved overføring mellom ektefeller, arv til lovbestemte arvinger, og ved nyoppført bolig (da betales avgift kun av tomteverdien). Ved samlivsbrudd kan felles bolig være fritatt hvis vilkår om felles adresse/barn er oppfylt.</div>
+ 
+  <p class="disclaimer">Verktøyet gir et veiledende estimat basert på gjeldende satser og regler (oppdatert juni 2026). Det er generell informasjon, ikke juridisk rådgivning, og erstatter ikke en konkret vurdering. Sjekk alltid mot offisielle kilder før du handler.</p>
+</div>
+<script>
+const nf = n => Math.round(n).toLocaleString('nb-NO');
+const nf2 = n => n.toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2});
+const val = id => parseFloat((document.getElementById(id).value||'').replace(/\s/g,'').replace(',','.'))||0;
+function seg(group, cb){
+  document.querySelectorAll('[data-seg="'+group+'"] button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-seg="'+group+'"] button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true'); cb && cb(b.dataset.v);
+    });
+  });
+}
+function segv(group){const b=document.querySelector('[data-seg="'+group+'"] button[aria-pressed=true]');return b?b.dataset.v:null;}
+
+seg('type', calc);
+function calc(){
+  const kjop=val('kjop'); const ting=parseFloat(document.getElementById('ting').value);
+  if(!kjop){return;}
+  const borettslag = segv('type')==='borettslag';
+  let avgift=0, grunnlag=0;
+  if(!borettslag){
+    grunnlag=Math.floor(kjop/1000)*1000;            // avrundes ned til nærmeste 1000
+    avgift=Math.floor((grunnlag*0.025)/10)*10;       // avrundes ned til nærmeste 10
+    if(avgift<250) avgift=250;                        // minimum
+  }
+  document.getElementById('big').textContent=nf(avgift)+' kr';
+  let h='';
+  if(borettslag){
+    h+='<div class="ln"><span>Dokumentavgift</span><span>0 kr (ingen ved borettslag)</span></div>';
+  } else {
+    h+='<div class="ln"><span>Avgiftsgrunnlag</span><span>'+nf(grunnlag)+' kr</span></div>';
+    h+='<div class="ln"><span>Sats</span><span>2,5 %</span></div>';
+  }
+  h+='<div class="ln"><span>Tinglysingsgebyr</span><span>'+nf(ting)+' kr</span></div>';
+  h+='<div class="ln tot"><span>Sum offentlige omkostninger</span><span>'+nf(avgift+ting)+' kr</span></div>';
+  document.getElementById('lines').innerHTML=h;
+  document.getElementById('note').textContent= borettslag ? 'I tillegg kommer eierskiftegebyr til borettslagets forretningsfører (varierer, ofte 4 000–6 000 kr).' : '';
+  document.getElementById('res').classList.add('show');
+}
+ 
+</script>
+</body>
+</html>

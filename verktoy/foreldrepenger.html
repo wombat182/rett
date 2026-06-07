@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foreldrepenger-kalkulator – Rettsregel</title>
+<meta name="description" content="Beregn foreldrepenger fra NAV. Sammenlign 100 % (49 uker) og 80 % (61 uker) og se fordelingen mellom foreldrene.">
+<link rel="canonical" href="https://rettsregel.no/verktoy/foreldrepenger/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="brand-dot"></span><a href="../">Rettsregel</a> &nbsp;/&nbsp; <a href="../">Verktøy</a></div>
+  <span class="tag">Folketrygdloven</span>
+  <h1>Foreldrepenger-kalkulator</h1>
+  <p class="lede">Se hva du får i foreldrepenger, og sammenlign 100 % i 49 uker mot 80 % i 61 uker. Dekning opp til 6G.</p>
+
+  <div class="card">
+    <div class="field"><label for="lonn">Årsinntekt (brutto)</label>
+      <div class="inputaffix"><input id="lonn" type="number" inputmode="decimal" placeholder="600 000"><span class="suffix">kr</span></div></div>
+    <div class="field"><label>Dekningsgrad</label>
+      <div class="seg" data-seg="dg">
+        <button data-v="100" aria-pressed="true">100 % – 49 uker</button>
+        <button data-v="80">80 % – 61 uker</button>
+      </div></div>
+    <button class="btn" onclick="calc()">Regn ut</button>
+  </div>
+  <div class="result" id="res">
+    <div class="biglabel">Utbetaling per måned</div>
+    <div class="big" id="big">–</div>
+    <div class="lines" id="lines"></div>
+    <div class="note" id="note"></div>
+  </div>
+  <div class="lawbox" id="law"></div>
+ 
+  <p class="disclaimer">Verktøyet gir et veiledende estimat basert på gjeldende satser og regler (oppdatert juni 2026). Det er generell informasjon, ikke juridisk rådgivning, og erstatter ikke en konkret vurdering. Sjekk alltid mot offisielle kilder før du handler.</p>
+</div>
+<script>
+const nf = n => Math.round(n).toLocaleString('nb-NO');
+const nf2 = n => n.toLocaleString('nb-NO',{minimumFractionDigits:2,maximumFractionDigits:2});
+const val = id => parseFloat((document.getElementById(id).value||'').replace(/\s/g,'').replace(',','.'))||0;
+function seg(group, cb){
+  document.querySelectorAll('[data-seg="'+group+'"] button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-seg="'+group+'"] button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true'); cb && cb(b.dataset.v);
+    });
+  });
+}
+function segv(group){const b=document.querySelector('[data-seg="'+group+'"] button[aria-pressed=true]');return b?b.dataset.v:null;}
+
+const SEKSG=819294, HALVG=68275, ENG=92648;
+seg('dg', calc);
+function calc(){
+  const lonn=val('lonn'); if(!lonn)return;
+  if(lonn<HALVG){
+    document.getElementById('big').textContent=nf(ENG)+' kr';
+    document.getElementById('lines').innerHTML='<div class="ln"><span>Engangsstønad (utbetales én gang)</span><span>'+nf(ENG)+' kr</span></div>';
+    document.getElementById('note').textContent='Inntekten din er under 0,5G ('+nf(HALVG)+' kr). Da har du ikke rett til foreldrepenger, men får engangsstønad.';
+    document.getElementById('law').innerHTML='';
+    document.getElementById('res').classList.add('show');return;
+  }
+  const dg=segv('dg')==='80'?0.8:1.0;
+  const grunnlag=Math.min(lonn,SEKSG);
+  const mnd=grunnlag*dg/12;
+  const uker = dg===1?49:61;
+  const total=grunnlag*dg*(uker/52);
+  document.getElementById('big').textContent=nf(mnd)+' kr';
+  let h='<div class="ln"><span>Dekningsgrad</span><span>'+(dg*100)+' %</span></div>';
+  h+='<div class="ln"><span>Varighet</span><span>'+uker+' uker'+(dg===0.8?' + 1 dag':'')+'</span></div>';
+  h+='<div class="ln"><span>Grunnlag</span><span>'+nf(grunnlag)+' kr'+(lonn>SEKSG?' (kappet ved 6G)':'')+'</span></div>';
+  if(lonn>SEKSG)h+='<div class="ln"><span>Inntekt over 6G (dekkes ikke av NAV)</span><span>'+nf((lonn-SEKSG)*dg/12)+' kr/mnd</span></div>';
+  h+='<div class="ln tot"><span>Samlet utbetaling over hele perioden</span><span>'+nf(total)+' kr</span></div>';
+  document.getElementById('lines').innerHTML=h;
+  document.getElementById('note').textContent='Total utbetaling er omtrent lik enten du velger 100 % eller 80 %. 100 % gir høyere månedsbeløp, 80 % gir lengre tid hjemme.';
+  const q = dg===1
+    ? 'Mødrekvote 15 uker · fedre-/medmorkvote 15 uker · fellesperiode 16 uker (deles fritt). I tillegg 3 uker før termin forbeholdt mor.'
+    : 'Mødrekvote 19 uker · fedre-/medmorkvote 19 uker · fellesperiode 20 uker + 1 dag (deles fritt). I tillegg 3 uker før termin forbeholdt mor.';
+  document.getElementById('law').innerHTML='<b>Fordeling ved '+(dg*100)+' %:</b> '+q;
+  document.getElementById('res').classList.add('show');
+}
+ 
+</script>
+</body>
+</html>
