@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan kommunen dele opplysninger om meg? — Rettsregel</title>
+<meta name="description" content="Kommunen kan dele opplysninger om deg når loven gir adgang, for eksempel internt i saken, med deg eller fullmektigen din, med samtykke, eller med andre…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-kommunen-dele-opplysninger-om-meg/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan kommunen dele opplysninger om meg?">
+<meta property="og:description" content="Kommunen kan dele opplysninger om deg når loven gir adgang, for eksempel internt i saken, med deg eller fullmektigen din, med samtykke, eller med andre…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-kommunen-dele-opplysninger-om-meg/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan kommunen dele opplysninger om meg?">
+<meta name="twitter:description" content="Kommunen kan dele opplysninger om deg når loven gir adgang, for eksempel internt i saken, med deg eller fullmektigen din, med samtykke, eller med andre…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forvaltning</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forvaltning</div>
+      <h1 class="article-title">Kan kommunen dele opplysninger om meg?</h1>
+      <p class="article-description">Kommunen kan dele opplysninger om deg når loven gir adgang, for eksempel internt i saken, med deg eller fullmektigen din, med samtykke, eller med andre…</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kommunen kan dele opplysninger om deg når loven gir adgang, for eksempel internt i saken, med deg eller fullmektigen din, med samtykke, eller med andre organer når det er nødvendig for lovpålagte oppgaver. Den kan ikke dele taushetsbelagte opplysninger fritt.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Taushetsplikt i forvaltningen reguleres særlig av forvaltningsloven §§ 13 til 13 g. Etter § 13 plikter enhver som utfører tjeneste eller arbeid for et forvaltningsorgan å hindre at andre får adgang eller kjennskap til det vedkommende får vite om noens personlige forhold, eller om tekniske innretninger, fremgangsmåter og drifts- eller forretningsforhold som det er konkurransemessig viktig å hemmeligholde. Taushetsplikten gjelder også etter at personen har sluttet i tjenesten. Samtidig er taushetsplikten ikke absolutt. § 13 a åpner blant annet for at opplysninger kan gis til den de direkte gjelder, at den som har krav på taushet samtykker, eller at opplysningene brukes i anonymisert form. § 13 b åpner for bruk og deling i flere situasjoner, blant annet til parter eller representanter, for å oppnå formålet opplysningene er gitt for, internt i organet så langt det trengs, og til andre forvaltningsorganer når det er nødvendig for å fremme oppgaver etter lov, instruks eller oppnevningsgrunnlag. § 13 g åpner for forskrifter om informasjonsdeling mellom bestemte organer. Partsinnsyn etter § 18 kan også gi en part rett til å se opplysninger i egen sak, men § 19 kan begrense innsyn i visse opplysninger om andre.</p>
+<h2>Hva betyr dette i praksis?</h2>
+<p>I praksis betyr taushetsplikt at kommunen, NAV, skolen, helse- og omsorgstjenesten eller andre forvaltningsorganer ikke fritt kan dele sensitive opplysninger om deg. De må ha et rettslig grunnlag, et saksbehandlingsbehov eller samtykke. Samtidig kan forvaltningen ofte bruke opplysninger internt i saken og dele dem med andre offentlige organer når det er nødvendig for å løse lovpålagte oppgaver. Det er derfor ikke alltid brudd på taushetsplikt at flere saksbehandlere i samme etat har tilgang til dokumentene. Spørsmålet er om tilgangen og delingen er saklig, nødvendig og lovlig. Hvis du mener opplysninger er delt ulovlig, bør du be organet forklare hvem opplysningene er delt med, hvilket rettslig grunnlag de viser til, og hvordan opplysningene er brukt. I noen saker kan Datatilsynet, Statsforvalteren, tilsynsmyndighet eller Sivilombudet være relevant, avhengig av tema.</p>
+<h2>Slik bør du bruke regelen i din sak</h2>
+<p>Deling av opplysninger bør ha formål. Hvis en opplysning brukes for å avgjøre din søknad eller følge opp et vedtak, kan det være saklig. Hvis den deles av nysgjerrighet, slurv eller uten tjenstlig behov, er situasjonen en annen. Be om konkret begrunnelse, ikke bare en generell henvisning til samarbeid. Når du skriver til forvaltningen, bør du bruke datoer, saksnummer og korte punkter. Forvaltningen har veiledningsplikt, men du hjelper saken din ved å være presis. Skriv hva du ber om, hvilken regel eller rettighet du viser til, og hvilke dokumenter du legger ved. Hvis saken haster, forklar hvorfor den haster, og hva som kan skje hvis organet venter. Hvis du er usikker på fristen, send en foreløpig klage eller henvendelse først og ettersend begrunnelse. Det viktigste er å sikre at rettighetene dine ikke går tapt mens du forsøker å samle dokumentasjon.</p>
+<h2>Praktisk eksempel</h2>
+<p>Kommunen sender relevante helseopplysninger til tildelingskontoret som skal behandle samme tjenestesak. Det kan være lovlig. Hvis de samme opplysningene sendes til en uvedkommende arbeidsgiver uten grunnlag, kan det derimot være brudd på taushetsplikten. Eksempelet viser hvorfor skriftlighet er viktig. I forvaltningssaker er det ofte dokumentene som avgjør hva klageinstansen kan kontrollere. Ta derfor vare på vedtak, konvolutt eller digital mottaksdato, innsendte skjemaer, kvitteringer, e-poster, journalposter og eventuelle purringer. Hvis du snakker med saksbehandler på telefon, kan du sende en kort oppsummering etter samtalen. Da får du et spor dersom det senere blir uenighet om hva som ble sagt.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Be skriftlig om forklaring på hvilke opplysninger som er delt og med hvem.</li>
+<li>Spør hvilket rettslig grunnlag organet mener gir adgang til delingen.</li>
+<li>Be om partsinnsyn i saken og eventuelle journalførte delinger.</li>
+<li>Krev retting eller begrensning hvis opplysningene er feil eller irrelevante.</li>
+<li>Vurder klage, tilsyn eller Sivilombudet hvis organet ikke svarer tilfredsstillende.</li>
+<li>Hold en rolig og saklig tone. Be om konkret svar innen en rimelig frist hvis saken står stille.</li>
+</ol>
+<h2>Vanlige misforståelser</h2>
+<p>En vanlig misforståelse er at taushetsplikt betyr at ingen i kommunen kan snakke med hverandre om saken. Det stemmer ikke; intern bruk kan være lovlig når den er nødvendig. En annen misforståelse er at samtykke alltid er nødvendig. Noen delinger kan skje med hjemmel i lov selv uten samtykke. Det er også vanlig å tro at muntlig kontakt er nok. Muntlig kontakt kan hjelpe, men når frister og rettigheter står på spill, bør viktige krav alltid bekreftes skriftlig.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

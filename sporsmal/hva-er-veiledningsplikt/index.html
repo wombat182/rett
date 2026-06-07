@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er veiledningsplikt? — Rettsregel</title>
+<meta name="description" content="Veiledningsplikt betyr at forvaltningen innenfor sitt saksområde skal hjelpe parter og andre interesserte med å ivareta sine interesser.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-veiledningsplikt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er veiledningsplikt?">
+<meta property="og:description" content="Veiledningsplikt betyr at forvaltningen innenfor sitt saksområde skal hjelpe parter og andre interesserte med å ivareta sine interesser.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-veiledningsplikt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er veiledningsplikt?">
+<meta name="twitter:description" content="Veiledningsplikt betyr at forvaltningen innenfor sitt saksområde skal hjelpe parter og andre interesserte med å ivareta sine interesser.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forvaltning</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forvaltning</div>
+      <h1 class="article-title">Hva er veiledningsplikt?</h1>
+      <p class="article-description">Veiledningsplikt betyr at forvaltningen innenfor sitt saksområde skal hjelpe parter og andre interesserte med å ivareta sine interesser.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Veiledningsplikt betyr at forvaltningen innenfor sitt saksområde skal hjelpe parter og andre interesserte med å ivareta sine interesser. Organet skal veilede om relevante regler, praksis, saksbehandling, frister og mangler.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Forvaltningsloven § 11 gir forvaltningen en alminnelig veiledningsplikt innenfor sitt saksområde. Formålet er at parter og andre interesserte skal få adgang til å ivareta sine interesser på best mulig måte. Omfanget må tilpasses organets situasjon og kapasitet, men organet skal av eget tiltak vurdere partenes behov for veiledning. Etter forespørsel, og ellers når sakens art eller partens forhold gir grunn til det, skal organet gi veiledning om aktuelle regler, vanlig praksis og saksbehandlingsregler. Hvis noen henvender seg til feil myndighet, skal organet om mulig vise vedkommende til riktig organ. Hvis en henvendelse inneholder feil eller mangler som avsenderen bør rette, skal organet om nødvendig gi beskjed og bør samtidig gi frist og veiledning om retting. § 11 a sier at saken skal forberedes og avgjøres uten ugrunnet opphold, og at foreløpig svar skal gis når svaret vil ta uforholdsmessig lang tid. I enkeltvedtakssaker skal foreløpig svar gis hvis henvendelsen ikke kan besvares innen én måned.</p>
+<h2>Hva betyr dette i praksis?</h2>
+<p>I praksis kan du be om veiledning før du søker, mens saken behandles, og etter at du har fått vedtak. Veiledning betyr ikke at kommunen skal skrive søknaden eller klagen for deg, men den skal forklare hvilke regler som gjelder, hvilke opplysninger som vanligvis trengs, hvor du skal sende saken, og hvilke frister som løper. Jo mer alvorlig saken er for deg, desto viktigere er god veiledning. Hvis du har språkproblemer, funksjonsnedsettelse, sykdom, lav digital kompetanse eller andre forhold som gjør saken vanskelig, bør du skrive det. Det kan påvirke hva som er nødvendig veiledning. Hvis kommunen gir feil eller mangelfull veiledning, kan det få betydning for frister, saksbehandlingsfeil og om saken bør behandles på nytt.</p>
+<h2>Frister, dokumentasjon og strategi</h2>
+<p>Forvaltningssaker avgjøres ofte på dokumentene. Derfor bør du alltid sikre spor: vedtaket, dato for mottak, saksnummer, innsendte dokumenter, kvitteringer, purringer og eventuelle svar fra saksbehandler. Hvis det løper klagefrist, bør du ikke vente på perfekt begrunnelse før du gjør noe. Send heller en kort foreløpig klage, be om partsinnsyn og skriv at du vil ettersende utfyllende merknader. Hvis saken haster, må du forklare hvorfor den haster, og be særskilt om rask behandling eller utsatt iverksetting. Når du argumenterer, bør du skille mellom faktum, regel og vurdering. Faktum er hva som faktisk har skjedd. Regel er hvilke lov- eller forskriftsbestemmelser som gjelder. Vurdering er hvordan organet bruker reglene på faktum. En god klage viser hvilket ledd som er feil. Det gjør det lettere for underinstansen å omgjøre og for klageinstansen å kontrollere saken.</p>
+<h2>Praktisk eksempel</h2>
+<p>Lars vet ikke hvilket skjema han skal bruke for omsorgstjenester. Kommunen må gi generell veiledning om søknadsprosessen, nødvendige opplysninger og hvor søknaden skal sendes. Poenget er at du bør reagere skriftlig og presist. I stedet for å skrive at saken er «urettferdig», bør du skrive hva som er feil, hvilke dokumenter som viser det, og hva du ber organet gjøre. Dersom organet ikke svarer, bør du purre skriftlig. Hvis organet bruker en regel du ikke forstår, kan du be om veiledning og begrunnelse. Hvis saken gjelder innsyn, sanksjon, tvangsmulkt eller gjennomføring før klagen er avgjort, bør du også be om at spørsmålet behandles raskt.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Be om veiledning skriftlig og forklar hva du trenger hjelp til.</li>
+<li>Spør hvilke regler, frister og dokumenter som er relevante.</li>
+<li>Be organet vise deg til riktig myndighet hvis du er feil sted.</li>
+<li>Rett mangler i søknaden så raskt som mulig når du får beskjed.</li>
+<li>Purr skriftlig hvis du ikke får svar innen rimelig tid.</li>
+<li>Skriv kort, saklig og med datoer. Legg ved dokumentasjon og be om bekreftelse på mottak hvis fristen er viktig.</li>
+</ol>
+<h2>Vanlige misforståelser</h2>
+<p>En vanlig misforståelse er at veiledningsplikt betyr at forvaltningen skal opptre som din advokat. Det gjør den ikke. En annen misforståelse er at dårlig veiledning alltid gjør vedtaket ugyldig. Det avhenger av om feilen kan ha påvirket saken eller rettighetene dine. Det er også vanlig å tro at forvaltningen alltid retter feil av seg selv. Noen feil blir rettet, men du bør ikke basere rettighetene dine på det. Bruk klage, innsyn, begrunnelseskrav, omgjøringsbegjæring eller purring når det trengs.</p>
+<h2>Hvis saken fortsatt er uklar</h2>
+<p>Be organet opplyse nøyaktig hvilken bestemmelse det bygger på, hvilke dokumenter som ligger til grunn, og hvilken frist du har for å svare. Be samtidig om at alle nye opplysninger journalføres. Hvis du får muntlige beskjeder, bekreft dem skriftlig. Hvis du oppdager at saken er behandlet etter feil spor, for eksempel som generell veiledning i stedet for enkeltvedtak, bør du be organet avklare dette. Slik unngår du at saken glir ut i uformell dialog mens frister løper.</p>
+<p>Sentrale bestemmelser er forvaltningsloven/§-11, forvaltningsloven/§-11a, forvaltningsloven/§-15a, forvaltningsloven/§-17. Du bør lese dem sammen med særloven som gjelder saksområdet ditt, fordi forvaltningsloven ofte gir grunnreglene mens andre lover gir egne frister, klageinstanser, vilkår eller unntak.</p>
+<p>nummer: 76</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

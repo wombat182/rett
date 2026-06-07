@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva gjør jeg hvis boligen er mindre enn avtalt? — Rettsregel</title>
+<meta name="description" content="Hvis boligen er mindre enn avtalt, bør du dokumentere avviket med tegninger, kontrakt og eventuell oppmåling.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-boligen-er-mindre-enn-avtalt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva gjør jeg hvis boligen er mindre enn avtalt?">
+<meta property="og:description" content="Hvis boligen er mindre enn avtalt, bør du dokumentere avviket med tegninger, kontrakt og eventuell oppmåling.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-boligen-er-mindre-enn-avtalt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva gjør jeg hvis boligen er mindre enn avtalt?">
+<meta name="twitter:description" content="Hvis boligen er mindre enn avtalt, bør du dokumentere avviket med tegninger, kontrakt og eventuell oppmåling.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva gjør jeg hvis boligen er mindre enn avtalt?</h1>
+      <p class="article-description">Hvis boligen er mindre enn avtalt, bør du dokumentere avviket med tegninger, kontrakt og eventuell oppmåling.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis boligen er mindre enn avtalt, bør du dokumentere avviket med tegninger, kontrakt og eventuell oppmåling. Arealavvik kan være mangel hvis resultatet ikke samsvarer med avtalen eller opplysninger du hadde grunn til å bygge på, særlig hvis avviket har økonomisk betydning.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven om denne typen mangel?</h2>
+<p>Bustadoppføringslova § 7 krever faglig god utførelse, tilbørlig omsorg og materialer av vanlig god kvalitet hvis ikke annet er avtalt. § 13 stiller særskilte krav i en del avtaler, blant annet at nødvendige eiendomsdeler og faste innretninger som trengs for vanlig bruk, må være med hvis de ikke er særskilt unntatt. Etter § 25 foreligger mangel når resultatet avviker fra avtalen, lovens kvalitetskrav eller offentlige krav. §§ 26 og 27 gjør også opplysninger og markedsføring viktige. Ved mangel kan du bruke kravene i §§ 29 til 35.</p>
+<p>Bustadoppføringslova er i tillegg en forbrukervernlov. Det betyr at entreprenøren ikke kan avtale seg bort fra reglene til skade for deg som forbruker, jf. § 3. Hvis kontrakten, salgsprospektet eller entreprenørens standardvilkår sier noe som gir deg dårligere rettigheter enn loven, må vilkåret vurderes kritisk. Samtidig kan avtalen gi deg bedre rettigheter enn loven, for eksempel lengre garanti, høyere dagmulkt eller klarere krav til materialer og standard. Derfor bør du alltid lese loven og avtalen sammen.</p>
+<h2>Slik vurderer du saken</h2>
+<p>Ved ny bolig må du tenke både praktisk og juridisk. Det viktigste er å reklamere tydelig, sikre bevis, ikke betale mer enn du må, og passe på at saken ikke skyves fremover til frister eller bevis glipper.</p>
+<p>Det første spørsmålet er om forholdet faktisk er omfattet av bustadoppføringslova. Loven gjelder avtaler mellom en forbruker og en profesjonell entreprenør om oppføring av ny eierbolig, fritidsbolig, full ombygging, eller kjøp av rett til ny bolig når arbeid som entreprenøren står for ikke var fullført på avtaletidspunktet. Hvis boligen var ferdig før avtalen, kan avhendingslova i stedet være aktuell. Hvis saken gjelder reparasjon eller mindre ombygging på en eksisterende bolig, kan håndverkertjenesteloven være riktig spor. Riktig lov er viktig fordi frister, garantier og krav kan være forskjellige.</p>
+<p>Det andre spørsmålet er hva du kan bevise. Nybyggstvister handler ofte om dokumentasjon: kontrakt, leveransebeskrivelse, tegninger, endringsmeldinger, e-poster, bilder, overtakelsesprotokoll, ferdigattest eller midlertidig brukstillatelse, takstrapport, fakturaer og bankutskrifter. Det er ikke nok å føle at boligen er dårligere enn forventet. Du bør kunne peke på et konkret avvik fra avtale, lov, forskrift, faglig god utførelse eller opplysninger som er gitt før avtalen.</p>
+<p>Det tredje spørsmålet er hvilket krav som passer. Retting er ofte førstevalget ved mangler, fordi loven både gir deg rett til retting og gir entreprenøren en viss rett til å rette. Prisavslag blir aktuelt hvis retting ikke skjer i samsvar med loven, eller hvis retting ikke er praktisk. Erstatning krever et økonomisk tap, for eksempel utgifter til rapport, midlertidig bolig, ekstra flytting eller følgeskade. Heving krever vesentlig avtalebrudd og bør vurderes med stor varsomhet. Tilbakehold kan brukes for å sikre kravet, men beløpet må være forsvarlig.</p>
+<h2>Frister og bevis du må passe på</h2>
+<p>Den viktigste fristen ved mangler er at du må reklamere innen rimelig tid etter at du oppdaget eller burde ha oppdaget feilen. I tillegg kan mangler som hovedregel ikke gjøres gjeldende senere enn fem år etter overtakelsen. Forbrukerrådet peker også på at krav kan foreldes etter foreldelsesreglene selv om du har reklamert, og at foreldelse i utgangspunktet kan løpe fra overtakelse. Derfor bør du ikke tro at en e-post med reklamasjon alene alltid holder saken levende i mange år.</p>
+<p>Ved overtakelse og ettårsbefaring er fristbildet skjerpet for synlige forhold. Feil som du burde oppdage ved overtakelsesforretningen, bør føres i protokollen eller tas opp straks. Feil som burde oppdages på ettårsbefaring, må også gjøres gjeldende så snart råd er. Det betyr ikke at du må bruke juridiske formuleringer, men entreprenøren må forstå hvilket forhold du mener er feil, og at du gjør det gjeldende som krav.</p>
+<p>Bevismessig bør du lage en enkel tidslinje. Skriv dato for avtale, planlagt overtakelse, faktisk overtakelse, når feilen ble oppdaget, når reklamasjon ble sendt, hva entreprenøren svarte, og hvilke kostnader du har hatt. Denne tidslinjen er nyttig både for deg, takstmann, klageorgan og eventuell advokat. Den hjelper også mot den vanlige innvendingen om at du har reklamert for sent.</p>
+<h2>Praktisk eksempel</h2>
+<p>Etter innflytting merker Ali og Ingrid kondens ved vinduene og fuktmerker i himlingen på badet. De sender reklamasjon med bilder, datoer og beskrivelse av når feilen viser seg. De ber om at entreprenøren undersøker årsaken og varsler at de vil innhente takst hvis saken ikke følges opp. Entreprenøren tilbyr først bare maling av flekken, men en rapport viser mangelfull tetting. Da blir saken ikke lenger en diskusjon om «normal byggfukt», men et konkret krav om retting av en mangel og dekning av nødvendige undersøkelsesutgifter.</p>
+<p>Eksempelet viser hovedpoenget: du må gjøre saken konkret. Jo mer konkret reklamasjonen er, desto vanskeligere er det for entreprenøren å avvise saken som misnøye, normal slitasje, brukerfeil eller en sak som må vente. Samtidig bør du unngå å overdrive. Krever du heving eller et svært høyt tilbakehold for en begrenset feil, kan du svekke forhandlingsposisjonen. Et presist krav er normalt sterkere enn et dramatisk krav.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Sikre bevis før forholdet endres. Ta bilder, video, mål og noter datoer. Ved fukt, bad, elektrisk anlegg eller konstruksjonsfeil bør du raskt bruke fagkyndig bistand. Send reklamasjon til entreprenøren og be om konkret plan for undersøkelse og retting. Ikke la entreprenøren gjøre en overflatisk kosmetisk reparasjon hvis årsaken ikke er avklart. Ved fare for følgeskade bør du samtidig gjøre rimelige skadebegrensende tiltak, for eksempel stoppe vann, ventilere eller hindre videre inntrenging, men dokumenter hva du gjør og hvorfor. Hold tilbake bare et forsvarlig beløp knyttet til kravet.</p>
+<p>Dersom saken gjelder store beløp, bør du også vurdere rettshjelpsdekning gjennom innboforsikring eller boligkjøperforsikring hvis du har det. Mange forsikringer dekker deler av advokatutgiftene ved tvist etter en egenandel. Det betyr ikke at du må starte rettssak, men det kan gi deg bedre grunnlag for å vurdere risiko, foreldelse og riktig krav. Ved tekniske mangler bør juridisk vurdering og byggfaglig vurdering ofte gå parallelt.</p>
+<h2>Vanlige misforståelser</h2>
+<ul>
+<li>Ikke legg til grunn at alt er normalt fordi boligen er ny.</li>
+<li>Ikke vent med fukt, el-feil eller våtromsfeil; følgeskader kan bli store.</li>
+<li>Et kosmetisk avvik og et funksjonelt avvik vurderes ikke alltid likt.</li>
+</ul>
+<p>Til slutt: Ikke signer på en sluttavtale, utbedringsavtale eller overtakelsesprotokoll som sier at alle krav er oppgjort, med mindre du faktisk mener det. Skriv heller uttrykkelig at du tar forbehold om krav som gjelder de konkrete feilene, forsinkelsen eller beløpene som fortsatt er uavklart.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

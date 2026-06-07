@@ -187,9 +187,25 @@ try:
 except ImportError:
     _SP_VEGTRAFIKK = []
 
+try:
+    from sporsmal_ferieloven import SPORSMAL as _SP_FERIE
+except ImportError:
+    _SP_FERIE = []
+
+try:
+    from sporsmal_bustadoppforingslova import SPORSMAL as _SP_BUSTAD
+except ImportError:
+    _SP_BUSTAD = []
+
+try:
+    from sporsmal_forvaltningsloven import SPORSMAL as _SP_FORVALTNING
+except ImportError:
+    _SP_FORVALTNING = []
+
 SPORSMAL = (_SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL
             + _SP_ANGRE + _SP_AVH + _SP_ARVE + _SP_BARNE
-            + _SP_STRAFF + _SP_INKASSO + _SP_VEGTRAFIKK)
+            + _SP_STRAFF + _SP_INKASSO + _SP_VEGTRAFIKK
+            + _SP_FERIE + _SP_BUSTAD + _SP_FORVALTNING)
 
 # ============================================================
 # SHARED CSS (same look as homepage)
@@ -3305,6 +3321,7 @@ def render_sporsmal_hub():
         "gjeld": "penger-og-gjeld",
         "bil": "bil-og-kjoretoy",
         "straff": "straff-og-kriminalitet",
+        "forvaltning": "det-offentlige",
         "tjenester": "selskap",
     }
 
@@ -3318,6 +3335,7 @@ def render_sporsmal_hub():
         ("nabo-og-eiendom", "Nabo og eiendom"),
         ("bil-og-kjoretoy", "Bil og kjøretøy"),
         ("straff-og-kriminalitet", "Straff og kriminalitet"),
+        ("det-offentlige", "Det offentlige"),
     ]
 
     # Group sporsmal under new categories
