@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan endres Grunnloven? — Rettsregel</title>
+<meta name="description" content="Grunnloven endres ved at et forslag fremsettes på første, andre eller tredje storting etter et nytt valg, kunngjøres, og først behandles av Stortinget…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-endres-grunnloven/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan endres Grunnloven?">
+<meta property="og:description" content="Grunnloven endres ved at et forslag fremsettes på første, andre eller tredje storting etter et nytt valg, kunngjøres, og først behandles av Stortinget…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-endres-grunnloven/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan endres Grunnloven?">
+<meta name="twitter:description" content="Grunnloven endres ved at et forslag fremsettes på første, andre eller tredje storting etter et nytt valg, kunngjøres, og først behandles av Stortinget…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Grunnlov</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Grunnlov</div>
+      <h1 class="article-title">Hvordan endres Grunnloven?</h1>
+      <p class="article-description">Grunnloven endres ved at et forslag fremsettes på første, andre eller tredje storting etter et nytt valg, kunngjøres, og først behandles av Stortinget…</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Grunnloven endres ved at et forslag fremsettes på første, andre eller tredje storting etter et nytt valg, kunngjøres, og først behandles av Stortinget etter neste valg. Vedtak krever to tredjedels flertall. Grunnlovsforslag kan bare behandles når minst to tredjedeler av stortingsrepresentantene er til stede.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Grunnloven kan endres, men bare etter den særlige prosessen i § 121. Forslag må fremsettes på første, andre eller tredje storting etter et nytt valg og kunngjøres. Først etter neste stortingsvalg kan Stortinget avgjøre om forslaget skal vedtas. Minst to tredjedeler av Stortinget må være enige, og et grunnlovsforslag kan bare behandles når minst to tredjedeler av representantene er til stede. Endringen må heller ikke motsi Grunnlovens prinsipper eller forandre konstitusjonens ånd.</p>
+<p>Hvordan endres Grunnloven? er et spørsmål som ofte oppstår når en offentlig avgjørelse, en politisk regel eller en praktisk handling oppleves som mer enn bare urimelig. Grunnloven er ikke en håndbok med svar på alle hverdagsproblemer, men den setter de øverste rammene for hva staten, kommunen, politiet, skolen, NAV og domstolene kan gjøre. Derfor må spørsmålet vurderes både juridisk og praktisk: Hvilken grunnlovsregel gjelder, hva er det konkrete inngrepet, og finnes det en vanlig lov eller klageordning som gir deg et spor videre?</p>
+<h2>Hva betyr dette i praksis?</h2>
+<p>Den vanskelige endringsprosessen gjør at Grunnloven ikke kan endres like raskt som en vanlig lov. Dette skaper stabilitet, men hindrer ikke utvikling. Grunnloven har blitt endret mange ganger. Poenget er at endringer skal skje åpent, med tid til debatt og gjennom brede flertall. Derfor må forslag fremmes før valg og vedtas etter valg.</p>
+<p>Grunnlovsendringer er åpne politiske prosesser. Forslag må kunngjøres før valget, slik at velgerne kan vite hvilke endringer som kan bli behandlet i neste periode. Det nye Stortinget kan ikke endre teksten på vanlig måte hvis forslaget ikke ligger innenfor det som er fremmet. Dette skal hindre raske og overraskende endringer i spillereglene for demokratiet.</p>
+<h2>Hvor går grensen?</h2>
+<p>Grunnloven gir sterke rettigheter, men mange av dem må avveies mot andre hensyn. En rettighet kan være berørt uten at den er krenket. Det avgjørende er ofte om myndighetene har lovhjemmel, om de forfølger et saklig og legitimt formål, og om inngrepet er forholdsmessig. Forholdsmessighet betyr at myndighetene må kunne vise at tiltaket er egnet, nødvendig og rimelig balansert. Et tiltak som er praktisk for staten, er ikke automatisk forholdsmessig. Samtidig er ikke et tiltak grunnlovsstridig bare fordi det er ubehagelig, dyrt eller belastende.</p>
+<p>Du bør også skille mellom rettslige og politiske spørsmål. Domstolene kan kontrollere rettigheter, hjemmel, saksbehandling og konkrete inngrep. De overtar ikke uten videre Stortingets politiske vurderinger. Stortinget kan på sin side endre lover og kontrollere regjeringen, men må holde seg innenfor Grunnloven. Forvaltningen må bruke lovene korrekt og kan ikke finne opp inngrep uten hjemmel.</p>
+<h2>Praktisk eksempel</h2>
+<p>Henrik leser om et forslag om å endre Grunnloven. Forslaget kan ikke vedtas straks som en vanlig lov. Det må ligge over et valg, slik at velgerne får mulighet til å reagere politisk. Først et senere storting kan vedta endringen, og da kreves to tredjedels flertall.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Finn først ut om saken gjelder et konkret vedtak, et inngrep, en straffesak, en nektelse, en kontrollhandling eller en generell politisk uenighet. Grunnloven brukes ulikt i disse situasjonene.</li>
+<li>Be om skriftlig begrunnelse, innsyn og hjemmel. Spør hvilken lovregel myndigheten bygger på, hvilke faktiske opplysninger som er lagt til grunn, og hvordan forholdsmessighet er vurdert.</li>
+<li>Skriv en kort tidslinje. Ta med datoer, vedtak, brev, møter, skjermbilder, vitner og dokumentasjon. Grunnlovsargumenter blir sterkere når faktum er ryddig.</li>
+<li>Bruk riktig kanal: Stortinget, særlig kontroll- og konstitusjonskomiteen og stortingsrepresentantene. I mange saker er første steg en vanlig forvaltningsklage. I andre saker må spørsmålet tas opp for domstolene.</li>
+<li>Unngå å gjøre klagen for bred. Velg de to eller tre sterkeste rettslige poengene. Et presist argument om lovhjemmel, usaklig forskjellsbehandling eller uforholdsmessig inngrep virker bedre enn en lang liste med alle grunnlovsparagrafer.</li>
+</ol>
+<h2>Vanlige misforståelser</h2>
+<ul>
+<li>Grunnloven er ikke uforanderlig.</li>
+<li>Men den kan ikke endres like enkelt som en vanlig lov.</li>
+<li>Grunnloven bør ikke brukes som en løs henvisning. Den virker best når du peker på nøyaktig paragraf, konkret inngrep og riktig klage- eller domstolsspor.</li>
+</ul>
+<h2>Kort oppsummert</h2>
+<p>Grunnloven endres ved at et forslag fremsettes på første, andre eller tredje storting etter et nytt valg, kunngjøres, og først behandles av Stortinget etter neste valg. Vedtak krever to tredjedels flertall. Grunnlovsforslag kan bare behandles når minst to tredjedeler av stortingsrepresentantene er til stede. I praksis bør du alltid kombinere grunnlovsargumentet med den vanlige loven som regulerer saken. Grunnloven er toppen av regelverket, men veien frem går ofte gjennom klagefrister, innsyn, begrunnelse, dokumentasjon og riktig instans.</p>
+<h2>Slik styrker du saken</h2>
+<p>Et grunnlovsargument bør skrives nøkternt. Start med faktum, ikke konklusjonen. Beskriv hva som skjedde, hvem som gjorde det, og hvilken virkning det fikk for deg. Deretter viser du til bestemmelsen, for eksempel grunnloven/§-73, og forklarer hvorfor vilkårene ikke er oppfylt. Avslutt med hva du ber om: omgjøring, ny behandling, innsyn, stans i tiltaket, erstatning eller dom for at vedtaket er ugyldig.</p>
+<h2>Slik styrker du saken</h2>
+<p>Et grunnlovsargument bør skrives nøkternt. Start med faktum, ikke konklusjonen. Beskriv hva som skjedde, hvem som gjorde det, og hvilken virkning det fikk for deg. Deretter viser du til bestemmelsen, for eksempel grunnloven/§-73, og forklarer hvorfor vilkårene ikke er oppfylt. Avslutt med hva du ber om: omgjøring, ny behandling, innsyn, stans i tiltaket, erstatning eller dom for at vedtaket er ugyldig.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

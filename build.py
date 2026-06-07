@@ -232,11 +232,42 @@ try:
 except ImportError:
     _SP_PASIENT = []
 
+try:
+    from sporsmal_universitetsloven import SPORSMAL as _SP_UNI
+except ImportError:
+    _SP_UNI = []
+
+try:
+    from sporsmal_navneloven import SPORSMAL as _SP_NAVN
+except ImportError:
+    _SP_NAVN = []
+
+try:
+    from sporsmal_voldserstatningsloven import SPORSMAL as _SP_VOLD
+except ImportError:
+    _SP_VOLD = []
+
+try:
+    from sporsmal_yrkesskadeforsikringsloven import SPORSMAL as _SP_YRKE
+except ImportError:
+    _SP_YRKE = []
+
+try:
+    from sporsmal_ekspropriasjonserstatningslova import SPORSMAL as _SP_EKSPRO
+except ImportError:
+    _SP_EKSPRO = []
+
+try:
+    from sporsmal_grunnloven import SPORSMAL as _SP_GRUNN
+except ImportError:
+    _SP_GRUNN = []
+
 SPORSMAL = (_SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL
             + _SP_ANGRE + _SP_AVH + _SP_ARVE + _SP_BARNE
             + _SP_STRAFF + _SP_INKASSO + _SP_VEGTRAFIKK
             + _SP_FERIE + _SP_BUSTAD + _SP_FORVALTNING
-            + _SP_TOMTE + _SP_NABO + _SP_BORETT + _SP_EIER + _SP_FORELD + _SP_PASIENT)
+            + _SP_TOMTE + _SP_NABO + _SP_BORETT + _SP_EIER + _SP_FORELD + _SP_PASIENT
+            + _SP_UNI + _SP_NAVN + _SP_VOLD + _SP_YRKE + _SP_EKSPRO + _SP_GRUNN)
 
 # ============================================================
 # SHARED CSS (same look as homepage)
@@ -3355,6 +3386,8 @@ def render_sporsmal_hub():
         "forvaltning": "det-offentlige",
         "nabo": "nabo-og-eiendom",
         "erstatning": "erstatning-og-skade",
+        "utdanning": "utdanning-og-studier",
+        "grunnlov": "grunnlov-og-rettigheter",
         "tjenester": "selskap",
     }
 
@@ -3370,6 +3403,8 @@ def render_sporsmal_hub():
         ("straff-og-kriminalitet", "Straff og kriminalitet"),
         ("det-offentlige", "Det offentlige"),
         ("erstatning-og-skade", "Erstatning og skade"),
+        ("utdanning-og-studier", "Utdanning"),
+        ("grunnlov-og-rettigheter", "Grunnlov og rettigheter"),
     ]
 
     # Group sporsmal under new categories

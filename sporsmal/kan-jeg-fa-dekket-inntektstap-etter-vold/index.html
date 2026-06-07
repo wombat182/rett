@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg få dekket inntektstap etter vold? — Rettsregel</title>
+<meta name="description" content="Ja, inntektstap etter vold kan dekkes hvis tapet skyldes handlingen og er dokumentert.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-fa-dekket-inntektstap-etter-vold/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg få dekket inntektstap etter vold?">
+<meta property="og:description" content="Ja, inntektstap etter vold kan dekkes hvis tapet skyldes handlingen og er dokumentert.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-fa-dekket-inntektstap-etter-vold/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg få dekket inntektstap etter vold?">
+<meta name="twitter:description" content="Ja, inntektstap etter vold kan dekkes hvis tapet skyldes handlingen og er dokumentert.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Erstatning</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Erstatning</div>
+      <h1 class="article-title">Kan jeg få dekket inntektstap etter vold?</h1>
+      <p class="article-description">Ja, inntektstap etter vold kan dekkes hvis tapet skyldes handlingen og er dokumentert.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, inntektstap etter vold kan dekkes hvis tapet skyldes handlingen og er dokumentert. Du må vise inntekt før og etter hendelsen, sykefravær, NAV-ytelser, arbeidsevne og medisinsk sammenheng. Både allerede lidt tap og fremtidig tap kan være aktuelt, men usikre krav må dokumenteres grundig.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Etter § 4 kan den voldsutsatte eller etterlatte kreve erstatning for personskade, menerstatning, erstatning for en persons død og oppreisning etter skadeserstatningsloven §§ 3-1, 3-2, 3-4 og 3-5. Staten dekker altså ikke en hvilken som helst økonomisk ulempe. Det må være en erstatningspost som loven åpner for, og tapet må dokumenteres. Erstatning som skadevolderen allerede har betalt, trekkes fra. Den øvre grensen er 60 ganger folketrygdens grunnbeløp per person per sak, men grensen kan fravikes i særlige tilfeller. Med grunnbeløpet på 136 549 kroner fra 1. mai 2026 utgjør 60 G 8 192 940 kroner.</p>
+<h2>Hvilke krav kan dekkes?</h2>
+<p>Inntektstap krever økonomisk dokumentasjon. Du bør vise hva du tjente før hendelsen, hva du faktisk fikk etterpå, hvilke NAV-ytelser du mottok, og hvordan skaden påvirket arbeidsevnen. Fremtidig tap krever ofte medisinsk vurdering av varighet og arbeidsmuligheter.</p>
+<h2>Hva betyr dette i praksis?</h2>
+<p>Erstatningsutmåling handler om mer enn å få anerkjent at du ble utsatt for noe straffbart. Du må vise hva skaden har kostet deg, eller hvilken ikke-økonomisk krenkelse som gir grunnlag for oppreisning. Fysiske og psykiske skader må som regel dokumenteres med journal, epikriser, erklæringer eller annen helsedokumentasjon. Inntektstap må dokumenteres med lønnsslipper, skattemeldinger, NAV-vedtak og opplysninger fra arbeidsgiver. Utgifter må dokumenteres med kvitteringer eller sannsynliggjøres på annen måte.</p>
+<p>Du bør også skille mellom krav som allerede er modne og krav som kan utvikle seg senere. Noen skader stabiliserer seg raskt. Andre får først varige følger etter lang tid. Hvis saken avsluttes før helsesituasjonen er klar, kan tilleggserstatning etter § 8 bli aktuelt i noen tilfeller. Det krever normalt at kravet ikke kunne vært fremmet tidligere fordi det ikke var modent, eller at vilkår for ny behandling etter skadeserstatningsloven § 3-8 er oppfylt.</p>
+<h2>Bevis, dokumentasjon og frister</h2>
+<p>I praksis bør du behandle saken som to parallelle spor: straffesakssporet og erstatningssporet. Straffesaken kan gi dom, forelegg, henleggelse, bevis og politidokumenter. Erstatningssporet handler om hva staten kan betale, hvilke vilkår som er oppfylt, og hvilket tap som er dokumentert. Du bør derfor ikke bare skrive at politiet kjenner saken. Forklar også hva du krever, hvorfor du krever det, og hvilke dokumenter som viser kravet.</p>
+<p>Fristene er særlig viktige. Har du rettskraftig dom som tilkjenner erstatning, må krav om utbetaling fremmes innen seks måneder etter at dommen ble rettskraftig. Har du ikke dom, men saken er anmeldt og endelig avgjort uten domstolsbehandling, er hovedregelen at søknaden må fremmes innen ett år etter endelig påtaleavgjørelse. I noen saker kan flere avgjørelser gjelde ulike skadevoldere eller ulike deler av saken. Ved tvil bør du sende søknad tidlig og heller forklare at du vil ettersende mer dokumentasjon.</p>
+<h2>Praktisk eksempel</h2>
+<p>Mina blir utsatt for ran og får brudd i armen og angstplager. Hun krever oppreisning, egenandeler til behandling, reiseutgifter og tapt lønn for seks uker. Hun legger ved dommen, legejournal, psykolognotat, lønnsslipper og kvitteringer. Mobilen som ble stjålet, krever hun først fra innboforsikringen, fordi voldserstatningsloven ikke er en generell tingskadeordning.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Skaff oversikt over politiets saksnummer, dom, henleggelse eller annen påtaleavgjørelse.</li>
+<li>Skriv en tidslinje med dato, sted, hendelse, skader, behandling og økonomiske følger.</li>
+<li>Hent journal, bilder, kvitteringer, lønnsdokumentasjon og annen dokumentasjon som viser skade og tap.</li>
+<li>Send søknad eller krav innen fristen, selv om noe dokumentasjon må ettersendes.</li>
+<li>Be om veiledning fra bistandsadvokat, Kontoret for voldsoffererstatning eller støttetjenester hvis du er usikker.</li>
+</ol>
+<h2>Vanlige misforståelser</h2>
+<ul>
+<li>At staten dekker alle utgifter etter hendelsen. Bare lovens erstatningsposter dekkes.</li>
+<li>At oppreisning og inntektstap er det samme. De bygger på ulike regler.</li>
+<li>At tingskader alltid dekkes. Rene eiendelsskader faller normalt utenfor.</li>
+</ul>
+<h2>Når bør du be om mer hjelp?</h2>
+<p>Du bør be om mer hjelp når saken gjelder alvorlig personskade, seksuelle overgrep, vold i nære relasjoner, barn, dødsfall, store inntektstap, ukjent skadevolder, utland eller avslag som er vanskelig å forstå. Bistandsadvokat kan være aktuelt i straffesaken. I selve voldserstatningssaken kan advokatutgifter i noen tilfeller dekkes etter § 10 dersom sakens omfang eller kompleksitet tilsier det, men kravet om dekning bør fremmes før vedtak fattes. Du kan også kontakte Kontoret for voldsoffererstatning for praktisk veiledning om skjema og dokumentasjon.</p>
+<p>Denne artikkelen gir en praktisk oversikt over hovedreglene. I voldserstatningssaker kan små forskjeller i straffesakens status, bevis, medisinsk dokumentasjon og frister få stor betydning. Les derfor vedtak, politidokumenter og fristbrev nøye før du bestemmer neste steg.</p>
+<h2>Ekstra kontroll før innsending</h2>
+<p>Før du sender inn eller klager, kontroller at du har skilt mellom hva som er bevist i straffesaken, hva som er dokumentert i helseopplysninger, og hva som er dokumentert økonomisk. Voldserstatningsmyndighetene kan ikke bygge et krav på antakelser alene. En ryddig tidslinje med datoer, dokumenter og kravsposter gjør saken mer forståelig og reduserer risikoen for at viktige opplysninger overses. Sjekk også om saken bygger på rettskraftig dom, henlagt sak eller en annen endelig påtaleavgjørelse, fordi dette styrer både frist og hvilken dokumentasjon som blir viktigst.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

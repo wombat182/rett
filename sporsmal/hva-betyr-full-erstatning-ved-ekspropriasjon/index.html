@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr full erstatning ved ekspropriasjon? — Rettsregel</title>
+<meta name="description" content="Ja, ved ekspropriasjon er utgangspunktet full erstatning for det økonomiske tapet.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-full-erstatning-ved-ekspropriasjon/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr full erstatning ved ekspropriasjon?">
+<meta property="og:description" content="Ja, ved ekspropriasjon er utgangspunktet full erstatning for det økonomiske tapet.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-full-erstatning-ved-ekspropriasjon/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr full erstatning ved ekspropriasjon?">
+<meta name="twitter:description" content="Ja, ved ekspropriasjon er utgangspunktet full erstatning for det økonomiske tapet.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Erstatning</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Erstatning</div>
+      <h1 class="article-title">Hva betyr full erstatning ved ekspropriasjon?</h1>
+      <p class="article-description">Ja, ved ekspropriasjon er utgangspunktet full erstatning for det økonomiske tapet.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, ved ekspropriasjon er utgangspunktet full erstatning for det økonomiske tapet. Det betyr ikke automatisk at du får alt du subjektivt mener eiendommen er verdt. Erstatningen må beregnes etter lovens verdsettelsesregler, med salgsverdi, bruksverdi, gjenanskaffelse og ulemper på resteiendommen som sentrale elementer.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Hva sier loven?</h2>
+<p>Erstatningsfastsettelsen er kjernen i ekspropriasjonserstatningslova. Det avgjørende er ikke hva tiltakshaver helst vil betale, eller hva eieren subjektivt føler eiendommen er verdt. Spørsmålet er hvilket økonomisk tap loven krever dekket, beregnet etter riktig metode.</p>
+<p>Ekspropriasjonserstatningslova gjelder vederlag ved oreigning av fast eiendom, så langt ikke annet er fastsatt i lov. Loven avgjør normalt ikke om ekspropriasjon kan skje. Den avgjør hvordan det økonomiske vederlaget skal fastsettes når eiendomsrett eller en rett i fast eiendom blir tvangsavstått.</p>
+<p>Etter § 3 skal eieren ha vederlag både for avståelsen av eiendom og for skade eller ulempe på den eiendommen som blir igjen. Det gis likevel ikke vederlag for skattekrav som ventes utløst av selve ekspropriasjonserstatningen.</p>
+<p>Verdsettelsen skjer etter § 4 på grunnlag av salgsverdi, bruksverdi eller, når vilkårene i § 7 er oppfylt, utgifter til attkjøp/gjenanskaffelse av tilsvarende eiendom. Poenget er å velge det erstatningsgrunnlaget som best dekker det økonomiske tapet innenfor lovens rammer.</p>
+<p>Salgsverdi etter § 5 er det vanlige kjøpere må antas å ville betale ved frivillig salg. Det skal legges vekt på eiendomstype, beliggenhet, påregnelig utnyttelse, sammenlignbare salg og andre forhold som faktisk påvirker markedsverdien. Verdiendringer som skyldes selve ekspropriasjonstiltaket, skal holdes utenfor.</p>
+<p>Bruksverdi etter § 6 bygger på avkastningen av eiendommen ved påregnelig utnyttelse som det reelt er grunnlag for på stedet. Det kan være særlig viktig for jordbruk, skogbruk, næringseiendom, rettigheter og eiendommer der verdien for eieren er høyere enn vanlig salgsverdi.</p>
+<p>Gjenanskaffelsesverdi etter § 7 kan brukes ved ekspropriasjon av eiendom som eieren bruker til bolig, fritidshus eller egen virksomhet. Da kan erstatningen bygge på nødvendige utgifter til å kjøpe annen eiendom til tilsvarende bruk, med fradrag for fordeler ved ny eiendom.</p>
+<p>Etter § 10 er utgangspunktet at verdsettelsestidspunktet er tidspunktet da skjønnet blir avhjemlet. Hvis ekspropriasjonen er satt i verk tidligere, skal verdien på overtakelsestidspunktet legges til grunn, og det skal tas hensyn til tap ved at erstatningen utbetales senere enn overtakelsen.</p>
+<p>Det betyr at du bør lese ekspropriasjonssaken i to lag. Først må du se om tiltakshaver har riktig grunnlag for inngrepet, og om saksbehandlingen er forsvarlig. Deretter må du kontrollere om erstatningen faktisk dekker det økonomiske tapet loven krever dekket. Selv om inngrepet er lovlig, kan erstatningstilbudet være for lavt. Og selv om tilbudet virker ryddig, kan vedtaket eller kartgrunnlaget være mangelfullt.</p>
+<h2>Hvordan vurderes verdien?</h2>
+<p>Det mest praktiske er å sette opp tre kolonner: salgsverdi, bruksverdi og eventuell gjenanskaffelse. I den første kolonnen vurderer du markedet. I den andre vurderer du avkastning og faktisk bruk. I den tredje vurderer du om du må kjøpe tilsvarende eiendom for å bli økonomisk holdt skadesløs.</p>
+<p>Du bør ikke låse deg til tiltakshavers første metode. Noen eiendommer ser enkle ut etter salgsverdi, men har høyere verdi i drift. Andre har liten løpende avkastning, men stor markedsverdi. For bolig, fritidshus og egen virksomhet kan gjenanskaffelse få en praktisk funksjon dersom vilkårene er oppfylt.</p>
+<p>En god praktisk test er å spørre: Hva ville en vanlig kjøper, bruker eller driver lagt vekt på etter inngrepet? Hvis svaret er dårligere adkomst, mindre tomt, mer støy, dårligere arrondering, redusert byggepotensial eller høyere kostnader, må dette frem i erstatningsvurderingen. Hvis svaret er at eiendommen også får en konkret fordel, må du være forberedt på at tiltakshaver kan kreve fradrag for fordelen.</p>
+<h2>Praktisk eksempel</h2>
+<p>Ingrid driver et lite verksted på egen eiendom. Kommunen vil ekspropriere bygget og tomten til ny vei. En ren salgsverdi kan gi én sum, men Ingrid må også vurdere om bruksverdien for virksomheten er høyere, eller om det er nødvendig å kjøpe en tilsvarende eiendom for å kunne fortsette driften. Dersom ny eiendom har mer moderne lokaler og lavere vedlikehold, kan slike fordeler trekkes fra i gjenanskaffelsesvurderingen.</p>
+<p>Eksempelet viser hvorfor ekspropriasjonssaker sjelden bør behandles som standardbrev. To eiendommer kan ha samme arealavståelse, men helt ulikt tap. En stripe langs en ubrukt utmarkseiendom er noe annet enn en stripe som fjerner parkering, deler en driftsvei, tar en støyskjerm eller hindrer fremtidig tilbygg. Det er den konkrete virkningen som må dokumenteres.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li>Lag en egen beregning for salgsverdi, bruksverdi og eventuell gjenanskaffelsesverdi.</li>
+<li>Skill skriftlig mellom innsigelser mot selve inngrepet og innsigelser mot erstatningens størrelse.</li>
+<li>Dokumenter eiendommen før inngrepet med bilder, video, kart, takst, regnskap, leieavtaler, driftsopplysninger og beskrivelser av faktisk bruk.</li>
+<li>Be tiltakshaver forklare hvorfor valgt verdsettelsesmetode er riktig for akkurat din eiendom.</li>
+<li>Svar innen fristen, og be skriftlig om dekning av nødvendige juridiske eller tekniske kostnader dersom saken krever bistand.</li>
+</ol>
+<p>Hvis saken allerede er i gang, bør du lage en tidslinje. Skriv ned når du fikk varsel, når du mottok kart, når det ble forhandlet, når arbeid eventuelt startet, og hvilke innsigelser du har sendt. Tidslinjen gjør det lettere å se frister, bevise hva som ble sagt, og forklare sammenhengen mellom inngrepet og tapet.</p>
+<h2>Dokumentasjon som ofte blir avgjørende</h2>
+<ul>
+<li>Kart med tydelig markering av areal som tas, midlertidig anleggsområde og rettigheter som skal tinglyses.</li>
+<li>Bilder og video av eiendommen før arbeid starter, særlig av adkomst, vegetasjon, murer, grøfter, drenering og bygninger.</li>
+<li>Takst, meglerverdivurdering eller annen markedsdokumentasjon som viser salgsverdi før og etter inngrepet.</li>
+<li>Driftsdokumentasjon, regnskap, avlingstall, leiekontrakter eller produksjonsdata hvis eiendommen brukes til jordbruk, skogbruk eller næring.</li>
+<li>Skriftlige kostnadsoverslag for flytting, gjenoppbygging, nye adkomstløsninger, støyskjerming, gjerder, murer eller tekniske tilpasninger.</li>
+</ul>
+<p>Dokumentasjonen bør være så konkret at en utenforstående kan forstå tapet uten å kjenne eiendommen fra før. Unngå bare å skrive at tiltaket er 'urimelig' eller 'ødeleggende'. Forklar heller hva som blir ødelagt, hvor det ligger, hvordan det brukes, hva det koster å rette, og hvordan det påvirker markedsverdi eller drift.</p>
+<h2>Vanlige misforståelser</h2>
+<ul>
+<li>At kommunen eller staten alltid kan ta eiendom uten reell prøving. Det må finnes hjemmel, vedtak eller annet lovlig grunnlag.</li>
+<li>At erstatningen bare er en kvadratmeterpris. Loven dekker også skade og ulempe på eiendommen som blir igjen.</li>
+<li>At høyeste personlige verdi alltid erstattes. Erstatningen skal beregnes etter lovens økonomiske verdsettelsesregler.</li>
+</ul>
+<p>En siste misforståelse er at du bør vente til slutt med å reagere fordi 'erstatningen ordner seg'. I ekspropriasjonssaker bør du reagere tidlig, presist og skriftlig. Det betyr ikke at du må krangle om alt, men at du bør sikre at saken får riktig faktum før beløpet låses, arbeidet starter eller avtale signeres.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  
+  
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
