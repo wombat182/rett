@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva arver særkullsbarn? — Rettsregel</title>
+<meta name="description" content="Særkullsbarn er livsarvinger og arver på samme linje som avdødes andre barn. Forskjellen merkes særlig ved uskifte: ektefellen trenger samtykke fra særkullsbarn for å sitte i uskifte med deres arv.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-arver-saerkullsbarn/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva arver særkullsbarn?">
+<meta property="og:description" content="Særkullsbarn er livsarvinger og arver på samme linje som avdødes andre barn. Forskjellen merkes særlig ved uskifte: ektefellen trenger samtykke fra særkullsbarn for å sitte i uskifte med deres arv.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-arver-saerkullsbarn/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva arver særkullsbarn?">
+<meta name="twitter:description" content="Særkullsbarn er livsarvinger og arver på samme linje som avdødes andre barn. Forskjellen merkes særlig ved uskifte: ektefellen trenger samtykke fra særkullsbarn for å sitte i uskifte med deres arv.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arv og skifte</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arv og skifte</div>
+      <h1 class="article-title">Hva arver særkullsbarn?</h1>
+      <p class="article-description">Særkullsbarn er livsarvinger og arver på samme linje som avdødes andre barn. Forskjellen merkes særlig ved uskifte: ektefellen trenger samtykke fra særkullsbarn for å sitte i uskifte med deres arv.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Særkullsbarn arver som andre barn etter arveloven. De er livsarvinger og har samme utgangspunkt etter arverekkefølgen som felles barn. Forskjellen ligger særlig i uskifte: lengstlevende ektefelle kan sitte i uskifte med særkullsbarn bare hvis særkullsbarnet samtykker. Ved testament må særkullsbarnets pliktdelsarv respekteres.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Særkullsbarn er barn i arverekkefølgen</h2>
+<p>Et særkullsbarn er avdødes barn, men ikke barn av lengstlevende ektefelle eller samboer. Etter <a href="arveloven/§-4">arveloven § 4</a> er arvelaterens livsarvinger de nærmeste slektsarvingene, og arven deles likt mellom arvelaterens barn hvis ikke noe annet følger av særskilte lovregler.</p>
+<p>Det betyr at særkullsbarn ikke står bak felles barn i køen. De er i samme arvegangsklasse.</p>
+<table>
+<thead>
+<tr>
+<th>Barnetype</th>
+<th>Arverett etter § 4</th>
+<th>Praktisk forskjell</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Felles barn</td>
+<td>Ja</td>
+<td>Må ofte vente hvis ektefellen overtar i uskifte</td>
+</tr>
+<tr>
+<td>Særkullsbarn</td>
+<td>Ja</td>
+<td>Kan kreve arv nå hvis de ikke samtykker til uskifte</td>
+</tr>
+<tr>
+<td>Barn av bare lengstlevende</td>
+<td>Nei, ikke etter avdøde</td>
+<td>Arver ikke avdøde bare fordi forelderen var gift med avdøde</td>
+</tr>
+</tbody>
+</table>
+<h2>Ektefellen arver også når avdøde har særkullsbarn</h2>
+<p>Hvis avdøde var gift, får ektefellen arv etter <a href="arveloven/§-8">arveloven § 8</a>. Ektefellen har da rett til én firedel, men minst fire ganger folketrygdens grunnbeløp ved arvefallet.</p>
+<p>Særkullsbarnas arv beregnes derfor ikke av hele boet uten videre. Først må ektefellens lovbestemte arv vurderes. Deretter fordeles resten mellom livsarvingene etter barnelinjene.</p>
+<h2>Den store forskjellen: uskifte</h2>
+<p>Etter <a href="arveloven/§-15">arveloven § 15</a> har lengstlevende ektefelle rett til uskifte med arvelaterens særskilte livsarving bare hvis denne arvingen samtykker. Loven nevner særkullsbarn og livsarving til særkullsbarn.</p>
+<blockquote>
+<p><strong>⚠️ Samtykke:</strong> Særkullsbarn kan si nei til at lengstlevende sitter i uskifte med deres arv. Da må deres del skiftes, selv om ektefellen kan sitte i uskifte med andre arvinger etter <a href="arveloven/§-16">§ 16</a>.</p>
+</blockquote>
+<p>Er særkullsbarnet mindreårig eller fratatt rettslig handleevne på det økonomiske området, kreves samtykke fra både vergen og statsforvalteren.</p>
+<h2>Testament og pliktdel</h2>
+<p>Særkullsbarn er livsarvinger. Derfor gjelder pliktdelsregelen i <a href="arveloven/§-50">arveloven § 50</a> også for dem. To tredeler av formuen er pliktdelsarv for livsarvingene, men pliktdelen er aldri større enn 15 ganger folketrygdens grunnbeløp ved arvefallet til hvert barn eller hver barnelinje.</p>
+<p>Et testament kan altså ikke bare «hoppe over» særkullsbarnet hvis pliktdelsarven rammes.</p>
+<h2>Praktisk eksempel</h2>
+<p>Rune dør 6. august 2026. Han er gift med Elin. Rune har sønnen Markus fra før, og Rune og Elin har datteren Sara sammen. Rune har ikke testament.</p>
+<p>Markus og Sara er begge Runes livsarvinger etter <a href="arveloven/§-4">arveloven § 4</a>. Elin har samtidig ektefellearv etter <a href="arveloven/§-8">§ 8</a>. Hvis Elin ønsker uskifte, kan hun ikke sitte i uskifte med Markus sin arv uten Markus sitt samtykke etter <a href="arveloven/§-15">§ 15</a>. Hun kan likevel ha uskifterett med andre arvinger etter <a href="arveloven/§-16">§ 16</a>.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn først ut om konflikten gjelder <strong>fordeling av arv</strong> eller <strong>uskifte</strong>. Ved fordeling må du beregne ektefellens arv og barnelinjene. Ved uskifte må du spørre særkullsbarnet om samtykke, og eventuelle vilkår bør dokumenteres skriftlig. Hvis særkullsbarnet er mindreårig, må verge og statsforvalteren inn i vurderingen etter <a href="arveloven/§-15">§ 15</a>.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/arveloven/4/" class="related-card">
+  <div class="related-card-meta">Arveloven § 4</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/8/" class="related-card">
+  <div class="related-card-meta">Arveloven § 8</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/15/" class="related-card">
+  <div class="related-card-meta">Arveloven § 15</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/16/" class="related-card">
+  <div class="related-card-meta">Arveloven § 16</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/50/" class="related-card">
+  <div class="related-card-meta">Arveloven § 50</div>
+  <div class="related-card-title"></div>
+</a></div>
+</div>
+  <div class="related-section">
+  <div class="related-label">Relaterte spørsmål</div>
+  <div class="related-cards"><a href="../../sporsmal/kan-ektefelle-sitte-i-uskifte-med-saerkullsbarn/" class="related-card">
+  <div class="related-card-title">Kan ektefelle sitte i uskifte med særkullsbarn?</div>
+</a><a href="../../sporsmal/hvor-mye-arver-barna/" class="related-card">
+  <div class="related-card-title">Hvor mye arver barna?</div>
+</a></div>
+</div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

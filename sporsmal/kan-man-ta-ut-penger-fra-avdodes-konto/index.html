@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan man ta ut penger fra avdødes konto? — Rettsregel</title>
+<meta name="description" content="Du kan ikke fritt ta ut penger fra avdødes konto. Før skifteattest er det begrenset hvem som kan disponere, og under skiftet må gjeld og boets kostnader gå foran arv.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-man-ta-ut-penger-fra-avdodes-konto/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan man ta ut penger fra avdødes konto?">
+<meta property="og:description" content="Du kan ikke fritt ta ut penger fra avdødes konto. Før skifteattest er det begrenset hvem som kan disponere, og under skiftet må gjeld og boets kostnader gå foran arv.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-man-ta-ut-penger-fra-avdodes-konto/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan man ta ut penger fra avdødes konto?">
+<meta name="twitter:description" content="Du kan ikke fritt ta ut penger fra avdødes konto. Før skifteattest er det begrenset hvem som kan disponere, og under skiftet må gjeld og boets kostnader gå foran arv.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arv og skifte</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arv og skifte</div>
+      <h1 class="article-title">Kan man ta ut penger fra avdødes konto?</h1>
+      <p class="article-description">Du kan ikke fritt ta ut penger fra avdødes konto. Før skifteattest er det begrenset hvem som kan disponere, og under skiftet må gjeld og boets kostnader gå foran arv.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei, du kan ikke fritt ta ut penger fra avdødes konto bare fordi du er arving eller pårørende. Kontoen hører til dødsboet. Ved privat skifte er det den eller de som får skifteattest, som kan råde over avdødes eiendeler og forplikte boet. Penger skal brukes til boets og avdødes forpliktelser før arv deles ut.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Kontoen er en del av dødsboet</h2>
+<p>Etter <a href="arveloven/§-98">arveloven § 98</a> omfatter dødsboet alle eiendelene og forpliktelsene arvelateren etterlater seg. Bankinnskudd er derfor ikke «ledige penger» for familien. De er midler i boet.</p>
+<p>Skiftet skal gjennomføres frem til forpliktelsene i boet er dekket og eiendelene fordelt. Det betyr at kontopenger først og fremst må brukes riktig i booppgjøret.</p>
+<h2>Skifteattest gir råderett</h2>
+<p>Ved privat skifte er skifteattesten nøkkelen. Etter <a href="arveloven/§-118">arveloven § 118</a> er den som skifteattesten er utstedt til, legitimert til å råde over arvelaterens eiendeler og til å forplikte boet.</p>
+<p>Det betyr at banken normalt vil kreve dokumentasjon før den lar noen disponere kontoen. Skifteattesten viser hvem som kan opptre på vegne av boet.</p>
+<h2>Hva kan pengene brukes til?</h2>
+<p>Etter <a href="arveloven/§-122">arveloven § 122</a> skal arvingene sørge for at boets og arvelaterens forpliktelser dekkes under skiftet. Loven nevner blant annet begravelsesomkostninger, skifteomkostninger og andre krav.</p>
+<p>En arving som har påtatt seg ansvaret for avdødes forpliktelser, kan etter <a href="arveloven/§-123">arveloven § 123</a> kreve at forfalte forpliktelser dekkes før noe arv deles ut.</p>
+<p>Dette gjør forskjellen mellom betaling og utdeling viktig:</p>
+<table>
+<thead>
+<tr>
+<th>Handling</th>
+<th>Typisk vurdering</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Betale begravelsesregning</td>
+<td>Kan være nødvendig booppgave</td>
+</tr>
+<tr>
+<td>Betale avdødes strømregning</td>
+<td>Kan være nødvendig hvis kravet består</td>
+</tr>
+<tr>
+<td>Overføre «sin arv» til egen konto</td>
+<td>Skal vente til gjeld og fordeling er avklart</td>
+</tr>
+<tr>
+<td>Tømme konto før skifteattest</td>
+<td>Høy risiko for konflikt og feil</td>
+</tr>
+</tbody>
+</table>
+<h2>Praktisk eksempel</h2>
+<p>Liv dør 18. august 2026. Sønnen Marius har hatt tilgang til nettbanken hennes for å hjelpe med regninger. Etter dødsfallet overfører han 90 000 kroner til seg selv og skriver «arv» i meldingsfeltet.</p>
+<p>Det er problematisk. Pengene tilhører dødsboet etter <a href="arveloven/§-98">§ 98</a>. Hvis Marius ikke har skifteattest etter <a href="arveloven/§-118">§ 118</a>, har han ikke nødvendig legitimasjon for å disponere boet. Selv med skifteattest må han følge reglene om gjeldsdekning og fordeling.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Stans private uttak. Skaff skifteattest hvis boet skal skiftes privat. Bruk boets konto til dokumenterte booppgaver: begravelse, nødvendige regninger, forsikring og sikring av eiendeler. Før oversikt over alle inn- og utbetalinger, slik <a href="arveloven/§-119">§ 119</a> legger opp til. Arv bør først utbetales når gjelden er dekket eller det er satt av nok penger.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/arveloven/98/" class="related-card">
+  <div class="related-card-meta">Arveloven § 98</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/118/" class="related-card">
+  <div class="related-card-meta">Arveloven § 118</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/119/" class="related-card">
+  <div class="related-card-meta">Arveloven § 119</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/122/" class="related-card">
+  <div class="related-card-meta">Arveloven § 122</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/123/" class="related-card">
+  <div class="related-card-meta">Arveloven § 123</div>
+  <div class="related-card-title"></div>
+</a></div>
+</div>
+  <div class="related-section">
+  <div class="related-label">Relaterte spørsmål</div>
+  <div class="related-cards"><a href="../../sporsmal/hva-skjer-med-bankkonto-nar-noen-dor/" class="related-card">
+  <div class="related-card-title">Hva skjer med bankkonto når noen dør?</div>
+</a><a href="../../sporsmal/hvordan-far-man-skifteattest/" class="related-card">
+  <div class="related-card-title">Hvordan får man skifteattest?</div>
+</a><a href="../../sporsmal/hvem-betaler-avdodes-gjeld/" class="related-card">
+  <div class="related-card-title">Hvem betaler avdødes gjeld?</div>
+</a></div>
+</div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

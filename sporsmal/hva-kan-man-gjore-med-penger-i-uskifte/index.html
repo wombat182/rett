@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva kan man gjøre med penger i uskifte? — Rettsregel</title>
+<meta name="description" content="Lengstlevende kan bruke penger i uskifte som eier, men ikke fritt gi bort store verdier eller favorisere én arving med arveoppgjør uten samtykke.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-kan-man-gjore-med-penger-i-uskifte/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva kan man gjøre med penger i uskifte?">
+<meta property="og:description" content="Lengstlevende kan bruke penger i uskifte som eier, men ikke fritt gi bort store verdier eller favorisere én arving med arveoppgjør uten samtykke.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-kan-man-gjore-med-penger-i-uskifte/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva kan man gjøre med penger i uskifte?">
+<meta name="twitter:description" content="Lengstlevende kan bruke penger i uskifte som eier, men ikke fritt gi bort store verdier eller favorisere én arving med arveoppgjør uten samtykke.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arv og skifte</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arv og skifte</div>
+      <h1 class="article-title">Hva kan man gjøre med penger i uskifte?</h1>
+      <p class="article-description">Lengstlevende kan bruke penger i uskifte som eier, men ikke fritt gi bort store verdier eller favorisere én arving med arveoppgjør uten samtykke.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du kan bruke penger i uskifte omtrent som eier, men ikke helt fritt. Etter [arveloven § 22](arveloven/§-22) rår lengstlevende over uskifteformuen i levende live. Begrensningene ligger særlig i reglene om store gaver, arveoppgjør til enkelte arvinger og klanderverdig reduksjon av uskifteformuen.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Vanlig bruk er normalt greit</h2>
+<p>Uskifte er ment å gjøre det mulig for lengstlevende å leve videre uten et straksoppgjør med arvingene. Derfor kan lengstlevende bruke midler til vanlige utgifter, vedlikehold, ferie, bil, bolig og løpende behov.</p>
+<p><a href="arveloven/§-22">Arveloven § 22</a> sier at lengstlevende ektefelle rår i levende live som en eier over alt som hører til uskifteformuen, med de unntakene som følger av lov, testament eller avtale. For samboer gjelder tilsvarende råderett etter <a href="arveloven/§-37">§ 37</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Normalt innenfor</th>
+<th>Risikoområde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Betale regninger</td>
+<td>Store pengegaver til ett barn</td>
+</tr>
+<tr>
+<td>Vedlikeholde bolig</td>
+<td>Billig salg til nærstående</td>
+</tr>
+<tr>
+<td>Kjøpe ny bil etter behov</td>
+<td>Arveoppgjør til én arving uten samtykke</td>
+</tr>
+<tr>
+<td>Bruke penger til eget livsopphold</td>
+<td>Disposisjoner som vesentlig reduserer boet</td>
+</tr>
+</tbody>
+</table>
+<h2>Store gaver kan angripes</h2>
+<p>Etter <a href="arveloven/§-23">arveloven § 23</a> kan lengstlevende ikke uten samtykke fra arvingene gi gaver som står i misforhold til formuen i uskifteboet. Dette gjelder også gavesalg.</p>
+<p>Hvis mottakeren forsto eller burde ha forstått at gaven var i strid med regelen, kan hver arving kreve gaven omstøtt ved at gavemottakeren tilbakefører gavens verdi. Søksmål må reises innen <strong>ett år etter at arvingen fikk kunnskap om gaven</strong>.</p>
+<blockquote>
+<p><strong>⚠️ Frist:</strong> Krav om omstøtelse av ulovlig gave fra uskiftebo må reises innen ett år etter at arvingen fikk kunnskap om gaven.</p>
+</blockquote>
+<h2>Arveoppgjør må behandles likt</h2>
+<p><a href="arveloven/§-24">Arveloven § 24</a> gjelder arveoppgjør fra uskifteformuen. Lengstlevende kan gi fullt eller delvis arveoppgjør til en arving bare hvis alle arvingene får en like stor del av sin arv eller har samtykket.</p>
+<p>Dette er strengere enn mange tror. Det er ikke fritt frem å «hjelpe» ett barn med forskudd fra uskifteboet hvis de andre ikke får tilsvarende eller samtykker.</p>
+<h2>Praktisk eksempel</h2>
+<p>Bjørg sitter i uskifte etter ektemannen. Uskifteformuen er omtrent 3 000 000 kroner. Hun betaler vanlige utgifter og bruker 90 000 kroner på å pusse opp badet. Det er normalt innenfor råderetten.</p>
+<p>Senere gir hun 900 000 kroner til sønnen Marius for at han skal kjøpe leilighet, uten at datteren Elise får noe eller samtykker. Dette er ikke bare vanlig bruk. Det kan være en gave eller et arveoppgjør som må vurderes etter <a href="arveloven/§-23">§ 23</a> og <a href="arveloven/§-24">§ 24</a>.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Hvis du sitter i uskifte og vil bruke større beløp, bør du gjøre dette:</p>
+<ol>
+<li><strong>Skill forbruk fra gave.</strong> Eget livsopphold er noe annet enn overføring til arving.</li>
+<li><strong>Sammenlign med boets størrelse.</strong> En gave vurderes opp mot hele uskifteformuen.</li>
+<li><strong>Innhent samtykke skriftlig.</strong> Særlig hvis én arving får noe de andre ikke får.</li>
+<li><strong>Dokumenter formålet.</strong> Noter om betalingen er lån, gave, oppgjør eller vanlig utgift.</li>
+<li><strong>Vurder skifte ved store disposisjoner.</strong> Hvis du uansett vil dele ut arv, kan helt eller delvis skifte være ryddigere.</li>
+</ol>
+<p>Arvinger som mistenker misbruk, kan også vurdere bevissikring etter <a href="arveloven/§-25">§ 25</a> eller kreve skifte etter <a href="arveloven/§-28">§ 28</a> hvis vilkårene er oppfylt.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/arveloven/22/" class="related-card">
+  <div class="related-card-meta">Arveloven § 22</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/23/" class="related-card">
+  <div class="related-card-meta">Arveloven § 23</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/24/" class="related-card">
+  <div class="related-card-meta">Arveloven § 24</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/28/" class="related-card">
+  <div class="related-card-meta">Arveloven § 28</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/30/" class="related-card">
+  <div class="related-card-meta">Arveloven § 30</div>
+  <div class="related-card-title"></div>
+</a></div>
+</div>
+  <div class="related-section">
+  <div class="related-label">Relaterte spørsmål</div>
+  <div class="related-cards"><a href="../../sporsmal/kan-man-gi-bort-gaver-fra-uskiftebo/" class="related-card">
+  <div class="related-card-title">Kan man gi bort gaver fra uskiftebo?</div>
+</a><a href="../../sporsmal/kan-arvinger-kreve-skifte-av-uskiftebo/" class="related-card">
+  <div class="related-card-title">Kan arvinger kreve skifte av uskiftebo?</div>
+</a><a href="../../sporsmal/hva-inngar-i-uskifteboet/" class="related-card">
+  <div class="related-card-title">Hva inngår i uskifteboet?</div>
+</a></div>
+</div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

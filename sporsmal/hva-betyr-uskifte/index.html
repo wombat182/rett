@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr uskifte? — Rettsregel</title>
+<meta name="description" content="Uskifte betyr at arveoppgjøret utsettes, slik at lengstlevende kan overta boet eller bestemte eiendeler uten å skifte med arvingene med en gang.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-uskifte/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr uskifte?">
+<meta property="og:description" content="Uskifte betyr at arveoppgjøret utsettes, slik at lengstlevende kan overta boet eller bestemte eiendeler uten å skifte med arvingene med en gang.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-uskifte/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr uskifte?">
+<meta name="twitter:description" content="Uskifte betyr at arveoppgjøret utsettes, slik at lengstlevende kan overta boet eller bestemte eiendeler uten å skifte med arvingene med en gang.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arv og skifte</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arv og skifte</div>
+      <h1 class="article-title">Hva betyr uskifte?</h1>
+      <p class="article-description">Uskifte betyr at arveoppgjøret utsettes, slik at lengstlevende kan overta boet eller bestemte eiendeler uten å skifte med arvingene med en gang.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Uskifte betyr at skiftet med arvingene utsettes. Lengstlevende ektefelle kan som hovedregel overta felleseiet uskiftet etter [arveloven § 14](arveloven/§-14). Samboer med felles barn kan ha en smalere uskifterett etter [§ 32](arveloven/§-32). Den som overtar uskiftet, får rådighet, men også ansvar og begrensninger.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Uskifte er ikke det samme som å arve alt</h2>
+<p>Uskifte betyr ikke at de andre arvingene mister arven sin. Det betyr at oppgjøret utsettes. Lengstlevende får bruke og råde over formuen innenfor lovens rammer, men arvingene etter førstavdøde kan fortsatt ha krav når uskifteboet senere skiftes.</p>
+<p>Ved ektefelleuskifte sier <a href="arveloven/§-14">arveloven § 14</a> at lengstlevende ektefelle har rett til å overta felleseiet uskiftet overfor førstavdødes andre arvinger etter loven.</p>
+<p>Ved samboeruskifte er retten smalere. <a href="arveloven/§-32">Arveloven § 32</a> gjelder samboer med felles barn og omfatter først og fremst felles bolig, innbo, bil og fritidsbolig med innbo som tjente til felles bruk.</p>
+<h2>Hva lengstlevende kan gjøre i uskifte</h2>
+<p>Etter <a href="arveloven/§-22">arveloven § 22</a> rår lengstlevende ektefelle i levende live som en eier over det som hører til uskifteformuen, med unntakene som følger av lov, testament eller avtale.</p>
+<p>Det betyr at lengstlevende kan bruke penger, betale regninger, selge eiendeler og kjøpe nye eiendeler. Men råderetten er ikke fri uten grenser. Gaver, arveoppgjør og klanderverdig reduksjon av formuen har egne regler.</p>
+<table>
+<thead>
+<tr>
+<th>Du kan vanligvis</th>
+<th>Du må være forsiktig med</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Betale løpende utgifter</td>
+<td>Store gaver fra uskifteboet</td>
+</tr>
+<tr>
+<td>Selge og kjøpe eiendeler</td>
+<td>Arveoppgjør til bare én arving</td>
+</tr>
+<tr>
+<td>Bruke formuen normalt</td>
+<td>Disposisjoner som vesentlig reduserer boet</td>
+</tr>
+</tbody>
+</table>
+<h2>Uskifte har frist og gjeldsansvar</h2>
+<p>Ektefelle som vil bruke retten til uskifte, skal sende melding til tingretten innen <strong>60 dager etter dødsfallet</strong>, jf. <a href="arveloven/§-19">arveloven § 19</a>. Samboer har samme frist etter <a href="arveloven/§-34">§ 34</a>.</p>
+<p>Den som overtar uskiftet, blir også ansvarlig for avdødes forpliktelser. For ektefelle følger dette av <a href="arveloven/§-20">§ 20</a>, og for samboer av <a href="arveloven/§-35">§ 35</a>.</p>
+<blockquote>
+<p><strong>⚠️ Frist:</strong> Uskifte krever melding til tingretten innen 60 dager etter dødsfallet.</p>
+</blockquote>
+<h2>Praktisk eksempel</h2>
+<p>Anne og Erik er gift og har felleseie. Erik dør 1. februar 2026. De har to felles barn. Anne ønsker å bli boende i huset og fortsette økonomien uten å gjøre fullt arveoppgjør med barna med en gang.</p>
+<p>Anne kan kreve uskifte etter <a href="arveloven/§-14">§ 14</a>, så lenge ingen særregler stanser retten. Hun må sende melding til tingretten innen 60 dager etter dødsfallet etter <a href="arveloven/§-19">§ 19</a>. Hvis hun overtar uskiftet, blir hun ansvarlig for Eriks forpliktelser etter <a href="arveloven/§-20">§ 20</a>.</p>
+<p>Barna mister ikke arveretten. Oppgjøret utsettes til uskifteformuen senere skiftes.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Før du velger uskifte, bør du avklare dette:</p>
+<ol>
+<li><strong>Er du ektefelle eller samboer?</strong> Reglene er ulike.</li>
+<li><strong>Finnes særkullsbarn?</strong> Da kan samtykke være nødvendig.</li>
+<li><strong>Er gjelden oversiktlig?</strong> Uskifte gir ansvar for avdødes forpliktelser.</li>
+<li><strong>Send melding til tingretten i tide.</strong> Fristen er 60 dager.</li>
+<li><strong>Vurder om skifte er bedre.</strong> Hvis økonomien er uklar eller arvingene er uenige, kan uskifte være risikabelt.</li>
+</ol>
+<p>Uskifte er praktisk når det passer, men det er ikke en gratis utsettelse uten konsekvenser. Det viktigste valget er ofte om tryggheten ved å bli sittende veier opp for gjeldsansvaret og begrensningene.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/arveloven/14/" class="related-card">
+  <div class="related-card-meta">Arveloven § 14</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/19/" class="related-card">
+  <div class="related-card-meta">Arveloven § 19</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/20/" class="related-card">
+  <div class="related-card-meta">Arveloven § 20</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/22/" class="related-card">
+  <div class="related-card-meta">Arveloven § 22</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/32/" class="related-card">
+  <div class="related-card-meta">Arveloven § 32</div>
+  <div class="related-card-title"></div>
+</a></div>
+</div>
+  <div class="related-section">
+  <div class="related-label">Relaterte spørsmål</div>
+  <div class="related-cards"><a href="../../sporsmal/hvem-kan-sitte-i-uskifte/" class="related-card">
+  <div class="related-card-title">Hvem kan sitte i uskifte?</div>
+</a><a href="../../sporsmal/hva-inngar-i-uskifteboet/" class="related-card">
+  <div class="related-card-title">Hva inngår i uskifteboet?</div>
+</a><a href="../../sporsmal/kan-man-angre-pa-uskifte/" class="related-card">
+  <div class="related-card-title">Kan man angre på uskifte?</div>
+</a></div>
+</div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

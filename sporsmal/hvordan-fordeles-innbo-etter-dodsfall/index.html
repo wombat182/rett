@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan fordeles innbo etter dødsfall? — Rettsregel</title>
+<meta name="description" content="Innbo fordeles som del av dødsboet. Arvingene kan avtale fordelingen, men ektefelle kan ha særskilt rett til å overta innbo fra felles bolig.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-fordeles-innbo-etter-dodsfall/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan fordeles innbo etter dødsfall?">
+<meta property="og:description" content="Innbo fordeles som del av dødsboet. Arvingene kan avtale fordelingen, men ektefelle kan ha særskilt rett til å overta innbo fra felles bolig.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-fordeles-innbo-etter-dodsfall/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan fordeles innbo etter dødsfall?">
+<meta name="twitter:description" content="Innbo fordeles som del av dødsboet. Arvingene kan avtale fordelingen, men ektefelle kan ha særskilt rett til å overta innbo fra felles bolig.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arv og skifte</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arv og skifte</div>
+      <h1 class="article-title">Hvordan fordeles innbo etter dødsfall?</h1>
+      <p class="article-description">Innbo fordeles som del av dødsboet. Arvingene kan avtale fordelingen, men ektefelle kan ha særskilt rett til å overta innbo fra felles bolig.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Innbo fordeles som en del av dødsboet. Arvingene kan bli enige om hvem som skal ha hva, eller om noe skal selges. Hvis avdøde etterlater seg ektefelle, kan ektefellen ha rett til å overta løsøre som har hørt til innboet i felles bolig. Ved uenighet må verdsettelse og overtakelse håndteres etter arvelovens regler.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Innbo er ikke «førstemann til mølla»</h2>
+<p>Innbo kan virke mindre formelt enn bolig og bankkonto, men juridisk er det fortsatt eiendeler i boet. Etter <a href="arveloven/§-119">arveloven § 119</a> skal boets eiendeler tas vare på, sikres, holdes i stand og eventuelt forsikres på betryggende måte.</p>
+<p>Det betyr at ingen arving bør hente møbler, smykker, kunst, verktøy eller bunader uten at det er avklart med de andre. Det gjelder særlig ting med økonomisk eller affeksjonsmessig verdi.</p>
+<blockquote>
+<p><strong>❗ Vanlig feil:</strong> «Jeg tok bare det mamma hadde sagt jeg skulle få» er ikke nok hvis det ikke finnes gyldig testament eller enighet mellom arvingene.</p>
+</blockquote>
+<h2>Arvingene kan avtale fordelingen</h2>
+<p>Etter <a href="arveloven/§-104">arveloven § 104</a> kan en arving overta bestemte eiendeler hvis ingen andre arvinger motsetter seg det. Hvis arvingene er enige, kan de fordele innboet praktisk: én tar spisebordet, én tar sølvtøyet, og resten selges eller gis bort.</p>
+<p>Verdsettelsen kan også avtales. <a href="arveloven/§-105">Arveloven § 105</a> sier at eiendeler som skal overtas, overtas til den verdien arvingene er enige om. Arvingene kan også avtale hvordan verdsettelsen skal skje.</p>
+<h2>Ektefelle kan ha særskilt rett til innbo</h2>
+<p>Hvis avdøde var gift, må du sjekke ektefellens rettigheter før barna fordeler innboet. Etter <a href="arveloven/§-113">arveloven § 113</a> kan ektefellen ha rett til å overta løsøre som har hørt til innboet i ektefellenes felles bolig, uten hensyn til hvem som brakte eiendelen inn i felleseiet, hvis det ikke er åpenbart urimelig.</p>
+<p>Ved særeie sier <a href="arveloven/§-114">arveloven § 114</a> at ektefellen kan ha rett til å overta bolig og løsøre som nevnt i § 113, hvis ikke særlige grunner tilsier noe annet. For samboere viser § 114 til husstandsfellesskapsloven for bolig og innbo.</p>
+<h2>Praktisk eksempel</h2>
+<p>Håkon dør 7. april 2026. Han etterlater seg ektefellen Brit og to barn. Barna vil dele kunst, møbler og sølvtøy med en gang. Brit ønsker å beholde sofa, spisebord og hvitevarer fra felles bolig.</p>
+<p>Da må barna først vurdere Brits rett etter <a href="arveloven/§-113">§ 113</a>. Innboet i felles bolig er ikke bare en pott barna kan dele. Det må avklares hva Brit kan overta, hvilken verdi eiendelene skal settes til, og hvordan dette påvirker arveoppgjøret.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Lag en innboliste før noe flyttes. Marker ting som har høy verdi, særlig affeksjonsverdi eller uklar eierhistorikk. Avklar om avdøde hadde ektefelle eller samboer med særskilt overtakelsesrett. Blir dere ikke enige om verdi, bør dere bruke ekstern takst eller skiftetakst der lovens vilkår er oppfylt. Ikke la småting bli en stor konflikt fordi noen tømte huset for raskt.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/arveloven/104/" class="related-card">
+  <div class="related-card-meta">Arveloven § 104</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/105/" class="related-card">
+  <div class="related-card-meta">Arveloven § 105</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/113/" class="related-card">
+  <div class="related-card-meta">Arveloven § 113</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/114/" class="related-card">
+  <div class="related-card-meta">Arveloven § 114</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/119/" class="related-card">
+  <div class="related-card-meta">Arveloven § 119</div>
+  <div class="related-card-title"></div>
+</a></div>
+</div>
+  <div class="related-section">
+  <div class="related-label">Relaterte spørsmål</div>
+  <div class="related-cards"><a href="../../sporsmal/kan-arvinger-selge-eiendeler-for-boet-er-skiftet/" class="related-card">
+  <div class="related-card-title">Kan arvinger selge eiendeler før boet er skiftet?</div>
+</a><a href="../../sporsmal/hva-gjor-man-nar-arvingene-er-uenige/" class="related-card">
+  <div class="related-card-title">Hva gjør man når arvingene er uenige?</div>
+</a><a href="../../sporsmal/kan-en-arving-overta-bolig-fra-dodsboet/" class="related-card">
+  <div class="related-card-title">Kan én arving overta bolig fra dødsboet?</div>
+</a></div>
+</div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

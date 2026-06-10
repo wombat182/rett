@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem arver når noen dør uten testament? — Rettsregel</title>
+<meta name="description" content="Uten testament fordeles arven etter arvelovens arverekkefølge: først barn, deretter foreldre/søsken, deretter besteforeldrelinjen – men ektefelle eller samboer med arverett kan gå foran.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-arver-uten-testament/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem arver når noen dør uten testament?">
+<meta property="og:description" content="Uten testament fordeles arven etter arvelovens arverekkefølge: først barn, deretter foreldre/søsken, deretter besteforeldrelinjen – men ektefelle eller samboer med arverett kan gå foran.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-arver-uten-testament/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem arver når noen dør uten testament?">
+<meta name="twitter:description" content="Uten testament fordeles arven etter arvelovens arverekkefølge: først barn, deretter foreldre/søsken, deretter besteforeldrelinjen – men ektefelle eller samboer med arverett kan gå foran.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arv og skifte</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arv og skifte</div>
+      <h1 class="article-title">Hvem arver når noen dør uten testament?</h1>
+      <p class="article-description">Uten testament fordeles arven etter arvelovens arverekkefølge: først barn, deretter foreldre/søsken, deretter besteforeldrelinjen – men ektefelle eller samboer med arverett kan gå foran.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det kommer an på hvem avdøde etterlater seg. Uten testament går arven først til livsarvingene, altså barn, barnebarn og videre nedover. Finnes det ikke livsarvinger, går arven til foreldre og deres etterkommere. Finnes heller ikke slike arvinger, går arven til besteforeldrelinjen. Ektefelle og enkelte samboere har egne arveretter som kan endre fordelingen.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Arverekkefølgen uten testament</h2>
+<p>Arveloven deler slekten inn i arvegangsklasser. Du starter alltid øverst og går bare videre hvis det ikke finnes arvinger i klassen foran.</p>
+<table>
+<thead>
+<tr>
+<th>Situasjon</th>
+<th>Hvem arver etter loven?</th>
+<th>Lovgrunnlag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Avdøde har barn, barnebarn eller andre livsarvinger</td>
+<td>Livsarvingene</td>
+<td><a href="arveloven/§-4">arveloven § 4</a></td>
+</tr>
+<tr>
+<td>Avdøde har ikke livsarvinger</td>
+<td>Foreldrene, eller deres etterkommere</td>
+<td><a href="arveloven/§-5">arveloven § 5</a></td>
+</tr>
+<tr>
+<td>Avdøde har verken livsarvinger, foreldre eller etterkommere etter foreldre</td>
+<td>Besteforeldre eller deres barn/barnebarn</td>
+<td><a href="arveloven/§-6">arveloven § 6</a></td>
+</tr>
+<tr>
+<td>Avdøde har ektefelle</td>
+<td>Ektefellen får arv etter egne regler</td>
+<td><a href="arveloven/§-8">arveloven §§ 8–9</a></td>
+</tr>
+<tr>
+<td>Avdøde har samboer med felles barn</td>
+<td>Samboeren får arv etter egen regel</td>
+<td><a href="arveloven/§-12">arveloven § 12</a></td>
+</tr>
+</tbody>
+</table>
+<p>Dette betyr at «nærmeste familie» ikke alltid betyr den personen som sto avdøde nærmest sosialt. Loven ser på slektslinjer, ekteskap og samboerstatus med felles barn.</p>
+<h2>Første stopp: barn og barnebarn</h2>
+<p>Hvis avdøde har barn, er barna de nærmeste slektsarvingene etter <a href="arveloven/§-4">arveloven § 4</a>. Arven deles likt mellom barna, med mindre en særregel endrer resultatet.</p>
+<p>Er et barn død før arvelateren, går dette barnets del videre til barnets egne livsarvinger. Det er derfor barnebarn kan arve direkte når deres forelder er død.</p>
+<blockquote>
+<p><strong>✅ Huskeregel:</strong> Barn står først. Barnebarn kommer inn i den grenen der deres forelder skulle ha arvet.</p>
+</blockquote>
+<h2>Hvis avdøde ikke hadde barn</h2>
+<p>Hvis avdøde ikke har livsarvinger, går arven etter <a href="arveloven/§-5">arveloven § 5</a> til foreldrene. Foreldrene arver likt.</p>
+<p>Hvis én forelder er død, går den forelderens halvdel videre til hans eller hennes livsarvinger. I praksis betyr det ofte avdødes søsken, eller nevøer og nieser hvis et søsken også er død.</p>
+<p>Hvis det ikke finnes arvinger i foreldrelinjen, går arven videre til besteforeldrene eller deres etterkommere etter <a href="arveloven/§-6">arveloven § 6</a>. Fjernere etterkommere etter besteforeldre enn deres barnebarn arver likevel ikke etter loven.</p>
+<h2>Ektefelle og samboer kan endre bildet</h2>
+<p>Arverekkefølgen for slekten gjelder ikke alene hvis avdøde hadde ektefelle eller samboer med arverett.</p>
+<p>Ektefellen har rett til arv etter <a href="arveloven/§-8">arveloven § 8</a> når avdøde har livsarvinger, og etter <a href="arveloven/§-9">arveloven § 9</a> når avdøde ikke har livsarvinger. Samboer har ikke en generell automatisk arverett, men samboer med felles barn har rett til arv etter <a href="arveloven/§-12">arveloven § 12</a>.</p>
+<h2>Praktisk eksempel</h2>
+<p>Kari dør 3. april 2026. Hun har ikke testament. Hun har to barn: Emil og Nora. Emil døde i 2022 og etterlot seg barna Aksel og Live.</p>
+<p>Da deles arven først i to grener etter <a href="arveloven/§-4">arveloven § 4</a>. Nora får én halvdel. Emils halvdel går videre til Aksel og Live, som får én fjerdedel hver. Karis foreldre, søsken og nevøer arver ingenting, fordi det finnes livsarvinger.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<ol>
+<li><strong>Skriv opp livsarvinger først.</strong> Ta med barn, døde barn og eventuelle barnebarn i hver gren.</li>
+<li><strong>Sjekk om avdøde var gift.</strong> Ektefelle kan ha krav på en del eller alt.</li>
+<li><strong>Sjekk samboerstatus.</strong> Samboer arver etter loven bare i bestemte tilfeller.</li>
+<li><strong>Finn ut om det finnes testament.</strong> Testament må vurderes sammen med pliktdel og ektefelle-/samboerrett.</li>
+<li><strong>Kontakt tingretten ved skifte.</strong> Tingretten håndterer blant annet skifteattest og valg av skifteform.</li>
+</ol>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/arveloven/4/" class="related-card">
+  <div class="related-card-meta">Arveloven § 4</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/5/" class="related-card">
+  <div class="related-card-meta">Arveloven § 5</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/6/" class="related-card">
+  <div class="related-card-meta">Arveloven § 6</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/8/" class="related-card">
+  <div class="related-card-meta">Arveloven § 8</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/9/" class="related-card">
+  <div class="related-card-meta">Arveloven § 9</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/12/" class="related-card">
+  <div class="related-card-meta">Arveloven § 12</div>
+  <div class="related-card-title"></div>
+</a></div>
+</div>
+  <div class="related-section">
+  <div class="related-label">Relaterte spørsmål</div>
+  <div class="related-cards"><a href="../../sporsmal/hvor-mye-arver-ektefellen/" class="related-card">
+  <div class="related-card-title">Hvor mye arver ektefellen?</div>
+</a><a href="../../sporsmal/hvor-mye-arver-barna/" class="related-card">
+  <div class="related-card-title">Hvor mye arver barna?</div>
+</a><a href="../../sporsmal/arver-samboer-automatisk/" class="related-card">
+  <div class="related-card-title">Arver samboer automatisk?</div>
+</a></div>
+</div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

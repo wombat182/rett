@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer hvis dødsboet har mer gjeld enn verdier? — Rettsregel</title>
+<meta name="description" content="Hvis dødsboet har mer gjeld enn verdier, må gjelden håndteres før arv deles ut. Ved privat skifte kan arvinger få ansvar hvis de har overtatt gjelden.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-hvis-dodsboet-har-mer-gjeld-enn-verdier/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer hvis dødsboet har mer gjeld enn verdier?">
+<meta property="og:description" content="Hvis dødsboet har mer gjeld enn verdier, må gjelden håndteres før arv deles ut. Ved privat skifte kan arvinger få ansvar hvis de har overtatt gjelden.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-hvis-dodsboet-har-mer-gjeld-enn-verdier/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer hvis dødsboet har mer gjeld enn verdier?">
+<meta name="twitter:description" content="Hvis dødsboet har mer gjeld enn verdier, må gjelden håndteres før arv deles ut. Ved privat skifte kan arvinger få ansvar hvis de har overtatt gjelden.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arv og skifte</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arv og skifte</div>
+      <h1 class="article-title">Hva skjer hvis dødsboet har mer gjeld enn verdier?</h1>
+      <p class="article-description">Hvis dødsboet har mer gjeld enn verdier, må gjelden håndteres før arv deles ut. Ved privat skifte kan arvinger få ansvar hvis de har overtatt gjelden.</p>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det kommer an på skifteformen og om noen arving har overtatt ansvaret for avdødes forpliktelser. Ved privat skifte må minst én myndig arving normalt påta seg ansvaret. Hvis boets eiendeler ikke dekker gjelden, skal forpliktelsene dekkes i lovens rekkefølge, og arv skal ikke deles ut før gjeld er dekket eller sikret.</p>
+</div>
+    <div class="article-body sp-body">
+      <h2>Ikke del ut arv før gjelden er avklart</h2>
+<p>Et dødsbo består etter <a href="arveloven/§-98">arveloven § 98</a> av både eiendelene og forpliktelsene arvelateren etterlater seg. Skifte er oppgavene frem til forpliktelsene er dekket og eiendelene fordelt.</p>
+<p>Derfor er første feilgrep å dele ut arv fordi det «ser ut» som boet har verdier. Bolig, bil og bankinnskudd kan være synlige. Kredittkortgjeld, restskatt, lån, garantiansvar og ubetalte regninger kan dukke opp senere.</p>
+<blockquote>
+<p><strong>⚠️ Advarsel:</strong> Ikke fordel penger til arvingene før dere har oversikt over gjeld, skatt, begravelsesomkostninger og skifteomkostninger.</p>
+</blockquote>
+<h2>Privat skifte kan gi personlig ansvar</h2>
+<p>Skal boet skiftes privat, må minst én myndig arving påta seg ansvaret for arvelaterens forpliktelser overfor retten, jf. <a href="arveloven/§-116">arveloven § 116</a>. Hvis flere gjør det, er de fullt og solidarisk ansvarlige overfor kreditorene.</p>
+<p>De øvrige arvingene er bare ansvarlige inntil verdien av sin arv. Det er et viktig skille: Den som skriver under på gjeldsansvaret, tar en annen risiko enn en arving som bare mottar arv.</p>
+<p>Loven har likevel en særregel for små bo. Hvis boets eiendeler antas å være verdt mindre enn tre ganger folketrygdens grunnbeløp, er ansvaret begrenset til boets eiendeler etter at begravelsesomkostningene er dekket.</p>
+<h2>Hvilke krav betales først?</h2>
+<p>Etter <a href="arveloven/§-122">arveloven § 122</a> skal arvingene sørge for at boets og arvelaterens forpliktelser dekkes under skiftet, med mindre forpliktelsen er bortfalt ved dødsfallet eller proklama.</p>
+<p>Hvis det er for lite penger, bør kravene dekkes slik:</p>
+<ol>
+<li><strong>Begravelsesomkostninger.</strong></li>
+<li><strong>Skifteomkostninger og andre massekrav.</strong></li>
+<li><strong>Fortrinnsberettigede krav etter dekningsloven.</strong></li>
+<li><strong>Andre krav.</strong></li>
+</ol>
+<p>En arving som har påtatt seg ansvaret, kan etter <a href="arveloven/§-123">arveloven § 123</a> kreve at forfalte krav dekkes før noe arv deles ut. For krav som ikke har forfalt, kan det kreves at det settes av penger.</p>
+<h2>Praktisk eksempel</h2>
+<p>Per dør 2. februar 2026. Han etterlater seg 180 000 kroner på konto, en bil verdt 70 000 kroner og usikret gjeld på 420 000 kroner. Datteren Sara vurderer privat skifte.</p>
+<p>Hvis Sara påtar seg ansvaret etter <a href="arveloven/§-116">§ 116</a>, kan hun bli ansvarlig overfor kreditorene. Hun bør derfor ikke dele ut bilen eller pengene til søsknene før kravene er kartlagt. Hvis det er usikkert om boet kan dekke alt, bør hun vurdere proklama og eventuelt offentlig skifte.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Lag først en enkel gjeldsoversikt: banklån, kredittkort, skatt, ubetalte regninger, begravelse og løpende avtaler. Be om proklama hvis dere trenger å få kreditorene frem i lyset. Ikke signer ansvar for privat skifte hvis du ikke forstår risikoen. Hvis boet er klart insolvent, bør du kontakte tingretten før eiendeler fordeles.</p>
+    </div>
+    <div class="om-takk">
+      <h2>Har du en sak du lurer på?</h2>
+      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
+      <a href="/kontakt/">Send inn saken din →</a>
+    </div>
+  </article>
+  <div class="related-section">
+  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-cards"><a href="../../lover/arveloven/98/" class="related-card">
+  <div class="related-card-meta">Arveloven § 98</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/116/" class="related-card">
+  <div class="related-card-meta">Arveloven § 116</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/122/" class="related-card">
+  <div class="related-card-meta">Arveloven § 122</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/123/" class="related-card">
+  <div class="related-card-meta">Arveloven § 123</div>
+  <div class="related-card-title"></div>
+</a><a href="../../lover/arveloven/159/" class="related-card">
+  <div class="related-card-meta">Arveloven § 159</div>
+  <div class="related-card-title"></div>
+</a></div>
+</div>
+  <div class="related-section">
+  <div class="related-label">Relaterte spørsmål</div>
+  <div class="related-cards"><a href="../../sporsmal/kan-arvinger-arve-gjeld/" class="related-card">
+  <div class="related-card-title">Kan arvinger arve gjeld?</div>
+</a><a href="../../sporsmal/hvem-betaler-avdodes-gjeld/" class="related-card">
+  <div class="related-card-title">Hvem betaler avdødes gjeld?</div>
+</a><a href="../../sporsmal/hva-er-proklama-i-dodsbo/" class="related-card">
+  <div class="related-card-title">Hva er proklama i dødsbo?</div>
+</a></div>
+</div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
