@@ -276,6 +276,14 @@ try:
 except ImportError:
     _SP_PLANBYGG = []
 try:
+    from noindex_slugs import NOINDEX_SLUGS
+except ImportError:
+    NOINDEX_SLUGS = set()
+try:
+    from redirects import REDIRECTS
+except ImportError:
+    REDIRECTS = {}
+try:
     from sporsmal_personopplysningsloven import SPORSMAL as _SP_PERSONVERN
 except ImportError:
     _SP_PERSONVERN = []  # GDPR removed — content quality too low
@@ -317,6 +325,19 @@ SPORSMAL = (_SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL
             + _SP_DOMMER
             + _SP_SAMEIE + _SP_PLANBYGG + _SP_PERSONVERN + _SP_PASIENTRETT + _SP_SOSIAL
             + _SP_SKATTEFORV + _SP_STATSBORGER + _SP_TVANG + _SP_UTLENDING + _SP_VERGEMAL)
+
+# --- Fjern templatede naer-duplikater (reversibelt via removed_slugs.py) ---
+try:
+    from removed_slugs import REMOVED_SLUGS
+except ImportError:
+    REMOVED_SLUGS = set()
+if REMOVED_SLUGS:
+    SPORSMAL = [s for s in SPORSMAL if s.get("slug") not in REMOVED_SLUGS]
+    _live_slugs = {s.get("slug") for s in SPORSMAL}
+    for _s in SPORSMAL:
+        rs = _s.get("related_sporsmal")
+        if rs:
+            _s["related_sporsmal"] = [r for r in rs if (r.get("slug") if isinstance(r, dict) else r) in _live_slugs]
 
 # ============================================================
 # SHARED CSS (same look as homepage)
@@ -2092,13 +2113,14 @@ form.contact-form.hide { display: none; }
 
 SITE_URL = "https://rettsregel.no"
 
-def shared_head(title, description, depth=0, canonical_path=""):
+def shared_head(title, description, depth=0, canonical_path="", robots=""):
     """depth=0 for homepage, depth=1 for /lover/index.html or /personvern/index.html,
     depth=2 for /lover/[lov]/index.html, depth=3 for /lover/[lov]/[n]/index.html
     canonical_path is the path from site root, e.g. '/lover/angrerettloven/16/'"""
     prefix = "../" * depth
     canonical_url = f"{SITE_URL}{canonical_path}"
     og_title = title.replace(' | Rettsregel', '').replace(' — Rettsregel', '')
+    robots_meta = f'<meta name="robots" content="{robots}">\n' if robots else ""
     return f"""<!DOCTYPE html>
 <html lang="nb">
 <head>
@@ -2106,7 +2128,7 @@ def shared_head(title, description, depth=0, canonical_path=""):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta name="description" content="{description}">
-<link rel="canonical" href="{canonical_url}">
+{robots_meta}<link rel="canonical" href="{canonical_url}">
 <link rel="icon" type="image/svg+xml" href="{prefix}favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="{prefix}favicon-32.png">
 <link rel="apple-touch-icon" href="{prefix}apple-touch-icon.png">
@@ -3376,10 +3398,11 @@ def render_sporsmal_page(s):
   <div class="related-cards">{"".join(sp_cards)}</div>
 </div>"""
 
+    robots = "noindex, follow" if slug in NOINDEX_SLUGS else ""
     return f"""{shared_head(
         f"{title} — Rettsregel",
         description,
-        depth=2, canonical_path=f"/sporsmal/{slug}/"
+        depth=2, canonical_path=f"/sporsmal/{slug}/", robots=robots
     )}
 {site_nav(depth=2)}
 <main class="page">
@@ -7374,6 +7397,29 @@ def build():
             with open(f"{out}/sporsmal/{s['slug']}/index.html", "w", encoding="utf-8") as f:
                 f.write(render_sporsmal_page(s))
 
+    # Redirects for retired slugs (canonical points to the live target)
+    if REDIRECTS:
+        _live = {s['slug'] for s in SPORSMAL}
+        for old_slug, target in REDIRECTS.items():
+            if old_slug in _live or target not in _live:
+                continue
+            os.makedirs(f"{out}/sporsmal/{old_slug}", exist_ok=True)
+            tgt = f"{SITE_URL}/sporsmal/{target}/"
+            with open(f"{out}/sporsmal/{old_slug}/index.html", "w", encoding="utf-8") as f:
+                f.write(f"""<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{tgt}">
+<meta http-equiv="refresh" content="0; url={tgt}">
+<title>Siden er flyttet</title>
+</head>
+<body>
+<p>Denne siden er flyttet. <a href="{tgt}">Gå til riktig side</a>.</p>
+</body>
+</html>""")
+
     # Tjenester
     os.makedirs(f"{out}/tjenester", exist_ok=True)
     with open(f"{out}/tjenester/index.html", "w", encoding="utf-8") as f:
@@ -7429,7 +7475,8 @@ def build():
     if SPORSMAL:
         urls.append(("/sporsmal/", "0.9"))
         for s in SPORSMAL:
-            urls.append((f"/sporsmal/{s['slug']}/", "0.8"))
+            if s['slug'] not in NOINDEX_SLUGS:
+                urls.append((f"/sporsmal/{s['slug']}/", "0.8"))
 
     urls.append(("/tjenester/", "0.8"))
     urls.append(("/tjenester/enk-eller-as/", "0.8"))
