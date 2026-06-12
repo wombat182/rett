@@ -1954,7 +1954,7 @@ form.contact-form.hide { display: none; }
 
 /* ---------- Unified site header (homepage + all subpages) ---------- */
 .rr-header {
-  background: #2C2C2A;
+  background: #3A3835;
 }
 .rr-header-row {
   max-width: 1200px; margin: 0 auto;
@@ -2024,8 +2024,6 @@ form.contact-form.hide { display: none; }
   transition: color 0.15s ease; white-space: nowrap;
 }
 .rr-nav a:hover { color: #FFFFFF; }
-.rr-nav-cta { color: #FAC775 !important; }
-.rr-nav-cta:hover { color: #FFDFA3 !important; }
 .rr-nav a.rr-nav-active { color: #FFFFFF; }
 
 
@@ -2237,7 +2235,6 @@ def site_nav(depth=1, active=None):
       <a href="{prefix}sporsmal/"{cls('sporsmal')}>Spørsmål</a>
       <a href="{prefix}tjenester/"{cls('tjenester')}>Verktøy/maler</a>
       <a href="{prefix}om/"{cls('om')}>Om</a>
-      <a href="{prefix}advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
     </nav>
   </div>
 </div>
@@ -4653,166 +4650,336 @@ TJENESTER_KATEGORIER = [
 ]
 
 
+VERKTOY_OMRADER = [
+    ("bolig", "Bolig og leie"),
+    ("arbeid", "Arbeid"),
+    ("penger", "Penger og gjeld"),
+    ("familie", "Familie og arv"),
+    ("kjop", "Kjøp og klage"),
+    ("selskap", "Selskap og næring"),
+    ("offentlig", "Det offentlige"),
+]
+
+VERKTOY_TYPER = {
+    "dokument": ("\U0001F4C4 Dokument", "#DFF0E9", "#0E5C46"),
+    "kalkulator": ("\U0001F522 Kalkulator", "#E3EEF9", "#15528F"),
+    "sjekker": ("\u2713 Sjekker", "#F8ECD6", "#7A4A0B"),
+    "brev": ("\u2709 Brev", "#EBE9F8", "#4D44A8"),
+}
+
+# URL-basename -> (omrade, type). Alle 100 verktøy, eksplisitt tagget.
+VERKTOY_TAG = {
+    "forsinkelsesrente": ("penger", "kalkulator"), "inkassosalaer": ("penger", "sjekker"),
+    "foreldelse": ("penger", "sjekker"), "dokumentavgift": ("bolig", "kalkulator"),
+    "sykepenger": ("arbeid", "kalkulator"), "foreldrepenger": ("familie", "kalkulator"),
+    "husleieokning": ("bolig", "kalkulator"), "fri-rettshjelp": ("offentlig", "sjekker"),
+    "utrokontrakt": ("familie", "dokument"),
+    "reklamasjon": ("kjop", "brev"), "heving": ("kjop", "brev"), "prisavslag": ("kjop", "kalkulator"),
+    "mangel": ("kjop", "sjekker"), "angreskjema": ("kjop", "dokument"), "inkasso": ("penger", "sjekker"),
+    "forsikringsavslag": ("penger", "brev"), "handverker-reklamasjon": ("kjop", "brev"),
+    "reklamasjon-bil": ("kjop", "brev"), "kredittkjop": ("kjop", "sjekker"),
+    "klagefrist": ("offentlig", "sjekker"), "pakkereis": ("kjop", "kalkulator"),
+    "gdpr-innsyn": ("offentlig", "brev"), "misligholdsvarsel": ("penger", "brev"),
+    "arbeid-oppsigelse": ("arbeid", "kalkulator"), "usaklig-oppsigelse": ("arbeid", "sjekker"),
+    "arbeidskontrakt": ("arbeid", "sjekker"), "arbeidsavtale": ("arbeid", "dokument"),
+    "sykmelding-vern": ("arbeid", "sjekker"), "permittering": ("arbeid", "sjekker"),
+    "konkurranse-klausul": ("arbeid", "sjekker"), "sluttavtale": ("arbeid", "dokument"),
+    "arbeidsavtale-deltid": ("arbeid", "dokument"), "arbeidsavtale-midlertidig": ("arbeid", "dokument"),
+    "taushetserklaring": ("arbeid", "dokument"), "arbeidsattest": ("arbeid", "dokument"),
+    "husleiekontrakt": ("bolig", "dokument"), "depositum-tilbake": ("bolig", "kalkulator"),
+    "husleie-oppsigelse": ("bolig", "kalkulator"), "leie-okning": ("bolig", "kalkulator"),
+    "vedlikehold": ("bolig", "sjekker"), "boligkjoper-sjekkliste": ("bolig", "sjekker"),
+    "vesentlig-mangel-bolig": ("bolig", "sjekker"), "selger-opplysningsplikt": ("bolig", "sjekker"),
+    "fremleiekontrakt": ("bolig", "dokument"), "fremleie": ("bolig", "sjekker"),
+    "depositumavtale": ("bolig", "dokument"), "prisavslag-bolig": ("bolig", "kalkulator"),
+    "overtakelsesprotokoll": ("bolig", "dokument"), "nabovarsel": ("bolig", "dokument"),
+    "kjopekontrakthytte": ("bolig", "dokument"), "leiekontrakt-naring": ("bolig", "dokument"),
+    "sameieandel": ("bolig", "dokument"),
+    "fullmakt-mal": ("familie", "dokument"), "kjopekontraktbil": ("kjop", "dokument"),
+    "kvittering": ("penger", "dokument"), "gjeldsbrev": ("penger", "dokument"),
+    "kausjonsavtale": ("penger", "dokument"), "betalingsplan": ("penger", "dokument"),
+    "konsulentavtale": ("selskap", "dokument"), "aksjonaravtale2": ("selskap", "dokument"),
+    "kjopekontraktbat": ("kjop", "dokument"), "kjopekontraktgjenstand": ("kjop", "dokument"),
+    "panteavtale": ("penger", "dokument"), "bruksrettsavtale": ("kjop", "dokument"),
+    "stiftelsesdokument": ("selskap", "dokument"), "aksjekjopekontrakt": ("selskap", "dokument"),
+    "opsjonsavtale": ("selskap", "dokument"), "styreprotokoll": ("selskap", "dokument"),
+    "generalforsamlingsprotokoll": ("selskap", "dokument"), "leverandoravtale": ("selskap", "dokument"),
+    "samarbeidsavtale": ("selskap", "dokument"), "overdragelsesavtale": ("selskap", "dokument"),
+    "tjenesteavtale": ("kjop", "dokument"), "consignmentavtale": ("selskap", "dokument"),
+    "arv": ("familie", "kalkulator"), "testament-mal": ("familie", "dokument"),
+    "pliktdel": ("familie", "kalkulator"), "uskifte": ("familie", "sjekker"),
+    "samboer-arverett": ("familie", "sjekker"), "fremtidsfullmakt": ("familie", "dokument"),
+    "samboeravtale": ("familie", "dokument"), "ektepakt": ("familie", "dokument"),
+    "arvegjeld": ("familie", "sjekker"), "gavebrev": ("familie", "dokument"),
+    "ektepakt-felleseie": ("familie", "dokument"), "samvaersavtale": ("familie", "dokument"),
+    "skifteavtale": ("familie", "dokument"),
+    "reklamasjonsfrist": ("kjop", "sjekker"), "angrefrist": ("kjop", "sjekker"),
+    "feriepenger": ("arbeid", "kalkulator"), "overtid": ("arbeid", "kalkulator"),
+    "depositum": ("bolig", "kalkulator"), "enk-eller-as": ("selskap", "kalkulator"),
+    "utbytte-skatt": ("selskap", "kalkulator"), "omdanning-enk-as": ("selskap", "kalkulator"),
+    "reklamasjonsfrist-bolig": ("bolig", "sjekker"), "dagmulkt": ("bolig", "kalkulator"),
+    "styreansvar": ("selskap", "sjekker"), "aksjekapital": ("selskap", "sjekker"),
+    "aksjonaravtale": ("selskap", "sjekker"),
+}
+
+
+def _verktoy_basename(url):
+    u = url.rstrip("/")
+    return u.rsplit("/", 1)[-1].replace(".html", "")
+
+
+def verktoy_alle():
+    """Flat liste over alle verktøy med (url, navn, desc, omrade, vtype)."""
+    alle = []
+    for _slug, _tittel, verktoy in TJENESTER_KATEGORIER:
+        for url, navn, desc in verktoy:
+            base = _verktoy_basename(url)
+            omrade, vtype = VERKTOY_TAG.get(base, ("kjop", "dokument"))
+            alle.append((url, navn, desc, omrade, vtype))
+    return alle
+
+
 def render_tjenester_hub():
-    """Verktøy/maler — funksjonell indeks med søk og progressive disclosure."""
+    """Verktøy/maler — områdefilter, populære, ofte brukt sammen, komplett A–Å-liste med output-badges."""
+    alle = sorted(verktoy_alle(), key=lambda v: v[1].lower())
+    total = len(alle)
 
-    # Intent-based kategorier (slug, tittel, [(url, navn, beskrivelse), ...])
-    # Order within each: most useful/most common first (first 8 shown by default)
-    KATEGORIER = TJENESTER_KATEGORIER
+    omrade_counts = {}
+    for _u, _n, _d, omrade, _t in alle:
+        omrade_counts[omrade] = omrade_counts.get(omrade, 0) + 1
 
-    total = sum(len(verktoy) for _, _, verktoy in KATEGORIER)
-    VISIBLE_BY_DEFAULT = 8
+    sidebar = f'      <button type="button" class="vh-omr vh-omr-aktiv" data-omr="alle">Alle <span>({total})</span></button>\n'
+    for oslug, otittel in VERKTOY_OMRADER:
+        n = omrade_counts.get(oslug, 0)
+        if n == 0:
+            continue
+        sidebar += f'      <button type="button" class="vh-omr" data-omr="{oslug}">{otittel} <span>({n})</span></button>\n'
 
-    # Build category nav
-    nav_items = ""
-    for slug, tittel, _ in KATEGORIER:
-        nav_items += f'    <a href="#{slug}" class="tk-cat" data-cat="{slug}">{tittel}</a>\n'
-    nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle</a>\n'
+    by_base = {}
+    for url, navn, desc, omrade, vtype in alle:
+        by_base[_verktoy_basename(url)] = (url, navn, desc, omrade, vtype)
 
-    # Build sections
-    sections = ""
-    for slug, tittel, verktoy in KATEGORIER:
-        collapsed_attr = ' data-collapsed' if len(verktoy) > VISIBLE_BY_DEFAULT else ''
-        rows = ""
-        for i, (url, navn, beskr) in enumerate(verktoy):
-            extra_cls = ' tk-row-extra' if i >= VISIBLE_BY_DEFAULT else ''
-            search_data = f"{navn.lower()} {beskr.lower()}"
-            rows += (
-                f'      <a href="{url}" class="tk-row{extra_cls}" data-search="{search_data}">\n'
-                f'        <span class="tk-row-name">{navn}</span>\n'
-                f'        <span class="tk-row-desc">{beskr}</span>\n'
-                f'        <span class="tk-row-arrow" aria-hidden="true">→</span>\n'
-                f'      </a>\n'
-            )
-        show_all = ""
-        if len(verktoy) > VISIBLE_BY_DEFAULT:
-            show_all = (
-                f'    <a href="#" class="tk-show-all" data-section="{slug}">'
-                f'Vis alle {len(verktoy)} i {tittel} '
-                f'<span class="tk-show-all-arrow" aria-hidden="true">→</span></a>\n'
-            )
-        sections += (
-            f'  <section class="tk-section" id="{slug}"{collapsed_attr}>\n'
-            f'    <h2 class="tk-section-title">{tittel}</h2>\n'
-            f'    <div class="tk-grid">\n'
-            f'{rows}'
-            f'    </div>\n'
-            f'{show_all}'
-            f'  </section>\n\n'
+    def badge(vtype):
+        label, bg, fg = VERKTOY_TYPER[vtype]
+        return f'<span class="vh-badge" style="background:{bg}; color:{fg};">{label}</span>'
+
+    def chip(base):
+        url, navn, _d, _o, vtype = by_base[base]
+        _l, bg, fg = VERKTOY_TYPER[vtype]
+        ikon = VERKTOY_TYPER[vtype][0].split(" ")[0]
+        return f'<a class="vh-chip" style="background:{bg}; color:{fg};" href="{url}">{ikon} {navn}</a>'
+
+    # Populære — kuratert
+    POPULAERE = ["husleiekontrakt", "feriepenger", "testament-mal"]
+    pop_cards = ""
+    for base in POPULAERE:
+        if base not in by_base:
+            continue
+        url, navn, desc, _o, vtype = by_base[base]
+        label, _bg, fg = VERKTOY_TYPER[vtype]
+        pop_cards += (
+            f'<a class="vh-pop" href="{url}">'
+            f'<span class="vh-pop-navn">{navn}</span>'
+            f'<span class="vh-pop-type" style="color:{fg};">{label}</span>'
+            f'<span class="vh-pop-desc">{desc}</span></a>'
         )
 
-    chat = chat_widget()
+    # Ofte brukt sammen — kuraterte flyter (kun verktøy som finnes)
+    FLYTER = [
+        ("Skal du leie ut?", ["husleiekontrakt", "depositumavtale", "overtakelsesprotokoll"]),
+        ("Fått inkassovarsel?", ["inkassosalaer", "foreldelse", "betalingsplan"]),
+        ("Planlegger du arven?", ["arv", "pliktdel", "testament-mal"]),
+        ("Ny jobb?", ["arbeidskontrakt", "overtid", "feriepenger"]),
+    ]
+    flyt_html = ""
+    for tittel, baser in FLYTER:
+        if not all(b in by_base for b in baser):
+            continue
+        chips = '<span class="vh-pluss" aria-hidden="true">+</span>'.join(chip(b) for b in baser)
+        flyt_html += (
+            f'<div class="vh-flyt"><div class="vh-flyt-rad">{chips}'
+            f'<span class="vh-flyt-navn">{tittel}</span></div></div>'
+        )
 
-    return f"""{shared_head(
-        'Verktøy og maler — juridiske dokumenter, kontrakter og kalkulatorer | Rettsregel',
-        f'{total} ferdige juridiske verktøy, kontrakter, brev og kalkulatorer — basert på norsk rett. Klar til bruk, gratis.',
-        depth=1, canonical_path='/tjenester/'
-    )}
-{site_nav(depth=1, active='tjenester')}
+    rows = ""
+    for url, navn, desc, omrade, vtype in alle:
+        rows += (
+            f'<a class="vh-row" href="{url}" data-omr="{omrade}" data-k="{navn.lower()} {desc.lower()}">'
+            f'<span class="vh-row-navn">{navn}</span>'
+            f'<span class="vh-row-desc">{desc}</span>'
+            f'{badge(vtype)}</a>\n'
+        )
 
-<main class="tk-page">
+    head = shared_head(
+        "Verktøy og maler — kontrakter, kalkulatorer og sjekkere | Rettsregel",
+        f"{total} gratis juridiske verktøy: kontrakter og maler klare til utfylling, kalkulatorer og sjekkere.",
+        depth=1, canonical_path="/tjenester/")
+    nav = site_nav(depth=1, active="tjenester")
+    footer = site_footer(depth=1)
 
-  <section class="tk-hero-compact" id="alle">
-    <h1>Hva skal du lage?</h1>
-    <p class="tk-hero-compact-lead">Kontrakter, brev, skjemaer og sjekker — klare til bruk.</p>
-  </section>
+    STYLE = """<style>
+.vh-page { max-width: 1060px; margin: 0 auto; padding: 30px 32px 72px; }
+.vh-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+.vh-head h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.024em; color: var(--ink); margin: 0 0 6px; }
+.vh-head p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-mute); margin: 0; }
+.vh-filter { position: relative; flex: none; width: 290px; }
+.vh-filter input {
+  width: 100%; height: 42px; box-sizing: border-box; padding: 0 14px 0 38px;
+  border: 1px solid var(--line-strong); border-radius: 11px;
+  background: var(--bg-card); color: var(--ink);
+  font-family: var(--sans); font-size: 13.5px; outline: none;
+}
+.vh-filter input:focus { border-color: var(--accent); }
+.vh-filter svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); pointer-events: none; }
+.vh-layout { display: grid; grid-template-columns: 180px 1fr; gap: 32px; align-items: start; }
+.vh-side { position: sticky; top: 24px; }
+.vh-side-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; color: var(--ink-mute); margin: 0 0 12px; }
+.vh-omr {
+  display: block; width: 100%; text-align: left;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--sans); font-size: 13.5px; color: var(--ink);
+  padding: 6px 0; transition: color .15s ease;
+}
+.vh-omr span { color: var(--ink-mute); font-size: 12px; }
+.vh-omr:hover { color: var(--accent); }
+.vh-omr-aktiv { color: var(--accent); font-weight: 600; }
+.vh-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); margin: 0 0 10px; }
+.vh-pops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 26px; }
+.vh-pop {
+  display: block; text-decoration: none;
+  background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 13px; padding: 14px 15px;
+  transition: transform .15s ease, border-color .15s ease;
+}
+.vh-pop:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+.vh-pop-navn { display: block; font-family: var(--serif); font-weight: 500; font-size: 15.5px; color: var(--ink); }
+.vh-pop-type { display: block; font-family: var(--sans); font-size: 11px; font-weight: 600; margin-top: 4px; }
+.vh-pop-desc { display: block; font-family: var(--sans); font-size: 12px; color: var(--ink-mute); margin-top: 5px; line-height: 1.45; }
+.vh-flyter { margin-bottom: 26px; }
+.vh-flyt { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 15px; margin-bottom: 8px; }
+.vh-flyt-rad { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.vh-chip { font-family: var(--sans); font-size: 12px; font-weight: 500; border-radius: 7px; padding: 5px 10px; text-decoration: none; white-space: nowrap; transition: transform .12s ease; }
+.vh-chip:hover { transform: translateY(-1px); }
+.vh-pluss { color: var(--ink-mute); font-size: 12px; }
+.vh-flyt-navn { margin-left: auto; font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+.vh-liste { border-top: 1px solid var(--line); }
+.vh-row {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 11px 2px; border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.vh-row-navn { font-family: var(--serif); font-weight: 500; font-size: 15.5px; color: var(--ink); white-space: nowrap; transition: color .15s ease; }
+.vh-row:hover .vh-row-navn { color: var(--accent); }
+.vh-row-desc { flex: 1; font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.vh-badge { font-family: var(--sans); font-size: 10.5px; font-weight: 600; border-radius: 6px; padding: 3px 9px; white-space: nowrap; }
+.vh-tomt { display: none; font-family: var(--sans); font-size: 14px; color: var(--ink-mute); padding: 22px 0; }
+.vh-bunn {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: var(--accent); border-radius: 12px;
+  padding: 15px 20px; margin-top: 26px;
+}
+.vh-bunn span { font-family: var(--sans); font-size: 13px; color: #fff; }
+.vh-bunn span em { font-style: normal; color: #F5C4B3; }
+.vh-bunn a {
+  font-family: var(--sans); font-size: 12.5px; font-weight: 600;
+  background: #F2BD6B; color: #412402; border-radius: 8px;
+  padding: 8px 16px; text-decoration: none; white-space: nowrap;
+  transition: background .15s ease;
+}
+.vh-bunn a:hover { background: #F8D194; }
+@media (max-width: 860px) {
+  .vh-page { padding: 22px 20px 56px; }
+  .vh-head { flex-direction: column; align-items: stretch; }
+  .vh-filter { width: 100%; }
+  .vh-layout { grid-template-columns: 1fr; gap: 16px; }
+  .vh-side { position: static; display: flex; gap: 6px; flex-wrap: wrap; }
+  .vh-side-label { display: none; }
+  .vh-omr { width: auto; border: 1px solid var(--line-strong); border-radius: 16px; padding: 5px 13px; font-size: 12.5px; }
+  .vh-omr-aktiv { border-color: var(--accent); }
+  .vh-pops { grid-template-columns: 1fr; }
+  .vh-flyt-navn { margin-left: 0; flex-basis: 100%; }
+  .vh-row-desc { display: none; }
+}
+</style>"""
 
-  <div class="tk-search-wrap">
-    <span class="tk-search-icon" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-    </span>
-    <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter dokument, brev eller situasjon …" aria-label="Søk i verktøy">
-    <span class="tk-search-hint">Filtreres mens du skriver</span>
+    BODY = f"""{STYLE}
+<main class="vh-page">
+  <header class="vh-head">
+    <div>
+      <h1>Hva skal du få gjort?</h1>
+      <p>{total} verktøy — ferdige dokumenter, kalkulatorer, sjekkere og brev. Gratis.</p>
+    </div>
+    <div class="vh-filter">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="vh-sok" placeholder="«kontrakt», «feriepenger», «inkasso» …" autocomplete="off">
+    </div>
+  </header>
+
+  <div class="vh-layout">
+    <aside class="vh-side" aria-label="Filtrer etter område">
+      <p class="vh-side-label">OMRÅDER</p>
+{sidebar}    </aside>
+
+    <div>
+      <section aria-label="Populære verktøy">
+        <p class="vh-label">Populære</p>
+        <div class="vh-pops">{pop_cards}</div>
+      </section>
+
+      <section aria-label="Ofte brukt sammen">
+        <p class="vh-label">Ofte brukt sammen</p>
+        <div class="vh-flyter">{flyt_html}</div>
+      </section>
+
+      <section aria-label="Alle verktøy">
+        <p class="vh-label">Alle verktøy · A–Å</p>
+        <div class="vh-liste" id="vh-liste">
+{rows}        </div>
+        <p class="vh-tomt" id="vh-tomt">Ingen verktøy matcher. Savner du et verktøy? <a href="../kontakt/" style="color:var(--accent);">Foreslå det</a>.</p>
+      </section>
+
+      <div class="vh-bunn">
+        <span><strong>Usikker på hvilket verktøy du trenger?</strong> <em>Beskriv saken, så peker vi deg riktig.</em></span>
+        <a href="../advokatvurdering/">Gratis vurdering</a>
+      </div>
+    </div>
   </div>
-
-  <nav class="tk-cat-bar" aria-label="Kategorier">
-{nav_items}  </nav>
-
-{sections}
-
 </main>
+"""
 
-{site_footer(depth=1)}
-
-<script>
-(function() {{
-  // Progressive disclosure
-  document.querySelectorAll('.tk-show-all').forEach(function(link) {{
-    link.addEventListener('click', function(e) {{
-      e.preventDefault();
-      var section = link.closest('.tk-section');
-      if (section) section.removeAttribute('data-collapsed');
-    }});
-  }});
-
-  // Scrollspy
-  var cats = document.querySelectorAll('.tk-cat');
-  var sections = document.querySelectorAll('.tk-section');
-  function setActive(slug) {{
-    cats.forEach(function(c) {{
-      if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
-      else c.classList.remove('is-active');
-    }});
-  }}
-  if ('IntersectionObserver' in window && cats.length > 0 && sections.length > 0) {{
-    var observer = new IntersectionObserver(function(entries) {{
-      var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
-      if (visible.length === 0) return;
-      visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
-      setActive(visible[0].target.id);
-    }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
-    sections.forEach(function(s) {{ observer.observe(s); }});
-  }}
-
-  // Search
-  var input = document.getElementById('tk-search');
+    SCRIPT = """<script>
+(function(){
+  var input = document.getElementById('vh-sok');
   if (!input) return;
-  var allRows = Array.from(document.querySelectorAll('.tk-row'));
-  var allSections = Array.from(document.querySelectorAll('.tk-section'));
-  var allShowAll = Array.from(document.querySelectorAll('.tk-show-all'));
+  var rows = [].slice.call(document.querySelectorAll('.vh-row'));
+  var omrs = [].slice.call(document.querySelectorAll('.vh-omr'));
+  var tomt = document.getElementById('vh-tomt');
+  var aktiv = 'alle';
+  function oppdater(){
+    var q = input.value.toLowerCase().trim();
+    var vist = 0;
+    rows.forEach(function(r){
+      var hitQ = !q || (r.getAttribute('data-k') || '').indexOf(q) !== -1;
+      var hitO = aktiv === 'alle' || r.getAttribute('data-omr') === aktiv;
+      var vis = hitQ && hitO;
+      r.style.display = vis ? '' : 'none';
+      if (vis) vist++;
+    });
+    tomt.style.display = vist === 0 ? 'block' : 'none';
+  }
+  input.addEventListener('input', oppdater);
+  omrs.forEach(function(o){
+    o.addEventListener('click', function(){
+      aktiv = o.getAttribute('data-omr');
+      omrs.forEach(function(x){ x.classList.remove('vh-omr-aktiv'); });
+      o.classList.add('vh-omr-aktiv');
+      oppdater();
+    });
+  });
+})();
+</script>"""
 
-  function applyFilter() {{
-    var q = input.value.trim().toLowerCase();
-    if (q === '') {{
-      // Reset to default view
-      allRows.forEach(function(r) {{ r.removeAttribute('data-hidden-by-search'); }});
-      allSections.forEach(function(s) {{
-        s.removeAttribute('data-hidden-by-search');
-        // Restore collapsed state if it had >8 rows
-        var rows = s.querySelectorAll('.tk-row');
-        if (rows.length > 8) s.setAttribute('data-collapsed', '');
-      }});
-      allShowAll.forEach(function(a) {{ a.style.display = ''; }});
-      return;
-    }}
-    // Filter rows
-    allSections.forEach(function(section) {{
-      var rows = section.querySelectorAll('.tk-row');
-      var anyVisible = false;
-      rows.forEach(function(r) {{
-        var hay = r.getAttribute('data-search') || '';
-        if (hay.indexOf(q) === -1) {{
-          r.setAttribute('data-hidden-by-search', '');
-        }} else {{
-          r.removeAttribute('data-hidden-by-search');
-          anyVisible = true;
-        }}
-      }});
-      // Expand section (show all rows) during search
-      section.removeAttribute('data-collapsed');
-      if (anyVisible) section.removeAttribute('data-hidden-by-search');
-      else section.setAttribute('data-hidden-by-search', '');
-    }});
-    // Hide show-all links during search
-    allShowAll.forEach(function(a) {{ a.style.display = 'none'; }});
-  }}
-  input.addEventListener('input', applyFilter);
-}})();
-</script>
-
-{chat}
-</body>
-</html>"""
+    return head + "\n" + nav + "\n" + BODY + "\n" + SCRIPT + "\n" + footer
 
 
 def render_enk_eller_as():
