@@ -3420,17 +3420,23 @@ def render_personvern():
 
   <div class="pv-body">
     <!-- TODO: legg til org.nr når klart: Walrus AS, org.nr. XXX XXX XXX -->
-    <p>Rettsregel.no drives av Walrus AS. Vi behandler ikke mer data enn nødvendig, og selger aldri informasjon videre.</p>
+    <p>Rettsregel.no drives av Walrus AS. Vi behandler ikke mer data enn nødvendig, og vi deler aldri opplysningene dine uten at du har samtykket til det.</p>
 
     <h2>Hva vi samler inn</h2>
-    <p>Når du sender inn kontaktskjemaet, lagrer vi navn, telefonnummer og e-postadresse. Det brukes utelukkende til å svare på henvendelsen.</p>
+    <p>Når du sender inn kontaktskjemaet, lagrer vi navn, telefonnummer og e-postadresse. Det brukes til å svare på henvendelsen.</p>
+    <p>Når du ber om en vurdering av en sak, lagrer vi opplysningene du oppgir om saken, sammen med navn og e-postadresse hvis du velger å sende saken videre.</p>
     <p>Nettstedet bruker ingen sporings-cookies, ingen annonsenettverk og ingen tredjeparts analyse utover det som trengs for ren drift.</p>
 
+    <h2>Saksvurdering og deling med advokat</h2>
+    <p>Beskriver du en sak i vurderingstjenesten, behandles opplysningene automatisk for å gi deg en foreløpig, maskinell vurdering. Vurderingen er generell informasjon, ikke juridisk rådgivning.</p>
+    <p>Velger du å sende saken videre, deler vi saksinformasjonen, den foreløpige vurderingen og kontaktopplysningene dine med en samarbeidende advokat eller et advokatfirma, slik at de kan vurdere saken og kontakte deg. Dette skjer bare hvis du uttrykkelig samtykker til det når du sender inn. Behandlingsgrunnlaget er samtykket ditt (personvernforordningen artikkel 6 nr. 1 bokstav a), og du kan trekke det tilbake når som helst ved å kontakte oss.</p>
+    <p>Vi lagrer saksopplysningene så lenge det er nødvendig for å følge opp henvendelsen, og sletter dem deretter.</p>
+
     <h2>Tredjeparter</h2>
-    <p>Kontaktskjemaet behandles via Formspree. Deres personvernerklæring gjelder for den databehandlingen, og vi har databehandleravtale med dem.</p>
+    <p>Kontaktskjemaet og saksinnsendinger behandles via Formspree. Den automatiske vurderingen kjøres via våre tekniske underleverandører. Deres behandling skjer på våre vegne og bare for å levere tjenesten.</p>
 
     <h2>Dine rettigheter</h2>
-    <p>Du har rett til innsyn, retting og sletting av opplysningene vi har om deg. Skriv til <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a> for å bruke rettighetene.</p>
+    <p>Du har rett til innsyn, retting og sletting av opplysningene vi har om deg, og til å trekke tilbake samtykker du har gitt. Skriv til <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a> for å bruke rettighetene. Du kan også klage til Datatilsynet.</p>
 
     <h2>Kontakt</h2>
     <p>Behandlingsansvarlig: Walrus AS · <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a></p>

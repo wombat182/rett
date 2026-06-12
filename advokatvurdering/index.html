@@ -38,6 +38,10 @@
 .va-input:focus, .va-select:focus, .va-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(192,74,38,.10); }
 .va-input:hover, .va-select:hover, .va-textarea:hover { border-color: var(--ink-mute); }
 .va-textarea { min-height: 160px; resize: vertical; line-height: 1.55; }
+.va-chips-label { font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); margin: 14px 0 8px; }
+.va-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+.va-chip { font-family: var(--sans); font-size: 13px; color: var(--ink-soft); background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: 16px; padding: 6px 14px; cursor: pointer; transition: border-color .15s ease, color .15s ease; }
+.va-chip:hover { border-color: var(--accent); color: var(--accent); }
 .va-select { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23C04A26' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 18px center; padding-right: 48px; }
 .va-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .va-option { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; cursor: pointer; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink); transition: border-color .18s ease, background .18s ease, box-shadow .18s ease; }
@@ -56,6 +60,7 @@
 }
 .va-next:hover { transform: translateY(-1px); background: #2A2018; }
 .va-next:disabled { opacity: 1; cursor: default; transform: none; background: var(--accent); }
+#av-send-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
 .va-next.thinking { background: var(--accent); }
 .va-thinking-dots { display: inline-flex; gap: 4px; align-items: center; }
 .va-thinking-dots span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: vaDot 1.2s ease-in-out infinite; }
@@ -134,12 +139,17 @@
 
     <div class="va-step active" data-step="0">
       <h2 class="va-q">Hva gjelder saken?</h2>
-      <p class="va-help">Velg det som passer best. Det er greit om du er usikker.</p>
+      <p class="va-help">Trykk på det som ligner mest. Det er greit om du er usikker.</p>
       <div class="va-field">
-        <select class="va-select" id="category" name="kategori" required>
-          <option value="">Velg kategori</option>
-          <option>Bolig og leie</option><option>Kjøp og reklamasjon</option><option>Arbeid</option><option>Familie og arv</option><option>Penger og krav</option><option>Naboforhold</option><option>Annet</option>
-        </select>
+        <div class="va-options">
+          <label class="va-option"><input type="radio" name="kategori" value="Bolig og leie" required> 🏠 Bolig og leie</label>
+          <label class="va-option"><input type="radio" name="kategori" value="Kjøp og reklamasjon"> 🛒 Kjøp og reklamasjon</label>
+          <label class="va-option"><input type="radio" name="kategori" value="Arbeid"> 💼 Arbeid</label>
+          <label class="va-option"><input type="radio" name="kategori" value="Familie og arv"> 👪 Familie og arv</label>
+          <label class="va-option"><input type="radio" name="kategori" value="Penger og krav"> 💰 Penger og krav</label>
+          <label class="va-option"><input type="radio" name="kategori" value="Naboforhold"> 🌳 Naboforhold</label>
+          <label class="va-option"><input type="radio" name="kategori" value="Annet"> ❓ Annet</label>
+        </div>
       </div>
     </div>
 
@@ -148,6 +158,13 @@
       <p class="va-help">Skriv kort hva som har skjedd, hvem som er involvert, og hva du ønsker hjelp med.</p>
       <div class="va-field">
         <textarea class="va-textarea" id="description" name="beskrivelse" minlength="40" required placeholder="Eksempel: Jeg kjøpte en brukt bil privat i mars. Etter to uker oppdaget jeg …"></textarea>
+      </div>
+      <p class="va-chips-label">Ta gjerne med — trykk for å legge til:</p>
+      <div class="va-chips">
+        <button type="button" class="va-chip" data-tekst="Når det skjedde: ">+ når det skjedde</button>
+        <button type="button" class="va-chip" data-tekst="Beløpet det gjelder: ">+ beløp</button>
+        <button type="button" class="va-chip" data-tekst="Motparten sier: ">+ hva motparten sier</button>
+        <button type="button" class="va-chip" data-tekst="Skriftlig avtale: ">+ skriftlig avtale?</button>
       </div>
     </div>
 
@@ -190,21 +207,7 @@
       </div>
     </div>
 
-    <div class="va-step" data-step="4">
-      <h2 class="va-q">Klar for vurdering</h2>
-      <p class="va-help">Det er alt vi trenger. Skriv inn navn og e-post, så får du vurderingen — og vi kan ta kontakt hvis du vil sende saken videre.</p>
-      <div class="va-field">
-        <label for="name">Navn</label>
-        <input class="va-input" id="name" name="navn" placeholder="Navn" required>
-      </div>
-      <div class="va-field">
-        <label for="email">E-post</label>
-        <input class="va-input" id="email" name="epost" type="email" placeholder="navn@eksempel.no" required>
-      </div>
-      <p class="va-fineprint" style="margin-top:0">Vi bruker e-posten din til å gi deg vurderingen og eventuelt kontakte deg om saken. Vi deler den ikke med andre. Les mer i <a href="../personvern/">personvernerklæringen</a>.</p>
-    </div>
-
-    <div class="va-nav">
+        <div class="va-nav">
       <button type="button" class="va-back" id="av-prev" hidden>← Tilbake</button>
       <button type="button" class="va-next" id="av-next">Neste <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
@@ -243,21 +246,29 @@
     <div class="va-divider"></div>
 
     <div class="va-result-actions">
-      <button type="button" class="va-cta primary" id="av-show-send">Send saken til en som kan se nærmere på den</button>
+      <button type="button" class="va-cta primary" id="av-show-send">Send saken til en advokat</button>
       <button type="button" class="va-cta ghost" id="av-restart">Start på nytt</button>
     </div>
 
     <div class="va-send" id="av-send">
-      <h3>Send saken videre</h3>
-      <p>Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan. Vi tar kontakt på <strong id="av-send-email-display"></strong>.</p>
-      <label class="va-consent"><input type="checkbox" id="av-consent"> <span>Jeg samtykker til at Rettsregel behandler opplysningene for å vurdere saken og ta kontakt.</span></label>
-      <button type="button" class="va-cta primary" id="av-send-btn">Bekreft og send inn saken</button>
-      <p class="va-fineprint">Når du sender saken godtar du at Rettsregel lagrer og behandler opplysningene du oppgir for å vurdere henvendelsen og kontakte deg. Vi deler ikke opplysningene med andre. Les mer i <a href="../personvern/">personvernerklæringen</a>.</p>
+      <h3>Send saken til en advokat</h3>
+      <p>Saksinformasjonen og den foreløpige vurderingen deles med en samarbeidende advokat, som kan kontakte deg hvis de ønsker å se nærmere på saken. Gratis og uforpliktende.</p>
+      <div class="va-field">
+        <label for="av-navn">Navn</label>
+        <input class="va-input" id="av-navn" placeholder="Navn" autocomplete="name">
+      </div>
+      <div class="va-field">
+        <label for="av-epost">E-post</label>
+        <input class="va-input" id="av-epost" type="email" placeholder="navn@eksempel.no" autocomplete="email">
+      </div>
+      <label class="va-consent"><input type="checkbox" id="av-consent"> <span>Jeg har lest <a href="../personvern/">personvernerklæringen</a> og samtykker til at saksinformasjonen min deles med en samarbeidende advokat, og til at advokaten kan kontakte meg om saken.</span></label>
+      <button type="button" class="va-cta primary" id="av-send-btn" disabled>Send saken til en advokat</button>
+      <p class="va-fineprint">Samtykket er frivillig og kan trekkes tilbake når som helst ved å kontakte rettsregel@gmail.com.</p>
     </div>
 
     <div class="va-success" id="av-success">
-      <h3>Takk!</h3>
-      <p>Vi har mottatt saken din og tar kontakt så snart vi kan.</p>
+      <h3>Takk! Saken er sendt.</h3>
+      <p>Hvis advokaten ønsker å gå videre med saken, blir du kontaktet på e-posten du oppga.</p>
     </div>
   </section>
 
@@ -282,7 +293,8 @@
 
   function val(id){ return (document.getElementById(id)?.value || '').trim(); }
   function docs(){ return [...form.querySelectorAll('input[name="dokumentasjon"]:checked')].map(x => x.value); }
-  function data(){ return { kategori: val('category'), beskrivelse: val('description'), tidspunkt: val('when'), motpart: val('counterparty'), maal: val('goal'), dokumentasjon: docs(), navn: val('name'), epost: val('email') }; }
+  function kat(){ return form.querySelector('input[name="kategori"]:checked')?.value || ''; }
+  function data(){ return { kategori: kat(), beskrivelse: val('description'), tidspunkt: val('when'), motpart: val('counterparty'), maal: val('goal'), dokumentasjon: docs(), navn: val('av-navn'), epost: val('av-epost') }; }
   function esc(s){ return String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
   function showStep(i){
@@ -366,22 +378,52 @@
   next.addEventListener('click', () => { if (!validStep()) return; if (current < steps.length-1) showStep(current+1); else assess(); });
   prev.addEventListener('click', () => showStep(current-1));
   showSend.addEventListener('click', () => {
-    document.getElementById('av-send-email-display').textContent = val('email') || 'e-posten din';
     sendBox.classList.add('show'); showSend.style.display = 'none';
     sendBox.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  // Send-knappen er låst til navn, gyldig e-post og samtykke er på plass
+  const consent = document.getElementById('av-consent');
+  const sendBtn = document.getElementById('av-send-btn');
+  function sjekkSendKlar(){
+    const navnOk = val('av-navn').length > 1;
+    const epostEl = document.getElementById('av-epost');
+    const epostOk = epostEl.value.trim() && epostEl.checkValidity();
+    sendBtn.disabled = !(navnOk && epostOk && consent.checked);
+  }
+  ['input','change'].forEach(ev => {
+    document.getElementById('av-navn').addEventListener(ev, sjekkSendKlar);
+    document.getElementById('av-epost').addEventListener(ev, sjekkSendKlar);
+    consent.addEventListener(ev, sjekkSendKlar);
+  });
+
+  // Hjelpe-chips i beskrivelsen
+  document.querySelectorAll('.va-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      const ta = document.getElementById('description');
+      const t = c.getAttribute('data-tekst');
+      if (ta.value.includes(t)) { ta.focus(); return; }
+      ta.value = (ta.value.trim() ? ta.value.replace(/\s+$/, '') + '\n' : '') + t;
+      ta.focus();
+      ta.selectionStart = ta.selectionEnd = ta.value.length;
+    });
   });
   restart.addEventListener('click', () => { window.location.reload(); });
 
   document.getElementById('av-send-btn').addEventListener('click', async () => {
-    if (!document.getElementById('av-consent').checked) { alert('Du må samtykke før du sender inn.'); return; }
+    if (!consent.checked) { return; }
     const btn = document.getElementById('av-send-btn');
     const fd = new FormData(form);
+    fd.set('navn', val('av-navn'));
+    fd.set('epost', val('av-epost'));
+    fd.set('_replyto', val('av-epost'));
+    fd.set('samtykke', 'Ja — akseptert personvernerklæringen, deling av saksinformasjon med samarbeidende advokat, og at advokaten kan kontakte innsender');
     btn.disabled = true; btn.textContent = 'Sender …';
     try {
       const res = await fetch(form.action, { method:'POST', body: fd, headers: {'Accept':'application/json'} });
       if (res.ok) { sendBox.classList.remove('show'); document.getElementById('av-success').classList.add('show'); }
-      else { alert('Noe gikk galt. Prøv igjen, eller send e-post til rettsregel@gmail.com'); btn.disabled=false; btn.textContent='Bekreft og send inn saken'; }
-    } catch(e) { alert('Noe gikk galt. Prøv igjen, eller send e-post til rettsregel@gmail.com'); btn.disabled=false; btn.textContent='Bekreft og send inn saken'; }
+      else { alert('Noe gikk galt. Prøv igjen, eller send e-post til rettsregel@gmail.com'); btn.disabled=false; btn.textContent='Send saken til en advokat'; }
+    } catch(e) { alert('Noe gikk galt. Prøv igjen, eller send e-post til rettsregel@gmail.com'); btn.disabled=false; btn.textContent='Send saken til en advokat'; }
   });
 
   showStep(0);
