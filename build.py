@@ -4038,21 +4038,118 @@ def render_sporsmal_hub():
     return head + "\n" + nav + "\n" + BODY + "\n" + SCRIPT + "\n" + footer
 
 
+# Tema-regler per kategori: (tittel, nøkkelord-liste). Første treff i spørsmålstittel vinner.
+SPORSMAL_TEMAER = {
+    "arv-og-testament": [
+        ("Testament", ["testament"]),
+        ("Uskifte", ["uskifte"]),
+        ("Pliktdel", ["pliktdel"]),
+        ("Samboere", ["samboer"]),
+        ("Ektefelle", ["ektefelle", "gjenlevende"]),
+        ("Skifte og oppgjør", ["skifte", "dødsbo", "oppgjør", "gjeld", "avkall", "forskudd"]),
+        ("Hvem arver", ["arv"]),
+    ],
+    "kjop-og-klage": [
+        ("Angrerett", ["angre"]),
+        ("Bil og kjøretøy", ["bil", "båt", "mc", "campingvogn"]),
+        ("Bolig", ["bolig", "hus ", "leilighet", "eiendom"]),
+        ("Håndverkere", ["håndverk"]),
+        ("Solgt som den er", ["som den er", "som forevist"]),
+        ("Når gjelder loven", ["kjøpsloven", "forbrukerkjøpsloven", "gjelder loven"]),
+        ("Heving og prisavslag", ["heve", "heving", "prisavslag", "pengene tilbake"]),
+        ("Retting og bytte", ["reparer", "rette", "retting", "omlever", "bytte", "ny vare"]),
+        ("Reklamasjon og mangler", ["reklam", "mangel", "feil", "garanti", "ødelagt", "defekt"]),
+        ("Klage og krav", ["klage", "kreve", "krav", "selger"]),
+    ],
+    "familie-og-samliv": [
+        ("Samboere", ["samboer"]),
+        ("Ekteskap og skilsmisse", ["ekteskap", "skilsmisse", "ektefelle", "ektepakt", "separasjon", "gift"]),
+        ("Barn og samvær", ["barn", "samvær", "foreldreansvar", "bosted", "bidrag"]),
+        ("Navn", ["navn"]),
+    ],
+    "nabo-og-eiendom": [
+        ("Trær og hekk", ["tre", "trær", "hekk", "grein"]),
+        ("Støy og sjenanse", ["støy", "bråk", "lukt", "røyk"]),
+        ("Gjerde og grense", ["gjerde", "grense", "tomt"]),
+        ("Bygging og utsikt", ["bygg", "nabovarsel", "utsikt", "vindu"]),
+    ],
+    "arbeid-og-oppsigelse": [
+        ("Oppsigelse og avskjed", ["oppsig", "sparken", "avskjed", "nedbemann"]),
+        ("Lønn og overtid", ["lønn", "overtid", "betal"]),
+        ("Ferie", ["ferie"]),
+        ("Sykdom", ["syk"]),
+        ("Arbeidsavtalen", ["avtale", "kontrakt", "prøvetid", "midlertidig"]),
+    ],
+    "penger-og-gjeld": [
+        ("Inkasso", ["inkasso"]),
+        ("Foreldelse", ["foreld"]),
+        ("Lån og gjeld", ["lån", "gjeld", "kausjon"]),
+    ],
+}
+
+def sporsmal_verdict(s):
+    """Returnerer ('JA'|'NEI'|'AVHENGER', css-stil) hvis kortsvaret gir en tydelig dom, ellers None."""
+    import re as _re
+    t = (s.get("kort_svar") or "").strip().lower()
+    if _re.match(r"^ja[,.\s:—–-]", t):
+        return ("JA", "background:#DFF0E9; color:#085041;")
+    if _re.match(r"^nei[,.\s:—–-]", t):
+        return ("NEI", "background:#F8E5DC; color:#93421E;")
+    if t.startswith("det kommer an på") or t.startswith("det avhenger") or t.startswith("avhenger"):
+        return ("AVHENGER", "background:#F8ECD6; color:#7A4A0B;")
+    return None
+
+def sporsmal_tema(kat_slug, s):
+    regler = SPORSMAL_TEMAER.get(kat_slug)
+    if not regler:
+        return None
+    t = s.get("title", "").lower()
+    for tema, ord in regler:
+        if any(o in t for o in ord):
+            return tema
+    return "Annet"
+
+
 def render_sporsmal_kategori(kat_slug, kat_tittel, items):
     """Kategori-underside for spørsmål — register med filter, samme mønster som lovsidene."""
     n = len(items)
-    rows = ""
-    for s in sorted(items, key=lambda x: x["title"].lower()):
+
+    def row_html(s):
         d = (s.get("kort_svar") or s.get("description") or "").replace("\n", " ").strip()
         if len(d) > 110:
             d = d[:110].rsplit(" ", 1)[0] + "…"
-        rows += (
+        v = sporsmal_verdict(s)
+        badge = f'<span class="spk-verdict" style="{v[1]}">{v[0]}</span>' if v else ""
+        return (
             f'<a class="spk-row" href="../{s["slug"]}/" data-k="{s["title"].lower()}">'
+            f'{badge}'
             f'<span class="spk-row-body">'
             f'<span class="spk-row-tittel">{s["title"]}</span>'
             f'<span class="spk-row-desc">{d}</span></span>'
             f'<span class="spk-row-pil" aria-hidden="true">&rarr;</span></a>'
         )
+
+    har_temaer = kat_slug in SPORSMAL_TEMAER and n >= 12
+    sidebar = ""
+    rows = ""
+    if har_temaer:
+        grupper = {}
+        for s in items:
+            grupper.setdefault(sporsmal_tema(kat_slug, s), []).append(s)
+        rekkefolge = [t for t, _ in SPORSMAL_TEMAER[kat_slug] if t in grupper]
+        if "Annet" in grupper:
+            rekkefolge.append("Annet")
+        sidebar += f'      <button type="button" class="spk-tema spk-tema-aktiv" data-tema="alle">Alle <span>({n})</span></button>\n'
+        for tema in rekkefolge:
+            sidebar += f'      <button type="button" class="spk-tema" data-tema="{tema}">{tema} <span>({len(grupper[tema])})</span></button>\n'
+        for tema in rekkefolge:
+            rows += f'<p class="spk-tema-hode" data-tema="{tema}">{tema} · {len(grupper[tema])}</p>'
+            for s in sorted(grupper[tema], key=lambda x: x["title"].lower()):
+                r = row_html(s)
+                rows += r.replace('class="spk-row"', f'class="spk-row" data-tema="{tema}"', 1)
+    else:
+        for s in sorted(items, key=lambda x: x["title"].lower()):
+            rows += row_html(s)
 
     head = shared_head(
         f"{kat_tittel} — spørsmål og svar | Rettsregel",
@@ -4080,8 +4177,20 @@ def render_sporsmal_kategori(kat_slug, kat_tittel, items):
 }
 .spk-filter input:focus { border-color: var(--accent); }
 .spk-filter svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); pointer-events: none; }
+.spk-layout { display: block; }
+.spk-layout.spk-har-temaer { display: grid; grid-template-columns: 185px 1fr; gap: 32px; align-items: start; }
+.spk-side { position: sticky; top: 24px; }
+.spk-side-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; color: var(--ink-mute); margin: 0 0 12px; }
+.spk-tema { display: block; width: 100%; text-align: left; background: none; border: none; cursor: pointer; font-family: var(--sans); font-size: 13.5px; color: var(--ink); padding: 6px 0; transition: color .15s ease; }
+.spk-tema span { color: var(--ink-mute); font-size: 12px; }
+.spk-tema:hover { color: var(--accent); }
+.spk-tema-aktiv { color: var(--accent); font-weight: 600; }
+.spk-tema-hode { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); margin: 26px 0 4px; }
+.spk-tema-hode:first-child { margin-top: 0; }
+.spk-verdict { flex: none; font-family: var(--sans); font-size: 9.5px; font-weight: 700; letter-spacing: .04em; border-radius: 5px; padding: 3px 8px; align-self: center; }
 .spk-liste { border-top: 1px solid var(--line); }
-.spk-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 13px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.spk-row { display: flex; align-items: center; gap: 12px; padding: 13px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.spk-row-body { flex: 1; min-width: 0; }
 .spk-row-tittel { display: block; font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--ink); line-height: 1.3; transition: color .15s ease; }
 .spk-row:hover .spk-row-tittel { color: var(--accent); }
 .spk-row-desc { display: block; font-family: var(--sans); font-size: 13px; color: var(--ink-mute); line-height: 1.5; margin-top: 3px; }
@@ -4099,6 +4208,11 @@ def render_sporsmal_kategori(kat_slug, kat_tittel, items):
   .spk-page { padding: 22px 20px 56px; }
   .spk-head { flex-direction: column; align-items: stretch; }
   .spk-filter { width: 100%; }
+  .spk-layout.spk-har-temaer { grid-template-columns: 1fr; gap: 16px; }
+  .spk-side { position: static; display: flex; gap: 6px; flex-wrap: wrap; }
+  .spk-side-label { display: none; }
+  .spk-tema { width: auto; border: 1px solid var(--line-strong); border-radius: 16px; padding: 5px 13px; font-size: 12.5px; }
+  .spk-tema-aktiv { border-color: var(--accent); }
 }
 </style>"""
 
@@ -4117,9 +4231,14 @@ def render_sporsmal_kategori(kat_slug, kat_tittel, items):
       <input type="search" id="spk-sok" placeholder="Filtrer spørsmålene …" autocomplete="off">
     </div>
   </header>
-  <div class="spk-liste" id="spk-liste">
-{rows}  </div>
-  <p class="spk-tomt" id="spk-tomt">Ingen spørsmål matcher. <a href="../../kontakt/" style="color:var(--accent);">Foreslå det</a> — så skriver vi svaret.</p>
+  <div class="spk-layout{' spk-har-temaer' if har_temaer else ''}">
+    {f'<aside class="spk-side" aria-label="Filtrer etter tema"><p class="spk-side-label">TEMAER</p>{chr(10)}{sidebar}</aside>' if har_temaer else ''}
+    <div>
+      <div class="spk-liste" id="spk-liste">
+{rows}      </div>
+      <p class="spk-tomt" id="spk-tomt">Ingen spørsmål matcher. <a href="../../kontakt/" style="color:var(--accent);">Foreslå det</a> — så skriver vi svaret.</p>
+    </div>
+  </div>
   <div class="spk-bunn">
     <span>Fant du ikke svaret? Saken din kan være mer spesiell enn et standardsvar.</span>
     <a href="../../advokatvurdering/">Få gratis vurdering &rarr;</a>
@@ -4132,16 +4251,35 @@ def render_sporsmal_kategori(kat_slug, kat_tittel, items):
   var input = document.getElementById('spk-sok');
   if (!input) return;
   var rows = [].slice.call(document.querySelectorAll('.spk-row'));
+  var hoder = [].slice.call(document.querySelectorAll('.spk-tema-hode'));
+  var temaer = [].slice.call(document.querySelectorAll('.spk-tema'));
   var tomt = document.getElementById('spk-tomt');
-  input.addEventListener('input', function(){
-    var q = this.value.toLowerCase().trim();
+  var aktivTema = 'alle';
+  function oppdater(){
+    var q = input.value.toLowerCase().trim();
     var vist = 0;
     rows.forEach(function(r){
-      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
-      r.style.display = m ? '' : 'none';
-      if (m) vist++;
+      var hitQ = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      var hitT = aktivTema === 'alle' || r.getAttribute('data-tema') === aktivTema;
+      var vis = hitQ && hitT;
+      r.style.display = vis ? '' : 'none';
+      if (vis) vist++;
+    });
+    hoder.forEach(function(h){
+      var tema = h.getAttribute('data-tema');
+      var noen = rows.some(function(r){ return r.getAttribute('data-tema') === tema && r.style.display !== 'none'; });
+      h.style.display = noen ? '' : 'none';
     });
     tomt.style.display = vist === 0 ? 'block' : 'none';
+  }
+  input.addEventListener('input', oppdater);
+  temaer.forEach(function(t){
+    t.addEventListener('click', function(){
+      aktivTema = t.getAttribute('data-tema');
+      temaer.forEach(function(x){ x.classList.remove('spk-tema-aktiv'); });
+      t.classList.add('spk-tema-aktiv');
+      oppdater();
+    });
   });
 })();
 </script>"""
