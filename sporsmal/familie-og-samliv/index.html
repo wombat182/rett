@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Familie og samliv — spørsmål og svar | Rettsregel</title>
+<meta name="description" content="51 spørsmål om familie og samliv, med konkrete svar på vanlig norsk.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/familie-og-samliv/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Familie og samliv — spørsmål og svar">
+<meta property="og:description" content="51 spørsmål om familie og samliv, med konkrete svar på vanlig norsk.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/familie-og-samliv/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Familie og samliv — spørsmål og svar">
+<meta name="twitter:description" content="51 spørsmål om familie og samliv, med konkrete svar på vanlig norsk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/" class="rr-nav-active">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<style>
+.spk-page { max-width: 860px; margin: 0 auto; padding: 32px 32px 72px; }
+.spk-crumb { font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); margin-bottom: 26px; }
+.spk-crumb a { color: var(--ink-mute); text-decoration: none; }
+.spk-crumb a:hover { color: var(--ink); }
+.spk-crumb .sep { margin: 0 8px; opacity: .45; }
+.spk-crumb .cur { color: var(--accent); }
+.spk-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 22px; flex-wrap: wrap; }
+.spk-head h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.024em; color: var(--ink); margin: 0 0 6px; }
+.spk-head p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-mute); margin: 0; }
+.spk-filter { position: relative; flex: none; width: 270px; }
+.spk-filter input {
+  width: 100%; height: 42px; box-sizing: border-box; padding: 0 14px 0 38px;
+  border: 1px solid var(--line-strong); border-radius: 11px;
+  background: var(--bg-card); color: var(--ink);
+  font-family: var(--sans); font-size: 13.5px; outline: none;
+}
+.spk-filter input:focus { border-color: var(--accent); }
+.spk-filter svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); pointer-events: none; }
+.spk-liste { border-top: 1px solid var(--line); }
+.spk-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 13px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.spk-row-tittel { display: block; font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--ink); line-height: 1.3; transition: color .15s ease; }
+.spk-row:hover .spk-row-tittel { color: var(--accent); }
+.spk-row-desc { display: block; font-family: var(--sans); font-size: 13px; color: var(--ink-mute); line-height: 1.5; margin-top: 3px; }
+.spk-row-pil { font-family: var(--serif); color: var(--ink-mute); flex: none; transition: color .18s, transform .22s; }
+.spk-row:hover .spk-row-pil { color: var(--accent); transform: translateX(5px); }
+.spk-tomt { display: none; font-family: var(--sans); font-size: 14px; color: var(--ink-mute); padding: 22px 0; }
+.spk-bunn {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 18px; margin-top: 26px;
+}
+.spk-bunn span { font-family: var(--sans); font-size: 13px; color: var(--ink-soft); }
+.spk-bunn a { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+@media (max-width: 720px) {
+  .spk-page { padding: 22px 20px 56px; }
+  .spk-head { flex-direction: column; align-items: stretch; }
+  .spk-filter { width: 100%; }
+}
+</style>
+<main class="spk-page">
+  <nav class="spk-crumb" aria-label="Brødsmuler">
+    <a href="../../">Hjem</a><span class="sep">/</span><a href="../">Spørsmål</a><span class="sep">/</span><span class="cur">Familie og samliv</span>
+  </nav>
+  <header class="spk-head">
+    <div>
+      <h1>Familie og samliv</h1>
+      <p>51 spørsmål med konkrete svar</p>
+    </div>
+    <div class="spk-filter">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="spk-sok" placeholder="Filtrer spørsmålene …" autocomplete="off">
+    </div>
+  </header>
+  <div class="spk-liste" id="spk-liste">
+<a class="spk-row" href="../betyr-felleseie-at-alt-eies-likt/" data-k="betyr felleseie at alt eies likt?"><span class="spk-row-body"><span class="spk-row-tittel">Betyr felleseie at alt eies likt?</span><span class="spk-row-desc">Nei. Felleseie betyr ikke at dere eier alt likt. Mens dere er gift, eier og rår hver av dere over det dere…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../deler-ektefeller-gjeld/" data-k="deler ektefeller gjeld?"><span class="spk-row-body"><span class="spk-row-tittel">Deler ektefeller gjeld?</span><span class="spk-row-desc">Nei. Ekteskap slår ikke gjelden sammen – hver ektefelle svarer for sin egen gjeld (ekteskapsloven § 40). Du…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../har-jeg-krav-paa-halvparten-hvis-jeg-ikke-staar-som-eier/" data-k="har jeg krav på halvparten hvis jeg ikke står som eier?"><span class="spk-row-body"><span class="spk-row-tittel">Har jeg krav på halvparten hvis jeg ikke står som eier?</span><span class="spk-row-desc">Ja. Ved felleseie deles nettoverdien likt uansett hvem som står som registrert eier (ekteskapsloven § 58). At…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-boer-jeg-gjore-for-jeg-signerer-skilsmisseoppgjor/" data-k="hva bør jeg gjøre før jeg signerer skilsmisseoppgjør?"><span class="spk-row-body"><span class="spk-row-tittel">Hva bør jeg gjøre før jeg signerer skilsmisseoppgjør?</span><span class="spk-row-desc">Før du signerer: skaff deg full oversikt over alle eiendeler og all gjeld, finn ut hva du faktisk har krav…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-boer-staa-i-en-skifteavtale/" data-k="hva bør stå i en skifteavtale?"><span class="spk-row-body"><span class="spk-row-tittel">Hva bør stå i en skifteavtale?</span><span class="spk-row-desc">En skifteavtale bør liste opp alle eiendeler og all gjeld med verdier, hvem som overtar hva, hvilke beløp som…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-deles-ved-skilsmisse/" data-k="hva deles ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva deles ved skilsmisse?</span><span class="spk-row-desc">Ved skilsmisse deles som hovedregel ektefellenes samlede nettoformue – altså verdier minus gjeld – likt…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-felleseie/" data-k="hva er felleseie?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er felleseie?</span><span class="spk-row-desc">Felleseie er normalordningen for ektefellers økonomi i Norge, og betyr at den samlede nettoformuen som…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../forskjellen-paa-separasjon-og-skilsmisse/" data-k="hva er forskjellen på separasjon og skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er forskjellen på separasjon og skilsmisse?</span><span class="spk-row-desc">Separasjon er en midlertidig atskillelse der dere fortsatt er juridisk gift – du kan ikke gifte deg på nytt,…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-offentlig-skifte-ved-skilsmisse/" data-k="hva er offentlig skifte ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er offentlig skifte ved skilsmisse?</span><span class="spk-row-desc">Offentlig skifte betyr at tingretten tar over oppgjøret og oppnevner en bobestyrer som gjennomfører delingen…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-privat-skifte-ved-skilsmisse/" data-k="hva er privat skifte ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er privat skifte ved skilsmisse?</span><span class="spk-row-desc">Privat skifte betyr at dere deler felleseiet selv, ved en avtale dere blir enige om, uten å involvere…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-skjevdeling/" data-k="hva er skjevdeling?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er skjevdeling?</span><span class="spk-row-desc">Skjevdeling betyr at du kan holde visse verdier utenfor likedelingen ved skilsmisse: det du eide før…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-saereie/" data-k="hva er særeie?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er særeie?</span><span class="spk-row-desc">Særeie er verdier som er holdt helt utenfor delingen ved skilsmisse – den som eier særeiet beholder det fullt…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-urimelig-skifteavtale/" data-k="hva er urimelig skifteavtale?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er urimelig skifteavtale?</span><span class="spk-row-desc">En skifteavtale er urimelig når den virker så skjevt overfor den ene parten at det blir positivt urettferdig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-gjor-jeg-hvis-ektefellen-nekter-aa-dele/" data-k="hva gjør jeg hvis ektefellen nekter å dele?"><span class="spk-row-body"><span class="spk-row-tittel">Hva gjør jeg hvis ektefellen nekter å dele?</span><span class="spk-row-desc">Den andre kan ikke blokkere oppgjøret ved å nekte. Klarer dere ikke en privat avtale, kan du kreve offentlig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-gjor-jeg-hvis-ektefellen-skjuler-penger/" data-k="hva gjør jeg hvis ektefellen skjuler penger?"><span class="spk-row-body"><span class="spk-row-tittel">Hva gjør jeg hvis ektefellen skjuler penger?</span><span class="spk-row-desc">Du har rett til innsyn i ektefellens økonomi (ekteskapsloven § 39), og kan be tingretten registrere…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-gjor-jeg-hvis-jeg-angrer-paa-skifteavtalen/" data-k="hva gjør jeg hvis jeg angrer på skifteavtalen?"><span class="spk-row-body"><span class="spk-row-tittel">Hva gjør jeg hvis jeg angrer på skifteavtalen?</span><span class="spk-row-desc">En skifteavtale er bindende, så du kan ikke angre fritt fordi du i ettertid synes den ble dårlig. Men er…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-har-jeg-krav-paa-ved-skilsmisse/" data-k="hva har jeg krav på ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva har jeg krav på ved skilsmisse?</span><span class="spk-row-desc">Du har krav på din halvpart av nettoverdien i felleseiet (ekteskapsloven § 58), pluss det du kan holde…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-koster-offentlig-skifte/" data-k="hva koster offentlig skifte?"><span class="spk-row-body"><span class="spk-row-tittel">Hva koster offentlig skifte?</span><span class="spk-row-desc">Offentlig skifte koster rettsgebyr for behandlingen, sikkerhetsstillelse for skiftekostnadene, og bobestyrers…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-hvis-ektefellen-har-brukt-opp-penger-for-skilsmisse/" data-k="hva skjer hvis ektefellen har brukt opp penger før skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer hvis ektefellen har brukt opp penger før skilsmisse?</span><span class="spk-row-desc">Vanlig forbruk må du tåle – hver ektefelle rår over sitt under ekteskapet (ekteskapsloven § 31). Men har…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-hvis-ektepakten-er-ugyldig/" data-k="hva skjer hvis ektepakten er ugyldig?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer hvis ektepakten er ugyldig?</span><span class="spk-row-desc">Er ektepakten ugyldig – som regel fordi formkravene i ekteskapsloven § 54 ikke er fulgt – faller…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-hvis-vi-flytter-sammen-igjen-etter-separasjon/" data-k="hva skjer hvis vi flytter sammen igjen etter separasjon?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer hvis vi flytter sammen igjen etter separasjon?</span><span class="spk-row-desc">Gjenopptar dere samlivet etter en separasjon, faller separasjonen bort og blir uten rettsvirkning –…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-med-aksjer-og-fond-ved-skilsmisse/" data-k="hva skjer med aksjer og fond ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer med aksjer og fond ved skilsmisse?</span><span class="spk-row-desc">Aksjer og fond som er felleseie deles likt etter verdien ved skilsmisse (ekteskapsloven § 58). Verdipapirer…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-med-bilen-ved-skilsmisse/" data-k="hva skjer med bilen ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer med bilen ved skilsmisse?</span><span class="spk-row-desc">Er bilen felleseie, deles verdien likt ved skilsmisse (ekteskapsloven § 58) – uansett hvem som står på…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-med-boligen-ved-skilsmisse/" data-k="hva skjer med boligen ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer med boligen ved skilsmisse?</span><span class="spk-row-desc">Boligen inngår i delingen som annen formue. Er den felleseie, deles nettoverdien – markedsverdi minus lån –…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-med-boliglaan-ved-skilsmisse/" data-k="hva skjer med boliglån ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer med boliglån ved skilsmisse?</span><span class="spk-row-desc">Selve skilsmisseoppgjøret endrer ikke hvem banken kan kreve betaling fra. Står dere begge som låntakere,…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-med-hytte-ved-skilsmisse/" data-k="hva skjer med hytte ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer med hytte ved skilsmisse?</span><span class="spk-row-desc">En hytte som er felleseie deles likt etter verdien (ekteskapsloven § 58). Men hytter er ofte arvet eller eid…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-med-innbo-og-mobler-ved-skilsmisse/" data-k="hva skjer med innbo og møbler ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer med innbo og møbler ved skilsmisse?</span><span class="spk-row-desc">Innbo og møbler som er felleseie deles likt etter verdi (ekteskapsloven § 58). Rent personlige eiendeler kan…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-med-pensjon-ved-skilsmisse/" data-k="hva skjer med pensjon ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer med pensjon ved skilsmisse?</span><span class="spk-row-desc">Opptjente pensjonsrettigheter holdes som hovedregel utenfor delingen ved skilsmisse – både offentlige og…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-med-sparepenger-ved-skilsmisse/" data-k="hva skjer med sparepenger ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer med sparepenger ved skilsmisse?</span><span class="spk-row-desc">Sparepenger som er felleseie deles likt ved skilsmisse (ekteskapsloven § 58) – uansett på hvilken konto de…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvem-betaler-gjeld-ved-skilsmisse/" data-k="hvem betaler gjeld ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hvem betaler gjeld ved skilsmisse?</span><span class="spk-row-desc">Hver ektefelle svarer for sin egen gjeld (ekteskapsloven § 40). Har dere tatt opp gjeld sammen, hefter dere…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvem-far-bli-boende-i-huset-etter-samlivsbrudd/" data-k="hvem får bli boende i huset etter samlivsbrudd?"><span class="spk-row-body"><span class="spk-row-tittel">Hvem får bli boende i huset etter samlivsbrudd?</span><span class="spk-row-desc">Det er ingen automatikk i at den ene får bli boende. Ved skilsmisse kan en ektefelle få rett til å overta…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvor-lang-tid-tar-et-skilsmisseoppgjor/" data-k="hvor lang tid tar et skilsmisseoppgjør?"><span class="spk-row-body"><span class="spk-row-tittel">Hvor lang tid tar et skilsmisseoppgjør?</span><span class="spk-row-desc">Det varierer kraftig. Et privat skifte der dere er enige, kan være ferdig på noen uker. Et offentlig skifte…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvor-lenge-maa-man-vaere-separert-for-skilsmisse/" data-k="hvor lenge må man være separert før skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hvor lenge må man være separert før skilsmisse?</span><span class="spk-row-desc">Du kan kreve skilsmisse når dere har vært separert i minst ett år (ekteskapsloven § 21). Fristen regnes fra…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvordan-oppretter-man-saereie/" data-k="hvordan oppretter man særeie?"><span class="spk-row-body"><span class="spk-row-tittel">Hvordan oppretter man særeie?</span><span class="spk-row-desc">Særeie opprettes på to måter: enten ved at dere skriver en ektepakt (ekteskapsloven § 54), eller ved at en…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvordan-soker-man-separasjon/" data-k="hvordan søker man separasjon?"><span class="spk-row-body"><span class="spk-row-tittel">Hvordan søker man separasjon?</span><span class="spk-row-desc">Du søker separasjon hos statsforvalteren (ekteskapsloven § 20) – enklest digitalt via statsforvalteren.no,…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvordan-verdsettes-bolig-ved-skilsmisse/" data-k="hvordan verdsettes bolig ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Hvordan verdsettes bolig ved skilsmisse?</span><span class="spk-row-desc">Boligen verdsettes til omsetningsverdi – det den ville solgt for i markedet (ekteskapsloven § 69). Blir dere…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-arv-holdes-utenfor-skilsmisseoppgjoret/" data-k="kan arv holdes utenfor skilsmisseoppgjøret?"><span class="spk-row-body"><span class="spk-row-tittel">Kan arv holdes utenfor skilsmisseoppgjøret?</span><span class="spk-row-desc">Ja. Arv kan du som hovedregel holde utenfor skilsmisseoppgjøret gjennom skjevdeling (ekteskapsloven § 59) –…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-ektefellen-gi-bort-verdier-for-skilsmisse/" data-k="kan ektefellen gi bort verdier før skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Kan ektefellen gi bort verdier før skilsmisse?</span><span class="spk-row-desc">Ikke uten begrensninger. Ektefellen kan ikke gi bort, selge eller pantsette felles bolig eller vanlig innbo…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-ektepakt-endres/" data-k="kan ektepakt endres?"><span class="spk-row-body"><span class="spk-row-tittel">Kan ektepakt endres?</span><span class="spk-row-desc">Ja. En ektepakt kan endres eller oppheves, men bare ved en ny ektepakt som oppfyller de samme formkravene…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-en-skifteavtale-endres/" data-k="kan en skifteavtale endres?"><span class="spk-row-body"><span class="spk-row-tittel">Kan en skifteavtale endres?</span><span class="spk-row-desc">En skifteavtale er bindende når den er inngått, men dere kan endre den hvis begge er enige – det stilles…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-gave-holdes-utenfor-skilsmisseoppgjoret/" data-k="kan gave holdes utenfor skilsmisseoppgjøret?"><span class="spk-row-body"><span class="spk-row-tittel">Kan gave holdes utenfor skilsmisseoppgjøret?</span><span class="spk-row-desc">Ja – men det avhenger av hvem gaven kom fra. Gaver fra andre enn ektefellen, som foreldre, slekt eller…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-kreve-ektefellebidrag/" data-k="kan jeg kreve ektefellebidrag?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg kreve ektefellebidrag?</span><span class="spk-row-desc">Hovedregelen er at hver av dere forsørger seg selv etter skilsmisse (ekteskapsloven § 79). Men du kan kreve…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-kreve-offentlig-skifte/" data-k="kan jeg kreve offentlig skifte?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg kreve offentlig skifte?</span><span class="spk-row-desc">Ja. Har dere felleseie, kan hver av dere kreve offentlig skifte hos tingretten (ekteskapsloven § 57, § 96) –…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-kreve-penger-for-arbeid-i-hjemmet/" data-k="kan jeg kreve penger for arbeid i hjemmet?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg kreve penger for arbeid i hjemmet?</span><span class="spk-row-desc">Du får ikke utbetalt «lønn» for husarbeid, men arbeid i hjemmet teller likevel økonomisk. Det gir deg…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-kreve-aa-overta-boligen/" data-k="kan jeg kreve å overta boligen?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg kreve å overta boligen?</span><span class="spk-row-desc">Ja, i to tilfeller. Eier du boligen fullt ut eller for det vesentlige, kan du kreve å beholde den – med…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-man-skilles-uten-separasjon/" data-k="kan man skilles uten separasjon?"><span class="spk-row-body"><span class="spk-row-tittel">Kan man skilles uten separasjon?</span><span class="spk-row-desc">Ja. Du kan kreve skilsmisse uten å ha vært separert først dersom samlivet har vært brutt i minst to år…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kjaeresten-flyttet-ut-hvem-eier-hva/" data-k="kjæresten flyttet ut — hvem eier hva?"><span class="spk-row-body"><span class="spk-row-tittel">Kjæresten flyttet ut — hvem eier hva?</span><span class="spk-row-desc">Samboere deler ikke automatisk på verdier slik ektefeller gjør. Du eier det du kan dokumentere at du kjøpte…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../maa-ektepakt-tinglyses/" data-k="må ektepakt tinglyses?"><span class="spk-row-body"><span class="spk-row-tittel">Må ektepakt tinglyses?</span><span class="spk-row-desc">Nei – ikke for å være gyldig mellom dere. En ektepakt som oppfyller formkravene i ekteskapsloven § 54 er…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../maa-vi-bruke-advokat-ved-skilsmisse/" data-k="må vi bruke advokat ved skilsmisse?"><span class="spk-row-body"><span class="spk-row-tittel">Må vi bruke advokat ved skilsmisse?</span><span class="spk-row-desc">Nei. Verken søknaden om separasjon og skilsmisse eller et privat skifte krever advokat. Søknaden er en enkel,…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../naar-kan-jeg-kreve-skjevdeling/" data-k="når kan jeg kreve skjevdeling?"><span class="spk-row-body"><span class="spk-row-tittel">Når kan jeg kreve skjevdeling?</span><span class="spk-row-desc">Du kan kreve skjevdeling når du klart kan føre en verdi tilbake til noe du eide før ekteskapet, eller til arv…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../naar-maa-en-ektefelle-betale-bidrag-til-den-andre/" data-k="når må en ektefelle betale bidrag til den andre?"><span class="spk-row-body"><span class="spk-row-tittel">Når må en ektefelle betale bidrag til den andre?</span><span class="spk-row-desc">En ektefelle må betale bidrag når to ting er oppfylt: den andres evne til å forsørge seg selv er blitt…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a>  </div>
+  <p class="spk-tomt" id="spk-tomt">Ingen spørsmål matcher. <a href="../../kontakt/" style="color:var(--accent);">Foreslå det</a> — så skriver vi svaret.</p>
+  <div class="spk-bunn">
+    <span>Fant du ikke svaret? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få gratis vurdering &rarr;</a>
+  </div>
+</main>
+
+<script>
+(function(){
+  var input = document.getElementById('spk-sok');
+  if (!input) return;
+  var rows = [].slice.call(document.querySelectorAll('.spk-row'));
+  var tomt = document.getElementById('spk-tomt');
+  input.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var vist = 0;
+    rows.forEach(function(r){
+      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.style.display = m ? '' : 'none';
+      if (m) vist++;
+    });
+    tomt.style.display = vist === 0 ? 'block' : 'none';
+  });
+})();
+</script>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>

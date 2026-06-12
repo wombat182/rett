@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nabo og eiendom — spørsmål og svar | Rettsregel</title>
+<meta name="description" content="40 spørsmål om nabo og eiendom, med konkrete svar på vanlig norsk.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nabo-og-eiendom/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Nabo og eiendom — spørsmål og svar">
+<meta property="og:description" content="40 spørsmål om nabo og eiendom, med konkrete svar på vanlig norsk.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nabo-og-eiendom/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nabo og eiendom — spørsmål og svar">
+<meta name="twitter:description" content="40 spørsmål om nabo og eiendom, med konkrete svar på vanlig norsk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/" class="rr-nav-active">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+      <a href="../../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<style>
+.spk-page { max-width: 860px; margin: 0 auto; padding: 32px 32px 72px; }
+.spk-crumb { font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); margin-bottom: 26px; }
+.spk-crumb a { color: var(--ink-mute); text-decoration: none; }
+.spk-crumb a:hover { color: var(--ink); }
+.spk-crumb .sep { margin: 0 8px; opacity: .45; }
+.spk-crumb .cur { color: var(--accent); }
+.spk-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 22px; flex-wrap: wrap; }
+.spk-head h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.024em; color: var(--ink); margin: 0 0 6px; }
+.spk-head p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-mute); margin: 0; }
+.spk-filter { position: relative; flex: none; width: 270px; }
+.spk-filter input {
+  width: 100%; height: 42px; box-sizing: border-box; padding: 0 14px 0 38px;
+  border: 1px solid var(--line-strong); border-radius: 11px;
+  background: var(--bg-card); color: var(--ink);
+  font-family: var(--sans); font-size: 13.5px; outline: none;
+}
+.spk-filter input:focus { border-color: var(--accent); }
+.spk-filter svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); pointer-events: none; }
+.spk-liste { border-top: 1px solid var(--line); }
+.spk-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 13px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.spk-row-tittel { display: block; font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--ink); line-height: 1.3; transition: color .15s ease; }
+.spk-row:hover .spk-row-tittel { color: var(--accent); }
+.spk-row-desc { display: block; font-family: var(--sans); font-size: 13px; color: var(--ink-mute); line-height: 1.5; margin-top: 3px; }
+.spk-row-pil { font-family: var(--serif); color: var(--ink-mute); flex: none; transition: color .18s, transform .22s; }
+.spk-row:hover .spk-row-pil { color: var(--accent); transform: translateX(5px); }
+.spk-tomt { display: none; font-family: var(--sans); font-size: 14px; color: var(--ink-mute); padding: 22px 0; }
+.spk-bunn {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 18px; margin-top: 26px;
+}
+.spk-bunn span { font-family: var(--sans); font-size: 13px; color: var(--ink-soft); }
+.spk-bunn a { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+@media (max-width: 720px) {
+  .spk-page { padding: 22px 20px 56px; }
+  .spk-head { flex-direction: column; align-items: stretch; }
+  .spk-filter { width: 100%; }
+}
+</style>
+<main class="spk-page">
+  <nav class="spk-crumb" aria-label="Brødsmuler">
+    <a href="../../">Hjem</a><span class="sep">/</span><a href="../">Spørsmål</a><span class="sep">/</span><span class="cur">Nabo og eiendom</span>
+  </nav>
+  <header class="spk-head">
+    <div>
+      <h1>Nabo og eiendom</h1>
+      <p>40 spørsmål med konkrete svar</p>
+    </div>
+    <div class="spk-filter">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="spk-sok" placeholder="Filtrer spørsmålene …" autocomplete="off">
+    </div>
+  </header>
+  <div class="spk-liste" id="spk-liste">
+<a class="spk-row" href="../hva-betyr-lnf-omrade/" data-k="hva betyr lnf-område?"><span class="spk-row-body"><span class="spk-row-tittel">Hva betyr LNF-område?</span><span class="spk-row-desc">LNF står for landbruk, natur og friluftsliv, med R for reindrift i samiske områder. Det er et arealformål i…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-betyr-utnyttelsesgrad-bya-bra/" data-k="hva betyr utnyttelsesgrad (bya/bra)?"><span class="spk-row-body"><span class="spk-row-tittel">Hva betyr utnyttelsesgrad (BYA/BRA)?</span><span class="spk-row-desc">BYA og BRA er to ulike måter å måle bebyggelse på. BYA, bebygd areal, er fotavtrykket bygningen tar opp på…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-ansvarsrett-i-byggesak/" data-k="hva er ansvarsrett i byggesak?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er ansvarsrett i byggesak?</span><span class="spk-row-desc">Ansvarsrett er et foretaks ansvar overfor kommunen for at deres del av et byggetiltak oppfyller kravene i…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-byggeforbudet-i-100-metersbeltet/" data-k="hva er byggeforbudet i 100-metersbeltet?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er byggeforbudet i 100-metersbeltet?</span><span class="spk-row-desc">Det er et generelt forbud mot å bygge nærmere sjøen enn 100 meter fra strandlinjen. Andre tiltak enn…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-en-ansvarlig-soker/" data-k="hva er en ansvarlig søker?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er en ansvarlig søker?</span><span class="spk-row-desc">Ansvarlig søker er foretaket som er tiltakshavers representant overfor kommunen i en byggesak med krav om…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-en-byggetillatelse/" data-k="hva er en byggetillatelse?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er en byggetillatelse?</span><span class="spk-row-desc">En byggetillatelse er kommunens vedtak om at du får lov til å gjennomføre et søknadspliktig tiltak. Kommunen…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-en-dispensasjon-fra-plan-og-bygningsloven/" data-k="hva er en dispensasjon fra plan- og bygningsloven?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er en dispensasjon fra plan- og bygningsloven?</span><span class="spk-row-desc">En dispensasjon er et lovlig unntak fra en bestemmelse i loven, en forskrift eller en arealplan, gitt av…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-en-grad-av-utnytting-pa-tomta/" data-k="hva er en grad av utnytting på tomta?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er en grad av utnytting på tomta?</span><span class="spk-row-desc">Grad av utnytting er et tak for hvor mye du kan bygge på en tomt, fastsatt i planen for området. Den…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-en-kommuneplan/" data-k="hva er en kommuneplan?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er en kommuneplan?</span><span class="spk-row-desc">Kommuneplanen er kommunens overordnede plan, og arealdelen av den bestemmer hovedtrekkene i arealbruken for…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-en-reguleringsplan/" data-k="hva er en reguleringsplan?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er en reguleringsplan?</span><span class="spk-row-desc">En reguleringsplan er en detaljert, juridisk bindende arealplan for et avgrenset område. Den fastsetter hva…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-en-situasjonsplan/" data-k="hva er en situasjonsplan?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er en situasjonsplan?</span><span class="spk-row-desc">En situasjonsplan er et kart over eiendommen din der tiltaket du skal bygge er tegnet inn og målsatt — med…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-forskjellen-pa-melding-og-soknad/" data-k="hva er forskjellen på melding og søknad?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er forskjellen på melding og søknad?</span><span class="spk-row-desc">Melding finnes ikke lenger som egen sakstype. Den gamle meldingsordningen ble avviklet i 2010. I dag er et…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-forskjellen-pa-regulert-og-uregulert-tomt/" data-k="hva er forskjellen på regulert og uregulert tomt?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er forskjellen på regulert og uregulert tomt?</span><span class="spk-row-desc">En regulert tomt er omfattet av en vedtatt reguleringsplan, som i detalj bestemmer hva som kan bygges der. En…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-reglene-for-levegg-uten-soknad/" data-k="hva er reglene for levegg uten søknad?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er reglene for levegg uten søknad?</span><span class="spk-row-desc">En levegg er unntatt søknad hvis den er inntil 1,8 meter høy og inntil 10 meter lang, plassert minst 1 meter…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-er-tiltakshaver/" data-k="hva er tiltakshaver?"><span class="spk-row-body"><span class="spk-row-tittel">Hva er tiltakshaver?</span><span class="spk-row-desc">Tiltakshaver er den som et byggetiltak utføres på vegne av — typisk eieren som vil bygge. Tiltakshaver har…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-kan-jeg-bygge-uten-a-soke/" data-k="hva kan jeg bygge uten å søke?"><span class="spk-row-body"><span class="spk-row-tittel">Hva kan jeg bygge uten å søke?</span><span class="spk-row-desc">Det kommer an på hva du skal bygge og hvor. En del mindre tiltak er unntatt søknadsplikt — for eksempel en…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-koster-en-byggesoknad/" data-k="hva koster en byggesøknad?"><span class="spk-row-body"><span class="spk-row-tittel">Hva koster en byggesøknad?</span><span class="spk-row-desc">Det finnes ingen fast nasjonal pris — hver kommune setter sine egne gebyrer i et eget regulativ. Gebyret skal…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-kreves-for-a-godkjenne-en-utleiedel/" data-k="hva kreves for å godkjenne en utleiedel?"><span class="spk-row-body"><span class="spk-row-tittel">Hva kreves for å godkjenne en utleiedel?</span><span class="spk-row-desc">Det kommer an på om du vil ha en selvstendig boenhet eller bare leie ut rom i egen bolig. En selvstendig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hva-skjer-hvis-jeg-har-bygd-ulovlig/" data-k="hva skjer hvis jeg har bygd ulovlig?"><span class="spk-row-body"><span class="spk-row-tittel">Hva skjer hvis jeg har bygd ulovlig?</span><span class="spk-row-desc">Kommunen har plikt til å følge opp ulovlige byggetiltak. Du kan få pålegg om å rette forholdet — for eksempel…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvor-lang-behandlingstid-har-kommunen-pa-en-byggesoknad/" data-k="hvor lang behandlingstid har kommunen på en byggesøknad?"><span class="spk-row-body"><span class="spk-row-tittel">Hvor lang behandlingstid har kommunen på en byggesøknad?</span><span class="spk-row-desc">Det kommer an på sakstypen. Enkle søknader som er i samsvar med planen, uten nabomerknader og uten behov for…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvor-lang-frist-har-naboen-pa-a-svare-pa-nabovarsel/" data-k="hvor lang frist har naboen på å svare på nabovarsel?"><span class="spk-row-body"><span class="spk-row-tittel">Hvor lang frist har naboen på å svare på nabovarsel?</span><span class="spk-row-desc">Minst to uker. Naboer og gjenboere skal ha en frist på minst to uker til å komme med merknader, regnet fra…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvor-naer-nabogrensen-kan-jeg-bygge/" data-k="hvor nær nabogrensen kan jeg bygge?"><span class="spk-row-body"><span class="spk-row-tittel">Hvor nær nabogrensen kan jeg bygge?</span><span class="spk-row-desc">Hovedregelen er minst 4 meter fra nabogrensen. Du kan bygge nærmere i to tilfeller: hvis naboen gir skriftlig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvor-stor-bod-kan-jeg-sette-opp-uten-soknad/" data-k="hvor stor bod kan jeg sette opp uten søknad?"><span class="spk-row-body"><span class="spk-row-tittel">Hvor stor bod kan jeg sette opp uten søknad?</span><span class="spk-row-desc">Inntil 50 m². En frittliggende bod følger samme størrelsesgrense som en garasje, fordi begge regnes som…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvordan-klager-jeg-pa-et-byggevedtak/" data-k="hvordan klager jeg på et byggevedtak?"><span class="spk-row-body"><span class="spk-row-tittel">Hvordan klager jeg på et byggevedtak?</span><span class="spk-row-desc">Du sender en skriftlig klage til kommunen som fattet vedtaket, innen tre uker fra du ble informert om det.…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvordan-soker-jeg-om-dispensasjon/" data-k="hvordan søker jeg om dispensasjon?"><span class="spk-row-body"><span class="spk-row-tittel">Hvordan søker jeg om dispensasjon?</span><span class="spk-row-desc">Du sender en skriftlig, begrunnet søknad til kommunen, og naboene skal varsles på samme måte som i en vanlig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-bygge-garasje-uten-a-soke/" data-k="kan jeg bygge garasje uten å søke?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg bygge garasje uten å søke?</span><span class="spk-row-desc">Hvis garasjen er frittliggende, inntil 50 m² og oppfyller noen faste vilkår, kan du bygge uten å søke. Den…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-bygge-i-strandsonen/" data-k="kan jeg bygge i strandsonen?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg bygge i strandsonen?</span><span class="spk-row-desc">Det kommer an på planen for området. I 100-metersbeltet langs sjøen gjelder et generelt byggeforbud, men det…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-flytte-inn-uten-ferdigattest/" data-k="kan jeg flytte inn uten ferdigattest?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg flytte inn uten ferdigattest?</span><span class="spk-row-desc">Nei, ikke uten videre. Hovedregelen er at et søknadspliktig tiltak ikke kan tas i bruk før det foreligger…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-gjore-om-kjeller-til-soverom/" data-k="kan jeg gjøre om kjeller til soverom?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg gjøre om kjeller til soverom?</span><span class="spk-row-desc">Ja, men det er som regel en søknadspliktig bruksendring. Når du gjør om en kjellerbod til soverom, går rommet…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-jeg-leie-ut-en-hybel-uten-godkjenning/" data-k="kan jeg leie ut en hybel uten godkjenning?"><span class="spk-row-body"><span class="spk-row-tittel">Kan jeg leie ut en hybel uten godkjenning?</span><span class="spk-row-desc">Hvis hybelen består av rom som allerede er godkjent for varig opphold, kan du leie den ut. Å leie ut et eller…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-naboen-klage-pa-byggetillatelsen-min/" data-k="kan naboen klage på byggetillatelsen min?"><span class="spk-row-body"><span class="spk-row-tittel">Kan naboen klage på byggetillatelsen min?</span><span class="spk-row-desc">En nabo som er part i saken, eller som ellers har rettslig klageinteresse, kan klage på byggetillatelsen du…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../ma-jeg-soke-om-fasadeendring/" data-k="må jeg søke om fasadeendring?"><span class="spk-row-body"><span class="spk-row-tittel">Må jeg søke om fasadeendring?</span><span class="spk-row-desc">Det kommer an på om endringen endrer bygningens karakter. En fasadeendring er i utgangspunktet…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../ma-jeg-soke-om-tilbygg/" data-k="må jeg søke om tilbygg?"><span class="spk-row-body"><span class="spk-row-tittel">Må jeg søke om tilbygg?</span><span class="spk-row-desc">Det kommer an på størrelsen. Et understøttet tilbygg på inntil 15 m² er unntatt søknad, så lenge det er i…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../ma-jeg-soke-om-a-bygge-terrasse/" data-k="må jeg søke om å bygge terrasse?"><span class="spk-row-body"><span class="spk-row-tittel">Må jeg søke om å bygge terrasse?</span><span class="spk-row-desc">Som regel ikke, hvis terrassen er lav og knyttet til huset. En terrasse på inntil 1,0 meter over terreng, som…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../ma-jeg-soke-om-a-bytte-vinduer/" data-k="må jeg søke om å bytte vinduer?"><span class="spk-row-body"><span class="spk-row-tittel">Må jeg søke om å bytte vinduer?</span><span class="spk-row-desc">Vanligvis ikke, hvis du bytter til vinduer som ligner de gamle. Vindusbytte regnes som en fasadeendring, og…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../ma-jeg-soke-om-a-rive-et-bygg/" data-k="må jeg søke om å rive et bygg?"><span class="spk-row-body"><span class="spk-row-tittel">Må jeg søke om å rive et bygg?</span><span class="spk-row-desc">Riving av en bygning er som hovedregel søknadspliktig. Du kan derimot rive uten søknad det som du i…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../ma-jeg-soke-om-a-sette-opp-gjerde/" data-k="må jeg søke om å sette opp gjerde?"><span class="spk-row-body"><span class="spk-row-tittel">Må jeg søke om å sette opp gjerde?</span><span class="spk-row-desc">Som regel ikke. Et vanlig gjerde mot naboen er normalt ikke søknadspliktig etter plan- og bygningsloven — det…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../nabo-bygget-for-naer-tomtegrense/" data-k="naboen har bygget for nær tomtegrensa — hva kan du gjøre?"><span class="spk-row-body"><span class="spk-row-tittel">Naboen har bygget for nær tomtegrensa — hva kan du gjøre?</span><span class="spk-row-desc">Byggverk skal som hovedregel stå minst fire meter fra nabogrensen. Er bygget nærmere uten dispensasjon fra…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../naboen-klager-paa-stoy/" data-k="naboen klager på støy fra deg — hva gjelder?"><span class="spk-row-body"><span class="spk-row-tittel">Naboen klager på støy fra deg — hva gjelder?</span><span class="spk-row-desc">En klage er ikke det samme som et brudd. Støy fra normal beboelse — barn, musikk på dagtid, selskaper til…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../nar-er-en-platting-soknadspliktig/" data-k="når er en platting søknadspliktig?"><span class="spk-row-body"><span class="spk-row-tittel">Når er en platting søknadspliktig?</span><span class="spk-row-desc">En lav platting på bakkenivå er normalt ikke søknadspliktig i det hele tatt. Er plattingen inntil cirka 0,5…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a>  </div>
+  <p class="spk-tomt" id="spk-tomt">Ingen spørsmål matcher. <a href="../../kontakt/" style="color:var(--accent);">Foreslå det</a> — så skriver vi svaret.</p>
+  <div class="spk-bunn">
+    <span>Fant du ikke svaret? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få gratis vurdering &rarr;</a>
+  </div>
+</main>
+
+<script>
+(function(){
+  var input = document.getElementById('spk-sok');
+  if (!input) return;
+  var rows = [].slice.call(document.querySelectorAll('.spk-row'));
+  var tomt = document.getElementById('spk-tomt');
+  input.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var vist = 0;
+    rows.forEach(function(r){
+      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.style.display = m ? '' : 'none';
+      if (m) vist++;
+    });
+    tomt.style.display = vist === 0 ? 'block' : 'none';
+  });
+})();
+</script>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>

@@ -316,15 +316,50 @@ try:
 except ImportError:
     _SP_VERGEMAL = []
 
-SPORSMAL = (_SP_BASE + _SP_KJOPSLOVEN + _SP_EKTESKAPSLOVEN + _SP_AML + _SP_FKJL
-            + _SP_ANGRE + _SP_AVH + _SP_ARVE + _SP_BARNE
-            + _SP_STRAFF + _SP_INKASSO + _SP_VEGTRAFIKK
-            + _SP_FERIE + _SP_BUSTAD + _SP_FORVALTNING
-            + _SP_TOMTE + _SP_NABO + _SP_BORETT + _SP_EIER + _SP_FORELD + _SP_PASIENT
-            + _SP_UNI + _SP_NAVN + _SP_VOLD + _SP_YRKE + _SP_EKSPRO + _SP_GRUNN
-            + _SP_DOMMER
-            + _SP_SAMEIE + _SP_PLANBYGG + _SP_PERSONVERN + _SP_PASIENTRETT + _SP_SOSIAL
-            + _SP_SKATTEFORV + _SP_STATSBORGER + _SP_TVANG + _SP_UTLENDING + _SP_VERGEMAL)
+def _tag_lov(items, lov):
+    """Tagger sporsmal med hvilken lov de tilhorer (None = ingen/blandet)."""
+    for it in items:
+        it.setdefault("lov", lov)
+    return items
+
+SPORSMAL = (_tag_lov(_SP_BASE, None)
+            + _tag_lov(_SP_KJOPSLOVEN, "kjopsloven")
+            + _tag_lov(_SP_EKTESKAPSLOVEN, "ekteskapsloven")
+            + _tag_lov(_SP_AML, "arbeidsmiljoloven")
+            + _tag_lov(_SP_FKJL, "forbrukerkjopsloven")
+            + _tag_lov(_SP_ANGRE, "angrerettloven")
+            + _tag_lov(_SP_AVH, "avhendingslova")
+            + _tag_lov(_SP_ARVE, "arveloven")
+            + _tag_lov(_SP_BARNE, "barnelova")
+            + _tag_lov(_SP_STRAFF, None)
+            + _tag_lov(_SP_INKASSO, "inkassoloven")
+            + _tag_lov(_SP_VEGTRAFIKK, None)
+            + _tag_lov(_SP_FERIE, "ferieloven")
+            + _tag_lov(_SP_BUSTAD, "bustadoppforingslova")
+            + _tag_lov(_SP_FORVALTNING, "forvaltningsloven")
+            + _tag_lov(_SP_TOMTE, "tomtefesteloven")
+            + _tag_lov(_SP_NABO, "naboloven")
+            + _tag_lov(_SP_BORETT, "burettslagslova")
+            + _tag_lov(_SP_EIER, "eierseksjonsloven")
+            + _tag_lov(_SP_FORELD, "foreldelsesloven")
+            + _tag_lov(_SP_PASIENT, "pasientskadeloven")
+            + _tag_lov(_SP_UNI, "universitets-og-hoyskoleloven")
+            + _tag_lov(_SP_NAVN, "navneloven")
+            + _tag_lov(_SP_VOLD, "voldserstatningsloven")
+            + _tag_lov(_SP_YRKE, "yrkesskadeforsikringsloven")
+            + _tag_lov(_SP_EKSPRO, None)
+            + _tag_lov(_SP_GRUNN, None)
+            + _tag_lov(_SP_DOMMER, None)
+            + _tag_lov(_SP_SAMEIE, None)
+            + _tag_lov(_SP_PLANBYGG, None)
+            + _tag_lov(_SP_PERSONVERN, None)
+            + _tag_lov(_SP_PASIENTRETT, None)
+            + _tag_lov(_SP_SOSIAL, None)
+            + _tag_lov(_SP_SKATTEFORV, None)
+            + _tag_lov(_SP_STATSBORGER, None)
+            + _tag_lov(_SP_TVANG, None)
+            + _tag_lov(_SP_UTLENDING, None)
+            + _tag_lov(_SP_VERGEMAL, None))
 
 # --- Fjern templatede naer-duplikater (reversibelt via removed_slugs.py) ---
 try:
@@ -1919,46 +1954,50 @@ form.contact-form.hide { display: none; }
 
 /* ---------- Unified site header (homepage + all subpages) ---------- */
 .rr-header {
-  max-width: 1200px; margin: 0 auto;
-  padding: 0 40px;
+  background: #2C2C2A;
 }
 .rr-header-row {
-  display: flex; align-items: center; gap: 20px;
-  height: 78px;
-  border-bottom: 1px solid var(--line);
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 18px;
+  height: 70px;
   position: relative;
 }
 .rr-logo {
-  display: inline-flex; align-items: center; flex: none;
-  text-decoration: none; color: var(--ink);
+  display: inline-flex; align-items: center; gap: 10px; flex: none;
+  text-decoration: none;
 }
 .rr-logo svg { display: block; }
+.rr-logo-name {
+  font-family: var(--serif); font-weight: 500; font-size: 17px;
+  letter-spacing: -0.01em; color: #FAF6F0; white-space: nowrap;
+}
 .rr-search {
-  flex: 1 1 360px; max-width: 400px;
+  flex: 1 1 360px; max-width: 440px;
   position: relative; display: flex; align-items: center;
 }
 .rr-search input {
-  width: 100%; height: 42px;
-  padding: 0 42px 0 17px;
-  border: 1px solid var(--line-strong); border-radius: 12px;
-  background: var(--bg-card); color: var(--ink);
+  width: 100%; height: 40px;
+  padding: 0 42px 0 16px;
+  border: 1px solid transparent; border-radius: 9px;
+  background: #FDFAF5; color: var(--ink);
   font-family: var(--sans); font-size: 14px;
-  transition: border-color .18s ease, box-shadow .18s ease;
+  transition: box-shadow .18s ease;
 }
-.rr-search input::placeholder { color: var(--ink-mute); }
+.rr-search input::placeholder { color: #8A8378; }
 .rr-search input:focus {
-  outline: none; border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(192,74,38,.10);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(250,199,117,.45);
 }
 .rr-search-icon {
   position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-  color: var(--ink-mute); pointer-events: none; display: flex;
+  color: #8A8378; pointer-events: none; display: flex;
 }
 .rr-search-icon svg { display: block; }
 .rr-search-results {
   display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0;
   background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: 14px;
-  box-shadow: 0 16px 40px rgba(35,30,25,.14); padding: 6px; z-index: 100;
+  box-shadow: 0 16px 40px rgba(35,30,25,.22); padding: 6px; z-index: 100;
   max-height: 420px; overflow-y: auto;
 }
 .rr-search-results.show { display: block; }
@@ -1975,27 +2014,26 @@ form.contact-form.hide { display: none; }
 .rr-search-empty { padding: 14px; font-family: var(--sans); font-size: 14px; color: var(--ink-mute); text-align: center; }
 .rr-nav {
   flex: none; margin-left: auto; display: flex; align-items: center;
-  gap: 26px;
+  gap: 24px;
   font-family: var(--sans);
-  font-size: 14px; font-weight: 500;
+  font-size: 13.5px; font-weight: 500;
   letter-spacing: -0.005em;
 }
 .rr-nav a {
-  color: var(--ink); text-decoration: none;
+  color: #D6D2C8; text-decoration: none;
   transition: color 0.15s ease; white-space: nowrap;
 }
-.rr-nav a:hover { color: var(--accent); }
-.rr-nav-cta { color: var(--accent) !important; }
-.rr-nav-cta:hover { color: var(--accent-deep) !important; }
-.rr-nav a.rr-nav-active { color: var(--accent); }
+.rr-nav a:hover { color: #FFFFFF; }
+.rr-nav-cta { color: #FAC775 !important; }
+.rr-nav-cta:hover { color: #FFDFA3 !important; }
+.rr-nav a.rr-nav-active { color: #FFFFFF; }
 
 
 .rr-burger { display: none; }
 .rr-burger-toggle { display: none; }
 
-@media (max-width: 860px) {
-  .rr-header { padding: 0 20px; }
-  .rr-header-row { flex-wrap: wrap; height: auto; padding: 14px 0; gap: 12px; }
+@media (max-width: 920px) {
+  .rr-header-row { padding: 0 20px; flex-wrap: wrap; height: auto; padding-top: 12px; padding-bottom: 12px; gap: 12px; }
   .rr-logo { order: 1; flex: none; }
   .rr-burger { order: 2; margin-left: auto; }
   .rr-search { order: 3; flex-basis: 100%; max-width: none; }
@@ -2007,13 +2045,13 @@ form.contact-form.hide { display: none; }
     background: transparent; border: none;
   }
   .rr-burger span {
-    display: block; width: 22px; height: 1px; background: var(--ink);
+    display: block; width: 22px; height: 1px; background: #FAF6F0;
   }
   .rr-nav {
     display: none;
     width: 100%;
-    flex-direction: column; gap: 18px;
-    align-items: flex-start;
+    flex-direction: column; gap: 16px;
+    align-items: flex-start; padding-bottom: 6px;
   }
   .rr-burger-toggle:checked ~ .rr-nav { display: flex; }
 }
@@ -2181,9 +2219,10 @@ def site_nav(depth=1, active=None):
           <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
         </g>
       </svg>
+      <span class="rr-logo-name">Rettsregel</span>
     </a>
     <form class="rr-search" role="search" onsubmit="return false;">
-      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
       <span class="rr-search-icon" aria-hidden="true">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </span>
@@ -2197,6 +2236,7 @@ def site_nav(depth=1, active=None):
       <a href="{prefix}lover/"{cls('lover')}>Lover</a>
       <a href="{prefix}sporsmal/"{cls('sporsmal')}>Spørsmål</a>
       <a href="{prefix}tjenester/"{cls('tjenester')}>Verktøy/maler</a>
+      <a href="{prefix}om/"{cls('om')}>Om</a>
       <a href="{prefix}advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
     </nav>
   </div>
@@ -2588,8 +2628,50 @@ def render_paragraph_page(p):
 
     return head + "\n" + nav + "\n" + BODY + "\n" + footer
 
+# Delt på tvers av lovregister og lovsider — håndplukket, verifiseres mot data ved bygging
+LOVER_POPULAR = {
+    "husleieloven": ["3-5", "9-9"],
+    "avhendingslova": ["3-9", "4-19"],
+    "naboloven": ["3", "2"],
+    "bustadoppforingslova": ["12", "18"],
+    "tomtefesteloven": ["15", "32"],
+    "eierseksjonsloven": ["29", "30"],
+    "burettslagslova": ["5-11", "5-17"],
+    "oreigningslova": ["2"],
+    "arbeidsmiljoloven": ["15-7", "10-6"],
+    "ferieloven": ["7", "11"],
+    "angrerettloven": ["21", "20"],
+    "kjopsloven": ["32", "39"],
+    "forbrukerkjopsloven": ["27", "32"],
+    "barnelova": ["36", "43"],
+    "arveloven": ["50", "28"],
+    "navneloven": ["4", "3"],
+    "ekteskapsloven": ["58", "59"],
+    "voldserstatningsloven": ["1", "6"],
+    "pasientskadeloven": ["2", "3"],
+    "yrkesskadeforsikringsloven": ["11", "13"],
+    "inkassoloven": ["9", "17"],
+    "foreldelsesloven": ["2", "3"],
+    "forvaltningsloven": ["28", "11"],
+}
+
+LOVER_TOOLS = {
+    "husleieloven": ("../kontrakter/husleiekontrakt/", "Husleiekontrakt"),
+    "arbeidsmiljoloven": ("../tjenester/arbeid-oppsigelse/", "Oppsigelsestid-kalkulator"),
+    "arveloven": ("../tjenester/testament-mal/", "Testament-mal"),
+    "forbrukerkjopsloven": ("../tjenester/reklamasjon/", "Reklamasjonsbrev"),
+    "angrerettloven": ("../tjenester/angreskjema/", "Angrerettskjema"),
+    "ferieloven": ("../tjenester/feriepenger/", "Feriepenger-kalkulator"),
+    "avhendingslova": ("../tjenester/reklamasjonsfrist-bolig/", "Reklamasjonsfrist bolig"),
+    "kjopsloven": ("../tjenester/heving/", "Heving av kjøp"),
+    "inkassoloven": ("../verktoy/inkassosalaer.html", "Inkassosalær-sjekker"),
+    "foreldelsesloven": ("../verktoy/foreldelse.html", "Foreldelse-sjekker"),
+}
+
+
+
 def render_lov_index(lov_name, lov_display, paragraphs):
-    """Lov-oversikt — varm, navigerbar innholdsfortegnelse."""
+    """Lov-hub — viktige paragrafer, sammenleggbare kapitler, relatert innhold."""
     import re as _re
     depth = 2
     prefix = "../" * depth
@@ -2598,7 +2680,7 @@ def render_lov_index(lov_name, lov_display, paragraphs):
         "angrerettloven": {"desc": "Angrerett ved netthandel og kjøp utenfor butikk — frister, unntak og hvordan du går fram.", "cat": "Forbruk", "featured": ["16", "20", "21", "22"]},
         "kjopsloven": {"desc": "Kjøp mellom private og mellom bedrifter — mangel, reklamasjon, forsinkelse og heving.", "cat": "Forbruk", "featured": ["17", "32", "39", "30"]},
         "forbrukerkjopsloven": {"desc": "Dine rettigheter når du kjøper varer fra en næringsdrivende — mangel, retting, omlevering og heving.", "cat": "Forbruk", "featured": ["16", "26", "27", "33"]},
-        "husleieloven": {"desc": "Leie av bolig — depositum, vedlikehold, leieforhøyelse, oppsigelse og tilbakelevering.", "cat": "Bolig", "featured": ["3-5", "9-5", "10-2", "2-10", "5-3"]},
+        "husleieloven": {"desc": "Leie av bolig — depositum, vedlikehold, leieforhøyelse, oppsigelse og tilbakelevering.", "cat": "Bolig", "featured": ["3-5", "9-5", "10-2", "2-10"]},
         "avhendingslova": {"desc": "Kjøp og salg av bolig, hytte og tomt — mangler, selgers opplysningsplikt og reklamasjon.", "cat": "Bolig", "featured": ["3-7", "4-19", "3-9", "4-8"]},
         "naboloven": {"desc": "Grenser for hva naboer kan gjøre — trær, gjerde, støy, graving og tålegrensen.", "cat": "Bolig", "featured": ["2", "3", "6", "10"]},
         "navneloven": {"desc": "Fornavn, etternavn og navnebytte for deg og familien.", "cat": "Familie", "featured": ["2", "7", "8", "9"]},
@@ -2606,11 +2688,12 @@ def render_lov_index(lov_name, lov_display, paragraphs):
         "bustadoppforingslova": {"desc": "Når du bygger nytt eller kjøper bolig under oppføring — garanti, dagmulkt og overtakelse.", "cat": "Bolig", "featured": ["12", "14", "18", "30"]},
         "tomtefesteloven": {"desc": "Når du leier tomt til hus du eier — festeavgift, regulering, innløsning og lenging.", "cat": "Bolig", "featured": ["1", "7", "32", "37"]},
         "ekteskapsloven": {"desc": "Hvem kan gifte seg, og hvordan — vilkår, prøvingsattest, vigsling og ugyldighet.", "cat": "Familie", "featured": ["1", "1a", "1b", "11"]},
+        "arbeidsmiljoloven": {"desc": "Rettigheter på jobben — arbeidstid, oppsigelse, permisjon og varsling.", "cat": "Arbeid", "featured": ["15-7", "10-6", "14-6", "15-3"]},
     }
     meta = LOV_META.get(lov_name, {"desc": f"{lov_display} paragraf for paragraf, på vanlig norsk.", "cat": "Lov", "featured": []})
 
     n = len(paragraphs)
-    by_num = {p["number"]: p for p in paragraphs}
+    by_num = {str(p["number"]): p for p in paragraphs}
 
     def pkey(num):
         out = []
@@ -2626,49 +2709,100 @@ def render_lov_index(lov_name, lov_display, paragraphs):
             e = e[:lim].rsplit(" ", 1)[0] + "…"
         return e
 
-    def row_html(p):
-        d = excerpt_of(p)
-        desc = f'<span class="lovx-row-desc">{d}</span>' if d else ""
-        return (f'<a class="lovx-row" href="{prefix}lover/{lov_name}/{p["number"]}/">'
-                f'<span class="lovx-row-num">§ {p["number"]}</span>'
-                f'<span class="lovx-row-body"><span class="lovx-row-title">{p["title"]}</span>{desc}</span>'
-                f'<span class="lovx-row-arrow" aria-hidden="true">&rarr;</span></a>')
+    # --- Viktige paragrafer (featured fra LOV_META, ellers LOVER_POPULAR; kun de som finnes) ---
+    viktig_nums = meta.get("featured") or LOVER_POPULAR.get(lov_name, [])
+    viktig_cards = ""
+    brukt = []
+    for num in viktig_nums:
+        p = by_num.get(str(num))
+        if not p:
+            continue
+        brukt.append(str(num))
+        viktig_cards += (
+            f'<a class="lovh-card" href="{prefix}lover/{lov_name}/{p["number"]}/">'
+            f'<span class="lovh-card-num">§ {p["number"]}</span>'
+            f'<span class="lovh-card-title">{p["title"]}</span></a>'
+        )
+        if len(brukt) >= 4:
+            break
+    viktig_block = ""
+    if viktig_cards:
+        viktig_block = (
+            '<section class="lovh-viktig" aria-label="Viktige paragrafer">'
+            '<p class="lovh-label">Viktige paragrafer</p>'
+            f'<div class="lovh-cards">{viktig_cards}</div></section>'
+        )
 
-    chaptered = n > 0 and all("-" in p["number"] for p in paragraphs)
+    # --- Paragrafliste: kapitler som <details> hvis loven er kapittelinndelt, ellers flat ---
+    def row_html(p, with_excerpt=True):
+        d = excerpt_of(p) if with_excerpt else ""
+        desc = f'<span class="lovh-row-desc">{d}</span>' if d else ""
+        return (f'<a class="lovh-row" href="{prefix}lover/{lov_name}/{p["number"]}/">'
+                f'<span class="lovh-row-num">§ {p["number"]}</span>'
+                f'<span class="lovh-row-body"><span class="lovh-row-title">{p["title"]}</span>{desc}</span>'
+                f'<span class="lovh-row-arrow" aria-hidden="true">&rarr;</span></a>')
+
+    chaptered = n > 0 and all("-" in str(p["number"]) for p in paragraphs)
 
     if chaptered:
         chaps = {}
-        for p in sorted(paragraphs, key=lambda x: pkey(x["number"])):
-            chaps.setdefault(p["number"].split("-")[0], []).append(p)
-        chap_keys = sorted(chaps, key=lambda k: (int(re.match(r"\d+", k).group()), k))
+        for p in sorted(paragraphs, key=lambda x: pkey(str(x["number"]))):
+            chaps.setdefault(str(p["number"]).split("-")[0], []).append(p)
+        chap_keys = sorted(chaps, key=lambda k: (int(_re.match(r"\d+", k).group()), k))
         main_sections = ""
-        chap_links = ""
         for k in chap_keys:
+            antall = len(chaps[k])
             rows = "".join(row_html(p) for p in chaps[k])
-            main_sections += (f'<section class="lovx-chapter" id="kap-{k}">'
-                              f'<h2 class="lovx-chapter-h">Kapittel {k}</h2>'
-                              f'<div class="lovx-rows">{rows}</div></section>')
-            chap_links += f'<a class="lovx-chap" href="#kap-{k}">Kapittel {k}</a>'
-        innhold_block = (f'<div class="lovx-side-block"><p class="lovx-side-label">Innhold</p>'
-                         f'<nav class="lovx-chaplist">{chap_links}</nav></div>')
+            main_sections += (
+                f'<details class="lovh-chapter" id="kap-{k}">'
+                f'<summary class="lovh-chapter-sum">'
+                f'<span class="lovh-chapter-name">Kapittel {k}</span>'
+                f'<span class="lovh-chapter-meta">{antall} §§ <span class="lovh-chapter-pil" aria-hidden="true">+</span></span>'
+                f'</summary>'
+                f'<div class="lovh-rows">{rows}</div></details>'
+            )
+        liste_label = f"Alle {n} paragrafer, kapittel for kapittel"
     else:
-        rows = "".join(row_html(p) for p in sorted(paragraphs, key=lambda x: pkey(x["number"])))
-        main_sections = f'<section class="lovx-chapter"><div class="lovx-rows">{rows}</div></section>'
-        innhold_block = ""
+        rows = "".join(row_html(p, with_excerpt=False) for p in sorted(paragraphs, key=lambda x: pkey(str(x["number"]))))
+        main_sections = f'<div class="lovh-rows lovh-rows-flat">{rows}</div>'
+        liste_label = f"Alle {n} paragrafer"
 
-    mest_items = ""
-    for fn in meta.get("featured", []):
-        fp = by_num.get(fn)
-        if not fp:
-            continue
-        mest_items += (f'<a class="lovx-mest-item" href="{prefix}lover/{lov_name}/{fp["number"]}/">'
-                       f'<span class="lovx-mest-num">§ {fp["number"]}</span>'
-                       f'<span class="lovx-mest-title">{fp["title"]}</span></a>')
-    mest_block = ""
-    if mest_items:
-        mest_block = (f'<div class="lovx-side-block"><p class="lovx-side-label">Mest lest</p>'
-                      f'<div class="lovx-mest">{mest_items}</div>'
-                      f'<a class="lovx-side-more" href="#lovx-list">Se alle paragrafer &rarr;</a></div>')
+    # --- Kanskje du også er interessert i — verktøy, spørsmål for loven, vurdering ---
+    rel_cards = ""
+    tool = LOVER_TOOLS.get(lov_name)
+    if tool:
+        rel_cards += (
+            f'<a class="lovh-rel lovh-rel-verktoy" href="{prefix.rstrip("/")}/{tool[0].lstrip("./")}">'
+            f'<span class="lovh-rel-tag">Verktøy</span>'
+            f'<span class="lovh-rel-title">{tool[1]}</span></a>'
+        )
+    EXTRA_SPORSMAL = {
+        "husleieloven": ["utleier-nekter-depositum"],
+    }
+    sp_for_lov = [s for s in SPORSMAL if s.get("lov") == lov_name][:2]
+    if len(sp_for_lov) < 2:
+        by_slug = {s["slug"]: s for s in SPORSMAL}
+        for slug in EXTRA_SPORSMAL.get(lov_name, []):
+            if slug in by_slug and by_slug[slug] not in sp_for_lov:
+                sp_for_lov.append(by_slug[slug])
+            if len(sp_for_lov) >= 2:
+                break
+    for s in sp_for_lov:
+        rel_cards += (
+            f'<a class="lovh-rel lovh-rel-sporsmal" href="{prefix}sporsmal/{s["slug"]}/">'
+            f'<span class="lovh-rel-tag">Spørsmål</span>'
+            f'<span class="lovh-rel-title">{s["title"]}</span></a>'
+        )
+    rel_cards += (
+        f'<a class="lovh-rel lovh-rel-vurdering" href="{prefix}advokatvurdering/">'
+        f'<span class="lovh-rel-tag">Gratis vurdering</span>'
+        f'<span class="lovh-rel-title">Står du i en konkret sak? Få en rask førstevurdering</span></a>'
+    )
+    rel_block = (
+        '<section class="lovh-relsec" aria-label="Relatert innhold">'
+        '<p class="lovh-label">Kanskje du også er interessert i</p>'
+        f'<div class="lovh-rels">{rel_cards}</div></section>'
+    )
 
     head = shared_head(
         f"{lov_display} forklart på vanlig norsk | Rettsregel",
@@ -2677,91 +2811,112 @@ def render_lov_index(lov_name, lov_display, paragraphs):
     footer = site_footer(depth=2)
 
     STYLE = """<style>
-.lovx-page { max-width: 1080px; margin: 0 auto; padding: 36px 48px 72px; }
+.lovh-page { max-width: 920px; margin: 0 auto; padding: 32px 32px 72px; }
+.lovh-crumb { font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); margin-bottom: 30px; }
+.lovh-crumb a { color: var(--ink-mute); text-decoration: none; }
+.lovh-crumb a:hover { color: var(--ink); }
+.lovh-crumb .sep { margin: 0 8px; opacity: 0.45; }
+.lovh-crumb .cur { color: var(--accent); }
 
-.lovx-crumb { font-family: var(--serif); font-size: 13px; color: var(--ink-mute); margin-bottom: 44px; letter-spacing: 0.01em; }
-.lovx-crumb a { color: var(--ink-mute); text-decoration: none; }
-.lovx-crumb a:hover { color: var(--ink); }
-.lovx-crumb .sep { margin: 0 9px; opacity: 0.45; }
-.lovx-crumb .cur { color: var(--accent); }
+.lovh-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 26px; flex-wrap: wrap; }
+.lovh-title { font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 3.2vw, 36px); line-height: 1.08; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 10px; }
+.lovh-desc { font-family: var(--sans); font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 540px; }
+.lovh-meta { font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); margin: 10px 0 0; }
+.lovh-search { position: relative; flex: none; width: 280px; }
+.lovh-search input {
+  width: 100%; height: 42px; box-sizing: border-box;
+  padding: 0 14px 0 38px;
+  border: 1px solid var(--line-strong); border-radius: 11px;
+  background: var(--bg-card); color: var(--ink);
+  font-family: var(--sans); font-size: 13.5px; outline: none;
+  transition: border-color .15s ease;
+}
+.lovh-search input:focus { border-color: var(--accent); }
+.lovh-search input::placeholder { color: var(--ink-mute); }
+.lovh-search svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); pointer-events: none; }
 
-.lovx-head { margin-bottom: 30px; }
-.lovx-title { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.4vw, 38px); line-height: 1.06; letter-spacing: -0.026em; color: var(--ink); margin: 0 0 16px; }
-.lovx-desc { font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--ink-soft); margin: 0 0 16px; max-width: 580px; }
-.lovx-meta { font-family: var(--serif); font-size: 14px; color: var(--ink-mute); letter-spacing: 0.01em; }
-.lovx-meta .dot { margin: 0 10px; opacity: 0.45; }
+.lovh-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); margin: 0 0 12px; }
 
-.lovx-search-wrap { position: relative; margin-bottom: 4px; }
-.lovx-search { width: 100%; box-sizing: border-box; font-family: var(--serif); font-size: 16px; color: var(--ink); background: transparent; border: none; border-bottom: 1px solid var(--ink); padding: 13px 4px 13px 28px; outline: none; }
-.lovx-search::placeholder { color: var(--ink-mute); }
-.lovx-search:focus { border-bottom-color: var(--accent); }
-.lovx-search-icon { position: absolute; left: 2px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-mute); pointer-events: none; }
+.lovh-viktig { margin: 26px 0 34px; }
+.lovh-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.lovh-card {
+  display: block; text-decoration: none;
+  background: rgba(192,74,38,.06); border: 1px solid rgba(192,74,38,.14);
+  border-radius: 13px; padding: 14px 15px;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.lovh-card:hover { border-color: var(--accent-soft); transform: translateY(-2px); }
+.lovh-card-num { font-family: var(--sans); font-size: 11.5px; font-weight: 600; color: var(--accent); display: block; }
+.lovh-card-title { font-family: var(--serif); font-weight: 500; font-size: 14.5px; color: var(--ink); line-height: 1.3; display: block; margin-top: 4px; }
 
-.lovx-layout { display: grid; grid-template-columns: 232px 1fr; gap: 0; margin-top: 48px; align-items: start; }
+.lovh-listsec { margin-bottom: 40px; }
+.lovh-chapter { border-bottom: 1px solid var(--line); }
+.lovh-chapter:first-of-type { border-top: 1px solid var(--line); }
+.lovh-chapter-sum {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+  padding: 14px 2px; cursor: pointer; list-style: none;
+}
+.lovh-chapter-sum::-webkit-details-marker { display: none; }
+.lovh-chapter-name { font-family: var(--serif); font-weight: 500; font-size: 16.5px; color: var(--ink); transition: color .15s ease; }
+.lovh-chapter-sum:hover .lovh-chapter-name { color: var(--accent); }
+.lovh-chapter-meta { font-family: var(--sans); font-size: 12px; color: var(--ink-mute); white-space: nowrap; }
+.lovh-chapter-pil { display: inline-block; width: 14px; text-align: center; color: var(--accent); font-size: 14px; }
+.lovh-chapter[open] .lovh-chapter-pil { transform: none; }
+.lovh-chapter[open] > .lovh-chapter-sum .lovh-chapter-pil::before { content: "−"; }
+.lovh-chapter[open] > .lovh-chapter-sum .lovh-chapter-pil { font-size: 0; }
+.lovh-chapter[open] > .lovh-chapter-sum .lovh-chapter-pil::before { font-size: 14px; }
+.lovh-chapter > .lovh-rows { padding: 0 0 8px 14px; }
 
-.lovx-side { position: sticky; top: 32px; padding-right: 40px; }
-.lovx-side-block { margin-bottom: 40px; }
-.lovx-side-block:last-child { margin-bottom: 0; }
-.lovx-side-label { font-family: var(--serif); font-size: 10.5px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; }
-.lovx-chaplist { display: flex; flex-direction: column; }
-.lovx-chap { font-family: var(--serif); font-size: 14.5px; color: var(--ink-soft); text-decoration: none; padding: 7px 0 7px 14px; border-left: 2px solid transparent; line-height: 1.3; transition: color .15s, border-color .15s; }
-.lovx-chap:hover { color: var(--ink); border-left-color: var(--accent); }
+.lovh-rows { display: flex; flex-direction: column; }
+.lovh-rows-flat { border-top: 1px solid var(--line); }
+.lovh-row { display: grid; grid-template-columns: 58px 1fr 22px; align-items: baseline; gap: 14px; padding: 12px 2px; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.lovh-rows-flat .lovh-row { padding: 11px 2px; }
+.lovh-chapter .lovh-row:last-child { border-bottom: none; }
+.lovh-row-num { font-family: var(--sans); font-size: 12.5px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+.lovh-row-body { min-width: 0; }
+.lovh-row-title { font-family: var(--serif); font-size: 15.5px; font-weight: 500; color: var(--ink); line-height: 1.3; display: block; transition: color .15s; }
+.lovh-row-desc { font-family: var(--sans); font-size: 13px; color: var(--ink-mute); line-height: 1.45; margin-top: 3px; display: block; }
+.lovh-row-arrow { font-family: var(--serif); font-size: 16px; color: var(--ink-mute); text-align: right; transition: color .18s, transform .22s; }
+.lovh-row:hover .lovh-row-arrow { color: var(--accent); transform: translateX(5px); }
+.lovh-row:hover .lovh-row-title { color: var(--accent-deep); }
 
-.lovx-mest { display: flex; flex-direction: column; }
-.lovx-mest-item { display: block; text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--line); }
-.lovx-mest-item:first-child { padding-top: 0; }
-.lovx-mest-item:last-child { border-bottom: none; }
-.lovx-mest-num { font-family: var(--serif); font-size: 13px; color: var(--accent); }
-.lovx-mest-title { font-family: var(--serif); font-size: 14px; color: var(--ink-soft); display: block; margin-top: 3px; line-height: 1.35; transition: color .15s; }
-.lovx-mest-item:hover .lovx-mest-title { color: var(--ink); }
-.lovx-side-more { display: inline-block; margin-top: 16px; font-family: var(--serif); font-size: 13px; color: var(--ink-mute); text-decoration: none; transition: color .15s; }
-.lovx-side-more:hover { color: var(--accent); }
+.lovh-empty { display: none; font-family: var(--sans); font-size: 14.5px; color: var(--ink-mute); padding: 24px 0; }
 
-.lovx-main { min-width: 0; border-left: 1px solid var(--line); padding-left: 48px; }
-.lovx-chapter { margin-bottom: 40px; }
-.lovx-chapter:last-child { margin-bottom: 0; }
-.lovx-chapter-h { font-family: var(--serif); font-weight: 500; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-mute); margin: 0; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+.lovh-relsec { margin-top: 8px; }
+.lovh-rels { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.lovh-rel { display: block; text-decoration: none; border-radius: 13px; padding: 14px 16px; border: 1px solid var(--line); background: var(--bg-card); transition: border-color .15s ease, transform .15s ease; }
+.lovh-rel:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+.lovh-rel-tag { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+.lovh-rel-title { font-family: var(--serif); font-weight: 500; font-size: 14.5px; color: var(--ink); line-height: 1.35; display: block; }
+.lovh-rel-verktoy .lovh-rel-tag { color: var(--kat-bolig); }
+.lovh-rel-sporsmal .lovh-rel-tag { color: var(--kat-tjenester); }
+.lovh-rel-vurdering { background: rgba(192,74,38,.07); border-color: var(--accent-soft); }
+.lovh-rel-vurdering .lovh-rel-tag { color: var(--accent); }
 
-.lovx-rows { display: flex; flex-direction: column; }
-.lovx-row { display: grid; grid-template-columns: 60px 1fr 24px; align-items: baseline; gap: 16px; padding: 19px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
-.lovx-row-num { font-family: var(--serif); font-size: 14px; color: var(--accent); white-space: nowrap; }
-.lovx-row-body { min-width: 0; }
-.lovx-row-title { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.25; letter-spacing: -0.012em; display: block; transition: color .15s; }
-.lovx-row-desc { font-family: var(--serif); font-size: 14.5px; color: var(--ink-mute); line-height: 1.45; margin-top: 5px; display: block; }
-.lovx-row-arrow { font-family: var(--serif); font-size: 17px; color: var(--ink-mute); line-height: 1; text-align: right; transition: color .18s, transform .22s; }
-.lovx-row:hover .lovx-row-arrow { color: var(--accent); transform: translateX(6px); }
-.lovx-row:hover .lovx-row-title { color: var(--ink); }
+.lovh-attest { border-top: 1px solid var(--line); margin-top: 48px; padding-top: 18px; font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); line-height: 1.55; max-width: 620px; }
+.lovh-attest a { color: var(--accent); text-decoration: none; }
+.lovh-attest a:hover { color: var(--accent-deep); }
 
-.lovx-empty { display: none; font-family: var(--serif); font-size: 16px; color: var(--ink-mute); padding: 28px 0; }
-
-.lovx-attest { max-width: 1080px; margin: 56px auto 0; padding: 0 48px; }
-.lovx-attest-inner { border-top: 1px solid var(--line); padding-top: 20px; font-family: var(--serif); font-size: 12.5px; color: var(--ink-mute); line-height: 1.55; max-width: 640px; }
-.lovx-attest-inner a { color: var(--accent); text-decoration: none; }
-.lovx-attest-inner a:hover { color: var(--accent-deep); }
-
-@media (max-width: 860px) {
-  .lovx-page { padding: 26px 22px 56px; }
-  .lovx-crumb { margin-bottom: 32px; }
-  .lovx-layout { grid-template-columns: 1fr; margin-top: 36px; }
-  .lovx-side { position: static; padding-right: 0; margin-bottom: 8px; }
-  .lovx-side-block { margin-bottom: 32px; }
-  .lovx-chaplist { flex-direction: row; overflow-x: auto; gap: 22px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
-  .lovx-chap { border-left: none; padding: 4px 0; white-space: nowrap; }
-  .lovx-chap:hover { border-left: none; }
-  .lovx-main { border-left: none; padding-left: 0; }
-  .lovx-attest { padding: 0 22px; }
+@media (max-width: 720px) {
+  .lovh-page { padding: 22px 20px 56px; }
+  .lovh-head { flex-direction: column; align-items: stretch; }
+  .lovh-search { width: 100%; }
+  .lovh-cards { grid-template-columns: 1fr 1fr; }
+  .lovh-row { grid-template-columns: 50px 1fr 18px; gap: 10px; }
 }
 </style>"""
 
     SCRIPT = """<script>
 (function(){
-  var inp = document.getElementById('lovxSearch');
+  var inp = document.getElementById('lovhSearch');
   if(!inp) return;
-  var rows = [].slice.call(document.querySelectorAll('.lovx-row'));
-  var chapters = [].slice.call(document.querySelectorAll('.lovx-chapter'));
-  var empty = document.getElementById('lovxEmpty');
+  var rows = [].slice.call(document.querySelectorAll('.lovh-row'));
+  var chapters = [].slice.call(document.querySelectorAll('.lovh-chapter'));
+  var empty = document.getElementById('lovhEmpty');
+  var apnet = false;
   inp.addEventListener('input', function(){
     var q = this.value.toLowerCase().trim();
+    if (q && !apnet) { chapters.forEach(function(c){ c.dataset.varApen = c.open ? '1' : ''; }); apnet = true; }
     var visible = 0;
     rows.forEach(function(r){
       var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
@@ -2770,266 +2925,334 @@ def render_lov_index(lov_name, lov_display, paragraphs):
     });
     chapters.forEach(function(c){
       var any = false;
-      var rs = c.querySelectorAll('.lovx-row');
+      var rs = c.querySelectorAll('.lovh-row');
       for(var i=0;i<rs.length;i++){ if(rs[i].style.display !== 'none'){ any = true; break; } }
       c.style.display = any ? '' : 'none';
+      if (q) { c.open = any; }
+      else if (apnet) { c.open = c.dataset.varApen === '1'; }
     });
+    if (!q) apnet = false;
     if(empty) empty.style.display = (visible === 0 && q) ? 'block' : 'none';
   });
 })();
 </script>"""
 
     BODY = f"""{STYLE}
-<main class="lovx-page">
-  <nav class="lovx-crumb" aria-label="Brødsmuler">
+<main class="lovh-page">
+  <nav class="lovh-crumb" aria-label="Brødsmuler">
     <a href="{prefix}">Hjem</a><span class="sep">/</span><a href="{prefix}lover/">Lover</a><span class="sep">/</span><span class="cur">{lov_display}</span>
   </nav>
 
-  <header class="lovx-head">
-    <h1 class="lovx-title">{lov_display}</h1>
-    <p class="lovx-desc">{meta["desc"]}</p>
-    <p class="lovx-meta">{n} paragrafer<span class="dot">·</span>{meta["cat"]}<span class="dot">·</span>Oppdatert 2026</p>
+  <header class="lovh-head">
+    <div>
+      <h1 class="lovh-title">{lov_display}</h1>
+      <p class="lovh-desc">{meta["desc"]}</p>
+      <p class="lovh-meta">{n} paragrafer · Oppdatert 2026</p>
+    </div>
+    <div class="lovh-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="lovhSearch" placeholder="Søk i {lov_display} …" autocomplete="off">
+    </div>
   </header>
 
-  <div class="lovx-search-wrap">
-    <svg class="lovx-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" class="lovx-search" id="lovxSearch" placeholder="Søk i {lov_display} …" autocomplete="off">
-  </div>
+  {viktig_block}
 
-  <div class="lovx-layout">
-    <aside class="lovx-side">
-      {innhold_block}
-      {mest_block}
-    </aside>
-    <div class="lovx-main" id="lovx-list">
-      {main_sections}
-      <p class="lovx-empty" id="lovxEmpty">Ingen paragrafer matcher søket.</p>
-    </div>
-  </div>
+  <section class="lovh-listsec" aria-label="Paragrafer">
+    <p class="lovh-label">{liste_label}</p>
+    {main_sections}
+    <p class="lovh-empty" id="lovhEmpty">Ingen paragrafer matcher søket.</p>
+  </section>
+
+  {rel_block}
+
+  <p class="lovh-attest">Juridisk informasjon, ikke rådgivning. Innholdet bygger på gjeldende norsk lov. Ved en konkret sak — kontakt advokat. <a href="{prefix}om/">Mer om Rettsregel &rarr;</a></p>
 </main>
-
-<div class="lovx-attest">
-  <p class="lovx-attest-inner">Juridisk informasjon, ikke rådgivning. Innholdet bygger på gjeldende norsk lov. Ved en konkret sak — kontakt advokat. <a href="{prefix}om/">Mer om Rettsregel &rarr;</a></p>
-</div>
 """
 
     return head + "\n" + nav + "\n" + BODY + "\n" + SCRIPT + "\n" + footer
 
+
 def render_lover_index():
-    """Lover-indeks — kompakt header, søk, intent-kategorier, progressive disclosure."""
+    """Lover-register — alfabetisk, adaptiv tetthet, navnesøk og kategorifilter."""
 
-    # Map lov_slug -> (display_name, kategori_slug, beskrivelse)
-    LOV_INFO = {
-        # Bolig
-        "husleieloven": ("Husleieloven", "bolig", "Leie av bolig og rettigheter ved leie."),
-        "avhendingslova": ("Avhendingslova", "bolig", "Kjøp og salg av bolig, hytte og tomt."),
-        "naboloven": ("Naboloven", "bolig", "Grenser, trær, støy og naboforhold."),
-        "bustadoppforingslova": ("Bustadoppføringslova", "bolig", "Bygging av ny bolig eller hytte."),
-        "tomtefesteloven": ("Tomtefesteloven", "bolig", "Leie av tomt til hus du eier — festeavgift og innløsning."),
-        # Kjøp og klage
-        "angrerettloven": ("Angrerettloven", "kjop-og-klage", "Angrerett ved netthandel og kjøp utenfor butikk."),
-        "kjopsloven": ("Kjøpsloven", "kjop-og-klage", "Kjøp og salg — privat og bedrift."),
-        "forbrukerkjopsloven": ("Forbrukerkjøpsloven", "kjop-og-klage", "Kjøp som forbruker — strengeste forbrukervern."),
-        # Arbeid
-        "arbeidsmiljoloven": ("Arbeidsmiljøloven", "arbeid", "Rettigheter på jobben — arbeidstid, oppsigelse, permisjon og varsling."),
-        "ferieloven": ("Ferieloven", "arbeid", "Ferie, feriepenger og når du har rett til fri."),
-        # Arv og familie
-        "barnelova": ("Barnelova", "arv-og-familie", "Foreldreansvar, fast bosted, samvær og farskap."),
-        "arveloven": ("Arveloven", "arv-og-familie", "Arv, testament og pliktdel."),
-        "navneloven": ("Navneloven", "arv-og-famille", "Navnevalg og navneendring."),
-        "ekteskapsloven": ("Ekteskapsloven", "arv-og-familie", "Vilkår for ekteskap, vigsling og ugyldighet."),
-        # Erstatning
-        "voldserstatningsloven": ("Voldserstatningsloven", "erstatning", "Erstatning fra staten ved vold og seksuallovbrudd."),
-        "pasientskadeloven": ("Pasientskadeloven", "erstatning", "Erstatning ved skade i helsevesenet."),
-        "yrkesskadeforsikringsloven": ("Yrkesskadeforsikringsloven", "erstatning", "Erstatning ved skade eller sykdom påført i arbeid."),
-        # Økonomi og gjeld
-        "inkassoloven": ("Inkassoloven", "gjeld", "Inkasso, inkassovarsel, gebyrer og dine rettigheter som skyldner."),
-        "foreldelsesloven": ("Foreldelsesloven", "gjeld", "Når et krav blir foreldet — frister for gjeld og andre krav."),
-        # Eiendom
-        "oreigningslova": ("Oreigningslova", "eiendom", "Ekspropriasjon — når det offentlige kan ta eiendom mot erstatning."),
-        "eierseksjonsloven": ("Eierseksjonsloven", "bolig", "Eierseksjoner — sameie, felleskostnader og vedtak på årsmøtet."),
-        "burettslagslova": ("Burettslagslova", "bolig", "Borettslag — andeler, borett, fellesgjeld og generalforsamling."),
-        # Utdanning
-        "universitets-og-hoyskoleloven": ("Universitets- og høyskoleloven", "utdanning", "Rettigheter som student — eksamen, klage og utestenging."),
-        # Forvaltning
-        "forvaltningsloven": ("Forvaltningsloven", "forvaltning", "Dine rettigheter i møte med det offentlige — vedtak, innsyn og klage."),
-    }
-
-    # All categories — order matters. Empty ones will be excluded from nav and sections.
-    KATEGORIER = [
-        ("bolig", "Bolig"),
-        ("eiendom", "Eiendom"),
-        ("kjop-og-klage", "Kjøp og klage"),
+    KATS = [
+        ("bolig", "Bolig og eiendom"),
         ("arbeid", "Arbeid"),
-        ("utdanning", "Utdanning"),
-        ("arv-og-familie", "Arv og familie"),
+        ("kjop", "Kjøp og klage"),
+        ("arv", "Arv og familie"),
         ("erstatning", "Erstatning"),
-        ("gjeld", "Gjeld"),
-        ("selskap", "Selskap"),
-        ("personvern", "Personvern"),
-        ("okonomi-og-skatt", "Økonomi og skatt"),
-        ("straff-og-politi", "Straff og politi"),
-        ("forvaltning", "Forvaltning"),
-        ("helse", "Helse"),
+        ("gjeld", "Gjeld og økonomi"),
+        ("offentlig", "Det offentlige"),
     ]
 
-    # Count paragrafer per lov
+    # slug -> (display, kategori, kort beskrivelse)
+    LOV_INFO = {
+        "husleieloven": ("Husleieloven", "bolig", "Leie av bolig — depositum, oppsigelse og vedlikehold"),
+        "avhendingslova": ("Avhendingslova", "bolig", "Kjøp og salg av bolig — mangler og reklamasjon"),
+        "naboloven": ("Naboloven", "bolig", "Trær, støy, gjerder og naboforhold"),
+        "bustadoppforingslova": ("Bustadoppføringslova", "bolig", "Bygging av ny bolig eller hytte"),
+        "tomtefesteloven": ("Tomtefesteloven", "bolig", "Festetomt — festeavgift og innløsning"),
+        "eierseksjonsloven": ("Eierseksjonsloven", "bolig", "Sameie, felleskostnader og årsmøte"),
+        "burettslagslova": ("Burettslagslova", "bolig", "Borettslag — andeler, borett og fellesgjeld"),
+        "oreigningslova": ("Oreigningslova", "bolig", "Ekspropriasjon — når det offentlige tar eiendom"),
+        "arbeidsmiljoloven": ("Arbeidsmiljøloven", "arbeid", "Jobb — oppsigelse, arbeidstid og vern"),
+        "ferieloven": ("Ferieloven", "arbeid", "Ferie og feriepenger"),
+        "angrerettloven": ("Angrerettloven", "kjop", "Netthandel — 14 dagers angrerett"),
+        "kjopsloven": ("Kjøpsloven", "kjop", "Kjøp og salg mellom private og bedrifter"),
+        "forbrukerkjopsloven": ("Forbrukerkjøpsloven", "kjop", "Kjøp fra butikk — reklamasjon og heving"),
+        "barnelova": ("Barnelova", "arv", "Foreldreansvar, fast bosted og samvær"),
+        "arveloven": ("Arveloven", "arv", "Arv, pliktdel, testament og uskifte"),
+        "navneloven": ("Navneloven", "arv", "Navnevalg og navneendring"),
+        "ekteskapsloven": ("Ekteskapsloven", "arv", "Ekteskap, skilsmisse og deling"),
+        "voldserstatningsloven": ("Voldserstatningsloven", "erstatning", "Erstatning fra staten ved vold"),
+        "pasientskadeloven": ("Pasientskadeloven", "erstatning", "Erstatning ved skade i helsevesenet"),
+        "yrkesskadeforsikringsloven": ("Yrkesskadeforsikringsloven", "erstatning", "Skade eller sykdom påført i arbeid"),
+        "inkassoloven": ("Inkassoloven", "gjeld", "Inkasso, varsler og gebyrer"),
+        "foreldelsesloven": ("Foreldelsesloven", "gjeld", "Når krav blir foreldet — frister"),
+        "forvaltningsloven": ("Forvaltningsloven", "offentlig", "Dine rettigheter mot det offentlige — vedtak og klage"),
+        "universitets-og-hoyskoleloven": ("Universitets- og høyskoleloven", "offentlig", "Studierettigheter — eksamen, klage og utestenging"),
+    }
+
+    # Håndplukkede populære paragrafer per lov — kun de som finnes i dataene tas med,
+    # og tittelen hentes alltid fra paragrafdataene (aldri fra hukommelsen).
+    POPULAR = LOVER_POPULAR
+
+    # Verktøy-snarveier per lov (relative paths fra /lover/, alle verifisert mot repoet)
+    TOOLS = LOVER_TOOLS
+
     counts = {}
+    titles = {}
     for p in PARAGRAPHS:
         lov = p["lov"]
         counts[lov] = counts.get(lov, 0) + 1
+        titles[(lov, str(p["number"]))] = p.get("title", "")
 
-    # Group laws by category, only including those with paragraph content
-    by_kat = {}
-    for slug, (display, kat, desc) in LOV_INFO.items():
-        antall = counts.get(slug, 0)
-        if antall == 0:
-            continue
-        by_kat.setdefault(kat, []).append((slug, display, desc, antall))
+    def ascii_variant(s):
+        return (s.lower().replace("ø", "o").replace("å", "a").replace("æ", "ae"))
 
-    total_lover = sum(len(v) for v in by_kat.values())
+    def short(t, lim=34):
+        t = (t or "").strip().rstrip(".?!")
+        return t if len(t) <= lim else t[:lim - 1].rstrip() + "…"
+
+    aktive = [(slug, info) for slug, info in LOV_INFO.items() if counts.get(slug, 0) > 0]
+    aktive.sort(key=lambda x: x[1][0].lower())
+    kat_counts = {}
+    for slug, (d, kat, desc) in aktive:
+        kat_counts[kat] = kat_counts.get(kat, 0) + 1
+
+    total_lover = len(aktive)
     total_paragrafer = sum(counts.values())
-    VISIBLE = 8
 
-    # Build category nav — only categories with content + "Alle"
-    active_kategorier = [(s, t) for s, t in KATEGORIER if s in by_kat]
-    nav_items = ""
-    for slug, tittel in active_kategorier:
-        nav_items += f'    <a href="#{slug}" class="tk-cat" data-cat="{slug}">{tittel}</a>\n'
-    nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle lover</a>\n'
+    sidebar = ""
+    sidebar += f'      <button type="button" class="lov-kat lov-kat-active" data-kat="alle">Alle lover <span>({total_lover})</span></button>\n'
+    for kslug, ktittel in KATS:
+        n = kat_counts.get(kslug, 0)
+        if n == 0:
+            continue
+        sidebar += f'      <button type="button" class="lov-kat" data-kat="{kslug}">{ktittel} <span>({n})</span></button>\n'
 
-    # Build sections
-    sections = ""
-    for slug, tittel in active_kategorier:
-        lover_i_kat = by_kat[slug]
-        collapsed_attr = ' data-collapsed' if len(lover_i_kat) > VISIBLE else ''
-        rows = ""
-        for i, (lov_slug, display, desc, antall) in enumerate(lover_i_kat):
-            extra_cls = ' tk-row-extra' if i >= VISIBLE else ''
-            meta_label = "paragraf" if antall == 1 else "paragrafer"
-            search_data = f"{display.lower()} {desc.lower()}"
-            rows += (
-                f'      <a href="{lov_slug}/" class="tk-row tk-row-with-meta{extra_cls}" data-search="{search_data}">\n'
-                f'        <span class="tk-row-name">{display}</span>\n'
-                f'        <span class="tk-row-desc">{desc}</span>\n'
-                f'        <span class="tk-row-meta">{antall} {meta_label}</span>\n'
-                f'        <span class="tk-row-arrow" aria-hidden="true">→</span>\n'
-                f'      </a>\n'
-            )
-        show_all = ""
-        if len(lover_i_kat) > VISIBLE:
-            show_all = (
-                f'    <a href="#" class="tk-show-all" data-section="{slug}">'
-                f'Vis alle {len(lover_i_kat)} lover i {tittel} '
-                f'<span class="tk-show-all-arrow" aria-hidden="true">→</span></a>\n'
-            )
-        sections += (
-            f'  <section class="tk-section" id="{slug}"{collapsed_attr}>\n'
-            f'    <h2 class="tk-section-title">{tittel}</h2>\n'
-            f'    <div class="tk-grid">\n'
-            f'{rows}'
-            f'    </div>\n'
-            f'{show_all}'
-            f'  </section>\n\n'
+    rows = ""
+    for slug, (display, kat, desc) in aktive:
+        antall = counts[slug]
+        data_k = f"{display.lower()} {ascii_variant(display)}"
+        pop_links = []
+        for num in POPULAR.get(slug, []):
+            t = titles.get((slug, num))
+            if t:
+                pop_links.append(f'<a href="{slug}/{num}/">§ {num} {short(t)}</a>')
+        tool = TOOLS.get(slug)
+        if tool:
+            pop_links.append(f'<a href="{tool[0]}" class="lov-row-tool">⚒ {tool[1]}</a>')
+        detail = ""
+        if pop_links:
+            detail = f'    <p class="lov-row-pop">{" · ".join(pop_links)}</p>\n'
+        rows += (
+            f'  <div class="lov-row" data-kat="{kat}" data-k="{data_k}">\n'
+            f'    <a href="{slug}/" class="lov-row-top">\n'
+            f'      <span class="lov-row-name">{display}</span>\n'
+            f'      <span class="lov-row-tag">{desc}</span>\n'
+            f'      <span class="lov-row-meta">{antall} §§</span>\n'
+            f'    </a>\n'
+            f'{detail}'
+            f'  </div>\n'
         )
 
-    chat = chat_widget()
-
-    return f"""{shared_head(
+    head = shared_head(
         'Lover — alle norske lover forklart på vanlig norsk | Rettsregel',
         f'{total_lover} norske lover, {total_paragrafer} paragrafer forklart på vanlig norsk. Husleieloven, arveloven, kjøpsloven og flere.',
         depth=1, canonical_path='/lover/'
-    )}
-{site_nav(depth=1, active='lover')}
+    )
+    nav = site_nav(depth=1, active='lover')
+    footer = site_footer(depth=1)
 
-<main class="tk-page">
+    style = """<style>
+.lov-page { max-width: 1100px; margin: 0 auto; padding: 0 32px 80px; }
+.lov-head { padding: 36px 0 4px; }
+.lov-head h1 {
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.024em;
+  color: var(--ink); margin: 0;
+}
+.lov-head p { font-family: var(--sans); font-size: 14px; color: var(--ink-mute); margin: 8px 0 0; }
+.lov-searchbar {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--bg); padding: 16px 0 14px;
+}
+.lov-searchbar-inner {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-card); border: 1px solid var(--line-strong);
+  border-radius: 12px; padding: 0 16px; height: 46px;
+}
+.lov-searchbar-inner svg { color: var(--ink-mute); flex: none; }
+#lov-sok {
+  flex: 1; border: none; background: transparent; outline: none;
+  font-family: var(--sans); font-size: 14.5px; color: var(--ink); height: 100%;
+}
+#lov-sok::placeholder { color: var(--ink-mute); }
+#lov-antall { font-family: var(--sans); font-size: 12px; color: var(--ink-mute); white-space: nowrap; }
+.lov-layout { display: grid; grid-template-columns: 190px 1fr; gap: 36px; align-items: start; }
+.lov-sidebar { position: sticky; top: 78px; }
+.lov-sidebar-label {
+  font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.1em; color: var(--ink-mute); margin: 6px 0 12px;
+}
+.lov-kat {
+  display: block; width: 100%; text-align: left;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--sans); font-size: 13.5px; color: var(--ink);
+  padding: 6px 0; transition: color .15s ease;
+}
+.lov-kat span { color: var(--ink-mute); font-size: 12px; }
+.lov-kat:hover { color: var(--accent); }
+.lov-kat-active { color: var(--accent); font-weight: 600; }
+.lov-register { border-top: 1px solid var(--line); }
+.lov-row { border-bottom: 1px solid var(--line); }
+.lov-row-top {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 13px 2px; text-decoration: none;
+}
+.lov-row-name {
+  font-family: var(--serif); font-weight: 500; font-size: 16.5px;
+  letter-spacing: -0.01em; color: var(--ink); white-space: nowrap;
+  transition: color .15s ease;
+}
+.lov-row-top:hover .lov-row-name { color: var(--accent); }
+.lov-row-tag {
+  flex: 1; font-family: var(--sans); font-size: 13px; color: var(--ink-mute);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.lov-row-meta { font-family: var(--sans); font-size: 12px; color: var(--ink-mute); white-space: nowrap; }
+.lov-row-pop {
+  font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute);
+  margin: 0; padding: 0 2px 13px; line-height: 1.6;
+}
+.lov-row-pop a { color: var(--accent); text-decoration: none; }
+.lov-row-pop a:hover { color: var(--accent-deep); }
+.lov-row-pop a.lov-row-tool { color: var(--kat-bolig); }
+.lov-register.kompakt .lov-row-pop { display: none; }
+.lov-register.kompakt .lov-row-top { padding: 10px 2px; }
+.lov-register.kompakt .lov-row-name { font-size: 15px; }
+.lov-tomt {
+  display: none; margin-top: 18px;
+  background: rgba(192,74,38,.07); border: 1px solid var(--accent-soft);
+  border-radius: 14px; padding: 20px 24px;
+}
+.lov-tomt-title { font-family: var(--serif); font-weight: 500; font-size: 17px; color: var(--ink); margin: 0 0 5px; }
+.lov-tomt p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft); margin: 0; line-height: 1.6; }
+.lov-tomt a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.lov-tomt a:hover { color: var(--accent-deep); }
+@media (max-width: 860px) {
+  .lov-page { padding: 0 20px 64px; }
+  .lov-layout { grid-template-columns: 1fr; gap: 18px; }
+  .lov-sidebar { position: static; display: flex; gap: 6px; flex-wrap: wrap; }
+  .lov-sidebar-label { display: none; }
+  .lov-kat {
+    width: auto; border: 1px solid var(--line-strong); border-radius: 16px;
+    padding: 5px 13px; font-size: 12.5px;
+  }
+  .lov-kat-active { border-color: var(--accent); }
+  .lov-row-tag { display: none; }
+}
+</style>
+"""
 
-  <section class="tk-hero-compact" id="alle">
+    body = f"""
+<main class="lov-page">
+
+  <div class="lov-head">
     <h1>Finn loven som gjelder deg.</h1>
-    <p class="tk-hero-compact-lead">Norske lover forklart på vanlig språk.</p>
-  </section>
-
-  <div class="tk-search-wrap">
-    <span class="tk-search-icon" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-    </span>
-    <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter lov, paragraf eller situasjon …" aria-label="Søk i lover">
-    <span class="tk-search-hint">Filtreres mens du skriver</span>
+    <p>{total_lover} lover · {total_paragrafer} paragrafer forklart på vanlig norsk — flere kommer.</p>
   </div>
 
-  <nav class="tk-cat-bar" aria-label="Kategorier">
-{nav_items}  </nav>
+  <div class="lov-searchbar">
+    <div class="lov-searchbar-inner">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="lov-sok" placeholder="Finn en lov: «husleieloven», «arveloven» …" aria-label="Finn en lov" autocomplete="off">
+      <span id="lov-antall"></span>
+    </div>
+  </div>
 
-{sections}
+  <div class="lov-layout">
+    <aside class="lov-sidebar" aria-label="Filtrer etter kategori">
+      <p class="lov-sidebar-label">FILTRER</p>
+{sidebar}    </aside>
+
+    <div>
+      <div class="lov-register kompakt" id="lov-register">
+{rows}      </div>
+      <div class="lov-tomt" id="lov-tomt">
+        <p class="lov-tomt-title">Vi dekker ikke denne loven ennå</p>
+        <p><a href="../kontakt/">Foreslå den</a> — eller <a href="../advokatvurdering/">beskriv saken din</a> og få en gratis førstevurdering.</p>
+      </div>
+    </div>
+  </div>
 
 </main>
+"""
 
-{site_footer(depth=1)}
-
-<script>
-(function() {{
-  document.querySelectorAll('.tk-show-all').forEach(function(link) {{
-    link.addEventListener('click', function(e) {{
-      e.preventDefault();
-      var section = link.closest('.tk-section');
-      if (section) section.removeAttribute('data-collapsed');
-    }});
-  }});
-  var cats = document.querySelectorAll('.tk-cat');
-  var sections = document.querySelectorAll('.tk-section');
-  function setActive(slug) {{
-    cats.forEach(function(c) {{
-      if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
-      else c.classList.remove('is-active');
-    }});
-  }}
-  if ('IntersectionObserver' in window && cats.length > 0 && sections.length > 0) {{
-    var observer = new IntersectionObserver(function(entries) {{
-      var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
-      if (visible.length === 0) return;
-      visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
-      setActive(visible[0].target.id);
-    }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
-    sections.forEach(function(s) {{ observer.observe(s); }});
-  }}
-  var input = document.getElementById('tk-search');
-  if (!input) return;
-  var allRows = Array.from(document.querySelectorAll('.tk-row'));
-  var allSections = Array.from(document.querySelectorAll('.tk-section'));
-  var allShowAll = Array.from(document.querySelectorAll('.tk-show-all'));
-  function applyFilter() {{
-    var q = input.value.trim().toLowerCase();
-    if (q === '') {{
-      allRows.forEach(function(r) {{ r.removeAttribute('data-hidden-by-search'); }});
-      allSections.forEach(function(s) {{
-        s.removeAttribute('data-hidden-by-search');
-        var rows = s.querySelectorAll('.tk-row');
-        if (rows.length > 8) s.setAttribute('data-collapsed', '');
-      }});
-      allShowAll.forEach(function(a) {{ a.style.display = ''; }});
-      return;
-    }}
-    allSections.forEach(function(section) {{
-      var rows = section.querySelectorAll('.tk-row');
-      var anyVisible = false;
-      rows.forEach(function(r) {{
-        var hay = r.getAttribute('data-search') || '';
-        if (hay.indexOf(q) === -1) r.setAttribute('data-hidden-by-search', '');
-        else {{ r.removeAttribute('data-hidden-by-search'); anyVisible = true; }}
-      }});
-      section.removeAttribute('data-collapsed');
-      if (anyVisible) section.removeAttribute('data-hidden-by-search');
-      else section.setAttribute('data-hidden-by-search', '');
-    }});
-    allShowAll.forEach(function(a) {{ a.style.display = 'none'; }});
-  }}
-  input.addEventListener('input', applyFilter);
-}})();
+    script = """<script>
+(function() {
+  var input = document.getElementById('lov-sok');
+  var register = document.getElementById('lov-register');
+  var antall = document.getElementById('lov-antall');
+  var tomt = document.getElementById('lov-tomt');
+  var rows = Array.prototype.slice.call(register.querySelectorAll('.lov-row'));
+  var kats = Array.prototype.slice.call(document.querySelectorAll('.lov-kat'));
+  var aktivKat = 'alle';
+  var EXPAND_AT = 6;
+  function oppdater() {
+    var q = (input.value || '').trim().toLowerCase();
+    var vist = 0;
+    rows.forEach(function(r) {
+      var hitQ = !q || (r.getAttribute('data-k') || '').indexOf(q) !== -1;
+      var hitK = aktivKat === 'alle' || r.getAttribute('data-kat') === aktivKat;
+      var vis = hitQ && hitK;
+      r.style.display = vis ? '' : 'none';
+      if (vis) vist++;
+    });
+    antall.textContent = 'Viser ' + vist + ' av ' + rows.length;
+    tomt.style.display = vist === 0 ? 'block' : 'none';
+    if (vist > 0 && vist <= EXPAND_AT) {
+      register.classList.remove('kompakt');
+    } else {
+      register.classList.add('kompakt');
+    }
+  }
+  input.addEventListener('input', oppdater);
+  kats.forEach(function(k) {
+    k.addEventListener('click', function() {
+      aktivKat = k.getAttribute('data-kat');
+      kats.forEach(function(x) { x.classList.remove('lov-kat-active'); });
+      k.classList.add('lov-kat-active');
+      oppdater();
+    });
+  });
+  oppdater();
+})();
 </script>
+"""
 
-{chat}
-</body>
-</html>"""
+    return head + nav + "\n" + style + body + footer.replace("</body>\n</html>", script + "</body>\n</html>")
 
 
 def render_kontakt():
@@ -3221,8 +3444,12 @@ def render_personvern():
 
 
 def render_om():
-    """Om-side v5 — Jony Ive minimal, site-skala."""
-    chat = chat_widget()
+    """Om-side — fortellende åpning, dynamiske nøkkeltall, kort produksjonsbeskrivelse."""
+    n_paragrafer = len(PARAGRAPHS)
+    n_lover = len(set(p["lov"] for p in PARAGRAPHS))
+    n_sporsmal = len(SPORSMAL)
+    n_verktoy = sum(len(v) for _, _, v in TJENESTER_KATEGORIER)
+    fmt = lambda n: f"{n:,}".replace(",", "\u00a0")
 
     return f"""{shared_head(
         'Om Rettsregel',
@@ -3233,92 +3460,115 @@ def render_om():
 
 <style>
 .om-page {{
-  max-width: 680px; margin: 0 auto;
-  padding: 120px 32px 128px;
+  max-width: 760px; margin: 0 auto;
+  padding: 88px 32px 104px;
   text-align: center;
 }}
-
-/* Hero — site-skala, samme som tk-hero-compact */
 .om-hero h1 {{
   font-family: var(--serif);
   font-weight: 500;
   font-size: clamp(24px, 3vw, 32px);
-  line-height: 1.14;
+  line-height: 1.22;
   letter-spacing: -0.024em;
   color: var(--ink);
   margin: 0 auto;
-  max-width: 460px;
+  max-width: 480px;
 }}
-.om-hero h1 em {{ font-style: italic; font-weight: 500; }}
-
-/* Stille statements — descending hierarki via størrelse + farge */
-.om-statements {{ margin-top: 112px; }}
-.om-statement {{
-  font-family: var(--serif);
-  font-size: 18px;
-  line-height: 1.55;
+.om-lede {{
+  font-family: var(--sans);
+  font-size: 15.5px; line-height: 1.7;
   color: var(--ink-soft);
-  margin: 0 auto;
-  max-width: 420px;
+  margin: 22px auto 0; max-width: 440px;
 }}
-.om-statement + .om-statement {{ margin-top: 60px; }}
-
-/* Foten — stille kontakt */
-.om-foot {{ margin-top: 112px; }}
-.om-foot-rule {{
-  width: 40px; height: 1px;
-  background: var(--ink-mute);
-  opacity: 0.4;
-  margin: 0 auto 44px;
+.om-stats {{
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 12px; max-width: 640px;
+  margin: 64px auto 0;
 }}
+.om-stat {{ border-radius: 14px; padding: 22px 14px 20px; }}
+.om-stat-num {{
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(24px, 2.6vw, 30px); line-height: 1;
+  letter-spacing: -0.02em;
+}}
+.om-stat-label {{
+  font-family: var(--sans); font-size: 12px; font-weight: 500;
+  margin-top: 7px;
+}}
+.om-stat-teal {{ background: #DFF0E9; }}
+.om-stat-teal .om-stat-num {{ color: #085041; }}
+.om-stat-teal .om-stat-label {{ color: #0E5C46; }}
+.om-stat-blue {{ background: #E3EEF9; }}
+.om-stat-blue .om-stat-num {{ color: #0C447C; }}
+.om-stat-blue .om-stat-label {{ color: #15528F; }}
+.om-stat-amber {{ background: #F8ECD6; }}
+.om-stat-amber .om-stat-num {{ color: #633806; }}
+.om-stat-amber .om-stat-label {{ color: #7A4A0B; }}
+.om-stat-purple {{ background: #EBE9F8; }}
+.om-stat-purple .om-stat-num {{ color: #3C3489; }}
+.om-stat-purple .om-stat-label {{ color: #4D44A8; }}
+.om-how {{ margin-top: 64px; }}
+.om-how-rule {{
+  width: 36px; height: 1px;
+  background: var(--ink-mute); opacity: 0.4;
+  margin: 0 auto 30px;
+}}
+.om-how p {{
+  font-family: var(--sans);
+  font-size: 14.5px; line-height: 1.8;
+  color: var(--ink-soft);
+  margin: 0 auto; max-width: 460px;
+}}
+.om-foot {{ margin-top: 72px; }}
 .om-foot p {{
-  font-family: var(--serif);
-  font-size: 15px;
-  line-height: 1.9;
-  color: var(--ink-mute);
-  margin: 0;
+  font-family: var(--sans);
+  font-size: 13.5px; line-height: 1.9;
+  color: var(--ink-mute); margin: 0;
 }}
 .om-foot a {{
-  color: var(--accent);
-  text-decoration: none;
+  color: var(--accent); text-decoration: none;
   border-bottom: 1px solid currentColor;
   transition: color 0.15s ease;
 }}
 .om-foot a:hover {{ color: var(--accent-deep); }}
 
 @media (max-width: 720px) {{
-  .om-page {{ padding: 80px 22px 88px; }}
-  .om-statements {{ margin-top: 80px; }}
-  .om-statement + .om-statement {{ margin-top: 48px; }}
-  .om-foot {{ margin-top: 80px; }}
+  .om-page {{ padding: 60px 22px 80px; }}
+  .om-stats {{ grid-template-columns: 1fr 1fr; margin-top: 48px; }}
+  .om-how {{ margin-top: 48px; }}
+  .om-foot {{ margin-top: 56px; }}
 }}
 </style>
 
 <main class="om-page">
 
   <section class="om-hero">
-    <h1>Norske lover, oversatt til <em>vanlig norsk</em>.</h1>
+    <h1>Loven gjelder for alle.<br>Den er skrevet for jurister.</h1>
+    <p class="om-lede">Rettsregel oversetter norsk lov til vanlig norsk — paragraf for paragraf, spørsmål for spørsmål. Gratis og åpent for alle.</p>
   </section>
 
-  <div class="om-statements">
-    <p class="om-statement">Loven gjelder for alle. Den er skrevet for jurister.</p>
-    <p class="om-statement">Vi lager forståelig juridisk innhold — forklaringer av lover, ferdige kontrakter og maler, og svar på vanlige spørsmål.</p>
-    <p class="om-statement">Alt er bygget med moderne språkteknologi og dyp tekstanalyse, som gjør tungt lovspråk om til klar norsk.</p>
+  <section class="om-stats" aria-label="Nøkkeltall">
+    <div class="om-stat om-stat-teal"><div class="om-stat-num">{n_lover}</div><div class="om-stat-label">lover</div></div>
+    <div class="om-stat om-stat-blue"><div class="om-stat-num">{fmt(n_paragrafer)}</div><div class="om-stat-label">paragrafer forklart</div></div>
+    <div class="om-stat om-stat-amber"><div class="om-stat-num">{fmt(n_sporsmal)}</div><div class="om-stat-label">spørsmål besvart</div></div>
+    <div class="om-stat om-stat-purple"><div class="om-stat-num">{n_verktoy}</div><div class="om-stat-label">verktøy og maler</div></div>
+  </section>
+
+  <div class="om-how">
+    <div class="om-how-rule" aria-hidden="true"></div>
+    <p>Alt innhold utarbeides med avansert språkteknologi og faglig kvalitetssikring. Vi forklarer hva loven sier — vi gir ikke råd om din konkrete sak.</p>
   </div>
 
   <div class="om-foot" id="kontakt">
-    <div class="om-foot-rule" aria-hidden="true"></div>
     <p>
-      <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a><br>
-      Walrus AS
+      Rettsregel drives av Walrus AS<br>
+      <a href="mailto:rettsregel@gmail.com">rettsregel@gmail.com</a>
     </p>
   </div>
 
 </main>
 
 {site_footer(depth=1)}
-
-{chat}
 </body>
 </html>"""
 
@@ -3446,211 +3696,458 @@ def render_sporsmal_page(s):
 </html>"""
 
 
-def render_sporsmal_hub():
-    """Spørsmål-hub — kompakt header, søk, intent-kategorier, progressive disclosure."""
+# --- Spørsmål: intent-kategorier delt mellom hub og undersider ---
+SPORSMAL_KAT_MAP = {
+    "bolig": "bolig-og-leie",
+    "forbruk": "kjop-og-klage",
+    "arbeid": "arbeid-og-oppsigelse",
+    "familie": "familie-og-samliv",
+    "arv": "arv-og-testament",
+    "gjeld": "penger-og-gjeld",
+    "bil": "bil-og-kjoretoy",
+    "straff": "straff-og-kriminalitet",
+    "forvaltning": "det-offentlige",
+    "nabo": "nabo-og-eiendom",
+    "erstatning": "erstatning-og-skade",
+    "utdanning": "utdanning-og-studier",
+    "grunnlov": "grunnlov-og-rettigheter",
+    "hoyesterettsdommer": "kjente-dommer",
+    "personvern": "personvern-og-data",
+    "helse": "helse-og-velferd",
+    "velferd": "helse-og-velferd",
+    "innvandring": "innvandring-og-statsborgerskap",
+    "skatt": "skatt-og-avgift",
+    "tjenester": "selskap",
+}
 
-    # Map current kategori -> new intent-based category
-    # Bolig items also split: "nabo" in title -> nabo-og-eiendom
-    KAT_MAP_BOLIG_DEFAULT = "bolig-og-leie"
-    KAT_MAP = {
-        "bolig": KAT_MAP_BOLIG_DEFAULT,  # split below
-        "forbruk": "kjop-og-klage",
-        "arbeid": "arbeid-og-oppsigelse",
-        "familie": "familie-og-samliv",
-        "arv": "arv-og-testament",
-        "gjeld": "penger-og-gjeld",
-        "bil": "bil-og-kjoretoy",
-        "straff": "straff-og-kriminalitet",
-        "forvaltning": "det-offentlige",
-        "nabo": "nabo-og-eiendom",
-        "erstatning": "erstatning-og-skade",
-        "utdanning": "utdanning-og-studier",
-        "grunnlov": "grunnlov-og-rettigheter",
-        "hoyesterettsdommer": "kjente-dommer",
-        "personvern": "personvern-og-data",
-        "helse": "helse-og-velferd",
-        "velferd": "helse-og-velferd",
-        "innvandring": "innvandring-og-statsborgerskap",
-        "skatt": "skatt-og-avgift",
-        "tjenester": "selskap",
-    }
+SPORSMAL_KATEGORIER = [
+    ("bolig-og-leie", "Bolig og leie"),
+    ("kjop-og-klage", "Kjøp og klage"),
+    ("arbeid-og-oppsigelse", "Arbeid og oppsigelse"),
+    ("familie-og-samliv", "Familie og samliv"),
+    ("arv-og-testament", "Arv og testament"),
+    ("nabo-og-eiendom", "Nabo og eiendom"),
+    ("erstatning-og-skade", "Erstatning og skade"),
+    ("penger-og-gjeld", "Penger og gjeld"),
+    ("bil-og-kjoretoy", "Bil og kjøretøy"),
+    ("straff-og-kriminalitet", "Straff og kriminalitet"),
+    ("det-offentlige", "Det offentlige"),
+    ("utdanning-og-studier", "Utdanning og studier"),
+    ("grunnlov-og-rettigheter", "Grunnlov og rettigheter"),
+    ("kjente-dommer", "Kjente dommer"),
+    ("personvern-og-data", "Personvern og data"),
+    ("helse-og-velferd", "Helse og velferd"),
+    ("innvandring-og-statsborgerskap", "Innvandring og statsborgerskap"),
+    ("skatt-og-avgift", "Skatt og avgift"),
+    ("selskap", "Selskap og næring"),
+]
 
-    KATEGORIER = [
-        ("bolig-og-leie", "Bolig og leie"),
-        ("kjop-og-klage", "Kjøp og klage"),
-        ("arbeid-og-oppsigelse", "Arbeid og oppsigelse"),
-        ("familie-og-samliv", "Familie og samliv"),
-        ("arv-og-testament", "Arv og testament"),
-        ("penger-og-gjeld", "Penger og gjeld"),
-        ("nabo-og-eiendom", "Nabo og eiendom"),
-        ("bil-og-kjoretoy", "Bil og kjøretøy"),
-        ("straff-og-kriminalitet", "Straff og kriminalitet"),
-        ("det-offentlige", "Det offentlige"),
-        ("erstatning-og-skade", "Erstatning og skade"),
-        ("utdanning-og-studier", "Utdanning"),
-        ("grunnlov-og-rettigheter", "Grunnlov og rettigheter"),
-        ("kjente-dommer", "Kjente dommer"),
-        ("personvern-og-data", "Personvern og data"),
-        ("helse-og-velferd", "Helse og velferd"),
-        ("innvandring-og-statsborgerskap", "Innvandring og statsborgerskap"),
-        ("skatt-og-avgift", "Skatt og avgift"),
-    ]
+# Fargepalett som roterer over kategoriene (lys flate, mørk tekst)
+SPORSMAL_KAT_FARGER = [
+    ("#DFF0E9", "#085041", "#0E5C46"),
+    ("#E3EEF9", "#0C447C", "#15528F"),
+    ("#F8ECD6", "#633806", "#7A4A0B"),
+    ("#EBE9F8", "#3C3489", "#4D44A8"),
+    ("#F6E4EB", "#722440", "#8C2F4E"),
+    ("#ECEAE2", "#444441", "#5F5E5A"),
+]
 
-    # Group sporsmal under new categories
+
+def sporsmal_intent_kat(s):
+    """Intent-kategori for et spørsmål. Bolig-spørsmål om naboforhold rutes til nabo-og-eiendom."""
+    kat = s.get("kategori", "")
+    if kat == "bolig":
+        t = s.get("title", "").lower()
+        if "nabo" in t or "tomtegrense" in t or "gjerde" in t:
+            return "nabo-og-eiendom"
+    return SPORSMAL_KAT_MAP.get(kat, "annet")
+
+
+def sporsmal_by_intent():
+    """Grupperer SPORSMAL etter intent-kategori, i SPORSMAL_KATEGORIER-rekkefølge."""
     by_kat = {}
     for s in SPORSMAL:
-        old_kat = s.get("kategori", "annet")
-        new_kat = KAT_MAP.get(old_kat, KAT_MAP_BOLIG_DEFAULT)
-        # Heuristic: bolig items with "nabo" in title -> nabo-og-eiendom
-        if old_kat == "bolig" and "nabo" in s.get("title", "").lower():
-            new_kat = "nabo-og-eiendom"
-        by_kat.setdefault(new_kat, []).append(s)
+        by_kat.setdefault(sporsmal_intent_kat(s), []).append(s)
+    return [(slug, tittel, by_kat[slug]) for slug, tittel in SPORSMAL_KATEGORIER if by_kat.get(slug)]
 
-    total = sum(len(v) for v in by_kat.values())
-    VISIBLE = 8
 
-    active_kategorier = [(s, t) for s, t in KATEGORIER if s in by_kat]
-    nav_items = ""
-    for slug, tittel in active_kategorier:
-        nav_items += f'    <a href="#{slug}" class="tk-cat" data-cat="{slug}">{tittel}</a>\n'
-    nav_items += '    <a href="#alle" class="tk-cat" data-cat="alle">Alle spørsmål</a>\n'
+def render_sporsmal_hub():
+    """Spørsmål-hub — søkemotor med kryss-type live-resultater, kategorikort og vanlige situasjoner."""
+    grupper = sporsmal_by_intent()
+    total = len(SPORSMAL)
+    fmt = lambda x: f"{x:,}".replace(",", "\u00a0")
 
-    sections = ""
-    for slug, tittel in active_kategorier:
-        items = by_kat[slug]
-        collapsed_attr = ' data-collapsed' if len(items) > VISIBLE else ''
-        rows = ""
-        for i, s in enumerate(items):
-            extra_cls = ' tk-row-extra' if i >= VISIBLE else ''
-            url = s.get("slug", "")
-            tittel_s = s.get("title", "")
-            desc = s.get("description", "")
-            search_data = f"{tittel_s.lower()} {desc.lower()}"
-            rows += (
-                f'      <a href="{url}/" class="tk-row{extra_cls}" data-search="{search_data}">\n'
-                f'        <span class="tk-row-name">{tittel_s}</span>\n'
-                f'        <span class="tk-row-desc">{desc}</span>\n'
-                f'        <span class="tk-row-arrow" aria-hidden="true">→</span>\n'
-                f'      </a>\n'
-            )
-        show_all = ""
-        if len(items) > VISIBLE:
-            show_all = (
-                f'    <a href="#" class="tk-show-all" data-section="{slug}">'
-                f'Vis alle {len(items)} spørsmål i {tittel} '
-                f'<span class="tk-show-all-arrow" aria-hidden="true">→</span></a>\n'
-            )
-        sections += (
-            f'  <section class="tk-section" id="{slug}"{collapsed_attr}>\n'
-            f'    <h2 class="tk-section-title">{tittel}</h2>\n'
-            f'    <div class="tk-grid">\n'
-            f'{rows}'
-            f'    </div>\n'
-            f'{show_all}'
-            f'  </section>\n\n'
+    kat_cards = ""
+    grupper_sortert = sorted(grupper, key=lambda g: -len(g[2]))
+    for i, (slug, tittel, items) in enumerate(grupper_sortert):
+        bg, fg, fg2 = SPORSMAL_KAT_FARGER[i % len(SPORSMAL_KAT_FARGER)]
+        kat_cards += (
+            f'<a class="sph-kat" style="background:{bg};" href="{slug}/">'
+            f'<span class="sph-kat-navn" style="color:{fg};">{tittel}</span>'
+            f'<span class="sph-kat-tall" style="color:{fg2};">{len(items)} spørsmål &rarr;</span></a>'
+        )
+    kat_cards += (
+        f'<a class="sph-kat sph-kat-alle" href="#" data-fokus="1">'
+        f'<span class="sph-kat-navn">Søk i alle</span>'
+        f'<span class="sph-kat-tall">{fmt(total)} spørsmål</span></a>'
+    )
+
+    # Vanlige situasjoner — kuraterte, verifiseres mot data ved bygging
+    SITUASJONER = [
+        "utleier-nekter-depositum",
+        "arbeidsgiver-vil-ikke-utbetale-lonn",
+        "bilen-har-skjult-feil",
+        "haandverker-leverte-ikke-som-avtalt",
+        "kjaeresten-flyttet-ut-hvem-eier-hva",
+        "inkassovarsel-ikke-bestilt",
+    ]
+    by_slug = {s["slug"]: s for s in SPORSMAL}
+    sit_rows = ""
+    for slug in SITUASJONER:
+        s = by_slug.get(slug)
+        if not s:
+            continue
+        sit_rows += (
+            f'<a class="sph-sit" href="{slug}/">'
+            f'<span class="sph-sit-tittel">{s["title"]}</span>'
+            f'<span class="sph-sit-pil" aria-hidden="true">&rarr;</span></a>'
         )
 
-    chat = chat_widget()
+    head = shared_head(
+        "Spørsmål og svar — vanlige juridiske spørsmål forklart | Rettsregel",
+        f"{total} juridiske spørsmål med konkrete svar på vanlig norsk. Bolig, arbeid, kjøp, arv, naboforhold og mer.",
+        depth=1, canonical_path="/sporsmal/")
+    nav = site_nav(depth=1, active="sporsmal")
+    footer = site_footer(depth=1)
 
-    return f"""{shared_head(
-        'Spørsmål og svar — vanlige juridiske spørsmål forklart | Rettsregel',
-        f'{total} spørsmål om norsk lov, med konkrete svar. Husleie, boligkjøp, naboforhold, arbeid og mer.',
-        depth=1, canonical_path='/sporsmal/'
-    )}
-{site_nav(depth=1, active='sporsmal')}
+    STYLE = """<style>
+.sph-page { max-width: 860px; margin: 0 auto; padding: 44px 32px 80px; }
+.sph-hero { text-align: center; margin-bottom: 26px; }
+.sph-hero h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 3.4vw, 36px); letter-spacing: -0.025em; color: var(--ink); margin: 0 0 20px; }
+.sph-sok { max-width: 560px; margin: 0 auto; }
+.sph-sok-felt {
+  display: flex; align-items: center; gap: 11px;
+  background: var(--bg-card); border: 1px solid var(--line-strong);
+  border-radius: 14px; padding: 0 18px; height: 52px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.sph-sok-felt:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(192,74,38,.1); }
+.sph-sok-felt svg { color: var(--ink-mute); flex: none; }
+#sph-input { flex: 1; border: none; background: transparent; outline: none; font-family: var(--sans); font-size: 15px; color: var(--ink); height: 100%; }
+#sph-input::placeholder { color: var(--ink-mute); }
+#sph-teller { font-family: var(--sans); font-size: 12px; color: var(--ink-mute); white-space: nowrap; }
+.sph-sok-hint { font-family: var(--sans); font-size: 11.5px; color: var(--ink-mute); margin: 8px 0 0; opacity: .8; }
 
-<main class="tk-page">
+.sph-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); margin: 0 0 10px; }
 
-  <section class="tk-hero-compact" id="alle">
+.sph-kats { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 9px; margin-bottom: 36px; }
+.sph-kat { display: block; text-decoration: none; border-radius: 12px; padding: 13px 14px; transition: transform .15s ease, box-shadow .15s ease; }
+.sph-kat:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(44,44,42,.08); }
+.sph-kat-navn { display: block; font-family: var(--sans); font-weight: 600; font-size: 13.5px; }
+.sph-kat-tall { display: block; font-family: var(--sans); font-size: 11.5px; margin-top: 3px; }
+.sph-kat-alle { background: var(--bg-card); border: 1px solid var(--line-strong); }
+.sph-kat-alle .sph-kat-navn { color: var(--accent); }
+.sph-kat-alle .sph-kat-tall { color: var(--ink-mute); }
+
+.sph-sits { border-top: 1px solid var(--line); margin-bottom: 40px; }
+.sph-sit { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 12px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.sph-sit-tittel { font-family: var(--serif); font-weight: 500; font-size: 15.5px; color: var(--ink); line-height: 1.35; transition: color .15s ease; }
+.sph-sit:hover .sph-sit-tittel { color: var(--accent); }
+.sph-sit-pil { font-family: var(--serif); color: var(--ink-mute); transition: color .18s, transform .22s; }
+.sph-sit:hover .sph-sit-pil { color: var(--accent); transform: translateX(5px); }
+
+#sph-res { display: none; }
+.sph-gruppe { border-top: 1px solid var(--line); margin-bottom: 22px; }
+.sph-treff { border-bottom: 1px solid var(--line); }
+.sph-treff-rad { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 11px 2px; cursor: pointer; text-decoration: none; }
+.sph-treff-tittel { font-family: var(--sans); font-size: 14px; color: var(--ink); line-height: 1.4; }
+.sph-treff-tittel mark { background: var(--accent-soft); color: var(--ink); border-radius: 3px; padding: 0 2px; }
+.sph-treff-meta { font-family: var(--sans); font-size: 11px; color: var(--ink-mute); white-space: nowrap; }
+.sph-treff-pil { color: var(--ink-mute); flex: none; font-size: 12px; transition: transform .2s ease; }
+.sph-treff.apen .sph-treff-pil { transform: rotate(180deg); }
+.sph-svar { display: none; padding: 2px 2px 14px; }
+.sph-treff.apen .sph-svar { display: block; }
+.sph-svar p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft); line-height: 1.65; margin: 0 0 8px; border-left: 2px solid var(--accent-soft); padding-left: 14px; }
+.sph-svar a { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; padding-left: 16px; }
+.sph-svar a:hover { color: var(--accent-deep); }
+
+.sph-bunn {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 18px; margin-top: 4px;
+}
+.sph-bunn span { font-family: var(--sans); font-size: 13px; color: var(--ink-soft); }
+.sph-bunn a { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+.sph-bunn a:hover { color: var(--accent-deep); }
+
+.sph-tomt {
+  background: rgba(192,74,38,.07); border: 1px solid var(--accent-soft);
+  border-radius: 14px; padding: 20px 24px;
+}
+.sph-tomt-tittel { font-family: var(--serif); font-weight: 500; font-size: 17px; color: var(--ink); margin: 0 0 5px; }
+.sph-tomt p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft); margin: 0; line-height: 1.6; }
+.sph-tomt a { color: var(--accent); font-weight: 600; text-decoration: none; }
+
+@media (max-width: 720px) {
+  .sph-page { padding: 30px 20px 60px; }
+  .sph-kats { grid-template-columns: 1fr 1fr; }
+}
+</style>"""
+
+    BODY = f"""{STYLE}
+<main class="sph-page">
+  <div class="sph-hero">
     <h1>Hva lurer du på?</h1>
-    <p class="tk-hero-compact-lead">Finn svar på juridiske spørsmål.</p>
-  </section>
-
-  <div class="tk-search-wrap">
-    <span class="tk-search-icon" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-    </span>
-    <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter spørsmål, situasjon eller tema …" aria-label="Søk i spørsmål">
-    <span class="tk-search-hint">Filtreres mens du skriver</span>
+    <div class="sph-sok">
+      <div class="sph-sok-felt">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        <input type="search" id="sph-input" placeholder="Beskriv problemet: «depositum», «oppsigelse», «arv» …" aria-label="Søk i spørsmål" autocomplete="off">
+        <span id="sph-teller">{fmt(total)} spørsmål</span>
+      </div>
+      <p class="sph-sok-hint">Søker samtidig i spørsmål, lovparagrafer og verktøy</p>
+    </div>
   </div>
 
-  <nav class="tk-cat-bar" aria-label="Kategorier">
-{nav_items}  </nav>
+  <div id="sph-null">
+    <section aria-label="Kategorier">
+      <p class="sph-label">Velg tema</p>
+      <div class="sph-kats">
+{kat_cards}      </div>
+    </section>
 
-{sections}
+    <section aria-label="Vanlige situasjoner">
+      <p class="sph-label">Vanlige situasjoner</p>
+      <div class="sph-sits">
+{sit_rows}      </div>
+    </section>
+  </div>
 
+  <div id="sph-res" aria-live="polite"></div>
+
+  <div class="sph-bunn">
+    <span>Fant du ikke svaret? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../advokatvurdering/">Få gratis vurdering &rarr;</a>
+  </div>
 </main>
+"""
 
-{site_footer(depth=1)}
-
-<script>
-(function() {{
-  document.querySelectorAll('.tk-show-all').forEach(function(link) {{
-    link.addEventListener('click', function(e) {{
-      e.preventDefault();
-      var section = link.closest('.tk-section');
-      if (section) section.removeAttribute('data-collapsed');
-    }});
-  }});
-  var cats = document.querySelectorAll('.tk-cat');
-  var sections = document.querySelectorAll('.tk-section');
-  function setActive(slug) {{
-    cats.forEach(function(c) {{
-      if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
-      else c.classList.remove('is-active');
-    }});
-  }}
-  if ('IntersectionObserver' in window && cats.length > 0 && sections.length > 0) {{
-    var observer = new IntersectionObserver(function(entries) {{
-      var visible = entries.filter(function(e) {{ return e.isIntersecting; }});
-      if (visible.length === 0) return;
-      visible.sort(function(a, b) {{ return a.target.offsetTop - b.target.offsetTop; }});
-      setActive(visible[0].target.id);
-    }}, {{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }});
-    sections.forEach(function(s) {{ observer.observe(s); }});
-  }}
-  var input = document.getElementById('tk-search');
+    SCRIPT = """<script>
+(function(){
+  var input = document.getElementById('sph-input');
+  var nullst = document.getElementById('sph-null');
+  var res = document.getElementById('sph-res');
+  var teller = document.getElementById('sph-teller');
   if (!input) return;
-  var allRows = Array.from(document.querySelectorAll('.tk-row'));
-  var allSections = Array.from(document.querySelectorAll('.tk-section'));
-  var allShowAll = Array.from(document.querySelectorAll('.tk-show-all'));
-  function applyFilter() {{
-    var q = input.value.trim().toLowerCase();
-    if (q === '') {{
-      allRows.forEach(function(r) {{ r.removeAttribute('data-hidden-by-search'); }});
-      allSections.forEach(function(s) {{
-        s.removeAttribute('data-hidden-by-search');
-        var rows = s.querySelectorAll('.tk-row');
-        if (rows.length > 8) s.setAttribute('data-collapsed', '');
-      }});
-      allShowAll.forEach(function(a) {{ a.style.display = ''; }});
-      return;
-    }}
-    allSections.forEach(function(section) {{
-      var rows = section.querySelectorAll('.tk-row');
-      var anyVisible = false;
-      rows.forEach(function(r) {{
-        var hay = r.getAttribute('data-search') || '';
-        if (hay.indexOf(q) === -1) r.setAttribute('data-hidden-by-search', '');
-        else {{ r.removeAttribute('data-hidden-by-search'); anyVisible = true; }}
-      }});
-      section.removeAttribute('data-collapsed');
-      if (anyVisible) section.removeAttribute('data-hidden-by-search');
-      else section.setAttribute('data-hidden-by-search', '');
-    }});
-    allShowAll.forEach(function(a) {{ a.style.display = 'none'; }});
-  }}
-  input.addEventListener('input', applyFilter);
-}})();
-</script>
+  var startTeller = teller.textContent;
+  var index = null;
+  var lastet = false;
+  function lastIndex(){
+    if (lastet) return;
+    lastet = true;
+    fetch('../paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){
+      index = d; render();
+    }).catch(function(){});
+  }
+  input.addEventListener('focus', lastIndex);
+  document.addEventListener('keydown', function(e){
+    if (e.key === '/' && document.activeElement !== input) { e.preventDefault(); input.focus(); }
+  });
+  var alleKort = document.querySelectorAll('.sph-kat[data-fokus]');
+  for (var i = 0; i < alleKort.length; i++) {
+    alleKort[i].addEventListener('click', function(e){ e.preventDefault(); input.focus(); });
+  }
+  function esc(t){ var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+  function hl(t, q){
+    var i = t.toLowerCase().indexOf(q);
+    if (i === -1) return esc(t);
+    return esc(t.slice(0,i)) + '<mark>' + esc(t.slice(i, i+q.length)) + '</mark>' + esc(t.slice(i+q.length));
+  }
+  var tid = null;
+  function planlegg(){ clearTimeout(tid); tid = setTimeout(render, 120); }
+  function render(){
+    var q = (input.value || '').trim().toLowerCase();
+    if (q.length < 2) {
+      nullst.style.display = 'block'; res.style.display = 'none';
+      teller.textContent = startTeller; return;
+    }
+    nullst.style.display = 'none'; res.style.display = 'block';
+    if (!index) { res.innerHTML = '<p style="font-family:var(--sans); font-size:13.5px; color:var(--ink-mute); padding:14px 0;">Laster søkeindeksen …</p>'; lastIndex(); return; }
+    var sp = [], pa = [], ve = [];
+    for (var i = 0; i < index.length; i++) {
+      var d = index[i];
+      var hay = ((d.title || '') + ' ' + (d.kort_svar || '') + ' ' + (d.kategori || '') + ' ' + (d.lov_display || '')).toLowerCase();
+      if (hay.indexOf(q) === -1) continue;
+      if (d.type === 'sporsmal' && sp.length < 6) sp.push(d);
+      else if (d.type === 'paragraf' && pa.length < 4) pa.push(d);
+      else if (d.type === 'verktoy' && ve.length < 3) ve.push(d);
+      if (sp.length >= 6 && pa.length >= 4 && ve.length >= 3) break;
+    }
+    var tot = sp.length + pa.length + ve.length;
+    teller.textContent = tot >= 13 ? '13+ treff' : tot + ' treff';
+    var h = '';
+    if (sp.length) {
+      h += '<p class="sph-label">Spørsmål</p><div class="sph-gruppe">';
+      sp.forEach(function(d, i){
+        var svar = (d.kort_svar || d.description || '').trim();
+        h += '<div class="sph-treff" id="sphx' + i + '">' +
+          '<div class="sph-treff-rad" data-i="' + i + '">' +
+          '<span class="sph-treff-tittel">' + hl(d.title, q) + '</span>' +
+          '<span class="sph-treff-pil" aria-hidden="true">&#9662;</span></div>' +
+          '<div class="sph-svar">' +
+          (svar ? '<p>' + esc(svar) + '</p>' : '') +
+          '<a href="' + esc(d.slug) + '/">Les hele svaret &rarr;</a></div></div>';
+      });
+      h += '</div>';
+    }
+    if (pa.length) {
+      h += '<p class="sph-label">Lovparagrafer</p><div class="sph-gruppe">';
+      pa.forEach(function(d){
+        h += '<a class="sph-treff sph-treff-rad" href="../lover/' + esc(d.lov) + '/' + esc(String(d.number)) + '/">' +
+          '<span class="sph-treff-tittel">§ ' + esc(String(d.number)) + ' ' + hl(d.title, q) + '</span>' +
+          '<span class="sph-treff-meta">' + esc(d.lov_display || '') + '</span></a>';
+      });
+      h += '</div>';
+    }
+    if (ve.length) {
+      h += '<p class="sph-label">Verktøy og maler</p><div class="sph-gruppe">';
+      ve.forEach(function(d){
+        h += '<a class="sph-treff sph-treff-rad" href="../' + esc(d.url) + '">' +
+          '<span class="sph-treff-tittel">&#9874; ' + hl(d.title, q) + '</span></a>';
+      });
+      h += '</div>';
+    }
+    if (tot === 0) {
+      h = '<div class="sph-tomt"><p class="sph-tomt-tittel">Ingen treff på &laquo;' + esc(q) + '&raquo;</p>' +
+        '<p><a href="../kontakt/">Foreslå spørsmålet</a> så skriver vi svaret — eller <a href="../advokatvurdering/">beskriv saken din</a> og få en gratis førstevurdering.</p></div>';
+    }
+    res.innerHTML = h;
+    var rader = res.querySelectorAll('.sph-treff-rad[data-i]');
+    for (var j = 0; j < rader.length; j++) {
+      rader[j].addEventListener('click', function(){
+        this.parentNode.classList.toggle('apen');
+      });
+    }
+  }
+  input.addEventListener('input', planlegg);
+})();
+</script>"""
 
-{chat}
-</body>
-</html>"""
+    return head + "\n" + nav + "\n" + BODY + "\n" + SCRIPT + "\n" + footer
+
+
+def render_sporsmal_kategori(kat_slug, kat_tittel, items):
+    """Kategori-underside for spørsmål — register med filter, samme mønster som lovsidene."""
+    n = len(items)
+    rows = ""
+    for s in sorted(items, key=lambda x: x["title"].lower()):
+        d = (s.get("kort_svar") or s.get("description") or "").replace("\n", " ").strip()
+        if len(d) > 110:
+            d = d[:110].rsplit(" ", 1)[0] + "…"
+        rows += (
+            f'<a class="spk-row" href="../{s["slug"]}/" data-k="{s["title"].lower()}">'
+            f'<span class="spk-row-body">'
+            f'<span class="spk-row-tittel">{s["title"]}</span>'
+            f'<span class="spk-row-desc">{d}</span></span>'
+            f'<span class="spk-row-pil" aria-hidden="true">&rarr;</span></a>'
+        )
+
+    head = shared_head(
+        f"{kat_tittel} — spørsmål og svar | Rettsregel",
+        f"{n} spørsmål om {kat_tittel.lower()}, med konkrete svar på vanlig norsk.",
+        depth=2, canonical_path=f"/sporsmal/{kat_slug}/")
+    nav = site_nav(depth=2, active="sporsmal")
+    footer = site_footer(depth=2)
+
+    STYLE = """<style>
+.spk-page { max-width: 860px; margin: 0 auto; padding: 32px 32px 72px; }
+.spk-crumb { font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); margin-bottom: 26px; }
+.spk-crumb a { color: var(--ink-mute); text-decoration: none; }
+.spk-crumb a:hover { color: var(--ink); }
+.spk-crumb .sep { margin: 0 8px; opacity: .45; }
+.spk-crumb .cur { color: var(--accent); }
+.spk-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 22px; flex-wrap: wrap; }
+.spk-head h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.024em; color: var(--ink); margin: 0 0 6px; }
+.spk-head p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-mute); margin: 0; }
+.spk-filter { position: relative; flex: none; width: 270px; }
+.spk-filter input {
+  width: 100%; height: 42px; box-sizing: border-box; padding: 0 14px 0 38px;
+  border: 1px solid var(--line-strong); border-radius: 11px;
+  background: var(--bg-card); color: var(--ink);
+  font-family: var(--sans); font-size: 13.5px; outline: none;
+}
+.spk-filter input:focus { border-color: var(--accent); }
+.spk-filter svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); pointer-events: none; }
+.spk-liste { border-top: 1px solid var(--line); }
+.spk-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 13px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.spk-row-tittel { display: block; font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--ink); line-height: 1.3; transition: color .15s ease; }
+.spk-row:hover .spk-row-tittel { color: var(--accent); }
+.spk-row-desc { display: block; font-family: var(--sans); font-size: 13px; color: var(--ink-mute); line-height: 1.5; margin-top: 3px; }
+.spk-row-pil { font-family: var(--serif); color: var(--ink-mute); flex: none; transition: color .18s, transform .22s; }
+.spk-row:hover .spk-row-pil { color: var(--accent); transform: translateX(5px); }
+.spk-tomt { display: none; font-family: var(--sans); font-size: 14px; color: var(--ink-mute); padding: 22px 0; }
+.spk-bunn {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 18px; margin-top: 26px;
+}
+.spk-bunn span { font-family: var(--sans); font-size: 13px; color: var(--ink-soft); }
+.spk-bunn a { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+@media (max-width: 720px) {
+  .spk-page { padding: 22px 20px 56px; }
+  .spk-head { flex-direction: column; align-items: stretch; }
+  .spk-filter { width: 100%; }
+}
+</style>"""
+
+    BODY = f"""{STYLE}
+<main class="spk-page">
+  <nav class="spk-crumb" aria-label="Brødsmuler">
+    <a href="../../">Hjem</a><span class="sep">/</span><a href="../">Spørsmål</a><span class="sep">/</span><span class="cur">{kat_tittel}</span>
+  </nav>
+  <header class="spk-head">
+    <div>
+      <h1>{kat_tittel}</h1>
+      <p>{n} spørsmål med konkrete svar</p>
+    </div>
+    <div class="spk-filter">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="spk-sok" placeholder="Filtrer spørsmålene …" autocomplete="off">
+    </div>
+  </header>
+  <div class="spk-liste" id="spk-liste">
+{rows}  </div>
+  <p class="spk-tomt" id="spk-tomt">Ingen spørsmål matcher. <a href="../../kontakt/" style="color:var(--accent);">Foreslå det</a> — så skriver vi svaret.</p>
+  <div class="spk-bunn">
+    <span>Fant du ikke svaret? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få gratis vurdering &rarr;</a>
+  </div>
+</main>
+"""
+
+    SCRIPT = """<script>
+(function(){
+  var input = document.getElementById('spk-sok');
+  if (!input) return;
+  var rows = [].slice.call(document.querySelectorAll('.spk-row'));
+  var tomt = document.getElementById('spk-tomt');
+  input.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var vist = 0;
+    rows.forEach(function(r){
+      var m = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.style.display = m ? '' : 'none';
+      if (m) vist++;
+    });
+    tomt.style.display = vist === 0 ? 'block' : 'none';
+  });
+})();
+</script>"""
+
+    return head + "\n" + nav + "\n" + BODY + "\n" + SCRIPT + "\n" + footer
 
 
 def render_homepage():
-    """Forside — premium, rolig, nyttig. Egen header med søk (kun forsiden)."""
+    """Forside — delt mørk header, vurderings-banner, lister med kategorichips, verktøy-grid."""
     chat = chat_widget()
     n_paragrafer = len(PARAGRAPHS)
     n_lover = len(set(p["lov"] for p in PARAGRAPHS))
@@ -3664,88 +4161,53 @@ def render_homepage():
 <style>
 .hp-body {{ background: var(--bg); }}
 
-/* ---------- Egen forside-header med søk ---------- */
-.hp-header {{ border-bottom: 1px solid var(--line); background: var(--bg); }}
-.hp-header-row {{
-  max-width: 1200px; margin: 0 auto;
-  padding: 0 40px; height: 80px;
-  display: flex; align-items: center; gap: 28px;
-}}
-.hp-logo {{ flex: none; color: var(--ink); display: flex; align-items: center; text-decoration: none; }}
-.hp-logo svg {{ display: block; }}
-.hp-search {{
-  flex: 1; max-width: 460px;
-  position: relative; display: flex; align-items: center;
-}}
-.hp-search input {{
-  width: 100%; height: 44px;
-  padding: 0 44px 0 18px;
-  border: 1px solid var(--line-strong); border-radius: 12px;
-  background: var(--bg-card); color: var(--ink);
-  font-family: var(--sans); font-size: 14.5px;
-  transition: border-color .18s ease, box-shadow .18s ease;
-}}
-.hp-search input::placeholder {{ color: var(--ink-mute); }}
-.hp-search input:focus {{
-  outline: none; border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(192,74,38,.10);
-}}
-.hp-search-icon {{
-  position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-  color: var(--ink-mute); pointer-events: none; display: flex;
-}}
-.hp-search-icon svg {{ display: block; }}
-.hp-nav {{ margin-left: auto; display: flex; align-items: center; gap: 30px; }}
-.hp-nav a {{
-  font-family: var(--sans); font-size: 14.5px; font-weight: 500;
-  color: var(--ink); text-decoration: none; letter-spacing: -0.005em;
-  transition: color .15s ease;
-}}
-.hp-nav a:hover {{ color: var(--accent); }}
-.hp-nav a.hp-nav-cta {{ color: var(--accent); }}
-.hp-nav a.hp-nav-cta:hover {{ color: var(--accent-deep); }}
-
-.hp-burger-toggle, .hp-burger {{ display: none; }}
-
 /* ---------- Container ---------- */
 .hp-main {{ max-width: 1200px; margin: 0 auto; padding: 0 40px; }}
 
-/* ---------- Hero ---------- */
-.hp-hero {{
-  display: grid; grid-template-columns: 1.1fr 0.9fr;
-  align-items: center; gap: 40px;
-  padding: 52px 0 44px;
+/* ---------- Vurderings-banner ---------- */
+.hp-banner {{
+  display: flex; align-items: center; gap: 22px;
+  background: var(--accent); border-radius: 18px;
+  padding: 28px 34px; margin: 30px 0 56px;
+  text-decoration: none;
+  transition: background .18s ease;
 }}
-.hp-hero-title {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(30px, 3.6vw, 46px); line-height: 1.03;
-  letter-spacing: -0.035em; color: var(--ink); margin: 0;
+.hp-banner:hover {{ background: var(--accent-deep); }}
+.hp-banner-icon {{
+  flex: none; width: 46px; height: 46px; border-radius: 12px;
+  background: rgba(0,0,0,.18); color: #FAECE7;
+  display: flex; align-items: center; justify-content: center;
 }}
-.hp-hero-title .accent {{ color: var(--accent); }}
-.hp-hero-art {{ display: flex; justify-content: center; align-items: center; }}
-.hp-hero-art svg {{ width: 100%; max-width: 240px; height: auto; display: block; }}
+.hp-banner-icon svg {{ display: block; }}
+.hp-banner-body {{ flex: 1; min-width: 0; }}
+.hp-banner-title {{
+  display: block;
+  font-family: var(--serif); font-weight: 500; font-size: 22px;
+  letter-spacing: -0.015em; color: #FFFFFF; line-height: 1.2;
+}}
+.hp-banner-sub {{
+  display: block;
+  font-family: var(--sans); font-size: 14px; color: #F8D5C7;
+  margin-top: 5px; line-height: 1.45;
+}}
+.hp-banner-btn {{
+  flex: none; background: #FAC775; color: #412402;
+  font-family: var(--sans); font-size: 14px; font-weight: 600;
+  border-radius: 10px; padding: 11px 22px; white-space: nowrap;
+  transition: background .15s ease;
+}}
+.hp-banner:hover .hp-banner-btn {{ background: #FFDFA3; }}
 
-/* ---------- Stats ---------- */
-.hp-stats {{
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--line-strong); border-radius: 18px;
-  background: var(--bg-card);
-  overflow: hidden; margin-bottom: 64px;
+/* ---------- Kategorichips og badges ---------- */
+.hp-chip {{
+  flex: none; width: 34px; height: 34px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
 }}
-.hp-stat {{
-  padding: 22px 24px; text-align: center;
-  border-left: 1px solid var(--line);
-}}
-.hp-stat:first-child {{ border-left: none; }}
-.hp-stat-num {{
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(20px, 1.9vw, 26px); line-height: 1;
-  color: var(--accent); letter-spacing: -0.02em;
-}}
-.hp-stat-label {{
-  margin-top: 8px; font-family: var(--sans);
-  font-size: 10.5px; font-weight: 700; letter-spacing: 0.13em;
-  text-transform: uppercase; color: var(--ink-soft);
+.hp-chip svg {{ display: block; }}
+.hp-badge {{
+  display: inline-block; font-family: var(--sans);
+  font-size: 10.5px; font-weight: 600; letter-spacing: .01em;
+  border-radius: 6px; padding: 2px 8px; margin-top: 6px;
 }}
 
 /* ---------- Section heads ---------- */
@@ -3819,7 +4281,11 @@ def render_homepage():
   transition: border-color .18s ease, transform .18s ease;
 }}
 .hp-tool:hover {{ border-color: var(--accent-soft); transform: translateY(-2px); }}
-.hp-tool-icon {{ color: var(--accent); margin-bottom: 14px; display: flex; }}
+.hp-tool-icon {{
+  width: 34px; height: 34px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}}
 .hp-tool-icon svg {{ display: block; }}
 .hp-tool-title {{
   font-family: var(--serif); font-weight: 500; font-size: 17px;
@@ -3883,17 +4349,10 @@ def render_homepage():
   .hp-tools {{ grid-template-columns: repeat(2, 1fr); }}
 }}
 @media (max-width: 860px) {{
-  .hp-header-row {{ flex-wrap: wrap; height: auto; padding: 16px 22px; gap: 14px; }}
-  .hp-nav {{ order: 3; width: 100%; margin-left: 0; gap: 20px; flex-wrap: wrap; }}
-  .hp-search {{ order: 2; max-width: none; flex-basis: 100%; }}
-  .hp-logo {{ order: 1; }}
   .hp-main, .hp-foot {{ padding-left: 22px; padding-right: 22px; }}
-  .hp-hero {{ grid-template-columns: 1fr; gap: 8px; padding: 48px 0 40px; }}
-  .hp-hero-art {{ display: none; }}
-  .hp-stats {{ grid-template-columns: 1fr 1fr; }}
-  .hp-stat {{ border-left: 1px solid var(--line); border-top: 1px solid var(--line); }}
-  .hp-stat:first-child, .hp-stat:nth-child(2) {{ border-top: none; }}
-  .hp-stat:nth-child(odd) {{ border-left: none; }}
+  .hp-banner {{ flex-wrap: wrap; padding: 22px; gap: 14px; margin: 22px 0 44px; }}
+  .hp-banner-body {{ flex-basis: calc(100% - 66px); }}
+  .hp-banner-btn {{ margin-left: 66px; }}
   .hp-cols {{ grid-template-columns: 1fr; gap: 48px; }}
   .hp-foot-row {{ flex-direction: column; gap: 14px; align-items: flex-start; }}
 }}
@@ -3907,104 +4366,16 @@ def render_homepage():
 
 <main class="hp-main">
 
-  <section class="hp-hero">
-    <h1 class="hp-hero-title">Norsk rett,<br><span class="accent">på vanlig språk.</span></h1>
-    <div class="hp-hero-art" aria-hidden="true">
-      <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="120" cy="90" r="66" fill="var(--accent)" opacity="0.12"/>
-        <g fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M120 58 C100 46 74 45 54 51 L54 128 C74 122 100 123 120 135 C140 123 166 122 186 128 L186 51 C166 45 140 46 120 58 Z"/>
-          <line x1="120" y1="58" x2="120" y2="135"/>
-          <path d="M68 66 C82 63 98 64 110 70" opacity="0.45"/>
-          <path d="M130 70 C142 64 158 63 172 66" opacity="0.45"/>
-        </g>
-      </svg>
-    </div>
-  </section>
-
-  <section class="hp-stats" aria-label="Nøkkeltall">
-    <div class="hp-stat"><div class="hp-stat-num">{n_sporsmal}</div><div class="hp-stat-label">Spørsmål</div></div>
-    <div class="hp-stat"><div class="hp-stat-num">{n_lover}</div><div class="hp-stat-label">Lover</div></div>
-    <div class="hp-stat"><div class="hp-stat-num">{n_paragrafer}</div><div class="hp-stat-label">Lovparagrafer</div></div>
-    <div class="hp-stat"><div class="hp-stat-num">91</div><div class="hp-stat-label">Verktøy/maler</div></div>
-  </section>
-
-  <div class="hp-cols">
-
-    <div class="hp-col">
-      <div class="hp-sec-head">
-        <h2 class="hp-sec-title">Mest brukte lover</h2>
-        <a href="lover/" class="hp-sec-link">Se alle lover →</a>
-      </div>
-      <div class="hp-list">
-        <a href="lover/husleieloven/" class="hp-row">
-          <span class="hp-row-body">
-            <span class="hp-row-title">Husleieloven</span>
-            <span class="hp-row-desc">Regler om leie av bolig og lokale</span>
-          </span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="lover/" class="hp-row">
-          <span class="hp-row-body">
-            <span class="hp-row-title">Arbeidsmiljøloven</span>
-            <span class="hp-row-desc">Regler om arbeidsmiljø, arbeidstid og stillingsvern</span>
-          </span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="lover/forbrukerkjopsloven/" class="hp-row">
-          <span class="hp-row-body">
-            <span class="hp-row-title">Forbrukerkjøpsloven</span>
-            <span class="hp-row-desc">Regler om kjøp av varer og tjenester</span>
-          </span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="lover/avhendingslova/" class="hp-row">
-          <span class="hp-row-body">
-            <span class="hp-row-title">Avhendingslova</span>
-            <span class="hp-row-desc">Regler om kjøp og salg av fast eiendom</span>
-          </span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="lover/arveloven/" class="hp-row">
-          <span class="hp-row-body">
-            <span class="hp-row-title">Arveloven</span>
-            <span class="hp-row-desc">Regler om arv og testament</span>
-          </span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="hp-col">
-      <div class="hp-sec-head">
-        <h2 class="hp-sec-title">Mest leste spørsmål</h2>
-        <a href="sporsmal/" class="hp-sec-link">Se alle spørsmål →</a>
-      </div>
-      <div class="hp-list">
-        <a href="sporsmal/utleier-nekter-depositum/" class="hp-row compact">
-          <span class="hp-row-body"><span class="hp-row-title">Utleier nekter å gi tilbake depositumet — hva gjør du?</span></span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="sporsmal/" class="hp-row compact">
-          <span class="hp-row-body"><span class="hp-row-title">Kan arbeidsgiver kreve at du jobber overtid?</span></span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="sporsmal/" class="hp-row compact">
-          <span class="hp-row-body"><span class="hp-row-title">Hva har du krav på ved oppsigelse?</span></span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="sporsmal/" class="hp-row compact">
-          <span class="hp-row-body"><span class="hp-row-title">Kan utleier kreve penger for vanlig slitasje?</span></span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="sporsmal/" class="hp-row compact">
-          <span class="hp-row-body"><span class="hp-row-title">Hvor lang tid tar Husleietvistutvalget?</span></span>
-          <span class="hp-row-arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
-
-  </div>
+  <a href="advokatvurdering/" class="hp-banner">
+    <span class="hp-banner-icon" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M8 21h8"/><path d="M4 7h16"/><path d="M6 7l-3 6a3.2 3.2 0 0 0 6 0z"/><path d="M18 7l-3 6a3.2 3.2 0 0 0 6 0z"/></svg>
+    </span>
+    <span class="hp-banner-body">
+      <span class="hp-banner-title">Få saken din vurdert</span>
+      <span class="hp-banner-sub">Svar på noen enkle spørsmål — og motta en rask og gratis førstevurdering.</span>
+    </span>
+    <span class="hp-banner-btn">Start nå →</span>
+  </a>
 
   <section class="hp-tools-sec">
     <div class="hp-sec-head">
@@ -4022,6 +4393,88 @@ def render_homepage():
       {hp_tool('kontrakter/fremtidsfullmakt/', 'shield', 'Fremtidsfullmakt', 'Bestem hvem som styrer for deg senere i livet')}
     </div>
   </section>
+
+  <div class="hp-cols">
+
+    <div class="hp-col">
+      <div class="hp-sec-head">
+        <h2 class="hp-sec-title">Mest brukte lover</h2>
+        <a href="lover/" class="hp-sec-link">Se alle lover →</a>
+      </div>
+      <div class="hp-list">
+        <a href="lover/husleieloven/" class="hp-row">
+          <span class="hp-chip" style="background:#DFF0E9; color:#0E5C46;" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2"/><path d="M16 7l3 3"/><path d="M19 4l2 2"/></svg></span>
+          <span class="hp-row-body">
+            <span class="hp-row-title">Husleieloven</span>
+            <span class="hp-row-desc">Regler om leie av bolig og lokale</span>
+          </span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="lover/" class="hp-row">
+          <span class="hp-chip" style="background:#E3EEF9; color:#15528F;" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg></span>
+          <span class="hp-row-body">
+            <span class="hp-row-title">Arbeidsmiljøloven</span>
+            <span class="hp-row-desc">Regler om arbeidsmiljø, arbeidstid og stillingsvern</span>
+          </span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="lover/forbrukerkjopsloven/" class="hp-row">
+          <span class="hp-chip" style="background:#F8ECD6; color:#7A4A0B;" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg></span>
+          <span class="hp-row-body">
+            <span class="hp-row-title">Forbrukerkjøpsloven</span>
+            <span class="hp-row-desc">Regler om kjøp av varer og tjenester</span>
+          </span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="lover/avhendingslova/" class="hp-row">
+          <span class="hp-chip" style="background:#F8E5DC; color:#93421E;" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-4h6v4"/><line x1="9" y1="10" x2="9" y2="12"/><line x1="15" y1="10" x2="15" y2="12"/></svg></span>
+          <span class="hp-row-body">
+            <span class="hp-row-title">Avhendingslova</span>
+            <span class="hp-row-desc">Regler om kjøp og salg av fast eiendom</span>
+          </span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="lover/arveloven/" class="hp-row">
+          <span class="hp-chip" style="background:#EBE9F8; color:#4D44A8;" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></span>
+          <span class="hp-row-body">
+            <span class="hp-row-title">Arveloven</span>
+            <span class="hp-row-desc">Regler om arv og testament</span>
+          </span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hp-col">
+      <div class="hp-sec-head">
+        <h2 class="hp-sec-title">Mest leste spørsmål</h2>
+        <a href="sporsmal/" class="hp-sec-link">Se alle spørsmål →</a>
+      </div>
+      <div class="hp-list">
+        <a href="sporsmal/utleier-nekter-depositum/" class="hp-row compact">
+          <span class="hp-row-body"><span class="hp-row-title">Utleier nekter å gi tilbake depositumet — hva gjør du?</span><span class="hp-badge" style="background:#DFF0E9; color:#0E5C46;">Bolig og leie</span></span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="sporsmal/" class="hp-row compact">
+          <span class="hp-row-body"><span class="hp-row-title">Kan arbeidsgiver kreve at du jobber overtid?</span><span class="hp-badge" style="background:#E3EEF9; color:#15528F;">Jobb</span></span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="sporsmal/" class="hp-row compact">
+          <span class="hp-row-body"><span class="hp-row-title">Hva har du krav på ved oppsigelse?</span><span class="hp-badge" style="background:#E3EEF9; color:#15528F;">Jobb</span></span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="sporsmal/" class="hp-row compact">
+          <span class="hp-row-body"><span class="hp-row-title">Kan utleier kreve penger for vanlig slitasje?</span><span class="hp-badge" style="background:#DFF0E9; color:#0E5C46;">Bolig og leie</span></span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="sporsmal/" class="hp-row compact">
+          <span class="hp-row-body"><span class="hp-row-title">Hvor lang tid tar Husleietvistutvalget?</span><span class="hp-badge" style="background:#DFF0E9; color:#0E5C46;">Bolig og leie</span></span>
+          <span class="hp-row-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
 
 </main>
 
@@ -4055,12 +4508,149 @@ def hp_tool(href, icon, title, desc):
         'file-text': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/>',
     }
     path = icons.get(icon, icons['file-text'])
+    chip_colors = {
+        'home': ('#DFF0E9', '#0E5C46'),
+        'log-out': ('#E3EEF9', '#15528F'),
+        'mail': ('#F8ECD6', '#7A4A0B'),
+        'message': ('#F6E4EB', '#8C2F4E'),
+        'briefcase': ('#E3EEF9', '#15528F'),
+        'feather': ('#EBE9F8', '#4D44A8'),
+        'users': ('#EBE9F8', '#4D44A8'),
+        'shield': ('#F6E4EB', '#8C2F4E'),
+        'file-text': ('#F8E5DC', '#93421E'),
+    }
+    bg, fg = chip_colors.get(icon, chip_colors['file-text'])
     return f"""<a href="{href}" class="hp-tool">
-        <span class="hp-tool-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{path}</svg></span>
+        <span class="hp-tool-icon" style="background:{bg}; color:{fg};" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{path}</svg></span>
         <span class="hp-tool-title">{title}</span>
         <span class="hp-tool-desc">{desc}</span>
         <span class="hp-tool-arrow" aria-hidden="true">→</span>
       </a>"""
+
+
+# Verktøy/maler-katalog — modulnivå så antallet kan telles på om-siden
+TJENESTER_KATEGORIER = [
+    ("kalkulatorer-og-sjekkere", "Kalkulatorer og sjekkere", [
+        ("../verktoy/forsinkelsesrente.html", "Forsinkelsesrente", "Regn ut morarente på en ubetalt faktura."),
+        ("../verktoy/inkassosalaer.html", "Inkassosalær-sjekker", "Er inkassokostnaden lovlig?"),
+        ("../verktoy/foreldelse.html", "Foreldelse-sjekker", "Er kravet foreldet?"),
+        ("../verktoy/dokumentavgift.html", "Dokumentavgift", "2,5 % avgift ved boligkjøp."),
+        ("../verktoy/sykepenger.html", "Sykepenger", "Hvor mye får du i sykepenger?"),
+        ("../verktoy/foreldrepenger.html", "Foreldrepenger", "100 % eller 80 %? Se hva du får."),
+        ("../verktoy/husleieokning.html", "Husleieøkning (KPI)", "Hvor mye kan leia økes?"),
+        ("../verktoy/fri-rettshjelp.html", "Fri rettshjelp", "Kvalifiserer du til gratis advokat?"),
+        ("../verktoy/utrokontrakt.html", "Utroskapskontrakt", "Lag avtalen selv."),
+    ]),
+    ("klage-og-krav", "Klage og krav", [
+        ("../tjenester/reklamasjon/", "Reklamasjonsbrev", "Klage med riktige lovhenvisninger."),
+        ("../tjenester/heving/", "Heving av kjøp", "Få pengene tilbake ved vesentlig feil."),
+        ("../tjenester/prisavslag/", "Prisavslag", "Hvor mye kan du kreve i avslag?"),
+        ("../tjenester/mangel/", "Mangel-sjekker", "Er feilen juridisk mangel — eller bare slitasje?"),
+        ("../tjenester/angreskjema/", "Angrerettskjema", "EU-standardskjema, klart til utfylling."),
+        ("../tjenester/inkasso/", "Inkasso-sjekk", "Er kravet lovlig? Foreldelse og gebyrer."),
+        ("../tjenester/forsikringsavslag/", "Forsikringsavslag", "Grunnlag for klage? Finansklagenemnda."),
+        ("../tjenester/handverker-reklamasjon/", "Håndverker-reklamasjon", "Brev ved dårlig håndverkertjeneste."),
+        # Extras
+        ("../tjenester/reklamasjon-bil/", "Reklamasjon bil", "Brev ved feil på bilen du kjøpte."),
+        ("../tjenester/kredittkjop/", "Kredittkjøp-sjekker", "Er banken medansvarlig når selger svikter?"),
+        ("../tjenester/klagefrist/", "Klagefrist forvaltning", "3 uker etter vedtak. Utløpt?"),
+        ("../tjenester/pakkereis/", "Pakkereise-kalkulator", "250–600 EUR ved forsinkelse. EU 261/2004."),
+        ("../tjenester/gdpr-innsyn/", "GDPR-innsynskrav", "Be selskaper om å vise dine data."),
+        ("../kontrakter/misligholdsvarsel/", "Misligholdsvarsel", "Siste varsel før inkasso."),
+    ]),
+    ("arbeid-og-oppsigelse", "Arbeid og oppsigelse", [
+        ("../tjenester/arbeid-oppsigelse/", "Oppsigelsestid", "Lovlig varsel basert på ansettelsestid og alder."),
+        ("../tjenester/usaklig-oppsigelse/", "Usaklig oppsigelse", "Saklig grunn, saksbehandling, sykevern."),
+        ("../tjenester/arbeidskontrakt/", "Arbeidskontrakt-sjekker", "Alle lovpålagte minimumsopplysninger?"),
+        ("../kontrakter/arbeidsavtale/", "Arbeidsavtale", "Fast ansettelse — alle aml. § 14-6-krav."),
+        ("../tjenester/sykmelding-vern/", "Sykmelding-vern", "Er du vernet de første 12 månedene?"),
+        ("../tjenester/permittering/", "Permittering-sjekker", "Lovlig varsel og arbeidsgiverperiode?"),
+        ("../tjenester/konkurranse-klausul/", "Konkurranse-/kundeklausul", "Gyldig? Kompensasjon og maksvarighet."),
+        ("../kontrakter/sluttavtale/", "Sluttavtale", "Frivillig avslutning av arbeidsforhold."),
+        # Extras
+        ("../kontrakter/arbeidsavtale-deltid/", "Arbeidsavtale (deltid)", "Stillingsprosent og fortrinnsrett."),
+        ("../kontrakter/arbeidsavtale-midlertidig/", "Arbeidsavtale (midlertidig)", "Vikariat, prosjekt og sesong."),
+        ("../kontrakter/taushetserklaring/", "Taushetserklæring (NDA)", "For ansatte, konsulenter, samarbeidspartnere."),
+        ("../kontrakter/arbeidsattest/", "Arbeidsattest", "Alle ansatte har rett på attest. Aml. § 15-15."),
+    ]),
+    ("bolig-og-leie", "Bolig og leie", [
+        ("../kontrakter/husleiekontrakt/", "Husleiekontrakt", "Tidsubestemt eller tidsbestemt."),
+        ("../tjenester/depositum-tilbake/", "Depositum tilbake", "Depositum og renter du har krav på."),
+        ("../tjenester/husleie-oppsigelse/", "Oppsigelsestid leie", "Lovlig oppsigelsestid for utleier og leietaker."),
+        ("../tjenester/leie-okning/", "Leieøkning", "Maks lovlig økning etter KPI, med varselbrev."),
+        ("../tjenester/vedlikehold/", "Vedlikeholdsansvar", "Utleier eller leietaker — hvem fikser hva?"),
+        ("../tjenester/boligkjoper-sjekkliste/", "Boligkjøper-sjekkliste", "8 punkter — ivareta undersøkelsesplikten."),
+        ("../tjenester/vesentlig-mangel-bolig/", "Vesentlig mangel bolig", "Over Høyesteretts 3–6 %-terskel?"),
+        ("../tjenester/selger-opplysningsplikt/", "Selgers opplysningsplikt", "Holdt selger tilbake info? §§ 3-7 og 3-8."),
+        # Extras
+        ("../kontrakter/fremleiekontrakt/", "Fremleiekontrakt", "Fremleie hele eller deler av boligen din."),
+        ("../tjenester/fremleie/", "Fremleie-sjekker", "Kan du fremleie? Kan utleier nekte?"),
+        ("../kontrakter/depositumavtale/", "Depositumavtale", "Sperret konto, maks 6 mnd. Husleieloven § 3-5."),
+        ("../tjenester/prisavslag-bolig/", "Prisavslag bolig", "Beregn krav basert på utbedringskostnad."),
+        ("../kontrakter/overtakelsesprotokoll/", "Overtakelsesprotokoll", "Målere, nøkler, feil. Avgjørende dokumentasjon."),
+        ("../kontrakter/nabovarsel/", "Nabovarsel", "Påkrevd før byggesøknad. 2 ukers merknadsfrist."),
+        ("../kontrakter/kjopekontrakthytte/", "Kjøpekontrakt hytte", "Fritidseiendom og tomt."),
+        ("../kontrakter/leiekontrakt-naring/", "Leiekontrakt næring", "Kontor, butikk, lager. KPI-regulering."),
+        ("../kontrakter/sameieandel/", "Sameieerklæring", "Hvem eier hva? Dokumentér sameieandeler."),
+    ]),
+    ("avtaler-og-fullmakter", "Avtaler og fullmakter", [
+        ("../tjenester/fullmakt-mal/", "Fullmakt-mal", "Fullmakt for Nav, bank, eiendom."),
+        ("../kontrakter/kjopekontraktbil/", "Kjøpekontrakt bil", "Privatbilsalg, basert på kjøpsloven."),
+        ("../kontrakter/kvittering/", "Kvittering", "Kontantbetaling, depositum og håndverk."),
+        ("../kontrakter/gjeldsbrev/", "Gjeldsbrev", "Privatlån mellom venner og familie."),
+        ("../kontrakter/kausjonsavtale/", "Kausjonsavtale", "Simpel eller selvskyldnerkausjon."),
+        ("../kontrakter/betalingsplan/", "Betalingsplan", "Nedbetaling av gjeld i avdrag."),
+        ("../kontrakter/konsulentavtale/", "Konsulentavtale", "For frilansere og selvstendige konsulenter."),
+        ("../kontrakter/aksjonaravtale2/", "Aksjonæravtale", "Forkjøpsrett, tag-along, utbytte, exit."),
+        # Extras
+        ("../kontrakter/kjopekontraktbat/", "Kjøpekontrakt båt", "Privat båtsalg med tilstandsklausul."),
+        ("../kontrakter/kjopekontraktgjenstand/", "Kjøpekontrakt eiendeler", "Finn.no-kjøp: møbler, elektronikk, mer."),
+        ("../kontrakter/panteavtale/", "Panteavtale", "Sikre lån med pant i bil eller løsøre."),
+        ("../kontrakter/bruksrettsavtale/", "Bruksrettsavtale", "Gi rett til å bruke noe uten å overdra eierskap."),
+        ("../kontrakter/stiftelsesdokument/", "Stiftelsesdokument AS", "Stift AS med vedtekter."),
+        ("../kontrakter/aksjekjopekontrakt/", "Aksjekjøpekontrakt", "Overdragelse av aksjer med garantier."),
+        ("../kontrakter/opsjonsavtale/", "Opsjonsavtale ansatte", "Vesting-periode og innløsningspris."),
+        ("../kontrakter/styreprotokoll/", "Styreprotokoll", "Protokollér styremøtet riktig. Asl. § 6-29."),
+        ("../kontrakter/generalforsamlingsprotokoll/", "GF-protokoll", "Protokollér GF riktig. Asl. § 5-16."),
+        ("../kontrakter/leverandoravtale/", "Leverandøravtale", "Kjøp av varer og tjenester over tid."),
+        ("../kontrakter/samarbeidsavtale/", "Samarbeidsavtale", "Strategisk samarbeid mellom virksomheter."),
+        ("../kontrakter/overdragelsesavtale/", "Overdragelsesavtale", "Salg av virksomhet. Goodwill, kunder, inventar."),
+        ("../kontrakter/tjenesteavtale/", "Tjenesteavtale", "For malere, vaskehjelp, håndverkere."),
+        ("../kontrakter/consignmentavtale/", "Consignmentavtale", "Selg kunst eller varer på vegne av en annen."),
+    ]),
+    ("arv-og-testament", "Arv og testament", [
+        ("../tjenester/arv/", "Arvefordeling", "Visuell oversikt basert på familiesituasjonen."),
+        ("../tjenester/testament-mal/", "Testament-mal", "Generer testament-utkast med vitnefelt."),
+        ("../tjenester/pliktdel/", "Pliktdel", "Hva kan du testamentere bort? 2/3-regelen."),
+        ("../tjenester/uskifte/", "Uskifte-sjekker", "Kan gjenlevende sitte i uskifte?"),
+        ("../tjenester/samboer-arverett/", "Samboer-arverett", "Arver samboeren din uten testament?"),
+        ("../kontrakter/fremtidsfullmakt/", "Fremtidsfullmakt", "Hvem ivaretar deg ved sviktende helse."),
+        ("../kontrakter/samboeravtale/", "Samboeravtale", "Hvem eier hva ved brudd?"),
+        ("../kontrakter/ektepakt/", "Ektepakt (særeie)", "Gjør formue til særeie."),
+        # Extras
+        ("../tjenester/arvegjeld/", "Arvegjeld-sjekker", "Overtar du avdødes gjeld?"),
+        ("../kontrakter/gavebrev/", "Gavebrev", "Med særeie-klausul og arveforskudd."),
+        ("../kontrakter/ektepakt-felleseie/", "Ektepakt (arv som særeie)", "Felleseie, men arv og gaver beskyttes."),
+        ("../kontrakter/samvaersavtale/", "Samværsavtale", "Barnets hverdag etter samlivsbrudd."),
+        ("../kontrakter/skifteavtale/", "Skifteavtale", "Bolig, bil, gjeld ved samlivsbrudd."),
+    ]),
+    ("frister-og-kalkulatorer", "Frister og kalkulatorer", [
+        ("../tjenester/reklamasjonsfrist/", "Reklamasjonsfrist", "Har du fortsatt rett til å klage?"),
+        ("../tjenester/angrefrist/", "Angrefrist", "Har du fortsatt rett til å angre kjøpet?"),
+        ("../tjenester/feriepenger/", "Feriepenger-kalkulator", "Standard, tariff og over 60."),
+        ("../tjenester/overtid/", "Overtid-kalkulator", "Beregn overtid med lovpålagt tillegg."),
+        ("../tjenester/depositum/", "Depositum-kalkulator", "Maks lovlig depositum basert på månedsleien."),
+        ("../tjenester/enk-eller-as/", "ENK eller AS?", "Optimal selskapsform med skatteillustrasjon."),
+        ("../tjenester/utbytte-skatt/", "Utbytte-skatt", "Effektiv sats 37,84 %. Netto utbytte."),
+        ("../tjenester/omdanning-enk-as/", "Omdanning ENK→AS", "Er det lønnsomt? Skattesammenligning."),
+        # Extras
+        ("../tjenester/reklamasjonsfrist-bolig/", "Reklamasjonsfrist bolig", "5-årsregel og 2-månedersfrist."),
+        ("../tjenester/dagmulkt/", "Dagmulkt", "Dagmulkt ved forsinket boligovertakelse."),
+        ("../tjenester/styreansvar/", "Styreansvar-sjekker", "Personlig ansvar? Handleplikt og insolvens."),
+        ("../tjenester/aksjekapital/", "Aksjekapital-sjekker", "Handleplikt og utbytteregler."),
+        ("../tjenester/aksjonaravtale/", "Aksjonæravtale-sjekker", "10-punkts sjekkliste."),
+    ]),
+]
 
 
 def render_tjenester_hub():
@@ -4068,128 +4658,7 @@ def render_tjenester_hub():
 
     # Intent-based kategorier (slug, tittel, [(url, navn, beskrivelse), ...])
     # Order within each: most useful/most common first (first 8 shown by default)
-    KATEGORIER = [
-        ("kalkulatorer-og-sjekkere", "Kalkulatorer og sjekkere", [
-            ("../verktoy/forsinkelsesrente.html", "Forsinkelsesrente", "Regn ut morarente på en ubetalt faktura."),
-            ("../verktoy/inkassosalaer.html", "Inkassosalær-sjekker", "Er inkassokostnaden lovlig?"),
-            ("../verktoy/foreldelse.html", "Foreldelse-sjekker", "Er kravet foreldet?"),
-            ("../verktoy/dokumentavgift.html", "Dokumentavgift", "2,5 % avgift ved boligkjøp."),
-            ("../verktoy/sykepenger.html", "Sykepenger", "Hvor mye får du i sykepenger?"),
-            ("../verktoy/foreldrepenger.html", "Foreldrepenger", "100 % eller 80 %? Se hva du får."),
-            ("../verktoy/husleieokning.html", "Husleieøkning (KPI)", "Hvor mye kan leia økes?"),
-            ("../verktoy/fri-rettshjelp.html", "Fri rettshjelp", "Kvalifiserer du til gratis advokat?"),
-            ("../verktoy/utrokontrakt.html", "Utroskapskontrakt", "Lag avtalen selv."),
-        ]),
-        ("klage-og-krav", "Klage og krav", [
-            ("../tjenester/reklamasjon/", "Reklamasjonsbrev", "Klage med riktige lovhenvisninger."),
-            ("../tjenester/heving/", "Heving av kjøp", "Få pengene tilbake ved vesentlig feil."),
-            ("../tjenester/prisavslag/", "Prisavslag", "Hvor mye kan du kreve i avslag?"),
-            ("../tjenester/mangel/", "Mangel-sjekker", "Er feilen juridisk mangel — eller bare slitasje?"),
-            ("../tjenester/angreskjema/", "Angrerettskjema", "EU-standardskjema, klart til utfylling."),
-            ("../tjenester/inkasso/", "Inkasso-sjekk", "Er kravet lovlig? Foreldelse og gebyrer."),
-            ("../tjenester/forsikringsavslag/", "Forsikringsavslag", "Grunnlag for klage? Finansklagenemnda."),
-            ("../tjenester/handverker-reklamasjon/", "Håndverker-reklamasjon", "Brev ved dårlig håndverkertjeneste."),
-            # Extras
-            ("../tjenester/reklamasjon-bil/", "Reklamasjon bil", "Brev ved feil på bilen du kjøpte."),
-            ("../tjenester/kredittkjop/", "Kredittkjøp-sjekker", "Er banken medansvarlig når selger svikter?"),
-            ("../tjenester/klagefrist/", "Klagefrist forvaltning", "3 uker etter vedtak. Utløpt?"),
-            ("../tjenester/pakkereis/", "Pakkereise-kalkulator", "250–600 EUR ved forsinkelse. EU 261/2004."),
-            ("../tjenester/gdpr-innsyn/", "GDPR-innsynskrav", "Be selskaper om å vise dine data."),
-            ("../kontrakter/misligholdsvarsel/", "Misligholdsvarsel", "Siste varsel før inkasso."),
-        ]),
-        ("arbeid-og-oppsigelse", "Arbeid og oppsigelse", [
-            ("../tjenester/arbeid-oppsigelse/", "Oppsigelsestid", "Lovlig varsel basert på ansettelsestid og alder."),
-            ("../tjenester/usaklig-oppsigelse/", "Usaklig oppsigelse", "Saklig grunn, saksbehandling, sykevern."),
-            ("../tjenester/arbeidskontrakt/", "Arbeidskontrakt-sjekker", "Alle lovpålagte minimumsopplysninger?"),
-            ("../kontrakter/arbeidsavtale/", "Arbeidsavtale", "Fast ansettelse — alle aml. § 14-6-krav."),
-            ("../tjenester/sykmelding-vern/", "Sykmelding-vern", "Er du vernet de første 12 månedene?"),
-            ("../tjenester/permittering/", "Permittering-sjekker", "Lovlig varsel og arbeidsgiverperiode?"),
-            ("../tjenester/konkurranse-klausul/", "Konkurranse-/kundeklausul", "Gyldig? Kompensasjon og maksvarighet."),
-            ("../kontrakter/sluttavtale/", "Sluttavtale", "Frivillig avslutning av arbeidsforhold."),
-            # Extras
-            ("../kontrakter/arbeidsavtale-deltid/", "Arbeidsavtale (deltid)", "Stillingsprosent og fortrinnsrett."),
-            ("../kontrakter/arbeidsavtale-midlertidig/", "Arbeidsavtale (midlertidig)", "Vikariat, prosjekt og sesong."),
-            ("../kontrakter/taushetserklaring/", "Taushetserklæring (NDA)", "For ansatte, konsulenter, samarbeidspartnere."),
-            ("../kontrakter/arbeidsattest/", "Arbeidsattest", "Alle ansatte har rett på attest. Aml. § 15-15."),
-        ]),
-        ("bolig-og-leie", "Bolig og leie", [
-            ("../kontrakter/husleiekontrakt/", "Husleiekontrakt", "Tidsubestemt eller tidsbestemt."),
-            ("../tjenester/depositum-tilbake/", "Depositum tilbake", "Depositum og renter du har krav på."),
-            ("../tjenester/husleie-oppsigelse/", "Oppsigelsestid leie", "Lovlig oppsigelsestid for utleier og leietaker."),
-            ("../tjenester/leie-okning/", "Leieøkning", "Maks lovlig økning etter KPI, med varselbrev."),
-            ("../tjenester/vedlikehold/", "Vedlikeholdsansvar", "Utleier eller leietaker — hvem fikser hva?"),
-            ("../tjenester/boligkjoper-sjekkliste/", "Boligkjøper-sjekkliste", "8 punkter — ivareta undersøkelsesplikten."),
-            ("../tjenester/vesentlig-mangel-bolig/", "Vesentlig mangel bolig", "Over Høyesteretts 3–6 %-terskel?"),
-            ("../tjenester/selger-opplysningsplikt/", "Selgers opplysningsplikt", "Holdt selger tilbake info? §§ 3-7 og 3-8."),
-            # Extras
-            ("../kontrakter/fremleiekontrakt/", "Fremleiekontrakt", "Fremleie hele eller deler av boligen din."),
-            ("../tjenester/fremleie/", "Fremleie-sjekker", "Kan du fremleie? Kan utleier nekte?"),
-            ("../kontrakter/depositumavtale/", "Depositumavtale", "Sperret konto, maks 6 mnd. Husleieloven § 3-5."),
-            ("../tjenester/prisavslag-bolig/", "Prisavslag bolig", "Beregn krav basert på utbedringskostnad."),
-            ("../kontrakter/overtakelsesprotokoll/", "Overtakelsesprotokoll", "Målere, nøkler, feil. Avgjørende dokumentasjon."),
-            ("../kontrakter/nabovarsel/", "Nabovarsel", "Påkrevd før byggesøknad. 2 ukers merknadsfrist."),
-            ("../kontrakter/kjopekontrakthytte/", "Kjøpekontrakt hytte", "Fritidseiendom og tomt."),
-            ("../kontrakter/leiekontrakt-naring/", "Leiekontrakt næring", "Kontor, butikk, lager. KPI-regulering."),
-            ("../kontrakter/sameieandel/", "Sameieerklæring", "Hvem eier hva? Dokumentér sameieandeler."),
-        ]),
-        ("avtaler-og-fullmakter", "Avtaler og fullmakter", [
-            ("../tjenester/fullmakt-mal/", "Fullmakt-mal", "Fullmakt for Nav, bank, eiendom."),
-            ("../kontrakter/kjopekontraktbil/", "Kjøpekontrakt bil", "Privatbilsalg, basert på kjøpsloven."),
-            ("../kontrakter/kvittering/", "Kvittering", "Kontantbetaling, depositum og håndverk."),
-            ("../kontrakter/gjeldsbrev/", "Gjeldsbrev", "Privatlån mellom venner og familie."),
-            ("../kontrakter/kausjonsavtale/", "Kausjonsavtale", "Simpel eller selvskyldnerkausjon."),
-            ("../kontrakter/betalingsplan/", "Betalingsplan", "Nedbetaling av gjeld i avdrag."),
-            ("../kontrakter/konsulentavtale/", "Konsulentavtale", "For frilansere og selvstendige konsulenter."),
-            ("../kontrakter/aksjonaravtale2/", "Aksjonæravtale", "Forkjøpsrett, tag-along, utbytte, exit."),
-            # Extras
-            ("../kontrakter/kjopekontraktbat/", "Kjøpekontrakt båt", "Privat båtsalg med tilstandsklausul."),
-            ("../kontrakter/kjopekontraktgjenstand/", "Kjøpekontrakt eiendeler", "Finn.no-kjøp: møbler, elektronikk, mer."),
-            ("../kontrakter/panteavtale/", "Panteavtale", "Sikre lån med pant i bil eller løsøre."),
-            ("../kontrakter/bruksrettsavtale/", "Bruksrettsavtale", "Gi rett til å bruke noe uten å overdra eierskap."),
-            ("../kontrakter/stiftelsesdokument/", "Stiftelsesdokument AS", "Stift AS med vedtekter."),
-            ("../kontrakter/aksjekjopekontrakt/", "Aksjekjøpekontrakt", "Overdragelse av aksjer med garantier."),
-            ("../kontrakter/opsjonsavtale/", "Opsjonsavtale ansatte", "Vesting-periode og innløsningspris."),
-            ("../kontrakter/styreprotokoll/", "Styreprotokoll", "Protokollér styremøtet riktig. Asl. § 6-29."),
-            ("../kontrakter/generalforsamlingsprotokoll/", "GF-protokoll", "Protokollér GF riktig. Asl. § 5-16."),
-            ("../kontrakter/leverandoravtale/", "Leverandøravtale", "Kjøp av varer og tjenester over tid."),
-            ("../kontrakter/samarbeidsavtale/", "Samarbeidsavtale", "Strategisk samarbeid mellom virksomheter."),
-            ("../kontrakter/overdragelsesavtale/", "Overdragelsesavtale", "Salg av virksomhet. Goodwill, kunder, inventar."),
-            ("../kontrakter/tjenesteavtale/", "Tjenesteavtale", "For malere, vaskehjelp, håndverkere."),
-            ("../kontrakter/consignmentavtale/", "Consignmentavtale", "Selg kunst eller varer på vegne av en annen."),
-        ]),
-        ("arv-og-testament", "Arv og testament", [
-            ("../tjenester/arv/", "Arvefordeling", "Visuell oversikt basert på familiesituasjonen."),
-            ("../tjenester/testament-mal/", "Testament-mal", "Generer testament-utkast med vitnefelt."),
-            ("../tjenester/pliktdel/", "Pliktdel", "Hva kan du testamentere bort? 2/3-regelen."),
-            ("../tjenester/uskifte/", "Uskifte-sjekker", "Kan gjenlevende sitte i uskifte?"),
-            ("../tjenester/samboer-arverett/", "Samboer-arverett", "Arver samboeren din uten testament?"),
-            ("../kontrakter/fremtidsfullmakt/", "Fremtidsfullmakt", "Hvem ivaretar deg ved sviktende helse."),
-            ("../kontrakter/samboeravtale/", "Samboeravtale", "Hvem eier hva ved brudd?"),
-            ("../kontrakter/ektepakt/", "Ektepakt (særeie)", "Gjør formue til særeie."),
-            # Extras
-            ("../tjenester/arvegjeld/", "Arvegjeld-sjekker", "Overtar du avdødes gjeld?"),
-            ("../kontrakter/gavebrev/", "Gavebrev", "Med særeie-klausul og arveforskudd."),
-            ("../kontrakter/ektepakt-felleseie/", "Ektepakt (arv som særeie)", "Felleseie, men arv og gaver beskyttes."),
-            ("../kontrakter/samvaersavtale/", "Samværsavtale", "Barnets hverdag etter samlivsbrudd."),
-            ("../kontrakter/skifteavtale/", "Skifteavtale", "Bolig, bil, gjeld ved samlivsbrudd."),
-        ]),
-        ("frister-og-kalkulatorer", "Frister og kalkulatorer", [
-            ("../tjenester/reklamasjonsfrist/", "Reklamasjonsfrist", "Har du fortsatt rett til å klage?"),
-            ("../tjenester/angrefrist/", "Angrefrist", "Har du fortsatt rett til å angre kjøpet?"),
-            ("../tjenester/feriepenger/", "Feriepenger-kalkulator", "Standard, tariff og over 60."),
-            ("../tjenester/overtid/", "Overtid-kalkulator", "Beregn overtid med lovpålagt tillegg."),
-            ("../tjenester/depositum/", "Depositum-kalkulator", "Maks lovlig depositum basert på månedsleien."),
-            ("../tjenester/enk-eller-as/", "ENK eller AS?", "Optimal selskapsform med skatteillustrasjon."),
-            ("../tjenester/utbytte-skatt/", "Utbytte-skatt", "Effektiv sats 37,84 %. Netto utbytte."),
-            ("../tjenester/omdanning-enk-as/", "Omdanning ENK→AS", "Er det lønnsomt? Skattesammenligning."),
-            # Extras
-            ("../tjenester/reklamasjonsfrist-bolig/", "Reklamasjonsfrist bolig", "5-årsregel og 2-månedersfrist."),
-            ("../tjenester/dagmulkt/", "Dagmulkt", "Dagmulkt ved forsinket boligovertakelse."),
-            ("../tjenester/styreansvar/", "Styreansvar-sjekker", "Personlig ansvar? Handleplikt og insolvens."),
-            ("../tjenester/aksjekapital/", "Aksjekapital-sjekker", "Handleplikt og utbytteregler."),
-            ("../tjenester/aksjonaravtale/", "Aksjonæravtale-sjekker", "10-punkts sjekkliste."),
-        ]),
-    ]
+    KATEGORIER = TJENESTER_KATEGORIER
 
     total = sum(len(verktoy) for _, _, verktoy in KATEGORIER)
     VISIBLE_BY_DEFAULT = 8
@@ -7398,6 +7867,13 @@ def build():
         os.makedirs(f"{out}/sporsmal", exist_ok=True)
         with open(f"{out}/sporsmal/index.html", "w", encoding="utf-8") as f:
             f.write(render_sporsmal_hub())
+        # Kategori-undersider — kollisjonsvern mot spørsmål-slugs
+        _sp_slugs = {s["slug"] for s in SPORSMAL}
+        for _kat_slug, _kat_tittel, _kat_items in sporsmal_by_intent():
+            assert _kat_slug not in _sp_slugs, f"Kategori-slug kolliderer med spørsmål-slug: {_kat_slug}"
+            os.makedirs(f"{out}/sporsmal/{_kat_slug}", exist_ok=True)
+            with open(f"{out}/sporsmal/{_kat_slug}/index.html", "w", encoding="utf-8") as f:
+                f.write(render_sporsmal_kategori(_kat_slug, _kat_tittel, _kat_items))
         for s in SPORSMAL:
             os.makedirs(f"{out}/sporsmal/{s['slug']}", exist_ok=True)
             with open(f"{out}/sporsmal/{s['slug']}/index.html", "w", encoding="utf-8") as f:
@@ -7480,6 +7956,8 @@ def build():
     
     if SPORSMAL:
         urls.append(("/sporsmal/", "0.9"))
+        for _kat_slug, _kat_tittel, _kat_items in sporsmal_by_intent():
+            urls.append((f"/sporsmal/{_kat_slug}/", "0.8"))
         for s in SPORSMAL:
             if s['slug'] not in NOINDEX_SLUGS:
                 urls.append((f"/sporsmal/{s['slug']}/", "0.8"))
@@ -7547,6 +8025,15 @@ Sitemap: {SITE_URL}/sitemap.xml
             "description": s.get("description", ""),
             "kategori": s.get("kategori", ""),
         })
+    for _kslug, _ktittel, _verktoy in TJENESTER_KATEGORIER:
+        for _vurl, _vnavn, _vdesc in _verktoy:
+            index.append({
+                "type": "verktoy",
+                "url": _vurl.lstrip("./"),
+                "title": _vnavn,
+                "kort_svar": _vdesc,
+                "kategori": _ktittel,
+            })
     with open(f"{out}/paragraphs-index.json", "w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, indent=None, separators=(",", ":"))
     

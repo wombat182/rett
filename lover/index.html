@@ -24,8 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
 </head>
-<body>
-<div class="rr-header">
+<body><div class="rr-header">
   <div class="rr-header-row">
     <a href="../" class="rr-logo" aria-label="Rettsregel forside">
       <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -39,9 +38,10 @@
           <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
         </g>
       </svg>
+      <span class="rr-logo-name">Rettsregel</span>
     </a>
     <form class="rr-search" role="search" onsubmit="return false;">
-      <input type="search" id="rr-search-input" placeholder="Søk i lover, paragrafer, spørsmål og maler..." aria-label="Søk" autocomplete="off">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
       <span class="rr-search-icon" aria-hidden="true">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </span>
@@ -55,6 +55,7 @@
       <a href="../lover/" class="rr-nav-active">Lover</a>
       <a href="../sporsmal/">Spørsmål</a>
       <a href="../tjenester/">Verktøy/maler</a>
+      <a href="../om/">Om</a>
       <a href="../advokatvurdering/" class="rr-nav-cta">Få saken din vurdert →</a>
     </nav>
   </div>
@@ -101,231 +102,326 @@
 })();
 </script>
 
+<style>
+.lov-page { max-width: 1100px; margin: 0 auto; padding: 0 32px 80px; }
+.lov-head { padding: 36px 0 4px; }
+.lov-head h1 {
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.024em;
+  color: var(--ink); margin: 0;
+}
+.lov-head p { font-family: var(--sans); font-size: 14px; color: var(--ink-mute); margin: 8px 0 0; }
+.lov-searchbar {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--bg); padding: 16px 0 14px;
+}
+.lov-searchbar-inner {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-card); border: 1px solid var(--line-strong);
+  border-radius: 12px; padding: 0 16px; height: 46px;
+}
+.lov-searchbar-inner svg { color: var(--ink-mute); flex: none; }
+#lov-sok {
+  flex: 1; border: none; background: transparent; outline: none;
+  font-family: var(--sans); font-size: 14.5px; color: var(--ink); height: 100%;
+}
+#lov-sok::placeholder { color: var(--ink-mute); }
+#lov-antall { font-family: var(--sans); font-size: 12px; color: var(--ink-mute); white-space: nowrap; }
+.lov-layout { display: grid; grid-template-columns: 190px 1fr; gap: 36px; align-items: start; }
+.lov-sidebar { position: sticky; top: 78px; }
+.lov-sidebar-label {
+  font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.1em; color: var(--ink-mute); margin: 6px 0 12px;
+}
+.lov-kat {
+  display: block; width: 100%; text-align: left;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--sans); font-size: 13.5px; color: var(--ink);
+  padding: 6px 0; transition: color .15s ease;
+}
+.lov-kat span { color: var(--ink-mute); font-size: 12px; }
+.lov-kat:hover { color: var(--accent); }
+.lov-kat-active { color: var(--accent); font-weight: 600; }
+.lov-register { border-top: 1px solid var(--line); }
+.lov-row { border-bottom: 1px solid var(--line); }
+.lov-row-top {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 13px 2px; text-decoration: none;
+}
+.lov-row-name {
+  font-family: var(--serif); font-weight: 500; font-size: 16.5px;
+  letter-spacing: -0.01em; color: var(--ink); white-space: nowrap;
+  transition: color .15s ease;
+}
+.lov-row-top:hover .lov-row-name { color: var(--accent); }
+.lov-row-tag {
+  flex: 1; font-family: var(--sans); font-size: 13px; color: var(--ink-mute);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.lov-row-meta { font-family: var(--sans); font-size: 12px; color: var(--ink-mute); white-space: nowrap; }
+.lov-row-pop {
+  font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute);
+  margin: 0; padding: 0 2px 13px; line-height: 1.6;
+}
+.lov-row-pop a { color: var(--accent); text-decoration: none; }
+.lov-row-pop a:hover { color: var(--accent-deep); }
+.lov-row-pop a.lov-row-tool { color: var(--kat-bolig); }
+.lov-register.kompakt .lov-row-pop { display: none; }
+.lov-register.kompakt .lov-row-top { padding: 10px 2px; }
+.lov-register.kompakt .lov-row-name { font-size: 15px; }
+.lov-tomt {
+  display: none; margin-top: 18px;
+  background: rgba(192,74,38,.07); border: 1px solid var(--accent-soft);
+  border-radius: 14px; padding: 20px 24px;
+}
+.lov-tomt-title { font-family: var(--serif); font-weight: 500; font-size: 17px; color: var(--ink); margin: 0 0 5px; }
+.lov-tomt p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft); margin: 0; line-height: 1.6; }
+.lov-tomt a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.lov-tomt a:hover { color: var(--accent-deep); }
+@media (max-width: 860px) {
+  .lov-page { padding: 0 20px 64px; }
+  .lov-layout { grid-template-columns: 1fr; gap: 18px; }
+  .lov-sidebar { position: static; display: flex; gap: 6px; flex-wrap: wrap; }
+  .lov-sidebar-label { display: none; }
+  .lov-kat {
+    width: auto; border: 1px solid var(--line-strong); border-radius: 16px;
+    padding: 5px 13px; font-size: 12.5px;
+  }
+  .lov-kat-active { border-color: var(--accent); }
+  .lov-row-tag { display: none; }
+}
+</style>
 
-<main class="tk-page">
+<main class="lov-page">
 
-  <section class="tk-hero-compact" id="alle">
+  <div class="lov-head">
     <h1>Finn loven som gjelder deg.</h1>
-    <p class="tk-hero-compact-lead">Norske lover forklart på vanlig språk.</p>
-  </section>
-
-  <div class="tk-search-wrap">
-    <span class="tk-search-icon" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-    </span>
-    <input type="search" class="tk-search-input" id="tk-search" placeholder="Søk etter lov, paragraf eller situasjon …" aria-label="Søk i lover">
-    <span class="tk-search-hint">Filtreres mens du skriver</span>
+    <p>24 lover · 1432 paragrafer forklart på vanlig norsk — flere kommer.</p>
   </div>
 
-  <nav class="tk-cat-bar" aria-label="Kategorier">
-    <a href="#bolig" class="tk-cat" data-cat="bolig">Bolig</a>
-    <a href="#eiendom" class="tk-cat" data-cat="eiendom">Eiendom</a>
-    <a href="#kjop-og-klage" class="tk-cat" data-cat="kjop-og-klage">Kjøp og klage</a>
-    <a href="#arbeid" class="tk-cat" data-cat="arbeid">Arbeid</a>
-    <a href="#utdanning" class="tk-cat" data-cat="utdanning">Utdanning</a>
-    <a href="#arv-og-familie" class="tk-cat" data-cat="arv-og-familie">Arv og familie</a>
-    <a href="#erstatning" class="tk-cat" data-cat="erstatning">Erstatning</a>
-    <a href="#gjeld" class="tk-cat" data-cat="gjeld">Gjeld</a>
-    <a href="#forvaltning" class="tk-cat" data-cat="forvaltning">Forvaltning</a>
-    <a href="#alle" class="tk-cat" data-cat="alle">Alle lover</a>
-  </nav>
-
-  <section class="tk-section" id="bolig">
-    <h2 class="tk-section-title">Bolig</h2>
-    <div class="tk-grid">
-      <a href="husleieloven/" class="tk-row tk-row-with-meta" data-search="husleieloven leie av bolig og rettigheter ved leie.">
-        <span class="tk-row-name">Husleieloven</span>
-        <span class="tk-row-desc">Leie av bolig og rettigheter ved leie.</span>
-        <span class="tk-row-meta">89 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="avhendingslova/" class="tk-row tk-row-with-meta" data-search="avhendingslova kjøp og salg av bolig, hytte og tomt.">
-        <span class="tk-row-name">Avhendingslova</span>
-        <span class="tk-row-desc">Kjøp og salg av bolig, hytte og tomt.</span>
-        <span class="tk-row-meta">55 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="naboloven/" class="tk-row tk-row-with-meta" data-search="naboloven grenser, trær, støy og naboforhold.">
-        <span class="tk-row-name">Naboloven</span>
-        <span class="tk-row-desc">Grenser, trær, støy og naboforhold.</span>
-        <span class="tk-row-meta">20 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="bustadoppforingslova/" class="tk-row tk-row-with-meta" data-search="bustadoppføringslova bygging av ny bolig eller hytte.">
-        <span class="tk-row-name">Bustadoppføringslova</span>
-        <span class="tk-row-desc">Bygging av ny bolig eller hytte.</span>
-        <span class="tk-row-meta">68 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="tomtefesteloven/" class="tk-row tk-row-with-meta" data-search="tomtefesteloven leie av tomt til hus du eier — festeavgift og innløsning.">
-        <span class="tk-row-name">Tomtefesteloven</span>
-        <span class="tk-row-desc">Leie av tomt til hus du eier — festeavgift og innløsning.</span>
-        <span class="tk-row-meta">47 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="eierseksjonsloven/" class="tk-row tk-row-with-meta" data-search="eierseksjonsloven eierseksjoner — sameie, felleskostnader og vedtak på årsmøtet.">
-        <span class="tk-row-name">Eierseksjonsloven</span>
-        <span class="tk-row-desc">Eierseksjoner — sameie, felleskostnader og vedtak på årsmøtet.</span>
-        <span class="tk-row-meta">71 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="burettslagslova/" class="tk-row tk-row-with-meta" data-search="burettslagslova borettslag — andeler, borett, fellesgjeld og generalforsamling.">
-        <span class="tk-row-name">Burettslagslova</span>
-        <span class="tk-row-desc">Borettslag — andeler, borett, fellesgjeld og generalforsamling.</span>
-        <span class="tk-row-meta">117 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
+  <div class="lov-searchbar">
+    <div class="lov-searchbar-inner">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="lov-sok" placeholder="Finn en lov: «husleieloven», «arveloven» …" aria-label="Finn en lov" autocomplete="off">
+      <span id="lov-antall"></span>
     </div>
-  </section>
+  </div>
 
-  <section class="tk-section" id="eiendom">
-    <h2 class="tk-section-title">Eiendom</h2>
-    <div class="tk-grid">
-      <a href="oreigningslova/" class="tk-row tk-row-with-meta" data-search="oreigningslova ekspropriasjon — når det offentlige kan ta eiendom mot erstatning.">
-        <span class="tk-row-name">Oreigningslova</span>
-        <span class="tk-row-desc">Ekspropriasjon — når det offentlige kan ta eiendom mot erstatning.</span>
-        <span class="tk-row-meta">33 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
+  <div class="lov-layout">
+    <aside class="lov-sidebar" aria-label="Filtrer etter kategori">
+      <p class="lov-sidebar-label">FILTRER</p>
+      <button type="button" class="lov-kat lov-kat-active" data-kat="alle">Alle lover <span>(24)</span></button>
+      <button type="button" class="lov-kat" data-kat="bolig">Bolig og eiendom <span>(8)</span></button>
+      <button type="button" class="lov-kat" data-kat="arbeid">Arbeid <span>(2)</span></button>
+      <button type="button" class="lov-kat" data-kat="kjop">Kjøp og klage <span>(3)</span></button>
+      <button type="button" class="lov-kat" data-kat="arv">Arv og familie <span>(4)</span></button>
+      <button type="button" class="lov-kat" data-kat="erstatning">Erstatning <span>(3)</span></button>
+      <button type="button" class="lov-kat" data-kat="gjeld">Gjeld og økonomi <span>(2)</span></button>
+      <button type="button" class="lov-kat" data-kat="offentlig">Det offentlige <span>(2)</span></button>
+    </aside>
+
+    <div>
+      <div class="lov-register kompakt" id="lov-register">
+  <div class="lov-row" data-kat="kjop" data-k="angrerettloven angrerettloven">
+    <a href="angrerettloven/" class="lov-row-top">
+      <span class="lov-row-name">Angrerettloven</span>
+      <span class="lov-row-tag">Netthandel — 14 dagers angrerett</span>
+      <span class="lov-row-meta">30 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="angrerettloven/21/">§ 21 Når starter angrefristen og hvor…</a> · <a href="angrerettloven/20/">§ 20 Slik bruker du angreretten</a> · <a href="../tjenester/angreskjema/" class="lov-row-tool">⚒ Angrerettskjema</a></p>
+  </div>
+  <div class="lov-row" data-kat="arbeid" data-k="arbeidsmiljøloven arbeidsmiljoloven">
+    <a href="arbeidsmiljoloven/" class="lov-row-top">
+      <span class="lov-row-name">Arbeidsmiljøloven</span>
+      <span class="lov-row-tag">Jobb — oppsigelse, arbeidstid og vern</span>
+      <span class="lov-row-meta">100 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="arbeidsmiljoloven/15-7/">§ 15-7 Kjerneparagrafen: Vern mot usakli…</a> · <a href="arbeidsmiljoloven/10-6/">§ 10-6 Overtid og meirarbeid (når du må…</a> · <a href="../tjenester/arbeid-oppsigelse/" class="lov-row-tool">⚒ Oppsigelsestid-kalkulator</a></p>
+  </div>
+  <div class="lov-row" data-kat="arv" data-k="arveloven arveloven">
+    <a href="arveloven/" class="lov-row-top">
+      <span class="lov-row-name">Arveloven</span>
+      <span class="lov-row-tag">Arv, pliktdel, testament og uskifte</span>
+      <span class="lov-row-meta">178 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="arveloven/50/">§ 50 Pliktdelsarv: Hvor mye må barna få</a> · <a href="arveloven/28/">§ 28 Når kan du kreve at uskifteboet o…</a> · <a href="../tjenester/testament-mal/" class="lov-row-tool">⚒ Testament-mal</a></p>
+  </div>
+  <div class="lov-row" data-kat="bolig" data-k="avhendingslova avhendingslova">
+    <a href="avhendingslova/" class="lov-row-top">
+      <span class="lov-row-name">Avhendingslova</span>
+      <span class="lov-row-tag">Kjøp og salg av bolig — mangler og reklamasjon</span>
+      <span class="lov-row-meta">55 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="avhendingslova/3-9/">§ 3-9 Eiendommen solgt «som den er»</a> · <a href="avhendingslova/4-19/">§ 4-19 Reklamasjon — frister for å klage</a> · <a href="../tjenester/reklamasjonsfrist-bolig/" class="lov-row-tool">⚒ Reklamasjonsfrist bolig</a></p>
+  </div>
+  <div class="lov-row" data-kat="arv" data-k="barnelova barnelova">
+    <a href="barnelova/" class="lov-row-top">
+      <span class="lov-row-name">Barnelova</span>
+      <span class="lov-row-tag">Foreldreansvar, fast bosted og samvær</span>
+      <span class="lov-row-meta">109 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="barnelova/36/">§ 36 Hvor skal barnet bo fast? (Delt f…</a> · <a href="barnelova/43/">§ 43 Hva er vanlig samvær (omfanget)</a></p>
+  </div>
+  <div class="lov-row" data-kat="bolig" data-k="burettslagslova burettslagslova">
+    <a href="burettslagslova/" class="lov-row-top">
+      <span class="lov-row-name">Burettslagslova</span>
+      <span class="lov-row-tag">Borettslag — andeler, borett og fellesgjeld</span>
+      <span class="lov-row-meta">117 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="burettslagslova/5-11/">§ 5-11 Slik skal du behandle boligen og…</a> · <a href="burettslagslova/5-17/">§ 5-17 Borettslagets plikt til å vedlike…</a></p>
+  </div>
+  <div class="lov-row" data-kat="bolig" data-k="bustadoppføringslova bustadoppforingslova">
+    <a href="bustadoppforingslova/" class="lov-row-top">
+      <span class="lov-row-name">Bustadoppføringslova</span>
+      <span class="lov-row-tag">Bygging av ny bolig eller hytte</span>
+      <span class="lov-row-meta">68 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="bustadoppforingslova/12/">§ 12 Bankgarantien som beskytter deg m…</a> · <a href="bustadoppforingslova/18/">§ 18 Slik regner du ut dagmulkten</a></p>
+  </div>
+  <div class="lov-row" data-kat="bolig" data-k="eierseksjonsloven eierseksjonsloven">
+    <a href="eierseksjonsloven/" class="lov-row-top">
+      <span class="lov-row-name">Eierseksjonsloven</span>
+      <span class="lov-row-tag">Sameie, felleskostnader og årsmøte</span>
+      <span class="lov-row-meta">71 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="eierseksjonsloven/29/">§ 29 Slik skal felleskostnadene deles…</a> · <a href="eierseksjonsloven/30/">§ 30 Er du ansvarlig hvis sameiet går…</a></p>
+  </div>
+  <div class="lov-row" data-kat="arv" data-k="ekteskapsloven ekteskapsloven">
+    <a href="ekteskapsloven/" class="lov-row-top">
+      <span class="lov-row-name">Ekteskapsloven</span>
+      <span class="lov-row-tag">Ekteskap, skilsmisse og deling</span>
+      <span class="lov-row-meta">128 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="ekteskapsloven/58/">§ 58 Slik regner dere ut hvem som får…</a> · <a href="ekteskapsloven/59/">§ 59 Behold det du tok med inn i ektes…</a></p>
+  </div>
+  <div class="lov-row" data-kat="arbeid" data-k="ferieloven ferieloven">
+    <a href="ferieloven/" class="lov-row-top">
+      <span class="lov-row-name">Ferieloven</span>
+      <span class="lov-row-tag">Ferie og feriepenger</span>
+      <span class="lov-row-meta">18 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="ferieloven/7/">§ 7 Når du kan kreve å ta ferie</a> · <a href="ferieloven/11/">§ 11 Når feriepenger skal utbetales</a> · <a href="../tjenester/feriepenger/" class="lov-row-tool">⚒ Feriepenger-kalkulator</a></p>
+  </div>
+  <div class="lov-row" data-kat="kjop" data-k="forbrukerkjøpsloven forbrukerkjopsloven">
+    <a href="forbrukerkjopsloven/" class="lov-row-top">
+      <span class="lov-row-name">Forbrukerkjøpsloven</span>
+      <span class="lov-row-tag">Kjøp fra butikk — reklamasjon og heving</span>
+      <span class="lov-row-meta">63 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="forbrukerkjopsloven/27/">§ 27 Hvor lenge kan du klage på en vare</a> · <a href="forbrukerkjopsloven/32/">§ 32 Slik krever du pengene tilbake (h…</a> · <a href="../tjenester/reklamasjon/" class="lov-row-tool">⚒ Reklamasjonsbrev</a></p>
+  </div>
+  <div class="lov-row" data-kat="gjeld" data-k="foreldelsesloven foreldelsesloven">
+    <a href="foreldelsesloven/" class="lov-row-top">
+      <span class="lov-row-name">Foreldelsesloven</span>
+      <span class="lov-row-tag">Når krav blir foreldet — frister</span>
+      <span class="lov-row-meta">33 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="foreldelsesloven/2/">§ 2 Den vanlige foreldelsesfristen er…</a> · <a href="foreldelsesloven/3/">§ 3 Når foreldelsesfristen begynner å…</a> · <a href="../verktoy/foreldelse.html" class="lov-row-tool">⚒ Foreldelse-sjekker</a></p>
+  </div>
+  <div class="lov-row" data-kat="offentlig" data-k="forvaltningsloven forvaltningsloven">
+    <a href="forvaltningsloven/" class="lov-row-top">
+      <span class="lov-row-name">Forvaltningsloven</span>
+      <span class="lov-row-tag">Dine rettigheter mot det offentlige — vedtak og klage</span>
+      <span class="lov-row-meta">63 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="forvaltningsloven/28/">§ 28 Hvem har rett til å klage, og hve…</a> · <a href="forvaltningsloven/11/">§ 11 Offentlige kontorer har plikt til…</a></p>
+  </div>
+  <div class="lov-row" data-kat="bolig" data-k="husleieloven husleieloven">
+    <a href="husleieloven/" class="lov-row-top">
+      <span class="lov-row-name">Husleieloven</span>
+      <span class="lov-row-tag">Leie av bolig — depositum, oppsigelse og vedlikehold</span>
+      <span class="lov-row-meta">89 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="husleieloven/3-5/">§ 3-5 Depositum — reglene du må kjenne</a> · <a href="husleieloven/9-9/">§ 9-9 Når kan utleieren heve leieavtale…</a> · <a href="../kontrakter/husleiekontrakt/" class="lov-row-tool">⚒ Husleiekontrakt</a></p>
+  </div>
+  <div class="lov-row" data-kat="gjeld" data-k="inkassoloven inkassoloven">
+    <a href="inkassoloven/" class="lov-row-top">
+      <span class="lov-row-name">Inkassoloven</span>
+      <span class="lov-row-tag">Inkasso, varsler og gebyrer</span>
+      <span class="lov-row-meta">37 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="inkassoloven/9/">§ 9 Inkassovarsel og betalingsfrist —…</a> · <a href="inkassoloven/17/">§ 17 Når skyldneren må betale inkassok…</a> · <a href="../verktoy/inkassosalaer.html" class="lov-row-tool">⚒ Inkassosalær-sjekker</a></p>
+  </div>
+  <div class="lov-row" data-kat="kjop" data-k="kjøpsloven kjopsloven">
+    <a href="kjopsloven/" class="lov-row-top">
+      <span class="lov-row-name">Kjøpsloven</span>
+      <span class="lov-row-tag">Kjøp og salg mellom private og bedrifter</span>
+      <span class="lov-row-meta">82 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="kjopsloven/32/">§ 32 Reklamasjonsfristene</a> · <a href="kjopsloven/39/">§ 39 Heving ved mangel</a> · <a href="../tjenester/heving/" class="lov-row-tool">⚒ Heving av kjøp</a></p>
+  </div>
+  <div class="lov-row" data-kat="bolig" data-k="naboloven naboloven">
+    <a href="naboloven/" class="lov-row-top">
+      <span class="lov-row-name">Naboloven</span>
+      <span class="lov-row-tag">Trær, støy, gjerder og naboforhold</span>
+      <span class="lov-row-meta">20 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="naboloven/3/">§ 3 Naboens tre kan ikke være høyere…</a> · <a href="naboloven/2/">§ 2 Grensen for urimelig skade og ule…</a></p>
+  </div>
+  <div class="lov-row" data-kat="arv" data-k="navneloven navneloven">
+    <a href="navneloven/" class="lov-row-top">
+      <span class="lov-row-name">Navneloven</span>
+      <span class="lov-row-tag">Navnevalg og navneendring</span>
+      <span class="lov-row-meta">17 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="navneloven/4/">§ 4 Avledede etternavn — navn via sle…</a> · <a href="navneloven/3/">§ 3 Frie, beskyttede og nye etternavn</a></p>
+  </div>
+  <div class="lov-row" data-kat="bolig" data-k="oreigningslova oreigningslova">
+    <a href="oreigningslova/" class="lov-row-top">
+      <span class="lov-row-name">Oreigningslova</span>
+      <span class="lov-row-tag">Ekspropriasjon — når det offentlige tar eiendom</span>
+      <span class="lov-row-meta">33 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="oreigningslova/2/">§ 2 Hvilke formål det kan eksproprier…</a></p>
+  </div>
+  <div class="lov-row" data-kat="erstatning" data-k="pasientskadeloven pasientskadeloven">
+    <a href="pasientskadeloven/" class="lov-row-top">
+      <span class="lov-row-name">Pasientskadeloven</span>
+      <span class="lov-row-tag">Erstatning ved skade i helsevesenet</span>
+      <span class="lov-row-meta">25 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="pasientskadeloven/2/">§ 2 Når du har krav på erstatning for…</a> · <a href="pasientskadeloven/3/">§ 3 Når årsaken til skaden er uklar</a></p>
+  </div>
+  <div class="lov-row" data-kat="bolig" data-k="tomtefesteloven tomtefesteloven">
+    <a href="tomtefesteloven/" class="lov-row-top">
+      <span class="lov-row-name">Tomtefesteloven</span>
+      <span class="lov-row-tag">Festetomt — festeavgift og innløsning</span>
+      <span class="lov-row-meta">47 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="tomtefesteloven/15/">§ 15 Slik reguleres festeavgiften</a> · <a href="tomtefesteloven/32/">§ 32 Du har rett til å kjøpe festetomt…</a></p>
+  </div>
+  <div class="lov-row" data-kat="offentlig" data-k="universitets- og høyskoleloven universitets- og hoyskoleloven">
+    <a href="universitets-og-hoyskoleloven/" class="lov-row-top">
+      <span class="lov-row-name">Universitets- og høyskoleloven</span>
+      <span class="lov-row-tag">Studierettigheter — eksamen, klage og utestenging</span>
+      <span class="lov-row-meta">9 §§</span>
+    </a>
+  </div>
+  <div class="lov-row" data-kat="erstatning" data-k="voldserstatningsloven voldserstatningsloven">
+    <a href="voldserstatningsloven/" class="lov-row-top">
+      <span class="lov-row-name">Voldserstatningsloven</span>
+      <span class="lov-row-tag">Erstatning fra staten ved vold</span>
+      <span class="lov-row-meta">19 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="voldserstatningsloven/1/">§ 1 Hvilke handlinger kan gi voldsers…</a> · <a href="voldserstatningsloven/6/">§ 6 Utbetaling når du har fått erstat…</a></p>
+  </div>
+  <div class="lov-row" data-kat="erstatning" data-k="yrkesskadeforsikringsloven yrkesskadeforsikringsloven">
+    <a href="yrkesskadeforsikringsloven/" class="lov-row-top">
+      <span class="lov-row-name">Yrkesskadeforsikringsloven</span>
+      <span class="lov-row-tag">Skade eller sykdom påført i arbeid</span>
+      <span class="lov-row-meta">21 §§</span>
+    </a>
+    <p class="lov-row-pop"><a href="yrkesskadeforsikringsloven/11/">§ 11 Skader og sykdommer som yrkesskad…</a> · <a href="yrkesskadeforsikringsloven/13/">§ 13 Hvordan erstatningen beregnes</a></p>
+  </div>
+      </div>
+      <div class="lov-tomt" id="lov-tomt">
+        <p class="lov-tomt-title">Vi dekker ikke denne loven ennå</p>
+        <p><a href="../kontakt/">Foreslå den</a> — eller <a href="../advokatvurdering/">beskriv saken din</a> og få en gratis førstevurdering.</p>
+      </div>
     </div>
-  </section>
-
-  <section class="tk-section" id="kjop-og-klage">
-    <h2 class="tk-section-title">Kjøp og klage</h2>
-    <div class="tk-grid">
-      <a href="angrerettloven/" class="tk-row tk-row-with-meta" data-search="angrerettloven angrerett ved netthandel og kjøp utenfor butikk.">
-        <span class="tk-row-name">Angrerettloven</span>
-        <span class="tk-row-desc">Angrerett ved netthandel og kjøp utenfor butikk.</span>
-        <span class="tk-row-meta">30 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="kjopsloven/" class="tk-row tk-row-with-meta" data-search="kjøpsloven kjøp og salg — privat og bedrift.">
-        <span class="tk-row-name">Kjøpsloven</span>
-        <span class="tk-row-desc">Kjøp og salg — privat og bedrift.</span>
-        <span class="tk-row-meta">82 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="forbrukerkjopsloven/" class="tk-row tk-row-with-meta" data-search="forbrukerkjøpsloven kjøp som forbruker — strengeste forbrukervern.">
-        <span class="tk-row-name">Forbrukerkjøpsloven</span>
-        <span class="tk-row-desc">Kjøp som forbruker — strengeste forbrukervern.</span>
-        <span class="tk-row-meta">63 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="tk-section" id="arbeid">
-    <h2 class="tk-section-title">Arbeid</h2>
-    <div class="tk-grid">
-      <a href="arbeidsmiljoloven/" class="tk-row tk-row-with-meta" data-search="arbeidsmiljøloven rettigheter på jobben — arbeidstid, oppsigelse, permisjon og varsling.">
-        <span class="tk-row-name">Arbeidsmiljøloven</span>
-        <span class="tk-row-desc">Rettigheter på jobben — arbeidstid, oppsigelse, permisjon og varsling.</span>
-        <span class="tk-row-meta">100 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="ferieloven/" class="tk-row tk-row-with-meta" data-search="ferieloven ferie, feriepenger og når du har rett til fri.">
-        <span class="tk-row-name">Ferieloven</span>
-        <span class="tk-row-desc">Ferie, feriepenger og når du har rett til fri.</span>
-        <span class="tk-row-meta">18 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="tk-section" id="utdanning">
-    <h2 class="tk-section-title">Utdanning</h2>
-    <div class="tk-grid">
-      <a href="universitets-og-hoyskoleloven/" class="tk-row tk-row-with-meta" data-search="universitets- og høyskoleloven rettigheter som student — eksamen, klage og utestenging.">
-        <span class="tk-row-name">Universitets- og høyskoleloven</span>
-        <span class="tk-row-desc">Rettigheter som student — eksamen, klage og utestenging.</span>
-        <span class="tk-row-meta">9 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="tk-section" id="arv-og-familie">
-    <h2 class="tk-section-title">Arv og familie</h2>
-    <div class="tk-grid">
-      <a href="barnelova/" class="tk-row tk-row-with-meta" data-search="barnelova foreldreansvar, fast bosted, samvær og farskap.">
-        <span class="tk-row-name">Barnelova</span>
-        <span class="tk-row-desc">Foreldreansvar, fast bosted, samvær og farskap.</span>
-        <span class="tk-row-meta">109 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="arveloven/" class="tk-row tk-row-with-meta" data-search="arveloven arv, testament og pliktdel.">
-        <span class="tk-row-name">Arveloven</span>
-        <span class="tk-row-desc">Arv, testament og pliktdel.</span>
-        <span class="tk-row-meta">178 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="ekteskapsloven/" class="tk-row tk-row-with-meta" data-search="ekteskapsloven vilkår for ekteskap, vigsling og ugyldighet.">
-        <span class="tk-row-name">Ekteskapsloven</span>
-        <span class="tk-row-desc">Vilkår for ekteskap, vigsling og ugyldighet.</span>
-        <span class="tk-row-meta">128 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="tk-section" id="erstatning">
-    <h2 class="tk-section-title">Erstatning</h2>
-    <div class="tk-grid">
-      <a href="voldserstatningsloven/" class="tk-row tk-row-with-meta" data-search="voldserstatningsloven erstatning fra staten ved vold og seksuallovbrudd.">
-        <span class="tk-row-name">Voldserstatningsloven</span>
-        <span class="tk-row-desc">Erstatning fra staten ved vold og seksuallovbrudd.</span>
-        <span class="tk-row-meta">19 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="pasientskadeloven/" class="tk-row tk-row-with-meta" data-search="pasientskadeloven erstatning ved skade i helsevesenet.">
-        <span class="tk-row-name">Pasientskadeloven</span>
-        <span class="tk-row-desc">Erstatning ved skade i helsevesenet.</span>
-        <span class="tk-row-meta">25 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="yrkesskadeforsikringsloven/" class="tk-row tk-row-with-meta" data-search="yrkesskadeforsikringsloven erstatning ved skade eller sykdom påført i arbeid.">
-        <span class="tk-row-name">Yrkesskadeforsikringsloven</span>
-        <span class="tk-row-desc">Erstatning ved skade eller sykdom påført i arbeid.</span>
-        <span class="tk-row-meta">21 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="tk-section" id="gjeld">
-    <h2 class="tk-section-title">Gjeld</h2>
-    <div class="tk-grid">
-      <a href="inkassoloven/" class="tk-row tk-row-with-meta" data-search="inkassoloven inkasso, inkassovarsel, gebyrer og dine rettigheter som skyldner.">
-        <span class="tk-row-name">Inkassoloven</span>
-        <span class="tk-row-desc">Inkasso, inkassovarsel, gebyrer og dine rettigheter som skyldner.</span>
-        <span class="tk-row-meta">37 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="foreldelsesloven/" class="tk-row tk-row-with-meta" data-search="foreldelsesloven når et krav blir foreldet — frister for gjeld og andre krav.">
-        <span class="tk-row-name">Foreldelsesloven</span>
-        <span class="tk-row-desc">Når et krav blir foreldet — frister for gjeld og andre krav.</span>
-        <span class="tk-row-meta">33 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="tk-section" id="forvaltning">
-    <h2 class="tk-section-title">Forvaltning</h2>
-    <div class="tk-grid">
-      <a href="forvaltningsloven/" class="tk-row tk-row-with-meta" data-search="forvaltningsloven dine rettigheter i møte med det offentlige — vedtak, innsyn og klage.">
-        <span class="tk-row-name">Forvaltningsloven</span>
-        <span class="tk-row-desc">Dine rettigheter i møte med det offentlige — vedtak, innsyn og klage.</span>
-        <span class="tk-row-meta">63 paragrafer</span>
-        <span class="tk-row-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
-
-
+  </div>
 
 </main>
-
 <footer class="site-footer">
   <span class="site-footer-copy">© 2026 Walrus AS</span>
   <span class="site-footer-links">
@@ -338,73 +434,45 @@
 <a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
   <span>Gratis vurdering av din sak</span>
 </a>
-</body>
-</html>
-
 <script>
 (function() {
-  document.querySelectorAll('.tk-show-all').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      var section = link.closest('.tk-section');
-      if (section) section.removeAttribute('data-collapsed');
+  var input = document.getElementById('lov-sok');
+  var register = document.getElementById('lov-register');
+  var antall = document.getElementById('lov-antall');
+  var tomt = document.getElementById('lov-tomt');
+  var rows = Array.prototype.slice.call(register.querySelectorAll('.lov-row'));
+  var kats = Array.prototype.slice.call(document.querySelectorAll('.lov-kat'));
+  var aktivKat = 'alle';
+  var EXPAND_AT = 6;
+  function oppdater() {
+    var q = (input.value || '').trim().toLowerCase();
+    var vist = 0;
+    rows.forEach(function(r) {
+      var hitQ = !q || (r.getAttribute('data-k') || '').indexOf(q) !== -1;
+      var hitK = aktivKat === 'alle' || r.getAttribute('data-kat') === aktivKat;
+      var vis = hitQ && hitK;
+      r.style.display = vis ? '' : 'none';
+      if (vis) vist++;
+    });
+    antall.textContent = 'Viser ' + vist + ' av ' + rows.length;
+    tomt.style.display = vist === 0 ? 'block' : 'none';
+    if (vist > 0 && vist <= EXPAND_AT) {
+      register.classList.remove('kompakt');
+    } else {
+      register.classList.add('kompakt');
+    }
+  }
+  input.addEventListener('input', oppdater);
+  kats.forEach(function(k) {
+    k.addEventListener('click', function() {
+      aktivKat = k.getAttribute('data-kat');
+      kats.forEach(function(x) { x.classList.remove('lov-kat-active'); });
+      k.classList.add('lov-kat-active');
+      oppdater();
     });
   });
-  var cats = document.querySelectorAll('.tk-cat');
-  var sections = document.querySelectorAll('.tk-section');
-  function setActive(slug) {
-    cats.forEach(function(c) {
-      if (c.getAttribute('data-cat') === slug) c.classList.add('is-active');
-      else c.classList.remove('is-active');
-    });
-  }
-  if ('IntersectionObserver' in window && cats.length > 0 && sections.length > 0) {
-    var observer = new IntersectionObserver(function(entries) {
-      var visible = entries.filter(function(e) { return e.isIntersecting; });
-      if (visible.length === 0) return;
-      visible.sort(function(a, b) { return a.target.offsetTop - b.target.offsetTop; });
-      setActive(visible[0].target.id);
-    }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
-    sections.forEach(function(s) { observer.observe(s); });
-  }
-  var input = document.getElementById('tk-search');
-  if (!input) return;
-  var allRows = Array.from(document.querySelectorAll('.tk-row'));
-  var allSections = Array.from(document.querySelectorAll('.tk-section'));
-  var allShowAll = Array.from(document.querySelectorAll('.tk-show-all'));
-  function applyFilter() {
-    var q = input.value.trim().toLowerCase();
-    if (q === '') {
-      allRows.forEach(function(r) { r.removeAttribute('data-hidden-by-search'); });
-      allSections.forEach(function(s) {
-        s.removeAttribute('data-hidden-by-search');
-        var rows = s.querySelectorAll('.tk-row');
-        if (rows.length > 8) s.setAttribute('data-collapsed', '');
-      });
-      allShowAll.forEach(function(a) { a.style.display = ''; });
-      return;
-    }
-    allSections.forEach(function(section) {
-      var rows = section.querySelectorAll('.tk-row');
-      var anyVisible = false;
-      rows.forEach(function(r) {
-        var hay = r.getAttribute('data-search') || '';
-        if (hay.indexOf(q) === -1) r.setAttribute('data-hidden-by-search', '');
-        else { r.removeAttribute('data-hidden-by-search'); anyVisible = true; }
-      });
-      section.removeAttribute('data-collapsed');
-      if (anyVisible) section.removeAttribute('data-hidden-by-search');
-      else section.setAttribute('data-hidden-by-search', '');
-    });
-    allShowAll.forEach(function(a) { a.style.display = 'none'; });
-  }
-  input.addEventListener('input', applyFilter);
+  oppdater();
 })();
 </script>
-
-<!-- Rettsregel advokatvurdering CTA -->
-<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
-  <span>Gratis vurdering av din sak</span>
-</a>
 </body>
 </html>
