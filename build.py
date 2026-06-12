@@ -508,6 +508,38 @@ main.page { max-width: 1100px; margin: 0 auto; padding: 0 32px; min-height: calc
 }
 
 /* Kort svar — featured callout */
+.sp-verdict {
+  display: inline-block; vertical-align: middle;
+  font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: .04em;
+  border-radius: 7px; padding: 5px 13px; margin-right: 13px;
+  transform: translateY(-4px);
+}
+.sp-kilde {
+  font-family: var(--sans); font-size: 12px; color: var(--ink-mute);
+  margin: 10px 0 0 !important; line-height: 1.5;
+}
+.sp-relatert { margin: 34px 0 0; }
+.sp-relchips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.sp-relchip {
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  background: var(--bg-card); border: 1px solid var(--line-strong); color: var(--ink);
+  border-radius: 16px; padding: 7px 15px; text-decoration: none;
+  transition: border-color .15s ease, color .15s ease;
+}
+.sp-relchip:hover { border-color: var(--accent); color: var(--accent); }
+.sp-relchip-verktoy { background: #DFF0E9; border-color: #BCDCCD; color: #0E5C46; }
+.sp-relchip-verktoy:hover { border-color: #0E5C46; color: #085041; }
+.sp-vurder {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: rgba(192,74,38,.07); border: 1px solid var(--accent-soft);
+  border-radius: 13px; padding: 15px 19px; margin: 14px 0 0;
+}
+.sp-vurder span { font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; }
+.sp-vurder a { font-family: var(--sans); font-size: 13.5px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+.sp-vurder a:hover { color: var(--accent-deep); }
+@media (max-width: 640px) {
+  .sp-vurder { flex-direction: column; align-items: flex-start; }
+}
 .kort-svar {
   background: var(--bg-card); border: 1px solid var(--line);
   border-left: 4px solid var(--accent);
@@ -3632,29 +3664,69 @@ def render_sporsmal_page(s):
   <div class="related-card-title">{tittel}</div>
 </a>""")
         related_html = f"""<div class="related-section">
-  <div class="related-label">Relaterte paragrafer</div>
+  <div class="related-label">Paragrafene bak svaret</div>
   <div class="related-cards">{"".join(related_cards)}</div>
 </div>"""
+
+    # Dom-badge fra kortsvaret (kun ved tydelig dom)
+    v = sporsmal_verdict(s)
+    verdict_badge = f'<span class="sp-verdict" style="{v[1]}">{v[0]}</span>' if v else ""
+
+    # Kildelinje fra related_paragrafer (aldri fabrikkert)
+    kilde = ""
+    if related:
+        per_lov = {}
+        for r in related:
+            lov_d = LOV_DISPLAY.get(r.get("lov", ""), r.get("lov", ""))
+            p = r.get("paragraf") or r.get("nummer", "")
+            if lov_d and p:
+                per_lov.setdefault(lov_d, []).append(str(p))
+        deler = [f"{lov} § " + " og § ".join(ps) if len(ps) <= 2 else f"{lov} §§ " + ", ".join(ps)
+                 for lov, ps in per_lov.items()]
+        if deler:
+            kilde = '<p class="sp-kilde">Bygger på ' + " · ".join(deler) + "</p>"
 
     kort_svar_html = ""
     if kort_svar:
         kort_svar_html = f"""<div class="kort-svar">
   <div class="kort-svar-label">Kort svar</div>
   <p>{kort_svar}</p>
+  {kilde}
 </div>"""
 
-    related_sp_html = ""
-    if related_sp:
-        sp_cards = []
-        for r in related_sp:
-            rslug = r.get("slug", "")
-            rtitle = r.get("title", "")
-            sp_cards.append(f"""<a href="../../sporsmal/{rslug}/" class="related-card">
-  <div class="related-card-title">{rtitle}</div>
-</a>""")
-        related_sp_html = f"""<div class="related-section">
-  <div class="related-label">Relaterte spørsmål</div>
-  <div class="related-cards">{"".join(sp_cards)}</div>
+    # Relatert-rad: related_sporsmal, fylt opp med tema-søsken fra samme kategori
+    ikat = sporsmal_intent_kat(s)
+    chips = []
+    sett = {slug}
+    for r in related_sp:
+        if r.get("slug") and r["slug"] not in sett:
+            chips.append((r["slug"], r.get("title", "")))
+            sett.add(r["slug"])
+    if len(chips) < 3:
+        mitt_tema = sporsmal_tema(ikat, s)
+        sosken = [x for x in SPORSMAL if sporsmal_intent_kat(x) == ikat and x["slug"] not in sett]
+        sosken.sort(key=lambda x: (sporsmal_tema(ikat, x) != mitt_tema, x["title"]))
+        for x in sosken[: 3 - len(chips)]:
+            chips.append((x["slug"], x["title"]))
+            sett.add(x["slug"])
+    chip_html = "".join(
+        f'<a class="sp-relchip" href="../../sporsmal/{cs}/">{ct}</a>' for cs, ct in chips[:4]
+    )
+    vt = ""
+    by_base = {}
+    for _u, _n, _d, _o, _t in verktoy_alle():
+        by_base[_verktoy_basename(_u)] = (_u, _n)
+    import posixpath
+    for base in SPORSMAL_KAT_VERKTOY.get(ikat, []):
+        if base in by_base:
+            u, navn = by_base[base]
+            mål = posixpath.normpath(posixpath.join("tjenester", u))
+            vt += f'<a class="sp-relchip sp-relchip-verktoy" href="../../{mål}{"" if mål.endswith(".html") else "/"}">&#128196; {navn}</a>'
+    relatert_rad = ""
+    if chip_html or vt:
+        relatert_rad = f"""<div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips">{chip_html}{vt}</div>
 </div>"""
 
     robots = "noindex, follow" if slug in NOINDEX_SLUGS else ""
@@ -3674,21 +3746,19 @@ def render_sporsmal_page(s):
   <article>
     <div class="article-header">
       <div class="article-eyebrow">{kat_label}</div>
-      <h1 class="article-title">{title}</h1>
-      <p class="article-description">{description}</p>
+      <h1 class="article-title">{verdict_badge}{title}</h1>
     </div>
     {kort_svar_html}
+    {related_html}
     <div class="article-body sp-body">
       {body_html}
     </div>
-    <div class="om-takk">
-      <h2>Har du en sak du lurer på?</h2>
-      <p>Skriv til oss. Vi leser alle henvendelser. Hvis vi ikke kan hjelpe direkte, peker vi deg til noen som kan.</p>
-      <a href="/kontakt/">Send inn saken din →</a>
-    </div>
   </article>
-  {related_html}
-  {related_sp_html}
+  {relatert_rad}
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
 </div>
 </main>
 <div class="innhold-attest">
@@ -3697,6 +3767,19 @@ def render_sporsmal_page(s):
 {site_footer(depth=2)}
 </body>
 </html>"""
+
+
+SPORSMAL_KAT_VERKTOY = {
+    "bolig-og-leie": ["husleiekontrakt", "depositum"],
+    "arbeid-og-oppsigelse": ["arbeidskontrakt", "feriepenger"],
+    "penger-og-gjeld": ["inkassosalaer", "foreldelse"],
+    "familie-og-samliv": ["samboeravtale", "ektepakt"],
+    "arv-og-testament": ["testament-mal", "arv"],
+    "kjop-og-klage": ["reklamasjon", "angrefrist"],
+    "bil-og-kjoretoy": ["kjopekontraktbil", "reklamasjon-bil"],
+    "nabo-og-eiendom": ["nabovarsel"],
+    "selskap": ["enk-eller-as", "aksjonaravtale"],
+}
 
 
 # --- Spørsmål: intent-kategorier delt mellom hub og undersider ---
