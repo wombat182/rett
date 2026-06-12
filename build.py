@@ -2437,6 +2437,24 @@ def paragraf_sort_key(p):
     return tuple((0, p) if isinstance(p, int) else (1, p) for p in parts)
 
 
+_PARA_NABOER = None
+
+def _para_naboer():
+    """(lov, number) -> (forrige, neste) som (number, title)-tupler, i filrekkefølge per lov."""
+    global _PARA_NABOER
+    if _PARA_NABOER is None:
+        _PARA_NABOER = {}
+        per_lov = {}
+        for p in PARAGRAPHS:
+            per_lov.setdefault(p["lov"], []).append(p)
+        for lov, liste in per_lov.items():
+            for i, p in enumerate(liste):
+                prev = (liste[i-1]["number"], liste[i-1]["title"]) if i > 0 else None
+                nxt = (liste[i+1]["number"], liste[i+1]["title"]) if i < len(liste) - 1 else None
+                _PARA_NABOER[(lov, p["number"])] = (prev, nxt)
+    return _PARA_NABOER
+
+
 def render_paragraph_page(p):
     lov_url = p["lov"].replace("ø", "o").replace("æ", "ae").replace("å", "aa")
     title_tag = f'{p["lov_display"]} § {p["number"]} — {p["title"]} | Rettsregel'
@@ -2465,6 +2483,52 @@ def render_paragraph_page(p):
 
     # ── Vanlige feil ───────────────────────────────────────────────────────
     vanlige_feil_html = '<ul class="lap-list">' + "".join(f"<li>{vf}</li>" for vf in p["vanlige_feil"]) + "</ul>"
+
+    # ── Anker-rad (kun seksjoner som finnes) ───────────────────────────────
+    ankere = []
+    if p.get("paragraftekst"): ankere.append(("lovteksten", "Lovteksten"))
+    if p.get("hva_betyr_html"): ankere.append(("forklaring", "Forklaring"))
+    if p.get("eksempler"): ankere.append(("eksempler", "Eksempler"))
+    if p.get("vanlige_feil"): ankere.append(("vanlige-feil", "Vanlige feil"))
+    if p.get("hva_bor_du_html"): ankere.append(("hva-gjor-du", "Hva bør du gjøre"))
+    anker_html = ""
+    if len(ankere) >= 3:
+        anker_html = '<nav class="lap-anchors" aria-label="På denne siden">' + "".join(
+            f'<a href="#{aid}">{navn}</a>' for aid, navn in ankere) + "</nav>"
+
+    # ── Lovtekst-kort ──────────────────────────────────────────────────────
+    lovtekst_html = ""
+    if p.get("paragraftekst"):
+        lovtekst_html = f"""<div class="lap-lovkort" id="lovteksten">
+        <div class="lap-lovkort-hode">
+          <span class="lap-lovkort-label">&#9878; Lovteksten — ordrett</span>
+          <span class="lap-lovkort-ref">{p["lov_display"]} § {p["number"]}</span>
+        </div>
+        <div class="lap-lovtekst">{p["paragraftekst"]}<span class="lap-kilde">— Kilde: Lovdata</span></div>
+      </div>"""
+
+    # ── Forrige/neste paragraf ─────────────────────────────────────────────
+    prev_p, next_p = _para_naboer().get((p["lov"], p["number"]), (None, None))
+    def _nabokort(retning, nabo):
+        if not nabo:
+            return '<span class="lap-nabo lap-nabo-tom"></span>'
+        nr, tit = nabo
+        just = ' style="text-align:right;"' if retning == "NESTE &rarr;" else ""
+        return (f'<a class="lap-nabo" href="../{nr}/"{just}>'
+                f'<span class="lap-nabo-retning">{retning}</span>'
+                f'<span class="lap-nabo-tittel">§ {nr} {tit}</span></a>')
+    prevnext_html = ('<nav class="lap-prevnext" aria-label="Forrige og neste paragraf">'
+                     + _nabokort("&larr; FORRIGE", prev_p) + _nabokort("NESTE &rarr;", next_p) + "</nav>")
+
+    # ── Verktøy for denne loven (skinnen) ──────────────────────────────────
+    verktoy_side_html = ""
+    _lt = LOVER_TOOLS.get(p["lov"])
+    if _lt:
+        _vurl, _vnavn = _lt
+        verktoy_side_html = f"""<div class="lap-side-verktoy">
+        <p class="lap-side-label">Verktøy for dette</p>
+        <a href="../../{_vurl}">&#128196; {_vnavn}</a>
+      </div>"""
 
     # ── Dumme spørsmål (beholdt) ─────────────────────────────────────────────
     faq_html = ""
@@ -2526,6 +2590,38 @@ def render_paragraph_page(p):
 .lap-h2 { font-family: var(--serif); font-weight: 500; font-size: 21px; line-height: 1.2; letter-spacing: -0.018em; color: var(--ink); margin: 48px 0 18px; }
 
 /* Lovtekst — kildetekst, ikke kort */
+.lap-anchors { display: flex; gap: 7px; flex-wrap: wrap; margin: -6px 0 22px; }
+.lap-anchors a {
+  font-family: var(--sans); font-size: 12px; font-weight: 500;
+  background: var(--bg-card); border: 1px solid var(--line-strong); color: var(--ink-soft);
+  border-radius: 14px; padding: 5px 13px; text-decoration: none;
+  transition: border-color .15s ease, color .15s ease;
+}
+.lap-anchors a:hover { border-color: var(--accent); color: var(--accent); }
+.lap-lovkort {
+  background: #FFFDF8; border: 1px solid #E0D5C2; border-radius: 13px;
+  padding: 16px 19px; margin: 26px 0;
+}
+.lap-lovkort-hode { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.lap-lovkort-label { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #7A6A4A; }
+.lap-lovkort-ref { font-family: var(--sans); font-size: 11px; color: var(--ink-mute); }
+.lap-lovkort .lap-lovtekst { margin: 0; padding: 0; background: none; border: none; }
+.lap-prevnext { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 34px; border-top: 1px solid var(--line); padding-top: 16px; }
+.lap-nabo {
+  display: block; background: var(--bg-card); border: 1px solid var(--line);
+  border-radius: 11px; padding: 12px 15px; text-decoration: none;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.lap-nabo:hover { border-color: var(--line-strong); transform: translateY(-1px); }
+.lap-nabo-tom { background: none; border: none; }
+.lap-nabo-retning { display: block; font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: .09em; color: var(--ink-mute); margin-bottom: 3px; }
+.lap-nabo-tittel { display: block; font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink); line-height: 1.4; }
+.lap-nabo:hover .lap-nabo-tittel { color: var(--accent); }
+.lap-side-verktoy { margin-top: 22px; }
+.lap-side-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); margin: 0 0 8px; }
+.lap-side-verktoy a { font-family: var(--sans); font-size: 13px; font-weight: 500; color: #0E5C46; text-decoration: none; }
+.lap-side-verktoy a:hover { color: #085041; }
+@media (max-width: 640px) { .lap-prevnext { grid-template-columns: 1fr; } }
 .lap-lovtekst { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0; margin: 0; font-family: var(--serif-prose); font-size: 16px; line-height: 1.75; color: var(--ink-soft); white-space: pre-line; }
 .lap-lovtekst p { margin: 0 0 14px; }
 .lap-lovtekst p:last-of-type { margin-bottom: 0; }
@@ -2613,31 +2709,31 @@ def render_paragraph_page(p):
         <p class="lap-intro">{p["description"]}</p>
       </header>
 
+      {anker_html}
+
       <div class="lap-kort">
         <p class="lap-kort-label">Kort svar</p>
         <p>{p["kort_svar"]}</p>
       </div>
 
-      <h2 class="lap-h2">Paragraftekst</h2>
-      <div class="lap-lovtekst">{p["paragraftekst"]}<span class="lap-kilde">— Kilde: Lovdata</span></div>
+      {lovtekst_html}
 
-      <h2 class="lap-h2">Hva betyr dette på vanlig norsk?</h2>
-      <div class="lap-prose">{hva_betyr}</div>
+      {f'<h2 class="lap-h2" id="forklaring">Hva betyr dette på vanlig norsk?</h2><div class="lap-prose">{hva_betyr}</div>' if p.get("hva_betyr_html") else ''}
 
-      <h2 class="lap-h2">Eksempel{"er" if len(p["eksempler"]) > 1 else ""}</h2>
-      {examples_html}
+      {f'<h2 class="lap-h2" id="eksempler">Eksempel{"er" if len(p["eksempler"]) > 1 else ""}</h2>{examples_html}' if p.get("eksempler") else ''}
 
-      <h2 class="lap-h2">Vanlige feil</h2>
-      {vanlige_feil_html}
+      {f'<h2 class="lap-h2" id="vanlige-feil">Vanlige feil</h2>{vanlige_feil_html}' if p.get("vanlige_feil") else ''}
 
-      <h2 class="lap-h2">Hva bør du gjøre?</h2>
-      <div class="lap-prose">{hva_bor_du}</div>
+      {f'<h2 class="lap-h2" id="hva-gjor-du">Hva bør du gjøre?</h2><div class="lap-prose">{hva_bor_du}</div>' if p.get("hva_bor_du_html") else ''}
 
       {faq_html}
+
+      {prevnext_html}
     </article>
 
     <aside class="lap-side">
       {related_block}
+      {verktoy_side_html}
 
       <div class="lap-side-block">
         <div class="lap-disc">
