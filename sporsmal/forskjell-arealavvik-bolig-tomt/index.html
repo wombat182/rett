@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på arealavvik i bolig og tomt? — Rettsregel</title>
+<meta name="description" content="Arealavvik i bolig og tomt vurderes forskjellig. Bygningsareal har en konkret terskel, mens tomteareal krever vesentlig avvik eller særlig klanderverdig opptreden.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/forskjell-arealavvik-bolig-tomt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på arealavvik i bolig og tomt?">
+<meta property="og:description" content="Arealavvik i bolig og tomt vurderes forskjellig. Bygningsareal har en konkret terskel, mens tomteareal krever vesentlig avvik eller særlig klanderverdig opptreden.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/forskjell-arealavvik-bolig-tomt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på arealavvik i bolig og tomt?">
+<meta name="twitter:description" content="Arealavvik i bolig og tomt vurderes forskjellig. Bygningsareal har en konkret terskel, mens tomteareal krever vesentlig avvik eller særlig klanderverdig opptreden.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er forskjellen på arealavvik i bolig og tomt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Forskjellen er at bygningsareal og tomteareal har ulike terskler i avhendingslova § 3-3. For bygninger er arealavvik en mangel hvis avviket er større enn to prosent og minst én kvadratmeter. For tomt må arealet være vesentlig mindre enn opplyst, eller selger/medhjelper må ha opptrådt særlig klanderverdig.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova §§ 3-3, 3-8, 4-12, 4-14, 4-19</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-3/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-3</div>
+  <div class="related-card-title">Arealsvikt</div>
+</a><a href="../../lover/avhendingslova/3-8/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-8</div>
+  <div class="related-card-title">Uriktig opplysning om eiendommen</div>
+</a><a href="../../lover/avhendingslova/4-12/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-12</div>
+  <div class="related-card-title">Prisavslag</div>
+</a><a href="../../lover/avhendingslova/4-14/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-14</div>
+  <div class="related-card-title">Erstatning ved mangel</div>
+</a><a href="../../lover/avhendingslova/4-19/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-19</div>
+  <div class="related-card-title">Reklamasjon — frister for å klage</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Forskjellen er at bygningsareal og tomteareal har ulike terskler i avhendingslova § 3-3. For bygninger er arealavvik en mangel hvis avviket er større enn to prosent og minst én kvadratmeter. For tomt må arealet være vesentlig mindre enn opplyst, eller selger/medhjelper må ha opptrådt særlig klanderverdig.</p>
+<h2>Samme paragraf, to ulike regler</h2>
+<p>Arealavvik i bolig og tomt reguleres begge av avhendingslova § 3-3, men bestemmelsen har to forskjellige ledd. Første ledd gjelder grunnareal, altså tomt. Andre ledd gjelder bygninger på eiendommen. Dette skillet er avgjørende. Mange kjøpere bruker samme argumentasjon for begge deler, men det blir feil.</p>
+<p>For bygninger er regelen tallfestet. Er bygningen mindre enn opplyst av selger eller selgers medhjelpere, foreligger mangel hvis avviket er større enn to prosent og utgjør minst én kvadratmeter. Det gjør vurderingen relativt teknisk: Hva ble opplyst, hva er riktig målt areal, hvor stort er avviket i prosent, og hvor mange kvadratmeter mangler?</p>
+<p>For tomt er regelen mer skjønnsmessig. Mindre grunnareal er ikke en mangel med mindre arealet er vesentlig mindre enn opplyst, eller selger/medhjelper har opptrådt særlig klanderverdig. Her må du argumentere mer om betydning, bruk og alvor. Det finnes ingen fast toprosentsregel for tomt.</p>
+<h2>Hvorfor bygningsareal har en klarere terskel</h2>
+<p>Boligareal er ofte en av de mest sentrale opplysningene i et salg. Kjøpere sammenligner kvadratmeterpris, planløsning, antall rom og bruksareal. Markedet priser boliger tett opp mot areal. Derfor gir loven en konkret terskel for bygningsareal. Samtidig tåler loven små måleavvik. En halv kvadratmeter feil skal ikke automatisk bli en mangelsak.</p>
+<p>Terskelen er todelt. Avviket må være større enn to prosent, og det må utgjøre minst én kvadratmeter. Begge vilkår må være oppfylt. I en liten leilighet kan én kvadratmeter være mer enn to prosent. I en stor enebolig kan to prosent være flere kvadratmeter. Regelen fanger opp at små og store boliger ikke bør behandles helt likt.</p>
+<p>Et eksempel viser det: En leilighet opplyst til 45 m² må faktisk være under 44 m² før én-kvadratmeterkravet er oppfylt, og avviket må samtidig være større enn 0,9 m² for å passere to prosent. En enebolig opplyst til 240 m² må ha et avvik på mer enn 4,8 m² for å passere to prosent. Da holder det ikke med 2 m² feil, selv om to kvadratmeter kan irritere.</p>
+<h2>Hvorfor tomt vurderes mer skjønnsmessig</h2>
+<p>Tomter er mer varierte. Noen tomter er presist oppmålt. Andre bygger på eldre grensebeskrivelser, omtrentlige kart eller historiske dokumenter. Betydningen av et avvik varierer også kraftig. Ti kvadratmeter kan være kritisk i et tett byområde, men ubetydelig på en stor naturtomt. Derfor bruker loven ordene «vesentleg mindre» for grunnareal.</p>
+<p>Tomtevurderingen handler ikke bare om regnestykke. Den handler om praktisk og økonomisk betydning. Hvor stor var tomten opplyst å være? Hvor stor er den faktisk? Hvor på tomten ligger avviket? Påvirker det hage, adkomst, parkering, byggemulighet, strandlinje, utsikt eller privatliv? Ble tomtestørrelsen fremhevet i markedsføringen?</p>
+<p>Særlig klanderverdig opptreden er et eget alternativ. Hvis selger eller medhjelper opptrådte kritikkverdig, kan det være mangel selv om avviket ikke alene er vesentlig. Det kan for eksempel gjelde der det fantes kjent grenseusikkerhet, tidligere nabokrav eller kommunale opplysninger som ikke ble tatt inn i salgsdokumentene.</p>
+<h2>Opplysningssvikt kan være viktig i begge saker</h2>
+<p>Selv om § 3-3 er arealregelen, må du ofte lese den sammen med § 3-7 og § 3-8. § 3-7 gjelder manglende opplysninger: Eiendommen har en mangel dersom kjøper ikke har fått opplysning om omstendigheter ved eiendommen som selger kjente eller måtte kjenne til, og som kjøper hadde grunn til å regne med å få, forutsatt at opplysningen kan antas å ha virket inn på avtalen. § 3-8 gjelder uriktige opplysninger i blant annet salgsprospekt og markedsføring.</p>
+<p>I en boligarealsak kan § 3-8 være relevant fordi salgsoppgaven opplyste feil BRA. I en tomtesak kan § 3-7 være relevant fordi selger visste at gjerdet sto feil eller at naboen hadde bestridt grensen. Begge reglene handler om informasjonsbildet før kjøpet.</p>
+<p>Men ikke bruk opplysningsreglene som en snarvei rundt arealregelen uten grunn. Hvis saken egentlig bare gjelder et lite tomteavvik uten vesentlig betydning og uten klanderverdig opptreden, blir det vanskelig å vinne bare ved å kalle det «uriktig opplysning». Lovens egen tomteregel må tas på alvor.</p>
+<h2>Prisavslag beregnes forskjellig i praksis</h2>
+<p>Ved bygningsareal kan prisavslag ofte ta utgangspunkt i kvadratmeterverdi, selv om det ikke alltid er matematisk én til én. Markedsverdien av en leilighet på 68 m² er ofte lavere enn en tilsvarende leilighet på 71 m². Men planløsning og bruksmulighet spiller inn. Manglende areal i et oppholdsrom kan påvirke verdien mer enn en måleforskjell i bod.</p>
+<p>Ved tomt blir verdiberegningen enda mer konkret. Manglende areal i en ubrukelig skråning har ikke nødvendigvis samme verdi som manglende flatt hageareal. Et avvik som ødelegger muligheten for garasje eller tilbygg kan ha større økonomisk betydning enn antall kvadratmeter isolert tilsier. Derfor kan takst eller eiendomsfaglig verdivurdering være mer nødvendig i tomtesaker.</p>
+<p>Avhendingslova § 4-12 er likevel felles: Har eiendommen en mangel, kan kjøper kreve et forholdsmessig prisavslag. Spørsmålet er hvordan det forholdsmessige avslaget skal beregnes i den konkrete saken.</p>
+<h2>Reklamasjonsfristen er den samme</h2>
+<p>Forskjellen mellom bolig og tomt gjelder mangelsvurderingen, ikke reklamasjonsplikten. Etter § 4-19 må kjøper reklamere innen rimelig tid etter å ha oppdaget eller burde ha oppdaget avtalebruddet. Det gjelder både feil BRA i leilighet og feil tomtegrense på enebolig. Absolutt reklamasjon kan som hovedregel ikke skje senere enn fem år etter at kjøper overtok bruken av eiendommen, med mindre selger har tatt på seg lengre ansvar.</p>
+<p>I praksis bør du reklamere når du har konkret mistanke. Du trenger ikke ferdig oppmålingsforretning eller endelig takst. Skriv at du gjør mulig arealavvik gjeldende, hvilket areal som er opplyst, hva du mener er riktig eller mistenker er riktig, og at du kommer tilbake med dokumentasjon.</p>
+<h2>Praktisk eksempel: samme avvik, ulik vurdering</h2>
+<p>Amalie kjøper en leilighet opplyst til 70 m². Etter faglig oppmåling viser den seg å være 67,8 m². Avviket er 2,2 m², altså 3,14 prosent. For bygningsareal passerer avviket terskelen i § 3-3 andre ledd. Hvis arealopplysningen var gitt i salgsoppgaven og Amalie la vekt på den, er dette et sterkt mangelsgrunnlag.</p>
+<p>Samme uke kjøper broren hennes, Morten, en enebolig med tomt opplyst til 1 200 m². Senere viser korrekt areal seg å være 1 178 m². Avviket er også 22 m², altså 1,83 prosent. For tomt finnes ingen automatisk mangelsterskel ved to prosent. Morten må vise at tomten er vesentlig mindre enn opplyst, eller at selger/medhjelper har opptrådt særlig klanderverdig. Hvis de 22 m² ligger i en skogkant uten betydning, er kravet svakt. Hvis de 22 m² utgjør hele den opparbeidede parkeringsplassen som ble markedsført som del av tomten, blir saken en annen.</p>
+<p>Eksemplet viser hvorfor samme prosentavvik kan få ulik juridisk behandling. Bygningsareal gir en mer mekanisk inngang. Tomt krever mer praktisk argumentasjon.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn først ut om avviket gjelder bygning eller tomt. Gjelder det bygning, bruk § 3-3 andre ledd: opplyst areal, målt areal, differanse i kvadratmeter og prosent. Gjelder det tomt, bruk § 3-3 første ledd: opplyst grunnareal, faktisk grunnareal, om avviket er vesentlig, og om selger eller medhjelper har opptrådt særlig klanderverdig.</p>
+<p>Send skriftlig reklamasjon til selger innen rimelig tid. Krev prisavslag etter § 4-12 hvis vilkårene for mangel er oppfylt, og vurder erstatning etter § 4-14 for nødvendige kostnader til oppmåling eller dokumentasjon. Ikke bruk samme standardbrev for bolig og tomt. Den ene saken vinnes på tallgrense. Den andre vinnes på vesentlighet, betydning og eventuelt kritikkverdig opptreden.</p>
+<h2>Slik bør du skrive reklamasjonen forskjellig</h2>
+<p>Ved bygningsareal bør reklamasjonen være matematisk. Skriv: opplyst areal, målt areal, differanse i kvadratmeter og prosent. Vis til § 3-3 andre ledd og forklar at avviket overstiger både toprosentgrensen og én-kvadratmeterkravet. Legg ved oppmålingsrapport eller skriv at rapport ettersendes.</p>
+<p>Ved tomteareal bør reklamasjonen være mer forklarende. Skriv opplyst og faktisk tomteareal, men bruk også plass på konsekvensen. Forklar om du mister hage, parkeringsareal, byggemulighet, adkomst, uteplass eller annen praktisk verdi. Vis til § 3-3 første ledd og bruk ordene «vesentlig mindre» hvis det er grunnlaget ditt. Hvis problemet er kjent grensekonflikt, skriv konkret hvorfor selger eller medhjelper har opptrådt særlig klanderverdig.</p>
+<p>Denne forskjellen gjør reklamasjonen mer treffsikker. En tomtereklamasjon som bare kopierer en boligarealreklamasjon, blir ofte for tynn. En boligarealreklamasjon som bruker store skjønnsmessige ord, men mangler regnestykke, blir ofte for uklar.</p>
+<h2>Når begge avvik finnes samtidig</h2>
+<p>Noen kjøp har både feil boligareal og feil tomteareal. Da bør du ikke blande dem i én setning. Lag to separate punkter i reklamasjonen. Punkt én gjelder bygning og terskelen i § 3-3 andre ledd. Punkt to gjelder tomt og vurderingen etter § 3-3 første ledd.</p>
+<p>Det gjør også kravet lettere å beregne. Prisavslag for manglende boligareal kan bygge på boligens markedsverdi og arealavvik. Prisavslag for manglende tomt kan bygge på tomtens funksjon og verdi. Hvis du blander kravene, kan motparten avvise alt som uklart selv om ett av kravene egentlig er godt.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/kan-kreve-prisavslag-arealavvik/">Kan jeg kreve prisavslag for arealavvik?</a><a class="sp-relchip" href="../../sporsmal/klage-feil-tomteareal/">Kan jeg klage på feil tomteareal?</a><a class="sp-relchip" href="../../sporsmal/boligen-mindre-enn-opplyst/">Hva gjør jeg hvis boligen er mindre enn opplyst?</a><a class="sp-relchip sp-relchip-verktoy" href="../../kontrakter/husleiekontrakt/">&#128196; Husleiekontrakt</a><a class="sp-relchip sp-relchip-verktoy" href="../../tjenester/depositum/">&#128196; Depositum-kalkulator</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

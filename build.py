@@ -163,6 +163,11 @@ except ImportError:
     _SP_AVH = []
 
 try:
+    from sporsmal_avhendingslova_v2 import SPORSMAL as _SP_AVH_V2
+except ImportError:
+    _SP_AVH_V2 = []
+
+try:
     from sporsmal_arveloven import SPORSMAL as _SP_ARVE
 except ImportError:
     _SP_ARVE = []
@@ -329,6 +334,7 @@ SPORSMAL = (_tag_lov(_SP_BASE, None)
             + _tag_lov(_SP_FKJL, "forbrukerkjopsloven")
             + _tag_lov(_SP_ANGRE, "angrerettloven")
             + _tag_lov(_SP_AVH, "avhendingslova")
+            + _tag_lov(_SP_AVH_V2, "avhendingslova")
             + _tag_lov(_SP_ARVE, "arveloven")
             + _tag_lov(_SP_BARNE, "barnelova")
             + _tag_lov(_SP_STRAFF, None)
