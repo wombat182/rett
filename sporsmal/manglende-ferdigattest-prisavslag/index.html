@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prisavslag for manglende ferdigattest eller brukstillatelse — Rettsregel</title>
+<meta name="description" content="Manglende ferdigattest eller brukstillatelse kan gi prisavslag når dokumentmangelen skjuler gjenstående arbeid, ulovlig bruk eller verdireduksjon. Kostnaden må vurderes konkret.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/manglende-ferdigattest-prisavslag/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Prisavslag for manglende ferdigattest eller brukstillatelse">
+<meta property="og:description" content="Manglende ferdigattest eller brukstillatelse kan gi prisavslag når dokumentmangelen skjuler gjenstående arbeid, ulovlig bruk eller verdireduksjon. Kostnaden må vurderes konkret.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/manglende-ferdigattest-prisavslag/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Prisavslag for manglende ferdigattest eller brukstillatelse">
+<meta name="twitter:description" content="Manglende ferdigattest eller brukstillatelse kan gi prisavslag når dokumentmangelen skjuler gjenstående arbeid, ulovlig bruk eller verdireduksjon. Kostnaden må vurderes konkret.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Prisavslag for manglende ferdigattest eller brukstillatelse</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Manglende ferdigattest eller brukstillatelse kan gi prisavslag dersom boligen avviker fra opplysningene, ikke lovlig kan brukes som forutsatt, eller krever dokumentasjon og arbeid for å avslutte byggesaken. Beløpet er ikke automatisk lik et standardgebyr. Kravet må bygge på kostnaden ved å skaffe lovlig status eller boligens verdireduksjon dersom dette ikke lar seg gjøre.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova §§ 3-2, 3-7, 3-8, 4-12, 4-18</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-2/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-2</div>
+  <div class="related-card-title">Generelle krav til tilstanden</div>
+</a><a href="../../lover/avhendingslova/3-7/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-7</div>
+  <div class="related-card-title">Selgerens plikt til å opplyse om feil</div>
+</a><a href="../../lover/avhendingslova/3-8/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-8</div>
+  <div class="related-card-title">Uriktig opplysning om eiendommen</div>
+</a><a href="../../lover/avhendingslova/4-12/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-12</div>
+  <div class="related-card-title">Prisavslag</div>
+</a><a href="../../lover/avhendingslova/4-18/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-18</div>
+  <div class="related-card-title">Offentligrettslige rådighetsbånd</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Manglende ferdigattest eller brukstillatelse kan gi prisavslag dersom boligen avviker fra opplysningene, ikke lovlig kan brukes som forutsatt, eller krever dokumentasjon og arbeid for å avslutte byggesaken. Beløpet er ikke automatisk lik et standardgebyr. Kravet må bygge på kostnaden ved å skaffe lovlig status eller boligens verdireduksjon dersom dette ikke lar seg gjøre.</p>
+<h2>Byggetillatelse, brukstillatelse og ferdigattest er forskjellige dokumenter</h2>
+<p>En byggesak kan inneholde:</p>
+<ul>
+<li>rammetillatelse</li>
+<li>igangsettingstillatelse</li>
+<li>midlertidig brukstillatelse</li>
+<li>ferdigattest</li>
+<li>dispensasjon</li>
+<li>bruksendringsvedtak</li>
+<li>samsvars- og kontrollerklæringer</li>
+</ul>
+<p>Dokumentene har ulike funksjoner.</p>
+<p>En byggetillatelse gir adgang til å gjennomføre tiltaket innenfor vedtaket.</p>
+<p>En midlertidig brukstillatelse kan gi adgang til bruk før alle mindre arbeider er ferdige, normalt med oversikt over gjenstående arbeid og frist.</p>
+<p>En ferdigattest avslutter byggesaken når tiltaket er ferdig og nødvendig dokumentasjon foreligger.</p>
+<p>Direktoratet for byggkvalitet opplyser at kommunen skal utstede ferdigattest for søknadspliktige tiltak når vilkårene er oppfylt.</p>
+<p>Se <a href="https://www.dibk.no/regelverk/sak/2/8/8-1">byggesaksforskriften § 8-1 med veiledning</a>.</p>
+<h2>Eldre tiltak kan ha andre dokumentkrav</h2>
+<p>Direktoratets veiledning opplyser at det ikke utstedes ferdigattest for tiltak det ble søkt om før 1. januar 1998.</p>
+<p>Det betyr at manglende ferdigattest ikke automatisk er en feil ved alle eldre bygg.</p>
+<p>For eldre saker må kjøperen undersøke:</p>
+<ul>
+<li>søknadstidspunkt</li>
+<li>tillatelse</li>
+<li>eventuelle eldre sluttmeldinger</li>
+<li>lovlig bruk</li>
+<li>om tiltaket er oppført i samsvar med vedtaket</li>
+<li>om kommunen har en åpen sak</li>
+</ul>
+<p>En selger eller megler bør ikke uten videre beskrive et eldre bygg som ulovlig bare fordi dagens ferdigattest mangler.</p>
+<p>Motsatt kan en gammel dato ikke brukes til å skjule at selve tiltaket aldri ble godkjent.</p>
+<h2>Manglende ferdigattest kan være administrativt eller alvorlig</h2>
+<p>Dokumentmangelen kan skyldes:</p>
+<h3>Enkel administrativ rest</h3>
+<p>Tiltaket er bygget i samsvar med tillatelsen, men sluttdokumentasjon ble aldri sendt.</p>
+<h3>Gjenstående mindre arbeider</h3>
+<p>Midlertidig brukstillatelse viser at rekkverk, terreng eller dokumentasjon mangler.</p>
+<h3>Vesentlige fysiske avvik</h3>
+<p>Bygningen avviker fra godkjente tegninger, brannkrav eller konstruksjon.</p>
+<h3>Ulovlig bruk</h3>
+<p>Boligen eller deler av den tas i bruk uten nødvendig tillatelse.</p>
+<h3>Åpen ulovlighetssak</h3>
+<p>Kommunen har varslet pålegg, retting eller tvangsmulkt.</p>
+<p>Prisavslaget avhenger av hvilken kategori saken tilhører.</p>
+<h2>Når er dokumentmangelen en mangel etter avhendingslova?</h2>
+<p>Etter <a href="https://lovdata.no/lov/1992-07-03-93/§3-8">avhendingslova § 3-8</a> kan uriktige opplysninger gi mangel.</p>
+<p>Eksempler:</p>
+<ul>
+<li>«ferdigattest foreligger» når den ikke gjør det</li>
+<li>«alle godkjenninger i orden»</li>
+<li>«boligen er lovlig tatt i bruk»</li>
+<li>«tilbygget er ferdigstilt etter kommunale vedtak»</li>
+</ul>
+<p>Etter <a href="https://lovdata.no/lov/1992-07-03-93/§3-7">§ 3-7</a> kan selgeren være ansvarlig for å holde tilbake en kjent åpen byggesak eller manglende brukstillatelse.</p>
+<p>Etter <a href="https://lovdata.no/lov/1992-07-03-93/§3-2">§ 3-2 tredje ledd</a> kan avvik fra offentligrettslige krav gi mangel ved forbrukerkjøp.</p>
+<p><a href="https://lovdata.no/lov/1992-07-03-93/§4-18">§ 4-18</a> kan også være relevant ved offentligrettslige rådighetsbegrensninger eller tyngsler.</p>
+<h2>Hent hele byggesaken før du beregner kravet</h2>
+<p>Be kommunen om:</p>
+<ul>
+<li>opprinnelig søknad</li>
+<li>godkjente tegninger</li>
+<li>tillatelse</li>
+<li>endringssøknader</li>
+<li>midlertidig brukstillatelse</li>
+<li>liste over gjenstående arbeid</li>
+<li>ferdigattest</li>
+<li>tilsyn</li>
+<li>pålegg</li>
+<li>korrespondanse</li>
+<li>dispensasjon</li>
+<li>gjennomføringsplan</li>
+</ul>
+<p>Sammenlign dagens bolig med tegningene.</p>
+<p>Se etter:</p>
+<ul>
+<li>endret plassering</li>
+<li>større areal</li>
+<li>ekstra etasje</li>
+<li>nye vinduer</li>
+<li>endret rombruk</li>
+<li>manglende brannskille</li>
+<li>ulovlig boenhet</li>
+<li>manglende rekkverk</li>
+<li>terrengendringer</li>
+<li>avvik i høyde eller avstand</li>
+</ul>
+<p>Kostnaden kan ikke beregnes før avviket er identifisert.</p>
+<h2>Når kan ferdigattest skaffes uten store arbeider?</h2>
+<p>En ansvarlig søker bør undersøke om saken kan avsluttes med:</p>
+<ul>
+<li>oppdaterte tegninger</li>
+<li>samsvarserklæringer</li>
+<li>kontrollerklæringer</li>
+<li>dokumentasjon av produkter</li>
+<li>måling</li>
+<li>brannrapport</li>
+<li>statisk vurdering</li>
+<li>søknad om mindre endring</li>
+<li>ferdigstillelse av enkelte arbeider</li>
+</ul>
+<p>Kostnaden kan da være:</p>
+<ul>
+<li>ansvarlig søker</li>
+<li>fagrapporter</li>
+<li>kommunalt gebyr</li>
+<li>mindre byggearbeid</li>
+<li>kontroll</li>
+<li>administrasjon</li>
+</ul>
+<p>Hvis ferdigattesten kan skaffes for 80 000 kroner uten varig verdifall, er dette et naturlig utgangspunkt for prisavslag.</p>
+<p>Kjøperen bør ikke kreve flere hundre tusen i markedsverdifall uten å dokumentere at usikkerheten består.</p>
+<h2>Når dokumentet ikke kan skaffes</h2>
+<p>Ferdigattest kan være vanskelig eller umulig å få fordi:</p>
+<ul>
+<li>tiltaket avviker betydelig fra tillatelsen</li>
+<li>ansvarlige foretak er borte og dokumentasjon mangler</li>
+<li>tekniske krav er ikke oppfylt</li>
+<li>dispensasjon avslås</li>
+<li>bruken er ikke godkjent</li>
+<li>kommunen krever tilbakeføring</li>
+<li>konstruksjonen ikke kan dokumenteres uten åpning</li>
+<li>bygget ligger i strid med plan eller byggegrense</li>
+</ul>
+<p>Da kan prisavslaget omfatte:</p>
+<ul>
+<li>lovliggjøringsforsøk</li>
+<li>fysisk ombygging</li>
+<li>tilbakeføring</li>
+<li>tapt areal eller funksjon</li>
+<li>varig markedsverdifall</li>
+<li>nødvendig prosjektering</li>
+<li>offentlige gebyrer</li>
+</ul>
+<p>Hvis boligens hovedbruk er ulovlig eller kommunen krever omfattende inngrep, kan heving etter § 4-13 også vurderes.</p>
+<h2>Midlertidig brukstillatelse må leses</h2>
+<p>En midlertidig brukstillatelse kan være gyldig, men vise at bestemte arbeider gjenstår.</p>
+<p>Etter byggesaksreglene skal gjenstående arbeid og tidsplan fremgå av gjennomføringsplanen.</p>
+<p>Se <a href="https://www.dibk.no/regelverk/sak/2/5/5-3">byggesaksforskriften § 5-3 med veiledning</a>.</p>
+<p>Kjøperen bør undersøke:</p>
+<ul>
+<li>hvilke arbeider som mangler</li>
+<li>om fristen er utløpt</li>
+<li>hvem som var ansvarlig</li>
+<li>om kommunen følger opp</li>
+<li>kostnad</li>
+<li>om bruken er lovlig i mellomtiden</li>
+<li>om sikkerhetskritiske forhold står igjen</li>
+</ul>
+<p>En midlertidig tillatelse med manglende planting vurderes annerledes enn en tillatelse hvor brannsikring og rømningsvei gjenstår.</p>
+<h2>Prisavslaget må bygge på konkret tap</h2>
+<p>Etter <a href="https://lovdata.no/lov/1992-07-03-93/§4-12">§ 4-12</a> brukes normalt nødvendig utbedringskostnad.</p>
+<p>Kravet kan omfatte:</p>
+<ul>
+<li>søker</li>
+<li>arkitekt</li>
+<li>landmåler</li>
+<li>brannrådgiver</li>
+<li>statiker</li>
+<li>kommunale gebyrer</li>
+<li>kontroll</li>
+<li>byggearbeid</li>
+<li>tilbakeføring</li>
+<li>dokumentert restverdifall</li>
+</ul>
+<p>Det er ikke automatisk riktig å kreve en rund prosentandel av kjøpesummen.</p>
+<p>Mangler bare ett dokument som kan skaffes enkelt, er verdireduksjonen begrenset.</p>
+<p>Er store deler av boligen uten lovlig bruk, kan verdifallet være betydelig større enn dokumentkostnaden.</p>
+<h2>Eksempel: Tilbygget avvek fra tillatelsen</h2>
+<p>Eline kjøper 9. mars 2026 et hus med et 50 m² tilbygg. Salgsoppgaven sier at ferdigattest foreligger.</p>
+<p>Kommunen bekrefter senere at bare den opprinnelige boligen har ferdigattest. Tilbygget:</p>
+<ul>
+<li>er fem meter større enn godkjent</li>
+<li>har endret plassering</li>
+<li>mangler brannprosjektering</li>
+<li>ligger for nær nabogrensen</li>
+<li>krever dispensasjon</li>
+</ul>
+<p>Ansvarlig søker anslår:</p>
+<ul>
+<li>søknad og prosjektering: 135 000 kroner</li>
+<li>brann- og konstruksjonstiltak: 310 000 kroner</li>
+<li>ombygging mot nabogrense: 280 000 kroner</li>
+<li>kommunale gebyrer: 45 000 kroner</li>
+</ul>
+<p>Lovliggjøring vurderes som mulig, men usikker.</p>
+<p>Prisavslaget må bygge på de nødvendige kostnadene og eventuell dokumentert restusikkerhet. Dersom dispensasjon avslås og deler må rives, må kravet beregnes på nytt.</p>
+<h2>Eksempel: Sluttpapirene manglet, men bygget var korrekt</h2>
+<p>Nils kjøper en nyere bolig hvor ferdigattesten mangler. Undersøkelsen viser at huset er bygget i samsvar med godkjente tegninger. Ansvarlige foretak finnes og leverer sluttført dokumentasjon.</p>
+<p>Ferdigattest utstedes etter seks uker. Kostnaden er 42 000 kroner.</p>
+<p>Kjøperen har ikke grunnlag for et stort prisavslag basert på at hele boligen var «ulovlig». Det dokumenterte tapet er avgrenset.</p>
+<h2>Den vanligste misforståelsen: Ingen ferdigattest betyr at boligen ikke kan brukes</h2>
+<p>Det avhenger av tiltakets alder, midlertidig brukstillatelse, godkjent bruk og kommunens vedtak.</p>
+<p>Den motsatte misforståelsen er at manglende ferdigattest bare er en formalitet. Dokumentmangelen kan skjule alvorlige fysiske og rettslige avvik.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Be kommunen om en skriftlig status og full byggesaksmappe.</p>
+<p>Engasjer ansvarlig søker til å beskrive:</p>
+<ul>
+<li>hva som mangler</li>
+<li>lovlig bruk i dag</li>
+<li>nødvendig dokumentasjon</li>
+<li>fysiske avvik</li>
+<li>lovliggjøringsmulighet</li>
+<li>kostnad</li>
+<li>tidsbruk</li>
+<li>risiko for pålegg</li>
+</ul>
+<p>Reklamer til selgeren før du sender omfattende søknader eller bygger om.</p>
+<p>Ved avslag fra boligselgerforsikringen kan Finansklagenemnda Eierskifte være aktuell etter ferdig behandling hos forsikringsselskapet. Sekretariatsbehandlingen er gratis.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/manglende-byggetillatelse-heving-boligkjop/">Manglende byggetillatelse etter boligkjøp – grunnlag for heving?</a><a class="sp-relchip" href="../../sporsmal/ulovlig-soverom-prisavslag/">Prisavslag for ulovlig soverom – hvordan beregnes verdireduksjonen?</a><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

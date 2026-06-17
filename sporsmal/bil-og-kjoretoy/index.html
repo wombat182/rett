@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bil og kjøretøy — spørsmål og svar | Rettsregel</title>
+<meta name="description" content="50 spørsmål om bil og kjøretøy, med konkrete svar på vanlig norsk.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/bil-og-kjoretoy/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Bil og kjøretøy — spørsmål og svar">
+<meta property="og:description" content="50 spørsmål om bil og kjøretøy, med konkrete svar på vanlig norsk.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/bil-og-kjoretoy/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bil og kjøretøy — spørsmål og svar">
+<meta name="twitter:description" content="50 spørsmål om bil og kjøretøy, med konkrete svar på vanlig norsk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/" class="rr-nav-active">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<style>
+.spk-page { max-width: 860px; margin: 0 auto; padding: 32px 32px 72px; }
+.spk-crumb { font-family: var(--sans); font-size: 12.5px; color: var(--ink-mute); margin-bottom: 26px; }
+.spk-crumb a { color: var(--ink-mute); text-decoration: none; }
+.spk-crumb a:hover { color: var(--ink); }
+.spk-crumb .sep { margin: 0 8px; opacity: .45; }
+.spk-crumb .cur { color: var(--accent); }
+.spk-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 22px; flex-wrap: wrap; }
+.spk-head h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.024em; color: var(--ink); margin: 0 0 6px; }
+.spk-head p { font-family: var(--sans); font-size: 13.5px; color: var(--ink-mute); margin: 0; }
+.spk-filter { position: relative; flex: none; width: 270px; }
+.spk-filter input {
+  width: 100%; height: 42px; box-sizing: border-box; padding: 0 14px 0 38px;
+  border: 1px solid var(--line-strong); border-radius: 11px;
+  background: var(--bg-card); color: var(--ink);
+  font-family: var(--sans); font-size: 13.5px; outline: none;
+}
+.spk-filter input:focus { border-color: var(--accent); }
+.spk-filter svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); pointer-events: none; }
+.spk-layout { display: block; }
+.spk-layout.spk-har-temaer { display: grid; grid-template-columns: 185px 1fr; gap: 32px; align-items: start; }
+.spk-side { position: sticky; top: 24px; }
+.spk-side-label { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; color: var(--ink-mute); margin: 0 0 12px; }
+.spk-tema { display: block; width: 100%; text-align: left; background: none; border: none; cursor: pointer; font-family: var(--sans); font-size: 13.5px; color: var(--ink); padding: 6px 0; transition: color .15s ease; }
+.spk-tema span { color: var(--ink-mute); font-size: 12px; }
+.spk-tema:hover { color: var(--accent); }
+.spk-tema-aktiv { color: var(--accent); font-weight: 600; }
+.spk-tema-hode { font-family: var(--sans); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); margin: 26px 0 4px; }
+.spk-tema-hode:first-child { margin-top: 0; }
+.spk-verdict { flex: none; font-family: var(--sans); font-size: 9.5px; font-weight: 700; letter-spacing: .04em; border-radius: 5px; padding: 3px 8px; align-self: center; }
+.spk-liste { border-top: 1px solid var(--line); }
+.spk-row { display: flex; align-items: center; gap: 12px; padding: 13px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.spk-row-body { flex: 1; min-width: 0; }
+.spk-row-tittel { display: block; font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--ink); line-height: 1.3; transition: color .15s ease; }
+.spk-row:hover .spk-row-tittel { color: var(--accent); }
+.spk-row-desc { display: block; font-family: var(--sans); font-size: 13px; color: var(--ink-mute); line-height: 1.5; margin-top: 3px; }
+.spk-row-pil { font-family: var(--serif); color: var(--ink-mute); flex: none; transition: color .18s, transform .22s; }
+.spk-row:hover .spk-row-pil { color: var(--accent); transform: translateX(5px); }
+.spk-tomt { display: none; font-family: var(--sans); font-size: 14px; color: var(--ink-mute); padding: 22px 0; }
+.spk-bunn {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 18px; margin-top: 26px;
+}
+.spk-bunn span { font-family: var(--sans); font-size: 13px; color: var(--ink-soft); }
+.spk-bunn a { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+@media (max-width: 720px) {
+  .spk-page { padding: 22px 20px 56px; }
+  .spk-head { flex-direction: column; align-items: stretch; }
+  .spk-filter { width: 100%; }
+  .spk-layout.spk-har-temaer { grid-template-columns: 1fr; gap: 16px; }
+  .spk-side { position: static; display: flex; gap: 6px; flex-wrap: wrap; }
+  .spk-side-label { display: none; }
+  .spk-tema { width: auto; border: 1px solid var(--line-strong); border-radius: 16px; padding: 5px 13px; font-size: 12.5px; }
+  .spk-tema-aktiv { border-color: var(--accent); }
+}
+</style>
+<main class="spk-page">
+  <nav class="spk-crumb" aria-label="Brødsmuler">
+    <a href="../../">Hjem</a><span class="sep">/</span><a href="../">Spørsmål</a><span class="sep">/</span><span class="cur">Bil og kjøretøy</span>
+  </nav>
+  <header class="spk-head">
+    <div>
+      <h1>Bil og kjøretøy</h1>
+      <p>50 spørsmål med konkrete svar</p>
+    </div>
+    <div class="spk-filter">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="spk-sok" placeholder="Filtrer spørsmålene …" autocomplete="off">
+    </div>
+  </header>
+  <div class="spk-layout">
+    
+    <div>
+      <div class="spk-liste" id="spk-liste">
+<a class="spk-row" href="../angrerett-bilkjop/" data-k="angrerett ved kjøp av bil – når kan du gå fra avtalen?"><span class="spk-row-body"><span class="spk-row-tittel">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</span><span class="spk-row-desc">Du har ikke en generell 14 dagers angrerett på bil. Kjøper du og inngår avtalen hos forhandleren, er kjøpet…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../avbestille-bil-for-levering/" data-k="avbestille bil før levering – hva kan forhandleren kreve?"><span class="spk-row-body"><span class="spk-row-tittel">Avbestille bil før levering – hva kan forhandleren kreve?</span><span class="spk-row-desc">Du kan avbestille bilen før den er levert. Forhandleren kan da ikke fastholde kjøpet og kreve at du overtar…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../batterifeil-tesla/" data-k="batterifeil på tesla – garanti, reklamasjon og heving"><span class="spk-row-body"><span class="spk-row-tittel">Batterifeil på Tesla – garanti, reklamasjon og heving</span><span class="spk-row-desc">En batterifeil kan gi krav både etter Teslas batterigaranti og mot selgeren etter kjøpslovgivningen.…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../batterikapasitet-lavere-enn-opplyst/" data-k="batterikapasiteten er lavere enn opplyst – kan elbilkjøpet heves?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Batterikapasiteten er lavere enn opplyst – kan elbilkjøpet heves?</span><span class="spk-row-desc">Ja, heving kan være mulig dersom batterikapasiteten er vesentlig lavere enn det selgeren opplyste,…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../bilen-bestaar-ikke-eu-kontroll/" data-k="bilen består ikke eu-kontroll etter kjøpet – hvem er ansvarlig?"><span class="spk-row-body"><span class="spk-row-tittel">Bilen består ikke EU-kontroll etter kjøpet – hvem er ansvarlig?</span><span class="spk-row-desc">Selgeren er ansvarlig dersom feilene som førte til underkjenningen forelå ved levering og utgjør en…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../bil-ikke-levert-avtalt-tid/" data-k="bilen ble ikke levert til avtalt tid – kan du heve kjøpet?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Bilen ble ikke levert til avtalt tid – kan du heve kjøpet?</span><span class="spk-row-desc">Ja, men ved kjøp fra forhandler må du normalt først gi selgeren en rimelig tilleggsfrist. Leveres bilen ikke…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../elbil-kortere-rekkevidde-annonsert/" data-k="elbilen har kortere rekkevidde enn annonsert – er det en mangel?"><span class="spk-row-body"><span class="spk-row-tittel">Elbilen har kortere rekkevidde enn annonsert – er det en mangel?</span><span class="spk-row-desc">Det kan være en mangel, men bilen trenger ikke oppnå annonsert standardrekkevidde under alle kjøreforhold.…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../erstatning-etter-bilkjop/" data-k="erstatning etter bilkjøp – hvilke utgifter må selger dekke?"><span class="spk-row-body"><span class="spk-row-tittel">Erstatning etter bilkjøp – hvilke utgifter må selger dekke?</span><span class="spk-row-desc">Selgeren kan måtte dekke økonomisk tap som mangelen har påført deg, for eksempel nødvendig berging, diagnose,…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../feil-kilometerstand-bruktbil/" data-k="feil kilometerstand på bruktbil – rett til heving og erstatning"><span class="spk-row-body"><span class="spk-row-tittel">Feil kilometerstand på bruktbil – rett til heving og erstatning</span><span class="spk-row-desc">Feil kilometerstand er normalt en kjøpsrettslig mangel når den oppgitte standen påvirket kjøpet. Avviket kan…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../feil-adblue-system-bilkjop/" data-k="feil på adblue-systemet etter bilkjøp – kan du reklamere?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Feil på AdBlue-systemet etter bilkjøp – kan du reklamere?</span><span class="spk-row-desc">Ja. Du kan reklamere når AdBlue- eller SCR-systemet svikter fordi bilen hadde en mangel ved levering.…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../feil-dieselpartikkelfilter/" data-k="feil på dieselpartikkelfilter – hvem betaler reparasjonen?"><span class="spk-row-body"><span class="spk-row-tittel">Feil på dieselpartikkelfilter – hvem betaler reparasjonen?</span><span class="spk-row-desc">Selgeren må betale dersom feilen i dieselpartikkelfilteret eller årsaken til den forelå ved levering og bilen…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../feil-firehjulstrekk-bil/" data-k="feil på firehjulstrekk – hvilke krav kan kjøper fremme?"><span class="spk-row-body"><span class="spk-row-tittel">Feil på firehjulstrekk – hvilke krav kan kjøper fremme?</span><span class="spk-row-desc">Du kan kreve kostnadsfri retting når firehjulstrekken ikke fungerer som avtalt på grunn av en mangel ved…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../tesla-hjuloppheng-baerearmer/" data-k="feil på hjuloppheng og bærearmer på tesla – hvem har ansvaret?"><span class="spk-row-body"><span class="spk-row-tittel">Feil på hjuloppheng og bærearmer på Tesla – hvem har ansvaret?</span><span class="spk-row-desc">Selgeren er ansvarlig når feilen i hjulopphenget utgjør en mangel som forelå eller var under utvikling ved…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../feil-ladeport-hurtiglading/" data-k="feil på ladeport eller hurtiglading – hvem må betale?"><span class="spk-row-body"><span class="spk-row-tittel">Feil på ladeport eller hurtiglading – hvem må betale?</span><span class="spk-row-desc">Selgeren må betale dersom ladeporten, den interne laderen eller hurtigladefunksjonen hadde en mangel ved…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../feil-varmepumpe-elbil/" data-k="feil på varmepumpe i elbil – reklamasjon og erstatning"><span class="spk-row-body"><span class="spk-row-tittel">Feil på varmepumpe i elbil – reklamasjon og erstatning</span><span class="spk-row-desc">Du kan reklamere dersom varmepumpen eller den avtalte varmefunksjonen hadde en mangel ved levering. Selgeren…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../for-sen-reklamasjon-bil/" data-k="for sen reklamasjon på bil – når mister du kravet?"><span class="spk-row-body"><span class="spk-row-tittel">For sen reklamasjon på bil – når mister du kravet?</span><span class="spk-row-desc">Du mister normalt kravet hvis du ikke varsler selgeren innen rimelig tid etter at du oppdaget eller burde ha…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../garanti-og-reklamasjonsrett-bil/" data-k="forskjellen på garanti og reklamasjonsrett ved bilkjøp"><span class="spk-row-body"><span class="spk-row-tittel">Forskjellen på garanti og reklamasjonsrett ved bilkjøp</span><span class="spk-row-desc">Reklamasjonsrett er et lovkrav mot selgeren når bilen har en mangel. Garanti er et frivillig løfte fra…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../girkassefeil-bruktbil/" data-k="girkassefeil på bruktbil – reklamasjon, prisavslag eller heving"><span class="spk-row-body"><span class="spk-row-tittel">Girkassefeil på bruktbil – reklamasjon, prisavslag eller heving</span><span class="spk-row-desc">Du kan reklamere når girkassen svikter fordi bilen hadde en mangel ved levering, ikke bare fordi en slitedel…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../heve-bilkjop/" data-k="heve bilkjøp – når har du rett til å levere bilen tilbake?"><span class="spk-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span><span class="spk-row-body"><span class="spk-row-tittel">Heve bilkjøp – når har du rett til å levere bilen tilbake?</span><span class="spk-row-desc">Det kommer an på hvem du kjøpte bilen av, hvor alvorlig feilen er, og om selgeren har fått en rimelig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hvor-mange-reparasjonsforsok-bilforhandler/" data-k="hvor mange reparasjonsforsøk har bilforhandleren?"><span class="spk-row-body"><span class="spk-row-tittel">Hvor mange reparasjonsforsøk har bilforhandleren?</span><span class="spk-row-desc">For bilkjøp inngått fra 1. januar 2024 finnes det ingen automatisk rett til to reparasjonsforsøk. Viser samme…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../hoyt-oljeforbruk-bruktbil/" data-k="høyt oljeforbruk på bruktbil – er det en mangel?"><span class="spk-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span><span class="spk-row-body"><span class="spk-row-tittel">Høyt oljeforbruk på bruktbil – er det en mangel?</span><span class="spk-row-desc">Det kommer an på hvor mye olje bilen bruker, hva produsenten oppgir, bilens alder og kilometerstand, og…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../importert-bil-feil-opplysninger/" data-k="importert bil uten riktige opplysninger – kan kjøpet heves?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Importert bil uten riktige opplysninger – kan kjøpet heves?</span><span class="spk-row-desc">Ja, kjøpet kan heves dersom feil eller manglende opplysninger om importbilen utgjør en tilstrekkelig alvorlig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kan-bruktbil-selges-som-den-er/" data-k="kan en bruktbil selges «som den er»?"><span class="spk-row-body"><span class="spk-row-tittel">Kan en bruktbil selges «som den er»?</span><span class="spk-row-desc">En forhandler kan ikke redusere forbrukerens lovvern med et generelt «som den er»-forbehold i avtaler inngått…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kjopt-bil-med-feil/" data-k="kjøpt bil med feil – hva kan du kreve av selger?"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt bil med feil – hva kan du kreve av selger?</span><span class="spk-row-desc">Har bilen en mangel som selgeren svarer for, kan du kreve at feilen rettes, og i enkelte tilfeller…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kjopt-bil-skjult-kollisjonsskade/" data-k="kjøpt bil med skjult kollisjonsskade – hva kan du kreve?"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt bil med skjult kollisjonsskade – hva kan du kreve?</span><span class="spk-row-desc">En skjult kollisjonsskade kan være en mangel dersom bilen avviker fra opplysningene, skaden skulle vært…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../slitte-bremser-dekk-bruktbil/" data-k="kjøpt bil med slitte bremser eller dekk – mangel eller normalt vedlikehold?"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt bil med slitte bremser eller dekk – mangel eller normalt vedlikehold?</span><span class="spk-row-desc">Slitte bremser og dekk er vanligvis vedlikeholds- og slitedeler som kjøperen må regne med å skifte. De kan…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kjopt-bil-privat-selgers-ansvar/" data-k="kjøpt bil privat – hvilke feil er selger ansvarlig for?"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt bil privat – hvilke feil er selger ansvarlig for?</span><span class="spk-row-desc">En privat selger er ansvarlig for feil som utgjør en mangel etter kjøpsloven og avtalen. Det gjelder særlig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kjopt-brukt-tesla-med-feil/" data-k="kjøpt brukt tesla med feil – slik går du frem mot selger"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt brukt Tesla med feil – slik går du frem mot selger</span><span class="spk-row-desc">Reklamer skriftlig til den som solgte bilen, ikke bare til Tesla-service. Kjøpte du av Tesla eller en annen…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kjopt-bruktbil-av-forhandler/" data-k="kjøpt bruktbil av forhandler – hvilke rettigheter har du?"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt bruktbil av forhandler – hvilke rettigheter har du?</span><span class="spk-row-desc">Du er beskyttet av forbrukerkjøpsloven når du som privatperson kjøper bruktbil fra en næringsdrivende.…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kjopt-elbil-darlig-batteri/" data-k="kjøpt elbil med dårlig batteri – hvilke rettigheter har du?"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt elbil med dårlig batteri – hvilke rettigheter har du?</span><span class="spk-row-desc">Du kan reklamere dersom høyvoltbatteriet har en feil eller en kapasitet som avviker fra avtalen, konkrete…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../elbil-ladekabel-ladeutstyr-selgers-ansvar/" data-k="kjøpt elbil uten fungerende ladekabel eller ladeutstyr – selgers ansvar"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt elbil uten fungerende ladekabel eller ladeutstyr – selgers ansvar</span><span class="spk-row-desc">Selgeren er ansvarlig dersom ladekabel, adapter eller annet ladeutstyr inngikk i avtalen, ble vist i annonsen…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../kjopt-stjalet-bil/" data-k="kjøpt stjålet bil – hvem taper bilen og pengene?"><span class="spk-row-body"><span class="spk-row-tittel">Kjøpt stjålet bil – hvem taper bilen og pengene?</span><span class="spk-row-desc">Er bilen fravendt den rette eieren ved tyveri, brukstyveri, ran eller vold, får en senere kjøper normalt ikke…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../manglende-service-bruktbil/" data-k="manglende service på bruktbil – betydningen for garanti og reklamasjon"><span class="spk-row-body"><span class="spk-row-tittel">Manglende service på bruktbil – betydningen for garanti og reklamasjon</span><span class="spk-row-desc">Manglende eller forsinket service kan føre til at en garantigiver avslår et garantikrav dersom vilkårene er…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../manipulert-servicehistorikk/" data-k="manipulert servicehistorikk – kan bilkjøpet heves?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Manipulert servicehistorikk – kan bilkjøpet heves?</span><span class="spk-row-desc">Ja. Manipulert eller falsk servicehistorikk kan gi hevingsrett når opplysningene påvirket kjøpet og avviket…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../motorhavari-kort-tid-etter-bilkjop/" data-k="motorhavari kort tid etter bilkjøpet – hvem må betale?"><span class="spk-row-body"><span class="spk-row-tittel">Motorhavari kort tid etter bilkjøpet – hvem må betale?</span><span class="spk-row-desc">Selgeren må betale dersom motorhavariet skyldes en mangel ved bilen som forelå eller var under utvikling da…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../nar-er-feil-pa-bil-en-mangel/" data-k="når er en feil på bilen en kjøpsrettslig mangel?"><span class="spk-row-body"><span class="spk-row-tittel">Når er en feil på bilen en kjøpsrettslig mangel?</span><span class="spk-row-desc">En teknisk eller faktisk feil er en kjøpsrettslig mangel når bilen ved levering avviker fra avtalen, konkrete…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../pant-heftelser-bil/" data-k="pant eller heftelser på bilen – hvem har ansvaret?"><span class="spk-row-body"><span class="spk-row-tittel">Pant eller heftelser på bilen – hvem har ansvaret?</span><span class="spk-row-desc">Selgerens billån blir ikke din personlige gjeld, men en gyldig panterett kan fortsatt følge bilen. Betaler…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../prisavslag-feil-bil/" data-k="prisavslag ved feil på bil – hvor mye kan du kreve?"><span class="spk-row-body"><span class="spk-row-tittel">Prisavslag ved feil på bil – hvor mye kan du kreve?</span><span class="spk-row-desc">Prisavslaget skal normalt settes slik at forholdet mellom den reduserte og avtalte prisen tilsvarer forholdet…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../registerreim-registerkjede-ryker/" data-k="registerreim eller registerkjede ryker etter kjøpet – selgers ansvar"><span class="spk-row-body"><span class="spk-row-tittel">Registerreim eller registerkjede ryker etter kjøpet – selgers ansvar</span><span class="spk-row-desc">Selgeren kan være ansvarlig dersom registerreimen eller registerkjedet svikter fordi bilen hadde en mangel…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../reklamasjon-bruktbil/" data-k="reklamasjon på bruktbil – frister, krav og dokumentasjon"><span class="spk-row-body"><span class="spk-row-tittel">Reklamasjon på bruktbil – frister, krav og dokumentasjon</span><span class="spk-row-desc">Du må reklamere skriftlig til selger innen rimelig tid etter at du oppdaget eller burde ha oppdaget feilen.…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../reklamere-pa-bil-reklamasjonsbrev/" data-k="reklamere på bil – slik skriver du et gyldig reklamasjonsbrev"><span class="spk-row-body"><span class="spk-row-tittel">Reklamere på bil – slik skriver du et gyldig reklamasjonsbrev</span><span class="spk-row-desc">Du må skriftlig gjøre det klart at du påberoper deg en konkret feil ved bilen som en mangel. Oppgi kjøpsdato,…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../rust-bruktbil-erstatning-heving/" data-k="rust på bruktbil – når kan kjøper kreve erstatning eller heving?"><span class="spk-row-body"><span class="spk-row-tittel">Rust på bruktbil – når kan kjøper kreve erstatning eller heving?</span><span class="spk-row-desc">Du kan kreve noe av selgeren når rusten utgjør en kjøpsrettslig mangel. Det gjelder særlig ved skjult rust i…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../selger-skjulte-feil-bil/" data-k="selger skjulte feil ved bilen – hvilke krav har kjøper?"><span class="spk-row-body"><span class="spk-row-tittel">Selger skjulte feil ved bilen – hvilke krav har kjøper?</span><span class="spk-row-desc">Har selgeren holdt tilbake et vesentlig forhold ved bilen som du hadde grunn til å få vite, kan bilen ha en…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../selger-unnlot-opplyse-feil-bil/" data-k="selger unnlot å opplyse om feil – ansvar ved bilkjøp"><span class="spk-row-body"><span class="spk-row-tittel">Selger unnlot å opplyse om feil – ansvar ved bilkjøp</span><span class="spk-row-desc">Selgeren kan bli ansvarlig dersom du ikke fikk opplysninger om et viktig forhold ved bilen som du hadde grunn…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../tesla-autopilot-fsd-prisavslag/" data-k="tesla med manglende eller feilopplyst autopilot/fsd – kan du kreve prisavslag?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Tesla med manglende eller feilopplyst Autopilot/FSD – kan du kreve prisavslag?</span><span class="spk-row-desc">Ja. Dersom selgeren opplyste at bilen hadde en bestemt Autopilot- eller FSD-pakke, men pakken ikke følger…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../tesla-skjerm-data-programvarefeil/" data-k="tesla med skjerm-, data- eller programvarefeil – er det en mangel?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Tesla med skjerm-, data- eller programvarefeil – er det en mangel?</span><span class="spk-row-desc">Ja, det kan være en mangel når skjermen, tilkoblingen eller programvaren ikke leverer avtalt eller nødvendig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../tidligere-skadet-kondemnert-bil/" data-k="tidligere skadet eller kondemnert bil – selgers opplysningsplikt"><span class="spk-row-body"><span class="spk-row-tittel">Tidligere skadet eller kondemnert bil – selgers opplysningsplikt</span><span class="spk-row-desc">Selgeren må opplyse om tidligere skade eller kondemnering når historikken er relevant for bilens sikkerhet,…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../uriktige-opplysninger-bilannonse/" data-k="uriktige opplysninger i bilannonsen – kan kjøpet heves?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Uriktige opplysninger i bilannonsen – kan kjøpet heves?</span><span class="spk-row-desc">Ja, uriktige annonseopplysninger kan gi rett til heving når de har påvirket kjøpet og avviket er alvorlig…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../vannlekkasje-fuktskade-bil-heving/" data-k="vannlekkasje og fuktskader i bil – grunnlag for heving?"><span class="spk-verdict" style="background:#DFF0E9; color:#085041;">JA</span><span class="spk-row-body"><span class="spk-row-tittel">Vannlekkasje og fuktskader i bil – grunnlag for heving?</span><span class="spk-row-desc">Ja, vannlekkasje kan gi grunnlag for heving når mangelen er mer enn uvesentlig ved forhandlerkjøp eller…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a><a class="spk-row" href="../varsellamper-elektroniske-feil-bil/" data-k="varsellamper og elektroniske feil etter kjøpet – selgers ansvar"><span class="spk-row-body"><span class="spk-row-tittel">Varsellamper og elektroniske feil etter kjøpet – selgers ansvar</span><span class="spk-row-desc">Selgeren er ansvarlig når varsellampen eller elektronikkfeilen skyldes en kjøpsrettslig mangel som var til…</span></span><span class="spk-row-pil" aria-hidden="true">&rarr;</span></a>      </div>
+      <p class="spk-tomt" id="spk-tomt">Ingen spørsmål matcher. <a href="../../kontakt/" style="color:var(--accent);">Foreslå det</a> — så skriver vi svaret.</p>
+    </div>
+  </div>
+  <div class="spk-bunn">
+    <span>Fant du ikke svaret? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få gratis vurdering &rarr;</a>
+  </div>
+</main>
+
+<script>
+(function(){
+  var input = document.getElementById('spk-sok');
+  if (!input) return;
+  var rows = [].slice.call(document.querySelectorAll('.spk-row'));
+  var hoder = [].slice.call(document.querySelectorAll('.spk-tema-hode'));
+  var temaer = [].slice.call(document.querySelectorAll('.spk-tema'));
+  var tomt = document.getElementById('spk-tomt');
+  var aktivTema = 'alle';
+  function oppdater(){
+    var q = input.value.toLowerCase().trim();
+    var vist = 0;
+    rows.forEach(function(r){
+      var hitQ = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      var hitT = aktivTema === 'alle' || r.getAttribute('data-tema') === aktivTema;
+      var vis = hitQ && hitT;
+      r.style.display = vis ? '' : 'none';
+      if (vis) vist++;
+    });
+    hoder.forEach(function(h){
+      var tema = h.getAttribute('data-tema');
+      var noen = rows.some(function(r){ return r.getAttribute('data-tema') === tema && r.style.display !== 'none'; });
+      h.style.display = noen ? '' : 'none';
+    });
+    tomt.style.display = vist === 0 ? 'block' : 'none';
+  }
+  input.addEventListener('input', oppdater);
+  temaer.forEach(function(t){
+    t.addEventListener('click', function(){
+      aktivTema = t.getAttribute('data-tema');
+      temaer.forEach(function(x){ x.classList.remove('spk-tema-aktiv'); });
+      t.classList.add('spk-tema-aktiv');
+      oppdater();
+    });
+  });
+})();
+</script>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>

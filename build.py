@@ -168,6 +168,16 @@ except ImportError:
     _SP_AVH_V2 = []
 
 try:
+    from sporsmal_boligkjop_v1 import SPORSMAL as _SP_BOLIGKJOP
+except ImportError:
+    _SP_BOLIGKJOP = []
+
+try:
+    from sporsmal_bilkjop_v1 import SPORSMAL as _SP_BILKJOP
+except ImportError:
+    _SP_BILKJOP = []
+
+try:
     from sporsmal_arveloven import SPORSMAL as _SP_ARVE
 except ImportError:
     _SP_ARVE = []
@@ -335,6 +345,8 @@ SPORSMAL = (_tag_lov(_SP_BASE, None)
             + _tag_lov(_SP_ANGRE, "angrerettloven")
             + _tag_lov(_SP_AVH, "avhendingslova")
             + _tag_lov(_SP_AVH_V2, "avhendingslova")
+            + _tag_lov(_SP_BOLIGKJOP, "avhendingslova")
+            + _tag_lov(_SP_BILKJOP, "forbrukerkjøpsloven")
             + _tag_lov(_SP_ARVE, "arveloven")
             + _tag_lov(_SP_BARNE, "barnelova")
             + _tag_lov(_SP_STRAFF, None)
@@ -671,6 +683,8 @@ main.page { max-width: 1100px; margin: 0 auto; padding: 0 32px; min-height: calc
   line-height: 1.3; color: var(--ink);
 }
 .related-card.unavailable { opacity: 0.6; pointer-events: none; }
+.lenke-tom, .lov-ref-tom { color: inherit; }
+.sp-body .lov-ref-tom, .lap-body .lenke-tom { color: var(--ink, #3A3835); border-bottom: 1px dotted #b9b3a7; }
 .related-card.unavailable .related-card-meta::after {
   content: ' · KOMMER SNART';
   color: var(--ink-mute);
@@ -3749,6 +3763,23 @@ def render_sporsmal_page(s):
 
     body_html = md.markdown(content_raw, extensions=["tables"]) if content_raw else ""
 
+    # Saner døde lov-lenker i brødteksten: hvis en /lover/{lov}/{para}/-lenke peker
+    # til en paragrafside som ikke finnes, gjør den om til ren tekst (behold synlig tekst).
+    # Fanger både trunkerte lovnavn og siterte paragrafer uten egen side.
+    _avail_para_keys = avail_paras  # {(lov, number)}
+    def _saner_lovlenke(mm):
+        href = mm.group(1)
+        tekst = mm.group(2)
+        m2 = re.search(r'/lover/([a-z0-9-]+)/([0-9][0-9a-z-]*)/?$', href)
+        if not m2:
+            return mm.group(0)
+        lov, para = m2.group(1), m2.group(2)
+        if (lov, para) in _avail_para_keys:
+            return mm.group(0)
+        # død lenke -> behold teksten som ikke-lenke
+        return f'<span class="lov-ref-tom">{tekst}</span>'
+    body_html = re.sub(r'<a href="([^"]*?/lover/[^"]*?)">(.*?)</a>', _saner_lovlenke, body_html, flags=re.S)
+
     # Related paragraphs
     related_html = ""
     if related:
@@ -3761,10 +3792,17 @@ def render_sporsmal_page(s):
             lov_display = LOV_DISPLAY.get(lov, lov)
             unavail_class = "" if available else " unavailable"
             href = f"../../lover/{lov}/{paragraf}/"
-            related_cards.append(f"""<a href="{href}" class="related-card{unavail_class}">
+            if available:
+                related_cards.append(f"""<a href="{href}" class="related-card{unavail_class}">
   <div class="related-card-meta">{lov_display} § {paragraf}</div>
   <div class="related-card-title">{tittel}</div>
 </a>""")
+            else:
+                # Ingen paragrafside finnes — vis kortet uten død lenke
+                related_cards.append(f"""<div class="related-card{unavail_class}">
+  <div class="related-card-meta">{lov_display} § {paragraf}</div>
+  <div class="related-card-title">{tittel}</div>
+</div>""")
         related_html = f"""<div class="related-section">
   <div class="related-label">Paragrafene bak svaret</div>
   <div class="related-cards">{"".join(related_cards)}</div>
@@ -3823,6 +3861,10 @@ def render_sporsmal_page(s):
         if base in by_base:
             u, navn = by_base[base]
             mål = posixpath.normpath(posixpath.join("tjenester", u))
+            # Bare emit chip hvis målfilen faktisk finnes i output (unngå døde lenker)
+            _cand = os.path.join("/home/claude/site/dist", mål if mål.endswith(".html") else os.path.join(mål, "index.html"))
+            if not os.path.exists(_cand):
+                continue
             vt += f'<a class="sp-relchip sp-relchip-verktoy" href="../../{mål}{"" if mål.endswith(".html") else "/"}">&#128196; {navn}</a>'
     relatert_rad = ""
     if chip_html or vt:
@@ -8532,7 +8574,7 @@ Sitemap: {SITE_URL}/sitemap.xml
             })
     with open(f"{out}/paragraphs-index.json", "w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, indent=None, separators=(",", ":"))
-    
+
     print(f"Built {len(PARAGRAPHS)} paragraph pages + {len(SPORSMAL)} sporsmal-artikler + homepage + lov index + lover index + personvern + om")
     print(f"Plus: sitemap.xml ({len(urls)} URLs), robots.txt, CNAME, paragraphs-index.json")
     print(f"Output: {out}")

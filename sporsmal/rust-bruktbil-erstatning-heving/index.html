@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rust på bruktbil – når kan kjøper kreve erstatning eller heving? — Rettsregel</title>
+<meta name="description" content="Rust er en mangel når omfanget avviker fra avtalen eller rimelige forventninger, eller når selgeren skjulte eller feilbeskrev tilstanden. Synlighet, sikkerhet og reparasjonskostnad avgjør.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/rust-bruktbil-erstatning-heving/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Rust på bruktbil – når kan kjøper kreve erstatning eller heving?">
+<meta property="og:description" content="Rust er en mangel når omfanget avviker fra avtalen eller rimelige forventninger, eller når selgeren skjulte eller feilbeskrev tilstanden. Synlighet, sikkerhet og reparasjonskostnad avgjør.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/rust-bruktbil-erstatning-heving/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rust på bruktbil – når kan kjøper kreve erstatning eller heving?">
+<meta name="twitter:description" content="Rust er en mangel når omfanget avviker fra avtalen eller rimelige forventninger, eller når selgeren skjulte eller feilbeskrev tilstanden. Synlighet, sikkerhet og reparasjonskostnad avgjør.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Rust på bruktbil – når kan kjøper kreve erstatning eller heving?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du kan kreve noe av selgeren når rusten utgjør en kjøpsrettslig mangel. Det gjelder særlig ved skjult rust i bærende konstruksjon, uriktige opplysninger, tildekking eller et omfang som bilen ikke ga grunn til å forvente. Overflaterust på en eldre bil kan være normal slitasje. Heving krever at rustmangelen er alvorlig nok og ikke avhjelpes tilfredsstillende.</p>
+  <p class="sp-kilde">Bygger på Forbrukerkjøpsloven §§ 15, 16, 18 · Kjøpsloven § 19 og § 20</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/forbrukerkjopsloven/15/" class="related-card">
+  <div class="related-card-meta">Forbrukerkjøpsloven § 15</div>
+  <div class="related-card-title">Hvilke krav kan du stille til varen du kjøper?</div>
+</a><a href="../../lover/forbrukerkjopsloven/16/" class="related-card">
+  <div class="related-card-meta">Forbrukerkjøpsloven § 16</div>
+  <div class="related-card-title">Hva regnes som en mangel?</div>
+</a><a href="../../lover/forbrukerkjopsloven/18/" class="related-card">
+  <div class="related-card-meta">Forbrukerkjøpsloven § 18</div>
+  <div class="related-card-title">Når oppstod feilen — og hvem må bevise det?</div>
+</a><a href="../../lover/kjopsloven/19/" class="related-card">
+  <div class="related-card-meta">Kjøpsloven § 19</div>
+  <div class="related-card-title">Varer solgt «som den er»</div>
+</a><a href="../../lover/kjopsloven/20/" class="related-card">
+  <div class="related-card-meta">Kjøpsloven § 20</div>
+  <div class="related-card-title">Når du visste om feilen</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Du kan kreve noe av selgeren når rusten utgjør en kjøpsrettslig mangel. Det gjelder særlig ved skjult rust i bærende konstruksjon, uriktige opplysninger, tildekking eller et omfang som bilen ikke ga grunn til å forvente. Overflaterust på en eldre bil kan være normal slitasje. Heving krever at rustmangelen er alvorlig nok og ikke avhjelpes tilfredsstillende.</p>
+<h2>Rust må klassifiseres før jussen vurderes</h2>
+<p>Ordet rust sier lite alene.</p>
+<p>Det må skilles mellom:</p>
+<ul>
+<li>overflaterust</li>
+<li>kosmetisk rust</li>
+<li>rust i skjermer og dører</li>
+<li>rust i bremserør</li>
+<li>rust i kanaler</li>
+<li>rust i innfestinger</li>
+<li>rust i ramme eller bærende konstruksjon</li>
+<li>rust under batterikasse</li>
+<li>rust skjult av understellsmasse eller sparkel</li>
+<li>rust etter dårlig kollisjonsreparasjon</li>
+</ul>
+<p>En liten boble i lakken på en gammel skjerm vurderes annerledes enn gjennomrusting ved beltefeste, fjærbein eller ramme.</p>
+<p>Be verkstedet beskrive rustens plassering, dybde og sikkerhetsmessige betydning. «Mye rust» er for upresist.</p>
+<h2>Alder og bruksmiljø påvirker forventningene</h2>
+<p>Rust utvikler seg over tid og påvirkes av blant annet:</p>
+<ul>
+<li>bilens alder</li>
+<li>vinterbruk</li>
+<li>veisalt</li>
+<li>konstruksjon</li>
+<li>tidligere antirustbehandling</li>
+<li>drenering</li>
+<li>skader i lakk og understellsbelegg</li>
+<li>kollisjonsreparasjoner</li>
+<li>oppbevaring</li>
+<li>vedlikehold</li>
+</ul>
+<p>En kjøper av en gammel bil må akseptere mer synlig rust enn en kjøper av en nyere bil.</p>
+<p>Det betyr ikke at all rust er forventelig. En bil kan være gammel, men fortsatt ha en mangel dersom:</p>
+<ul>
+<li>selgeren beskrev den som rustfri</li>
+<li>rusten er skjult og strukturell</li>
+<li>bilen nylig ble godkjent på feilaktig eller misvisende grunnlag</li>
+<li>kritiske områder er dekket til</li>
+<li>reparasjonsbehovet er langt større enn pris og opplysninger tilsa</li>
+<li>selgeren kjente en kontrollrapport og unnlot å opplyse</li>
+</ul>
+<h2>Forhandlerens opplysninger og kontroll</h2>
+<p>Ved forhandlerkjøp gjelder <a href="https://lovdata.no/lov/2002-06-21-34/§15">forbrukerkjøpsloven §§ 15 og 16</a>.</p>
+<p>Forhandleren kan bli ansvarlig når bilen avviker fra rimelige forventninger eller når han burde ha opplyst om rusten.</p>
+<p>En profesjonell forhandler trenger ikke demontere hele bilen. Men han kan vanskelig se bort fra:</p>
+<ul>
+<li>rustmerknader i tilstandsrapport</li>
+<li>tydelige hull</li>
+<li>fersk understellsmasse over problemområder</li>
+<li>kontrollseddel med rustanmerkning</li>
+<li>egne verkstedfunn</li>
+<li>unormal deformasjon eller tidligere reparasjon</li>
+<li>synlig rust ved løftepunkter og innfestinger</li>
+</ul>
+<p>Et generelt «bruktbil – rust kan forekomme» er ikke et presist avvik for nyere forbrukerkjøp. Skal en konkret rustskade legges på kjøperen, må den opplyses tydelig og særskilt aksepteres etter reglene som gjelder.</p>
+<h2>Privatkjøp og kjøperens undersøkelse</h2>
+<p>Ved privat «som den er»-kjøp kan <a href="https://lovdata.no/lov/1988-05-13-27/§19">kjøpsloven § 19</a> gi krav når:</p>
+<ul>
+<li>rusttilstanden avviker fra selgerens opplysninger</li>
+<li>selgeren unnlot å opplyse om vesentlig rust han måtte kjenne til</li>
+<li>bilen er i vesentlig dårligere stand enn kjøperen hadde grunn til å forvente</li>
+</ul>
+<p>Etter <a href="https://lovdata.no/lov/1988-05-13-27/§20">§ 20</a> kan kjøperen normalt ikke klage på rust han kjente eller måtte kjenne til.</p>
+<p>Synlig rust ved hjulbue er noe annet enn rust inne i en lukket kanal. Kjøperen må ikke demontere bilen, men kan få et svakere krav dersom selgeren uttrykkelig oppfordret til verkstedkontroll og tydelige rusttegn ble ignorert.</p>
+<p>Selgerens tildekking endrer vurderingen. Fersk masse, sparkel eller plater som skjuler rust kan være bevis på kunnskap og uredelighet.</p>
+<h2>EU-kontroll er ikke en garanti mot rust</h2>
+<p>En gyldig periodisk kjøretøykontroll viser at bilen ble vurdert etter kontrollreglene på et bestemt tidspunkt.</p>
+<p>Den garanterer ikke:</p>
+<ul>
+<li>at det ikke finnes skjult rust</li>
+<li>at rust ikke har utviklet seg etter kontrollen</li>
+<li>at alle områder ble demontert og undersøkt</li>
+<li>at selgerens opplysninger er riktige</li>
+<li>at bilen har normal markedsverdi</li>
+</ul>
+<p>Underkjennes bilen kort tid etter kjøpet på grunn av gammel, omfattende rust, kan dette være et viktig bevis. Verkstedet bør beskrive om rusten må ha utviklet seg over lang tid og om den burde vært synlig ved tidligere kontroll.</p>
+<p>Kravet bør rettes mot selgeren. Eventuelle spørsmål om kontrollverkstedets arbeid er et separat forhold.</p>
+<h2>Forhandlerkjøp og toårsformodningen</h2>
+<p>For avtaler inngått fra 1. januar 2024 følger det av <a href="https://lovdata.no/lov/2002-06-21-34/§18">forbrukerkjøpsloven § 18</a> at en mangel som viser seg innen to år, som utgangspunkt formodes å ha eksistert ved levering.</p>
+<p>Gjennomrusting som avdekkes etter tre måneder har normalt ikke oppstått fra ingenting i perioden. Rustens natur kan derfor støtte at tilstanden var til stede ved levering.</p>
+<p>Formodningen betyr ikke at enhver ny rustflekk er selgerens ansvar. En fersk lakkskade etter steinsprut eller kollisjon kan ha oppstått etter kjøpet.</p>
+<p>En sakkyndig bør beskrive:</p>
+<ul>
+<li>rustens alder</li>
+<li>omfang</li>
+<li>lagdeling</li>
+<li>tidligere reparasjon</li>
+<li>tildekking</li>
+<li>sannsynlig utviklingstid</li>
+</ul>
+<h2>Retting, prisavslag eller heving</h2>
+<p><strong>Retting</strong> passer ved avgrenset rust som kan fjernes fagmessig og varig.</p>
+<p>Forhandlerens plan bør beskrive:</p>
+<ul>
+<li>hva som kuttes bort</li>
+<li>hvilke deler som skiftes</li>
+<li>sveisemetode</li>
+<li>korrosjonsbeskyttelse</li>
+<li>lakkoppbygging</li>
+<li>kontroll av bærende styrke</li>
+<li>garanti på arbeidet</li>
+</ul>
+<p>Kosmetisk sliping og lakk er ikke tilstrekkelig dersom rusten sitter i bærende metall.</p>
+<p><strong>Prisavslag</strong> er aktuelt når bilen har lavere verdi eller når lovlig avhjelp ikke skjer. Reparasjonskostnaden er relevant, men varig rusthistorikk og restverdi kan også ha betydning.</p>
+<p><strong>Heving</strong> står sterkere når:</p>
+<ul>
+<li>rusten er omfattende og strukturell</li>
+<li>bilen er utrygg eller ikke kan godkjennes</li>
+<li>flere områder er angrepet</li>
+<li>selgeren skjulte tilstanden</li>
+<li>reparasjonen er økonomisk eller teknisk uforsvarlig</li>
+<li>rusten kommer tilbake etter retting</li>
+<li>verdireduksjonen er betydelig</li>
+</ul>
+<p>Ved privatkjøp må rustmangelen medføre et vesentlig kontraktbrudd.</p>
+<h2>Erstatning for økonomisk tap</h2>
+<p>Erstatning kan være aktuelt for:</p>
+<ul>
+<li>sakkyndig rustundersøkelse</li>
+<li>transport når bilen ikke er trygg</li>
+<li>kontroll etter reparasjon</li>
+<li>rimelig alternativ transport</li>
+<li>nødvendig skadebegrensning</li>
+<li>følgeskade fra vanninntrenging</li>
+<li>prisforskjell etter berettiget heving</li>
+</ul>
+<p>Kjøperen må dokumentere tapet og begrense det.</p>
+<p>Ikke bestill full rustsanering før selgeren har fått inspisere bilen. Ved sikkerhetskritisk rust kan bilen sikres og transporteres, men selgeren bør varsles straks.</p>
+<h2>Eksempel: Skjult rust under fersk masse</h2>
+<p>Julie kjøper 14. april 2026 en brukt varebil fra forhandler for 185 000 kroner. Annonsen sier «meget pen under». Understellet er nylig dekket med svart masse.</p>
+<p>To måneder senere løsner et feste. Et karosseriverksted fjerner deler av massen og finner omfattende gjennomrusting i kanaler og innfestinger. Rapporten mener rusten har utviklet seg over flere år og at massen er lagt over eksisterende skade.</p>
+<p>Dette er ikke normal rust som oppsto etter kjøpet. Opplysningen og tildekkingen styrker mangelskravet. Hvis flere bærende områder må bygges opp og bilen ikke kan repareres uten stor usikkerhet, kan Julie kreve heving.</p>
+<p>Forhandleren må få inspisere, men Julie trenger ikke godta en overflatisk lapping uten dokumentert metode.</p>
+<h2>Eksempel: Synlig rust på gammel privatbil</h2>
+<p>Magnus kjøper en 20 år gammel bil privat for 18 000 kroner. Annonsen sier «mye rust i skjermer og kanaler – prosjektbil». Han ser rusthull og kjøper uten verkstedkontroll.</p>
+<p>Etterpå viser det seg at kanalene må skiftes for å få bilen godkjent.</p>
+<p>Dette er normalt en kjent og akseptert risiko. Bilen ble solgt som prosjekt, rusten var synlig og prisen lav.</p>
+<p>Resultatet kan bli annerledes dersom selgeren uttrykkelig sa at rusten bare var kosmetisk og skjulte alvorlig rammerust med påsveisede plater.</p>
+<h2>Den vanligste misforståelsen: Rust på bruktbil er alltid normalt</h2>
+<p>Alder gjør rust mer påregnelig, men fritar ikke selgeren for uriktige opplysninger, skjuling eller en bil i klart dårligere stand enn forventet.</p>
+<p>Den motsatte misforståelsen er at enhver rustboble gir heving. Mangelens plassering, omfang, reparerbarhet og betydning avgjør reaksjonen.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Ikke slip, sveise eller påføre ny masse før rusten er dokumentert. Ta bilder med målestokk og få bilen på løftebukk.</p>
+<p>Be rapporten skille mellom:</p>
+<ul>
+<li>overflaterust</li>
+<li>gjennomrusting</li>
+<li>bærende og ikke-bærende områder</li>
+<li>sikkerhetsrisiko</li>
+<li>forventet utviklingstid</li>
+<li>reparasjonsmetode</li>
+<li>kostnad og restverdi</li>
+</ul>
+<p>Reklamer skriftlig og gi selgeren mulighet til inspeksjon. Dersom bilen kan være trafikkfarlig, ikke kjør den til selgeren; avklar berging.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bilen-bestaar-ikke-eu-kontroll/">Bilen består ikke EU-kontroll etter kjøpet – hvem er ansvarlig?</a><a class="sp-relchip" href="../../sporsmal/selger-skjulte-feil-bil/">Selger skjulte feil ved bilen – hvilke krav har kjøper?</a><a class="sp-relchip" href="../../sporsmal/kjopt-bil-skjult-kollisjonsskade/">Kjøpt bil med skjult kollisjonsskade – hva kan du kreve?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

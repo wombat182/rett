@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kjøpt brukt Tesla med feil – slik går du frem mot selger — Rettsregel</title>
+<meta name="description" content="Ved feil på en brukt Tesla må du først avklare hvem som er juridisk selger, sikre data og reklamere skriftlig. Forhandlerkjøp og privatkjøp følger ulike lover.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kjopt-brukt-tesla-med-feil/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kjøpt brukt Tesla med feil – slik går du frem mot selger">
+<meta property="og:description" content="Ved feil på en brukt Tesla må du først avklare hvem som er juridisk selger, sikre data og reklamere skriftlig. Forhandlerkjøp og privatkjøp følger ulike lover.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kjopt-brukt-tesla-med-feil/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kjøpt brukt Tesla med feil – slik går du frem mot selger">
+<meta name="twitter:description" content="Ved feil på en brukt Tesla må du først avklare hvem som er juridisk selger, sikre data og reklamere skriftlig. Forhandlerkjøp og privatkjøp følger ulike lover.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Kjøpt brukt Tesla med feil – slik går du frem mot selger</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Reklamer skriftlig til den som solgte bilen, ikke bare til Tesla-service. Kjøpte du av Tesla eller en annen forhandler, gjelder normalt forbrukerkjøpsloven. Ved privatkjøp gjelder kjøpsloven. Dokumenter feilen i bilen og appen, sikre servicehistorikk og gi selgeren mulighet til å undersøke og rette før du bestiller omfattende arbeid selv.</p>
+  <p class="sp-kilde">Bygger på Forbrukerkjøpsloven §§ 1, 18, 27, 29 · Kjøpsloven § 32</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/forbrukerkjopsloven/1/" class="related-card">
+  <div class="related-card-meta">Forbrukerkjøpsloven § 1</div>
+  <div class="related-card-title">Når gjelder loven?</div>
+</a><a href="../../lover/forbrukerkjopsloven/18/" class="related-card">
+  <div class="related-card-meta">Forbrukerkjøpsloven § 18</div>
+  <div class="related-card-title">Når oppstod feilen — og hvem må bevise det?</div>
+</a><a href="../../lover/forbrukerkjopsloven/27/" class="related-card">
+  <div class="related-card-meta">Forbrukerkjøpsloven § 27</div>
+  <div class="related-card-title">Hvor lenge kan du klage på en vare?</div>
+</a><a href="../../lover/forbrukerkjopsloven/29/" class="related-card">
+  <div class="related-card-meta">Forbrukerkjøpsloven § 29</div>
+  <div class="related-card-title">Rett til å velge mellom reparasjon og ny vare</div>
+</a><a href="../../lover/kjopsloven/32/" class="related-card">
+  <div class="related-card-meta">Kjøpsloven § 32</div>
+  <div class="related-card-title">Reklamasjonsfristene</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Reklamer skriftlig til den som solgte bilen, ikke bare til Tesla-service. Kjøpte du av Tesla eller en annen forhandler, gjelder normalt forbrukerkjøpsloven. Ved privatkjøp gjelder kjøpsloven. Dokumenter feilen i bilen og appen, sikre servicehistorikk og gi selgeren mulighet til å undersøke og rette før du bestiller omfattende arbeid selv.</p>
+<h2>Start med å identifisere riktig motpart</h2>
+<p>Ved brukt Tesla oppstår det ofte forvirring mellom:</p>
+<ul>
+<li>selgeren</li>
+<li>Tesla som produsent</li>
+<li>Tesla-service</li>
+<li>garantigiveren</li>
+<li>et annet bilverksted</li>
+<li>finansieringsselskapet</li>
+</ul>
+<p>Kjøpte du bilen direkte fra Tesla som forbruker, er Tesla selger etter kjøpekontrakten.</p>
+<p>Kjøpte du av en uavhengig bruktbilforhandler, er denne forhandleren normalt ansvarlig for reklamasjonskravet. Forhandleren kan ikke uten videre avvise deg med at Tesla må behandle saken.</p>
+<p>Kjøpte du direkte fra en privatperson, gjelder kjøpsloven. Tesla kan fortsatt være garantigiver for enkelte komponenter, men er ikke dermed selger i privatavtalen.</p>
+<p>Du kan ha flere parallelle krav:</p>
+<ul>
+<li>reklamasjonskrav mot selgeren</li>
+<li>garantikrav mot Tesla</li>
+<li>krav etter en separat bruktbilgaranti</li>
+<li>krav mot verkstedet som utførte en mangelfull reparasjon</li>
+</ul>
+<p>Send reklamasjonen til selgeren selv om service bestilles i Tesla-appen. En servicehenvendelse er ikke alltid tilstrekkelig tydelig som juridisk reklamasjon.</p>
+<h2>Forhandlerkjøp gir et sterkere lovvern</h2>
+<p>Når en privatperson kjøper fra en næringsdrivende, gjelder <a href="https://lovdata.no/lov/2002-06-21-34">forbrukerkjøpsloven</a>.</p>
+<p>Ved en mangel kan du blant annet kreve:</p>
+<ul>
+<li>kostnadsfri retting</li>
+<li>omlevering når dette er mulig og forholdsmessig</li>
+<li>prisavslag</li>
+<li>heving</li>
+<li>erstatning</li>
+<li>tilbakehold av ubetalt kjøpesum</li>
+</ul>
+<p>For kjøp inngått fra 1. januar 2024 formodes en mangel som viser seg innen to år å ha eksistert ved levering, med mindre dette er uforenlig med bilens eller mangelens art, jf. <a href="https://lovdata.no/lov/2002-06-21-34/§18">§ 18</a>.</p>
+<p>Den absolutte reklamasjonsfristen er normalt fem år for bil. Du må i tillegg reklamere innen rimelig tid etter at feilen ble eller burde blitt oppdaget. Ved forbrukerkjøp er to måneder fra oppdagelsen alltid tilstrekkelig, jf. <a href="https://lovdata.no/lov/2002-06-21-34/§27">§ 27</a>.</p>
+<p>Femårsfristen er ikke en garanti for alt som skjer. Normal slitasje, skade etter levering og feil bruk kan falle på kjøperen.</p>
+<h2>Privatkjøp krever mer dokumentasjon fra kjøperen</h2>
+<p>Ved kjøp fra privatperson gjelder <a href="https://lovdata.no/lov/1988-05-13-27">kjøpsloven</a>.</p>
+<p>Du må normalt sannsynliggjøre at bilen:</p>
+<ul>
+<li>avvek fra avtalen</li>
+<li>ikke svarte til selgerens opplysninger</li>
+<li>hadde en feil eller skade ved levering</li>
+<li>var vesentlig dårligere enn forventet ved et «som den er»-salg</li>
+<li>manglet en funksjon eller programvarepakke som ble lovet</li>
+</ul>
+<p>Kjøpsloven har ikke den samme generelle toårsformodningen som nyere forbrukerkjøp.</p>
+<p>Den absolutte reklamasjonsfristen er normalt to år. Reklamasjonen må også sendes innen rimelig tid etter at feilen ble eller burde blitt oppdaget.</p>
+<p>Ved en teknisk komplisert Tesla-feil blir en rapport om årsak og utviklingstid ofte avgjørende.</p>
+<h2>Garanti og reklamasjon er to forskjellige spor</h2>
+<p>Teslas norske støtteside opplyser per juni 2026 at den begrensede grunnleggende bilgarantien for nye biler gjelder i fem år eller 100 000 kilometer, avhengig av hva som inntreffer først. Batteri- og drivenhetsgarantien har egne tids- og kilometergrenser.</p>
+<p>Teslas side opplyser også at sertifiserte bruktbiler kjøpt direkte fra Tesla omfattes av gjenværende del av den grunnleggende bilgarantien og deretter en begrenset bruktbilgaranti på ett år eller 20 000 kilometer. Gjenværende batteri- og drivenhetsgaranti fortsetter etter de aktuelle vilkårene.</p>
+<p>Se <a href="https://www.tesla.com/no_no/support/vehicle-warranty">Teslas norske garantiside</a>.</p>
+<p>Det nøyaktige garantidokumentet som gjelder bilen må kontrolleres. Eldre biler, bruktimport og tidligere avtaler kan ha andre vilkår.</p>
+<p>At garantien er utløpt betyr ikke at reklamasjonsretten mot forhandleren er utløpt. Et garantiavslag må derfor ikke være slutten på vurderingen.</p>
+<p>Skriv tydelig:</p>
+<blockquote>
+<p>Jeg ber om garantibehandling dersom vilkårene er oppfylt. Uavhengig av garantien reklamerer jeg over feilen som en mangel etter forbrukerkjøpsloven.</p>
+</blockquote>
+<h2>Sikre digitale bevis før bilen oppdateres eller repareres</h2>
+<p>Tesla-feil kan være periodiske og datastyrte. Feilen kan forsvinne etter omstart, programvareoppdatering eller sletting av logger.</p>
+<p>Dokumenter:</p>
+<ul>
+<li>varselteksten på skjermen</li>
+<li>dato og klokkeslett</li>
+<li>kilometerstand</li>
+<li>programvareversjon</li>
+<li>ladenivå</li>
+<li>temperatur</li>
+<li>hva bilen gjorde</li>
+<li>om feilen oppsto ved kjøring, lading eller parkering</li>
+<li>bilder og video</li>
+<li>appmeldinger</li>
+<li>servicehistorikk i appen</li>
+<li>tidligere verkstedfakturaer</li>
+</ul>
+<p>Skjermbildet «Kontroller» &gt; «Programvare» kan blant annet dokumentere bilens identitet, kilometerstand, programvare og installerte funksjoner.</p>
+<p>Ved feil i Autopilot, lading eller batteri bør du også beskrive:</p>
+<ul>
+<li>vei- og værforhold</li>
+<li>ladepunkt</li>
+<li>batteriprosent</li>
+<li>feilmeldinger</li>
+<li>om feilen lot seg gjenta</li>
+</ul>
+<p>Ikke utfør fabrikktilbakestilling eller installer uautorisert programvare før bevisene er sikret.</p>
+<h2>Bestill service, men send en egen reklamasjon</h2>
+<p>Tesla opplyser at service kan bestilles og følges gjennom Tesla-appen. Appen kan være praktisk for diagnose, kommunikasjon og timebestilling.</p>
+<p>Se <a href="https://www.tesla.com/no_NO/support/tesla-app">Tesla-appstøtte</a>.</p>
+<p>En kort appmelding som sier «klunk foran» kan være for uklar som reklamasjon til en annen forhandler som solgte bilen.</p>
+<p>Send derfor en egen melding til selgeren:</p>
+<blockquote>
+<p>Jeg reklamerer over klunkelyd og ustabil styring. Feilen oppsto 4. juni 2026 ved 82 400 kilometer. Jeg holder dere ansvarlig som selger og krever kostnadsfri undersøkelse og retting. Bilen er samtidig meldt inn til Tesla-service for diagnose.</p>
+</blockquote>
+<p>Da er det klart at du gjør et lovkrav gjeldende.</p>
+<h2>Selgeren får normalt forsøke å rette</h2>
+<p>Ved forhandlerkjøp kan selgeren normalt tilby avhjelp etter <a href="https://lovdata.no/lov/2002-06-21-34/§29">forbrukerkjøpsloven §§ 29 og 30</a>.</p>
+<p>Det innebærer at du ikke uten videre kan:</p>
+<ol>
+<li>bestille en dyr reparasjon hos Tesla</li>
+<li>betale fakturaen</li>
+<li>sende regningen til bruktbilforhandleren</li>
+</ol>
+<p>Forhandleren må få en reell mulighet til å undersøke og organisere reparasjonen.</p>
+<p>Avklar skriftlig:</p>
+<ul>
+<li>hvor bilen skal leveres</li>
+<li>om Tesla-service skal brukes</li>
+<li>hvem som godkjenner kostnaden</li>
+<li>om bilen kan kjøres</li>
+<li>hvordan transport ordnes</li>
+<li>om lånebil tilbys</li>
+<li>forventet ferdigdato</li>
+</ul>
+<p>Du trenger ikke godta et verksted uten riktig kompetanse til høyvoltsystem, programvare eller Tesla-spesifikk diagnose.</p>
+<p>Selgerens valgte løsning må være faglig forsvarlig.</p>
+<h2>Når bør du bruke en uavhengig sakkyndig?</h2>
+<p>En ny vurdering er særlig nyttig når:</p>
+<ul>
+<li>selgeren sier «ingen feil funnet»</li>
+<li>feilen er periodisk</li>
+<li>Tesla og selgeren peker på hverandre</li>
+<li>årsaken bestrides</li>
+<li>bilen har vært reparert flere ganger</li>
+<li>en garanti avviser som slitasje</li>
+<li>du vurderer heving</li>
+<li>reparasjonen er svært dyr</li>
+<li>det er tvil om skade før levering</li>
+</ul>
+<p>Den sakkyndige bør beskrive:</p>
+<ul>
+<li>symptom</li>
+<li>teknisk årsak</li>
+<li>feilkoder og data</li>
+<li>om tilstanden må ha utviklet seg over tid</li>
+<li>reparasjonsalternativ</li>
+<li>sikkerhet</li>
+<li>kostnad</li>
+<li>risiko for gjentakelse</li>
+</ul>
+<p>Be om en skriftlig rapport, ikke bare en muntlig verkstedkommentar.</p>
+<h2>Eksempel: Brukt Tesla kjøpt av annen forhandler</h2>
+<p>Julie kjøper 15. februar 2026 en brukt Model Y fra Fjord Bil AS. Etter tre uker oppstår varsel om høyvoltsystem og bilen nekter å hurtiglade.</p>
+<p>Fjord Bil sier:</p>
+<blockquote>
+<p>Dette er en Tesla. Du må ta saken med Tesla.</p>
+</blockquote>
+<p>Julie bestiller diagnose i appen. Tesla opplyser at feilen ikke dekkes av gjenværende garanti og gir et kostnadsoverslag.</p>
+<p>Fjord Bil er fortsatt selger etter forbrukerkjøpsloven. Et garantiavslag fra Tesla avgjør ikke om bilen hadde en mangel ved levering.</p>
+<p>Julie bør sende diagnose og overslag til Fjord Bil og kreve at forhandleren tar stilling til kostnadsfri avhjelp. Hun bør ikke godkjenne reparasjonen for egen regning før forhandleren har fått en rimelig frist.</p>
+<h2>Eksempel: Privat selger opplyste om kjent feil</h2>
+<p>Martin kjøper en eldre Model S privat. Kontrakten sier:</p>
+<blockquote>
+<p>Dørhåndtak høyre foran virker periodisk. Selges med denne feilen.</p>
+</blockquote>
+<p>Etter kjøpet slutter håndtaket helt å virke.</p>
+<p>Martin kan normalt ikke reklamere over akkurat denne utviklingen dersom tilstanden samsvarer med den konkret opplyste risikoen.</p>
+<p>Hvis skjermen samtidig svikter på grunn av en eldre feil selgeren hadde fått pristilbud på, men holdt skjult, må denne separate feilen vurderes selvstendig.</p>
+<h2>Den vanligste misforståelsen: Tesla må alltid håndtere Tesla-feilen</h2>
+<p>Produsenten og servicesenteret er ikke nødvendigvis den juridiske selgeren.</p>
+<p>Kjøpte du bilen av en annen forhandler, skal reklamasjonskravet normalt rettes dit. Forhandleren kan bruke Tesla som verksted eller søke dekning i et tidligere salgsledd, men dette skal ikke skyves over på kjøperen uten videre.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Finn kjøpekontrakten og identifiser selgeren. Lagre annonsen, bilens programvareside, apphistorikk og feilmeldinger.</p>
+<p>Send en skriftlig reklamasjon som inneholder:</p>
+<ul>
+<li>registreringsnummer og understellsnummer</li>
+<li>kjøpsdato</li>
+<li>dato og kilometerstand ved første feil</li>
+<li>konkret funksjonssvikt</li>
+<li>dokumentasjon</li>
+<li>krav om undersøkelse og retting</li>
+<li>frist for skriftlig svar</li>
+</ul>
+<p>Dersom saken ikke løses, kan Forbrukertilsynet mekle etter at du har forsøkt direkte med selgeren. Mekling koster 269 kroner i 2026. Behandling i Forbrukerklageutvalget har et eget gebyr.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a><a class="sp-relchip" href="../../sporsmal/tesla-hjuloppheng-baerearmer/">Feil på hjuloppheng og bærearmer på Tesla – hvem har ansvaret?</a><a class="sp-relchip" href="../../sporsmal/tesla-skjerm-data-programvarefeil/">Tesla med skjerm-, data- eller programvarefeil – er det en mangel?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

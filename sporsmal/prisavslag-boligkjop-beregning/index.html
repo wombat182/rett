@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prisavslag etter boligkjøp – hvordan beregnes kravet? — Rettsregel</title>
+<meta name="description" content="Prisavslag ved boligkjøp fastsettes normalt etter nødvendige utbedringskostnader, men kan justeres for standardheving, restverdi, kjent vedlikehold og kjøperens egenandel.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/prisavslag-boligkjop-beregning/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Prisavslag etter boligkjøp – hvordan beregnes kravet?">
+<meta property="og:description" content="Prisavslag ved boligkjøp fastsettes normalt etter nødvendige utbedringskostnader, men kan justeres for standardheving, restverdi, kjent vedlikehold og kjøperens egenandel.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/prisavslag-boligkjop-beregning/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Prisavslag etter boligkjøp – hvordan beregnes kravet?">
+<meta name="twitter:description" content="Prisavslag ved boligkjøp fastsettes normalt etter nødvendige utbedringskostnader, men kan justeres for standardheving, restverdi, kjent vedlikehold og kjøperens egenandel.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Prisavslag etter boligkjøp – hvordan beregnes kravet?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Prisavslaget skal kompensere for at boligen var mindre verdt enn avtalt ved overtakelsen. Etter avhendingslova beregnes kravet normalt med utgangspunkt i nødvendige kostnader til å rette mangelen. Beløpet kan justeres dersom reparasjonen gir vesentlig standardheving, bare deler av arbeidet skyldes mangelen, eller boligen fortsatt har lavere markedsverdi etter utbedring.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova §§ 3-1, 4-10, 4-12, 4-14</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-1/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-1</div>
+  <div class="related-card-title">Hva er en mangel ved en eiendom</div>
+</a><a href="../../lover/avhendingslova/4-10/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-10</div>
+  <div class="related-card-title">Retting av mangler</div>
+</a><a href="../../lover/avhendingslova/4-12/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-12</div>
+  <div class="related-card-title">Prisavslag</div>
+</a><a href="../../lover/avhendingslova/4-14/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-14</div>
+  <div class="related-card-title">Erstatning ved mangel</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Prisavslaget skal kompensere for at boligen var mindre verdt enn avtalt ved overtakelsen. Etter avhendingslova beregnes kravet normalt med utgangspunkt i nødvendige kostnader til å rette mangelen. Beløpet kan justeres dersom reparasjonen gir vesentlig standardheving, bare deler av arbeidet skyldes mangelen, eller boligen fortsatt har lavere markedsverdi etter utbedring.</p>
+<h2>Prisavslag forutsetter først en juridisk mangel</h2>
+<p>Det er ikke nok at kjøperen har fått en uventet regning.</p>
+<p>Før prisavslaget beregnes, må kjøperen sannsynliggjøre at boligen hadde en mangel etter avhendingslova. Det kan blant annet skyldes at:</p>
+<ul>
+<li>boligen avvek fra kjøpeavtalen</li>
+<li>selgeren holdt tilbake viktige opplysninger</li>
+<li>salgsoppgaven eller egenerklæringen inneholdt uriktige opplysninger</li>
+<li>boligen var dårligere enn kjøperen med rimelighet kunne forvente</li>
+<li>arealet var mindre enn opplyst</li>
+<li>boligen ikke oppfylte relevante offentligrettslige krav</li>
+<li>en skjult feil forelå ved overtakelsen</li>
+</ul>
+<p>Etter <a href="https://lovdata.no/lov/1992-07-03-93/§3-1">avhendingslova § 3-1</a> vurderes mangelen med utgangspunkt i tilstanden da risikoen gikk over på kjøperen, normalt ved overtakelsen. En feil kan være en mangel selv om den først viser seg senere.</p>
+<p>Normal aldring og vedlikehold etter overtakelsen gir ikke prisavslag.</p>
+<h2>Hovedregelen er et forholdsmessig prisavslag</h2>
+<p>Etter <a href="https://lovdata.no/lov/1992-07-03-93/§4-12">§ 4-12 første ledd</a> kan kjøperen kreve et forholdsmessig prisavslag når eiendommen har en mangel.</p>
+<p>Det prinsipielle utgangspunktet er forholdet mellom:</p>
+<ul>
+<li>boligens verdi i kontraktsmessig stand ved overtakelsen</li>
+<li>boligens faktiske verdi med mangelen ved overtakelsen</li>
+</ul>
+<p>Et enkelt eksempel:</p>
+<ul>
+<li>Avtalt og mangelfri verdi: 6 000 000 kroner</li>
+<li>Faktisk verdi med mangelen: 5 700 000 kroner</li>
+</ul>
+<p>Den relative verdireduksjonen er fem prosent. Et forholdsmessig prisavslag vil da i utgangspunktet tilsvare fem prosent av den avtalte kjøpesummen.</p>
+<p>I praksis er det ofte vanskelig å bevise nøyaktig markedsverdi med og uten en skjult feil. Derfor har loven en praktisk bevisregel.</p>
+<h2>Utbedringskostnaden er lovens normalregel</h2>
+<p>Etter <a href="https://lovdata.no/lov/1992-07-03-93/§4-12">§ 4-12 andre ledd</a> skal prisavslaget fastsettes til kostnadene ved å få mangelen rettet, med mindre noe annet blir godtgjort.</p>
+<p>Kjøperen bør derfor dokumentere:</p>
+<ul>
+<li>teknisk årsak</li>
+<li>nødvendig reparasjonsmetode</li>
+<li>rivearbeid</li>
+<li>tørking og sanering</li>
+<li>materialer</li>
+<li>håndverk</li>
+<li>prosjektering</li>
+<li>offentlig saksbehandling</li>
+<li>nødvendig tilbakeføring</li>
+<li>merverdiavgift</li>
+<li>kontroll og dokumentasjon</li>
+</ul>
+<p>Kostnadsoverslaget må gjelde en faglig forsvarlig og varig løsning.</p>
+<p>Det er ikke nok å hente en rund sum fra en nettbasert kalkulator eller få en håndverker til å skrive «ca. 500 000 kroner» uten arbeidsbeskrivelse.</p>
+<h2>Kravet skal bare dekke arbeid som skyldes mangelen</h2>
+<p>Et pristilbud kan inneholde mer enn juridisk utbedring.</p>
+<p>Eksempel:</p>
+<p>Et bad har en skjult membranfeil. Kjøperen velger samtidig:</p>
+<ul>
+<li>større fliser</li>
+<li>vegghengt spesialinnredning</li>
+<li>flytting av toalett</li>
+<li>elektrisk gulvvarme med ny styring</li>
+<li>innbygging av vaskemaskin</li>
+<li>dyrere armatur</li>
+</ul>
+<p>Selgeren skal normalt ikke betale for kjøperens personlige oppgradering.</p>
+<p>Rapporten og tilbudet bør dele kostnadene i:</p>
+<ol>
+<li>Nødvendig arbeid for å rette mangelen.</li>
+<li>Følgearbeid som må utføres for å komme til og gjenoppbygge.</li>
+<li>Vedlikehold som uansett var nødvendig.</li>
+<li>Frivillig standardheving.</li>
+</ol>
+<p>Bare de relevante postene inngår i prisavslaget.</p>
+<h2>Riving og gjenoppbygging kan være en del av utbedringen</h2>
+<p>En liten teknisk feil kan kreve store inngrep.</p>
+<p>Hvis et rør inne i et flislagt bad er mangelfullt, kan det være nødvendig å:</p>
+<ul>
+<li>rive fliser</li>
+<li>åpne vegg</li>
+<li>demontere innredning</li>
+<li>reparere røret</li>
+<li>etablere ny membran</li>
+<li>bygge opp veggen</li>
+<li>legge nye fliser</li>
+<li>remontere utstyr</li>
+</ul>
+<p>Selgeren kan ikke nødvendigvis begrense prisavslaget til prisen på selve røret.</p>
+<p>Det avgjørende er hvilke kostnader en forsvarlig retting faktisk utløser.</p>
+<p>Kjøperen må likevel undersøke om lokal reparasjon er teknisk mulig. Full utskifting av et helt rom kan ikke kreves bare fordi det er den løsningen kjøperen foretrekker.</p>
+<h2>Fradrag for standardheving og «nytt for gammelt»</h2>
+<p>Utbedringen kan gi kjøperen en bedre eller nyere bygningsdel enn han kjøpte.</p>
+<p>Eksempel:</p>
+<ul>
+<li>Badet var 22 år gammelt.</li>
+<li>Mangelen gjør at det må bygges helt nytt.</li>
+<li>Det nye badet får vesentlig lengre restlevetid.</li>
+</ul>
+<p>Da kan et fradrag for standardheving være aktuelt.</p>
+<p>Fradraget er ikke automatisk lik den prosentvise alderen. Det må vurderes konkret ut fra:</p>
+<ul>
+<li>opplyst alder</li>
+<li>faktisk alder</li>
+<li>tilstand ved kjøpet</li>
+<li>forventet restlevetid</li>
+<li>om hele utskiftingen skyldes mangelen</li>
+<li>hvilken standard som er nødvendig</li>
+<li>om kjøperen ble lovet en nyere bygningsdel</li>
+</ul>
+<p>Hvis badet ble markedsført som nyrenovert to år før salget, står selgeren svakere med et stort aldersfradrag.</p>
+<p>Hvis tilstandsrapporten tydelig sa at et 30 år gammelt bad måtte skiftes snart, står fradragsargumentet sterkere.</p>
+<h2>Kjøperen kan måtte bære de første 10 000 kronene</h2>
+<p>For avtaler som omfattes av dagens regelverk, følger det av <a href="https://lovdata.no/lov/1992-07-03-93/§3-1">§ 3-1 fjerde ledd</a> at kjøperen selv må dekke tap og kostnader ved mangler opp til 10 000 kroner, med mindre noe annet følger av loven.</p>
+<p>Regelen gjelder ikke når en bygning er solgt som ny.</p>
+<p>Eksempel:</p>
+<ul>
+<li>Godkjent prisavslag og erstatning før egenandel: 310 000 kroner</li>
+<li>Kjøperens andel: 10 000 kroner</li>
+<li>Mulig krav: 300 000 kroner</li>
+</ul>
+<p>Egenandelen er ikke det samme som at feil under 10 000 kroner aldri er mangler. Den reduserer den økonomiske dekningen.</p>
+<p>For eldre kjøpeavtaler må reglene som gjaldt da avtalen ble inngått undersøkes.</p>
+<h2>Markedsverdifallet kan være høyere enn reparasjonskostnaden</h2>
+<p>Noen boliger har lavere verdi også etter at den tekniske feilen er reparert.</p>
+<p>Dette kan forekomme ved:</p>
+<ul>
+<li>alvorlige setningsskader</li>
+<li>tidligere oversvømmelse</li>
+<li>omfattende mugg</li>
+<li>forurenset grunn</li>
+<li>skadehistorikk som må opplyses ved videresalg</li>
+<li>usikker offentlig godkjenning</li>
+<li>reparasjon med begrenset dokumentasjon</li>
+</ul>
+<p>Høyesterett har akseptert at prisavslaget ikke alltid må begrenses til utbedringskostnaden når den faktiske verdireduksjonen er større. Dette er omtalt i <a href="https://www.regjeringen.no/no/dokumenter/prop.-44-l-20182019/id2623112/?ch=11">Prop. 44 L om avhendingslova</a>.</p>
+<p>Kjøperen må da dokumentere restverdifallet med en eiendomsfaglig vurdering.</p>
+<p>Det er ikke nok å hevde at «ingen vil kjøpe et hus som har hatt fukt».</p>
+<p>Vurderingen bør sammenligne markedsverdien:</p>
+<ul>
+<li>etter full reparasjon</li>
+<li>uten skadehistorikken</li>
+<li>på samme verdsettelsestidspunkt</li>
+</ul>
+<h2>Prisavslag er ikke det samme som erstatning</h2>
+<p>Prisavslaget dekker verdimangelen ved selve boligen.</p>
+<p>Andre økonomiske tap kan kreves som erstatning etter <a href="https://lovdata.no/lov/1992-07-03-93/§4-14">§ 4-14</a>, for eksempel:</p>
+<ul>
+<li>nødvendig midlertidig bolig</li>
+<li>flytting og lagring</li>
+<li>sakkyndig rapport</li>
+<li>reiseutgifter</li>
+<li>tapte leieinntekter</li>
+<li>sikring mot videre skade</li>
+</ul>
+<p>Grensen mellom prisavslag og erstatning kan være teknisk.</p>
+<p>Kjøperen bør derfor sette opp kravet i separate poster og unngå dobbel dekning.</p>
+<h2>Selgeren kan ha rett til å rette</h2>
+<p>Etter <a href="https://lovdata.no/lov/1992-07-03-93/§4-10">§ 4-10</a> kan selgeren på visse vilkår tilby retting for egen regning.</p>
+<p>Kjøperen bør normalt ikke bestille full reparasjon før:</p>
+<ul>
+<li>det er reklamert</li>
+<li>selgeren har fått undersøke</li>
+<li>rettingsretten er avklart</li>
+<li>bevisene er sikret</li>
+</ul>
+<p>Hvis kjøperen uten grunn avviser et rettetilbud selgeren har rett til å gjennomføre, kan prisavslaget gå tapt.</p>
+<p>Akutte tiltak for å hindre mer skade kan utføres, men må dokumenteres.</p>
+<h2>Eksempel: Feil i tak og korrekt beregning</h2>
+<p>Maren kjøper 15. januar 2026 et hus for 6 300 000 kroner. Taket ble opplyst å være totalrenovert i 2021.</p>
+<p>Etter lekkasje viser undersøkelsen at undertaket og beslagene er feil utført.</p>
+<p>To tilbud viser:</p>
+<ul>
+<li>nødvendig riving: 180 000 kroner</li>
+<li>nytt undertak og beslag: 310 000 kroner</li>
+<li>gjenlegging av brukbar takstein: 95 000 kroner</li>
+<li>innvendig reparasjon: 75 000 kroner</li>
+<li>frivillig oppgradering til dyrere takstein: 140 000 kroner</li>
+</ul>
+<p>Det siste beløpet gjelder ikke nødvendig retting og holdes utenfor.</p>
+<p>Nødvendig utbedring er 660 000 kroner. Dersom ingen relevant standardheving eller annen justering påvises, er dette normalutgangspunktet for prisavslaget før kjøperens lovbestemte andel og eventuelle separate erstatningsposter.</p>
+<h2>Den vanligste misforståelsen: Prisavslaget er alltid lik håndverkerens høyeste tilbud</h2>
+<p>Et tilbud er bevis, ikke fasit.</p>
+<p>Kravet må bygge på nødvendig, rimelig og faglig forsvarlig utbedring. Retten kan velge en annen metode eller kostnad enn kjøperens foretrukne løsning.</p>
+<p>Den motsatte misforståelsen er at prisavslaget alltid begrenses til billigste reparasjon. En billig, midlertidig eller usikker løsning oppfyller ikke lovens formål.</p>
+<h2>Hva kan du gjøre nå?</h2>
+<p>Lag et kravsskjema med følgende kolonner:</p>
+<ul>
+<li>mangel</li>
+<li>årsak</li>
+<li>nødvendig tiltak</li>
+<li>kostnad uten merverdiavgift</li>
+<li>merverdiavgift</li>
+<li>standardheving</li>
+<li>overlapp</li>
+<li>prisavslag</li>
+<li>erstatning</li>
+<li>dokument</li>
+</ul>
+<p>Be den sakkyndige forklare hvorfor hver kostnad er nødvendig.</p>
+<p>Dersom boligselgerforsikringen behandler kravet og saken ikke løses, kan Finansklagenemnda Eierskifte være aktuell når vilkårene er oppfylt. Behandlingen i nemndas sekretariat er gratis. En direkte tvist mot selgeren kan måtte bringes inn for de ordinære domstolene.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/prisavslag-erstatning-boligkjop-forskjell/">Prisavslag eller erstatning ved boligkjøp – hva er forskjellen?</a><a class="sp-relchip" href="../../sporsmal/prisavslag-skjult-fuktskade/">Hvor stort prisavslag kan du kreve for skjult fuktskade?</a><a class="sp-relchip" href="../../sporsmal/prisavslag-feil-bad/">Prisavslag for feil på bad – må hele badet bygges på nytt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
