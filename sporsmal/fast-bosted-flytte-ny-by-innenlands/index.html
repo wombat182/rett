@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer med samværsordningen når bostedsforelderen flytter til ny by? — Rettsregel</title>
+<meta name="description" content="Innenlandsflytting endrer ikke automatisk samværet. Men reiseavstanden er et sentralt moment ved ny fastsettelse – og domstolen tilpasser ordningen til ny virkelighet.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/fast-bosted-flytte-ny-by-innenlands/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer med samværsordningen når bostedsforelderen flytter til ny by?">
+<meta property="og:description" content="Innenlandsflytting endrer ikke automatisk samværet. Men reiseavstanden er et sentralt moment ved ny fastsettelse – og domstolen tilpasser ordningen til ny virkelighet.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/fast-bosted-flytte-ny-by-innenlands/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer med samværsordningen når bostedsforelderen flytter til ny by?">
+<meta name="twitter:description" content="Innenlandsflytting endrer ikke automatisk samværet. Men reiseavstanden er et sentralt moment ved ny fastsettelse – og domstolen tilpasser ordningen til ny virkelighet.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva skjer med samværsordningen når bostedsforelderen flytter til ny by?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Samværsordningen endres ikke automatisk når bostedsforelderen flytter. Men reiseavstand er et sentralt moment i vurderingen av samvær (§ 43), og en vesentlig avstandsøkning er «særlege grunnar» for å endre en eksisterende ordning (§ 63). Retten tilpasser omfang og form til ny virkelighet.</p>
+  <p class="sp-kilde">Bygger på barnelova §§ 43, 63, 44</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/barnelova/43/" class="related-card">
+  <div class="related-card-meta">barnelova § 43</div>
+  <div class="related-card-title">Hva er vanlig samvær (omfanget)?</div>
+</a><a href="../../lover/barnelova/63/" class="related-card">
+  <div class="related-card-meta">barnelova § 63</div>
+  <div class="related-card-title">Når kan du ta opp igjen en gammel barnefordelingssak?</div>
+</a><a href="../../lover/barnelova/44/" class="related-card">
+  <div class="related-card-meta">barnelova § 44</div>
+  <div class="related-card-title">Hvem skal betale for reisen når barnet skal på samvær?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Samværsordningen endres ikke automatisk når bostedsforelderen flytter. Men reiseavstand er et sentralt moment i vurderingen av samvær (§ 43), og en vesentlig avstandsøkning er «særlege grunnar» for å endre en eksisterende ordning (§ 63). Retten tilpasser omfang og form til ny virkelighet.</p>
+<hr />
+<h2>Tre situasjoner som oppstår</h2>
+<p>Bostedsforelderen varsler og gjennomfører innenlandsflytting lovlig (§ 37, § 42 a). Hva skjer så med samværet?</p>
+<p><strong>Situasjon 1: Foreldrene er enige om en ny ordning</strong>
+Endre avtalen privat, meld eventuelt inn ny avtale til Folkeregisteret. Raskest og billigst.</p>
+<p><strong>Situasjon 2: Foreldrene er uenige</strong>
+Samværsforelderen kan kreve at samværets omfang og form fastsettes på nytt av tingretten (§ 43 og § 63). Reiseavstand er et sentralt moment.</p>
+<p><strong>Situasjon 3: Eksisterende dom eller tvangskraftig avtale</strong>
+Denne kan bare endres dersom det foreligger «særlege grunnar» (§ 63). En vesentlig avstandsøkning regnes som særlig grunn i rettspraksis.</p>
+<hr />
+<h2>Hva domstolen vurderer ved ny fastsettelse</h2>
+<p>Barnelova § 43 angir at retten ved fastsettelse av samvær skal legge vekt på «reiseavstanden mellom foreldra» blant annet. En flukt fra Stavanger til Tromsø påvirker samværsmønsteret radikalt.</p>
+<p>Typisk tilpasning ved lang avstand:
+- Kortere, hyppige helgesamvær byttes ut med <strong>lengre, sammenhengende ferieopplegg</strong>
+- Sommerferien kan utvides fra tre til seks–sju uker
+- Jul/påske/vinter/høst feries hos samværsforelderen i sin helhet
+- Regelmessig ukentlig samvær som var naturlig ved kort avstand, faller bort</p>
+<hr />
+<h2>Reisekostnadene fordeles etter inntekt</h2>
+<p>Økt reiseavstand øker reisekostnadene. Etter § 44 fordeles kostnadene etter inntektsforholdet mellom foreldrene (den med høyest inntekt betaler høyest andel). At bostedsforelderen har forårsaket avstandsøkningen ved å flytte, gir ikke i seg selv samværsforelderen hele regninga.</p>
+<hr />
+<h2>Eksempel: Oslo–Bergen</h2>
+<p>Marte og Thomas bor begge i Oslo. Thomas har Nils (9) annenhver helg og onsdag kveld. Marte varsler og flytter til Bergen med tre måneder varsel. Thomas krever ny fastsettelse av samvær.</p>
+<p>Tingretten vurderer: ukentlig overnatting og annenhver helg er umulig ved Oslo–Bergen-avstand for et barn på 9 år. Ny ordning: Nils er hos Thomas seks uker om sommeren, hele juleferien og annenhver høst/påskeferie. Reisekostnadene fordeles etter inntekt (§ 44).</p>
+<hr />
+<h2>Eksempel: kortere avstand – ordningen beholdes</h2>
+<p>Solveig og Erik bor i Drammen. Solveig varsler og flytter til Tønsberg. Reisetid med tog: 35 minutter. Thomas krever ikke endring – annenhver helg-samvær lar seg fortsatt gjennomføre. Ordningen videreføres med uendret innhold.</p>
+<hr />
+<h2>Kan samværsforelderen få fast bosted som følge av flytten?</h2>
+<p>Ja – dersom flytten reelt sett umuliggjør samvær i det mønsteret som var, og barnet heller vil bo hos samværsforelderen, er dette grunnlag for å kreve endret fast bosted etter § 63. Retten vil da vurdere barnets beste samlet – inkludert barnets mening (§ 31), tilknytning og konsekvensene av begge alternativer.</p>
+<hr />
+<h2>Den vanligste misforståelsen</h2>
+<p>Mange bostedsforeldre tror at de kan flytte og «beholde alt» – at samværsordningen forblir den samme uansett avstand. Det er feil. Samværet er barnets rett, og retten kan og vil tilpasse ordningen slik at barnet fortsatt har reell og meningsfull kontakt med samværsforelderen – uavhengig av bostedsforelderens valg av bosted.</p>
+<hr />
+<h2>Hva gjør du nå?</h2>
+<p><strong>Bostedsforelder som vil flytte:</strong>
+- Varsle tre måneder i forveien (§ 42 a)
+- Foreslå konkret ny samværsordning som gir samværsforelderen reell tid med barnet</p>
+<p><strong>Samværsforelder som mottar varsel:</strong>
+- Krev mekling og forhandle om ny ordning
+- Reiser dere sak: krev ny fastsettelse av samvær tilpasset reiseavstand
+- Vurder om du vil kreve endret fast bosted</p>
+<p><em>Artikkelen er basert på barnelova §§ 37, 42 a, 43, 44 og 63 (LOV-1981-04-08-7), sist endret 25. april 2025 (ikr. 1. januar 2026).</em></p>
+<hr />
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/flytte-til-annen-by-med-barnet/">Kan jeg flytte til en annen by med barnet uten samtykke?</a><a class="sp-relchip" href="../../sporsmal/reisekostnader-samvaer-hvem-betaler/">Hvem betaler reisekostnadene ved samvær?</a><a class="sp-relchip" href="../../sporsmal/endre-rettskraftig-dom-samvaer-bosted/">Kan jeg endre en rettskraftig dom om samvær eller bosted?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

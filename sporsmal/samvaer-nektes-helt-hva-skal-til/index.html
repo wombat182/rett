@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan samvær nektes helt – og hva skal til? — Rettsregel</title>
+<meta name="description" content="Kan samvær stoppes permanent? Ja, men terskelen er svært høy. Les hva loven krever og hva domstolene faktisk krever i bevis.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/samvaer-nektes-helt-hva-skal-til/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan samvær nektes helt – og hva skal til?">
+<meta property="og:description" content="Kan samvær stoppes permanent? Ja, men terskelen er svært høy. Les hva loven krever og hva domstolene faktisk krever i bevis.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/samvaer-nektes-helt-hva-skal-til/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan samvær nektes helt – og hva skal til?">
+<meta name="twitter:description" content="Kan samvær stoppes permanent? Ja, men terskelen er svært høy. Les hva loven krever og hva domstolene faktisk krever i bevis.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Kan samvær nektes helt – og hva skal til?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei, samvær kan ikke nektes av en forelder alene. Bare retten kan avgjøre at det ikke skal være samvær – og det krever at samvær er til konkret skade for barnet. Terskelen er svært høy. En forelder som nekter samvær på egen hånd, bryter loven.</p>
+  <p class="sp-kilde">Bygger på barnelova §§ 43, 48, 60</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/barnelova/43/" class="related-card">
+  <div class="related-card-meta">barnelova § 43</div>
+  <div class="related-card-title">Hva er vanlig samvær (omfanget)?</div>
+</a><a href="../../lover/barnelova/48/" class="related-card">
+  <div class="related-card-meta">barnelova § 48</div>
+  <div class="related-card-title">"Barnets beste" er lovens viktigste regel</div>
+</a><a href="../../lover/barnelova/60/" class="related-card">
+  <div class="related-card-meta">barnelova § 60</div>
+  <div class="related-card-title">Domstolen kan ta en "midlertidig" avgjørelse</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Nei, samvær kan ikke nektes av en forelder alene. Bare retten kan avgjøre at det ikke skal være samvær – og det krever at samvær er til konkret skade for barnet. Terskelen er svært høy. En forelder som nekter samvær på egen hånd, bryter loven.</p>
+<hr />
+<h2>Utgangspunktet: samvær er en rett, ikke en tjeneste</h2>
+<p>Barnelova § 42 slår fast at barnet har <strong>rett til samvær med begge foreldre</strong>, og at denne retten er gjensidig. Det er ikke bostedsforelderen som gir den andre «lov» til å se barnet. Samvær er barnets rett, ikke forelderens.</p>
+<p>§ 43 sier at samvær bare kan avskjæres av retten dersom «samvær ikkje er til beste for barnet». Denne ordlyden er snudd i forhold til det mange tror: det er ikke tilstrekkelig å vise at samvær er <em>krevende</em> eller at bostedsforelderen er <em>bekymret</em>. Retten må konkludere med at samvær aktivt skader barnet.</p>
+<hr />
+<h2>Hva er høy nok terskel?</h2>
+<p>Praksis fra norske domstoler viser at total samværsnekt bare aksepteres i noen typetilfeller:</p>
+<p><strong>1. Dokumentert vold eller overgrep mot barnet.</strong> Er det avsagt dom for vold eller seksuelle overgrep mot barnet fra samværsforelderens side, eller er det sterke bevis for dette, kan retten nekte samvær. Retten har da plikt til å ta hensyn til barnets sikkerhet etter § 48 andre ledd.</p>
+<p><strong>2. Alvorlig psykisk sykdom eller rusavhengighet.</strong> Dersom samværsforelderen er alvorlig psykisk syk eller rusmisbruker på en måte som konkret truer barnets trygghet under samvær, kan retten nekte samvær eller kreve tilsyn som vilkår (§ 43 a).</p>
+<p><strong>3. Barnekidnappingsrisiko.</strong> Dersom det er «uvisst om barnet vil komme attende» fra samvær, jf. § 41, kan retten legge begrensninger på samværet.</p>
+<p><strong>4. Barnets ekstremt sterke uvilje.</strong> Et barn på 15–16 år som konsekvent og aktivt motsetter seg samvær kan i praksis gjøre at retten ikke fastsetter samvær – ikke fordi det er <em>forbudt</em>, men fordi tvangsfullbyrdelse mot et ungt menneskes tydelige vilje er uforholdsmessig (§ 65 fjerde ledd).</p>
+<hr />
+<h2>Hva som <em>ikke</em> er nok</h2>
+<p>Følgende holder ikke som begrunnelse for total samværsnekt:</p>
+<ul>
+<li>At den andre er en dårlig partner (skilsmissegrunner er ikke samværsgrunner)</li>
+<li>At barnet gråter når det skal dra</li>
+<li>At du generelt misliker den andre som person</li>
+<li>At den andre er lite flink til å betale barnebidrag</li>
+<li>At den andre har lav inntekt eller bor trangt</li>
+<li>At dere ikke klarer å kommunisere godt</li>
+</ul>
+<hr />
+<h2>Midlertidig samværsstans under en pågående sak</h2>
+<p>I en pågående rettssak om foreldreansvar eller bosted kan en forelder begjære <strong>midlertidig avgjørelse</strong> etter § 60 om at samvær ikke skal finne sted i mellomtiden. Vilkåret er fortsatt barnets beste, og retten kan nedlegge en midlertidig samværsstans dersom det er «ein risiko for at barnet blir utsett for vald eller på anna vis handsama slik at den fysiske eller psykiske helsa vert utsett for skade eller fare» (§ 60 første ledd).</p>
+<p>En midlertidig avgjørelse er ikke det samme som permanent samværsnekt, og den faller bort eller bekreftes i den endelige dommen.</p>
+<hr />
+<h2>Tilsyn som alternativ til total nektelse</h2>
+<p>Retten vil ofte velge tilsyn fremfor total nektelse, der det er en risikofaktor som ikke er absolut. Barnelova § 43 a åpner for offentlig oppnevnt tilsyn – enten «beskytta tilsyn» (kommunal barneverntjeneste organiserer det) eller «støtta tilsyn» (departementet oppnevner). Staten dekker kostnadene. Tilsynet er tidsavgrenset.</p>
+<hr />
+<h2>Eksempel: Samværsnekt avvist</h2>
+<p>Hanne (37) nekter eks-mannen Erik (39) samvær med sønnen Leon (6), med begrunnelsen at Leon «er lei seg etter samvær» og «ikke vil dra». Hanne leverer ingen dokumentasjon på skade. Tingretten, som innhenter en sakkyndig, finner at Leon er moderat lei seg i overgangssituasjoner, men fungerer godt hos Erik. Retten konstaterer at samvær er til Leons beste og fastsetter samvær. Hanne ilegges tvangsbot for tidligere brudd.</p>
+<h2>Eksempel: Samværsnekt innvilget</h2>
+<p>Marte (32) søker om midlertidig samværsstans for sønnen Tobias (4) mot far Kjetil (35), som nylig er siktet for vold mot Marte og indirekte eksponerte Tobias for vold i hjemmet. Barneverntjenesten støtter søknaden. Tingretten innvilger midlertidig samværsstans frem til rettssaken er avgjort, med opsjon for kontrollert tilsyn under saksbehandling.</p>
+<hr />
+<h2>Den vanligste misforståelsen</h2>
+<p>«Jeg er redd for at den andre vil skade barnet, så jeg nekter samvær inntil bevisene er klare.» Dette er den mest risikable strategien en bostedsforelder kan velge. Uten en midlertidig avgjørelse fra retten begår du et lovbrudd ved å nekte samvær. Retten kan gi den andre forelderen fast bosted som direkte konsekvens.</p>
+<hr />
+<h2>Hva gjør du hvis du mener samvær er til skade?</h2>
+<ol>
+<li><strong>Kontakt barnevernet</strong> dersom du mener barnet er i fare. Barnevernet er lavterskel og gratis. De kan innhente informasjon og støtte en søknad om midlertidig avgjørelse.</li>
+<li><strong>Begjær midlertidig avgjørelse</strong> (§ 60) i tingretten umiddelbart dersom det er akutt risiko. Du trenger ikke meklingsattest for midlertidige avgjørelser.</li>
+<li><strong>Ikke nekt samvær på egenhånd</strong> uten rettslig avgjørelse. Dokumenter i stedet alt som bekymrer deg og bring det til retten.</li>
+</ol>
+<p><em>Artikkelen er basert på barnelova av 8. april 1981, sist endret 25. april 2025 (ikr. 1. januar 2026).</em></p>
+<hr />
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/samvaer-saboteres-hva-gjore/">Hva gjør jeg når den andre forelderen saboterer samværet mitt?</a><a class="sp-relchip" href="../../sporsmal/barnebidrag-delt-fast-bosted/">Betales barnebidrag når barnet har delt fast bosted?</a><a class="sp-relchip" href="../../sporsmal/barnebidrag-privat-avtale-vs-nav/">Bør vi avtale barnebidrag privat eller gå via NAV?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

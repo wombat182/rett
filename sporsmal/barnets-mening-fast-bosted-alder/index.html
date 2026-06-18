@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor gammelt må barnet være for å bestemme hvor det vil bo? — Rettsregel</title>
+<meta name="description" content="Barnet bestemmer aldri alene – men meningen teller mer jo eldre det er. Fra 7 år har barnet rett til å bli hørt. Fra 12 år skal meningen tillegges stor vekt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/barnets-mening-fast-bosted-alder/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor gammelt må barnet være for å bestemme hvor det vil bo?">
+<meta property="og:description" content="Barnet bestemmer aldri alene – men meningen teller mer jo eldre det er. Fra 7 år har barnet rett til å bli hørt. Fra 12 år skal meningen tillegges stor vekt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/barnets-mening-fast-bosted-alder/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor gammelt må barnet være for å bestemme hvor det vil bo?">
+<meta name="twitter:description" content="Barnet bestemmer aldri alene – men meningen teller mer jo eldre det er. Fra 7 år har barnet rett til å bli hørt. Fra 12 år skal meningen tillegges stor vekt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvor gammelt må barnet være for å bestemme hvor det vil bo?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Barnet bestemmer aldri alene. Men barnelova § 31 gir barnet rett til å bli hørt fra det er 7 år. Fra 12 år skal meningen tillegges **stor vekt**. Jo eldre og mer modent barnet er, desto tyngre veier dets ønske – men retten kan gå mot barnets ønske dersom barnets beste tilsier det.</p>
+  <p class="sp-kilde">Bygger på barnelova §§ 31, 43, 65</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/barnelova/31/" class="related-card">
+  <div class="related-card-meta">barnelova § 31</div>
+  <div class="related-card-title">Barnet har rett til å si sin mening (fra 7 og 12 år)</div>
+</a><a href="../../lover/barnelova/43/" class="related-card">
+  <div class="related-card-meta">barnelova § 43</div>
+  <div class="related-card-title">Hva er vanlig samvær (omfanget)?</div>
+</a><a href="../../lover/barnelova/65/" class="related-card">
+  <div class="related-card-meta">barnelova § 65</div>
+  <div class="related-card-title">Hva skjer når en forelder bryter samværsavtalen og saboterer?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Barnet bestemmer aldri alene. Men barnelova § 31 gir barnet rett til å bli hørt fra det er 7 år. Fra 12 år skal meningen tillegges <strong>stor vekt</strong>. Jo eldre og mer modent barnet er, desto tyngre veier dets ønske – men retten kan gå mot barnets ønske dersom barnets beste tilsier det.</p>
+<hr />
+<h2>Lovteksten: hva § 31 faktisk sier</h2>
+<p>Barnelova § 31 andre ledd lyder:</p>
+<blockquote>
+<p>«Eit barn som er fylt sju år, og yngre barn som er i stand til å danne seg eigne synspunkt, skal få informasjon og høve til å seie meininga si [...] Meininga til barnet skal bli vektlagt etter alder og modning. Når barnet er fylt 12 år, skal det leggjast stor vekt på kva barnet meiner.»</p>
+</blockquote>
+<p>Tre ting er viktige her:
+- Retten til å bli hørt gjelder <strong>fra 7 år</strong> som fast regel, og yngre barn «som er i stand til å danne seg eigne synspunkt» (det er ikke umulig at en moden 5-åring høres)
+- Fra <strong>12 år</strong> bruker loven uttrykket «stor vekt» – et høyere krav enn generell vektlegging
+- Ingen av delene betyr at barnet <em>bestemmer</em></p>
+<hr />
+<h2>Hva betyr «stor vekt» i praksis?</h2>
+<p>«Stor vekt» betyr ikke at retten er bundet av barnets ønske. Det betyr at retten aktivt må begrunne dersom den går mot et 12-årings klare ønske, og at det kreves sterke motgrunner for å gjøre det.</p>
+<p>Norsk rettspraksis viser at domstolene sjelden overprøver et klart og gjentatt ønske fra en 14–16-åring. En gutt på 15 som konsekvent sier han vil bo hos far, vil i de fleste saker ende med fast bosted hos far – med mindre det er dokumentert at faren er skadelig for ham.</p>
+<p>For 12-åringer er det mer sammensatt. Rettens vurdering er: er ønsket genuint forankret i barnets egne opplevelser, eller er det påvirket av en forelder? Sakkyndig psykolog kan bidra til å avklare dette.</p>
+<hr />
+<h2>Hvem snakker med barnet i rettsprosessen?</h2>
+<p>Barn snakker ikke direkte til dommeren i en rettsal. Barnelova § 61 nr. 4 gir dommeren mulighet til å «gjennomføre samtalar med barnet», eventuelt med hjelp fra en sakkyndig. Den sakkyndige kan også snakke med barnet alene.</p>
+<p>Et viktig punkt: dersom barnet har gitt uttrykk for sin mening, <strong>skal dommeren eller den dommeren peker ut orientere barnet om utfallet av saken og hvordan meningen er blitt tatt hensyn til</strong>. Barn skal ikke sitte igjen og lure på om noen hørte på dem.</p>
+<hr />
+<h2>Det grå området: barn som er påvirket</h2>
+<p>Den største utfordringen i praksis er å skille mellom et barns genuine ønske og et barn som formidler en forelders holdning. Barn er lojale mot foreldrene og kan lett internalisere den ene forelderens fortelling.</p>
+<p>Sakkyndig psykolog er ekspert på nettopp dette. En sakkyndig som snakker med barnet over tid, i trygge omgivelser, kan vurdere i hvilken grad barnets mening er selvstendig. Dersom en forelder har drevet systematisk bearbeiding av barnet («foreldrefiendtlighet» i psykologisk terminologi), vil det vanligvis synes i en grundig sakkyndig vurdering.</p>
+<hr />
+<h2>Eksempel: 10-åringen som ville bli hos far</h2>
+<p>Karl og Ida skilles. Sønnen Mikkel (10) sier tydelig til den sakkyndige at han vil bo hos far, Karl. Han begrunner det med at de har mange felles interesser og at han har nærmeste venner i området der Karl bor. Ida argumenterer for at Mikkel egentlig er påvirket av Karl. Sakkyndig vurderer at Mikkels ønske virker genuint og selvstendig. Tingretten legger stor vekt på dette, kombinert med at Karl er en kompetent omsorgsperson i like god stand som Ida. Karl får fast bosted.</p>
+<hr />
+<h2>Eksempel: 8-åringen som «ikke ville dra til pappa»</h2>
+<p>Lise (8) sier at hun ikke vil på samvær hos far. Hun gråter. Mor bruker dette som begrunnelse for å nekte samvær. Sakkyndig snakker med Lise alene og observerer at hun fungerer godt hos far under kontrollerte betingelser, og at gråten primært oppstår i avskjedssituasjonen med mor. Sakkyndig vurderer dette som en separasjonsreaksjon, ikke et uttrykk for at hun ikke ønsker samvær. Retten fastsetter samvær. Lises ønske er tatt med, men har ikke blitt avgjørende.</p>
+<hr />
+<h2>Fra 15 år: selvbestemmelse i noen spørsmål</h2>
+<p>Barnelova § 32 gir barn som er fylt <strong>15 år</strong> rett til selv å avgjøre «spørsmål om val av utdanning og om å melde seg inn i eller ut av foreiningar». Dette er ikke det samme som å bestemme fast bosted, men det viser at 15-årsgrensen er meningsfull som en slags selvråderettsterskel.</p>
+<p>Og i tvangsfullbyrdelse: § 65 fjerde ledd sier eksplisitt at «tvangsfullføring skal ikkje skje mot barnet sin vilje» med mindre retten finner det nødvendig av hensyn til barnet. I praksis er det nesten umulig å tvangshente et barn på 14–16 som klart neker.</p>
+<hr />
+<h2>Den vanligste misforståelsen</h2>
+<p>«Barnet mitt er 12, så nå bestemmer det selv.» Nei – fra 12 år skal barnets mening tillegges <em>stor</em> vekt, men retten kan fortsatt gå mot det. Et 12-år gammelt barn som ønsker å bo hos den forelderen som lar det holde seg oppe til midnatt, spise godteri til middag og slippe lekser, formidler ikke nødvendigvis det som er til barnets beste på lang sikt.</p>
+<hr />
+<h2>Hva gjør du nå?</h2>
+<ul>
+<li>Er du bekymret for at barnet er påvirket av den andre forelderen: krev at en sakkyndig gjennomfører samtaler (§ 61 nr. 3 og 4)</li>
+<li>Er barnet ditt 7 år eller eldre og har klare ønsker: sørg for at dette dokumenteres av sakkyndig, ikke bare av deg</li>
+<li>Husk at det er barnets beste – ikke forelderens ønske eller barnets midlertidige preferanser – som er rettens ledestjerne</li>
+</ul>
+<p><em>Artikkelen er basert på barnelova av 8. april 1981, sist endret 25. april 2025 (ikr. 1. januar 2026).</em></p>
+<hr />
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/far-fast-bosted-barnet/">Hvordan får jeg som far fast bosted for barnet?</a><a class="sp-relchip" href="../../sporsmal/kan-retten-bestemme-delt-fast-bosted/">Kan retten bestemme delt fast bosted mot min vilje?</a><a class="sp-relchip" href="../../sporsmal/barnebidrag-delt-fast-bosted/">Betales barnebidrag når barnet har delt fast bosted?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

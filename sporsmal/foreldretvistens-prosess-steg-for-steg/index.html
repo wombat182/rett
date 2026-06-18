@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan foregår en barnefordelingssak steg for steg? — Rettsregel</title>
+<meta name="description" content="En barnefordelingssak starter med mekling og ender enten i rettsforlik eller dom etter mange måneder. Her er prosessen fra start til slutt – med typiske tidspunkter.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/foreldretvistens-prosess-steg-for-steg/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan foregår en barnefordelingssak steg for steg?">
+<meta property="og:description" content="En barnefordelingssak starter med mekling og ender enten i rettsforlik eller dom etter mange måneder. Her er prosessen fra start til slutt – med typiske tidspunkter.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/foreldretvistens-prosess-steg-for-steg/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan foregår en barnefordelingssak steg for steg?">
+<meta name="twitter:description" content="En barnefordelingssak starter med mekling og ender enten i rettsforlik eller dom etter mange måneder. Her er prosessen fra start til slutt – med typiske tidspunkter.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvordan foregår en barnefordelingssak steg for steg?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En barnefordelingssak starter med obligatorisk mekling på familievernkontoret. Deretter stevning til tingretten, saksforberedende møter (der flertallet ender i enighet), og til slutt eventuell full hovedforhandling. Typisk total tid: 6–24 måneder.</p>
+  <p class="sp-kilde">Bygger på barnelova §§ 51, 56, 59, 61</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/barnelova/51/" class="related-card">
+  <div class="related-card-meta">barnelova § 51</div>
+  <div class="related-card-title">Hvem MÅ møte til mekling, og når?</div>
+</a><a href="../../lover/barnelova/56/" class="related-card">
+  <div class="related-card-meta">barnelova § 56</div>
+  <div class="related-card-title">Når du velger å saksøke eksen for foreldreansvar eller samvær</div>
+</a><a href="../../lover/barnelova/59/" class="related-card">
+  <div class="related-card-meta">barnelova § 59</div>
+  <div class="related-card-title">Dommeren skal skynde seg og forsøke å forlike dere</div>
+</a><a href="../../lover/barnelova/61/" class="related-card">
+  <div class="related-card-meta">barnelova § 61</div>
+  <div class="related-card-title">Rettens mektige verktøykasse under barnefordeling</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> En barnefordelingssak starter med obligatorisk mekling på familievernkontoret. Deretter stevning til tingretten, saksforberedende møter (der flertallet ender i enighet), og til slutt eventuell full hovedforhandling. Typisk total tid: 6–24 måneder.</p>
+<hr />
+<h2>Steg 1: Obligatorisk mekling (§ 51)</h2>
+<p>Familievernet: én obligatorisk time. Gratis. Meklingsattest utstedes etter én time – gyldig i 6 måneder. Uten attest: ingen stevning.</p>
+<p>Foreldrene kan velge ytterligere mekling (opptil 7 timer totalt) frivillig og gratis. <strong>Mange saker løses her.</strong></p>
+<p><em>Typisk tidspunkt: uke 1–4</em></p>
+<hr />
+<h2>Steg 2: Stevning til tingretten (§ 56)</h2>
+<p>Dersom mekling ikke fører frem: send stevning til tingretten der barnet bor. Stevningen skal inneholde barnets og foreldrenes navn, hva du krever, og kort begrunnelse.</p>
+<p>Den andre parten får frist til å sende tilsvar.</p>
+<p><em>Typisk tidspunkt: uke 4–8</em></p>
+<hr />
+<h2>Steg 3: Midlertidig avgjørelse (§ 60) – dersom nødvendig</h2>
+<p>Er situasjonen uavklart og barnet trenger en midlertidig ordning: begjær midlertidig avgjørelse. Retten avgjør raskt (1–4 uker).</p>
+<p><em>Tidspunkt: parallelt med stevning eller rett etter</em></p>
+<hr />
+<h2>Steg 4: Første saksforberedende møte (§ 59)</h2>
+<p>Dommeren kaller inn partene til saksforberedende møte, ofte med sakkyndig psykolog (§ 61 nr. 1). Formålet er enighet. <strong>70–80 % av sakene avsluttes her</strong> – enten ved rettsforlik eller ved at saken heves fordi foreldrene er enige.</p>
+<p><em>Typisk tidspunkt: 2–4 måneder etter stevning</em></p>
+<hr />
+<h2>Steg 5: Sakkyndig utredning (§ 61 nr. 3) – dersom enighet ikke nås</h2>
+<p>Retten oppnevner sakkyndig psykolog for full utredning. Sakkyndig intervjuer foreldre og barn, observerer og skriver rapport. Rapport sendes til Barnesakkyndig kommisjon (§ 61 c) for kvalitetsvurdering (frist 12 dager).</p>
+<p><em>Typisk tidspunkt: 2–6 måneder etter første møte</em></p>
+<hr />
+<h2>Steg 6: Andre saksforberedende møte</h2>
+<p>Med sakkyndiges rapport tilgjengelig: nytt møte der partene igjen forsøker enighet. Mange saker avsluttes her.</p>
+<p><em>Typisk tidspunkt: 5–8 måneder etter stevning</em></p>
+<hr />
+<h2>Steg 7: Hovedforhandling (§ 30 tvisteloven)</h2>
+<p>Dersom enighet ikke oppnås: full hovedforhandling. Vanligvis 1–3 rettsdager. Begge parter prosederer, vitner (inkl. sakkyndig) forklarer seg. Retten voterer og avgir dom innen 2 uker.</p>
+<p><em>Typisk tidspunkt: 12–24 måneder etter stevning</em></p>
+<hr />
+<h2>Steg 8: Dom og eventuell anke (tvisteloven § 29-13)</h2>
+<p>Dommen er rettskraftig etter 1 måneds ankefrist. Anke til lagmannsretten er mulig. De fleste saker slipper inn til full ankebehandling.</p>
+<hr />
+<h2>Tidsestimat</h2>
+<table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Typisk varighet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mekling</td>
+<td>1–4 uker</td>
+</tr>
+<tr>
+<td>Stevning + tilsvar</td>
+<td>4–8 uker</td>
+</tr>
+<tr>
+<td>Midl. avgjørelse</td>
+<td>1–4 uker</td>
+</tr>
+<tr>
+<td>Saksforberedende møte</td>
+<td>2–4 mnd.</td>
+</tr>
+<tr>
+<td>Sakkyndig utredning</td>
+<td>3–6 mnd.</td>
+</tr>
+<tr>
+<td>Hovedforhandling</td>
+<td>12–24 mnd.</td>
+</tr>
+<tr>
+<td>Dom</td>
+<td>2 uker etter forhandling</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Den vanligste misforståelsen</h2>
+<p>Mange tror at en stevning betyr at saken går til dom. Det er feil. Flertallet avsluttes i saksforberedende møter med enighet. Stevningen er starten på en prosess, ikke en uunngåelig rettssak.</p>
+<hr />
+<h2>Hva gjør du nå?</h2>
+<ul>
+<li>Mekle først og seriøst – det er billigst, raskest og best for barnet</li>
+<li>Har du advokat: gå gjennom prosessen og vurder hva som er realistisk tidslinje for din sak</li>
+<li>Er situasjonen akutt: begjær midlertidig avgjørelse umiddelbart</li>
+</ul>
+<p><em>Artikkelen er basert på barnelova §§ 51, 56, 59–61 (LOV-1981-04-08-7) og tvisteloven.</em></p>
+<hr />
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/mekling-obligatorisk-barnefordeling/">Må jeg møte til mekling før jeg kan gå til retten?</a><a class="sp-relchip" href="../../sporsmal/barnefordelingssak-total-kostnad/">Hva koster en barnefordelingssak totalt?</a><a class="sp-relchip" href="../../sporsmal/saksomkostninger-barnefordelingssak/">Hvem betaler advokatkostnadene i en barnefordelingssak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

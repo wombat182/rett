@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg endre en rettskraftig dom om samvær eller bosted? — Rettsregel</title>
+<meta name="description" content="En rettskraftig dom om samvær eller bosted kan endres – men bare ved «særlege grunnar». Hva som holder og hva som ikke holder, viser rettspraksis tydelig.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/endre-rettskraftig-dom-samvaer-bosted/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg endre en rettskraftig dom om samvær eller bosted?">
+<meta property="og:description" content="En rettskraftig dom om samvær eller bosted kan endres – men bare ved «særlege grunnar». Hva som holder og hva som ikke holder, viser rettspraksis tydelig.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/endre-rettskraftig-dom-samvaer-bosted/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg endre en rettskraftig dom om samvær eller bosted?">
+<meta name="twitter:description" content="En rettskraftig dom om samvær eller bosted kan endres – men bare ved «særlege grunnar». Hva som holder og hva som ikke holder, viser rettspraksis tydelig.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg endre en rettskraftig dom om samvær eller bosted?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, men bare dersom det foreligger «særlege grunnar». En dom, et rettsforlik eller en avtale med tvangskraft kan ikke fritt prøves på nytt – terskelen er høyere enn ved første gangs behandling. Frie private avtaler kan foreldrene endre seg imellom når som helst uten vilkår.</p>
+  <p class="sp-kilde">Bygger på barnelova §§ 63, 56, 60</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/barnelova/63/" class="related-card">
+  <div class="related-card-meta">barnelova § 63</div>
+  <div class="related-card-title">Når kan du ta opp igjen en gammel barnefordelingssak?</div>
+</a><a href="../../lover/barnelova/56/" class="related-card">
+  <div class="related-card-meta">barnelova § 56</div>
+  <div class="related-card-title">Når du velger å saksøke eksen for foreldreansvar eller samvær</div>
+</a><a href="../../lover/barnelova/60/" class="related-card">
+  <div class="related-card-meta">barnelova § 60</div>
+  <div class="related-card-title">Domstolen kan ta en "midlertidig" avgjørelse</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> Ja, men bare dersom det foreligger «særlege grunnar». En dom, et rettsforlik eller en avtale med tvangskraft kan ikke fritt prøves på nytt – terskelen er høyere enn ved første gangs behandling. Frie private avtaler kan foreldrene endre seg imellom når som helst uten vilkår.</p>
+<hr />
+<h2>Tre ulike typer avgjørelser – tre ulike endringskrav</h2>
+<p>Barnelova § 63 skiller mellom hva som skal til for å endre ulike typer avgjørelser:</p>
+<p><strong>Fri privat avtale:</strong> Foreldrene kan endre denne seg imellom uten vilkår og uten å involvere noen. Ingen krav om «særlege grunnar».</p>
+<p><strong>Dom, rettsforlik og statsforvalterstadfestet avtale (§ 55):</strong> Kan bare endres av retten dersom «særlege grunnar talar for det». Dette er et reelt rettslig krav, ikke en formalitet.</p>
+<p><strong>Midlertidig avgjørelse (§ 60):</strong> Kan endres av samme domstol som har hovedsaken, på samme vilkår som over – men prosessen er enklere.</p>
+<p>Denne distinksjonen betyr at to foreldre som møtes i retten etter en dom, møter en høyere terskel enn foreldre som aldri har hatt en dom.</p>
+<hr />
+<h2>Hva er «særlege grunnar» i praksis?</h2>
+<p>Loven definerer ikke «særlege grunnar» nærmere. Rettspraksis fyller innholdet:</p>
+<p><strong>Endrede faktiske forhold</strong> er kjernen. Eksempler som norske domstoler har akseptert:</p>
+<ul>
+<li>En av foreldrene har flyttet langt fra den andre, slik at samværsordningen ikke lenger fungerer praktisk</li>
+<li>Barnet har fått en alvorlig sykdom som krever en annen omsorgsordning</li>
+<li>En forelder har fått alvorlige rusproblemer eller psykiske problemer som ikke var kjent ved dom</li>
+<li>Bostedsforelderen saboterer systematisk samværet over tid (foreldretvist.no / § 63 rettspraksis)</li>
+<li>Barnet er blitt vesentlig eldre og har klare, stabile ønsker som peker i en annen retning (jf. § 31)</li>
+<li>En forelder har fått ny partner med barn, slik at boforholdet endres vesentlig</li>
+</ul>
+<p><strong>Det er ikke «særlege grunnar»:</strong>
+- At du angrer på forliket du inngikk
+- At du ikke var fornøyd med rettens begrunnelse
+- At det er gått kort tid og du vil prøve igjen med ny argumentasjon
+- At samværet er krevende, men fungerer</p>
+<p>Dersom retten finner det «openbert» at det ikke foreligger særlige grunner, kan saken avgjøres uten hovedforhandling – det vil si at du ikke får noen rettssak (§ 63 tredje ledd). Det er et effektivt filter mot gjentatt prosesstreting.</p>
+<hr />
+<h2>Tidsaspektet: hvor fort kan du reise ny sak?</h2>
+<p>Loven setter ingen absolutt frist, men kortere tid siden forrige avgjørelse stiller strengere krav. En dom som er ett år gammel krever mer for å endres enn en dom som er fire år gammel.</p>
+<p><strong>Eksempel – for kort tid:</strong>
+Hanne og Erik inngikk rettsforlik i januar 2024 om at sønnen Nils (8) bor fast hos Hanne med samvær for Erik annenhver helg. Erik er misfornøyd og stevner i april 2024 – tre måneder etter forliket. Tingretten avviser saken uten hovedforhandling: det foreligger ikke særlige grunner når det er gått svært kort tid siden rettsforliket, og det ikke er påvist endringer.</p>
+<p><strong>Eksempel – nok tid og reell endring:</strong>
+Samme Hanne og Erik, men nå er vi i 2027. Hanne har fått ny jobb i Tromsø og varslet om å flytte dit med Nils. Erik bor i Oslo. Nils er nå 11 år og sier klart at han vil bo hos far. Erik reiser endringssak. Tingretten finner at kombinasjonen av geografisk avstand, Nils' alder og hans klare uttalte ønske utgjør særlige grunner. Saken behandles.</p>
+<hr />
+<h2>Ensidig flytting åpner ny sak uten særlige grunner</h2>
+<p>§ 63 siste ledd gjør ett viktig unntak: «Dersom ein av foreldra har flytta med barnet utan at foreldra var samde, kan den andre av foreldra reise ny sak for retten.» Her gjelder ikke kravet om særlige grunner. En uenig og ensidig innenlandsflytting med barnet er altså selvstendig grunnlag for ny sak.</p>
+<hr />
+<h2>Saksgang for endringssak</h2>
+<p>Prosessen er den samme som for en ordinær barnefordelingssak:</p>
+<ol>
+<li><strong>Mekling</strong> ved familievernkontor – obligatorisk (§ 51), gratis, meklingsattest gyldig 6 måneder</li>
+<li><strong>Stevning</strong> til tingretten der barnet har verneting (§ 57)</li>
+<li><strong>Behandling</strong> – dommeren vurderer først om særlige grunner foreligger. Finner retten det «openbert» at de ikke gjør det, avgjøres saken uten hovedforhandling</li>
+<li><strong>Dom eller rettsforlik</strong> – ny avgjørelse erstatter den gamle</li>
+</ol>
+<hr />
+<h2>Den vanligste misforståelsen</h2>
+<p>Mange tror at fordi loven alltid setter barnets beste øverst, kan de reise ny sak når som helst med påstand om at situasjonen nå er annerledes for barnet. Det er ikke slik systemet fungerer. Barnets beste er kriteriet retten bruker når saken er oppe – men for å komme inn i rettssystemet med en endringssak, må du passere terskelen om særlige grunner. Disse to vilkårene er kumulative, ikke alternative.</p>
+<hr />
+<h2>Hva kan du gjøre nå?</h2>
+<p>Mener du at situasjonen er vesentlig endret siden dommen:</p>
+<ol>
+<li><strong>Book familievernkontor</strong> (bufetat.no) – gratis, og obligatorisk uansett</li>
+<li><strong>Dokumenter endringen</strong>: ny adresse, legeerklæring, barnets uttalelse, samværslogg</li>
+<li><strong>Rådspør advokat</strong> om særlige grunner faktisk foreligger – å reise en sak som avvises uten hovedforhandling er bortkastet tid og penger</li>
+<li><strong>Vurder midlertidig avgjørelse (§ 60)</strong> dersom situasjonen er akutt og du ikke kan vente på full saksbehandling</li>
+</ol>
+<p><em>Artikkelen er basert på barnelova av 8. april 1981, sist endret 25. april 2025 (ikr. 1. januar 2026).</em></p>
+<hr />
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/samvaer-saboteres-hva-gjore/">Hva gjør jeg når den andre forelderen saboterer samværet mitt?</a><a class="sp-relchip" href="../../sporsmal/far-fast-bosted-barnet/">Hvordan får jeg som far fast bosted for barnet?</a><a class="sp-relchip" href="../../sporsmal/midlertidig-avgjorelse-barnefordeling/">Hva er en foreløpig avgjørelse – og når kan jeg kreve den?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -178,6 +178,11 @@ except ImportError:
     _SP_BILKJOP = []
 
 try:
+    from sporsmal_barnelova_v1 import SPORSMAL as _SP_BARNELOVA_V1
+except ImportError:
+    _SP_BARNELOVA_V1 = []
+
+try:
     from sporsmal_arveloven import SPORSMAL as _SP_ARVE
 except ImportError:
     _SP_ARVE = []
@@ -347,6 +352,7 @@ SPORSMAL = (_tag_lov(_SP_BASE, None)
             + _tag_lov(_SP_AVH_V2, "avhendingslova")
             + _tag_lov(_SP_BOLIGKJOP, "avhendingslova")
             + _tag_lov(_SP_BILKJOP, "forbrukerkjøpsloven")
+            + _tag_lov(_SP_BARNELOVA_V1, "barnelova")
             + _tag_lov(_SP_ARVE, "arveloven")
             + _tag_lov(_SP_BARNE, "barnelova")
             + _tag_lov(_SP_STRAFF, None)

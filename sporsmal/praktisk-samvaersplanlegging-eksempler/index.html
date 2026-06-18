@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan planlegge samvær i praksis – typiske ordninger og eksempler — Rettsregel</title>
+<meta name="description" content="Vanlig samvær er en juridisk minimumsstandard, ikke en maksgrense. Her er de vanligste samværsordningene, feriefordelingen og hva domstolene typisk fastsetter.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/praktisk-samvaersplanlegging-eksempler/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan planlegge samvær i praksis – typiske ordninger og eksempler">
+<meta property="og:description" content="Vanlig samvær er en juridisk minimumsstandard, ikke en maksgrense. Her er de vanligste samværsordningene, feriefordelingen og hva domstolene typisk fastsetter.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/praktisk-samvaersplanlegging-eksempler/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan planlegge samvær i praksis – typiske ordninger og eksempler">
+<meta name="twitter:description" content="Vanlig samvær er en juridisk minimumsstandard, ikke en maksgrense. Her er de vanligste samværsordningene, feriefordelingen og hva domstolene typisk fastsetter.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvordan planlegge samvær i praksis – typiske ordninger og eksempler</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>«Vanleg samværsrett» (§ 43 andre ledd) er et juridisk minimum på én ettermiddag per uke og annenhver helg med overnattinger. I praksis avtaler mange langt mer. Her er de vanligste ordningene, feriedelingen og hva retten typisk fastsetter.</p>
+  <p class="sp-kilde">Bygger på barnelova § 43 og § 44</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/barnelova/43/" class="related-card">
+  <div class="related-card-meta">barnelova § 43</div>
+  <div class="related-card-title">Hva er vanlig samvær (omfanget)?</div>
+</a><a href="../../lover/barnelova/44/" class="related-card">
+  <div class="related-card-meta">barnelova § 44</div>
+  <div class="related-card-title">Hvem skal betale for reisen når barnet skal på samvær?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p><strong>Kort svar:</strong> «Vanleg samværsrett» (§ 43 andre ledd) er et juridisk minimum på én ettermiddag per uke og annenhver helg med overnattinger. I praksis avtaler mange langt mer. Her er de vanligste ordningene, feriedelingen og hva retten typisk fastsetter.</p>
+<hr />
+<h2>«Vanleg samværsrett» – hva det betyr i konkrete timer</h2>
+<p>Barnelova § 43 andre ledd definerer vanlig samværsrett:</p>
+<blockquote>
+<p>«Med vanleg samværsrett meiner ein at barnet er hos den forelderen det ikkje bur fast hos, ein ettermiddag i veka med overnatting, annankvar helg, til saman tre veker i sommarferien, og annankvar haust-, jule-, vinter- og påskeferie.»</p>
+</blockquote>
+<p>I tidsekvivalent: ca. 80–100 overnattinger per år – rundt 28 % av årets netter.</p>
+<p>Dette er et <strong>juridisk minimum og utgangspunkt</strong> dersom ingen avtale er inngått. Ingenting hindrer foreldrene i å avtale mer, og mange gjør det.</p>
+<hr />
+<h2>Tre vanlige ordningstyper</h2>
+<p><strong>Type 1: «Utvidet vanlig samvær»</strong>
+Annenhver helg fra fredag til søndag, pluss onsdag kveld med overnatting. Noen legger til en ekstra helg per måned. Omfang: ca. 100–120 overnattinger per år (30–33 %).</p>
+<p><strong>Type 2: Delt fast bosted (50/50)</strong>
+Barnet bor annenhver uke hos hver forelder, typisk byttes mandag eller fredag. Krever at foreldrene bor nær nok til at barnet kan gå i same barnehage/skole. Omfang: ca. 182–183 overnattinger per år hos hver.</p>
+<p><strong>Type 3: Utvidet delt bosted med faste ukedager</strong>
+2-2-3-modellen: barnet er 2 dager hos A, 2 dager hos B, 3 dager hos A, neste uke: 3 dager hos B, 2 dager hos A, 2 dager hos B. Barna slipper å skifte bolig hele uker, og bytter hyppigere. Populær for yngre barn.</p>
+<hr />
+<h2>Feriedeling: typisk standard</h2>
+<p>Uavhengig av ordinær ukeordning deles ferier typisk slik:</p>
+<table>
+<thead>
+<tr>
+<th>Ferie</th>
+<th>Ordning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sommerferie</td>
+<td>Annenhver uke (3 + 3 uker, eller 4 + 3)</td>
+</tr>
+<tr>
+<td>Juleferie</td>
+<td>Annethvert år: juleaften hos en forelder</td>
+</tr>
+<tr>
+<td>Påskeferie</td>
+<td>Annethvert år</td>
+</tr>
+<tr>
+<td>Vinterferie</td>
+<td>Annethvert år</td>
+</tr>
+<tr>
+<td>Høstferie</td>
+<td>Annethvert år</td>
+</tr>
+</tbody>
+</table>
+<p>Lange ferier hos samværsforelder er særlig viktig ved lang avstand mellom foreldrene.</p>
+<hr />
+<h2>Hva retten fastsetter dersom foreldrene ikke er enige</h2>
+<p>Dersom foreldrene ikke kan bli enige og retten fastsetter:
+- <strong>Nær avstand (under 30 min):</strong> retten vurderer delt fast bosted eller utvidet samvær – særlig for barn i skolealder
+- <strong>Middels avstand (30–90 min):</strong> annenhver helg med overnattinger, onsdag kveld uten overnatting, og lengre ferieopplegg
+- <strong>Lang avstand (over 90 min eller forskjellige byer):</strong> færre, men lengre blokker – typisk 4–6 uker sommer, alle ferieukene, og noen ekstrahelger</p>
+<hr />
+<h2>Eksempel: kort avstand, to barn</h2>
+<p>Hanne og Lars bor 15 minutter fra hverandre. Barna Ella (9) og Knut (7) trives hos begge. Retten fastsetter: annenhver uke fast bosted (delt fast bosted). Bytte mandag morgen via skolelevering. Sommerferie: tre uker hos hver, pluss to dager påske og to dager pinse veksler.</p>
+<hr />
+<h2>Eksempel: lang avstand, ett barn</h2>
+<p>Marte (Oslo) og Thomas (Tromsø). Barnet Siri (6) bor fast hos Marte. Thomas bor langt unna. Retten fastsetter: seks uker sammenhengende sommer hos Thomas, juleferien annethvert år, påske annethvert år, og to ekstra helgeopphold (fly) per år. Thomas dekker flybillettene. Reisekostnadene fordeles etter inntekt (§ 44).</p>
+<hr />
+<h2>Hva påvirker omfanget av samværet?</h2>
+<ul>
+<li>Barnets alder: yngre barn trenger hyppigere kontakt (kortere intervaller), eldre barn tåler og ønsker lengre blokker</li>
+<li>Barnets eget ønske (§ 31): fra 12 år tillegges det stor vekt</li>
+<li>Foreldrenes evne til samarbeid</li>
+<li>Barnets tilknytning til begge foreldre</li>
+<li>Geografisk avstand</li>
+</ul>
+<hr />
+<h2>Den vanligste misforståelsen</h2>
+<p>Mange tror at «vanleg samværsrett» betyr 50/50. Det gjør det ikke – vanlig samværsrett er ca. 28 % av årets netter. Delt fast bosted (ca. 50 %) må avtales eller fastsettes særskilt av retten.</p>
+<hr />
+<h2>Hva gjør du nå?</h2>
+<ul>
+<li>Bruk familievernet til å lage en konkret samværsavtale med årskalender</li>
+<li>Bufdir.no har maler for samværsavtaler</li>
+<li>Klarer dere ikke å bli enige: mekling på familievernkontoret er gratis og kan hjelpe</li>
+</ul>
+<p><em>Artikkelen er basert på barnelova § 43 andre ledd (LOV-1981-04-08-7) og norsk rettspraksis om samværsfastsettelse.</em></p>
+<hr />
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/vanlig-samvaersrett-hva-betyr/">Hva betyr «vanlig samværsrett» i tid og dager?</a><a class="sp-relchip" href="../../sporsmal/reisekostnader-samvaer-hvem-betaler/">Hvem betaler reisekostnadene ved samvær?</a><a class="sp-relchip" href="../../sporsmal/kan-retten-bestemme-delt-fast-bosted/">Kan retten bestemme delt fast bosted mot min vilje?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
