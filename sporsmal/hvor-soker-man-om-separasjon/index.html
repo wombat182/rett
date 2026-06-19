@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor søker man om separasjon? — Rettsregel</title>
+<meta name="description" content="Man søker om separasjon hos statsforvalteren.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-soker-man-om-separasjon/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor søker man om separasjon?">
+<meta property="og:description" content="Man søker om separasjon hos statsforvalteren.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-soker-man-om-separasjon/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor søker man om separasjon?">
+<meta name="twitter:description" content="Man søker om separasjon hos statsforvalteren.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvor søker man om separasjon?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Man søker om separasjon hos statsforvalteren. Statsforvalteren er det forvaltningsorganet som behandler søknader om separasjon og skilsmisse etter ekteskapsloven og gir separasjons- og skilsmissebevilling. Søknaden leveres i praksis digitalt gjennom statsforvalterens elektroniske løsning. Domstolene behandler bare de særlige sakene om skilsmisse ved dom etter el. § 23 og oppløsning etter § 24.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 23, 20, 24, 21, 22</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/23/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 23</div>
+  <div class="related-card-title">Skilsmisse på dagen ved overgrep eller tvang</div>
+</a><a href="../../lover/ekteskapsloven/20/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 20</div>
+  <div class="related-card-title">Slik får du separasjon</div>
+</a><a href="../../lover/ekteskapsloven/24/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 24</div>
+  <div class="related-card-title">Tvangsoppløsning av ulovlige ekteskap</div>
+</a><a href="../../lover/ekteskapsloven/21/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 21</div>
+  <div class="related-card-title">Skilsmisse etter ett års separasjon</div>
+</a><a href="../../lover/ekteskapsloven/22/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 22</div>
+  <div class="related-card-title">Skilsmisse etter å ha bodd fra hverandre i to år (Samlivsbrudd)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Man søker om separasjon hos statsforvalteren. Statsforvalteren er det forvaltningsorganet som behandler søknader om separasjon og skilsmisse etter ekteskapsloven og gir separasjons- og skilsmissebevilling. Søknaden leveres i praksis digitalt gjennom statsforvalterens elektroniske løsning. Domstolene behandler bare de særlige sakene om skilsmisse ved dom etter el. § 23 og oppløsning etter § 24.</p>
+<h3>Statsforvalteren som rett myndighet</h3>
+<p>Etter ekteskapsloven kapittel 5 er det statsforvalteren som behandler saker om separasjon og om skilsmisse på de alminnelige grunnlagene. Statsforvalteren het tidligere «fylkesmannen», og eldre kilder og avtaler kan derfor omtale fylkesmannen. Det er det samme organet. Statsforvalteren gir separasjonsbevilling etter el. § 20 og skilsmissebevilling etter §§ 21 og 22.</p>
+<p>Søknaden behandles av statsforvalteren i det fylket der ektefellene bor. I praksis er behandlingen samordnet gjennom en nasjonal digital løsning, slik at det ikke har avgjørende betydning hvilket fylkesembete man henvender seg til. Statsforvalteren vurderer om vilkårene for å behandle saken er oppfylt, herunder tilknytningen til Norge.</p>
+<h3>Digital søknad er hovedveien</h3>
+<p>Den praktiske hovedveien er å sende søknaden digitalt gjennom statsforvalterens elektroniske selvbetjeningsløsning. Her logger man inn med elektronisk ID, fyller ut opplysninger om ektefellene og barna, og laster opp nødvendige vedlegg som meklingsattest. Søker ektefellene i fellesskap, samtykker begge digitalt. Den digitale løsningen håndterer også oversendelse til den andre ektefellen dersom den ene søker alene, og administrasjon av vitner ved skilsmisse etter § 22.</p>
+<p>Det er fortsatt mulig å søke på papir, men den digitale løsningen gir raskere og mer oversiktlig behandling. Ektefeller uten mulighet til å bruke digital ID kan kontakte statsforvalteren for alternativ framgangsmåte. Den digitale løsningen gir også partene mulighet til å følge saken, administrere vitner og frafalle klageretten elektronisk.</p>
+<h3>Når domstolen er rett organ</h3>
+<p>Statsforvalteren behandler ikke alle saker om ekteskapsoppløsning. Følgende saker hører under tingretten:</p>
+<ul>
+<li><strong>Skilsmisse ved dom etter el. § 23</strong>, der en ektefelle har vært utsatt for overgrep, alvorlig mishandling eller tvangsekteskap. Slike saker fremmes for tingretten der man bor.</li>
+<li><strong>Oppløsning etter el. § 24</strong>, blant annet ved bigami.</li>
+<li><strong>Skilsmisse etter § 22 uten den andres bekreftelse.</strong> Dersom den andre ektefellen ikke skriftlig bekrefter at vedkommende er enig i atskillelsen, har statsforvalteren ikke myndighet, og saken må bringes inn for tingretten.</li>
+</ul>
+<p>Den praktiske konsekvensen er at den administrative, gratis og enkle veien gjennom statsforvalteren forutsetter enten enighet eller at vilkårene for separasjon etter § 20 er oppfylt. Ved tvist om de faktiske vilkårene for samlivsbrudd, eller ved overgrepsgrunnlag, må domstolen kobles inn. Det er likevel viktig å understreke at separasjon etter § 20 alltid behandles av statsforvalteren, uavhengig av enighet, fordi retten her er individuell.</p>
+<h3>Tilknytning til Norge som kompetansevilkår</h3>
+<p>For at statsforvalteren skal kunne behandle søknaden, må det foreligge tilstrekkelig tilknytning til Norge. Hovedregelen er at minst én av ektefellene har fast bosetting i Norge i minst to år. Norske statsborgere bosatt i utlandet kan likevel søke separasjon i Norge dersom de er enige og begge undertegner eller samtykker digitalt. Tilsvarende kan utflyttede søke skilsmisse i Norge innen fem år etter at separasjonsbevilling ble gitt. Statsforvalteren vurderer tilknytningskravet når søknaden tas til behandling.</p>
+<h3>Hva skjer etter at søknaden er sendt?</h3>
+<p>Når statsforvalteren har mottatt søknaden, vurderes vilkårene og saken behandles. Søker ektefellene i fellesskap og frafaller klageretten, kan endelig separasjonsbevilling skrives ut samme dag som bevilling gis. Søker den ene alene, oversendes søknaden til den andre ektefellen for uttalelse, noe som forlenger saksbehandlingstiden. Når bevillingen er gitt, sender statsforvalteren automatisk melding til Skatteetaten, slik at folkeregisteret endrer sivilstatus.</p>
+<p>Saksbehandlingstiden varierer avhengig av saksmengden hos statsforvalteren og av sakens karakter. Faktorer som forlenger behandlingen, er at den ene søker alene, at den andre ektefellen er bosatt i utlandet, eller at en av partene påklager bevillingen. Felles søknad med frafall av klageretten gir den raskeste behandlingen.</p>
+<h3>Klage og klageinstans</h3>
+<p>Vedtak om separasjon kan påklages etter forvaltningslovens regler. Statsforvalteren er førsteinstans, og klagen behandles av overordnet forvaltningsorgan. En klage kan gjelde om de formelle vilkårene er oppfylt, for eksempel tilknytningskravet, men kan ikke føre fram med den begrunnelse at den andre ektefellen ikke ønsker separasjon, ettersom retten er individuell. Inntil klagen er avgjort, er separasjonsbevillingen ikke endelig. For å unngå at en klage forsinker prosessen, kan begge ektefeller frafalle klageretten, slik at bevillingen blir endelig samme dag. Klageadgangen er derfor mest praktisk i saker der det er reell tvil om statsforvalterens kompetanse.</p>
+<h3>Hvorfor statsforvalteren og ikke domstolen?</h3>
+<p>At de alminnelige separasjons- og skilsmissesakene er lagt til statsforvalteren og ikke til domstolene, er et bevisst valg fra lovgivers side. Begrunnelsen er at disse sakene normalt ikke reiser tvist om rettsanvendelsen; når vilkårene er oppfylt, skal bevilling gis. En administrativ behandling er da raskere, rimeligere og mindre belastende enn en domstolsprosess. Domstolsbehandling er forbeholdt de sakene der det er reell tvist eller der særlige grunnlag som overgrep gjør seg gjeldende. Denne arbeidsdelingen mellom statsforvalteren og tingretten er sentral for å forstå systemet i ekteskapsloven kapittel 5.</p>
+<h3>Saksgangen ved utenlandsk tilknytning</h3>
+<p>I saker med utenlandsk tilknytning må statsforvalteren vurdere både tilknytningskravet og eventuelle internasjonale forhold. Er den andre ektefellen bosatt i utlandet, må søknaden oversendes dit, noe som forlenger behandlingen. Statsforvalteren vurderer om botidskravet på to års fast bosetting i Norge er oppfylt, eller om unntak gjør seg gjeldende. Norske statsborgere bosatt i utlandet kan søke i fellesskap. Praktikeren bør i slike saker avklare tidlig om norsk myndighet overhodet er kompetent, og om en eventuell norsk bevilling vil bli anerkjent i det landet ektefellene har tilknytning til.</p>
+<h3>Praktisk om den nasjonale digitale løsningen</h3>
+<p>Den digitale selvbetjeningsløsningen for separasjon og skilsmisse er nasjonal og samordnet på tvers av statsforvalterembetene. Det innebærer at ektefellene logger inn med elektronisk ID og fyller ut søknaden i et felles system, uavhengig av hvilket embete som formelt behandler saken. Løsningen veileder søkeren gjennom de nødvendige opplysningene, kontrollerer at vedlegg som meklingsattest er lastet opp, og håndterer samtykke fra begge ektefeller ved felles søknad. For den ene som søker alene, sørger systemet for at den andre ektefellen blir varslet og får mulighet til å uttale seg. Denne digitaliseringen har gjort behandlingen raskere og mer ensartet, og er i dag den klart vanligste måten å søke separasjon på.</p>
+<h3>Oppsummering</h3>
+<p>Separasjon søkes hos statsforvalteren, fortrinnsvis gjennom den digitale løsningen. Statsforvalteren gir separasjons- og skilsmissebevilling på de alminnelige grunnlagene etter §§ 20, 21 og 22. Domstolen er bare rett organ ved skilsmisse ved dom etter § 23, oppløsning etter § 24 og § 22-saker uten den andres bekreftelse. Tilknytning til Norge er et vilkår for statsforvalterens kompetanse.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

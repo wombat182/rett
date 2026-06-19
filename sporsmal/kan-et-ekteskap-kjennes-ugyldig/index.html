@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan et ekteskap kjennes ugyldig? — Rettsregel</title>
+<meta name="description" content="Ja, et ekteskap kan kjennes ugyldig på de grunnlagene som er uttømmende angitt i el.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-et-ekteskap-kjennes-ugyldig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan et ekteskap kjennes ugyldig?">
+<meta property="og:description" content="Ja, et ekteskap kan kjennes ugyldig på de grunnlagene som er uttømmende angitt i el.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-et-ekteskap-kjennes-ugyldig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan et ekteskap kjennes ugyldig?">
+<meta name="twitter:description" content="Ja, et ekteskap kan kjennes ugyldig på de grunnlagene som er uttømmende angitt i el.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan et ekteskap kjennes ugyldig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, et ekteskap kan kjennes ugyldig på de grunnlagene som er uttømmende angitt i el. § 16. Ved bigami, forbudt slektskap og mindreårighet er ekteskapet ugyldig direkte i kraft av loven, mens ugyldighet på grunn av tvang må gjøres gjeldende ved søksmål etter el. § 16 tredje ledd. Norsk rett har ikke et alminnelig ugyldighetsinstitutt for ekteskap utover disse grunnlagene.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 16, 3, 4, 24, 11</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/16/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 16</div>
+  <div class="related-card-title">Når er et ekteskap ugyldig?</div>
+</a><a href="../../lover/ekteskapsloven/3/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 3</div>
+  <div class="related-card-title">Forbud mot å gifte seg med nære slektninger</div>
+</a><a href="../../lover/ekteskapsloven/4/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 4</div>
+  <div class="related-card-title">Du kan ikke være gift med to samtidig (Forbud mot bigami)</div>
+</a><a href="../../lover/ekteskapsloven/24/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 24</div>
+  <div class="related-card-title">Tvangsoppløsning av ulovlige ekteskap</div>
+</a><a href="../../lover/ekteskapsloven/11/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 11</div>
+  <div class="related-card-title">Hvordan selve vielsen foregår</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, et ekteskap kan kjennes ugyldig på de grunnlagene som er uttømmende angitt i el. § 16. Ved bigami, forbudt slektskap og mindreårighet er ekteskapet ugyldig direkte i kraft av loven, mens ugyldighet på grunn av tvang må gjøres gjeldende ved søksmål etter el. § 16 tredje ledd. Norsk rett har ikke et alminnelig ugyldighetsinstitutt for ekteskap utover disse grunnlagene.</p>
+<h3>Et uttømmende sett av ugyldighetsgrunner</h3>
+<p>Ekteskapsloven bygger på et prinsipp om at ekteskap kun kan være ugyldige på nærmere bestemte, lovfestede grunnlag. Ugyldighetsgrunnene følger av el. § 16. Det finnes ikke noe generelt ulovfestet ugyldighetsinstitutt for ekteskap, og alminnelige avtalerettslige ugyldighetsregler om for eksempel villfarelse, svik eller bristende forutsetninger gjelder ikke for ekteskap på samme måte som for ordinære avtaler. Begrunnelsen er hensynet til forutberegnelighet og stabilitet i familieforholdene, samt vernet av en godtroende part og eventuelle barn.</p>
+<p>Dette innebærer at en part som for eksempel føler seg lurt med hensyn til den andres økonomi, fortid eller hensikter, ikke kan kreve ekteskapet kjent ugyldig på dette grunnlaget. Slike forhold må eventuelt løses gjennom skilsmisse etter el. kapittel 4, ikke gjennom ugyldighet.</p>
+<h3>Ugyldighet som inntrer direkte</h3>
+<p>Etter el. § 16 første ledd er et ekteskap ugyldig dersom det er inngått i strid med el. § 3 (forbudt slektskap) eller el. § 4 (bigami). Etter el. § 16 annet ledd er ekteskapet ugyldig dersom en av partene var under 18 år ved vigselen. I disse tilfellene inntrer ugyldigheten direkte – ekteskapet er ugyldig fra inngåelsen uten at det kreves dom.</p>
+<p>At ugyldigheten inntrer direkte, betyr likevel ikke at det aldri er behov for rettslig behandling. For å skape klarhet og for å håndtere de rettslige og økonomiske virkningene kan det reises sak, og statsforvalteren har etter el. § 24 plikt til å reise sak om oppløsning av ekteskapet ved bigami og forbudt slektskap dersom ingen av ektefellene gjør det. Statsforvalteren kan likevel la være å reise sak eller utsette saken dersom sterke grunner taler for det.</p>
+<h3>Ugyldighet som krever søksmål</h3>
+<p>Ugyldighet på grunn av tvang står i en særstilling. Etter el. § 16 tredje ledd må denne ugyldighetsgrunnen gjøres gjeldende ved søksmål – den inntrer ikke automatisk. Hver av ektefellene kan reise søksmål for å få ekteskapet kjent ugyldig dersom vedkommende er tvunget til å inngå det ved rettsstridig atferd. Inntil et slikt søksmål fører frem, består ekteskapet med fulle rettsvirkninger. Dette skillet mellom direkte ugyldighet og ugyldighet som må gjøres gjeldende ved søksmål, er sentralt for å forstå ugyldighetsinstituttet.</p>
+<h3>Anerkjennelse av ekteskap med mindreårig</h3>
+<p>Selv om et ekteskap med en mindreårig i utgangspunktet er ugyldig etter el. § 16 annet ledd, åpner el. § 16 b for at statsforvalteren likevel kan anerkjenne ekteskapet på nærmere vilkår. Statsforvalteren kan anerkjenne ekteskapet dersom begge parter er over 18 år, begge var over 16 år ved vigselen, og den som var mindreårig ved vigselen ønsker ekteskapet anerkjent. Statsforvalteren kan også anerkjenne ekteskapet dersom sterke grunner taler for det.</p>
+<p>Denne adgangen ivaretar hensynet til parter som selv ønsker å opprettholde ekteskapet etter at de er blitt voksne, og som ikke har vært utsatt for tvang. Bestemmelsen viser at ugyldigheten ved mindreårighet ikke er absolutt i den forstand at den alltid må føre til oppløsning – den kan repareres gjennom anerkjennelse dersom vilkårene er oppfylt. Et viktig vilkår er at den som var mindreårig ved vigselen, selv ønsker ekteskapet anerkjent. Dette sikrer at anerkjennelsen ikke skjer mot den tidligere mindreåriges vilje, og at hensynet til vedkommendes selvbestemmelse står sentralt. Statsforvalterens skjønnsmessige adgang til å anerkjenne ekteskapet der sterke grunner taler for det, gir dessuten rom for å ta hensyn til særlige omstendigheter i det enkelte tilfellet.</p>
+<h3>Forholdet til vigsler som ikke er gyldig inngått</h3>
+<p>Ugyldighet etter el. § 16 må holdes adskilt fra de tilfellene der ekteskapet ikke er gyldig inngått etter el. § 11 annet ledd. Sistnevnte gjelder svikt ved de konstitutive vigselsvilkårene i el. §§ 11 og 12, der ekteskapet aldri er kommet i stand. Ugyldighet etter el. § 16 forutsetter derimot at det foreligger et inngått ekteskap, men at det heftet en materiell mangel. Denne sondringen er behandlet nærmere i artikkel 20.</p>
+<h3>Hvem kan gjøre ugyldighet gjeldende?</h3>
+<p>Spørsmålet om hvem som kan kreve et ekteskap ugyldig, avhenger av ugyldighetsgrunnen. Ved tvang er det den tvungne ektefellen som kan reise søksmål etter el. § 16 tredje ledd, eventuelt med statsforvalteren som alternativ søksmålsmyndighet etter el. § 16 a. Ved bigami og forbudt slektskap har statsforvalteren plikt til å reise sak etter el. § 24. Dette behandles nærmere i artikkel 27.</p>
+<h3>Hvorfor avtalerettslige ugyldighetsregler ikke gjelder</h3>
+<p>Den klare avgrensningen mot alminnelige avtalerettslige ugyldighetsgrunner fortjener en nærmere begrunnelse. Ekteskapet er ikke en formuerettslig avtale, men en personrettslig og familierettslig statushandling med virkninger overfor en rekke tredjeparter og samfunnet. Dersom ekteskap kunne kjennes ugyldig på grunnlag av for eksempel villfarelse, svik eller bristende forutsetninger, ville rettstilstanden bli uforutsigbar, og vernet av en godtroende part, av barn og av tredjeparter ville bli svekket. Lovgiver har derfor bevisst valgt en uttømmende regulering der kun nærmere bestemte, alvorlige mangler ved selve inngåelsen kan føre til ugyldighet. Misnøye med ektefellen, anger eller skuffede forventninger må håndteres gjennom skilsmisse etter el. kapittel 4, ikke gjennom ugyldighet.</p>
+<h3>Forholdet mellom ugyldighet og oppløsning</h3>
+<p>Et viktig poeng er at ugyldighet og oppløsning ikke er gjensidig utelukkende. Selv om et ekteskap er ugyldig direkte i kraft av loven ved bigami, slektskap eller mindreårighet, vil det normalt være behov for en formell oppløsning etter el. kapittel 4 for å bringe rettsforholdet til opphør på en ordnet måte og for å gjennomføre det økonomiske oppgjøret. Statsforvalterens plikt etter el. § 24 går nettopp ut på å reise sak om oppløsning. Ugyldigheten er dermed grunnlaget, mens oppløsningen er den prosessuelle gjennomføringen. Dette skiller seg fra tvangstilfellene, der ugyldigheten først fastslås ved dom etter søksmål.</p>
+<h3>Oppsummering</h3>
+<p>Et ekteskap kan kjennes ugyldig, men kun på de uttømmende angitte grunnlagene i el. § 16: bigami og forbudt slektskap (§ 16 første ledd) og mindreårighet (§ 16 annet ledd), som medfører direkte ugyldighet, samt tvang (§ 16 tredje ledd), som må gjøres gjeldende ved søksmål. Alminnelige avtalerettslige ugyldighetsregler gjelder ikke. Ekteskap med mindreårig kan anerkjennes av statsforvalteren etter el. § 16 b. For en nærmere gjennomgang av når et ekteskap er ugyldig, se artikkel 23.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

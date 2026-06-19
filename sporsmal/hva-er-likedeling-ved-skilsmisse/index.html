@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er likedeling ved skilsmisse? — Rettsregel</title>
+<meta name="description" content="Likedeling er hovedregelen for hvordan ektefellenes formue fordeles ved skilsmisse.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-likedeling-ved-skilsmisse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er likedeling ved skilsmisse?">
+<meta property="og:description" content="Likedeling er hovedregelen for hvordan ektefellenes formue fordeles ved skilsmisse.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-likedeling-ved-skilsmisse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er likedeling ved skilsmisse?">
+<meta name="twitter:description" content="Likedeling er hovedregelen for hvordan ektefellenes formue fordeles ved skilsmisse.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva er likedeling ved skilsmisse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Likedeling er hovedregelen for hvordan ektefellenes formue fordeles ved skilsmisse. Etter ekteskapsloven § 58 skal ektefellenes samlede formue som utgangspunkt deles likt mellom dem etter at det er gjort fradrag for gjeld. Likedeling gjelder felleseiemidlene, og bygger på tanken om at ektefeller gjennom ekteskapet har bidratt til en felles økonomi og et felles livsprosjekt.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 58, 60, 59, 31, 65</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/58/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 58</div>
+  <div class="related-card-title">Slik regner dere ut hvem som får hva (Likedeling og gjeldsfradrag)</div>
+</a><a href="../../lover/ekteskapsloven/60/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 60</div>
+  <div class="related-card-title">Datoen som fryser økonomien (Skjæringstidspunktet)</div>
+</a><a href="../../lover/ekteskapsloven/59/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 59</div>
+  <div class="related-card-title">Behold det du tok med inn i ekteskapet (Skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/31/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 31</div>
+  <div class="related-card-title">Du bestemmer over dine egne penger og eiendeler</div>
+</a><a href="../../lover/ekteskapsloven/65/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 65</div>
+  <div class="related-card-title">Kan vi gjøre akkurat det vi vil med oppgjøret (Avtalefrihet)?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Likedeling er hovedregelen for hvordan ektefellenes formue fordeles ved skilsmisse. Etter ekteskapsloven § 58 skal ektefellenes samlede formue som utgangspunkt deles likt mellom dem etter at det er gjort fradrag for gjeld. Likedeling gjelder felleseiemidlene, og bygger på tanken om at ektefeller gjennom ekteskapet har bidratt til en felles økonomi og et felles livsprosjekt.</p>
+<h3>Hovedregelen i § 58</h3>
+<p>Ekteskapsloven § 58 første ledd fastslår at ektefellenes samlede formue skal deles likt etter at det er gjort fradrag for gjeld etter reglene i § 58 andre ledd og § 60. Likedelingen gjelder nettoformuen – altså verdiene etter at gjelden er trukket fra. Resultatet er at hver ektefelle har krav på en halvpart av den samlede nettoformuen som utgjør felleseiemidler. Bestemmelsen er uttrykk for det grunnleggende likhetsprinsippet i norsk ekteskapsrett: ektefeller anses som likeverdige bidragsytere til den felles økonomien, uavhengig av hvem som formelt har stått for inntekten eller ervervet eiendelene.</p>
+<h3>Hva som inngår i likedelingen</h3>
+<p>Likedelingen omfatter i utgangspunktet alle felleseiemidler som ektefellene eide ved skjæringstidspunktet etter ekteskapsloven § 60. Dette inkluderer typisk bolig, fritidseiendom, bankinnskudd, kjøretøy, innbo og andre verdier som ikke holdes utenfor. Det som holdes utenfor, er særeie og verdier som med rette kan skjevdeles etter § 59. Eiendeler ervervet etter skjæringstidspunktet inngår heller ikke. I tillegg holdes visse personlige eiendeler og rettigheter utenfor etter § 61, se artikkel 116.</p>
+<h3>Skjæringstidspunktet og gjeldsfradraget – § 58 andre ledd og § 60</h3>
+<p>To forhold er sentrale for hva som faktisk kommer til likedeling. For det første skjæringstidspunktet: bare det ektefellene eide da begjæring om separasjon eller skilsmisse kom inn, eventuelt da samlivet ble brutt, regnes med, jf. ekteskapsloven § 60. For det andre gjeldsfradraget: før delingen kan hver ektefelle gjøre fradrag for gjeld etter reglene i § 58 andre ledd og § 60. Bestemmelsen i § 58 andre ledd regulerer i hvilken utstrekning en ektefelle med både skjevdelingsmidler/særeie og felleseie kan kreve fradrag for gjeld i felleseiemidlene. En ektefelle som bare har felleseiemidler, kan trekke fra all sin gjeld i disse, mens en ektefelle som også har særeie eller skjevdelingsmidler, må henføre gjelden til riktig formuesmasse. Dette er behandlet nærmere i artikkel 120.</p>
+<h3>Forholdet mellom likedeling og skjevdeling</h3>
+<p>Likedeling og skjevdeling henger tett sammen. Skjevdeling etter ekteskapsloven § 59 er et unntak fra likedelingen, og verdier som skjevdeles, holdes utenfor likedelingsgrunnlaget. Først når skjevdelingskrav er avklart og gjeldsfradrag er gjennomført, deles resten likt etter § 58. I praksis er det derfor ofte skjevdelingen som er det reelle tvistetemaet, mens selve likedelingen er en regnefunksjon på det som gjenstår. Jo større del av formuen som kan skjevdeles, desto mindre blir likedelingsgrunnlaget, og motsatt.</p>
+<h3>Likedeling betyr verdideling, ikke at alt eies sammen</h3>
+<p>Et utbredt misforståelse er at likedeling innebærer at ektefellene eier alt sammen. Det stemmer ikke. Under ekteskapet eier hver ektefelle sitt, jf. ekteskapsloven § 31. Likedelingen gjelder verdiene ved oppgjøret, ikke eiendomsretten underveis. Ved selve oppgjøret bestemmer reglene i ekteskapsloven kapittel 13 hvem som overtar de enkelte eiendelene, og en ektefelle som overtar verdier ut over sin halvpart, må betale mellomlegg. Likedelingen sikrer altså en lik fordeling av verdiene, men den enkelte ektefelle får ikke automatisk eierandel i den andres eiendeler – det er verdien, ikke gjenstanden, som deles.</p>
+<h3>Avtalefrihet og lemping</h3>
+<p>Ektefellene kan avtale en annen fordeling enn likedeling, jf. ekteskapsloven § 65. Likedelingen er altså en normalordning som kan fravikes ved avtale. En urimelig oppgjørsavtale kan imidlertid lempes etter § 65 andre ledd, slik at en part ikke blir bundet av et oppgjør som rammer vedkommende på en klart urimelig måte. Videre kan likedelingsresultatet i særlige tilfeller virke urimelig, og loven har mekanismer både i skjevdelingsreglene (§ 59) og i § 73 om vederlagskrav som kan korrigere resultatet der felles midler er brukt på verdier som holdes utenfor delingen.</p>
+<h3>Praktisk betydning</h3>
+<p>For advokaten er likedeling det matematiske endepunktet i oppgjøret. Den praktiske jobben ligger som regel i å fastsette riktige verdier per skjæringstidspunkt, identifisere og dokumentere skjevdelingskrav og gjøre korrekte gjeldsfradrag. Når disse postene er på plass, gir likedelingen etter § 58 seg selv. Et tydelig oppgjørsskjema som viser veien fra bruttoformue via gjeldsfradrag og skjevdeling til likedelt nettoformue, er et nyttig verktøy både for å forhandle og for å dokumentere oppgjøret.</p>
+<p>En vanlig feilkilde er å blande sammen likedelingsgrunnlaget og bruttoformuen: det er nettoformuen etter gjeldsfradrag og skjevdeling som skal likedeles, ikke summen av alle eiendeler. En annen feilkilde er å overse at verdsettelsestidspunktet kan avvike fra skjæringstidspunktet, noe som kan ha betydning der verdiene har endret seg vesentlig mellom de to tidspunktene. Ved å holde disse forholdene atskilt og dokumentere hver post, sikrer advokaten et korrekt og etterprøvbart likedelingsoppgjør.</p>
+<h3>Et regneeksempel på likedeling</h3>
+<p>Likedelingen kan illustreres med et enkelt eksempel. Anta at den ene ektefellen har felleseiemidler med en bruttoverdi på 4 000 000 kroner og gjeld på 1 500 000 kroner, mens den andre har felleseiemidler på 1 000 000 kroner og gjeld på 200 000 kroner. Ingen av dem har skjevdelingsmidler eller særeie. Etter gjeldsfradrag har den første en nettoformue på 2 500 000 kroner og den andre på 800 000 kroner. Til sammen utgjør dette 3 300 000 kroner som skal likedeles, slik at hver ektefelle har krav på 1 650 000 kroner. Den ektefellen som sitter med mest, må da betale den andre et mellomlegg slik at begge ender på samme nettoverdi. Eksempelet viser at det er nettoformuene som legges sammen og deles, ikke bruttoverdiene, og at likedelingen utjevner forskjellene mellom ektefellene.</p>
+<h3>Likedelingens historiske og rettspolitiske begrunnelse</h3>
+<p>Likedelingsprinsippet bygger på en grunnleggende tanke om likeverd mellom ektefeller. Tradisjonelt har den ene ektefellen ofte hatt hovedansvaret for inntektsgivende arbeid, mens den andre har lagt ned innsats i hjem og familie. Likedelingen anerkjenner at begge former for innsats har bidratt til den felles økonomien, og at det derfor ville være urimelig om bare den som formelt har tjent pengene, skulle beholde verdiene. Prinsippet er et sentralt uttrykk for solidaritet og likestilling i ekteskapet, og skjevdelingsreglene i § 59 er nettopp utformet som et avgrenset unntak som tar hensyn til at noen verdier har et opphav som ligger utenfor det felles livsprosjektet.</p>
+<h3>Forholdet til personlige rettigheter etter § 61</h3>
+<p>Det bør også nevnes at likedelingen er begrenset av reglene i § 61 om eiendeler og rettigheter som holdes utenfor av personlige grunner. Pensjonsrettigheter, visse personlige eiendeler og erstatning for personskade holdes som hovedregel utenfor likedelingen, jf. artikkel 116. Dette innebærer at ikke all nettoformue uten videre inngår i likedelingsgrunnlaget; man må først luke ut særeie, skjevdelingsmidler og § 61-eiendeler. Først det som da gjenstår av felleseiemidler, deles likt etter § 58. For advokaten er det viktig å gå systematisk gjennom alle disse kategoriene før likedelingen beregnes, slik at man ikke feilaktig deler verdier som loven holder utenfor.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er skjæringstidspunktet ved separasjon? — Rettsregel</title>
+<meta name="description" content="Skjæringstidspunktet ved separasjon er det tidspunktet som avgjør hvilke eiendeler og hvilken gjeld som inngår i delingen av ektefellenes formue.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-skjaeringstidspunktet-ved-separasjon/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er skjæringstidspunktet ved separasjon?">
+<meta property="og:description" content="Skjæringstidspunktet ved separasjon er det tidspunktet som avgjør hvilke eiendeler og hvilken gjeld som inngår i delingen av ektefellenes formue.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-skjaeringstidspunktet-ved-separasjon/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er skjæringstidspunktet ved separasjon?">
+<meta name="twitter:description" content="Skjæringstidspunktet ved separasjon er det tidspunktet som avgjør hvilke eiendeler og hvilken gjeld som inngår i delingen av ektefellenes formue.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva er skjæringstidspunktet ved separasjon?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Skjæringstidspunktet ved separasjon er det tidspunktet som avgjør hvilke eiendeler og hvilken gjeld som inngår i delingen av ektefellenes formue. Etter el. § 60 første ledd bokstav a er skjæringstidspunktet ved separasjon det tidspunktet da begjæring om separasjon kom inn til statsforvalteren. Eiendeler ervervet etter dette tidspunktet, holdes utenfor delingen.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 60, 69, 59, 22, 21</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/60/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 60</div>
+  <div class="related-card-title">Datoen som fryser økonomien (Skjæringstidspunktet)</div>
+</a><a href="../../lover/ekteskapsloven/69/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 69</div>
+  <div class="related-card-title">Hvem bestemmer prisen på huset når dere skilles? (Takst)</div>
+</a><a href="../../lover/ekteskapsloven/59/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 59</div>
+  <div class="related-card-title">Behold det du tok med inn i ekteskapet (Skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/22/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 22</div>
+  <div class="related-card-title">Skilsmisse etter å ha bodd fra hverandre i to år (Samlivsbrudd)</div>
+</a><a href="../../lover/ekteskapsloven/21/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 21</div>
+  <div class="related-card-title">Skilsmisse etter ett års separasjon</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Skjæringstidspunktet ved separasjon er det tidspunktet som avgjør hvilke eiendeler og hvilken gjeld som inngår i delingen av ektefellenes formue. Etter el. § 60 første ledd bokstav a er skjæringstidspunktet ved separasjon det tidspunktet da begjæring om separasjon kom inn til statsforvalteren. Eiendeler ervervet etter dette tidspunktet, holdes utenfor delingen.</p>
+<h3>Lovgrunnlaget i § 60</h3>
+<p>Ekteskapsloven § 60 fastsetter skjæringstidspunktet for delingen av formuen. Etter første ledd bokstav a regnes skjæringstidspunktet ved separasjon fra da begjæring om separasjon eller skilsmisse kom inn til statsforvalteren. Det er altså ikke separasjonsbevillingens dato, ikke tidspunktet for faktisk utflytting og ikke skilsmissetidspunktet som er avgjørende for delingen, men det tidspunktet søknaden ble registrert mottatt hos statsforvalteren. Dette er en viktig presisering som ofte forveksles med bevillingsdatoen. Bevillingsdatoen er avgjørende for når man regnes som separert og for når separasjonstiden begynner å løpe, men skjæringstidspunktet for delingen knytter seg til søknadstidspunktet.</p>
+<h3>Hva skjæringstidspunktet bestemmer</h3>
+<p>Skjæringstidspunktet har to hovedfunksjoner:</p>
+<ul>
+<li><strong>Hvilke eiendeler og hvilken gjeld som inngår.</strong> Det er ektefellenes formuesstilling på skjæringstidspunktet som danner grunnlaget for delingen. Eiendeler ervervet etter skjæringstidspunktet, holdes utenfor og tilfaller den enkelte ektefelle. Tilsvarende holdes gjeld stiftet etter skjæringstidspunktet, utenfor delingen.</li>
+<li><strong>Verdsettelsen.</strong> Etter el. § 69 verdsettes eiendeler som hovedregel etter verdien på skjæringstidspunktet ved deling ved separasjon og skilsmisse, med visse unntak for eiendeler en ektefelle skal overta. Avkastning og verdiendringer etter skjæringstidspunktet tilfaller den enkelte ektefelle.</li>
+</ul>
+<p>Skjæringstidspunktet «fryser» dermed boets sammensetning på et bestemt tidspunkt, slik at senere disposisjoner og erverv ikke påvirker delingen.</p>
+<h3>Hvorfor søknadstidspunktet, ikke bevillingen?</h3>
+<p>At loven knytter skjæringstidspunktet til da begjæringen kom inn til statsforvalteren, og ikke til når bevillingen gis, har en praktisk begrunnelse. Saksbehandlingstiden hos statsforvalteren kan variere. Ville man knyttet skjæringstidspunktet til bevillingsdatoen, kunne den ene ektefellen ha interesse av å trenere prosessen for å få med seg den andres senere erverv i delingen, eller motsatt. Ved å knytte skjæringstidspunktet til søknadstidspunktet sikrer loven et nøytralt og forutsigbart skjæringstidspunkt som ektefellene selv kan styre gjennom når søknaden sendes.</p>
+<h3>Strategisk betydning for praktikeren</h3>
+<p>Skjæringstidspunktet er ofte det mest praktisk avgjørende ved separasjon, og har stor strategisk betydning:</p>
+<ul>
+<li><strong>Tidlig søknad sikrer tidlig skjæring.</strong> En ektefelle som forventer å erverve betydelige verdier – for eksempel arv, bonus eller gevinst – kan ha interesse av å sende separasjonssøknaden tidlig, slik at de framtidige verdiene holdes utenfor delingen.</li>
+<li><strong>Den ene kan søke alene.</strong> Ettersom retten til separasjon er individuell, jf. artiklene 87 og 88, kan en ektefelle sikre et tidlig skjæringstidspunkt uten å være avhengig av den andres medvirkning.</li>
+<li><strong>Gjeld stiftet etter skjæring</strong> holdes utenfor, noe som kan ha betydning der den ene ektefellen pådrar seg gjeld i bruddfasen.</li>
+</ul>
+<p>Dette gjør tidspunktet for innsending av separasjonssøknaden til et viktig taktisk valg i saker med betydelige eller forventede verdier.</p>
+<h3>Forholdet til skjevdeling og særeie</h3>
+<p>Skjæringstidspunktet samvirker med reglene om skjevdeling etter el. § 59 og om særeie. Skjevdeling innebærer at verdien av formue som klart kan føres tilbake til midler en ektefelle hadde da ekteskapet ble inngått, eller senere har ervervet ved arv eller gave fra andre enn ektefellen, kan holdes utenfor delingen. Skjæringstidspunktet avgrenser hvilke verdier som overhodet er gjenstand for deling, mens skjevdelingsreglene avgjør hvordan de delbare verdiene skal fordeles. For en fullstendig vurdering må praktikeren se disse i sammenheng, ettersom samspillet mellom skjæringstidspunktet, skjevdeling og særeie avgjør det endelige delingsresultatet.</p>
+<h3>Skjæringstidspunkt uten forutgående separasjon</h3>
+<p>Velges skilsmisse uten forutgående separasjon, for eksempel etter to års samlivsbrudd etter § 22, knytter skjæringstidspunktet seg etter el. § 60 til når begjæring om skilsmisse kom inn til statsforvalteren, eller i visse tilfeller til når samlivet ble brutt. Valget av vei til skilsmisse kan dermed påvirke skjæringstidspunktet og dermed delingen. Dette bør vurderes nøye der det er betydelige verdier i spill, jf. artikkel 79.</p>
+<h3>Eiendeler som erverves etter skjæringstidspunktet</h3>
+<p>En sentral konsekvens av skjæringstidspunktet er at eiendeler ervervet etter dette tidspunktet, holdes utenfor delingen. Lønn, bonus, arv, gevinst eller andre erverv som tilkommer en ektefelle etter at separasjonsbegjæringen kom inn til statsforvalteren, inngår dermed ikke i det som skal deles. Tilsvarende holdes avkastning og verdistigning på den enkeltes eiendeler etter skjæringstidspunktet utenfor. Dette gjør skjæringstidspunktet til et klart tidsmessig skille mellom den felles økonomiske perioden og den selvstendige perioden etter bruddet. For klienter som forventer betydelige erverv, er det derfor av stor betydning når separasjonsbegjæringen registreres mottatt.</p>
+<h3>Verdsettelsestidspunktet etter § 69</h3>
+<p>Skjæringstidspunktet henger nært sammen med verdsettelsen. Etter el. § 69 verdsettes eiendelene som hovedregel etter verdien på det tidspunktet delingen finner sted, men for eiendeler en ektefelle skal beholde, gjelder særlige regler. Samspillet mellom skjæringstidspunktet, som avgjør hva som inngår, og verdsettelsestidspunktet, som avgjør verdien, er sentralt i skifteoppgjøret. Det kan oppstå spørsmål om verdiendringer mellom skjæringstidspunktet og det faktiske skiftet, særlig der skiftet trekker ut i tid. Praktikeren må holde disse tidspunktene fra hverandre og anvende riktig regel for den enkelte eiendel, ettersom feil her kan gi betydelig utslag i delingsresultatet.</p>
+<h3>Bevissikring rundt skjæringstidspunktet</h3>
+<p>Ettersom skjæringstidspunktet er avgjørende for hva som inngår i delingen, er det viktig å sikre bevis om formuesstillingen på dette tidspunktet. Kontoutskrifter, takster, opplysninger om gjeld og eierforhold per skjæringstidspunktet bør sikres så tidlig som mulig. Der skiftet utsettes, kan det bli krevende å fastslå formuesstillingen i ettertid. En grundig bevissikring rundt skjæringstidspunktet reduserer risikoen for senere tvist om hva som forelå da begjæringen kom inn til statsforvalteren. Dette er særlig viktig i saker med kompleks økonomi, næringsvirksomhet eller betydelige verdier.</p>
+<h3>De tre tidspunktene som må holdes fra hverandre</h3>
+<p>I separasjonssaker opererer ekteskapsloven med flere tidspunkter som lett forveksles. For det første søknadstidspunktet – da begjæringen kom inn til statsforvalteren – som er skjæringstidspunkt for hva som inngår i delingen etter § 60. For det andre bevillingsdatoen, da statsforvalteren gir separasjonsbevilling, som er utgangspunkt for separasjonstiden etter § 21 og for når man regnes som separert, jf. artikkel 90. For det tredje delingstidspunktet, som er avgjørende for verdsettelsen etter § 69. Disse tre tidspunktene faller normalt ikke sammen. Praktikeren må holde dem fra hverandre, ettersom hvert av dem har ulike rettsvirkninger. Forveksling av skjæringstidspunktet med bevillingsdatoen er en av de vanligste feilene i praksis og kan gi uriktige delingsresultater.</p>
+<h3>Oppsummering</h3>
+<p>Skjæringstidspunktet ved separasjon er tidspunktet da begjæring om separasjon kom inn til statsforvalteren, jf. el. § 60 første ledd bokstav a. Det avgjør hvilke eiendeler og hvilken gjeld som inngår i delingen, og er utgangspunkt for verdsettelsen etter § 69. Skjæringstidspunktet er ofte det mest avgjørende ved separasjon, og en ektefelle kan sikre et tidlig skjæringstidspunkt ved å søke separasjon tidlig og alene. Skjæringstidspunktet må holdes adskilt fra bevillingsdatoen, som er avgjørende for når man regnes som separert.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

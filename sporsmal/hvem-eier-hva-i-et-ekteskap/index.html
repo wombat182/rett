@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem eier hva i et ekteskap? — Rettsregel</title>
+<meta name="description" content="Hovedregelen er enkel: hver ektefelle eier det han eller hun bringer inn i ekteskapet og det vedkommende senere erverver.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-eier-hva-i-et-ekteskap/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem eier hva i et ekteskap?">
+<meta property="og:description" content="Hovedregelen er enkel: hver ektefelle eier det han eller hun bringer inn i ekteskapet og det vedkommende senere erverver.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-eier-hva-i-et-ekteskap/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem eier hva i et ekteskap?">
+<meta name="twitter:description" content="Hovedregelen er enkel: hver ektefelle eier det han eller hun bringer inn i ekteskapet og det vedkommende senere erverver.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvem eier hva i et ekteskap?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hovedregelen er enkel: hver ektefelle eier det han eller hun bringer inn i ekteskapet og det vedkommende senere erverver. Dette følger av ekteskapsloven § 31 første ledd. Sameie oppstår der begge har bidratt til ervervet – også indirekte gjennom husarbeid og omsorg for barn, jf. § 31 tredje ledd. Eierforholdene endres ikke av ekteskapsinngåelsen.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 31, 32, 66, 59, 67</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/31/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 31</div>
+  <div class="related-card-title">Du bestemmer over dine egne penger og eiendeler</div>
+</a><a href="../../lover/ekteskapsloven/32/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 32</div>
+  <div class="related-card-title">Du kan ikke selge eller pantsette felles bolig uten lov</div>
+</a><a href="../../lover/ekteskapsloven/66/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 66</div>
+  <div class="related-card-title">Har du rett til å beholde akkurat dine ting?</div>
+</a><a href="../../lover/ekteskapsloven/59/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 59</div>
+  <div class="related-card-title">Behold det du tok med inn i ekteskapet (Skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/67/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 67</div>
+  <div class="related-card-title">Rett til å kreve den felles boligen og innboet</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Hovedregelen er enkel: hver ektefelle eier det han eller hun bringer inn i ekteskapet og det vedkommende senere erverver. Dette følger av ekteskapsloven § 31 første ledd. Sameie oppstår der begge har bidratt til ervervet – også indirekte gjennom husarbeid og omsorg for barn, jf. § 31 tredje ledd. Eierforholdene endres ikke av ekteskapsinngåelsen.</p>
+<h3>Eneeie som utgangspunkt</h3>
+<p>Etter ekteskapsloven § 31 første ledd beholder hver ektefelle eiendomsretten til sine eiendeler. Det innebærer at:</p>
+<ul>
+<li><strong>Det man eide før vigselen</strong>, forblir ens eget.</li>
+<li><strong>Lønn og annen inntekt</strong> tilhører den som har opptjent den.</li>
+<li><strong>Arv og gaver</strong> tilhører mottakeren.</li>
+<li><strong>Det man kjøper for egne midler</strong>, blir ens eget.</li>
+</ul>
+<p>Eierskapet er uavhengig av formuesordningen. Også når formuen er felleseie, er hovedregelen eneeie under ekteskapet; felleseie sier bare noe om delingen ved oppløsning. Et ektepar med felleseie har altså ikke felles eiendomsrett til hverandres lønnskontoer eller eiendeler – de eier hver sitt, men nettoverdiene skal likedeles ved et eventuelt oppgjør.</p>
+<h3>Sameie ved felles erverv</h3>
+<p>Ektefeller blir sameiere når begge bidrar til ervervet av en eiendel. Dette er praktisk svært vanlig for den felles boligen. Bidragene kan være direkte (begge betaler egenkapital, begge er låntakere) eller indirekte. Etter ekteskapsloven § 31 tredje ledd kan en ektefelle ha ervervet eierandel i eiendeler som har tjent til ektefellenes felles personlige bruk, dersom vedkommende i vesentlig grad har bidratt til ervervet gjennom arbeid i hjemmet, omsorg for barn eller på annen måte.</p>
+<p>Bestemmelsen innebærer at en hjemmeværende ektefelle kan bli medeier i bolig og innbo selv uten å ha bidratt med penger. Sameieandelen fastsettes etter en skjønnsmessig vurdering av bidragenes størrelse og art. I rettspraksis er det utviklet retningslinjer for hvordan slike indirekte bidrag verdsettes, og spørsmålet er ofte sentralt i tvister ved samlivsbrudd.</p>
+<h3>Bevisbyrde og dokumentasjon</h3>
+<p>Det finnes ingen lovfestet alminnelig sameiepresumsjon mellom ektefeller. Den som hevder eierskap eller medeierskap, må sannsynliggjøre ervervet. I praksis vurderes blant annet hvem som har betalt, hvordan eiendelen er registrert, hvem som har stått for lån, og hvilke bidrag hver part har ydet over tid. For større anskaffelser bør klienter rådes til å dokumentere bidragene, særlig der bare den ene står som formell eier. God dokumentasjon underveis i ekteskapet forebygger kostbare bevisproblemer ved et senere oppgjør.</p>
+<h3>Felles bolig og innbo – rådighetsvern</h3>
+<p>Uavhengig av eierforholdet nyter den felles boligen og vanlig innbo et særlig vern. Etter ekteskapsloven §§ 32 og 33 kan en ektefelle ikke uten den andres skriftlige samtykke selge, pantsette eller leie ut den felles boligen, og kan ikke overdra eller pantsette vanlig innbo eller den andres nødvendige arbeidsredskaper. Dette gjelder selv om disponerende ektefelle er eneeier. Vernet er knyttet til eiendelens funksjon som felles bolig og innbo, ikke til eierskapet, og sikrer at den ene ektefellen ikke ensidig kan disponere over familiens hjem.</p>
+<h3>Betydningen ved oppløsning – naturalutlegg</h3>
+<p>Eierspørsmålet etter § 31 er avgjørende for hvem som har rett til å overta en bestemt eiendel ved skilsmisse, jf. reglene om naturalutlegg i ekteskapsloven §§ 66 flg. Hver ektefelle har som hovedregel rett til å beholde eiendeler han eller hun fullt ut eller for det vesentlige eier. Spørsmålet om <em>verdideling</em> avgjøres deretter etter felleseie-/særeiereglene. Eierskap og deling er altså to atskilte trinn i oppgjøret: først avklares hvem som har rett til å overta hva (naturalutlegg etter eierskap), deretter hvordan verdiene fordeles (likedeling eller særeie). Ekteskapsloven § 67 gir dessuten en særskilt rett for den ene ektefellen til å overta den felles boligen og innbo når sterke grunner taler for det, selv om den andre er eier, mot å betale vederlag.</p>
+<h3>Arv og gaver – skjevdelingsrett</h3>
+<p>Selv om arv og gaver tilhører mottakeren som eneeie, har den juridiske rådgiveren grunn til å fremheve at slike verdier også nyter et delingsvern: etter ekteskapsloven § 59 kan verdier ervervet ved arv eller gave fra andre enn ektefellen kreves holdt utenfor likedelingen (skjevdeling), forutsatt at de er i behold og klart kan føres tilbake. Eierskapet og skjevdelingsretten gir til sammen et betydelig vern for medbrakte og arvede verdier (se egen artikkel om arv som særeie).</p>
+<h3>Eierskap til virksomhet og næringsmidler</h3>
+<p>For ektefeller som driver næringsvirksomhet, kan eierspørsmålet være særlig praktisk. En virksomhet som den ene ektefellen eier og driver, er som utgangspunkt vedkommendes eneeie, men den andre kan ha ervervet en eierandel gjennom bidrag til driften. Verdiene kan dessuten være gjenstand for skjevdeling i den grad de stammer fra midler vedkommende hadde med inn i ekteskapet. For å unngå at en virksomhet må deles eller realiseres ved en skilsmisse, velger mange å skjerme den ved ektepakt om særeie.</p>
+<h3>Eierskap til bankkonti, sparing og verdipapirer</h3>
+<p>For finansielle aktiva følger eierskapet de samme prinsippene. Penger på en konto tilhører den som er kontohaver og som har innbetalt midlene; lønn som settes inn på den enes konto, blir den enes eneeie. Settes lønn fra begge inn på en felles konto, kan det oppstå sameie i innestående etter en konkret vurdering av innskuddene. Verdipapirer, fond og aksjer eies av den som har ervervet dem for egne midler. Et praktisk problem oppstår når midler sammenblandes over tid, fordi det da kan bli vanskelig å fastslå både eierforhold og senere skjevdelingsrett. Rådgiveren bør anbefale klienter som ønsker klarhet, å holde adskilte midler på adskilte konti og dokumentere større overføringer, særlig der midlene stammer fra arv eller fra tiden før ekteskapet.</p>
+<h3>Registrerte eierforhold og realiteten</h3>
+<p>For eiendeler med offentlig registrering – fast eiendom i grunnboken, kjøretøy i motorvognregisteret, aksjer i aksjeeierregisteret – gir registreringen en sterk indikasjon på eierforholdet, men den er ikke avgjørende internt mellom ektefellene. Det reelle ervervet kan vise at en eiendel er sameie selv om bare den ene står registrert, eller at en eiendel tilhører den ene fullt ut selv om begge står oppført. I tvister legges det vekt på hvem som faktisk har finansiert ervervet og bidratt. Overfor tredjepersoner og kreditorer har imidlertid registreringen ofte avgjørende betydning, og dette spennet mellom intern realitet og ekstern legitimasjon er viktig å være bevisst på.</p>
+<h3>Oppsummering for praktikeren</h3>
+<p>Hver ektefelle eier sitt etter § 31 første ledd; sameie oppstår ved felles erverv, herunder indirekte bidrag etter § 31 tredje ledd. Det finnes ingen alminnelig sameiepresumsjon, så ervervet må sannsynliggjøres. Felles bolig og innbo har et eget rådighetsvern etter §§ 32–33 uavhengig av eierskap, og reglene om naturalutlegg i §§ 66–67 styrer hvem som kan overta hva ved oppløsning. Medbrakt og arvet formue har skjevdelingsvern etter § 59.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

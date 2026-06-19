@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem kan kreve et ekteskap ugyldig? — Rettsregel</title>
+<meta name="description" content="Hvem som kan kreve et ekteskap ugyldig, avhenger av ugyldighetsgrunnen.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-kan-kreve-et-ekteskap-ugyldig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem kan kreve et ekteskap ugyldig?">
+<meta property="og:description" content="Hvem som kan kreve et ekteskap ugyldig, avhenger av ugyldighetsgrunnen.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-kan-kreve-et-ekteskap-ugyldig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem kan kreve et ekteskap ugyldig?">
+<meta name="twitter:description" content="Hvem som kan kreve et ekteskap ugyldig, avhenger av ugyldighetsgrunnen.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvem kan kreve et ekteskap ugyldig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvem som kan kreve et ekteskap ugyldig, avhenger av ugyldighetsgrunnen. Ved tvang er det den tvungne ektefellen som kan reise søksmål etter el. § 16 tredje ledd, og statsforvalteren kan reise sak etter el. § 16 a. Ved bigami og forbudt slektskap har statsforvalteren plikt til å reise sak om oppløsning etter el. § 24. Søksmålskompetansen er dermed fordelt mellom ektefellene selv og det offentlige.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 16, 24, 18, 3, 4</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/16/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 16</div>
+  <div class="related-card-title">Når er et ekteskap ugyldig?</div>
+</a><a href="../../lover/ekteskapsloven/24/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 24</div>
+  <div class="related-card-title">Tvangsoppløsning av ulovlige ekteskap</div>
+</a><a href="../../lover/ekteskapsloven/18/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 18</div>
+  <div class="related-card-title">Når vigsleren er inhabil (Ugildhet)</div>
+</a><a href="../../lover/ekteskapsloven/3/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 3</div>
+  <div class="related-card-title">Forbud mot å gifte seg med nære slektninger</div>
+</a><a href="../../lover/ekteskapsloven/4/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 4</div>
+  <div class="related-card-title">Du kan ikke være gift med to samtidig (Forbud mot bigami)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Hvem som kan kreve et ekteskap ugyldig, avhenger av ugyldighetsgrunnen. Ved tvang er det den tvungne ektefellen som kan reise søksmål etter el. § 16 tredje ledd, og statsforvalteren kan reise sak etter el. § 16 a. Ved bigami og forbudt slektskap har statsforvalteren plikt til å reise sak om oppløsning etter el. § 24. Søksmålskompetansen er dermed fordelt mellom ektefellene selv og det offentlige.</p>
+<h3>Ektefellenes egen søksmålsadgang ved tvang</h3>
+<p>Ved ugyldighet på grunn av tvang er det først og fremst den tvungne ektefellen selv som har søksmålskompetanse. Etter el. § 16 tredje ledd kan hver av ektefellene reise søksmål for å få ekteskapet kjent ugyldig dersom vedkommende er tvunget til å inngå ekteskapet ved rettsstridig atferd. Søksmålsadgangen tilligger den part som har vært utsatt for tvangen.</p>
+<p>Etter el. § 18 reises ekteskapssaker for domstolene av eller mot en ektefelle personlig, også når vedkommende er mindreårig eller er fratatt rettslig handleevne på det aktuelle området. Denne bestemmelsen sikrer at den tvungne selv har partsstilling i saken, uavhengig av eventuell mindreårighet eller begrenset rettslig handleevne. Det er et viktig prosessuelt vern, ettersom tvangsekteskapssaker ofte involverer unge og sårbare parter.</p>
+<h3>Statsforvalterens søksmålsadgang ved tvang – el. § 16 a</h3>
+<p>Ved siden av ektefellens egen søksmålsadgang gir el. § 16 a statsforvalteren adgang til å reise sak for å få dom for at et ekteskap består eller ikke består. Denne bestemmelsen er særlig innrettet mot tvangsekteskap. Formålet er å avlaste den tvungne, som ofte vil oppleve det som svært byrdefullt å reise sak selv – typisk fordi tvangen er utøvd av nær familie.</p>
+<p>Statsforvalterens adgang etter el. § 16 a innebærer at det offentlige kan ta initiativet til å få fastslått at et tvangsekteskap ikke består. Dette gir en viktig sikkerhetsventil i situasjoner med sterk sosial kontroll, der den tvungne ikke selv er i stand til eller tør å reise sak. Statsforvalterens rolle er behandlet også i artikkel 26.</p>
+<h3>Statsforvalterens plikt ved bigami og slektskap – el. § 24</h3>
+<p>Ved bigami og forbudt slektskap har det offentlige ikke bare en adgang, men en plikt til å gripe inn. Etter el. § 24 skal statsforvalteren reise sak om oppløsning av ekteskapet dersom det er inngått mellom nære slektninger i strid med el. § 3 eller i strid med bigamiforbudet i el. § 4, og ingen av ektefellene selv reiser slik sak. Statsforvalteren kan likevel la være å reise sak eller utsette den dersom sterke grunner taler for det.</p>
+<p>Denne plikten reflekterer at bigami og forbudt slektskap er forhold som rammer grunnleggende samfunnshensyn og ikke bare partenes egne interesser. Derfor er det ikke overlatt til ektefellene alene om ugyldigheten skal forfølges; det offentlige har et selvstendig ansvar. Samtidig gir adgangen til å la være eller utsette en viss fleksibilitet, for eksempel av hensyn til en godtroende part eller til barn.</p>
+<h3>Forholdet til ektefellenes egen søksmålsadgang ved bigami og slektskap</h3>
+<p>Statsforvalterens plikt etter el. § 24 utelukker ikke at ektefellene selv reiser sak. Etter el. § 24 inntrer statsforvalterens plikt nettopp når «ingen av ektefellene» reiser slik sak. Ektefellene har dermed en primær adgang til selv å forfølge ugyldigheten, mens statsforvalteren har en subsidiær, men pliktmessig rolle dersom ektefellene forholder seg passive. Dette sikrer at ugyldige ekteskap ikke blir bestående utelukkende fordi partene ikke selv tar initiativ.</p>
+<h3>Anerkjennelse av ekteskap med mindreårig – el. § 16 b</h3>
+<p>Ved ekteskap inngått med en mindreårig er ekteskapet i utgangspunktet ugyldig etter el. § 16 annet ledd. Her gir el. § 16 b statsforvalteren adgang til å anerkjenne ekteskapet på nærmere vilkår, dersom begge parter er over 18 år, begge var over 16 år ved vigselen og den som var mindreårig ønsker ekteskapet anerkjent, eller dersom sterke grunner taler for anerkjennelse. Statsforvalteren har dermed en dobbeltrolle: på den ene siden å forfølge ugyldighet der det er påkrevd, og på den andre siden å kunne anerkjenne ekteskapet der vilkårene for det er oppfylt.</p>
+<h3>Prosessuelle særtrekk</h3>
+<p>Saker om et ekteskaps bestående eller om ugyldighet behandles av domstolene, jf. el. kapittel 5 om behandlingen av saker om oppløsning. Etter el. § 18 har ektefellen partsstilling personlig. I saker som reises av statsforvalteren etter el. § 16 a eller § 24, opptrer det offentlige som part, mens ektefellene er motparter eller berørte. De prosessuelle reglene sikrer at både den enkeltes interesser og samfunnets interesser ivaretas.</p>
+<h3>Den prinsipielle begrunnelsen for det offentliges rolle</h3>
+<p>Fordelingen av søksmålskompetanse reflekterer en avveining mellom privatautonomi og offentlige interesser. Ved tvang er det først og fremst den krenkede partens interesse som skal vernes, og derfor er det den tvungne selv som har den primære søksmålsadgangen etter el. § 16 tredje ledd. Samtidig erkjenner loven at den tvungne kan være ute av stand til å forfølge saken, og gir derfor statsforvalteren en supplerende adgang etter el. § 16 a. Ved bigami og slektskap er det derimot tyngre samfunnshensyn som gjør seg gjeldende – forhold som angår grunnleggende prinsipper i ekteskapsretten – og derfor er statsforvalterens rolle her ikke bare en adgang, men en plikt etter el. § 24. Denne gradvise styrkingen av det offentliges rolle, fra adgang til plikt, gjenspeiler ugyldighetsgrunnenes ulike karakter.</p>
+<h3>Tidsmessige begrensninger på søksmålsadgangen</h3>
+<p>Søksmålsadgangen er ikke ubegrenset i tid. Ved tvang gjelder fristene i el. § 16 fjerde ledd: søksmål må reises innen seks måneder etter at ektefellen er blitt fri for tvangen, og uansett ikke senere enn fem år etter ekteskapsinngåelsen. Disse fristene gjelder også for den tvungnes egen søksmålsadgang. For statsforvalterens plikt etter el. § 24 ved bigami og slektskap gjelder ikke tilsvarende korte frister, ettersom disse ugyldighetsgrunnene knytter seg til vedvarende forhold og til samfunnshensyn som ikke svekkes med tiden på samme måte. Den ulike fristreguleringen er enda et uttrykk for at de forskjellige ugyldighetsgrunnene behandles ulikt avhengig av hvilke hensyn de verner.</p>
+<h3>Oppsummering</h3>
+<p>Hvem som kan kreve et ekteskap ugyldig, avhenger av grunnlaget: ved tvang kan den tvungne ektefellen reise søksmål etter el. § 16 tredje ledd, og statsforvalteren kan reise sak etter el. § 16 a; ved bigami og slektskap har statsforvalteren plikt til å reise sak om oppløsning etter el. § 24 dersom ektefellene ikke selv gjør det. Ektefellen har partsstilling personlig etter el. § 18. Ekteskap med mindreårig kan anerkjennes av statsforvalteren etter el. § 16 b. For de økonomiske virkningene av ugyldighet, se artikkel 28.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

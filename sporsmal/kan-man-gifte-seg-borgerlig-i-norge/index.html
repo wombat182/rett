@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan man gifte seg borgerlig i Norge? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-man-gifte-seg-borgerlig-i-norge/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan man gifte seg borgerlig i Norge?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-man-gifte-seg-borgerlig-i-norge/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan man gifte seg borgerlig i Norge?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan man gifte seg borgerlig i Norge?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Man kan gifte seg borgerlig i Norge, og siden 1. januar 2018 er det kommunene som har ansvaret for borgerlige vielser. Borgerlig vigsel er en ikke-religiøs seremoni som forrettes av ordfører, varaordfører eller andre som kommunestyret har gitt vigselsmyndighet, jf. ekteskapsloven § 12.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven § 12 og § 11</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/12/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 12</div>
+  <div class="related-card-title">Hvem har lov til å vie dere?</div>
+</a><a href="../../lover/ekteskapsloven/11/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 11</div>
+  <div class="related-card-title">Hvordan selve vielsen foregår</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Man kan gifte seg borgerlig i Norge, og siden 1. januar 2018 er det kommunene som har ansvaret for borgerlige vielser. Borgerlig vigsel er en ikke-religiøs seremoni som forrettes av ordfører, varaordfører eller andre som kommunestyret har gitt vigselsmyndighet, jf. ekteskapsloven § 12.</p>
+<h3>Den kommunale vigselsordningen</h3>
+<p>Frem til 2018 lå ansvaret for borgerlige vielser hos domstolene, men ved en lovendring ble oppgaven overført til kommunene med virkning fra 1. januar 2018. Bakgrunnen var blant annet et ønske om å gjøre borgerlig vigsel mer tilgjengelig og lokalt forankret. I dag tilbyr alle landets kommuner borgerlig vigsel, og brudeparet kontakter kommunen for å avtale tidspunkt og sted. Hvilke vigslere kommunen har, varierer, men ordfører og varaordfører har vigselsmyndighet direkte etter el. § 12, og kommunestyret kan i tillegg gi myndighet til folkevalgte og kommunalt ansatte.</p>
+<h3>Hvem kan vies borgerlig?</h3>
+<p>Borgerlig vigsel står åpen for alle som oppfyller ekteskapsvilkårene, jf. el. kapittel 1 og artikkel 1. Det stilles ingen krav om tilhørighet til noe trossamfunn, og ordningen er nettopp et tilbud til dem som ikke ønsker en religiøs seremoni. Mange kommuner tilbyr også vigsel for par som ikke er bosatt i kommunen eller i Norge, så lenge ekteskapsvilkårene er oppfylt.</p>
+<h3>Den borgerlige vigselsformen</h3>
+<p>Det finnes en fastsatt borgerlig vigselsformular som benyttes ved den seremonielle delen. Selve formkravene følger likevel av el. § 11: begge parter må være til stede samtidig, to vitner skal overvære seremonien, partene skal erklære at de ønsker å inngå ekteskap med hverandre, og vigsleren skal deretter erklære dem for ektefolk. Den borgerlige seremonien er gjerne kort og nøktern, men kan tilpasses med for eksempel musikk eller tekstlesning innenfor rammene kommunen tillater.</p>
+<h3>Hva koster borgerlig vigsel?</h3>
+<p>Borgerlig vigsel innenfor kommunens ordinære tilbud er som hovedregel gratis. Mange kommuner tilbyr vederlagsfri vigsel på rådhuset eller kommunehuset innenfor normal arbeidstid. For vigsler utenfor ordinær arbeidstid – for eksempel på kveldstid, i helger eller på helligdager – eller på et annet sted enn kommunens faste vigsellokale, tar mange kommuner et gebyr. Gebyrenes størrelse fastsettes lokalt og varierer, men ligger ofte i størrelsesorden rundt 1 000 kroner for vigsel utenom ordinær tid eller utenfor det faste lokalet. Enkelte kommuner tar også et gebyr for par som er bosatt i andre kommuner. Kostnadene behandles nærmere i artikkel 9.</p>
+<h3>Forholdet til religiøs vigsel</h3>
+<p>Borgerlig og religiøs vigsel gir nøyaktig samme rettsvirkninger – ekteskapet er like gyldig uansett seremoniform, forutsatt at vigsleren har myndighet etter el. § 12 og at formkravene i el. § 11 er oppfylt. Valget mellom borgerlig og religiøs vigsel er dermed et personlig og verdimessig valg uten rettslige konsekvenser for ekteskapets status. Et par kan ikke vies både borgerlig og religiøst som to selvstendige ekteskapsinngåelser; ekteskapet inngås én gang, ved den vigselen som har rettsvirkning.</p>
+<h3>Prøving må skje først</h3>
+<p>Også ved borgerlig vigsel må ekteskapsvilkårene prøves av Skatteetaten på forhånd, og gyldig prøvingsattest må foreligge før vielsen, jf. artiklene 4 og 5. Brudeparet sender prøvingsattesten til kommunen før vigselen. Attesten må være gyldig – det vil si ikke eldre enn fire måneder – på vigselsdagen. Den kommunale vigsleren plikter, som andre vigslere, å påse at attesten er gyldig og at partene legitimerer seg.</p>
+<h3>Borgerlig vigsel for tilreisende og utenlandske par</h3>
+<p>En praktisk side ved den kommunale ordningen er at borgerlig vigsel også er åpen for par som ikke er bosatt i kommunen, og i mange tilfeller for personer som ikke er bosatt i Norge, så lenge ekteskapsvilkårene er oppfylt. Dette gjør borgerlig vigsel til et tilgjengelig alternativ også for utenlandske brudepar og for par som ønsker å gifte seg i en bestemt kommune uten å være bosatt der. Forutsetningen er alltid at prøvingen er gjennomført og at gyldig prøvingsattest foreligger, jf. artiklene 4 og 5, og at de alminnelige ekteskapsvilkårene er oppfylt. Kommunene kan imidlertid ta et gebyr for par som ikke er bosatt i kommunen, jf. artikkel 9.</p>
+<h3>Bakgrunnen for reformen i 2018</h3>
+<p>Overføringen av vigselsmyndigheten fra domstolene til kommunene fra 1. januar 2018 var begrunnet i flere hensyn. Domstolene skulle i større grad rendyrkes som dømmende organer, og borgerlig vigsel ble ansett som en oppgave som passet bedre i kommunal regi, nærmere innbyggerne. Reformen ga også kommunene anledning til å utforme et lokalt tilpasset tilbud, for eksempel med vigsler på rådhuset, i historiske bygninger eller på attraktive lokale steder. For brudepar har endringen i praksis gjort borgerlig vigsel mer tilgjengelig, samtidig som de grunnleggende kravene til prøving og form er uendret.</p>
+<h3>Vitnenes rolle ved borgerlig vigsel</h3>
+<p>Som ved all vigsel kreves det at to vitner overværer seremonien, jf. el. § 11. Ved borgerlig vigsel stiller brudeparet vanligvis med egne vitner, men praksis varierer mellom kommunene, og enkelte kan bistå dersom paret ikke har med seg vitner. Vitnene bør være myndige. Vitnenes funksjon er å bekrefte at vigselen har funnet sted i samsvar med formkravene, og de inngår dermed som en rettssikkerhetsgaranti. Det er ikke noe krav om at vitnene er de samme personene som har vært forlovere i prøvingsfasen, jf. skillet omtalt i artikkel 6.</p>
+<h3>Tilrettelegging og innhold i seremonien</h3>
+<p>Den borgerlige vigselsseremonien tar utgangspunkt i et fastsatt formular, men mange kommuner åpner for at brudeparet kan tilføre personlige elementer, som musikk, dikt eller en kort tale, innenfor de rammene kommunen tillater. Kjernen – partenes erklæring om at de vil inngå ekteskap, og vigslerens erklæring om at de er ektefolk – må likevel alltid være med, ettersom dette er det rettslig konstituerende. Seremonien er gjerne kortvarig, og brudepar som ønsker en mer omfattende markering, kombinerer ofte den korte borgerlige vigselen med en separat, uformell feiring.</p>
+<h3>Praktisk gjennomføring</h3>
+<p>I praksis tar brudeparet kontakt med kommunen for å avtale dato, klokkeslett og lokale. Kommunen opplyser om hvilke vigslere som er tilgjengelige, hvilke lokaler som kan benyttes, og hvilke eventuelle gebyrer som gjelder for vigsel utenom ordinær tid eller sted. To vitner må være til stede; ofte stiller brudeparet med egne vitner, men noen kommuner kan også bistå. Etter vigselen sender den kommunale vigsleren vigselsmelding til Skatteetaten innen tre dager.</p>
+<h3>Oppsummering</h3>
+<p>Borgerlig vigsel er fullt mulig i Norge og forrettes av kommunen etter el. § 12. Den er som hovedregel gratis innenfor ordinær tid og sted, gir samme rettsvirkninger som religiøs vigsel, og forutsetter – som all vigsel – gjennomført prøving med gyldig prøvingsattest og oppfyllelse av formkravene i el. § 11. For kostnader vises til artikkel 9, og for oversikt over vigslere til artikkel 7.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor gammel må man være for å gifte seg? — Rettsregel</title>
+<meta name="description" content="Man må ha fylt 18 år for å gifte seg i Norge.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-gammel-ma-man-vaere-for-a-gifte/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor gammel må man være for å gifte seg?">
+<meta property="og:description" content="Man må ha fylt 18 år for å gifte seg i Norge.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-gammel-ma-man-vaere-for-a-gifte/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor gammel må man være for å gifte seg?">
+<meta name="twitter:description" content="Man må ha fylt 18 år for å gifte seg i Norge.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvor gammel må man være for å gifte seg?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Man må ha fylt 18 år for å gifte seg i Norge. Dette følger av ekteskapsloven § 1a, og det finnes ingen adgang til dispensasjon for personer under 18 år. Aldersgrensen er absolutt, og en mindreårig kan under ingen omstendighet inngå ekteskap her i landet.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 1a, 1, 18, 16</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/1a/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 1a</div>
+  <div class="related-card-title">Aldersgrensen for å gifte seg er 18 år</div>
+</a><a href="../../lover/ekteskapsloven/1/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 1</div>
+  <div class="related-card-title">To personer av samme eller motsatt kjønn kan gifte seg</div>
+</a><a href="../../lover/ekteskapsloven/18/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 18</div>
+  <div class="related-card-title">Når vigsleren er inhabil (Ugildhet)</div>
+</a><a href="../../lover/ekteskapsloven/16/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 16</div>
+  <div class="related-card-title">Når er et ekteskap ugyldig?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Man må ha fylt 18 år for å gifte seg i Norge. Dette følger av ekteskapsloven § 1a, og det finnes ingen adgang til dispensasjon for personer under 18 år. Aldersgrensen er absolutt, og en mindreårig kan under ingen omstendighet inngå ekteskap her i landet.</p>
+<h3>Den gjeldende regelen i el. § 1a</h3>
+<p>El. § 1a lyder at den som er under 18 år, ikke kan inngå ekteskap. Bestemmelsen ble innført ved lov 15. juni 2018 nr. 31 med ikrafttredelse 1. juli 2018. Før dette fulgte hovedregelen om 18-årsgrensen av el. § 1, men med en sentral forskjell: det fantes en dispensasjonsadgang. Personer mellom 16 og 18 år kunne tidligere søke fylkesmannen (nå statsforvalteren) om tillatelse til å gifte seg, forutsatt samtykke fra den eller dem som hadde foreldreansvar. Denne adgangen er nå fullstendig opphevet.</p>
+<h3>Hvorfor ble dispensasjonsadgangen fjernet?</h3>
+<p>Bakgrunnen for endringen var et ønske om å beskytte barn og motvirke barneekteskap og tvangsekteskap. Lovgiver mente at en absolutt aldersgrense gir et klarere og mer effektivt vern enn en skjønnsmessig dispensasjonsordning, og at selv en frivillig inngåelse av ekteskap før fylte 18 år kan ha uheldige konsekvenser for den unges utdanning, helse og selvbestemmelse. Den absolutte grensen harmonerer også med Norges forpliktelser etter barnekonvensjonen og internasjonale anbefalinger om å sette minstealderen for ekteskap til 18 år uten unntak.</p>
+<h3>Praktisk betydning av at det ikke finnes dispensasjon</h3>
+<p>For praktikeren betyr dette at det er unødvendig – og umulig – å søke noen form for dispensasjon for en mindreårig. Spørsmål fra klienter om hvorvidt foreldre kan «gi tillatelse» til at en 16- eller 17-åring gifter seg, må besvares benektende: foreldreansvar gir ingen adgang til å samtykke til ekteskap på vegne av et barn, og statsforvalteren har ikke lenger myndighet til å innvilge noe unntak. Aldersvilkåret fanges dessuten opp allerede i prøvingen hos Skatteetaten, slik at prøvingsattest ikke vil bli utstedt dersom en av partene er under 18 år.</p>
+<h3>Forholdet til ekteskap inngått i utlandet</h3>
+<p>En særskilt problemstilling oppstår når en mindreårig er blitt viet i utlandet, eller når et ektepar der minst én var mindreårig ved vielsen, senere flytter til Norge. El. § 18 a regulerer anerkjennelse av ekteskap inngått i utlandet. Hovedregelen er at et ekteskap som er inngått i utlandet ikke anerkjennes her dersom minst én av partene var under 18 år da ekteskapet ble inngått, og minst én av partene var norsk statsborger eller fast bosatt i Norge på vigselstidspunktet. Det kan likevel gjøres unntak dersom sterke grunner taler for å anerkjenne ekteskapet, og begge parter ønsker det og er over 18 år på vurderingstidspunktet. Dette er et område hvor det kreves konkret rettsanvendelse, og hvor jurister bør være oppmerksomme på samspillet mellom el. § 18 a og de internasjonal-privatrettslige reglene.</p>
+<h3>Tidspunktet for aldersvurderingen</h3>
+<p>Aldersvilkåret må være oppfylt på vigselstidspunktet. Det er ikke tilstrekkelig at parten fyller 18 år kort tid etter den planlagte vielsen; vigsel kan ikke gjennomføres før vedkommende faktisk har fylt 18 år. I praksis vil et brudepar som er nær aldersgrensen, måtte planlegge vielsen til etter 18-årsdagen, og prøvingsattest vil først kunne utstedes når vilkåret er oppfylt.</p>
+<h3>Forholdet til samtykke og handleevne</h3>
+<p>At man har fylt 18 år, er en nødvendig, men ikke alltid tilstrekkelig betingelse. Den som er myndig, kan i utgangspunktet selv samtykke til ekteskap, men kravet om reelt og fritt samtykke gjelder uavhengig av alder, jf. el. § 16 og artikkel 13. For personer som er fratatt rettslig handleevne, gjelder dessuten særlige regler. Aldersgrensen handler altså om den formelle myndighetsalderen for ekteskap, mens samtykkekravet er et selvstendig vilkår.</p>
+<h3>Kort om vitner og forlovere</h3>
+<p>Det er verdt å merke seg at 18-årskravet også gjelder forloverne. Etter Skatteetatens krav til prøving må forloverne, som avgir forlovererklæring, være 18 år eller eldre. Dette er et eget krav knyttet til prøvingen og må ikke forveksles med brudeparets eget alderskrav, men illustrerer at 18-årsgrensen står sentralt i hele ekteskapsprosessen.</p>
+<h3>Betydningen for utdanning, helse og selvbestemmelse</h3>
+<p>Den absolutte aldersgrensen bygger på en erkjennelse av at ekteskap før voksen alder kan ha alvorlige negative konsekvenser for den mindreårige. Tidlig ekteskap er internasjonalt forbundet med avbrutt skolegang, redusert deltakelse i arbeidslivet, tidlig svangerskap med tilhørende helserisiko, og svekket evne til å treffe selvstendige livsvalg. Ved å sette en fast grense på 18 år gir norsk rett et entydig vern mot disse konsekvensene, og signaliserer at ekteskap er en avgjørelse som forutsetter den modenhet og selvstendighet som myndighetsalderen representerer. For jurister som arbeider med familierett eller barnerett, er det nyttig å forstå at aldersgrensen ikke bare er en formell terskel, men uttrykk for et bredt sammensatt vern av barn og unge.</p>
+<h3>Sammenligning med tidligere rett og rettsutviklingen</h3>
+<p>Den absolutte 18-årsgrensen markerer slutten på en lang historisk utvikling. Tidligere norsk ekteskapslovgivning opererte med lavere minstealder og romslige dispensasjonsadganger. Da ekteskapsloven av 1991 ble vedtatt, var hovedregelen 18 år med adgang til dispensasjon ned mot 16 år. I tiårene som fulgte, ble dispensasjonspraksis gradvis innstrammet, blant annet på grunn av økt oppmerksomhet om barne- og tvangsekteskap og Norges internasjonale forpliktelser. Innføringen av el. § 1a i 2018 var det endelige skrittet, der lovgiver valgte en klar regel fremfor en skjønnsmessig vurdering. For jurister som arbeider med eldre saker eller med personer som ble viet under tidligere rettstilstand, er det viktig å være klar over at gyldigheten av et ekteskap som hovedregel vurderes etter reglene som gjaldt på vigselstidspunktet, mens nye ekteskap utelukkende kan inngås innenfor dagens absolutte grense.</p>
+<h3>Hensynet bak en klar regel</h3>
+<p>Lovgivers valg av en absolutt grense fremfor en skjønnsmessig dispensasjonsadgang bygger på flere rettspolitiske hensyn. En klar regel gir forutsigbarhet, likebehandling og enkel håndheving, og den fjerner muligheten for at press fra familie eller miljø kanaliseres inn i en dispensasjonssøknad. Erfaringen var at en dispensasjonsadgang, uansett hvor strengt den ble praktisert, kunne misbrukes og skape forventninger som la press på unge mennesker. Ved å fjerne adgangen fullstendig sikres et entydig vern, og myndighetene slipper å foreta vanskelige skjønnsmessige vurderinger av om et bestemt ekteskap er til en mindreårigs beste.</p>
+<h3>Oppsummering</h3>
+<p>Minstealderen for å gifte seg i Norge er 18 år, jf. el. § 1a. Grensen er absolutt og uten unntak. Den tidligere dispensasjonsordningen for 16–18-åringer ble opphevet 1. juli 2018, og en mindreårig kan verken med foreldrenes samtykke eller statsforvalterens tillatelse inngå ekteskap. For ekteskap inngått i utlandet av mindreårige gjelder særskilte anerkjennelsesregler i el. § 18 a. Spørsmålet om 16-åringer behandles nærmere i artikkel 3.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

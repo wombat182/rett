@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer hvis vilkårene for ekteskap ikke er oppfylt? — Rettsregel</title>
+<meta name="description" content="Det avhenger av hvilke vilkår som svikter.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-hvis-vilkarene-for-ekteskap-ikke-er/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer hvis vilkårene for ekteskap ikke er oppfylt?">
+<meta property="og:description" content="Det avhenger av hvilke vilkår som svikter.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-hvis-vilkarene-for-ekteskap-ikke-er/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer hvis vilkårene for ekteskap ikke er oppfylt?">
+<meta name="twitter:description" content="Det avhenger av hvilke vilkår som svikter.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Hva skjer hvis vilkårene for ekteskap ikke er oppfylt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det avhenger av hvilke vilkår som svikter. Brudd på de materielle ekteskapsvilkårene om bigami, forbudt slektskap og alder fører til at ekteskapet er ugyldig etter el. § 16, mens svikt ved de konstitutive vigselsvilkårene i el. §§ 11 og 12 innebærer at ekteskapet ikke er gyldig inngått, jf. el. § 11 annet ledd. Rene prøvingsfeil fører derimot normalt ikke til ugyldighet.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 16, 11, 3, 4, 24</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/16/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 16</div>
+  <div class="related-card-title">Når er et ekteskap ugyldig?</div>
+</a><a href="../../lover/ekteskapsloven/11/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 11</div>
+  <div class="related-card-title">Hvordan selve vielsen foregår</div>
+</a><a href="../../lover/ekteskapsloven/3/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 3</div>
+  <div class="related-card-title">Forbud mot å gifte seg med nære slektninger</div>
+</a><a href="../../lover/ekteskapsloven/4/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 4</div>
+  <div class="related-card-title">Du kan ikke være gift med to samtidig (Forbud mot bigami)</div>
+</a><a href="../../lover/ekteskapsloven/24/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 24</div>
+  <div class="related-card-title">Tvangsoppløsning av ulovlige ekteskap</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det avhenger av hvilke vilkår som svikter. Brudd på de materielle ekteskapsvilkårene om bigami, forbudt slektskap og alder fører til at ekteskapet er ugyldig etter el. § 16, mens svikt ved de konstitutive vigselsvilkårene i el. §§ 11 og 12 innebærer at ekteskapet ikke er gyldig inngått, jf. el. § 11 annet ledd. Rene prøvingsfeil fører derimot normalt ikke til ugyldighet.</p>
+<h3>Tre kategorier av vilkår</h3>
+<p>For å forstå konsekvensene må man skille mellom tre kategorier av vilkår. For det første de materielle ekteskapsvilkårene i el. kapittel 1: alder (§ 1 a), forbud mot bigami (§ 4) og forbud mot ekteskap mellom nære slektninger (§ 3). For det andre de konstitutive vigselsvilkårene i el. §§ 11 og 12: vigslerens myndighet, brudefolkenes erklæringer og vigslerens erklæring om at de er ektefolk. For det tredje prøvingsvilkårene i el. kapittel 2, herunder kravet om prøvingsattest og forlovere.</p>
+<p>Konsekvensen av at et vilkår ikke er oppfylt, varierer betydelig avhengig av hvilken kategori vilkåret tilhører. Denne sondringen er avgjørende for den praktiske håndteringen.</p>
+<h3>Svikt ved de konstitutive vigselsvilkårene</h3>
+<p>Etter el. § 11 annet ledd er ekteskapet ikke gyldig inngått dersom kravene i § 11 første ledd og § 12 ikke er oppfylt. Dette gjelder de helt grunnleggende elementene i vigselen: at brudefolkene faktisk har erklært at de ønsker å inngå ekteskap, at de var til stede samtidig, at vigsleren erklærte dem for ektefolk, og at vigsleren hadde vigselsmyndighet. Svikter ett av disse, foreligger det i utgangspunktet ikke noe gyldig ekteskap.</p>
+<p>I slike tilfeller er det tale om et såkalt «non-ekteskap» – et ekteskap som rettslig sett ikke er kommet i stand. Det er ikke nødvendig med noe søksmål eller noen oppløsningsbehandling for å konstatere dette, fordi ekteskapet aldri er etablert. Loven gir imidlertid en sikkerhetsventil i el. § 11 tredje ledd: departementet kan likevel godkjenne ekteskapet som gyldig dersom sterke grunner taler for det. Dette er praktisk for å reparere formelle mangler, for eksempel der vigsleren ved en feil manglet gyldig vigselsmyndighet på vigselstidspunktet.</p>
+<h3>Svikt ved de materielle ekteskapsvilkårene</h3>
+<p>Dersom selve vigselen er gjennomført korrekt, men det heftet en materiell ekteskapshindring, reguleres virkningen av el. § 16. Etter el. § 16 første ledd er et ekteskap ugyldig dersom det er inngått i strid med el. § 3 (forbudt slektskap) eller el. § 4 (bestående ekteskap, bigami). Etter el. § 16 annet ledd er et ekteskap også ugyldig dersom en av partene var under 18 år ved vigselen.</p>
+<p>Det sentrale her er at ekteskapet er ugyldig direkte i kraft av loven – det kreves ingen dom for at ugyldigheten skal foreligge. Ekteskapet er ugyldig fra inngåelsen. Likevel kan det reises sak for å få fastslått ugyldigheten, og statsforvalteren har plikt til å reise sak om oppløsning i visse tilfeller, jf. el. § 24. For ekteskap inngått med en mindreårig gir el. § 16 b statsforvalteren adgang til å anerkjenne ekteskapet på nærmere vilkår dersom begge parter er over 18 år, begge var over 16 år ved vigselen og den som var mindreårig ønsker ekteskapet anerkjent, eller dersom sterke grunner taler for anerkjennelse.</p>
+<h3>Tvang som ugyldighetsgrunn</h3>
+<p>En særskilt ugyldighetsgrunn er tvang. Etter el. § 16 tredje ledd kan hver av ektefellene reise søksmål for å få kjent ekteskapet ugyldig dersom vedkommende er blitt tvunget til å inngå ekteskapet ved rettsstridig atferd, uansett hvem som har utøvd tvangen. I motsetning til ugyldighet ved bigami, slektskap og mindreårighet, som inntrer direkte, må ugyldighet på grunn av tvang gjøres gjeldende ved søksmål innen fristene i el. § 16. Tvangsekteskap behandles nærmere i artikkel 21 og 26.</p>
+<h3>Svikt ved prøvingsvilkårene</h3>
+<p>Den tredje kategorien – feil ved prøvingen – har en annen og mildere konsekvens. Dersom prøvingsattest mangler eller er beheftet med feil, eller forloverkravet ikke er oppfylt, fører dette ikke i seg selv til at et ellers gyldig inngått ekteskap blir ugyldig. Ugyldighet inntrer kun på de uttømmende angitte grunnlagene i el. § 16. En prøvingsfeil innebærer at vigselen ikke skulle vært gjennomført, men dersom den likevel er gjennomført i samsvar med el. §§ 11 og 12, er ekteskapet gyldig.</p>
+<p>Dette betyr at en svikt i prøvingen kan ha andre konsekvenser – for eksempel ansvar for vigsleren eller behov for etterfølgende kontroll – men det rokker ikke ved selve gyldigheten av ekteskapet. Skillet mellom prøvingsfeil og materielle hindringer er derfor helt sentralt.</p>
+<h3>Rettsvirkningene av ugyldighet</h3>
+<p>Dersom et ekteskap er ugyldig etter el. § 16, oppstår spørsmålet om hvordan det skal håndteres økonomisk og rettslig. Oppløsning skjer etter el. kapittel 4, og det økonomiske oppgjøret reiser særlige spørsmål som behandles i artikkel 28. Et ugyldig ekteskap har som utgangspunkt ikke de rettsvirkningene et gyldig ekteskap har, men loven inneholder regler som ivaretar en godtroende part og hensynet til barn.</p>
+<h3>Praktisk håndtering av de ulike feiltypene</h3>
+<p>For den praktiserende jurist er det avgjørende å diagnostisere riktig hvilken feiltype som foreligger, fordi konsekvensen og fremgangsmåten varierer. Foreligger det en svikt ved de konstitutive vigselsvilkårene, er spørsmålet om ekteskapet i det hele tatt er kommet i stand, eller om det bør søkes godkjent etter el. § 11 tredje ledd. Foreligger det en materiell ekteskapshindring, er ekteskapet ugyldig etter el. § 16, og det må vurderes om ugyldigheten inntrer direkte eller må gjøres gjeldende ved søksmål, samt om statsforvalteren har plikt til å reise sak etter el. § 24. Foreligger det kun en prøvingsfeil, er ekteskapet normalt gyldig, men feilen kan ha andre konsekvenser. Denne diagnostiseringen styrer hele den videre håndteringen av saken, og en feilaktig kvalifikasjon kan føre til at det velges feil rettslig spor.</p>
+<h3>Forholdet til vigsleren og prøvingsmyndigheten</h3>
+<p>Når en feil oppdages, oppstår også spørsmålet om ansvar og om eventuell retting. Dersom vigsel er gjennomført til tross for at prøvingsattest manglet eller var beheftet med feil, kan dette innebære at vigsleren eller prøvingsmyndigheten har handlet i strid med regelverket. Dette rokker som nevnt ikke ved gyldigheten dersom de konstitutive vigselsvilkårene er oppfylt, men det kan utløse interne reaksjoner og behov for etterkontroll. For brudefolkene er det viktigste at de får avklart sin sivilrettslige status, og at eventuelle formelle mangler enten repareres etter el. § 11 tredje ledd eller håndteres gjennom de ordinære reglene om ugyldighet og oppløsning.</p>
+<h3>Oppsummering</h3>
+<p>Konsekvensen av at vilkårene ikke er oppfylt avhenger av vilkårstypen: svikt ved de konstitutive vigselsvilkårene i el. §§ 11 og 12 innebærer at ekteskapet ikke er gyldig inngått (el. § 11 annet ledd), brudd på de materielle vilkårene om bigami, slektskap og alder fører til ugyldighet etter el. § 16, mens rene prøvingsfeil normalt ikke gjør ekteskapet ugyldig. Tvang gir grunnlag for ugyldighet ved søksmål etter el. § 16 tredje ledd. For den nærmere behandlingen av ugyldighet, se artikkel 22 og 23.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan bare den ene parten kreve separasjon? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-bare-den-ene-parten-kreve-separasjon/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan bare den ene parten kreve separasjon?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-bare-den-ene-parten-kreve-separasjon/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan bare den ene parten kreve separasjon?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan bare den ene parten kreve separasjon?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Retten til separasjon er individuell. Etter el. § 20 første ledd kan en ektefelle som ikke finner å kunne fortsette samlivet, kreve separasjon, uavhengig av om den andre ektefellen er enig. Statsforvalteren gir separasjonsbevilling selv om bare den ene ektefellen ønsker det. Den andres samtykke er ikke et vilkår.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 20, 60, 21, 22</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/20/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 20</div>
+  <div class="related-card-title">Slik får du separasjon</div>
+</a><a href="../../lover/ekteskapsloven/60/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 60</div>
+  <div class="related-card-title">Datoen som fryser økonomien (Skjæringstidspunktet)</div>
+</a><a href="../../lover/ekteskapsloven/21/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 21</div>
+  <div class="related-card-title">Skilsmisse etter ett års separasjon</div>
+</a><a href="../../lover/ekteskapsloven/22/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 22</div>
+  <div class="related-card-title">Skilsmisse etter å ha bodd fra hverandre i to år (Samlivsbrudd)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Retten til separasjon er individuell. Etter el. § 20 første ledd kan en ektefelle som ikke finner å kunne fortsette samlivet, kreve separasjon, uavhengig av om den andre ektefellen er enig. Statsforvalteren gir separasjonsbevilling selv om bare den ene ektefellen ønsker det. Den andres samtykke er ikke et vilkår.</p>
+<h3>Den individuelle retten i § 20</h3>
+<p>Ekteskapsloven § 20 første ledd gir hver enkelt ektefelle en selvstendig og betingelsesløs rett til separasjon. Ordlyden – «en ektefelle som ikke finner å kunne fortsette samlivet» – knytter retten til den enkeltes vurdering. Det er ikke et vilkår at det finnes objektive grunner, og det kreves ingen begrunnelse. Loven bygger på prinsippet om at ingen skal tvinges til å forbli i et samliv mot sin vilje. Den ene ektefellens ønske om separasjon er dermed tilstrekkelig.</p>
+<p>Dette er et grunnleggende trekk ved norsk ekteskapsrett. Retten til å bryte ut av et samliv er lagt til den enkelte, ikke gjort avhengig av enighet. Konsekvensen er at den ektefellen som ønsker separasjon, ikke kan hindres av den andre.</p>
+<h3>Statsforvalterens behandling når én søker alene</h3>
+<p>Søker bare den ene ektefellen, behandler statsforvalteren saken slik at også den andre ektefellen blir part. Statsforvalteren oversender søknaden til den andre ektefellen og ber vedkommende undertegne eller uttale seg. Begge har rett til å gjøre seg kjent med saksdokumentene. Det er likevel viktig å forstå at oversendelsen ikke gir den andre en vetorett. Den andre ektefellens manglende undertegning eller uttrykte motvilje stanser ikke separasjonen. Statsforvalteren gir bevilling fordi retten etter § 20 er individuell.</p>
+<p>Oversendelsen til den andre ektefellen er altså en del av saksbehandlingen som ivaretar kontradiksjon og partsrettigheter, ikke et samtykkekrav. Den andre ektefellens rolle er å bli hørt, ikke å avgjøre om separasjonen skal gis.</p>
+<h3>Konsekvenser for saksbehandlingstiden</h3>
+<p>Selv om den ene kan søke alene, har det praktiske konsekvenser. Saksbehandlingstiden blir lengre når bare den ene søker, fordi statsforvalteren må oversende søknaden til den andre ektefellen og avvente uttalelse. Er den andre ektefellen bosatt i utlandet, eller påklager vedkommende bevillingen, forlenges behandlingen ytterligere. Til sammenligning kan endelig bevilling skrives ut samme dag når begge søker i fellesskap og frafaller klageretten. Forskjellen er altså praktisk, ikke rettslig: separasjonen kommer uansett, men kan ta noe lengre tid når bare den ene søker.</p>
+<h3>Klageadgang for den andre ektefellen</h3>
+<p>Den andre ektefellen kan påklage separasjonsvedtaket. En slik klage stanser likevel ikke retten til separasjon som sådan, men kan utsette tidspunktet for når bevillingen blir endelig. Klagen kan for eksempel gjelde om vilkårene for statsforvalterens kompetanse er oppfylt, slik som tilknytningen til Norge. Klagen kan derimot ikke føre fram med den begrunnelse at den andre ektefellen ikke ønsker separasjon, ettersom samtykke ikke er et vilkår. Inntil en eventuell klage er avgjort, er separasjonsbevillingen ikke endelig.</p>
+<h3>Betydningen for skjæringstidspunktet</h3>
+<p>At den ene kan kreve separasjon alene, har også betydning for skjæringstidspunktet for delingen. Etter el. § 60 regnes skjæringstidspunktet fra det tidspunktet da begjæring om separasjon kom inn til statsforvalteren. Den ektefellen som ønsker å sikre et tidlig skjæringstidspunkt – for eksempel for å holde framtidige erverv utenfor delingen – kan derfor søke separasjon alene uten å være avhengig av den andres medvirkning. Dette er et viktig strategisk poeng i saker med betydelige verdier, fordi den ene ektefellen selv kan styre når skjæringstidspunktet inntreffer. Se artikkel 89.</p>
+<h3>Forholdet til skilsmisse</h3>
+<p>Den individuelle retten gjelder tilsvarende ved skilsmisse etter el. § 21. Når separasjonstiden på ett år er over, kan hver av ektefellene kreve skilsmisse alene, uavhengig av den andres ønske. Også her er retten betingelsesløs. Ved skilsmisse etter to års samlivsbrudd etter § 22 stiller det seg noe annerledes: for at statsforvalteren skal ha myndighet, må den andre ektefellen skriftlig bekrefte at vedkommende er enig i atskillelsen. Mangler bekreftelsen, må saken bringes inn for tingretten. Dette skiller § 22-veien fra separasjonsveien, og er behandlet i artiklene 79 og 88.</p>
+<h3>Praktiske råd</h3>
+<p>For praktikeren er følgende sentralt:</p>
+<ul>
+<li><strong>Klienten trenger ikke den andres samtykke</strong> for å bli separert.</li>
+<li><strong>Søknad alene tar lengre tid</strong>, men fører fram.</li>
+<li><strong>Tidlig søknad sikrer tidlig skjæringstidspunkt</strong>, uavhengig av den andre.</li>
+<li><strong>Klage fra den andre</strong> utsetter bare endelig bevilling, den hindrer ikke separasjonen.</li>
+</ul>
+<h3>Den andre ektefellens partsrettigheter</h3>
+<p>Selv om den andre ektefellen ikke kan nekte separasjon, har vedkommende fulle partsrettigheter i saken. Det innebærer rett til å bli varslet, rett til innsyn i sakens dokumenter, rett til å uttale seg og rett til å påklage vedtaket. Disse rettighetene følger av forvaltningsloven og av ekteskapslovens saksbehandlingsregler. Partsrettighetene ivaretar hensynet til kontradiksjon, men gir ikke den andre noen rett til å stanse separasjonen. For praktikeren er det viktig å skille mellom partsrettigheter, som den andre ektefellen fullt ut har, og en eventuell vetorett, som ikke finnes. Den andre ektefellens innflytelse er prosessuell, ikke materiell.</p>
+<h3>Når den andre ektefellen er utilgjengelig</h3>
+<p>Et praktisk problem oppstår der den andre ektefellen er utilgjengelig, for eksempel bosatt på ukjent adresse i utlandet eller uten kontaktinformasjon. Også i slike tilfeller kan den ene ektefellen kreve separasjon, men saksbehandlingen kompliseres ved at statsforvalteren må forsøke å varsle den andre. Statsforvalteren har rutiner for forkynning og varsling der den andre ektefellen ikke lar seg nå på ordinær måte. At den andre er utilgjengelig, hindrer altså ikke separasjonen, men kan forlenge behandlingstiden betydelig. Dette er et viktig poeng der klienten er gift med en person uten kjent oppholdssted.</p>
+<h3>Strategiske vurderinger ved ensidig søknad</h3>
+<p>For praktikeren kan en ensidig separasjonssøknad være et bevisst strategisk valg. Selv om felles søknad gir raskere behandling, kan det i enkelte saker være ønskelig å sikre et tidlig skjæringstidspunkt uavhengig av om den andre samarbeider. Ettersom skjæringstidspunktet etter el. § 60 knytter seg til da begjæringen kom inn til statsforvalteren, kan en ensidig søknad sende tidlig låse skjæringstidspunktet. Dette kan være avgjørende i saker der den ene ektefellen forventer å erverve verdier, eller der det er risiko for at den andre vil pådra seg gjeld. Den individuelle retten etter § 20 gir altså klienten et reelt handlingsrom uavhengig av den andres vilje.</p>
+<h3>Oppsummering</h3>
+<p>Bare den ene parten kan kreve separasjon. Retten etter el. § 20 er individuell og betingelsesløs, og den andres samtykke er ikke et vilkår. Statsforvalteren gir bevilling selv om bare den ene søker, men saksbehandlingstiden blir da lengre. Den andre kan klage, men klagen utsetter bare når bevillingen blir endelig, den hindrer ikke separasjonen.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

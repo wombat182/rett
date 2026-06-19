@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan utlendinger gifte seg i Norge? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-utlendinger-gifte-seg-i-norge/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan utlendinger gifte seg i Norge?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-utlendinger-gifte-seg-i-norge/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan utlendinger gifte seg i Norge?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan utlendinger gifte seg i Norge?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Utlendinger kan gifte seg i Norge, men de må oppfylle de samme ekteskapsvilkårene som norske borgere, og i tillegg ha lovlig opphold i landet etter ekteskapsloven § 5a. De må dessuten dokumentere sin sivilstand, og fremgangsmåten følger de alminnelige reglene om prøving og prøvingsattest.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 5a, 1a, 4, 3, 7</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/5a/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 5a</div>
+  <div class="related-card-title">Utenlandske statsborgere må ha lovlig opphold for å gifte seg i Norge</div>
+</a><a href="../../lover/ekteskapsloven/1a/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 1a</div>
+  <div class="related-card-title">Aldersgrensen for å gifte seg er 18 år</div>
+</a><a href="../../lover/ekteskapsloven/4/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 4</div>
+  <div class="related-card-title">Du kan ikke være gift med to samtidig (Forbud mot bigami)</div>
+</a><a href="../../lover/ekteskapsloven/3/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 3</div>
+  <div class="related-card-title">Forbud mot å gifte seg med nære slektninger</div>
+</a><a href="../../lover/ekteskapsloven/7/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 7</div>
+  <div class="related-card-title">Papirene og bevisene dere må levere før bryllupet</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Utlendinger kan gifte seg i Norge, men de må oppfylle de samme ekteskapsvilkårene som norske borgere, og i tillegg ha lovlig opphold i landet etter ekteskapsloven § 5a. De må dessuten dokumentere sin sivilstand, og fremgangsmåten følger de alminnelige reglene om prøving og prøvingsattest.</p>
+<h3>Utgangspunktet – like vilkår</h3>
+<p>Det er ingen prinsipiell hindring for at utenlandske statsborgere kan gifte seg i Norge. De alminnelige ekteskapsvilkårene i el. kapittel 1 gjelder også for utlendinger: 18-årsgrensen i el. § 1a, forbudet mot bestående ekteskap i el. § 4, slektskapsforbudene i el. § 3 og kravet om fritt samtykke. I tillegg kommer ett vilkår som er særskilt for utenlandske statsborgere: kravet om lovlig opphold etter el. § 5a.</p>
+<h3>Kravet om lovlig opphold – el. § 5a</h3>
+<p>Etter el. § 5a må en utenlandsk statsborger ha lovlig opphold i Norge for å kunne inngå ekteskap her. Vilkåret ble innført for å motvirke at ekteskap inngås utelukkende for å omgå utlendingslovgivningen, og for å hindre at personer uten lovlig opphold benytter ekteskapsinngåelse i Norge som ledd i slik omgåelse. Kravet gjelder på vigselstidspunktet: utlendingen må ha et lovlig oppholdsgrunnlag når ekteskapet inngås.</p>
+<h3>Hva regnes som lovlig opphold?</h3>
+<p>Lovlig opphold foreligger der utlendingen har gyldig oppholdstillatelse, oppholdsrett eller annet lovlig grunnlag for å oppholde seg i Norge. Dette omfatter blant annet personer med gyldig oppholdstillatelse etter utlendingsloven. Enkelte grupper har lovlig opphold uten å måtte fremvise en formell tillatelse: nordiske borgere har fri adgang til opphold i Norge, og visumfrie borgere har lovlig opphold innenfor den perioden de kan oppholde seg her uten visum (normalt inntil tre måneder). EØS-borgere med oppholdsrett står også i en gunstig stilling. Den konkrete vurderingen avhenger av nasjonalitet og oppholdsgrunnlag.</p>
+<h3>Dokumentasjon av lovlig opphold og sivilstand</h3>
+<p>Utenlandske statsborgere må dokumentere både lovlig opphold og sivilstand i prøvingen, jf. el. § 7. Dokumentasjon på lovlig opphold kan være oppholdstillatelse, oppholdskort eller annet som viser oppholdsgrunnlaget. I tillegg må sivilstand normalt dokumenteres med en attest fra hjemlandet som bekrefter at vedkommende er ugift, ofte omtalt som «certificate of no impediment to marriage» eller tilsvarende. Slike utenlandske dokumenter må gjerne legaliseres eller forsynes med apostille, og oversettes til norsk eller engelsk av autorisert translatør. Kravene til dokumentasjon er strenge, og manglende eller mangelfull dokumentasjon er en vanlig årsak til at prøvingen trekker ut i tid.</p>
+<h3>Fremgangsmåten – prøving og prøvingsattest</h3>
+<p>Også for utlendinger må ekteskapsvilkårene prøves av Skatteetaten før vigsel, og gyldig prøvingsattest må foreligge. Fremgangsmåten med egenerklæring og forlovererklæring er den samme som for norske borgere, men med tillegg av dokumentasjon på lovlig opphold og sivilstand. Prøvingsattesten er gyldig i fire måneder, jf. artikkel 5. På grunn av behovet for å innhente og eventuelt legalisere utenlandske dokumenter, bør utlendinger beregne ekstra god tid til prøvingen.</p>
+<h3>Pro forma-problematikken</h3>
+<p>Kravet om lovlig opphold og kontrollen i prøvingen henger sammen med myndighetenes arbeid mot pro forma-ekteskap – ekteskap som inngås uten reell vilje til samliv, utelukkende for å oppnå oppholdstillatelse. Selv om selve ekteskapsinngåelsen kan være formelt korrekt, kan et pro forma-ekteskap få konsekvenser i utlendingssaken, ettersom oppholdstillatelse på grunnlag av ekteskap forutsetter et reelt ekteskap. Skillet mellom ekteskapsrettens regler og utlendingsrettens regler er her viktig: ekteskapet kan være gyldig inngått etter ekteskapsloven, samtidig som det ikke gir grunnlag for oppholdstillatelse fordi det anses som pro forma. Samtykkekravet behandles i artikkel 13.</p>
+<h3>Formålet bak kravet om lovlig opphold</h3>
+<p>Kravet om lovlig opphold i el. § 5a kom inn i loven som et ledd i arbeidet mot omgåelse av utlendingslovgivningen. Uten et slikt vilkår kunne ekteskapsinngåelse i Norge ha blitt brukt som et middel for personer uten lovlig opphold til å skaffe seg et grunnlag for videre opphold. Ved å gjøre lovlig opphold til et vilkår for å inngå ekteskap, knyttes ekteskapsretten sammen med utlendingsregelverket på en måte som motvirker slik omgåelse. Det er likevel viktig å understreke at vilkåret ikke utelukker utlendinger generelt – tvert imot kan de aller fleste utlendinger med et lovlig oppholdsgrunnlag gifte seg i Norge. Kravet retter seg mot dem som oppholder seg ulovlig i landet, typisk etter avslag på en oppholdssøknad.</p>
+<h3>To utlendinger som vil gifte seg i Norge</h3>
+<p>Et praktisk spørsmål er om to utenlandske statsborgere – uten norsk tilknytning utover at de oppholder seg her – kan gifte seg i Norge. Svaret er som utgangspunkt ja, forutsatt at begge oppfyller de alminnelige ekteskapsvilkårene og har lovlig opphold etter el. § 5a, samt at de kan dokumentere sin sivilstand. Det stilles ikke krav om at minst én av partene er norsk borger eller bosatt i Norge. Mange kommuner tilbyr borgerlig vigsel også for tilreisende par. Det avgjørende er at vilkårene er oppfylt og at prøvingen kan gjennomføres med tilstrekkelig dokumentasjon. Et par bør likevel være oppmerksomme på at det kan ta tid å fremskaffe nødvendig dokumentasjon fra hjemlandet.</p>
+<h3>Anerkjennelse i hjemlandet</h3>
+<p>Et ekteskap som er gyldig inngått i Norge, vil normalt være gyldig også andre steder, men anerkjennelse i utlandet beror på reglene i det aktuelle landet. For utenlandske brudepar kan det være behov for en norsk vigselsattest, eventuelt med apostille eller legalisering, for at ekteskapet skal kunne dokumenteres og anerkjennes i hjemlandet. Den som rådgir utenlandske brudefolk, bør gjøre dem oppmerksomme på at den norske vigselen i seg selv ikke garanterer anerkjennelse alle steder, og at det kan være nødvendig å innhente bekreftelser for bruk i utlandet.</p>
+<h3>Vigsel og videre saksgang</h3>
+<p>Når prøvingsattest foreligger, kan utlendingen vies på lik linje med norske borgere – borgerlig eller religiøst, jf. artiklene 7 og 8. Vigsleren påser at attesten er gyldig og at partene legitimerer seg. Etter vielsen sender vigsleren vigselsmelding til Skatteetaten innen tre dager, og ekteskapet registreres i Folkeregisteret. Ønsker den utenlandske ektefellen å bli boende i Norge på grunnlag av ekteskapet, må det søkes om oppholdstillatelse etter utlendingsloven – dette er en separat prosess som ikke følger automatisk av at ekteskapet er inngått.</p>
+<h3>Oppsummering</h3>
+<p>Utlendinger kan gifte seg i Norge dersom de oppfyller de alminnelige ekteskapsvilkårene og i tillegg har lovlig opphold etter el. § 5a. De må dokumentere både lovlig opphold og sivilstand i prøvingen, jf. el. § 7. Fremgangsmåten følger de ordinære reglene om prøving og prøvingsattest. Nærmere om hva som kreves av den enkelte utlending, behandles i artikkel 15.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

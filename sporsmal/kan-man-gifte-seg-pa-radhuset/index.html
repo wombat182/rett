@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan man gifte seg på rådhuset? — Rettsregel</title>
+<meta name="description" content="Ja, man kan gifte seg på rådhuset gjennom borgerlig vigsel.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-man-gifte-seg-pa-radhuset/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan man gifte seg på rådhuset?">
+<meta property="og:description" content="Ja, man kan gifte seg på rådhuset gjennom borgerlig vigsel.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-man-gifte-seg-pa-radhuset/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan man gifte seg på rådhuset?">
+<meta name="twitter:description" content="Ja, man kan gifte seg på rådhuset gjennom borgerlig vigsel.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan man gifte seg på rådhuset?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, man kan gifte seg på rådhuset gjennom borgerlig vigsel. Borgerlig vigselsmyndighet ligger siden 2018 hos kommunen, slik at ordføreren, varaordføreren og kommunalt ansatte eller folkevalgte som kommunestyret har gitt slik myndighet, kan foreta vigsel, jf. el. § 12 første ledd bokstav b. Rådhuset er det typiske vigselslokalet for borgerlig vigsel.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 12, 14, 6, 11, 15</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/12/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 12</div>
+  <div class="related-card-title">Hvem har lov til å vie dere?</div>
+</a><a href="../../lover/ekteskapsloven/14/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 14</div>
+  <div class="related-card-title">Vigsleren må sjekke prøvingsattesten før bryllupet</div>
+</a><a href="../../lover/ekteskapsloven/6/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 6</div>
+  <div class="related-card-title">Skatteetaten sjekker om dere har lov til å gifte dere</div>
+</a><a href="../../lover/ekteskapsloven/11/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 11</div>
+  <div class="related-card-title">Hvordan selve vielsen foregår</div>
+</a><a href="../../lover/ekteskapsloven/15/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 15</div>
+  <div class="related-card-title">Regjeringens makt til å lage regler for bryllupsseremonien</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, man kan gifte seg på rådhuset gjennom borgerlig vigsel. Borgerlig vigselsmyndighet ligger siden 2018 hos kommunen, slik at ordføreren, varaordføreren og kommunalt ansatte eller folkevalgte som kommunestyret har gitt slik myndighet, kan foreta vigsel, jf. el. § 12 første ledd bokstav b. Rådhuset er det typiske vigselslokalet for borgerlig vigsel.</p>
+<h3>Borgerlig vigsel i kommunen</h3>
+<p>Etter el. § 12 første ledd bokstav b er ordføreren, varaordføreren og kommunalt ansatte eller folkevalgte som kommunestyret selv gir slik myndighet, vigslere ved borgerlige vigsler. Ansvaret for borgerlig vigsel ble overført fra de tidligere tingrettene (notarius publicus) til kommunene med virkning fra 1. januar 2018. Bakgrunnen var et ønske om å gjøre tilbudet mer tilgjengelig og lokalt forankret.</p>
+<p>Hver kommune skal ha et borgerlig vigselstilbud, og det er kommunen som organiserer hvor og når vigsler gjennomføres. Rådhuset er det vanligste vigselslokalet, men kommunen kan også tilby vigsel på andre egnede steder. Mange kommuner tilbyr dessuten vigsel utenfor rådhuset og utenfor ordinær arbeidstid mot betaling, og brudefolkene kan i mange tilfeller selv foreslå sted for seremonien dersom kommunen samtykker.</p>
+<h3>Vilkårene for vigsel gjelder fullt ut</h3>
+<p>Selv om vigselen skjer på rådhuset i kommunal regi, gjelder de alminnelige vilkårene for gyldig vigsel fullt ut. Vigsleren må ha mottatt gyldig prøvingsattest fra prøvingsmyndigheten før vigselen, jf. el. § 14. Attesten dokumenterer at ekteskapsvilkårene er prøvet og at reglene i el. §§ 6 til 10 er fulgt, og den er gyldig i fire måneder.</p>
+<p>Selve vigselen må gjennomføres i samsvar med el. § 11 første ledd: brudefolkene møter for vigsleren, erklærer mens begge er til stede at de ønsker å inngå ekteskap med hverandre, og vigsleren erklærer dem deretter for ektefolk. Minst to vitner skal være til stede, jf. el. § 15. Det er fastsatt et borgerlig vigselsformular ved forskrift, som angir det rituelle innholdet i den borgerlige seremonien. Brudefolkene kan i tillegg tilføre seremonien personlige elementer innenfor rammene formularet setter.</p>
+<h3>Borgerlig vigsel kontra kirkelig og annen religiøs vigsel</h3>
+<p>Rådhusvigsel er én av flere lovlige vigselsformer. Etter el. § 12 første ledd bokstav a kan vigsel også foretas av prest i Den norske kirke og av prest eller forstander i et registrert trossamfunn, samt av seremonileder eller tilsvarende i livssynssamfunn som mottar tilskudd. Felles for alle vigselsformene er at vigsleren må ha vigselsmyndighet etter el. § 12, og at de øvrige gyldighetsvilkårene må være oppfylt.</p>
+<p>Et viktig poeng er at den rettslige virkningen er den samme uavhengig av vigselsform. Et ekteskap inngått ved borgerlig vigsel på rådhuset har nøyaktig de samme rettsvirkningene som et ekteskap inngått ved kirkelig vigsel. Valget mellom vigselsformene er et spørsmål om livssyn og preferanse, ikke om rettslig stilling.</p>
+<h3>Vigselsmyndighet og habilitet</h3>
+<p>Vigsleren som foretar vigselen på rådhuset, må ha gyldig vigselsmyndighet på vigselstidspunktet. Dersom vigselen foretas av en person uten vigselsmyndighet, vil ekteskapet etter el. § 11 annet ledd som hovedregel ikke være gyldig inngått. Det finnes imidlertid en sikkerhetsventil i el. § 11 tredje ledd, hvoretter departementet (i praksis statsforvalteren etter delegasjon) likevel kan godkjenne ekteskapet som gyldig dersom sterke grunner taler for det. Denne adgangen brukes for å reparere tilfeller der det i ettertid viser seg å hefte en formell mangel ved vigslerens myndighet.</p>
+<p>Spørsmål om vigslerens habilitet kan oppstå dersom vigsleren har en nær tilknytning til brudefolkene. Forvaltningslovens habilitetsregler kommer i utgangspunktet til anvendelse for kommunale vigslere, men en eventuell inhabilitet medfører ikke uten videre at ekteskapet blir ugyldig, ettersom ugyldighet kun inntrer på grunnlagene i el. § 16. En slik feil vil i praksis kunne repareres etter el. § 11 tredje ledd.</p>
+<h3>Vigselsformularet og seremoniens innhold</h3>
+<p>Den borgerlige vigselen følger et fastsatt borgerlig vigselsformular gitt ved forskrift. Formularet angir den rituelle rammen for seremonien og sikrer at de nødvendige elementene etter el. § 11 første ledd er på plass: at brudefolkene erklærer at de ønsker å inngå ekteskap med hverandre mens begge er til stede, og at vigsleren erklærer dem for ektefolk. Innenfor formularets ramme står brudefolkene fritt til å tilføre seremonien personlige elementer, for eksempel egne tekster, musikk eller løfter, så lenge de obligatoriske elementene er ivaretatt. Det er nettopp de obligatoriske elementene som er konstitutive for vigselen, og som må være til stede for at ekteskapet skal være gyldig inngått. Personlige tilføyelser har derimot ingen rettslig betydning for gyldigheten.</p>
+<h3>Praktisk fremgangsmåte</h3>
+<p>For par som ønsker å gifte seg på rådhuset, er den praktiske fremgangsmåten først å gjennomføre prøvingen hos prøvingsmyndigheten, deretter å avtale tid og sted med kommunen. Prøvingen må være fullført og prøvingsattesten oversendt vigsleren før seremonien. Mange kommuner har faste vigselsdager og -tider på rådhuset, og bestilling skjer normalt elektronisk.</p>
+<p>Brudefolkene må medbringe gyldig legitimasjon, og to vitner må være til stede. Etter vigselen utsteder vigsleren vigselsmelding, og opplysningene registreres i folkeregisteret. Vigselsattest utstedes som dokumentasjon på det inngåtte ekteskapet.</p>
+<h3>Vigsel av par med utenlandsk tilknytning på rådhuset</h3>
+<p>Borgerlig vigsel på rådhuset er også tilgjengelig for par med utenlandsk tilknytning, forutsatt at prøvingen er gjennomført og prøvingsattest foreligger. For utenlandske statsborgere uten fast bosted i Norge gjelder kravet om lovlig opphold etter el. § 5 a, og det kan kreves dokumentasjon på at det ikke foreligger ekteskapshindringer etter hjemlandets rett, jf. el. § 7 bokstav h. Disse vilkårene knytter seg til prøvingen, ikke til selve den kommunale vigselshandlingen, men de må være avklart før vigsleren kan motta prøvingsattesten og gjennomføre seremonien. Dette er behandlet nærmere i artikkel 16.</p>
+<h3>Kommunens organisering og tilgjengelighet</h3>
+<p>Ettersom ansvaret for borgerlig vigsel ligger hos kommunen, varierer det praktiske tilbudet noe mellom kommunene. Loven pålegger likevel kommunene å ha et tilbud om borgerlig vigsel som er tilgjengelig for kommunens innbyggere, og tilbudet skal være gratis for kommunens egne innbyggere og for personer som ikke er bosatt i Norge, innenfor ordinære rammer for tid og sted. Vigsel utenfor disse rammene – for eksempel på et annet sted enn rådhuset eller utenfor ordinær arbeidstid – kan kommunen ta betalt for. Kommunestyret fastsetter selv hvem som skal ha vigselsmyndighet utover ordføreren og varaordføreren, og kan gi slik myndighet til kommunalt ansatte eller folkevalgte, jf. el. § 12 første ledd bokstav b. Vigsleren utøver med dette en offentligrettslig myndighet på vegne av kommunen.</p>
+<h3>Oppsummering</h3>
+<p>Man kan gifte seg på rådhuset gjennom borgerlig vigsel, som siden 2018 hører under kommunen, jf. el. § 12 første ledd bokstav b. De alminnelige vilkårene for gyldig vigsel gjelder fullt ut: gyldig prøvingsattest etter el. § 14, gjennomføring etter el. § 11 og minst to vitner etter el. § 15. Borgerlig vigsel har samme rettsvirkninger som kirkelig vigsel. For konsekvensene av at vilkårene ikke er oppfylt, se artikkel 20.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

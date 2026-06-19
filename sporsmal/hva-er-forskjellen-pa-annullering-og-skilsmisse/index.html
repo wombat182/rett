@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på annullering og skilsmisse? — Rettsregel</title>
+<meta name="description" content="Forskjellen er grunnleggende.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-annullering-og-skilsmisse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på annullering og skilsmisse?">
+<meta property="og:description" content="Forskjellen er grunnleggende.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-annullering-og-skilsmisse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på annullering og skilsmisse?">
+<meta name="twitter:description" content="Forskjellen er grunnleggende.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva er forskjellen på annullering og skilsmisse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Forskjellen er grunnleggende. Det norske rettssystemet kjenner ikke «annullering» som eget institutt, men når man sammenligner ugyldighet (det nærmeste motstykket til annullering) med skilsmisse, er forskjellen at ugyldighet bygger på en opprinnelig mangel ved ekteskapsinngåelsen etter el. § 16, mens skilsmisse er en oppløsning av et gyldig inngått ekteskap etter el. kapittel 4. Ugyldighet ser bak</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 16, 4, 3, 1, 20</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/16/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 16</div>
+  <div class="related-card-title">Når er et ekteskap ugyldig?</div>
+</a><a href="../../lover/ekteskapsloven/4/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 4</div>
+  <div class="related-card-title">Du kan ikke være gift med to samtidig (Forbud mot bigami)</div>
+</a><a href="../../lover/ekteskapsloven/3/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 3</div>
+  <div class="related-card-title">Forbud mot å gifte seg med nære slektninger</div>
+</a><a href="../../lover/ekteskapsloven/1/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 1</div>
+  <div class="related-card-title">To personer av samme eller motsatt kjønn kan gifte seg</div>
+</a><a href="../../lover/ekteskapsloven/20/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 20</div>
+  <div class="related-card-title">Slik får du separasjon</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Forskjellen er grunnleggende. Det norske rettssystemet kjenner ikke «annullering» som eget institutt, men når man sammenligner ugyldighet (det nærmeste motstykket til annullering) med skilsmisse, er forskjellen at ugyldighet bygger på en opprinnelig mangel ved ekteskapsinngåelsen etter el. § 16, mens skilsmisse er en oppløsning av et gyldig inngått ekteskap etter el. kapittel 4. Ugyldighet ser bakover; skilsmisse ser fremover.</p>
+<h3>Ugyldighet bygger på en opprinnelig mangel</h3>
+<p>Ugyldighet etter el. § 16 forutsetter at det allerede ved ekteskapsinngåelsen forelå en mangel: bigami i strid med el. § 4, forbudt slektskap i strid med el. § 3, mindreårighet i strid med el. § 1 a, eller tvang etter el. § 16 tredje ledd. Ved bigami, slektskap og mindreårighet er ekteskapet ugyldig fra inngåelsen, mens tvang gir grunnlag for å få ekteskapet kjent ugyldig ved søksmål.</p>
+<p>Det karakteristiske er at ugyldigheten knytter seg til omstendigheter som forelå da ekteskapet ble inngått. Forhold som oppstår senere i ekteskapet – samlivsbrudd, utroskap, uenighet – er irrelevante for ugyldighetsvurderingen. Ugyldighet er dermed et tilbakeskuende institutt som vurderer lovligheten av selve inngåelsen.</p>
+<h3>Skilsmisse oppløser et gyldig ekteskap</h3>
+<p>Skilsmisse er derimot et fremoverskuende institutt. Det forutsetter at ekteskapet er gyldig inngått, men at partene – eller én av dem – ønsker å oppløse det. Etter el. § 20 kan et ekteskap oppløses ved skilsmisse etter forutgående separasjon, eller uten forutgående separasjon i de tilfellene loven angir. Etter el. § 21 har en ektefelle krav på skilsmisse når ektefellene har vært separert i minst ett år, eller har levd atskilt i minst to år.</p>
+<p>I tillegg gir el. §§ 22 og 23 grunnlag for skilsmisse uten forutgående separasjon i særlige tilfeller, herunder ved overgrep og ved tvangsekteskap. Etter el. § 23 har en ektefelle blant annet krav på skilsmisse dersom han eller hun er blitt tvunget til å inngå ekteskapet ved rettsstridig atferd. Dette gir et alternativ til ugyldighetssøksmålet etter el. § 16 tredje ledd, noe som er praktisk viktig der ugyldighetsfristene er utløpt.</p>
+<h3>Ulike rettsvirkninger</h3>
+<p>Forskjellen mellom ugyldighet og skilsmisse får betydning for rettsvirkningene, særlig for det økonomiske oppgjøret. Ved skilsmisse av et gyldig ekteskap gjennomføres et ordinært økonomisk oppgjør etter el. kapittel 12 og 15, med deling av felleseiet som hovedregel etter el. § 58. Ved ugyldighet oppstår derimot særlige spørsmål om hvordan formuen skal behandles, ettersom ekteskapet er beheftet med en opprinnelig mangel. Det økonomiske oppgjøret ved ugyldighet behandles nærmere i artikkel 28.</p>
+<p>En annen praktisk forskjell er forholdet til tredjeparter og til offentligrettslige virkninger. Et ugyldig ekteskap har som utgangspunkt ikke hatt de rettsvirkningene et gyldig ekteskap har, mens et ekteskap som oppløses ved skilsmisse har vært fullt ut gyldig frem til oppløsningen, med alle de virkninger det innebærer for arv, trygd, skatt og formue.</p>
+<h3>Fremgangsmåten er ulik</h3>
+<p>Fremgangsmåten skiller seg også. Skilsmisse etter forutgående separasjon behandles av statsforvalteren etter el. kapittel 5, og bygger på en forholdsvis enkel administrativ prosess der separasjon og skilsmisse innvilges når vilkårene er oppfylt. Skilsmisse uten forutgående separasjon etter el. §§ 22 og 23 må derimot bringes inn for domstolene.</p>
+<p>Ugyldighet gjøres gjeldende dels ved at statsforvalteren reiser sak om oppløsning etter el. § 24 ved bigami og slektskap, dels ved søksmål fra ektefellen selv etter el. § 16 tredje ledd ved tvang, eventuelt med statsforvalteren som alternativ søksmålsmyndighet etter el. § 16 a. Saker om et ekteskaps bestående behandles av domstolene.</p>
+<h3>Fristenes betydning for valg av spor</h3>
+<p>Et praktisk avgjørende forhold ved valget mellom ugyldighet og skilsmisse i tvangstilfellene er fristene. Ugyldighetssøksmålet etter el. § 16 tredje ledd er underlagt fristene i el. § 16 fjerde ledd: seks måneder etter at parten er fri for tvangen, og uansett senest fem år etter inngåelsen. Skilsmisse etter el. § 23 er derimot ikke underlagt disse korte fristene. For en klient som oppsøker advokat lenge etter ekteskapsinngåelsen, vil skilsmissesporet ofte være den eneste farbare veien, ettersom ugyldighetsfristene da kan være oversittet. Advokaten må derfor tidlig avklare når tvangen opphørte og når ekteskapet ble inngått, for å vurdere om ugyldighetssporet fortsatt er åpent.</p>
+<h3>Når bør man velge hvilken vei?</h3>
+<p>For en advokat er det praktisk viktig å vurdere hvilken vei klienten bør gå. Ved tvangsekteskap kan klienten både kreve ugyldighet etter el. § 16 tredje ledd og skilsmisse etter el. § 23. Valget kan ha betydning for det økonomiske oppgjøret og for hvordan forholdet rettslig kvalifiseres. Dersom ugyldighetsfristene i el. § 16 fjerde ledd er utløpt, vil skilsmisse etter el. § 23 ofte være den praktiske veien ut, ettersom denne bestemmelsen ikke er underlagt de samme korte fristene.</p>
+<p>For et nylig inngått, men gyldig ekteskap uten ugyldighetsgrunn, finnes ingen annulleringsvei. Da må forholdet løses gjennom separasjon og skilsmisse etter el. §§ 20 og 21, uansett hvor kort tid ekteskapet har vart.</p>
+<h3>Betydningen for tredjeparter og offentligrettslig status</h3>
+<p>En ytterligere forskjell mellom ugyldighet og skilsmisse gjelder forholdet til tredjeparter og offentligrettslig status i den perioden ekteskapet besto. Ved skilsmisse har ekteskapet vært fullt ut gyldig frem til oppløsningstidspunktet, med alle de virkninger det innebærer for arv, trygd, skatt og formue underveis. Ved ugyldighet er utgangspunktet at ekteskapet ikke har hatt disse virkningene, men hensynet til en godtroende part og til tredjeparter som har innrettet seg i tillit til ekteskapet, kan modifisere dette. Denne forskjellen kan ha stor praktisk betydning, for eksempel for ektefellepensjon, for arv dersom den ene parten er død, og for spørsmål om felles gjeld og ansvar overfor kreditorer.</p>
+<h3>Tidsdimensjonen: bakoverskuende kontra fremoverskuende</h3>
+<p>Den mest grunnleggende sondringen ligger i tidsdimensjonen. Ugyldighet er bakoverskuende: den retter seg mot omstendigheter som forelå ved inngåelsen, og spør om ekteskapet i det hele tatt skulle vært inngått. Skilsmisse er fremoverskuende: den forutsetter et gyldig ekteskap og spør om det skal bestå videre. Denne grunnleggende forskjellen forklarer hvorfor de to instituttene har ulike vilkår, ulike frister og ulike rettsvirkninger. For den praktiserende jurist er det avgjørende å plassere klientens sak riktig: bygger kravet på en mangel ved selve inngåelsen, eller på et ønske om å avslutte et gyldig ekteskap?</p>
+<h3>Oppsummering</h3>
+<p>Forskjellen er at ugyldighet – det nærmeste motstykket til «annullering» – bygger på en opprinnelig mangel ved ekteskapsinngåelsen etter el. § 16, mens skilsmisse oppløser et gyldig inngått ekteskap etter el. kapittel 4. Ugyldighet ser bakover på lovligheten av inngåelsen; skilsmisse ser fremover på oppløsningen. De to har ulike vilkår, ulik fremgangsmåte og ulike rettsvirkninger, særlig for det økonomiske oppgjøret. For oppløsning av tvangsekteskap, se artikkel 26.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

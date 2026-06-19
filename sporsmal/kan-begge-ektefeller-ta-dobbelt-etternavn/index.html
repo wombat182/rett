@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan begge ektefeller ta dobbelt etternavn? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-begge-ektefeller-ta-dobbelt-etternavn/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan begge ektefeller ta dobbelt etternavn?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-begge-ektefeller-ta-dobbelt-etternavn/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan begge ektefeller ta dobbelt etternavn?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan begge ektefeller ta dobbelt etternavn?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Begge ektefeller kan ta et dobbelt etternavn, og de kan dessuten ta samme doble etternavn slik at familien får et felles navn. Adgangen følger av navneloven § 12 om dobbelt etternavn, sammenholdt med § 4 om hvilke navn ektefeller har rett til. Et dobbelt etternavn settes sammen av to enkle etternavn forbundet med bindestrek.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 12, 4, 3, 9, 10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/12/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 12</div>
+  <div class="related-card-title">Hvem har lov til å vie dere?</div>
+</a><a href="../../lover/ekteskapsloven/4/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 4</div>
+  <div class="related-card-title">Du kan ikke være gift med to samtidig (Forbud mot bigami)</div>
+</a><a href="../../lover/ekteskapsloven/3/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 3</div>
+  <div class="related-card-title">Forbud mot å gifte seg med nære slektninger</div>
+</a><a href="../../lover/ekteskapsloven/9/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 9</div>
+  <div class="related-card-title">Kravet om at dere forstår hva ekteskap er (Rettslig handleevne)</div>
+</a><a href="../../lover/ekteskapsloven/10/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 10</div>
+  <div class="related-card-title">Prøvingsattesten er gyldig i 4 måneder</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Begge ektefeller kan ta et dobbelt etternavn, og de kan dessuten ta samme doble etternavn slik at familien får et felles navn. Adgangen følger av navneloven § 12 om dobbelt etternavn, sammenholdt med § 4 om hvilke navn ektefeller har rett til. Et dobbelt etternavn settes sammen av to enkle etternavn forbundet med bindestrek.</p>
+<h3>Hjemmelen for dobbelt etternavn</h3>
+<p>Navneloven (lov 7. juni 2002 nr. 19) § 12 fastsetter at et dobbelt etternavn kan dannes ved at to etternavn settes sammen med bindestrek. Sammenstillingen behandles i flere relasjoner som om det dreier seg om to selvstendige etternavn. Det innebærer blant annet at hvert av leddene i det doble navnet må være et navn vedkommende har rett til etter de alminnelige reglene i §§ 3 til 8.</p>
+<p>For ektefeller er dette praktisk uproblematisk: hver av dem har etter § 4 første ledd nr. 4 rett til den andres etternavn, og de har naturligvis rett til sitt eget. Et dobbelt etternavn sammensatt av begge ektefellenes navn ligger derfor klart innenfor det loven tillater, og krever ingen særskilt begrunnelse eller samtykke ut over det som følger av at navnene tilhører ektefellene selv.</p>
+<h3>Begge kan ta samme doble navn</h3>
+<p>Et viktig poeng er at begge ektefeller kan ta det <em>samme</em> doble etternavnet. Dersom A heter Hansen og B heter Berg, kan begge ta etternavnet «Berg-Hansen» eller «Hansen-Berg». Da får hele familien, inkludert eventuelle barn, et felles dobbelt etternavn. Rekkefølgen på leddene står ektefellene fritt til å velge, og de behøver ikke velge samme rekkefølge – men i praksis velger de fleste lik rekkefølge for å markere et felles familienavn og for at familien skal alfabetiseres likt.</p>
+<p>Alternativt kan den ene ta dobbelt etternavn mens den andre beholder sitt enkle navn, eller ektefellene kan velge ulik sammensetning eller ulik rekkefølge. Loven krever ikke symmetri, og dette gir betydelig fleksibilitet for par som ønsker å markere både fellesskap og individuell identitet.</p>
+<h3>Forskjellen mellom dobbelt etternavn og mellomnavn</h3>
+<p>Det er rettslig viktig å skille mellom et dobbelt etternavn etter § 12 og bruk av mellomnavn etter § 9. Ved dobbelt etternavn er begge leddene <em>etternavn</em>, forbundet med bindestrek, og hele konstruksjonen er personens etternavn. Ved mellomnavn beholder man ett etternavn, mens det andre navnet bæres som mellomnavn uten bindestrek og uten å være en del av etternavnet.</p>
+<p>Distinksjonen har betydning for flere forhold:</p>
+<ul>
+<li><strong>Registrering og alfabetisering.</strong> Et dobbelt etternavn alfabetiseres etter hele konstruksjonen, mens et mellomnavn ikke er en del av etternavnet og dermed ikke styrer alfabetiseringen på samme måte.</li>
+<li><strong>Barns navnevalg.</strong> Et dobbelt etternavn teller som to etternavn i relasjon til reglene om hvilke navn et barn kan avlede av forelderen. Et barn kan dermed ta ett av leddene, begge leddene eller danne sitt eget doble navn med ett av foreldrenes ledd. Et mellomnavn gir andre avledningsmuligheter etter § 9.</li>
+<li><strong>Daglig bruk.</strong> Mellomnavn benyttes ofte ikke i dagligtale på samme måte som etternavnet, mens et dobbelt etternavn er det fulle etternavnet i alle sammenhenger.</li>
+</ul>
+<p>For klienter som er opptatt av hva barna skal kunne hete, kan dette være et reelt valgkriterium, og rådgiveren bør forklare konsekvensene av hvert alternativ.</p>
+<h3>Antall ledd og bindestrek</h3>
+<p>Loven tillater dobbelt etternavn – altså to ledd. Det er ikke adgang til å danne trippel etternavn med flere bindestrek. Bindestreken er det formelle kjennetegnet på at det dreier seg om ett dobbelt etternavn og ikke om et etternavn med et foranstilt mellomnavn. Den som ønsker å beholde flest mulig av sine navn, må derfor velge mellom å kombinere mellomnavn (§ 9) og etternavn (§ 12) innenfor lovens rammer. En person kan for eksempel ha både et mellomnavn og et dobbelt etternavn, slik at den fulle navnerekken blir lengre, men selve etternavnet kan ikke bestå av mer enn to ledd.</p>
+<h3>Praktiske eksempler</h3>
+<p>For å illustrere fleksibiliteten: Anta at Kari Solberg gifter seg med Jonas Dahl. Mulige løsninger inkluderer at begge tar «Dahl-Solberg», at Kari blir «Kari Solberg Dahl» (Solberg som mellomnavn, Dahl som etternavn), eller at Jonas beholder «Dahl» mens Kari tar «Solberg-Dahl». Hvert valg er rettslig holdbart, og valget bør tilpasses parets ønsker om fellesskap, yrkesmessig kontinuitet og hva eventuelle barn skal hete. Rådgiverens rolle er å vise frem mulighetsrommet, ikke å anbefale en bestemt løsning.</p>
+<h3>Tiårsregelen og gebyr</h3>
+<p>Som ved annen navneendring i forbindelse med ekteskap, er det å ta dobbelt etternavn ved giftermål gebyrfritt og unntatt fra tiårsbegrensningen i navneloven § 10. Ektefellene kan derfor senere endre navnet – for eksempel ved å droppe ett av leddene ved en skilsmisse – uten å støte mot tiårsregelen, så lenge endringen skjer i tilknytning til ekteskapets inngåelse eller oppløsning.</p>
+<h3>Dobbelt etternavn og barnas navnevalg</h3>
+<p>Et dobbelt etternavn hos foreldrene gir barna et bredt sett av navnemuligheter. Siden hvert ledd i det doble navnet etter § 12 behandles som et selvstendig etternavn, kan et barn ta ett av leddene, begge leddene som dobbelt etternavn, eller kombinere ett av foreldrenes ledd med den andre forelderens etternavn. Dette gir betydelig fleksibilitet, men kan også skape et noe uoversiktlig bilde over generasjoner: tar hver generasjon med seg ett ledd og legger til ett nytt, kan navnene «vokse» og måtte beskjæres. Rådgiveren bør gjøre par oppmerksomme på at et dobbelt etternavn er praktisk, men at det legger føringer for hvordan etterkommernes navn kan bygges opp, og at loven ikke tillater mer enn to ledd i ett etternavn.</p>
+<h3>Når bare den ene tar dobbelt etternavn</h3>
+<p>Det er fullt mulig at bare den ene ektefellen tar et dobbelt etternavn mens den andre beholder sitt enkle navn eller tar partnerens navn som mellomnavn. En vanlig løsning er at den ene parten – ofte den som har et yrkesmessig innarbeidet navn – tar dobbelt etternavn for å beholde sitt eget samtidig som familietilhørigheten markeres, mens den andre beholder sitt enkle navn. Loven krever som nevnt ikke symmetri, og denne fleksibiliteten gjør at par kan finne en løsning tilpasset begges behov for kontinuitet og fellesskap. Rådgiverens oppgave er å vise frem kombinasjonsmulighetene mellom § 9 (mellomnavn) og § 12 (dobbelt etternavn), slik at paret treffer et informert valg.</p>
+<h3>Oppsummering for praktikeren</h3>
+<p>Begge ektefeller kan ta dobbelt etternavn, og de kan dele samme doble navn som felles familienavn. Hjemmelen er navneloven § 12, jf. § 4. Skill klart mellom dobbelt etternavn og mellomnavn (§ 9), vær oppmerksom på at bare to ledd er tillatt, klargjør konsekvensene for barnas senere navnevalg, og utnytt unntaket fra tiårsregelen ved ekteskap.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

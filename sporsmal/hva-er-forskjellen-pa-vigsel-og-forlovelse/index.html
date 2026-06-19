@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på vigsel og forlovelse? — Rettsregel</title>
+<meta name="description" content="Vigsel og forlovelse er to vesensforskjellige fenomener.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-vigsel-og-forlovelse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på vigsel og forlovelse?">
+<meta property="og:description" content="Vigsel og forlovelse er to vesensforskjellige fenomener.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-vigsel-og-forlovelse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på vigsel og forlovelse?">
+<meta name="twitter:description" content="Vigsel og forlovelse er to vesensforskjellige fenomener.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva er forskjellen på vigsel og forlovelse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Vigsel og forlovelse er to vesensforskjellige fenomener. Vigsel er den rettsstiftende handlingen som etablerer ekteskap med fulle rettsvirkninger etter ekteskapsloven, jf. el. § 11 første ledd, mens forlovelse er en uformell og rettslig uforpliktende erklæring om at to personer akter å gifte seg. Forlovelse har i moderne norsk rett ingen selvstendige rettsvirkninger.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 11, 12, 14, 15, 38</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/11/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 11</div>
+  <div class="related-card-title">Hvordan selve vielsen foregår</div>
+</a><a href="../../lover/ekteskapsloven/12/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 12</div>
+  <div class="related-card-title">Hvem har lov til å vie dere?</div>
+</a><a href="../../lover/ekteskapsloven/14/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 14</div>
+  <div class="related-card-title">Vigsleren må sjekke prøvingsattesten før bryllupet</div>
+</a><a href="../../lover/ekteskapsloven/15/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 15</div>
+  <div class="related-card-title">Regjeringens makt til å lage regler for bryllupsseremonien</div>
+</a><a href="../../lover/ekteskapsloven/38/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 38</div>
+  <div class="related-card-title">Ektefeller har plikt til å forsørge hverandre</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Vigsel og forlovelse er to vesensforskjellige fenomener. Vigsel er den rettsstiftende handlingen som etablerer ekteskap med fulle rettsvirkninger etter ekteskapsloven, jf. el. § 11 første ledd, mens forlovelse er en uformell og rettslig uforpliktende erklæring om at to personer akter å gifte seg. Forlovelse har i moderne norsk rett ingen selvstendige rettsvirkninger.</p>
+<h3>Vigsel – den rettsstiftende handlingen</h3>
+<p>Etter el. § 11 første ledd inngås ekteskap ved at brudefolkene møter for en vigsler. Mens begge er til stede, skal de erklære at de ønsker å inngå ekteskap med hverandre, hvoretter vigsleren erklærer dem for ektefolk. Vigselen er dermed en formbundet rettshandling med klare gyldighetsvilkår.</p>
+<p>For at vigselen skal være gyldig, må vigsleren ha vigselsmyndighet etter el. § 12, det må foreligge gyldig prøvingsattest etter el. § 14, og minst to vitner må være til stede, jf. el. § 15. Erklæringene fra brudefolkene og vigslerens erklæring om at de er ektefolk, utgjør kjernen i den konstitutive handlingen. Mangler ved disse kjerneelementene kan føre til at ekteskapet ikke anses inngått overhodet, jf. el. § 11 annet ledd om at ekteskapet ikke er gyldig inngått dersom kravene i § 11 første ledd og § 12 ikke er oppfylt.</p>
+<p>Det er først ved vigselen at ektefellene oppnår de omfattende rettsvirkningene ekteskap utløser: gjensidig underholdsplikt etter el. § 38, formuesordningen med felleseie som hovedregel etter el. §§ 56 flg., arverettslige virkninger etter arveloven, samt en rekke virkninger i trygde-, skatte- og utlendingsretten.</p>
+<h3>Forlovelse – en rettslig uforpliktende erklæring</h3>
+<p>Forlovelse er derimot en privat erklæring om fremtidig ekteskapsinngåelse. Den eldre ekteskapslovgivningen kjente regler om trolovelse med visse rettsvirkninger, men dagens ekteskapslov av 1991 inneholder ingen bestemmelser om forlovelse. En forlovelse forplikter ikke partene til å gifte seg, og et brutt forlovelsesløfte gir ikke grunnlag for erstatning eller andre sanksjoner etter ekteskapsloven.</p>
+<p>Dette innebærer at en forlovelse fritt kan brytes av begge parter når som helst, uten rettslige konsekvenser. Forlovelsen etablerer ingen formuesordning, ingen underholdsplikt og ingen arverett. Eventuelle økonomiske mellomværender mellom forlovede – for eksempel gaver eller felles investeringer – må eventuelt løses etter alminnelige formuerettslige regler om gaver, sameie og ulovfestet berikelse, ikke etter ekteskapslovens delingsregler.</p>
+<h3>Forlovere – ikke det samme som forlovelse</h3>
+<p>Det er viktig å skille begrepet forlovelse fra begrepet forlovere. Forlovere er de personene som etter el. § 16 bekrefter at ekteskapsvilkårene er oppfylt forut for vigselen, og som inngår i prøvingsprosessen. Forlovere har altså en konkret funksjon i selve ekteskapsinngåelsen, mens forlovelse er en uforpliktende privat erklæring. Forholdet til forlovere behandles nærmere i artikkel 18.</p>
+<h3>Den rettslige sondringen i praksis</h3>
+<p>Skillet får praktisk betydning i flere sammenhenger. Ved samlivsbrudd mellom forlovede gjelder ingen særlige regler om deling av formue, og det er heller ingen krav om separasjon eller skilsmissebehandling. Forholdet opphører ganske enkelt ved at en av partene trekker seg. Ved brudd i et ekteskap kreves derimot formell oppløsning etter el. kapittel 4, enten ved separasjon og etterfølgende skilsmisse etter el. § 21, eller skilsmisse på de grunnlag som følger av el. §§ 22 og 23.</p>
+<p>For samboere som har vært forlovet, men aldri gift, gjelder samboerrettslige prinsipper og eventuelle samboeravtaler – ikke ekteskapsloven. Dette er en vanlig kilde til misforståelser, ettersom mange tror at en langvarig forlovelse eller et felles husholdningsfellesskap gir ekteskapslignende rettigheter. Det gjør det ikke. Samboere er henvist til alminnelige formuerettslige regler, eventuelle avtaler og enkelte særregler i annen lovgivning, men ekteskapslovens regler om felleseie, skjevdeling og deling kommer ikke til anvendelse på et forhold som ikke har vært formalisert ved vigsel.</p>
+<h3>Vigselsattest som bevis for inngått ekteskap</h3>
+<p>Mens en forlovelse ikke etterlater noe rettslig spor, dokumenteres et inngått ekteskap gjennom vigselsattest og registrering i folkeregisteret. Vigselsattesten er det praktiske beviset for at vigsel har funnet sted, og legges til grunn av offentlige myndigheter og private aktører som har behov for å fastslå partenes sivilstand. For en forlovelse finnes ingen tilsvarende dokumentasjon med rettslig betydning. Dette understreker den prinsipielle forskjellen: vigselen er en rettshandling som registreres og dokumenteres med virkninger overfor det offentlige og tredjeparter, mens forlovelsen er en rent privat erklæring uten registrering eller rettslig dokumentasjon.</p>
+<h3>Overgangen fra forlovelse til ekteskap</h3>
+<p>Den rettslige overgangen fra et uforpliktende forhold til et rettslig bindende ekteskap skjer i ett tidspunkt: i vigselsøyeblikket. Det er ingen mellomtilstand med delvise rettsvirkninger. Enten er partene gift med fulle rettsvirkninger, eller så er de det ikke. Dette gir en klar og forutsigbar rettstilstand, men forutsetter at partene er klar over at det først er vigselen – ikke forlovelsen, ikke samboerskapet og ikke en eventuell religiøs eller kulturell seremoni uten vigselsmyndighet – som stifter ekteskap etter norsk rett.</p>
+<h3>Religiøse og kulturelle seremonier uten vigselsmyndighet</h3>
+<p>En praktisk viktig presisering er at en religiøs eller kulturell seremoni ikke stifter ekteskap etter norsk rett med mindre den som forretter har vigselsmyndighet etter el. § 12 og de øvrige vilkårene er oppfylt. En seremoni som rent religiøst eller kulturelt markerer et ekteskap, men som gjennomføres av en person uten vigselsmyndighet og uten gyldig prøvingsattest, har ingen sivilrettslig virkning. Partene er da rettslig sett ikke gift, uansett hvordan forholdet oppfattes i deres miljø. Dette har stor praktisk betydning, blant annet i saker om sosial kontroll, der en part kan være «religiøst gift» uten å være rettslig gift, eller motsatt rettslig skilt uten å være «religiøst skilt». Juristen må derfor alltid avklare om det foreligger en sivilrettslig gyldig vigsel etter el. §§ 11 og 12, og ikke bygge på partenes egen oppfatning av forholdet.</p>
+<h3>Betydningen av sondringen ved død og arv</h3>
+<p>Skillet mellom forlovelse og vigsel får også betydning ved dødsfall. En forlovet etterlatt har ingen arverett etter avdøde som ektefelle, og ingen rett til uskifte etter arveloven. En ektefelle har derimot legalarverett og som hovedregel rett til uskifte. For par som lever i en langvarig forlovelse uten å være gift, kan dette gi uventede og inngripende konsekvenser ved den enes død. Dersom partene ønsker å sikre hverandre arverettslig uten å gifte seg, må dette skje ved testament innenfor pliktdelsreglenes rammer. Dette understreker nok en gang at det er vigselen, og ikke forlovelsen, som utløser de ekteskapelige rettsvirkningene.</p>
+<h3>Oppsummering</h3>
+<p>Forskjellen er fundamental: vigsel er den formbundne, rettsstiftende handlingen etter el. § 11 som etablerer ekteskap med fulle rettsvirkninger, mens forlovelse er en rettslig uforpliktende erklæring uten selvstendige virkninger etter ekteskapsloven. Kun vigselen utløser ektefellenes rettigheter og plikter, og kun et inngått ekteskap krever formell oppløsning. For vilkårene for gyldig vigsel, se artikkel 19 og 20.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/betyr-felleseie-at-alt-eies-likt/">Betyr felleseie at alt eies likt?</a><a class="sp-relchip" href="../../sporsmal/har-jeg-krav-paa-halvparten-hvis-jeg-ikke-staar-som-eier/">Har jeg krav på halvparten hvis jeg ikke står som eier?</a><a class="sp-relchip" href="../../sporsmal/hva-boer-staa-i-en-skifteavtale/">Hva bør stå i en skifteavtale?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

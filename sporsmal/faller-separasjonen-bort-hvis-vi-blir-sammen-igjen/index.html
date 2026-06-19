@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faller separasjonen bort hvis vi blir sammen igjen? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/faller-separasjonen-bort-hvis-vi-blir-sammen-igjen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Faller separasjonen bort hvis vi blir sammen igjen?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/faller-separasjonen-bort-hvis-vi-blir-sammen-igjen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Faller separasjonen bort hvis vi blir sammen igjen?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Faller separasjonen bort hvis vi blir sammen igjen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Etter el. § 20 tredje ledd faller separasjonen bort dersom ektefellene fortsetter eller gjenopptar samlivet. Da mister separasjonen sin rettsvirkning, og separasjonstiden nullstilles. Unntak gjelder for samliv i en overgangsperiode inntil samlivet er brutt, og for kortvarige forsøk på å gjenoppta samlivet, som ikke fører til at separasjonen faller bort.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 20, 60, 59, 21, 22</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/20/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 20</div>
+  <div class="related-card-title">Slik får du separasjon</div>
+</a><a href="../../lover/ekteskapsloven/60/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 60</div>
+  <div class="related-card-title">Datoen som fryser økonomien (Skjæringstidspunktet)</div>
+</a><a href="../../lover/ekteskapsloven/59/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 59</div>
+  <div class="related-card-title">Behold det du tok med inn i ekteskapet (Skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/21/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 21</div>
+  <div class="related-card-title">Skilsmisse etter ett års separasjon</div>
+</a><a href="../../lover/ekteskapsloven/22/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 22</div>
+  <div class="related-card-title">Skilsmisse etter å ha bodd fra hverandre i to år (Samlivsbrudd)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Etter el. § 20 tredje ledd faller separasjonen bort dersom ektefellene fortsetter eller gjenopptar samlivet. Da mister separasjonen sin rettsvirkning, og separasjonstiden nullstilles. Unntak gjelder for samliv i en overgangsperiode inntil samlivet er brutt, og for kortvarige forsøk på å gjenoppta samlivet, som ikke fører til at separasjonen faller bort.</p>
+<h3>Hovedregelen: gjenopptatt samliv opphever separasjonen</h3>
+<p>Ekteskapsloven § 20 tredje ledd første punktum slår fast at en separasjon blir uten rettsvirkning dersom ektefellene fortsetter eller senere gjenopptar samlivet. Begrunnelsen er at separasjonen er et uttrykk for at samlivet er brutt. Gjenopptas samlivet reelt, faller selve grunnlaget for separasjonen bort, og ekteskapet fortsetter som før. Den ettårige separasjonstiden etter § 21 kan da ikke lenger bygges på.</p>
+<p>Dette er en logisk konsekvens av separasjonens karakter. Separasjonen er en formalisering av et samlivsbrudd. Når bruddet opphører ved at ektefellene finner sammen igjen, er det ikke lenger grunnlag for å opprettholde separasjonens rettsvirkninger. Lovgiver har derfor knyttet bortfallet direkte til den faktiske gjenopptakelsen av samlivet.</p>
+<h3>Unntaket: overgangsperiode og kortvarige forsøk</h3>
+<p>Annet punktum i § 20 tredje ledd gjør et praktisk viktig unntak: samliv i en overgangsperiode inntil samlivet blir brutt, eller kortvarige forsøk på å gjenoppta samlivet, har ikke denne virkning. Unntaket favner to typetilfeller:</p>
+<ul>
+<li><strong>Overgangsperioden.</strong> Det tar ofte tid å flytte fra hverandre etter at separasjonsbevilling er gitt. At ektefellene fortsatt bor under samme tak mens den ene skaffer ny bolig, opphever ikke separasjonen, forutsatt at det reelle samlivet er brutt.</li>
+<li><strong>Kortvarige forsøk.</strong> Ektefeller som ønsker å undersøke om forholdet kan reddes, kan gjøre et avgrenset forsøk på å gjenoppta samlivet uten at separasjonen automatisk faller bort.</li>
+</ul>
+<h3>Grensen mellom kortvarig forsøk og reell gjenopptakelse</h3>
+<p>Det avgjørende er om samlivet reelt og varig er gjenopptatt. Vurderingen er konkret, og sentrale momenter er varigheten av samlivet, hensikten bak gjenforeningen og graden av felles husholdning og økonomi. Et forsøk over noen dager eller uker med en klar prøvekarakter ligger normalt innenfor unntaket. Strekker samlivet seg over flere måneder med full gjenopprettelse av felles husholdning, taler det sterkt for at separasjonen er falt bort. Loven oppstiller ingen fast tidsgrense, og det må derfor foretas en helhetsvurdering. Se også artikkel 83.</p>
+<h3>Rettsvirkningene av bortfall</h3>
+<p>Faller separasjonen bort, inntrer flere konsekvenser:</p>
+<ul>
+<li><strong>Separasjonstiden nullstilles.</strong> Opptjent tid går tapt, og ny separasjonstid må eventuelt løpe fra en ny bevilling, jf. artikkel 84.</li>
+<li><strong>Arveretten gjenoppstår.</strong> Ektefellenes gjensidige arverett, som falt bort ved separasjonen, er igjen i kraft, og muligheten for uskifte gjenoppstår.</li>
+<li><strong>Sivilstatus skal rettes.</strong> Det skal meldes fra til Skatteetaten om opphør av separasjonen, slik at folkeregisteret igjen registrerer ektefellene som gift.</li>
+<li><strong>Underholdsplikten gjenoppstår.</strong> Den gjensidige forsørgelsesplikten under ekteskapet gjelder igjen.</li>
+</ul>
+<h3>Hva med et gjennomført skifte?</h3>
+<p>Har ektefellene allerede delt formuen under separasjonen og deretter gjenopptar samlivet, behandles det de har igjen fra det tidligere skiftet, på linje med midler de eide ved inngåelsen av ekteskapet, dersom formuen senere skal deles på nytt, jf. el. § 60. Dette har betydning for skjevdeling etter el. § 59 ved en eventuell framtidig deling, og er et viktig praktisk poeng som praktikeren bør avklare med klienter som har skiftet og funnet sammen igjen.</p>
+<h3>Råd til klienter som vurderer å bli sammen igjen</h3>
+<p>For praktikeren er det viktig å gi tydelige råd:</p>
+<ul>
+<li><strong>Vær bevisst risikoen.</strong> En reell gjenopptakelse nullstiller separasjonstiden og kan forsinke en senere skilsmisse betydelig.</li>
+<li><strong>Skill mellom forsøk og gjenforening.</strong> Et avgrenset, tidsbegrenset forsøk rammes ikke, men grensen er skjønnsmessig.</li>
+<li><strong>Vurder § 22-veien</strong> som alternativ dersom et nytt ettårig separasjonsløp fremstår uhensiktsmessig.</li>
+<li><strong>Meld fra ved faktisk gjenopptakelse</strong>, slik at folkeregisteret er korrekt.</li>
+</ul>
+<h3>Forholdet til separasjonsbevillingens gyldighet</h3>
+<p>Når separasjonen faller bort etter § 20 tredje ledd, mister separasjonsbevillingen sin rettsvirkning. Bevillingen er da ikke lenger et gyldig grunnlag for å kreve skilsmisse etter § 21, fordi separasjonstiden forutsetter at separasjonen består og at ektefellene har levd atskilt. Ønsker ektefellene senere skilsmisse, kan de altså ikke bygge på den bortfalte separasjonsbevillingen, men må søke ny separasjon. Det er viktig at praktikeren er bevisst dette, slik at man ikke feilaktig legger til grunn at en gammel separasjonsbevilling fortsatt gir grunnlag for skilsmisse etter at samlivet har vært gjenopptatt.</p>
+<h3>Konkret vurdering i tvilstilfeller</h3>
+<p>I tvilstilfeller må det foretas en konkret vurdering av om samlivet er reelt gjenopptatt. Spørsmålet kan komme på spissen når en ektefelle senere søker skilsmisse etter § 21 og statsforvalteren må ta stilling til om separasjonstiden er gyldig oppfylt. Har det i mellomtiden vært perioder med samliv, må statsforvalteren vurdere om dette var akseptable kortvarige forsøk eller en reell gjenopptakelse som lot separasjonen falle bort. Bevisbyrden og bevisvurderingen kan da bli avgjørende. Ektefeller som har hatt slike perioder, bør være forberedt på å dokumentere at samlivet ikke var reelt gjenopptatt, dersom de ønsker å bygge videre på den opprinnelige separasjonen.</p>
+<h3>Sammenhengen med skilsmisse etter § 22</h3>
+<p>Der separasjonen er falt bort og ektefellene likevel ønsker skilsmisse, er skilsmisse etter to års samlivsbrudd etter § 22 ofte et naturlig alternativ. Toårsregelen knytter seg til det faktiske samlivsbruddet, og en periode med gjenopptatt samliv vil avbryte fristen, slik at den må løpe på nytt fra et nytt samlivsbrudd. Praktikeren må derfor vurdere både separasjonsveien og samlivsbruddsveien i lys av hvordan periodene med samliv og atskillelse fordeler seg over tid. I begge tilfeller er det den reelle atskillelsen som er avgjørende, ikke formelle vedtak alene.</p>
+<h3>Hensynet bak unntaket for forsoningsforsøk</h3>
+<p>Unntaket for kortvarige forsøk og overgangsperioder bygger på et bevisst hensyn til forsoning. Lovgiver har ikke ønsket å skape en rettstilstand der ektefeller avstår fra å forsøke å redde forholdet av frykt for å miste opptjent separasjonstid. Ved å la kortvarige forsøk være uten betydning for separasjonen, oppmuntrer loven til at ektefeller kan undersøke om samlivet kan gjenopptas, uten umiddelbar rettslig risiko. Dette hensynet er sentralt for å forstå hvorfor grensen mellom forsøk og reell gjenopptakelse er skjønnsmessig: loven ønsker å gi rom for forsoning, men kan ikke akseptere at et reelt gjenopptatt samliv opprettholder en separasjon som ikke lenger har noe grunnlag.</p>
+<h3>Oppsummering</h3>
+<p>Separasjonen faller bort hvis ektefellene reelt blir sammen igjen, jf. el. § 20 tredje ledd. Da nullstilles separasjonstiden, arveretten gjenoppstår, og det skal meldes fra til Skatteetaten. Unntak gjelder for samliv i en overgangsperiode og kortvarige forsøk på å gjenoppta samlivet. Grensen mellom forsøk og reell gjenopptakelse er en konkret helhetsvurdering basert på varighet, hensikt og grad av samliv.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

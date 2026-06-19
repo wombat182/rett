@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan man bli skilt uten å være separert først? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-man-bli-skilt-uten-a-vaere-separert/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan man bli skilt uten å være separert først?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-man-bli-skilt-uten-a-vaere-separert/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan man bli skilt uten å være separert først?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan man bli skilt uten å være separert først?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Selv om skilsmisse etter forutgående separasjon (el. § 21) er den vanligste veien, kan ekteskapet oppløses uten separasjonsbevilling i flere tilfeller. De viktigste er skilsmisse etter to års samlivsbrudd etter el. § 22 og skilsmisse ved dom etter overgrep eller tvangsekteskap etter el. § 23. I tillegg kan ekteskap oppløses ved bigami etter el. § 24.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 21, 22, 23, 24, 19</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/21/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 21</div>
+  <div class="related-card-title">Skilsmisse etter ett års separasjon</div>
+</a><a href="../../lover/ekteskapsloven/22/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 22</div>
+  <div class="related-card-title">Skilsmisse etter å ha bodd fra hverandre i to år (Samlivsbrudd)</div>
+</a><a href="../../lover/ekteskapsloven/23/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 23</div>
+  <div class="related-card-title">Skilsmisse på dagen ved overgrep eller tvang</div>
+</a><a href="../../lover/ekteskapsloven/24/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 24</div>
+  <div class="related-card-title">Tvangsoppløsning av ulovlige ekteskap</div>
+</a><a href="../../lover/ekteskapsloven/19/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 19</div>
+  <div class="related-card-title">Hvordan avslutte et ekteskap (Skilsmisse og oppløsning)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Selv om skilsmisse etter forutgående separasjon (el. § 21) er den vanligste veien, kan ekteskapet oppløses uten separasjonsbevilling i flere tilfeller. De viktigste er skilsmisse etter to års samlivsbrudd etter el. § 22 og skilsmisse ved dom etter overgrep eller tvangsekteskap etter el. § 23. I tillegg kan ekteskap oppløses ved bigami etter el. § 24.</p>
+<h3>Lovens tre veier til skilsmisse</h3>
+<p>Etter el. § 19 kan et ekteskap oppløses ved skilsmisse etter forutgående separasjon (§ 21) eller uten forutgående separasjon (§§ 22 og 23). I tillegg kan ekteskapet oppløses etter § 24. Separasjon er altså ikke en absolutt forutsetning for skilsmisse. Lovgiver har bevisst åpnet alternative veier der separasjonskravet ville være urimelig eller unødvendig. Den vanligste veien er likevel separasjon etterfulgt av skilsmisse etter ett år, fordi de fleste ektefeller ønsker raskest mulig oppløsning og ikke har vært atskilt i to år når bruddet skjer.</p>
+<h3>Skilsmisse etter to års samlivsbrudd, § 22</h3>
+<p>Etter el. § 22 kan hver av ektefellene kreve skilsmisse dersom samlivet har vært brutt i minst to år. Her er det ingen forutgående separasjonsbevilling, men det stilles krav til dokumentasjon av samlivsbruddet. Søknaden må vedlegges vitneerklæring der det framgår når ektefellene flyttet fra hverandre, undertegnet av to vitner som kjenner én av eller begge ektefellene godt og kan bekrefte atskillelsen. For at statsforvalteren skal ha myndighet, må den andre ektefellen skriftlig bekrefte at vedkommende er enig i atskillelsen. Mangler slik bekreftelse, må saken bringes inn for tingretten, som da har myndighet til å avgjøre om vilkårene i § 22 er oppfylt.</p>
+<p>Toårsregelen er praktisk for ektefeller som har bodd fra hverandre lenge uten å formalisere noen separasjon. For dem kan det være raskere å bygge direkte på § 22 enn å søke separasjon og vente ett nytt år. Se artikkel 78. Toårsfristen regnes fra det faktiske samlivsbruddet, altså fra da ektefellene reelt flyttet fra hverandre, ikke fra noe formelt vedtak.</p>
+<h3>Skilsmisse ved dom etter overgrep, § 23</h3>
+<p>Etter el. § 23 kan en ektefelle kreve skilsmisse uten forutgående separasjon dersom vedkommende har vært utsatt for at den andre ektefellen forsettlig har forsøkt å drepe ham eller henne eller barna, eller forsettlig har utsatt dem for alvorlig mishandling. Det samme gjelder dersom ektefellen er tvunget til å inngå ekteskapet ved rettsstridig atferd. Slike saker behandles ikke av statsforvalteren, men fremmes for tingretten ved søksmål. Søksmålsfristen er som hovedregel seks måneder etter at ektefellen fikk kjennskap til handlingen, og senest to år etter at den fant sted.</p>
+<p>Bestemmelsen gir en umiddelbar rett til skilsmisse uten den ventetiden som ellers gjelder. Begrunnelsen er at det vil være urimelig å kreve at et offer for grov vold eller tvang skal måtte gjennom en ettårig separasjonsperiode for å bli løst fra ekteskapet. Bestemmelsen ivaretar dermed hensynet til den fornærmede ektefellen og barna på en måte som separasjonsveien ikke kan.</p>
+<h3>Oppløsning ved bigami, § 24</h3>
+<p>Etter el. § 24 kan hver av ektefellene kreve ekteskapet oppløst dersom en av dem har inngått et nytt ekteskap som består til tross for det tidligere ekteskapet (bigami). Bestemmelsen verner det opprinnelige ekteskapet og gir grunnlag for oppløsning uten separasjon. Også enkelte tilfeller der ekteskapsvilkår ikke var oppfylt ved inngåelsen, kan føre til oppløsning på dette grunnlaget. Slike saker behandles av tingretten.</p>
+<h3>Når lønner det seg å velge bort separasjon?</h3>
+<p>For praktikeren er valget mellom separasjonsveien (§§ 20 og 21) og de alternative veiene en konkret vurdering:</p>
+<ul>
+<li><strong>Ektefeller som nylig er flyttet fra hverandre</strong> og ønsker raskest mulig oppløsning, er normalt henvist til separasjonsveien, da to års samlivsbrudd ennå ikke foreligger.</li>
+<li><strong>Ektefeller som har vært atskilt i mer enn to år</strong>, kan gå rett på skilsmisse etter § 22 og slipper å vente ny separasjonstid.</li>
+<li><strong>Ofre for overgrep eller tvangsekteskap</strong> bør vurdere skilsmisse ved dom etter § 23, som gir umiddelbar oppløsning.</li>
+</ul>
+<h3>Betydningen for skifte og skjæringstidspunkt</h3>
+<p>Velges § 22-veien fremfor separasjon, endres også skjæringstidspunktet for delingen. Etter el. § 60 er skjæringstidspunktet ved separasjon det tidspunktet begjæringen kom inn til statsforvalteren. Uten forutgående separasjon knytter skjæringstidspunktet seg i stedet til når begjæring om skilsmisse ble framsatt, eventuelt når samlivet ble brutt. Dette kan ha stor betydning for hvilke eiendeler og hvilken gjeld som inngår i delingen, og bør vurderes nøye før man velger vei. Se artikkel 89.</p>
+<h3>Vitneerklæringens rolle ved § 22-veien</h3>
+<p>Ved skilsmisse etter to års samlivsbrudd er vitneerklæringen et sentralt dokument. Den må fylles ut og sendes inn sammen med skilsmissesøknaden, og inneholder et eget felt der ektefellene angir datoen de flyttet fra hverandre. To vitner som kjenner én av eller begge ektefellene godt, skal undertegne og dermed bekrefte at ektefellene har levd atskilt fra den oppgitte datoen. Vitnenes funksjon er å gi statsforvalteren et dokumentasjonsgrunnlag for at toårsfristen er oppfylt. Velges denne veien, må praktikeren sørge for at vitnene oppfyller kravene, og at datoen for samlivsbruddet er korrekt angitt, ettersom denne datoen er avgjørende for fristberegningen.</p>
+<h3>Når kravet om den andres bekreftelse ikke er oppfylt</h3>
+<p>Et særtrekk ved § 22-veien er at statsforvalteren bare har myndighet dersom den andre ektefellen skriftlig bekrefter at vedkommende er enig i atskillelsen. Dette skiller seg fra separasjonsveien, der den ene kan kreve separasjon uavhengig av den andres holdning. Mangler bekreftelsen ved § 22, er det bare tingretten som kan avgjøre saken. For klienter der den andre ektefellen er uenig eller utilgjengelig, kan dette gjøre separasjonsveien mer hensiktsmessig, fordi separasjon etter § 20 ikke krever den andres medvirkning. Valget av vei må derfor ses i lys av om man kan forvente samarbeid fra den andre ektefellen.</p>
+<h3>Praktisk veiledning ved valg av vei</h3>
+<p>For praktikeren er valget av vei en konkret vurdering der flere hensyn spiller inn: hvor lenge ektefellene har vært atskilt, om den andre samarbeider, hvilke verdier som står på spill med tanke på skjæringstidspunktet, og om det foreligger overgrepsgrunnlag. Der ektefellene nylig er flyttet fra hverandre og den andre er uenig, er separasjonsveien normalt det riktige valget. Der ektefellene har vært atskilt i mer enn to år og er enige, kan § 22-veien spare dem for et nytt år. Ved overgrep eller tvang er § 23-veien gjennom tingretten den eneste som gir umiddelbar oppløsning.</p>
+<h3>Oppsummering</h3>
+<p>Man kan bli skilt uten å være separert først. De viktigste alternativene er skilsmisse etter to års samlivsbrudd (§ 22), skilsmisse ved dom etter overgrep eller tvangsekteskap (§ 23) og oppløsning ved bigami (§ 24). Separasjonsveien etter §§ 20 og 21 er likevel den vanligste, særlig for ektefeller som nylig er flyttet fra hverandre. Valg av vei påvirker både tidsbruk, hvilket organ som er kompetent, og skjæringstidspunktet for delingen.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/betyr-felleseie-at-alt-eies-likt/">Betyr felleseie at alt eies likt?</a><a class="sp-relchip" href="../../sporsmal/har-jeg-krav-paa-halvparten-hvis-jeg-ikke-staar-som-eier/">Har jeg krav på halvparten hvis jeg ikke står som eier?</a><a class="sp-relchip" href="../../sporsmal/hva-boer-staa-i-en-skifteavtale/">Hva bør stå i en skifteavtale?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

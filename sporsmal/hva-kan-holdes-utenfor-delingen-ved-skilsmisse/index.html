@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva kan holdes utenfor delingen ved skilsmisse? — Rettsregel</title>
+<meta name="description" content="Ved skilsmisse kan flere kategorier verdier holdes utenfor likedelingen.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-kan-holdes-utenfor-delingen-ved-skilsmisse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva kan holdes utenfor delingen ved skilsmisse?">
+<meta property="og:description" content="Ved skilsmisse kan flere kategorier verdier holdes utenfor likedelingen.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-kan-holdes-utenfor-delingen-ved-skilsmisse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva kan holdes utenfor delingen ved skilsmisse?">
+<meta name="twitter:description" content="Ved skilsmisse kan flere kategorier verdier holdes utenfor likedelingen.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva kan holdes utenfor delingen ved skilsmisse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ved skilsmisse kan flere kategorier verdier holdes utenfor likedelingen. De viktigste er særeie, verdier som kan skjevdeles etter ekteskapsloven § 59, visse personlige eiendeler og rettigheter etter § 61, og eiendeler ervervet etter skjæringstidspunktet etter § 60. I tillegg påvirker gjeldsfradrag etter §§ 58 andre ledd og 60 hva som faktisk kommer til deling.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 59, 42, 60, 58, 73</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/59/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 59</div>
+  <div class="related-card-title">Behold det du tok med inn i ekteskapet (Skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/42/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 42</div>
+  <div class="related-card-title">Slik oppretter dere særeie (Ektepakt)</div>
+</a><a href="../../lover/ekteskapsloven/60/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 60</div>
+  <div class="related-card-title">Datoen som fryser økonomien (Skjæringstidspunktet)</div>
+</a><a href="../../lover/ekteskapsloven/58/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 58</div>
+  <div class="related-card-title">Slik regner dere ut hvem som får hva (Likedeling og gjeldsfradrag)</div>
+</a><a href="../../lover/ekteskapsloven/73/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 73</div>
+  <div class="related-card-title">Kan du kreve betalt for å ha økt verdien på partnerens særeie?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ved skilsmisse kan flere kategorier verdier holdes utenfor likedelingen. De viktigste er særeie, verdier som kan skjevdeles etter ekteskapsloven § 59, visse personlige eiendeler og rettigheter etter § 61, og eiendeler ervervet etter skjæringstidspunktet etter § 60. I tillegg påvirker gjeldsfradrag etter §§ 58 andre ledd og 60 hva som faktisk kommer til deling.</p>
+<h3>Særeie</h3>
+<p>Særeie er den mest grunnleggende kategorien som holdes utenfor delingen. Særeie kan være avtalt mellom ektefellene ved ektepakt etter ekteskapsloven § 42, eller bestemt av en arvelater eller giver etter § 48. Særeiemidler inngår ikke i likedelingen i det hele tatt, men holdes i sin helhet utenfor. Det er viktig å skille særeie fra skjevdeling: særeie er en formuesordning, mens skjevdeling gjelder felleseiemidler man likevel får holde verdien av utenfor. Særeie gir et mer robust vern enn skjevdeling, fordi det ikke avhenger av at man dokumenterer midlenes opphav på samme måte – det følger direkte av ektepakten eller arvelaters bestemmelse.</p>
+<p>Særeie kan være fullstendig eller delvis, og det kan være tidsbegrenset eller betinget. Ektefellene kan for eksempel avtale at noe skal være særeie så lenge ekteskapet består, men inngå i delingen ved død. Slike nyanser må kartlegges konkret ut fra ektepakten.</p>
+<h3>Skjevdelingsmidler – § 59</h3>
+<p>Verdier som klart kan føres tilbake til premidler, arv eller gave fra andre enn ektefellen, kan holdes utenfor likedelingen ved skjevdeling etter ekteskapsloven § 59. Til forskjell fra særeie er dette felleseiemidler, men den berettigede ektefellen kan kreve verdien holdt utenfor. Skjevdeling forutsetter at man fremmer krav og dokumenterer sammenhengen, og den kan reduseres dersom den ville være åpenbart urimelig etter § 59 andre ledd. Se artiklene 113-115 for en utførlig behandling.</p>
+<h3>Personlige eiendeler og rettigheter – § 61</h3>
+<p>Ekteskapsloven § 61 lar en ektefelle holde utenfor delingen visse eiendeler og rettigheter av personlig art. Dette omfatter blant annet:</p>
+<ul>
+<li>Eiendeler som utelukkende tjener til ektefellens personlige bruk, så langt det ikke vil være åpenbart urimelig overfor den andre.</li>
+<li>Rettigheter i offentlige eller private pensjonsordninger.</li>
+<li>Visse trygde- og forsikringsytelser og krav som ikke kan overdras eller er av personlig karakter.</li>
+<li>Erstatning, trygd eller forsikring som dekker tap i fremtidig erverv og utgifter som en personskade har påført ektefellen.</li>
+</ul>
+<p>Bakgrunnen er at slike verdier har en så personlig karakter at de ikke bør deles. For enkelte av disse rettighetene gjelder likevel en sikkerhetsventil: dersom det å holde dem utenfor vil føre til et åpenbart urimelig resultat, kan den andre ektefellen tilkjennes et beløp for å hindre urimelighet. Pensjonsrettigheter er praktisk viktige her, fordi de ofte representerer betydelige verdier som likevel som hovedregel holdes utenfor delingen.</p>
+<h3>Eiendeler ervervet etter skjæringstidspunktet – § 60</h3>
+<p>Skjæringstidspunktet etter ekteskapsloven § 60 avgjør hvilke eiendeler som overhodet inngår i delingen. Bare det ektefellene eide da begjæring om separasjon eller skilsmisse kom inn, eventuelt da samlivet ble brutt, regnes med. Det en ektefelle erverver etter dette tidspunktet, holdes utenfor delingen. Dette gjør skjæringstidspunktet til et helt sentralt fastsettelsesspørsmål i oppgjøret, og uklarhet om tidspunktet kan gi opphav til betydelig tvist, særlig der partene har fortsatt å bo sammen etter bruddet, jf. artikkel 110.</p>
+<h3>Gjeld og gjeldsfradrag – §§ 58 andre ledd og 60</h3>
+<p>Gjeld er ikke en verdi som «holdes utenfor», men gjeldsfradrag etter ekteskapsloven §§ 58 andre ledd og 60 reduserer det som kommer til deling. Hver ektefelle kan trekke fra sin gjeld før delingen, men reglene er strenge for ektefeller som også har skjevdelingsmidler eller særeie. Gjeld knyttet til skjevdelings- eller særeiemidler kan ikke uten videre belastes felleseiemidlene, fordi det ellers ville være mulig å redusere likedelingsgrunnlaget på en urimelig måte. Se artikkel 120 for en nærmere gjennomgang.</p>
+<h3>Forholdet til vederlagskrav</h3>
+<p>Selv om visse verdier holdes utenfor delingen, kan den andre ektefellen i noen tilfeller ha krav på vederlag. Etter ekteskapsloven § 73 kan en ektefelle kreve vederlag dersom den andre har brukt felleseiemidler til å øke verdien av særeie eller skjevdelingsmidler. Vederlagskravet retter opp skjevheter som ellers kunne oppstå ved at felles midler er brukt på verdier som holdes utenfor delingen. Dette er en viktig korreksjonsmekanisme som sikrer at den ektefellen som har bidratt med felles midler til den andres særeie eller skjevdelingsmidler, ikke står igjen tomhendt.</p>
+<h3>Praktisk betydning</h3>
+<p>For advokaten gir det god oversikt å sortere alle verdiposter i fire kategorier: særeie (helt utenfor som formuesordning), skjevdelingsmidler (verdi utenfor likedeling etter krav), § 61-eiendeler (utenfor av personlige grunner) og eiendeler ervervet etter skjæringstidspunktet (utenfor i tid). Resten er felleseiemidler som likedeles etter § 58. Denne sorteringen, kombinert med korrekt gjeldsfradrag etter §§ 58 andre ledd og 60, gir et ryddig oppgjør og avdekker tvistepunkter tidlig.</p>
+<p>En praktisk fallgruve er å overse vederlagskravene etter § 73: når felles midler er brukt på verdier som holdes utenfor, bør advokaten alltid vurdere om klienten har et vederlagskrav å gjøre gjeldende, eller om motparten kan ha det. Ved å gå systematisk gjennom hver verdipost og plassere den i riktig kategori, sikrer man at både det som holdes utenfor og det som likedeles, er korrekt behandlet.</p>
+<h3>Skillet mellom særeie og skjevdeling oppsummert</h3>
+<p>Fordi særeie og skjevdeling lett forveksles, er det nyttig å oppsummere forskjellen. Særeie er en formuesordning: de aktuelle verdiene er per definisjon ikke en del av delingsformuen og holdes helt utenfor, uavhengig av om noen krever det. Særeie etableres ved ektepakt etter § 42 eller ved bestemmelse fra arvelater eller giver etter § 48. Skjevdeling gjelder derimot felleseiemidler – verdier som i utgangspunktet inngår i delingsformuen, men der den berettigede ektefellen kan kreve verdien holdt utenfor likedelingen fordi den klart kan føres tilbake til premidler, arv eller gave. Skjevdeling må påberopes og dokumenteres, og kan reduseres etter rimelighetsbegrensningen i § 59 andre ledd. Særeie er dermed et sterkere og mer forutsigbart vern, mens skjevdeling er mer sårbart for sammenblanding og rimelighetsvurderinger.</p>
+<h3>Praktisk fremgangsmåte for kategorisering</h3>
+<p>I et konkret oppgjør anbefales en systematisk gjennomgang der hver enkelt eiendel og hver gjeldspost plasseres i riktig kategori. Først identifiseres særeie, som tas helt ut av delingsgrunnlaget. Deretter vurderes om noen av felleseiemidlene kan skjevdeles etter § 59. Så luker man ut personlige eiendeler og rettigheter etter § 61, herunder pensjonsrettigheter og personskadeerstatning. Videre kontrolleres at bare eiendeler ervervet før skjæringstidspunktet etter § 60 er med. Det som da gjenstår, er felleseiemidler som likedeles etter § 58, etter at korrekt gjeldsfradrag er gjort. Til slutt vurderes om det foreligger vederlagskrav etter § 73. Denne fremgangsmåten gir et oversiktlig og etterprøvbart oppgjør, og reduserer risikoen for at verdier feilaktig deles eller holdes utenfor.</p>
+<h3>Bevisbyrde for det som holdes utenfor</h3>
+<p>Et gjennomgående trekk er at den som vil holde verdier utenfor delingen, normalt har bevisbyrden for grunnlaget. Den som påberoper særeie, må kunne vise til ektepakt eller arvelaters bestemmelse. Den som krever skjevdeling, må dokumentere at verdien klart kan føres tilbake til premidler, arv eller gave. Den som vil holde en eiendel utenfor etter § 61, må kunne sannsynliggjøre at vilkårene er oppfylt. Dette innebærer at god dokumentasjon er avgjørende for å lykkes med å holde verdier utenfor delingen, og at manglende dokumentasjon ofte er den reelle grunnen til at verdier likevel må deles. For advokaten er det derfor sentralt å sikre dokumentasjon tidlig og å bygge kravene på et solid bevismessig grunnlag.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

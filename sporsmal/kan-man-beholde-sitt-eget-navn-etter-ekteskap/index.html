@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan man beholde sitt eget navn etter ekteskap? — Rettsregel</title>
+<meta name="description" content="Ja, uten videre.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-man-beholde-sitt-eget-navn-etter-ekteskap/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan man beholde sitt eget navn etter ekteskap?">
+<meta property="og:description" content="Ja, uten videre.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-man-beholde-sitt-eget-navn-etter-ekteskap/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan man beholde sitt eget navn etter ekteskap?">
+<meta name="twitter:description" content="Ja, uten videre.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan man beholde sitt eget navn etter ekteskap?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, uten videre. Den som ikke ønsker å endre navn, beholder automatisk sitt opprinnelige etternavn ved ekteskapsinngåelse. Det kreves ingen aktiv handling for å beholde eget navn – tvert imot kreves det en aktiv navnemelding for å endre det. Navnevalget er frivillig etter navneloven (lov 7. juni 2002 nr. 19), og ekteskapsloven oppstiller intet krav om felles etternavn.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 4, 11, 9, 12, 10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/4/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 4</div>
+  <div class="related-card-title">Du kan ikke være gift med to samtidig (Forbud mot bigami)</div>
+</a><a href="../../lover/ekteskapsloven/11/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 11</div>
+  <div class="related-card-title">Hvordan selve vielsen foregår</div>
+</a><a href="../../lover/ekteskapsloven/9/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 9</div>
+  <div class="related-card-title">Kravet om at dere forstår hva ekteskap er (Rettslig handleevne)</div>
+</a><a href="../../lover/ekteskapsloven/12/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 12</div>
+  <div class="related-card-title">Hvem har lov til å vie dere?</div>
+</a><a href="../../lover/ekteskapsloven/10/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 10</div>
+  <div class="related-card-title">Prøvingsattesten er gyldig i 4 måneder</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, uten videre. Den som ikke ønsker å endre navn, beholder automatisk sitt opprinnelige etternavn ved ekteskapsinngåelse. Det kreves ingen aktiv handling for å beholde eget navn – tvert imot kreves det en aktiv navnemelding for å endre det. Navnevalget er frivillig etter navneloven (lov 7. juni 2002 nr. 19), og ekteskapsloven oppstiller intet krav om felles etternavn.</p>
+<h3>Utgangspunktet: status quo uten melding</h3>
+<p>Ekteskap utløser ingen automatisk navneendring. Dersom ingen av ektefellene sender navnemelding til Skatteetaten, fortsetter begge med de etternavnene de hadde før vigselen. Dette er det rettslige normalscenarioet. Navneendring forutsetter at en av ektefellene benytter retten etter navneloven § 4 og melder endringen etter §§ 11 og 12; uten slik melding skjer ingenting med navnet. Det er altså passivitet som leder til at man beholder navnet – det motsatte av hva mange tror.</p>
+<h3>Ektefeller med ulike etternavn</h3>
+<p>Et ektepar kan gjennom hele ekteskapet ha hvert sitt etternavn. Dette har ingen rettslige ulemper. Ekteskapets gyldighet, ektefellenes innbyrdes rettigheter og plikter, foreldreansvaret, arveretten og de formuesrettslige forholdene påvirkes ikke av at ektefellene bærer ulike navn. Ekteskapsloven knytter ingen virkninger til navnelikhet, og navneulikhet skaper ingen presumsjon om at man «ikke egentlig er en familie».</p>
+<p>For barn av ekteparet gjelder navneloven §§ 4 til 6: barnet kan få etternavn fra den ene eller begge foreldrene, eller et dobbelt etternavn. At foreldrene har ulike etternavn, er altså intet hinder for at barnet kan knyttes navnemessig til begge. Mange familier lever helt uproblematisk med tre eller flere ulike etternavn i husstanden.</p>
+<h3>Yrkesmessige og personlige grunner til å beholde navnet</h3>
+<p>Mange velger å beholde eget navn av profesjonelle hensyn. For advokater, leger, akademikere, kunstnere, forfattere og andre med et etablert navn knyttet til yrkesutøvelsen, kan kontinuitet i navnet ha reell økonomisk og omdømmemessig verdi. Et innarbeidet navn er en del av den profesjonelle identiteten, og et navnebytte kan i praksis bety at man må bygge opp gjenkjennelighet på nytt. Andre beholder navnet av hensyn til egen identitet, slektstilknytning eller fordi de prinsipielt mener at ekteskap ikke bør innebære navnebytte. Loven likestiller fullt ut den som beholder eget navn med den som tar partnerens navn, og ingen av valgene er rettslig «riktigere» enn det andre.</p>
+<h3>Mellomløsninger for den som vil beholde <em>og</em> tilføye</h3>
+<p>Den som primært vil beholde sitt eget etternavn, men likevel ønsker en navnemessig tilknytning til partneren, har to hovedalternativer:</p>
+<ul>
+<li><strong>Partnerens navn som mellomnavn</strong> etter navneloven § 9. Da beholdes eget etternavn som etternavn, mens partnerens etternavn bæres som mellomnavn uten bindestrek. Dette markerer tilhørighet uten at man gir slipp på sitt eget etternavn.</li>
+<li><strong>Dobbelt etternavn</strong> etter § 12, der eget navn settes først eller sist i et sammensatt etternavn med bindestrek. Da beholdes eget navn som en del av etternavnet.</li>
+</ul>
+<p>Begge løsninger gjør at man ikke trenger å gi slipp på sitt eget navn (se egne artikler om dobbelt etternavn og om navneendring etter bryllup). For mange klienter er nettopp mellomnavnløsningen attraktiv, fordi den er smidig og reversibel.</p>
+<h3>Mulighet for å ombestemme seg senere</h3>
+<p>Et viktig poeng for klienter er at valget om å beholde eget navn ikke er endelig. Den som først beholder navnet sitt, kan senere ta partnerens etternavn etter navneloven § 4. Slik endring i tilknytning til ekteskap er unntatt fra tiårsbegrensningen i § 10 og er gebyrfri. Det er altså fullt mulig å vente med navnevalget og ta stilling senere i ekteskapet, uten å forbruke den ordinære navnekvoten. Mange par lar spørsmålet ligge til etter at hverdagen har innfunnet seg, eller til de eventuelt får barn.</p>
+<h3>Navn og formuesforhold er atskilt</h3>
+<p>Det er en vanlig misforståelse at navnevalget har betydning for eierforhold eller økonomi. Det er ikke tilfellet. Hvem som eier hva, om en eiendel er felleseie eller særeie, og spørsmålet om gjeldsansvar, avgjøres etter ekteskapslovens regler – særlig § 31 om eierforhold og rådighet, § 40 om gjeldsansvar og §§ 42 flg. om særeie – helt uavhengig av hvilket etternavn ektefellene bærer. Å beholde eget navn gir derfor verken bedre eller dårligere formuesrettslig stilling, og det å ta partnerens navn medfører verken medeierskap eller medansvar for gjeld. Denne avklaringen er ofte beroligende for klienter som har forvekslet navn og økonomi.</p>
+<h3>Praktiske konsekvenser av å beholde navnet</h3>
+<p>Å beholde eget navn innebærer at ingen dokumenter må endres, og at man slipper det praktiske arbeidet med å oppdatere pass, førerkort, bankforbindelser og avtaler. For den som reiser mye, driver næringsvirksomhet eller har et innarbeidet faglig navn, er dette en ikke ubetydelig fordel. Samtidig opplever noen at ulike etternavn skaper praktiske spørsmål, for eksempel ved henting av barn eller i kontakt med utenlandske myndigheter; dette løses normalt enkelt med dokumentasjon på familieforholdet.</p>
+<h3>Beholde navnet nå, velge senere</h3>
+<p>En klient som er usikker, kan trygt beholde sitt eget navn ved vigselen og utsette beslutningen. Fordi navneendring i tilknytning til ekteskap er unntatt fra tiårsregelen i § 10, står klienten fritt til å ta partnerens navn etter § 4, ta dobbelt etternavn etter § 12 eller ta partnerens navn som mellomnavn etter § 9 på et senere tidspunkt, uten kostnad og uten å forbruke navnekvoten. Dette er praktisk nyttig informasjon: valget trenger ikke treffes under tidspresset rundt bryllupet, og et opprinnelig valg om å beholde navnet låser ikke klienten for fremtiden.</p>
+<h3>Beholde navnet ved gjengifte</h3>
+<p>Ved gjengifte oppstår særlige spørsmål. En person som tidligere har tatt en tidligere ektefelles navn, kan beholde dette også inn i et nytt ekteskap, men kan ikke uten videre overføre det videre til den nye ektefellen – § 4 åpner bare for å ta et navn som «er eller har vært» den nye partnerens navn, ikke et navn man selv har ervervet gjennom et tidligere ekteskap. For klienter i gjengifte er det derfor nyttig å avklare hvilke navn hver part faktisk har rett til å ta og beholde, slik at man unngår navneønsker som ikke har hjemmel i loven.</p>
+<h3>Likestillingshensynet i praksis</h3>
+<p>At begge løsninger er likeverdige, er ikke bare en formell sannhet, men har praktisk betydning i rådgivningen. Rådgiveren bør være varsom med å antyde at det ene valget er «vanligst» eller «forventet», og i stedet legge frem mulighetsrommet nøytralt. Lovgivers utgangspunkt er at navnet tilhører den enkelte, og at ekteskapet ikke endrer dette. Klienten som velger å beholde eget navn, gjør et fullt ut anerkjent valg som ikke svekker noen rettsstilling.</p>
+<h3>Oppsummering for praktikeren</h3>
+<p>Å beholde eget navn er det rettslige utgangspunktet og krever ingen handling. Navnevalget er frivillig etter navneloven, og ekteskapsloven stiller ingen navnekrav. Minn klienten om mellomløsningene i §§ 9 og 12, om at valget kan tas om senere uten å støte mot tiårsregelen i § 10, og om at navn og formuesforhold er fullstendig atskilte rettsområder.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

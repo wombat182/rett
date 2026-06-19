@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer med min formue når jeg gifter meg? — Rettsregel</title>
+<meta name="description" content="Kort sagt: ingenting med eierskapet, men noe med delingsreglene.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-med-min-formue-nar-jeg-gifter/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer med min formue når jeg gifter meg?">
+<meta property="og:description" content="Kort sagt: ingenting med eierskapet, men noe med delingsreglene.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-med-min-formue-nar-jeg-gifter/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer med min formue når jeg gifter meg?">
+<meta name="twitter:description" content="Kort sagt: ingenting med eierskapet, men noe med delingsreglene.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva skjer med min formue når jeg gifter meg?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: ingenting med eierskapet, men noe med delingsreglene. Når du gifter deg, beholder du eiendomsretten til alt du eier fra før og alt du senere erverver, jf. ekteskapsloven § 31. Det som endrer seg, er at formuen din i utgangspunktet blir felleseie, slik at den vil inngå i likedelingen ved en eventuell oppløsning – med viktige modifikasjoner gjennom skjevdeling og forlodds uttak.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 31, 58, 59, 61, 32</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/31/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 31</div>
+  <div class="related-card-title">Du bestemmer over dine egne penger og eiendeler</div>
+</a><a href="../../lover/ekteskapsloven/58/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 58</div>
+  <div class="related-card-title">Slik regner dere ut hvem som får hva (Likedeling og gjeldsfradrag)</div>
+</a><a href="../../lover/ekteskapsloven/59/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 59</div>
+  <div class="related-card-title">Behold det du tok med inn i ekteskapet (Skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/61/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 61</div>
+  <div class="related-card-title">Ting du eier som er for personlige til å deles</div>
+</a><a href="../../lover/ekteskapsloven/32/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 32</div>
+  <div class="related-card-title">Du kan ikke selge eller pantsette felles bolig uten lov</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: ingenting med eierskapet, men noe med delingsreglene. Når du gifter deg, beholder du eiendomsretten til alt du eier fra før og alt du senere erverver, jf. ekteskapsloven § 31. Det som endrer seg, er at formuen din i utgangspunktet blir felleseie, slik at den vil inngå i likedelingen ved en eventuell oppløsning – med viktige modifikasjoner gjennom skjevdeling og forlodds uttak.</p>
+<h3>Eierskapet er uberørt</h3>
+<p>Ekteskapsinngåelsen flytter ingen eiendomsrett. Etter ekteskapsloven § 31 første ledd beholder du eiendomsretten og rådigheten over alt du eier ved vigselen, og du blir eneeier av det du erverver under ekteskapet. Bolig, sparepenger, bil, arv og inntekt forblir dine. Din ektefelle blir ikke medeier bare ved giftermålet – sameie krever et eget ervervsgrunnlag (se egne artikler om eierskap i ekteskap). Den utbredte forestillingen om at «alt blir felles» når man gifter seg, er altså uriktig på eiersiden.</p>
+<h3>Formuen blir felleseie – betydningen ved oppløsning</h3>
+<p>Med mindre du oppretter ektepakt om særeie, blir formuen din felleseie. Dette betyr ikke at den blir felles eiendom, men at den vil inngå i likedelingen etter ekteskapsloven § 58 dersom ekteskapet oppløses ved skilsmisse eller død. Ved oppgjøret legges ektefellenes nettoformuer sammen og deles likt, etter at hver har gjort fradrag for sin gjeld.</p>
+<p>For formuen du bringer inn i ekteskapet, er imidlertid likedeling sjelden den faktiske konsekvensen, på grunn av skjevdelingsretten. Det er først og fremst verdier som <em>skapes under ekteskapet</em> gjennom felles innsats, som reelt sett deles likt.</p>
+<h3>Skjevdeling beskytter det du bringer med deg – § 59</h3>
+<p>Den mest sentrale beskyttelsen er ekteskapsloven § 59 første ledd: verdier som klart kan føres tilbake til midler du hadde da ekteskapet ble inngått, eller som du senere har ervervet ved arv eller gave fra andre enn ektefellen, kan du kreve holdt utenfor likedelingen. Dette kalles skjevdeling.</p>
+<p>Praktisk betyr dette at den boligen, sparekapitalen eller arven du tok med inn i ekteskapet, normalt kan holdes utenfor delingen ved en senere skilsmisse – forutsatt at:</p>
+<ul>
+<li><strong>Verdien er i behold.</strong> Skjevdeling forutsetter at midlene fortsatt eksisterer; har de gått tapt eller blitt forbrukt, faller skjevdelingsretten bort for den forbrukte delen.</li>
+<li><strong>Verdien klart kan føres tilbake.</strong> Det må kunne dokumenteres at de aktuelle verdiene stammer fra de medbrakte eller arvede midlene. Sammenblanding med felleseiemidler kan svekke kravet, og bevisbyrden ligger på den som krever skjevdeling.</li>
+</ul>
+<p>Etter § 59 annet ledd kan skjevdeling lempes dersom den vil føre til et åpenbart urimelig resultat, og etter tredje ledd kan en ektefelle gis en viss rett til skjevdeling også der vilkårene ellers ikke er oppfylt, av rimelighetshensyn. Skjevdeling er altså en skjønnspreget, men praktisk svært viktig regel som i mange tilfeller gir nesten samme beskyttelse som særeie for medbrakte verdier.</p>
+<h3>Forlodds uttak – § 61</h3>
+<p>I tillegg kan du etter ekteskapsloven § 61 ta visse eiendeler forlodds ut av delingen, blant annet eiendeler som utelukkende eller for det vesentlige tjener til din personlige bruk, rettigheter i offentlige trygdeordninger og pensjonsordninger, personlige rettigheter, og erstatning, trygd eller forsikring for personskade. Disse holdes utenfor likedelingen uavhengig av om de ellers er felleseie, og forlodds uttak kommer i tillegg til en eventuell skjevdelingsrett.</p>
+<h3>Rådighetsbegrensninger inntrer</h3>
+<p>En endring som inntrer ved ekteskapet, er rådighetsbegrensningene i ekteskapsloven §§ 32 og 33. Etter giftermålet kan du ikke uten din ektefelles skriftlige samtykke selge, pantsette eller leie ut den felles boligen, og du kan ikke overdra eller pantsette vanlig innbo i hjemmet eller ektefellens nødvendige arbeidsredskaper – selv om du er eneeier. Dette er en reell innskrenkning i rådigheten som inntrer nettopp fordi eiendelen får funksjon som felles bolig eller innbo. For den som bringer en bolig inn i ekteskapet, er det viktig å være klar over at boligen dermed ikke lenger kan disponeres helt fritt.</p>
+<h3>Gjeld og kreditorer</h3>
+<p>Din formue blir ikke utsatt for din ektefelles kreditorer ved giftermålet. Etter ekteskapsloven § 40 hefter hver for sin egen gjeld, og etter § 31 eier hver sitt. Din eneeide formue og ditt eventuelle særeie er derfor beskyttet mot partnerens kreditorer. Du blir heller ikke ansvarlig for gjeld partneren tar opp, ut over felles ansvar for vanlige husholdningsutgifter etter § 41 (se egne artikler om gjeldsansvar).</p>
+<h3>Vil du sikre full kontroll – ektepakt om særeie</h3>
+<p>Ønsker du at din formue helt skal holdes utenfor enhver fremtidig deling, kan du sammen med din ektefelle opprette ektepakt om særeie etter ekteskapsloven § 42, med formkrav etter § 54 og tinglysing etter § 55. For mange er likevel skjevdelingsretten etter § 59 tilstrekkelig beskyttelse for medbrakte og arvede verdier, slik at ektepakt ikke alltid er nødvendig. Behovet for ektepakt er størst der verdiene er vanskelige å spore over tid (slik at skjevdeling kan bli usikker), der man ønsker forutsigbarhet, eller der man bringer inn en virksomhet eller en stor formue (se egne artikler om særeie).</p>
+<h3>Et praktisk eksempel</h3>
+<p>Anta at du bringer inn en bolig verdt to millioner kroner i ekteskapet, og at boligen i behold ved en senere skilsmisse er verdt tre millioner. Uten ektepakt vil verdien som klart kan føres tilbake til den opprinnelige boligen, kunne skjevdeles etter § 59, slik at du beholder denne verdien udelt, mens en eventuell verdiøkning som skyldes felles innsats eller nedbetaling med felleseiemidler kan komme i en mer sammensatt stilling. Dette illustrerer hvorfor dokumentasjon av medbrakte verdier er så viktig, og hvorfor mange likevel velger særeie for full forutsigbarhet.</p>
+<h3>Gjeld du bringer med deg</h3>
+<p>Det er ikke bare formue, men også gjeld du tar med deg inn i ekteskapet. Ekteskapet endrer ikke din gjeld – den forblir din alene etter § 40, og din ektefelle blir ikke ansvarlig for den ved giftermålet. Ved et eventuelt felleseieoppgjør gjør du fradrag for gjelden din etter reglene i § 58 annet ledd. Har du mer gjeld enn formue, kan din nettoandel til deling bli null, men du kan ikke trekke negativ formue fra den andres del. Den medbrakte gjelden påvirker altså ditt eget delingsgrunnlag, men belaster ikke partneren. Dette er nyttig avklaring for klienter som er bekymret for hvordan egen eller partnerens gjeld vil slå ut ved et giftermål.</p>
+<h3>Pensjon og forsikring</h3>
+<p>Et forhold mange er opptatt av, er hva som skjer med pensjonsrettigheter. Rettigheter i offentlige trygdeordninger og i offentlige eller private pensjonsordninger kan etter ekteskapsloven § 61 holdes utenfor delingen som forlodds uttak, og opptjente pensjonsrettigheter deles dermed normalt ikke ved en skilsmisse. Det samme gjelder i utgangspunktet retten til erstatning og forsikring for personskade. For klienter med betydelige pensjonsrettigheter er det betryggende å vite at disse i hovedsak er skjermet fra likedeling, men spørsmålet kan være sammensatt der det er tale om kapitaliserte verdier eller individuelle spareordninger, og bør vurderes konkret.</p>
+<h3>Bør du opprette ektepakt før vigselen?</h3>
+<p>Mange spør om de bør ordne formuesforholdene før de gifter seg. Svaret beror på en konkret vurdering av hva man bringer inn, hvilken risiko man har, og hvor stort behovet for forutsigbarhet er. Den som bringer inn en virksomhet, en stor formue eller arv som er vanskelig å spore over tid, har ofte god grunn til å vurdere ektepakt. Den som primært eier verdier som lett kan dokumenteres som medbrakt, kan ofte stole på skjevdelingsvernet i § 59. Rådgiveren bør gjennomgå klientens faktiske formuesbilde før det gis råd om ektepakt, og minne om at ektepakt kan opprettes både før og under ekteskapet.</p>
+<h3>Oppsummering for praktikeren</h3>
+<p>Ved giftermål skjer ingen endring i eierskapet (§ 31), men formuen blir felleseie og dermed gjenstand for likedeling ved oppløsning (§ 58). Skjevdeling (§ 59) og forlodds uttak (§ 61) beskytter medbrakte og arvede verdier i betydelig grad. Rådighetsbegrensningene i §§ 32–33 inntrer, og gjeldsansvaret følger fortsatt § 40. Vurder ektepakt om særeie der full kontroll og forutsigbarhet ønskes.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

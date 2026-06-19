@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan man gifte seg med slektninger? — Rettsregel</title>
+<meta name="description" content="Som hovedregel kan man ikke gifte seg med nære slektninger i Norge.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-man-gifte-seg-med-slektninger/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan man gifte seg med slektninger?">
+<meta property="og:description" content="Som hovedregel kan man ikke gifte seg med nære slektninger i Norge.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-man-gifte-seg-med-slektninger/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan man gifte seg med slektninger?">
+<meta name="twitter:description" content="Som hovedregel kan man ikke gifte seg med nære slektninger i Norge.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Kan man gifte seg med slektninger?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Som hovedregel kan man ikke gifte seg med nære slektninger i Norge. Ekteskapsloven § 3 forbyr ekteskap mellom slektninger i rett opp- og nedstigende linje, mellom hel- og halvsøsken, og – etter lovendringen ved lov 25. juni 2024 nr. 57 – mellom søskenbarn og nærmere beslektede. For de aller nærmeste slektskapsforholdene gis det ingen dispensasjon, mens statsforvalteren for søskenbarn og tilsvarend</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven § 3 og § 4</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/3/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 3</div>
+  <div class="related-card-title">Forbud mot å gifte seg med nære slektninger</div>
+</a><a href="../../lover/ekteskapsloven/4/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 4</div>
+  <div class="related-card-title">Du kan ikke være gift med to samtidig (Forbud mot bigami)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Som hovedregel kan man ikke gifte seg med nære slektninger i Norge. Ekteskapsloven § 3 forbyr ekteskap mellom slektninger i rett opp- og nedstigende linje, mellom hel- og halvsøsken, og – etter lovendringen ved lov 25. juni 2024 nr. 57 – mellom søskenbarn og nærmere beslektede. For de aller nærmeste slektskapsforholdene gis det ingen dispensasjon, mens statsforvalteren for søskenbarn og tilsvarende kan gi tillatelse når sterke grunner foreligger.</p>
+<h3>Slektskapsforbudenes oppbygning</h3>
+<p>Slektskapsforbudene i el. § 3 kan deles inn i tre nivåer ut fra hvor strengt forbudet er:</p>
+<ul>
+<li><strong>Rett opp- og nedstigende linje:</strong> Ekteskap kan ikke inngås mellom foreldre og barn, besteforeldre og barnebarn, og så videre. Dette gjelder uansett om slektskapet er biologisk eller, etter omstendighetene, rettslig etablert gjennom adopsjon. Forbudet er absolutt.</li>
+<li><strong>Hel- og halvsøsken:</strong> Ekteskap kan ikke inngås mellom søsken, verken helsøsken eller halvsøsken. Også dette forbudet er absolutt.</li>
+<li><strong>Søskenbarn og nærmere beslektede:</strong> Etter lovendringen omfatter forbudet også ekteskap mellom søskenbarn samt onkel/tante og nevø/niese. For denne kategorien kan statsforvalteren gi dispensasjon når sterke grunner taler for det.</li>
+</ul>
+<h3>Hvorfor forbys ekteskap mellom nære slektninger?</h3>
+<p>Forbudene bygger på flere hensyn. Det mest grunnleggende er et biologisk og helsemessig hensyn: barn av nært beslektede foreldre har forhøyet risiko for arvelige sykdommer. I tillegg kommer etiske og kulturelle normer mot ekteskap innenfor den nærmeste familien, samt – for søskenbarnforbudet – et ønske om å motvirke negativ sosial kontroll og tvangsekteskap. For de aller nærmeste slektskapsforholdene veier disse hensynene så tungt at det ikke gis noe unntak.</p>
+<h3>Adopsjon og slektskap</h3>
+<p>Et særlig spørsmål er hvordan adopsjon påvirker slektskapsforbudene. Ved adopsjon etableres et rettslig slektskapsforhold som i utgangspunktet likestilles med biologisk slektskap, samtidig som det biologiske slektskapet fortsatt består i denne sammenhengen. Det betyr at en adoptert person kan være omfattet av forbudet både i forhold til sin biologiske familie og sin adoptivfamilie. Dette er en problemstilling som kan kreve konkret rettslig vurdering, og hvor jurister bør være oppmerksomme på samspillet mellom adopsjonsloven og el. § 3.</p>
+<h3>Svogerskap og besvogrede</h3>
+<p>Forbudene i el. § 3 gjelder slektskap, ikke svogerskap. Det er altså ikke noe generelt forbud mot å gifte seg med en tidligere ektefelles slektninger eller med ektefellen til en slektning, så lenge man ikke selv er i slekt med vedkommende innenfor forbudets rammer. Tidligere norsk rett opererte med visse forbud knyttet til svogerskap, men disse er ikke videreført på samme måte. Dette er et praktisk skille som det kan være verdt å avklare i rådgivning.</p>
+<h3>Dispensasjon for søskenbarn og tilsvarende</h3>
+<p>For søskenbarn og dem som er nærmere beslektet enn søskenbarn (men ikke i de absolutte kategoriene), kan statsforvalteren etter el. § 3 gi tillatelse til ekteskap når sterke grunner taler for det. Dette er en snever unntaksregel. «Sterke grunner» innebærer en høy terskel, og dispensasjon gis bare unntaksvis. Søskenbarnsituasjonen behandles utførlig i artikkel 10.</p>
+<h3>Slektskap og ekteskap inngått i utlandet</h3>
+<p>Slektskapsforbudene har betydning også for ekteskap inngått i utlandet. Etter el. § 4 gjelder de norske vilkårene for å inngå ekteskap når en norsk statsborger eller en person fast bosatt i Norge inngår ekteskap i utlandet. Et ekteskap mellom nære slektninger inngått i utlandet kan dermed bli nektet anerkjent i Norge dersom det strider mot de norske forbudene og partene har tilstrekkelig tilknytning hit. Vurderingen må gjøres konkret og i lys av de internasjonal-privatrettslige reglene.</p>
+<h3>Hensynet bak forbudene i et rettshistorisk lys</h3>
+<p>Slektskapsforbud ved ekteskap har dype historiske røtter og finnes i de fleste rettssystemer, om enn med ulik rekkevidde. I norsk rett har omfanget av forbudene variert over tid. Tidligere omfattet reglene også enkelte svogerskapsforhold, og det fantes dispensasjonsadganger som senere er strammet inn eller fjernet. Den utvidelsen som kom ved lov 25. juni 2024 nr. 57, der søskenbarn og nærmere beslektede ble omfattet, representerer en innstramming begrunnet i både helsemessige hensyn og hensynet til å motvirke negativ sosial kontroll. For jurister er det nyttig å se forbudene i el. § 3 som uttrykk for en avveining mellom respekten for den enkeltes valg av ektefelle og samfunnets interesse i å beskytte mot helserisiko og press. De absolutte forbudene reflekterer at hensynene veier tyngst for de aller nærmeste slektsforholdene.</p>
+<h3>Oversikt over hvilke relasjoner som er forbudt</h3>
+<p>For å gjøre forbudene mer konkrete kan de absolutte slektskapsforbudene illustreres slik: ekteskap er utelukket mellom forelder og barn, mellom besteforelder og barnebarn (og videre oppover og nedover i rett linje), og mellom helsøsken og halvsøsken. Disse forbudene gjelder uten unntak. For den utvidede gruppen – som er forbudt, men hvor statsforvalteren kan dispensere ved sterke grunner – omfattes onkel og niese, tante og nevø, samt søskenbarn (fettere og kusiner). Relasjoner som ligger utenfor dette, for eksempel tremenninger (barn av søskenbarn), rammes ikke av forbudet og kan gifte seg fritt. Denne avgrensningen er praktisk viktig: forbudet stanser ved søskenbarn, slik at fjernere slektninger ikke er omfattet.</p>
+<h3>Bevisspørsmål og uklare slektskapsforhold</h3>
+<p>I noen tilfeller kan slektskapet være uklart, for eksempel der opplysninger om biologisk opphav er usikre, eller der dokumentasjon fra utlandet er mangelfull. Prøvingen bygger på de opplysningene som er tilgjengelige i Folkeregisteret og på den dokumentasjonen partene fremlegger. Oppstår det tvil om et mulig slektskap som omfattes av forbudet, vil dette måtte avklares før prøvingsattest kan utstedes. For par med uklare familieforhold, eller der den ene parten er adoptert eller har opphav i utlandet, kan det være grunn til å avklare slektskapsforholdet på forhånd for å unngå forsinkelser i prøvingen.</p>
+<h3>Kontroll i prøvingen</h3>
+<p>Slektskapsforbudene kontrolleres i prøvingen hos Skatteetaten før prøvingsattest utstedes. Foreligger det et slektskap som omfattes av et absolutt forbud, vil prøvingsattest ikke bli utstedt, og det finnes ingen dispensasjonsadgang. Gjelder det søskenbarn eller tilsvarende, må dispensasjon fra statsforvalteren foreligge før attest kan utstedes.</p>
+<h3>Oppsummering</h3>
+<p>Man kan ikke gifte seg med nære slektninger i Norge. El. § 3 forbyr ekteskap i rett opp- og nedstigende linje, mellom hel- og halvsøsken (absolutte forbud uten dispensasjon), og mellom søskenbarn og nærmere beslektede (hvor statsforvalteren kan gi tillatelse ved sterke grunner). Forbudene gjelder slektskap, ikke svogerskap, og har også betydning for ekteskap inngått i utlandet. For søskenbarn vises særskilt til artikkel 10.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

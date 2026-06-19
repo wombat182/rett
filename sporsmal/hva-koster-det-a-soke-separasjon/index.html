@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva koster det å søke separasjon? — Rettsregel</title>
+<meta name="description" content="Det koster ingenting å søke om separasjon hos statsforvalteren.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-koster-det-a-soke-separasjon/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva koster det å søke separasjon?">
+<meta property="og:description" content="Det koster ingenting å søke om separasjon hos statsforvalteren.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-koster-det-a-soke-separasjon/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva koster det å søke separasjon?">
+<meta name="twitter:description" content="Det koster ingenting å søke om separasjon hos statsforvalteren.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hva koster det å søke separasjon?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det koster ingenting å søke om separasjon hos statsforvalteren. Behandling av søknad om separasjon og skilsmisse er gratis. Det påløper ikke gebyr til statsforvalteren for selve bevillingen. Eventuelle kostnader kan likevel oppstå i tilknytning til mekling, advokatbistand, skifte og oversettelse av dokumenter.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 20, 21, 26, 22, 23</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/20/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 20</div>
+  <div class="related-card-title">Slik får du separasjon</div>
+</a><a href="../../lover/ekteskapsloven/21/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 21</div>
+  <div class="related-card-title">Skilsmisse etter ett års separasjon</div>
+</a><a href="../../lover/ekteskapsloven/26/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 26</div>
+  <div class="related-card-title">Plikt til å mekle når dere har barn</div>
+</a><a href="../../lover/ekteskapsloven/22/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 22</div>
+  <div class="related-card-title">Skilsmisse etter å ha bodd fra hverandre i to år (Samlivsbrudd)</div>
+</a><a href="../../lover/ekteskapsloven/23/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 23</div>
+  <div class="related-card-title">Skilsmisse på dagen ved overgrep eller tvang</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det koster ingenting å søke om separasjon hos statsforvalteren. Behandling av søknad om separasjon og skilsmisse er gratis. Det påløper ikke gebyr til statsforvalteren for selve bevillingen. Eventuelle kostnader kan likevel oppstå i tilknytning til mekling, advokatbistand, skifte og oversettelse av dokumenter.</p>
+<h3>Ingen gebyr for selve søknaden</h3>
+<p>Statsforvalterens behandling av separasjons- og skilsmissesøknader er en gratis offentlig tjeneste. Verken det å søke separasjon etter el. § 20 eller å søke skilsmisse etter el. § 21 eller § 22 utløser et behandlingsgebyr. Dette gjelder uavhengig av om ektefellene søker i fellesskap eller om den ene søker alene. Den digitale løsningen hos statsforvalteren er likeledes gratis å bruke.</p>
+<p>Det er viktig å presisere dette overfor klienter, fordi mange forventer at en offentlig forvaltningsbehandling er forbundet med gebyr. Selve statusendringen fra gift til separert, og senere fra separert til skilt, koster altså ingenting. Kostnadene i en separasjons- eller skilsmisseprosess oppstår utelukkende i tilknytning til andre forhold enn selve bevillingen.</p>
+<h3>Kostnader som likevel kan oppstå</h3>
+<p>Selv om selve søknaden er gratis, kan klienten møte kostnader i prosessen rundt separasjonen. Det er viktig å skille mellom selve bevillingen og de øvrige forholdene:</p>
+<ul>
+<li><strong>Mekling.</strong> Har ektefellene felles barn under 16 år, kreves meklingsattest, jf. el. § 26 og artikkel 76. Mekling ved offentlig familievernkontor er i utgangspunktet gratis for de første timene. Velges privat mekler, kan det påløpe kostnader.</li>
+<li><strong>Advokatbistand.</strong> Mange velger advokat til å bistå med skifteoppgjør, avtaler om barn eller selve søknaden. Advokatsalær kommer i tillegg og dekkes ikke av det offentlige med mindre vilkårene for fri rettshjelp er oppfylt.</li>
+<li><strong>Skifte.</strong> Det økonomiske oppgjøret er en egen sak. Ved offentlig skifte gjennom tingretten påløper rettsgebyr og kostnader til bostyrer. Privat skifte er rimeligere, men kan kreve juridisk bistand.</li>
+<li><strong>Oversettelse.</strong> Bevillingen skrives kun ut på norsk. Trenger man den på et annet språk, må man selv bekoste autorisert oversettelse.</li>
+</ul>
+<h3>Skifte som den vesentligste kostnaden</h3>
+<p>I praksis er det skifteoppgjøret som ofte utgjør den største kostnaden i forbindelse med en separasjon. Selve delingen av formuen etter el. kapittel 12 kan være enkel der ektefellene er enige, men kompleks der det er uenighet om verdsettelse, skjevdeling eller eierforhold til boligen. Ved offentlig skifte gjennom tingretten påløper rettsgebyr og godtgjørelse til bostyrer, som dekkes av boet. Klienter bør derfor informeres om at det er mulig å bli separert gratis, men at det å gjøre opp det økonomiske mellomværendet kan koste betydelig dersom det oppstår tvist.</p>
+<h3>Fri rettshjelp og økonomisk støtte</h3>
+<p>I enkelte saker kan en ektefelle ha krav på fri rettshjelp etter rettshjelploven, særlig i saker om barnefordeling eller der den ene er utsatt for overgrep. Fri rettshjelp er behovsprøvd og avhenger av inntekt og formue. For selve separasjonssøknaden er dette sjelden aktuelt, ettersom søknaden er enkel og gratis, men i tilknyttede tvister om barn eller skifte kan ordningen være relevant. Praktikeren bør vurdere om klienten oppfyller inntektsgrensene, og om saken faller inn under de prioriterte sakstypene.</p>
+<h3>Praktiske råd for å holde kostnadene nede</h3>
+<p>For klienter som ønsker en rimelig prosess, kan følgende råd være nyttige:</p>
+<ul>
+<li><strong>Søk i fellesskap</strong> og frafall klageretten. Dette gir raskere behandling og reduserer behovet for advokatbistand i selve søknadsfasen.</li>
+<li><strong>Bruk offentlig familievernkontor</strong> til mekling, som er gratis for de første timene.</li>
+<li><strong>Velg privat skifte</strong> der ektefellene klarer å bli enige, fremfor offentlig skifte gjennom tingretten.</li>
+<li><strong>Avklar avtaler om barn og bolig</strong> tidlig, slik at man unngår kostbare tvister.</li>
+<li><strong>Vurder om fri rettshjelp er aktuelt</strong> i tilknyttede tvister.</li>
+</ul>
+<h3>Forholdet til skilsmisse</h3>
+<p>Kostnadsbildet er det samme for skilsmisse etter separasjon (§ 21) og etter samlivsbrudd (§ 22): selve bevillingen er gratis. Ved skilsmisse etter § 22 kreves vitneerklæring, som ikke koster noe utover vitnenes tid. Ved skilsmisse ved dom etter § 23 må saken derimot bringes inn for tingretten, og da påløper rettsgebyr og normalt advokatkostnader. Det er altså domstolsbehandlingen, ikke den administrative behandlingen hos statsforvalteren, som er forbundet med gebyr.</p>
+<h3>Kostnader ved tvist om barn</h3>
+<p>Der ektefellene har felles barn og ikke blir enige om foreldreansvar, fast bosted eller samvær, kan det oppstå tvist som må løses etter barnelovens regler. Slike tvister behandles av tingretten og kan medføre betydelige advokatkostnader. Den obligatoriske meklingen ved felles barn under 16 år er ment å redusere konfliktnivået og dermed behovet for domstolsbehandling, men er ingen garanti mot tvist. I barnefordelingssaker kan fri rettshjelp være aktuelt på nærmere vilkår, ettersom slike saker er blant de prioriterte sakstypene. Kostnadene ved barnetvister er rettslig sett uavhengige av separasjonen, men oppstår ofte i samme tidsrom og bør derfor inngå i klientens samlede kostnadsbilde.</p>
+<h3>Indirekte kostnader ved separasjon</h3>
+<p>I tillegg til de direkte kostnadene kommer indirekte økonomiske konsekvenser av separasjonen. Når den gjensidige underholdsplikten opphører, må hver ektefelle forsørge seg selv, og to husholdninger er normalt dyrere enn én. Endret sivilstatus kan påvirke skatt og rett til ytelser. Deling av felles bolig kan utløse behov for refinansiering eller salg. Disse konsekvensene er ikke gebyrer i egentlig forstand, men er reelle økonomiske virkninger som klienten bør være forberedt på. En helhetlig rådgivning bør derfor omfatte både de formelle kostnadene og de økonomiske konsekvensene av selve samlivsbruddet.</p>
+<h3>Oversettelse og dokumentasjon i internasjonale saker</h3>
+<p>I saker med internasjonale elementer kan det påløpe kostnader til oversettelse og dokumentasjon. Bevillingen skrives kun ut på norsk, og skal den brukes i utlandet, må ektefellen selv bekoste autorisert oversettelse. Tilsvarende kan det være nødvendig med apostille eller annen legalisering for at en norsk separasjons- eller skilsmissebevilling skal anerkjennes i et annet land. Disse kostnadene er ikke knyttet til selve behandlingen hos statsforvalteren, men kan være betydelige for ektefeller med tilknytning til flere land.</p>
+<h3>Gratis tjeneste – en bevisst politikk</h3>
+<p>At separasjon og skilsmisse hos statsforvalteren er gratis, er et bevisst politisk valg. Adgangen til å oppløse et ekteskap skal ikke være avhengig av betalingsevne, og terskelen for å bli separert eller skilt skal være lav. Dette er i tråd med prinsippet om at ingen skal være bundet til et samliv mot sin vilje, jf. el. § 20. Den gratis administrative behandlingen står i kontrast til de kostnadene som kan oppstå rundt skifte, barnetvister og advokatbistand. For praktikeren er det viktig å formidle dette tydelig, slik at klienten forstår at selve oppløsningen er gratis, mens det er det økonomiske og praktiske oppgjøret rundt som kan medføre kostnader.</p>
+<h3>Oppsummering</h3>
+<p>Å søke separasjon er gratis. Statsforvalteren tar ikke gebyr for behandling av separasjons- eller skilsmissesøknader. Kostnader kan likevel oppstå i tilknytning til mekling med privat mekler, advokatbistand, skifteoppgjør og oversettelse. Klienter bør informeres om at det er gratis å bli separert, men at oppgjøret rundt – særlig et omtvistet skifte – kan koste betydelig.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

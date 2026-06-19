@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor mye er ektefellebidrag? — Rettsregel</title>
+<meta name="description" content="Det finnes ingen fast sats for ektefellebidrag.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-mye-er-ektefellebidrag/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor mye er ektefellebidrag?">
+<meta property="og:description" content="Det finnes ingen fast sats for ektefellebidrag.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-mye-er-ektefellebidrag/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor mye er ektefellebidrag?">
+<meta name="twitter:description" content="Det finnes ingen fast sats for ektefellebidrag.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Hvor mye er ektefellebidrag?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det finnes ingen fast sats for ektefellebidrag. Bidragets størrelse fastsettes konkret etter ekteskapsloven § 80, ut fra den bidragsberettigedes behov for bidrag og den bidragspliktiges økonomiske evne til å betale. Bidraget skal bidra til den bidragsberettigedes underhold i en omstillingsperiode, men skal ikke gå ut over den bidragspliktiges egen rimelige levestandard. Størrelsen varierer derfor </p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven § 80 og § 83</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/80/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 80</div>
+  <div class="related-card-title">Hvordan regner de ut hvor stort ektefellebidraget blir?</div>
+</a><a href="../../lover/ekteskapsloven/83/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 83</div>
+  <div class="related-card-title">Hvem bestemmer ektefellebidraget: Dere eller NAV?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det finnes ingen fast sats for ektefellebidrag. Bidragets størrelse fastsettes konkret etter ekteskapsloven § 80, ut fra den bidragsberettigedes behov for bidrag og den bidragspliktiges økonomiske evne til å betale. Bidraget skal bidra til den bidragsberettigedes underhold i en omstillingsperiode, men skal ikke gå ut over den bidragspliktiges egen rimelige levestandard. Størrelsen varierer derfor sterkt fra sak til sak.</p>
+<h3>Ingen standardisert utmåling</h3>
+<p>I motsetning til barnebidrag, som beregnes etter relativt detaljerte forskrifter og standardiserte modeller, finnes det ingen tabell eller fast prosentsats for ektefellebidrag. Utmålingen er skjønnsmessig og individuell. Dette gjør at det er vanskelig å forutsi nøyaktig hvor stort et bidrag vil bli uten å gå inn i partenes konkrete økonomi.</p>
+<p>Etter ekteskapsloven § 80 er det to størrelser som styrer utmålingen: behovet hos den som skal motta bidrag, og betalingsevnen hos den som skal betale. Bidraget kan ikke overstige det som dekker et rimelig behov, og det kan heller ikke settes høyere enn det den bidragspliktige har evne til å betale uten å undergrave sin egen rimelige livssituasjon.</p>
+<h3>Behovsvurderingen</h3>
+<p>Behovet vurderes ut fra hva den bidragsberettigede mangler for å dekke et rimelig underhold med egne midler. Man tar utgangspunkt i vedkommendes inntekter, formue og forsørgelsesbyrder, og vurderer hvilket beløp som trengs for å opprettholde et rimelig forsørgelsesnivå i overgangsperioden. Den levestandarden ektefellene hadde under ekteskapet, kan være et moment, men bidraget er ikke ment å sikre videreføring av tidligere levestandard på ubestemt tid.</p>
+<p>Det er bare det reelle udekkede behovet som er relevant. Har den bidragsberettigede egen inntekt eller formue som dekker behovet, blir det lite eller ingenting å betale.</p>
+<h3>Betalingsevnen</h3>
+<p>Betalingsevnen vurderes ut fra den bidragspliktiges inntekt, formue og forpliktelser. Sentralt er at den bidragspliktige skal beholde tilstrekkelig til eget rimelig underhold og til å oppfylle andre forsørgelsesplikter, særlig overfor egne barn. Forsørgelsesplikten overfor barn går foran bidragsplikten overfor den tidligere ektefellen. Har den bidragspliktige stram økonomi, blir bidraget tilsvarende lavt eller faller helt bort.</p>
+<h3>Forholdet til folketrygdens grunnbeløp</h3>
+<p>Selv om ektefellebidrag ikke beregnes etter grunnbeløpet, er det nyttig å kjenne G som referanse fordi flere økonomiske størrelser i familieretten knyttes til det. Folketrygdens grunnbeløp utgjør fra 1. mai 2026 kroner 136 549, mot kroner 130 160 i perioden fra 1. mai 2025. Grunnbeløpet justeres normalt hvert år med virkning fra 1. mai. For ektefellebidrag har G ingen direkte rolle i utmålingen, men det kan brukes som målestokk når man vurderer hva som utgjør et rimelig nivå.</p>
+<h3>Engangsbidrag og løpende bidrag</h3>
+<p>Bidrag kan settes som løpende månedlige beløp eller som et engangsbeløp. Et engangsbeløp har den fordelen at det gjør partene økonomisk uavhengige umiddelbart, og det fjerner risikoen for senere endringssaker. Løpende bidrag gir på den annen side fleksibilitet, fordi det kan endres ved vesentlig endrede forhold etter ekteskapsloven § 83. Hva som er mest hensiktsmessig, avhenger av partenes økonomi og ønske om et rent brudd.</p>
+<h3>Skattemessige forhold</h3>
+<p>Det er verdt å være oppmerksom på de skattemessige sidene ved bidrag, ettersom dette påvirker den reelle størrelsen for begge parter. Den konkrete skattemessige behandlingen bør avklares i forbindelse med oppgjøret, slik at partene kjenner nettoeffekten av et avtalt eller fastsatt bidrag.</p>
+<p>Se artikkel 141 og 142 om grunnlaget for bidrag, og artikkel 143 om varigheten.</p>
+<p>Oppsummert: Ektefellebidragets størrelse fastsettes individuelt etter ekteskapsloven § 80, basert på behov og betalingsevne, uten noen fast sats. Folketrygdens grunnbeløp er fra 1. mai 2026 kroner 136 549 og kan tjene som referanse, men inngår ikke direkte i utmålingen.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

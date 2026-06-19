@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når bør man opprette ektepakt? — Rettsregel</title>
+<meta name="description" content="Ektepakt bør vurderes når ektefellene ønsker en annen formuesordning enn lovens likedeling – typisk ved skjevhet i formue ved inngåelsen, arv eller gaver,…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-bor-man-opprette-ektepakt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når bør man opprette ektepakt?">
+<meta property="og:description" content="Ektepakt bør vurderes når ektefellene ønsker en annen formuesordning enn lovens likedeling – typisk ved skjevhet i formue ved inngåelsen, arv eller gaver,…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-bor-man-opprette-ektepakt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når bør man opprette ektepakt?">
+<meta name="twitter:description" content="Ektepakt bør vurderes når ektefellene ønsker en annen formuesordning enn lovens likedeling – typisk ved skjevhet i formue ved inngåelsen, arv eller gaver,…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title">Når bør man opprette ektepakt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ektepakt bør vurderes når ektefellene ønsker en annen formuesordning enn lovens likedeling – typisk ved skjevhet i formue ved inngåelsen, arv eller gaver, virksomhetseierskap, særkullsbarn, ønske om å sikre lengstlevende, eller gjelds- og kreditorrisiko hos den ene. Tidspunktet kan være før eller når som helst mens ekteskapet består; ektepakt kan opprettes både av forlovede og av gifte.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 56, 59, 55, 43, 54</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/56/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 56</div>
+  <div class="related-card-title">Når gjelder reglene for oppgjør og deling?</div>
+</a><a href="../../lover/ekteskapsloven/59/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 59</div>
+  <div class="related-card-title">Behold det du tok med inn i ekteskapet (Skjevdeling)</div>
+</a><a href="../../lover/ekteskapsloven/55/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 55</div>
+  <div class="related-card-title">Ektepakten må tinglyses for å være trygg</div>
+</a><a href="../../lover/ekteskapsloven/43/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 43</div>
+  <div class="related-card-title">Avtale om å sitte i uskiftet bo med særeie</div>
+</a><a href="../../lover/ekteskapsloven/54/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 54</div>
+  <div class="related-card-title">Formkravene: Slik må en ektepakt se ut for å være gyldig</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Når lovens normalordning ikke passer</h3>
+<p>Lovens utgangspunkt – felleseie og likedeling, jf. §§ 56 og 58 – passer godt for mange, men ikke for alle. Behovet for ektepakt oppstår når denne normalordningen gir et resultat partene ikke ønsker. De vanligste typetilfellene er:</p>
+<ul>
+<li><strong>Ulik formue ved inngåelsen.</strong> Dersom den ene bringer betydelig mer inn i ekteskapet, kan særeie eller en skjevdelingsavtale gi en mer ønsket fordeling. Skjevdelingsreglene i § 59 fanger opp noe av dette automatisk, men ektepakt gir større forutsigbarhet og avskjærer bevisproblemer.</li>
+<li><strong>Arv og gaver.</strong> Verdier mottatt som arv eller gave kan skjevdeles etter § 59, men ektepakt kan gi en klarere og mer omfattende skjerming, eller motsatt sikre at slike verdier deles likt. Se også artikkel 75.</li>
+<li><strong>Virksomhet og næringsformue.</strong> Eiere av bedrifter ønsker ofte å holde virksomheten utenfor et eventuelt skilsmisseoppgjør, både for forutsigbarhet og for å unngå at virksomheten må realiseres eller belånes for å betale ut den andre.</li>
+<li><strong>Særkullsbarn.</strong> Der en eller begge har barn fra tidligere forhold, kan ektepakt – i samspill med testament og uskifteregler – balansere hensynet til lengstlevende og til særkullsbarna.</li>
+<li><strong>Gjelds- og kreditorrisiko.</strong> Dersom den ene driver risikofylt virksomhet eller har betydelig gjeld, kan særeie tinglyst etter § 55 verne den andres formue mot kreditorbeslag.</li>
+<li><strong>Sikring av lengstlevende.</strong> Kombinasjonen særeie i live og felleseie ved død kan styrke lengstlevendes økonomiske stilling ved dødsfall, samtidig som verdiene holdes adskilt ved skilsmisse.</li>
+</ul>
+<h3>Tidspunktet for opprettelse</h3>
+<p>Ektepakt kan opprettes både før og under ekteskapet. Forlovede kan inngå ektepakt med virkning fra vigselen, og gifte kan opprette eller endre ektepakt når som helst mens ekteskapet består (artikkel 68). Det er ofte naturlig å vurdere ektepakt:</p>
+<ul>
+<li>I forbindelse med inngåelse av ekteskap, særlig ved formuesskjevhet eller virksomhetseierskap.</li>
+<li>Ved vesentlige endringer i økonomien, som arv, virksomhetssalg eller oppstart av næring.</li>
+<li>Når den ene skal påta seg betydelig gjeld eller risiko.</li>
+<li>Ved familieendringer, som barn fra nytt eller tidligere forhold.</li>
+<li>Som ledd i generasjonsskifte og arveplanlegging.</li>
+</ul>
+<h3>Hvorfor tidlig vurdering lønner seg</h3>
+<p>Det er en fordel å vurdere ektepakt før behovet er akutt. Et særeie som etableres mens den ene ektefellen er gjeldfri, gir bedre vern enn et særeie som forsøkes etablert når kreditorpågang allerede truer – da kan disposisjonen rammes av omstøtelsesregler og fremstå som et forsøk på å unndra verdier. Tidlig og gjennomtenkt etablering, kombinert med tinglysing, gir det mest robuste vernet. Det samme gjelder arveplanlegging: jo tidligere ektepakt, testament og uskifte samordnes, desto enklere er det å sikre et helhetlig resultat.</p>
+<h3>Samordning med arveplanlegging</h3>
+<p>Ektepakt bør sjelden vurderes isolert. Den henger nært sammen med arveloven, testament og uskifteregler. En særeieordning påvirker hva lengstlevende kan sitte i uskifte med (§ 43), hvordan dødsboet skiftes, og hvor mye som tilfaller arvingene. Advokaten bør derfor se ektepakten i sammenheng med klientens samlede livs- og arveplan, slik at virkemidlene trekker i samme retning og ikke motvirker hverandre.</p>
+<h3>Når ektepakt ikke er nødvendig</h3>
+<p>For ektefeller med jevn formue, uten næringsvirksomhet, uten særkullsbarn og uten særlig kreditorrisiko, vil lovens normalordning ofte gi et rimelig og ønsket resultat. Da er ektepakt ikke nødvendig. Poenget er ikke at alle bør ha ektepakt, men at behovet skal vurderes konkret ut fra partenes økonomi, familieforhold og ønsker.</p>
+<h3>Konklusjon</h3>
+<p>Den riktige tidspunktsvurderingen er behovsstyrt, ikke kalenderstyrt. Ektepakt bør opprettes når – og bare når – partenes situasjon tilsier en annen ordning enn lovens. Når behovet først foreligger, bør ektepakten opprettes formriktig etter § 54 og tinglyses etter § 55, og samordnes med øvrig arve- og formuesplanlegging.</p>
+<h3>Forholdet til skjevdelingsreglene som alternativ</h3>
+<p>Et spørsmål som ofte må vurderes, er om behovet allerede er dekket av skjevdelingsreglene i § 59, slik at ektepakt ikke er nødvendig. Skjevdeling gir en lovbestemt rett til å holde utenfor likedelingen verdier som klart kan tilbakeføres til det man hadde med inn i ekteskapet, eller til senere arv og gave. For mange vil dette langt på vei dekke ønsket om å beskytte slike verdier. Men skjevdeling har svakheter: den må gjøres gjeldende, den forutsetter sporbarhet, og den faller bort eller blir vanskelig å gjennomføre dersom verdiene er brukt opp, ombyttet eller sammenblandet. En ektepakt om særeie gir et mer robust og forutsigbart vern, uten de bevisproblemene skjevdeling ofte medfører. Vurderingen av om ektepakt er nødvendig, bør derfor inkludere en realistisk vurdering av hvor godt skjevdelingsreglene faktisk vil fungere i den konkrete situasjonen.</p>
+<h3>Typiske utløsende livshendelser</h3>
+<p>I praksis er det ofte konkrete livshendelser som aktualiserer behovet for ektepakt. Mottakelse av en større arv eller gave er en klassisk anledning, særlig der giveren ønsker at verdiene skal forbli i mottakerens slekt. Oppstart eller overtakelse av virksomhet er en annen, fordi næringsformue ofte ønskes skjermet både mot skilsmisseoppgjør og mot kreditorrisiko. Inngåelse av nytt ekteskap der en eller begge har særkullsbarn, er en tredje, fordi balansen mellom lengstlevende og særkullsbarna da må håndteres bevisst. Også kjøp av felles bolig der den ene har bidratt vesentlig mer enn den andre, kan gi grunn til å vurdere en ordning. Advokaten bør være oppmerksom på disse anledningene, fordi de gir naturlige tidspunkter for å reise spørsmålet om ektepakt med klienten.</p>
+<h3>Helhetlig planlegging fremfor enkeltgrep</h3>
+<p>Det er en gjennomgående anbefaling at ektepakt ikke vurderes som et isolert enkeltgrep, men som en del av en samlet plan for formue og arv. En ektepakt som beskytter en virksomhet mot skilsmisseoppgjør, bør for eksempel ses i sammenheng med hvordan virksomheten skal behandles ved død, og med eventuelle testament og uskifteklausuler. Når disse virkemidlene planlegges samlet, unngår man at de motvirker hverandre, og man oppnår et resultat som er forutsigbart i alle de relevante situasjonene – skilsmisse, død og kreditorpågang. Dette helhetsperspektivet er ofte det viktigste advokaten kan tilføre, og det taler for å reise spørsmålet om ektepakt i god tid, mens det fortsatt er rom for å se virkemidlene i sammenheng.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">Blir man økonomisk ansvarlig for ektefellens gjeld?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

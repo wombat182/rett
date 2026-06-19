@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blir man økonomisk ansvarlig for ektefellens gjeld? — Rettsregel</title>
+<meta name="description" content="Nei.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Blir man økonomisk ansvarlig for ektefellens gjeld?">
+<meta property="og:description" content="Nei.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/blir-man-okonomisk-ansvarlig-for-ektefellens-gjeld/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Blir man økonomisk ansvarlig for ektefellens gjeld?">
+<meta name="twitter:description" content="Nei.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Familie og samliv</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Familie og samliv</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Blir man økonomisk ansvarlig for ektefellens gjeld?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei. Man blir ikke ansvarlig for ektefellens gjeld bare ved å gifte seg. Hovedregelen i ekteskapsloven § 40 er klar: en ektefelle kan ikke stifte gjeld med virkning for den andre, og hver ektefelle hefter bare for sin egen gjeld. Ekteskapet skaper ikke solidaransvar for gjeld. Den eneste vesentlige modifikasjonen er ektefellenes felles ansvar for visse daglige husholdningsutgifter etter § 41.</p>
+  <p class="sp-kilde">Bygger på Ekteskapsloven §§ 40, 41, 58, 63, 31</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/ekteskapsloven/40/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 40</div>
+  <div class="related-card-title">Din gjeld er din egen (ikke ektefellens)</div>
+</a><a href="../../lover/ekteskapsloven/41/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 41</div>
+  <div class="related-card-title">Felles ansvar for daglige utgifter (Husleie og mat)</div>
+</a><a href="../../lover/ekteskapsloven/58/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 58</div>
+  <div class="related-card-title">Slik regner dere ut hvem som får hva (Likedeling og gjeldsfradrag)</div>
+</a><a href="../../lover/ekteskapsloven/63/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 63</div>
+  <div class="related-card-title">Du kan kreve vederlag (erstatning) fra ektefellen din</div>
+</a><a href="../../lover/ekteskapsloven/31/" class="related-card">
+  <div class="related-card-meta">Ekteskapsloven § 31</div>
+  <div class="related-card-title">Du bestemmer over dine egne penger og eiendeler</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Nei. Man blir ikke ansvarlig for ektefellens gjeld bare ved å gifte seg. Hovedregelen i ekteskapsloven § 40 er klar: en ektefelle kan ikke stifte gjeld med virkning for den andre, og hver ektefelle hefter bare for sin egen gjeld. Ekteskapet skaper ikke solidaransvar for gjeld. Den eneste vesentlige modifikasjonen er ektefellenes felles ansvar for visse daglige husholdningsutgifter etter § 41.</p>
+<h3>Hovedregelen: hver hefter for sin egen gjeld</h3>
+<p>Ekteskapsloven § 40 fastsetter at en ektefelle ikke kan stifte gjeld som også forplikter den andre ektefellen, med mindre dette har særskilt hjemmel eller den andre har påtatt seg ansvar. Konsekvensen er at gjeld den ene ektefellen stifter – forbrukslån, kredittkortgjeld, kausjon, næringsgjeld – som utgangspunkt bare er denne ektefellens ansvar. Den andre ektefellen hefter ikke, og kreditor kan ikke søke dekning i den andres formue.</p>
+<p>Dette er et grunnleggende prinsipp i norsk ekteskapsrett og en sentral trygghet å formidle til klienter: ekteskap medfører ikke automatisk medansvar for partnerens forpliktelser. Prinsippet henger nøye sammen med eierprinsippet i § 31 (hver eier sitt) – siden ektefellene har atskilte formuer, har de også atskilt gjeldsansvar.</p>
+<h3>Unntaket: felles ansvar for husholdningsutgifter etter § 41</h3>
+<p>Den praktisk viktigste modifikasjonen er ekteskapsloven § 41, som gir hver ektefelle rett til under samlivet å inngå avtaler om vanlige utgifter til husholdningen og oppfostringen av barna, og om vanlige utgifter til dekning av den enkeltes nødvendige behov, slik at <em>begge</em> ektefeller blir ansvarlige. Begge ektefeller hefter altså solidarisk for slike alminnelige dagligdagse forpliktelser som inngås under samlivet.</p>
+<p>Bestemmelsen er imidlertid snever. Den omfatter «vanlige» utgifter til husholdning, barneoppfostring og den enkeltes nødvendige behov – ikke større anskaffelser, investeringer, lån eller ekstraordinære forpliktelser. Et forbrukslån, en bil eller en større møbelhandel faller utenfor og forplikter bare den som inngår avtalen. Grensen mellom «vanlige» og «større» utgifter beror på en konkret vurdering der husstandens økonomiske nivå og forholdets art inngår.</p>
+<p>Retten etter § 41 bortfaller dessuten dersom samlivet er brutt, eller dersom den ene ektefellen har gitt melding til den andre parten i avtalen om at retten ikke skal gjelde. Etter brudd kan altså ikke den ene lenger forplikte den andre for husholdningsutgifter.</p>
+<h3>Frivillig medansvar: kausjon og medlåntakerskap</h3>
+<p>En ektefelle kan selvsagt påta seg ansvar for den andres gjeld frivillig, typisk ved å kausjonere for et lån eller stå som medlåntaker. Da hefter vedkommende, men på grunnlag av sin egen avtalebindende disposisjon – ikke som følge av ekteskapet. Dette er en viktig presisering: mange tror de hefter «fordi de er gift», når de i realiteten hefter fordi de har signert som kausjonist eller medlåntaker.</p>
+<p>Ved kjøp av felles bolig er det vanlig at begge står som låntakere, og da hefter begge solidarisk for hele boliglånet på avtalerettslig grunnlag. Solidaransvaret innebærer at banken kan kreve hele beløpet av hver av låntakerne; det interne oppgjøret mellom ektefellene er kreditor uvedkommende. Klienter bør være bevisste på dette før de signerer felles lån.</p>
+<h3>Kreditorenes dekningsadgang</h3>
+<p>Fordi hver ektefelle eier sitt etter § 31 og hefter for sin egen gjeld etter § 40, kan den ene ektefellens kreditorer som hovedregel bare ta beslag i denne ektefellens eiendeler. Den andre ektefellens særeie og eneeie er beskyttet. Sameieandeler kan derimot være utsatt: eier ektefellene en eiendel i sameie, kan kreditor søke dekning i debitors sameieandel.</p>
+<p>For klienter med næringsrisiko er dette et argument for å holde formuesposisjonene klart atskilt. Det kan være fornuftig at den ektefellen som driver risikofylt virksomhet, ikke står som eier av familiens viktigste eiendeler, og at ektefellene vurderer ektepakt om særeie. Særeie endrer ikke selve gjeldsansvaret, men kan ha betydning for hvilke verdier som inngår i et oppgjør og dermed indirekte for risikoeksponeringen. Det er likevel viktig å være klar over at en ektepakt som overfører verdier i en presset situasjon, kan omstøtes overfor kreditorene etter dekningslovens regler.</p>
+<h3>Betydningen av formuesordningen</h3>
+<p>Verken felleseie eller særeie endrer gjeldsansvaret. Gjeldsansvaret følger § 40 uavhengig av om formuen er felleseie eller særeie. En ektepakt om særeie gjør ikke noen mindre ansvarlig for egen gjeld, og felleseie gjør ingen ansvarlig for den andres gjeld. Dette skillet bør formidles tydelig, fordi mange forveksler formuesordning og gjeldsansvar.</p>
+<h3>Ved oppløsning: gjeldsavleggelse i likedelingen</h3>
+<p>Ved oppløsning av ekteskap har gjelden betydning for likedelingen. Etter ekteskapsloven § 58 annet ledd gjør hver ektefelle fradrag for sin gjeld før felleseiet deles, etter detaljerte regler om hvilken gjeld som kan trekkes fra mot hvilken formuesmasse. Dette er et oppgjørsspørsmål mellom ektefellene og endrer ikke hvem som hefter overfor kreditor. En ektefelle med stor gjeld og liten formue kan ende med et nettoresultat på null, men gjelden forblir vedkommendes ansvar overfor kreditorene også etter skiftet.</p>
+<h3>Hvorfor prinsippet om atskilt ansvar er viktig</h3>
+<p>Prinsippet i § 40 om at hver hefter for sin egen gjeld, er en grunnpilar som beskytter den enkelte ektefelles økonomiske selvstendighet. Det innebærer at en person ikke risikerer å bli ruinert av en partners uforsvarlige låneopptak eller mislykkede næringsvirksomhet, så lenge vedkommende ikke selv har påtatt seg ansvar. Dette gir trygghet og er en bevisst lovgivervalg: ekteskapet er et personlig fellesskap, men ikke automatisk et økonomisk solidaransvar. Sammenhengen mellom § 31 (atskilt eierskap) og § 40 (atskilt gjeldsansvar) gjør at ektefeller i utgangspunktet har separate økonomiske sfærer, selv om de lever i felleseie.</p>
+<h3>Forholdet mellom ektefellene internt</h3>
+<p>Selv om kreditor bare kan forholde seg til debitor, kan det interne forholdet mellom ektefellene være et annet. Har den ene betalt på den andres gjeld, eller har felles midler gått til å dekke den enes særgjeld, kan det oppstå et internt oppgjørs- eller vederlagskrav, jf. blant annet reglene om vederlag i ekteskapsloven § 63 ved deling. Dette er imidlertid et forhold mellom ektefellene og påvirker ikke kreditors stilling. Praktikeren bør holde de to planene fra hverandre: ansvaret overfor kreditor (§ 40) på den ene siden, og den interne fordelingen mellom ektefellene på den andre.</p>
+<h3>Oppsummering for praktikeren</h3>
+<p>Ekteskap skaper ikke medansvar for gjeld. Hovedregelen i § 40 er at hver hefter for sin egen gjeld; det praktiske unntaket er felles ansvar for vanlige husholdningsutgifter etter § 41. Frivillig kausjon eller medlåntakerskap er et selvstendig avtalegrunnlag. Formuesordningen påvirker ikke gjeldsansvaret, men kreditorer kan ta beslag i debitors sameieandeler (se egen artikkel om å hefte for ektefellens gjeld).</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/anerkjenner-norge-ekteskap-inngatt-i-utlandet/">Anerkjenner Norge ekteskap inngått i utlandet?</a><a class="sp-relchip" href="../../sporsmal/deler-ektefeller-gjeld/">Deler ektefeller gjeld?</a><a class="sp-relchip" href="../../sporsmal/eier-ektefeller-alt-sammen-nar-de-er-gift/">Eier ektefeller alt sammen når de er gift?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
