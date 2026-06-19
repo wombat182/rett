@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg parkere på eiendommen? — Rettsregel</title>
+<meta name="description" content="Det kommer an på hva som er avtalt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-parkere-pa-eiendommen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg parkere på eiendommen?">
+<meta property="og:description" content="Det kommer an på hva som er avtalt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-parkere-pa-eiendommen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg parkere på eiendommen?">
+<meta name="twitter:description" content="Det kommer an på hva som er avtalt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Kan jeg parkere på eiendommen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det kommer an på hva som er avtalt. Du har rett til å bruke det som leiekontrakten din omfatter – og hvis parkeringsplass er en del av avtalen, kan du parkere der. Er parkering ikke nevnt, har du ikke en automatisk rett til å sette bilen på eiendommen, og du må avklare det med utleier. Sjekk alltid kontrakten først.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 5-2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/5-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-2</div>
+  <div class="related-card-title">Ro, orden og dyrehold</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det kommer an på hva som er avtalt. Du har rett til å bruke det som leiekontrakten din omfatter – og hvis parkeringsplass er en del av avtalen, kan du parkere der. Er parkering ikke nevnt, har du ikke en automatisk rett til å sette bilen på eiendommen, og du må avklare det med utleier. Sjekk alltid kontrakten først.</p>
+<h3>Hvorfor handler dette om kontrakten?</h3>
+<p>Når du leier en bolig, leier du det som står i avtalen – boligen og det som hører til. Parkering er ikke noe du får automatisk bare fordi du leier en leilighet. Om du har rett til å parkere på eiendommen, avhenger derfor av hva dere har avtalt. Derfor er det aller første du bør gjøre, å lese leiekontrakten nøye.</p>
+<h3>Hva ser jeg etter i kontrakten?</h3>
+<p>Let etter formuleringer som:</p>
+<ul>
+<li>"Leieforholdet omfatter én parkeringsplass."</li>
+<li>"Parkering inngår ikke i leien."</li>
+<li>En beskrivelse av hva som hører til boligen (bod, garasje, parkering).</li>
+</ul>
+<p>Står det tydelig at parkering er inkludert, har du rett til å bruke plassen. Står det at parkering ikke inngår, eller at det ikke nevnes i det hele tatt, bør du avklare med utleier før du regner med en plass.</p>
+<h3>Eksempler</h3>
+<p><strong>"Det står ingenting om parkering i kontrakten, men det er en stor gårdsplass. Kan jeg bare sette bilen der?"</strong> Ikke uten videre. At det finnes plass, betyr ikke at den er din å bruke. Gårdsplassen kan være ment for utleier, for andre leietakere eller for gjester. Spør utleier og få et klart svar, gjerne skriftlig.</p>
+<p><strong>"Kontrakten sier at jeg har én parkeringsplass, men utleier har leid den ut til en annen også."</strong> Da har du et godt utgangspunkt. Når plassen er en avtalt del av det du leier, har du rett til å bruke den. Vis til kontrakten og be utleier ordne opp.</p>
+<p><strong>"Kan jeg parkere gjesten min på naboens plass når den står tom?"</strong> Nei, ikke uten avtale. Andres parkeringsplasser er deres, selv om de står tomme. Slik bruk kan skape unødvendige konflikter og i verste fall borttauing.</p>
+<h3>Hva med fellesregler og husordensregler?</h3>
+<p>Selv om du har rett til å parkere, kan det gjelde rimelige husordensregler om hvor og hvordan (§ 5-2). For eksempel:</p>
+<ul>
+<li>At du bare bruker din tildelte plass.</li>
+<li>At du ikke blokkerer innkjørsel, garasjeport eller brannvei.</li>
+<li>At gjester bruker eventuelle gjesteplasser.</li>
+</ul>
+<p>Slike regler er rimelige og fornuftige, og dem må du følge. De handler om at alle skal komme til og at sikkerheten ivaretas.</p>
+<h3>Hva hvis jeg trenger parkering, men det ikke er avtalt?</h3>
+<p>Da kan du ta opp med utleier om dere kan inngå en avtale:</p>
+<ol>
+<li><strong>Spør om det finnes en ledig plass</strong> du kan leie i tillegg.</li>
+<li><strong>Avtal pris og vilkår skriftlig,</strong> så det er klart hva som gjelder.</li>
+<li><strong>Be om at plassen merkes</strong> eller tildeles tydelig, slik at det ikke blir uenighet med andre beboere.</li>
+</ol>
+<p>En slik tilleggsavtale kan gjerne stå som et vedlegg til leiekontrakten, eller bekreftes på e-post.</p>
+<h3>Hva med elbil-lading?</h3>
+<p>Stadig flere lurer på lading. Du har ikke en automatisk rett til å installere ladeboks, men det kan avtales med utleier. Bor du i et sameie eller borettslag, finnes det egne regler om rett til ladepunkt, men det er da utleier (eier) som eventuelt må fremme et slikt krav overfor sameiet. Ønsker du lading, ta det opp med utleier som et eget spørsmål, og avtal hvem som dekker kostnadene og hva som skjer med utstyret når du flytter.</p>
+<h3>Hva hvis bilen min blir tauet eller ilagt gebyr?</h3>
+<p>Parkerer du feil – for eksempel på en plass du ikke har rett til, eller i strid med skilting på eiendommen – kan bilen i prinsippet bli ilagt kontrollavgift eller tauet, akkurat som andre steder. Derfor er det viktig å ha klarhet i hvilken plass som er din. Er du i tvil, spør heller én gang for mye enn å risikere et gebyr.</p>
+<h3>Trygge råd om parkering</h3>
+<ol>
+<li><strong>Les kontrakten</strong> og finn ut hva som faktisk er avtalt.</li>
+<li><strong>Avklar med utleier</strong> dersom parkering ikke er nevnt – ikke bare anta.</li>
+<li><strong>Få avtaler skriftlig,</strong> enten i kontrakten eller på e-post.</li>
+<li><strong>Følg rimelige parkeringsregler</strong> for eiendommen (§ 5-2).</li>
+<li><strong>Respekter andres plasser,</strong> også når de står tomme.</li>
+</ol>
+<h3>Hva hvis parkering var "lovet muntlig"?</h3>
+<p>Det hender at utleier muntlig sier "ja, du kan jo bare bruke plassen ute", uten at det står noe i kontrakten. En muntlig avtale er i prinsippet bindende, men den er vanskelig å bevise hvis det senere oppstår uenighet. Derfor bør du alltid be om en kort skriftlig bekreftelse, for eksempel en SMS: "Bare for å ha det på det rene – jeg kan bruke parkeringsplassen til venstre for inngangen, ikke sant?" Et "ja" på skrift er gull verdt hvis det skulle bli diskusjon.</p>
+<h3>Parkering og fellesarealer i borettslag</h3>
+<p>Ligger boligen i et borettslag eller sameie, er det ofte laget – ikke utleier alene – som bestemmer over parkeringen i fellesområdene. Da kan det være tildelte plasser, gjesteplasser med tidsbegrensning og egne regler for hvor man kan stå. Utleier kan bare gi deg rett til en plass utleier faktisk rår over. Er du usikker, spør utleier om hvilken plass som hører til boligen din, og om det finnes egne parkeringsregler fra laget du må følge.</p>
+<h3>Hva med sykkel og tilhenger?</h3>
+<p>Også oppbevaring av sykkel, barnevogn eller tilhenger kan være regulert. Mange bygg har et eget sykkelrom eller en bod til dette. Sett ikke fra deg slikt i trappeoppganger eller rømningsveier – det er ofte forbudt av brannhensyn, og er en typisk rimelig husordensregel (§ 5-2). Spør utleier hvor du kan oppbevare slike ting, så unngår du både irettesettelser og at tingene dine blir fjernet.</p>
+<h3>Hva hvis parkeringen forsvinner underveis?</h3>
+<p>Tenk deg at du har en avtalt parkeringsplass, men utleier plutselig vil ta den i bruk selv eller leie den ut til andre. Når parkering er en del av det du leier, kan utleier ikke uten videre ta den fra deg midt i leieforholdet. Det ville være å redusere det du faktisk har leid. Skjer dette, vis til kontrakten og si tydelig fra at plassen inngår i leieavtalen din. Blir dere ikke enige, kan du ta saken til Husleietvistutvalget (HTU). Skulle utleier ha et reelt behov for å gjøre endringer, må det eventuelt skje gjennom en ordentlig avtale dere blir enige om – ikke ensidig.</p>
+<h3>Koster parkeringen ekstra?</h3>
+<p>Noen ganger er parkering inkludert i husleien, andre ganger koster den et eget beløp i tillegg. Det skal fremgå av avtalen. Pass på at du vet hva du betaler for, slik at du ikke ender opp med å betale for en plass du ikke bruker, eller bruker en plass du egentlig ikke har betalt for. Er prisen og vilkårene uklare, be utleier om en skriftlig oppklaring. Tydelige avtaler om akkurat dette sparer mange for irritasjon senere.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du har rett til å parkere på eiendommen hvis det er avtalt i leiekontrakten.</li>
+<li>Er parkering ikke nevnt, har du ingen automatisk rett – avklar med utleier.</li>
+<li>At det finnes ledig plass betyr ikke at den er din å bruke.</li>
+<li>Følg rimelige parkeringsregler, og respekter andres plasser.</li>
+<li>Trenger du parkering eller lading, ta det opp med utleier og få en skriftlig avtale.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

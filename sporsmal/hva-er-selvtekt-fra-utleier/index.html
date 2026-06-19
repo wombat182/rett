@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er selvtekt fra utleier? — Rettsregel</title>
+<meta name="description" content="Selvtekt betyr å ta loven i egne hender — altså å tvinge gjennom det du mener er din rett uten å gå via de lovlige kanalene. Når en utleier kaster ut,…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-selvtekt-fra-utleier/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er selvtekt fra utleier?">
+<meta property="og:description" content="Selvtekt betyr å ta loven i egne hender — altså å tvinge gjennom det du mener er din rett uten å gå via de lovlige kanalene. Når en utleier kaster ut,…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-selvtekt-fra-utleier/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er selvtekt fra utleier?">
+<meta name="twitter:description" content="Selvtekt betyr å ta loven i egne hender — altså å tvinge gjennom det du mener er din rett uten å gå via de lovlige kanalene. Når en utleier kaster ut,…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er selvtekt fra utleier?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Selvtekt betyr å ta loven i egne hender — altså å tvinge gjennom det du mener er din rett uten å gå via de lovlige kanalene. Når en utleier kaster ut, stenger ute, bytter lås, kutter strøm eller fjerner eiendeler for å presse en leietaker ut, er det ulovlig selvtekt. Det kan være straffbart etter straffeloven. Utleier må alltid bruke namsmannen for å få en leietaker ut.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr "selvtekt"?</h3>
+<p>"Selvtekt" er et gammelt, men presist ord. Det betyr å skaffe seg eller gjennomtvinge en rett ved egen makt, i stedet for å bruke de offentlige kanalene som finnes for å løse konflikter. I et leieforhold betyr det at utleier tar saken i egne hender for å oppnå noe han mener han har krav på — for eksempel å få en leietaker ut eller få inn skyldig leie.</p>
+<p>Problemet er at selv om utleier kanskje <em>har</em> rett i sak (for eksempel at leietaker faktisk skylder penger), har han ikke lov til å gjennomtvinge det med makt selv. Det er nettopp dette loven forbyr.</p>
+<h3>Eksempler på selvtekt fra utleier</h3>
+<p>Her er typiske handlinger som regnes som ulovlig selvtekt når du fortsatt bor i boligen:</p>
+<ul>
+<li><strong>Bytte låsen</strong> for å stenge deg ute.</li>
+<li><strong>Montere ekstra lås, kjetting eller blokkere døra.</strong></li>
+<li><strong>Bære ut eller kaste tingene dine.</strong></li>
+<li><strong>Kutte strøm, vann eller varme</strong> for å presse deg ut.</li>
+<li><strong>Stenge internett eller andre tjenester</strong> som inngår i leien, for å gjøre boligen ubeboelig.</li>
+<li><strong>Fjerne vinduer eller dører.</strong></li>
+<li><strong>Trakassere deg</strong> med trusler, sjikane eller stadige uanmeldte besøk for å skremme deg til å flytte.</li>
+<li><strong>Holde eiendelene dine som "pant"</strong> for skyldig leie.</li>
+</ul>
+<p>Alle disse har til felles at utleier bruker egenmakt for å oppnå et resultat han eventuelt måtte fått gjennom namsmannen.</p>
+<h3>Hvorfor er selvtekt forbudt?</h3>
+<p>Det er to gode grunner:</p>
+<ol>
+<li><strong>Rettssikkerhet.</strong> Hvis hver utleier kunne kaste ut leietakere på egen hånd, ville den sterkeste alltid vinne — uavhengig av hvem som faktisk har rett. Loven krever at en nøytral instans (namsmannen) kontrollerer saken først.</li>
+<li><strong>Beskyttelse av hjemmet.</strong> Et hjem er grunnleggende for et menneskes liv og verdighet. Derfor er det bare staten som kan bruke tvang for å frata noen hjemmet, og bare etter en ordnet prosess.</li>
+</ol>
+<p>Med andre ord: forbudet mot selvtekt er der for å beskytte den svakere parten i en konflikt — som ofte er leietakeren.</p>
+<h3>Selvtekt kan være straffbart</h3>
+<p>Det er ikke bare "ikke lov" på et teknisk nivå — selvtekt kan være <strong>straffbart</strong> etter straffeloven. Avhengig av hva utleier gjør, kan handlingene rammes av bestemmelser om ulovlig selvtekt, og enkelte handlinger kan i tillegg utgjøre andre lovbrudd. Det betyr at politiet kan involveres, og at utleier kan stilles til ansvar.</p>
+<p><em>Eksempel:</em> Lars skylder leie. Utleier blir lei av å vente, går inn mens Lars er borte, bærer ut møblene hans og setter dem på fortauet, og bytter låsen. Dette er klar selvtekt. Selv om Lars skylder penger, har utleier begått en ulovlig — og potensielt straffbar — handling. Lars kan anmelde forholdet, kreve å komme inn igjen, og kreve erstatning for skadde eller tapte eiendeler.</p>
+<h3>Hva med "men leietaker har jo gjort noe galt"?</h3>
+<p>Dette er kjernen i misforståelsen. Mange utleiere tenker: "Leietaker betaler ikke / oppfører seg dårlig / har ikke flyttet, så da må jeg vel kunne gjøre noe?" Svaret er: du kan gjøre noe — men det lovlige noe, ikke selvtekt. At motparten har misligholdt gir deg <em>ikke</em> rett til å ta loven i egne hender. Det gir deg rett til å bruke de lovlige virkemidlene: kreve inn pengene, sende varsel, og begjære utkastelse via namsmannen.</p>
+<h3>Hva kan du som leietaker gjøre hvis utleier begår selvtekt?</h3>
+<ol>
+<li><strong>Kontakt utleier</strong> og gjør tydelig at handlingen er ulovlig selvtekt. Noen ganger trekker utleier seg når han forstår alvoret.</li>
+<li><strong>Kontakt politiet.</strong> Selvtekt kan være straffbart, og politiet kan bistå deg med å gjenopprette situasjonen (for eksempel få tilgang til hjemmet ditt).</li>
+<li><strong>Dokumentér grundig:</strong> bilder, video, meldinger, e-poster, tidspunkt og eventuelle vitner.</li>
+<li><strong>Krev erstatning</strong> for økonomisk tap — hotell, tapt eller skadet eiendel, ekstra utgifter.</li>
+<li><strong>Bruk Husleietvistutvalget</strong> for krav som springer ut av leieforholdet, eller få veiledning hos Forbrukerrådet.</li>
+</ol>
+<h3>Gjelder selvtekt-forbudet begge veier?</h3>
+<p>Ja, prinsippet om at man ikke skal ta loven i egne hender gjelder generelt. Men i praksis er det utleier som har "maktmidlene" (nøkler, eierskap, kontroll over strøm osv.), og derfor er det oftest leietaker som trenger beskyttelse mot selvtekt. Som leietaker bør du på din side også opptre lovlig — for eksempel ikke skade boligen eller hindre utleier all lovlig adgang.</p>
+<h3>Den lovlige veien — som alternativ til selvtekt</h3>
+<p>Det er verdt å minne om at utleier nesten alltid <em>har</em> en lovlig vei til målet sitt. Selvtekt er derfor ikke bare ulovlig, den er også unødvendig. Hvis utleier vil ha deg ut eller vil ha betalt, kan han:</p>
+<ul>
+<li><strong>kreve inn skyldig leie</strong> på lovlig vis (purring, inkasso, eventuelt rettslig inndriving),</li>
+<li><strong>avslutte leieforholdet</strong> ved oppsigelse eller heving når vilkårene er oppfylt,</li>
+<li><strong>sende et § 4-18-varsel</strong> med 14 dagers frist ved ubetalt leie,</li>
+<li><strong>begjære fravikelse via namsmannen</strong>, som kontrollerer saken og eventuelt gjennomfører.</li>
+</ul>
+<p>Når den lovlige veien finnes, er det ingen grunn — verken juridisk eller praktisk — for utleier til å ty til makt. Det er nettopp dette du rolig kan minne en frustrert utleier om.</p>
+<h3>Hvordan kjenner du igjen selvtekt?</h3>
+<p>Spør deg selv: <em>Prøver utleier å oppnå noe med makt eller press, i stedet for å gå via de lovlige kanalene?</em> Hvis svaret er ja, er det sannsynligvis selvtekt. Noen kjennetegn:</p>
+<ul>
+<li>Utleier handler <strong>uten</strong> at namsmannen er involvert.</li>
+<li>Handlingen er ment å <strong>tvinge</strong> deg til noe (flytte, betale) ved å gjøre hverdagen din vanskelig.</li>
+<li>Det rammer <strong>tilgangen din til hjemmet</strong> eller eiendelene dine.</li>
+</ul>
+<h3>Trygghet midt i en vanskelig situasjon</h3>
+<p>Hvis du leser dette fordi en utleier presser deg, er det viktigste budskapet dette: <strong>du er ikke rettsløs, selv om du skylder penger eller er i konflikt.</strong> Loven står på din side når det gjelder selvtekt. Utleier kan ha rett i at du skylder leie — men det gir ham aldri rett til å stenge deg ute, kutte strøm eller fjerne tingene dine. Du har rett til å bo i fred til en eventuell utkastelse er gjennomført på lovlig vis, og du har konkrete steg du kan ta (politi, dokumentasjon, erstatning, gratis rådgivning) hvis grensen blir tråkket over.</p>
+<h3>Kort oppsummert</h3>
+<p>Selvtekt fra utleier er når utleier tar loven i egne hender for å presse deg ut eller tvinge gjennom et krav — for eksempel ved å bytte lås, stenge deg ute, kutte strøm, fjerne eiendeler eller trakassere deg. Dette er ulovlig og kan være straffbart, uansett om du faktisk skylder leie eller har misligholdt. Den eneste lovlige veien for utleier er via namsmannen. Opplever du selvtekt, kontakt politiet, dokumentér alt, og vurder erstatning. At du har gjort noe galt fratar deg ikke beskyttelsen mot selvtekt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er felleskostnader i et leieforhold? — Rettsregel</title>
+<meta name="description" content="Felleskostnader er utgifter knyttet til fellesarealer og felles tjenester i en eiendom – for eksempel oppvarming av fellesareal, vaktmester, renhold av…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-felleskostnader-i-et-leieforhold/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er felleskostnader i et leieforhold?">
+<meta property="og:description" content="Felleskostnader er utgifter knyttet til fellesarealer og felles tjenester i en eiendom – for eksempel oppvarming av fellesareal, vaktmester, renhold av…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-felleskostnader-i-et-leieforhold/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er felleskostnader i et leieforhold?">
+<meta name="twitter:description" content="Felleskostnader er utgifter knyttet til fellesarealer og felles tjenester i en eiendom – for eksempel oppvarming av fellesareal, vaktmester, renhold av…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er felleskostnader i et leieforhold?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Felleskostnader er utgifter knyttet til fellesarealer og felles tjenester i en eiendom – for eksempel oppvarming av fellesareal, vaktmester, renhold av trappeoppgang, vann og avløp. I et leieforhold kan utleier bare kreve at du dekker slike kostnader hvis det er **særskilt og tydelig avtalt**, og bare for **faktiske** utgifter. Mye av det folk kaller «felleskostnader» kan ikke veltes over på leietaker uten klar avtale (§ 3-1 og § 3-5).</p>
+  <p class="sp-kilde">Bygger på Husleieloven §§ 3-1, 3-5, 4-2, 4-3</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/3-1/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 3-1</div>
+  <div class="related-card-title">Hva kan utleieren kreve i husleie?</div>
+</a><a href="../../lover/husleieloven/3-5/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 3-5</div>
+  <div class="related-card-title">Depositum — reglene du må kjenne</div>
+</a><a href="../../lover/husleieloven/4-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 4-2</div>
+  <div class="related-card-title">Utleieren kan justere husleien med konsumprisindeksen</div>
+</a><a href="../../lover/husleieloven/4-3/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 4-3</div>
+  <div class="related-card-title">Etter 2,5 år kan leien justeres til markedsnivå</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hva er felleskostnader?</h3>
+<p>I borettslag og sameier er «felleskostnader» et fast begrep: det er de månedlige utgiftene eierne deler på for å drifte eiendommen – som vedlikehold av bygget, forsikring, vaktmester, renhold, oppvarming av fellesarealer og lignende. Eier du selv, betaler du dette til borettslaget eller sameiet.</p>
+<p>I et <strong>leieforhold</strong> er bildet et annet. Utgangspunktet etter husleieloven er at leien skal være <strong>ett pengebeløp</strong> (§ 3-1), og at utleier ikke kan kreve at du betaler andre eller større beløp enn loven tillater (§ 3-5). Det betyr at utleier ikke fritt kan sende deg en regning for «felleskostnader» i tillegg til leien. Hvis utleier selv betaler felleskostnader til et borettslag eller sameie, er det normalt utleiers egen utgift – som skal være innbakt i leien.</p>
+<h3>Hva kan kreves i tillegg – og hva ikke?</h3>
+<p>De tingene loven uttrykkelig åpner for at du kan betale <strong>særskilt</strong> (hvis avtalt), er knyttet til <strong>ditt eget forbruk</strong>:</p>
+<ul>
+<li><strong>Strøm og brensel</strong> (oppvarming) – eget forbruk.</li>
+<li><strong>Vann og avløp</strong> – eget forbruk.</li>
+</ul>
+<p>For disse har du rett til årlig regnskap (§ 3-1).</p>
+<p>Andre utgifter – som vaktmester, renhold av fellesareal, forsikring, kabel-TV/internett eller utleiers vedlikehold – kan <strong>ikke</strong> uten videre kreves som et separat tillegg. Som hovedregel skal slike kostnader være innbakt i selve husleien. Hvis utleier ønsker at du skal dekke en konkret tjeneste, må det være tydelig avtalt og holde seg innenfor lovens rammer.</p>
+<h3>Hvorfor er dette viktig for deg?</h3>
+<p>Fordi det beskytter deg mot «snik-økning» av boutgiftene. Hvis utleier kunne lagt på stadig nye «felleskostnader», ville reglene om KPI-justering (§ 4-2) og gjengs leie (§ 4-3) mistet mye av sin verdi. Derfor er hovedregelen at leien skal være forutsigbar og samlet i ett beløp. Tenk på det slik: hadde utleier kunnet legge på 1 000 kr i «felleskostnader» når som helst, ville KPI-taket på leieøkninger vært lite verdt.</p>
+<h3>Et opplysende eksempel</h3>
+<p>Tenk deg en kontrakt med følgende poster:</p>
+<table>
+<thead>
+<tr>
+<th>Post</th>
+<th>Lovlig som eget tillegg?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Husleie 12 000 kr</td>
+<td>Ja – selve leien (§ 3-1)</td>
+</tr>
+<tr>
+<td>Akonto strøm, eget forbruk</td>
+<td>Ja, hvis avtalt, med årlig regnskap</td>
+</tr>
+<tr>
+<td>Vann/avløp, eget forbruk</td>
+<td>Ja, hvis avtalt, med årlig regnskap</td>
+</tr>
+<tr>
+<td>«Felleskostnader» 1 000 kr (vaktmester, trappevask)</td>
+<td>Tvilsomt – skal normalt være med i leien</td>
+</tr>
+<tr>
+<td>«Adm.gebyr» 250 kr</td>
+<td>Nei – ulovlig (§ 3-5)</td>
+</tr>
+</tbody>
+</table>
+<p>I dette eksempelet er strøm og vann/avløp greit hvis avtalt, mens et løst «felleskostnader»-beløp og et «administrasjonsgebyr» er problematiske og kan utfordres. Hadde du betalt de 1 000 + 250 = 1 250 kr i tolv måneder, snakker vi om 15 000 kr i året som helt eller delvis kan være ulovlig.</p>
+<h3>Hva med kabel-TV, internett og lignende?</h3>
+<p>Utleier kan tilby slike tjenester som en del av leien, eller dere kan avtale at du betaler for dem særskilt. Men det må være <strong>klart avtalt</strong>, og prisen bør svare til den faktiske kostnaden. Du kan ikke pålegges å betale for tjenester du verken bruker eller har avtalt.</p>
+<h3>Slik sjekker du om «felleskostnadene» dine er lovlige</h3>
+<ol>
+<li>Se i kontrakten: er hver tilleggspost konkret avtalt?</li>
+<li>Knytter posten seg til en <strong>faktisk</strong> utgift (strøm, vann) eller er den et udefinert påslag?</li>
+<li>Får du regnskap som viser hva pengene faktisk går til?</li>
+<li>Er noen poster i realiteten utleiers eget vedlikehold? Det skal du ikke betale særskilt for.</li>
+</ol>
+<p>Er du i tvil, be utleier om en spesifisert oversikt. Får du ikke et godt svar, kan beløpet være ulovlig – og da kan du kreve det tilbake (§ 3-5).</p>
+<h3>Vanlige feller</h3>
+<ul>
+<li><strong>Runde «felleskostnader» uten spesifikasjon.</strong> Krev en oppdeling av hva beløpet dekker.</li>
+<li><strong>Utleiers vedlikehold sendt videre.</strong> Vanlig vedlikehold av bygget er utleiers ansvar.</li>
+<li><strong>Tjenester du ikke bruker.</strong> Du skal ikke betale for noe du ikke har avtalt.</li>
+</ul>
+<h3>Trygge råd</h3>
+<ul>
+<li>Krev at alle «felleskostnader» er spesifisert og knyttet til faktiske utgifter.</li>
+<li>Be om årlig regnskap for forbruksutgifter (strøm, vann).</li>
+<li>Vær skeptisk til runde, udefinerte «felleskostnader» og «gebyrer» – de skal normalt være med i leien.</li>
+<li>Ulovlige tillegg kan kreves tilbakebetalt; ta eventuelt saken til HTU.</li>
+</ul>
+<h3>Forskjellen på å eie og å leie</h3>
+<p>Det er lett å blande sammen, så her er kjerneforskjellen:</p>
+<ul>
+<li><strong>Eier du</strong> en bolig i et borettslag eller sameie, betaler du felleskostnader hver måned til fellesskapet. Det er en del av det å eie.</li>
+<li><strong>Leier du</strong>, er felleskostnadene i utgangspunktet <strong>utleiers</strong> utgift. Utleier betaler dem til borettslaget eller sameiet, og det skal være innbakt i husleien du betaler – ikke en egen regning til deg.</li>
+</ul>
+<p>Derfor er det et rødt flagg hvis du som leietaker får en egen «felleskostnadsregning» i tillegg til leien, uten at det er klart avtalt og knyttet til ditt eget forbruk.</p>
+<h3>Et scenario: utleier vil sende felleskostnadene videre</h3>
+<p>Utleier sier: «Sameiet har satt opp felleskostnadene med 500 kr, så leien din øker tilsvarende fra neste måned.» Er det greit?</p>
+<p>Nei. Utleier kan ikke bare velte sine egne økte felleskostnader over på deg som et tillegg eller en leieøkning utenom de vanlige reglene. En leieøkning må skje etter KPI (§ 4-2) eller gjengs leie (§ 4-3) – ikke fordi utleiers egne utgifter har gått opp. Du kan vise til at leien bare kan justeres etter de lovbestemte reglene.</p>
+<h3>Ofte stilte spørsmål</h3>
+<p><strong>Kan internett og TV være med i leien?</strong>
+Ja, hvis det er avtalt. Da er det en del av pakken du betaler for. Det kan ikke pålegges deg i ettertid uten avtale.</p>
+<p><strong>Hva gjør jeg hvis jeg er usikker på en post?</strong>
+Be om en spesifisert oversikt skriftlig. Får du ikke et godt svar, kan posten være ulovlig, og du kan ta saken til HTU.</p>
+<p><strong>Kan utleier kreve at jeg betaler for trappevask eller snømåking?</strong>
+Slike tjenester er normalt en del av driften som skal dekkes av leien, ikke et eget tillegg til deg – med mindre det er klart og særskilt avtalt.</p>
+<h3>Det viktigste å ta med seg</h3>
+<p>Hovedregelen er enkel: leien skal være ett samlet pengebeløp, og bare ditt eget forbruk av strøm/brensel og vann/avløp kan kreves særskilt hvis det er avtalt. Alt annet som kalles «felleskostnader» bør du se nærmere på. Be om en spesifisert oversikt, sjekk om hver post er konkret avtalt og knyttet til en faktisk utgift, og reager på runde, udefinerte beløp. Slik beskytter du deg mot snik-økning av boutgiftene, og du beholder den forutsigbarheten loven er ment å gi deg.</p>
+<h3>Kort oppsummert</h3>
+<p>Felleskostnader i et leieforhold er ikke fritt frem for utleier å kreve. Leien skal som hovedregel være ett samlet pengebeløp (§ 3-1), og bare eget forbruk av strøm/brensel og vann/avløp kan kreves særskilt hvis det er avtalt – med rett til årlig regnskap. Udefinerte «felleskostnader» og gebyrer kan være ulovlige og kreves tilbake (§ 3-5). Be alltid om en spesifisert oversikt hvis noe er uklart.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

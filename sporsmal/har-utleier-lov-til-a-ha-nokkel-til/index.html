@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har utleier lov til å ha nøkkel til leiligheten? — Rettsregel</title>
+<meta name="description" content="Ja, utleier kan godt ha en ekstranøkkel til boligen – men nøkkelen gir ikke utleier rett til å bruke den fritt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-utleier-lov-til-a-ha-nokkel-til/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har utleier lov til å ha nøkkel til leiligheten?">
+<meta property="og:description" content="Ja, utleier kan godt ha en ekstranøkkel til boligen – men nøkkelen gir ikke utleier rett til å bruke den fritt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-utleier-lov-til-a-ha-nokkel-til/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har utleier lov til å ha nøkkel til leiligheten?">
+<meta name="twitter:description" content="Ja, utleier kan godt ha en ekstranøkkel til boligen – men nøkkelen gir ikke utleier rett til å bruke den fritt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Har utleier lov til å ha nøkkel til leiligheten?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, utleier kan godt ha en ekstranøkkel til boligen – men nøkkelen gir ikke utleier rett til å bruke den fritt. Du har enerett til boligen din, og utleier må uansett varsle deg i rimelig tid før hun går inn (§ 5-6). En nøkkel er altså til nødsituasjoner og avtalte besøk, ikke til å komme og gå som det passer.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 5-6 og § 10-2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/5-6/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-6</div>
+  <div class="related-card-title">Kan utleieren komme inn i leiligheten din?</div>
+</a><a href="../../lover/husleieloven/10-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 10-2</div>
+  <div class="related-card-title">Slik leverer du tilbake boligen når du flytter</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, utleier kan godt ha en ekstranøkkel til boligen – men nøkkelen gir ikke utleier rett til å bruke den fritt. Du har enerett til boligen din, og utleier må uansett varsle deg i rimelig tid før hun går inn (§ 5-6). En nøkkel er altså til nødsituasjoner og avtalte besøk, ikke til å komme og gå som det passer.</p>
+<h3>Å eie en nøkkel er ikke det samme som å ha rett til å bruke den</h3>
+<p>Det er lett å tenke at "utleier eier jo boligen, så da kan hun jo ha nøkkel og bruke den". Men det er to helt forskjellige ting:</p>
+<ul>
+<li><strong>Å ha en nøkkel</strong> er praktisk, og helt vanlig. Mange utleiere beholder en ekstranøkkel.</li>
+<li><strong>Å bruke nøkkelen</strong> for å gå inn i boligen krever et lovlig grunnlag og normalt varsel (§ 5-6).</li>
+</ul>
+<p>Tenk på det som en hotellsituasjon snudd på hodet: Resepsjonen har hovednøkkel til rommet ditt, men de kan ikke spasere inn når du sover. Det samme prinsippet gjelder i et leieforhold – bare enda sterkere, fordi dette er ditt faste hjem.</p>
+<h3>Hvorfor har utleier ofte en ekstranøkkel?</h3>
+<p>Det er flere gode og legitime grunner til at utleier har en nøkkel liggende:</p>
+<ul>
+<li><strong>Nødssituasjoner:</strong> vannlekkasje, brann eller annen akutt skade der utleier må komme inn raskt (§ 5-6).</li>
+<li><strong>Avtalte besøk:</strong> tilsyn, reparasjoner eller visning som dere har avtalt på forhånd.</li>
+<li><strong>Hvis du låser deg ute:</strong> en ekstranøkkel kan redde dagen din.</li>
+</ul>
+<p>Problemet oppstår bare hvis utleier bruker nøkkelen til å gå inn uten avtale og uten varsel. Da er det ikke nøkkelen som er problemet, men bruken.</p>
+<h3>Eksempler</h3>
+<p><strong>"Utleier sier hun vil ha en nøkkel for å kunne sjekke leiligheten av og til. Må jeg godta det?"</strong> Du må godta at utleier kan ha en ekstranøkkel, men ikke at hun "sjekker av og til" på egen hånd. Tilsyn skal varsles i rimelig tid, og du bestemmer i praksis når det passer (innenfor rimelighetens grenser). Avtal gjerne fast hvordan tilsyn skal skje.</p>
+<p><strong>"Jeg vil ikke at utleier skal ha nøkkel i det hele tatt. Kan jeg bytte lås?"</strong> Som leietaker har du normalt rett til trygghet og kontroll over hvem som kommer inn. Du kan ofte bytte lås, men det bør avtales med utleier, og du må sette tilbake den opprinnelige låsen (eller levere nye nøkler til utleier) når du flytter. Et alternativ er en tilleggslås eller sikkerhetslås. Snakk med utleier om en løsning dere begge er trygge på.</p>
+<h3>Kan jeg bytte lås selv?</h3>
+<p>Mange leietakere lurer på dette etter et samlivsbrudd, etter at en tidligere leietaker ikke leverte tilbake nøkler, eller fordi de føler utleier "snoker". Hovedregelen er:</p>
+<ul>
+<li>Du kan som regel sette inn en ny lås av hensyn til din egen sikkerhet, så lenge du ikke gjør varig skade på døren.</li>
+<li>Gi utleier beskjed, og tilby å gi utleier en ny nøkkel eller å sette tilbake den gamle låsen ved utflytting.</li>
+<li>Ved utflytting må boligen og låsen leveres tilbake i samme stand som ved overtakelse (§ 10-2), bortsett fra vanlig slitasje. Tar du vare på den gamle låsen og setter den tilbake, slipper du krav om utbedring.</li>
+</ul>
+<p>Det tryggeste er alltid å snakke med utleier først og bli enige skriftlig. De fleste utleiere forstår behovet for trygghet.</p>
+<h3>Hva hvis utleier misbruker nøkkelen?</h3>
+<p>Bruker utleier nøkkelen til å gå inn uanmeldt, krenker hun din enerett til boligen. Da bør du:</p>
+<ol>
+<li><strong>Dokumentere det</strong> – noter dato og hva som skjedde, ta gjerne bilder hvis ting er flyttet på.</li>
+<li><strong>Sende en skriftlig påminnelse</strong> om at hun må varsle i rimelig tid (§ 5-6).</li>
+<li><strong>Vurdere låsbytte</strong> hvis det gjentar seg.</li>
+<li><strong>Kontakte Husleietvistutvalget (HTU)</strong> hvis problemet ikke løser seg. De kan avgjøre tvisten rimelig og raskt.</li>
+</ol>
+<h3>Hvor mange nøkler skal jeg ha?</h3>
+<p>Ved innflytting bør det noteres i overtakelsesprotokollen hvor mange nøkler du får utlevert. Det er nyttig av to grunner: du vet hvor mange du skal levere tilbake ved utflytting, og du har dokumentasjon hvis det skulle bli uenighet om antallet senere. Få gjerne også med hva slags nøkler det er – ytterdør, postkasse, bod, fellesinngang.</p>
+<p>Et godt råd er å ikke lage ekstra kopier uten å si fra til utleier, og å holde oversikt over hvem som har nøkler i husstanden din. Da unngår du ubehagelige overraskelser den dagen du skal flytte ut og levere alt tilbake.</p>
+<h3>Hva hvis jeg mister en nøkkel mens jeg bor der?</h3>
+<p>Mister du en nøkkel underveis i leieforholdet, bør du si fra til utleier så fort som mulig. En nøkkel på avveie er en sikkerhetsrisiko for boligen, og det er bedre å ta tak i det med en gang enn å vente til utflytting. Sammen kan dere vurdere om det holder å bestille en ny kopi, eller om låsen bør byttes. Kostnaden ved en låsendring som skyldes at du har mistet en nøkkel, kan falle på deg, men den må være rimelig og dokumentert.</p>
+<h3>Et godt nøkkelforhold bygger tillit</h3>
+<p>De fleste konflikter om nøkler bunner i utrygghet – leietakeren føler seg overvåket, eller utleieren er redd for at uvedkommende har tilgang. Begge deler løses best med åpenhet. Avtal tydelig hvem som har nøkler, hvordan tilsyn skal varsles, og hva dere gjør hvis en nøkkel forsvinner. Når dette er på plass, blir nøkkelspørsmålet sjelden et problem.</p>
+<h3>Hva med kodelås eller nøkkelboks?</h3>
+<p>Stadig flere boliger har kodelås eller en nøkkelboks i stedet for vanlige nøkler. Prinsippet er nøyaktig det samme: at utleier kjenner koden eller har tilgang til boksen, gir ikke rett til å gå inn uten avtale og varsel (§ 5-6). Har dere en kodelås, bør du kunne bytte koden din egen for trygghets skyld, og avtale med utleier hva som skjer ved utflytting. En kode er like privat som en nøkkel.</p>
+<p>Et godt råd er å avtale skriftlig hvem som kjenner koden, og å endre koden hvis du har gitt den til folk som ikke lenger skal ha tilgang – for eksempel en eks-partner eller en tidligere romkamerat.</p>
+<h3>Hva hvis en tidligere leietaker fortsatt har nøkkel?</h3>
+<p>Flytter du inn i en bolig der den forrige leietakeren kan ha beholdt en kopi, er det fullt rimelig å be utleier om å bytte lås, eller å gjøre det selv etter avtale. Du har krav på å føle deg trygg i ditt eget hjem. Ta det opp med utleier med en gang ved innflytting, så slipper du å gå rundt og lure på hvem som kan ha tilgang. De fleste utleiere forstår dette godt og ordner det uten diskusjon.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Utleier kan ha en ekstranøkkel – det er lov og helt vanlig.</li>
+<li>Men nøkkelen gir ikke rett til å gå inn fritt; du har enerett til boligen.</li>
+<li>Utleier må varsle deg i rimelig tid før besøk, unntatt i akutte nødssituasjoner (§ 5-6).</li>
+<li>Du kan ofte bytte lås for din egen trygghet, men avtal det med utleier og sett den tilbake ved utflytting.</li>
+<li>Misbrukes nøkkelen, si fra skriftlig og kontakt Husleietvistutvalget.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem betaler for reparasjoner i leiligheten? — Rettsregel</title>
+<meta name="description" content="I de aller fleste tilfeller betaler utleier for reparasjoner. Du som leietaker betaler bare for det lille, daglige vedlikeholdet – og for skader du selv…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-betaler-for-reparasjoner-i-leiligheten/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem betaler for reparasjoner i leiligheten?">
+<meta property="og:description" content="I de aller fleste tilfeller betaler utleier for reparasjoner. Du som leietaker betaler bare for det lille, daglige vedlikeholdet – og for skader du selv…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-betaler-for-reparasjoner-i-leiligheten/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem betaler for reparasjoner i leiligheten?">
+<meta name="twitter:description" content="I de aller fleste tilfeller betaler utleier for reparasjoner. Du som leietaker betaler bare for det lille, daglige vedlikeholdet – og for skader du selv…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvem betaler for reparasjoner i leiligheten?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>I de aller fleste tilfeller betaler utleier for reparasjoner. Du som leietaker betaler bare for det lille, daglige vedlikeholdet – og for skader du selv har forårsaket. Alt annet er utleiers regning.</p>
+  <p class="sp-kilde">Bygger på Husleieloven §§ 5-3, 5-1, 2-13, 2-11, 2-10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/5-3/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-3</div>
+  <div class="related-card-title">Hvem er ansvarlig for vedlikehold?</div>
+</a><a href="../../lover/husleieloven/5-1/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-1</div>
+  <div class="related-card-title">Dine plikter og utleierens plikter mens du bor der</div>
+</a><a href="../../lover/husleieloven/2-13/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-13</div>
+  <div class="related-card-title">Du kan kreve erstatning for tap ved forsinkelse eller mangler</div>
+</a><a href="../../lover/husleieloven/2-11/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-11</div>
+  <div class="related-card-title">Du kan kreve lavere husleie hvis boligen er mangelfull</div>
+</a><a href="../../lover/husleieloven/2-10/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-10</div>
+  <div class="related-card-title">Du kan kreve at utleieren retter feil for egen regning</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Den enkle hovedregelen</h3>
+<p>Tenk på det slik:</p>
+<ul>
+<li><strong>Utleier betaler</strong> for det meste – store reparasjoner, slitasje over tid, ting som ryker av alder.</li>
+<li><strong>Du betaler</strong> for det lille daglige (§ 5-3) og for skader du eller dine gjester har forårsaket.</li>
+</ul>
+<h3>Tre spørsmål som avgjør hvem som betaler</h3>
+<p>Når noe må repareres, still deg disse tre spørsmålene:</p>
+<p><strong>1. Er det lite, daglig vedlikehold?</strong>
+(lyspære, sikring, pakning, smøre lås) → <strong>Du betaler.</strong></p>
+<p><strong>2. Er det skadet på grunn av noe du gjorde?</strong>
+(du knuste vinduet, sølte og ødela parketten, lot vannet renne over) → <strong>Du betaler.</strong></p>
+<p><strong>3. Er det stort vedlikehold, eller noe som ryket av alder/slitasje, eller en tilfeldig skade?</strong>
+(komfyren døde, røret sprakk, taket lekker, varmtvannsberederen ga opp) → <strong>Utleier betaler.</strong></p>
+<h3>Konkrete eksempler på hvem som betaler</h3>
+<table>
+<thead>
+<tr>
+<th>Situasjon</th>
+<th>Hvem betaler?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lyspæra går</td>
+<td>Du</td>
+</tr>
+<tr>
+<td>En sikring ryker</td>
+<td>Du</td>
+</tr>
+<tr>
+<td>Pakning i kran må byttes</td>
+<td>Du</td>
+</tr>
+<tr>
+<td>Du knuser en rute</td>
+<td>Du</td>
+</tr>
+<tr>
+<td>Du brenner hull i benkeplaten</td>
+<td>Du</td>
+</tr>
+<tr>
+<td>Komfyren slutter å virke (alder)</td>
+<td>Utleier</td>
+</tr>
+<tr>
+<td>Kjøleskapet ryker en søndag</td>
+<td>Utleier</td>
+</tr>
+<tr>
+<td>Røret sprekker og vann renner ut</td>
+<td>Utleier</td>
+</tr>
+<tr>
+<td>Taket lekker</td>
+<td>Utleier</td>
+</tr>
+<tr>
+<td>Det elektriske anlegget svikter</td>
+<td>Utleier</td>
+</tr>
+<tr>
+<td>Varmtvannsberederen dør</td>
+<td>Utleier</td>
+</tr>
+<tr>
+<td>Innbrudd – ødelagt dør</td>
+<td>Utleier (forsikring)</td>
+</tr>
+<tr>
+<td>Maling som har bleknet over år</td>
+<td>Utleier (normal slitasje)</td>
+</tr>
+</tbody>
+</table>
+<h3>Hva med "force majeure" og tilfeldige uhell?</h3>
+<p>Hvis noe går i stykker uten at det er noens skyld – for eksempel at kjøleskapet bare gir opp en søndag – så er det fortsatt utleiers regning. Det er en del av utleiers vedlikeholdsplikt at boligen og det som følger med skal virke (§ 5-1). At det skjedde på en søndag eller i en helg spiller ingen rolle for <em>hvem som betaler</em>. Det kan derimot ha betydning for <em>hvor raskt</em> det kan fikses.</p>
+<h3>Hva med tap mens du venter på reparasjon?</h3>
+<p>Det er ikke bare selve reparasjonen utleier kan måtte dekke. Hvis du får et tap fordi noe ikke virker – for eksempel at maten i kjøleskapet råtner mens du venter på at det skal byttes – kan du i tillegg ha krav på <strong>erstatning</strong> for tapet (§ 2-13). Og hvis mangelen varer en stund og går ut over hvordan du kan bo, kan du ha krav på <strong>prisavslag</strong> (lavere leie) for perioden (§ 2-11). Så svaret på "hvem betaler" handler ikke bare om regningen for å fikse tingen, men også om følgene av at den var ødelagt. Dokumentér derfor både feilen og eventuelle tap, slik at du kan kreve alt du har rett til.</p>
+<h3>Hva hvis vi er uenige om hvem som har skylden?</h3>
+<p>Det er ofte her det blir krangel. Var det slitasje (utleiers regning) eller skade (din regning)? Var fuktskaden på badet din feil (du luftet aldri) eller utleiers feil (skjult lekkasje)?</p>
+<p>Da gjelder:
+1. <strong>Dokumentasjon avgjør.</strong> Bilder fra innflytting, overtakelsesprotokoll og skriftlig kommunikasjon er gull verdt.
+2. <strong>Utgangspunktet er at utleier har bevisbyrden</strong> for at en skade skyldes deg, hvis han vil at du skal betale.
+3. <strong>Husleietvistutvalget (HTU)</strong> kan avgjøre tvisten billig og raskt hvis dere ikke blir enige (mer i artikkel 104).</p>
+<h3>Hva hvis utleier krever at DU betaler for noe som egentlig er hans ansvar?</h3>
+<p>Dette skjer dessverre ofte. Utleier sier for eksempel: "Komfyren er din regning." Da skal du:</p>
+<ol>
+<li><strong>Henvise til loven.</strong> Forklar høflig at husleieloven legger ansvaret for hvitevarer på utleier.</li>
+<li><strong>Be om at det fikses.</strong> Krev retting skriftlig (§ 2-10).</li>
+<li><strong>Ikke betale uten videre.</strong> Du er ikke pliktig til å betale for utleiers vedlikehold.</li>
+<li><strong>Hold eventuelt tilbake leie</strong> hvis utleier nekter (men gjør det riktig – se artikkel 100).</li>
+</ol>
+<h3>Tydelige lister: Hvem betaler hva</h3>
+<p><strong>Du (leietaker) betaler for:</strong>
+- Lite, daglig vedlikehold: lyspærer, sikringer, kranpakninger, smøring av lås (§ 5-3)
+- Skader du eller dine gjester har forårsaket (knust rute, brennmerke, søl du ikke tok deg av)
+- Skader som skyldes at du forsømte noe (mugg fordi du aldri luftet)</p>
+<p><strong>Utleier betaler for:</strong>
+- Alle store reparasjoner på bygning, rør og elektrisk anlegg
+- Hvitevarer som ryker av alder eller slitasje
+- Tilfeldige uhell og skader som ikke er din skyld
+- Normal slitasje og fornyelse (maling, slitt parkett)
+- Utskifting av utleiers ting som er utslitt</p>
+<h3>Hva med det enkle vedlikeholdet du betaler for selv – hvor mye koster det egentlig?</h3>
+<p>De tingene du har ansvar for, er bevisst valgt fordi de er <strong>små og billige</strong>. En lyspære koster noen titalls kroner, en kranpakning et par tiere, en sikring lite. Poenget med loven er at det skal være upraktisk å plage utleier med slike bagateller – ikke at du skal ut med store summer. Hvis utleier prøver å legge en stor regning på deg under dekke av at det er "ditt vedlikehold", er det et varsko: Store reparasjoner og utskiftinger er nesten alltid utleiers regning, uansett hva utleier kaller det.</p>
+<h3>Eksempel: En typisk uenighet om regningen</h3>
+<p>Tenk deg at blandebatteriet på badet begynner å dryppe. Utleier sier: "Kraner er ditt ansvar etter loven, så dette må du fikse." Er det riktig?</p>
+<ul>
+<li><strong>Hvis det bare er en slitt pakning</strong> som gjør at kranen drypper: Ja, det er lite vedlikehold du har ansvar for (§ 5-3). En pakning koster nesten ingenting.</li>
+<li><strong>Hvis hele blandebatteriet er ødelagt</strong> og må byttes med et nytt: Nei. Da er det en <em>utskifting</em> av utleiers utstyr, og det er utleiers regning (§ 5-3 siste ledd).</li>
+</ul>
+<p>Her ser du hvor viktig skillet mellom <em>vedlikehold</em> og <em>utskifting</em> er. Utleier kan ikke bruke det ene som påskudd for å velte det andre over på deg.</p>
+<h3>Et viktig unntak: Hva dere har avtalt</h3>
+<p>Du og utleier kan ha avtalt en annen fordeling i kontrakten. For eksempel kan det stå at leietaker har ansvar for vedlikehold av hagen, eller at leietaker selv skaffer og vedlikeholder vaskemaskin. Slike avtaler er som regel gyldige så lenge de ikke gir deg urimelig mye mer ansvar enn loven. Les kontrakten – men husk at utleier ikke kan avtale seg bort fra sitt grunnleggende ansvar for at boligen er forsvarlig og trygg (§ 1-2).</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Hovedregel: Utleier betaler for reparasjoner.</li>
+<li>Du betaler bare for lite, daglig vedlikehold (§ 5-3) og for skader du selv har forårsaket.</li>
+<li>Tilfeldige uhell og ting som ryker av alder = utleiers regning, uansett når det skjer.</li>
+<li>Ved uenighet: Dokumentasjon avgjør, og HTU kan hjelpe.</li>
+<li>Sjekk hva kontrakten sier, men utleier kan ikke fraskrive seg grunnleggende ansvar.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan utleier ta av depositum for vanlig slitasje? — Rettsregel</title>
+<meta name="description" content="Nei.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-utleier-ta-av-depositum-for-vanlig-slitasje/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan utleier ta av depositum for vanlig slitasje?">
+<meta property="og:description" content="Nei.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-utleier-ta-av-depositum-for-vanlig-slitasje/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan utleier ta av depositum for vanlig slitasje?">
+<meta name="twitter:description" content="Nei.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Kan utleier ta av depositum for vanlig slitasje?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei. Utleier kan ikke trekke deg for normal slitasje og elde. Når du flytter ut, skal du levere boligen tilbake i samme stand som da du overtok den, men med fradrag for nettopp den slitasjen og aldringen som følger av vanlig bruk (§ 10-2). Vanlig bruk er gratis – det er bare skader utover dette du kan holdes ansvarlig for.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 10-2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/10-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 10-2</div>
+  <div class="related-card-title">Slik leverer du tilbake boligen når du flytter</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Nei. Utleier kan ikke trekke deg for normal slitasje og elde. Når du flytter ut, skal du levere boligen tilbake i samme stand som da du overtok den, men med fradrag for nettopp den slitasjen og aldringen som følger av vanlig bruk (§ 10-2). Vanlig bruk er gratis – det er bare skader utover dette du kan holdes ansvarlig for.</p>
+<h3>Den viktige forskjellen: slitasje vs. skade</h3>
+<p>Dette er kanskje det aller mest omstridte temaet i depositumssaker, så la oss gjøre det krystallklart:</p>
+<ul>
+<li><strong>Normal slitasje og elde</strong> = de sporene som naturlig oppstår når man bor et sted og bruker det på vanlig måte. Dette skal du <em>ikke</em> betale for.</li>
+<li><strong>Skade</strong> = forringelse utover det normale, ofte fordi noe er ødelagt, behandlet uforsvarlig eller ikke vedlikeholdt slik du skulle. Dette <em>kan</em> du holdes ansvarlig for.</li>
+</ul>
+<p>Loven (§ 10-2) sier rett ut at du skal levere boligen tilbake «i samme stand som ved overtakelsen, bortsett fra den forringelse som skyldes alminnelig slit og elde». Med andre ord: jo lenger du har bodd der, jo mer slitasje må utleier finne seg i.</p>
+<h3>Eksempler på NORMAL SLITASJE (kan ikke trekkes)</h3>
+<ul>
+<li>Små riper og merker i parkett eller laminat etter vanlig gange og møbler.</li>
+<li>Bleknet maling, eller mindre merker og hull etter bilder og hyller på veggene.</li>
+<li>Slitte fuger eller lett misfarging på bad etter års bruk.</li>
+<li>Mindre riper på kjøkkenbenken.</li>
+<li>Litt slitt belegg foran ofte brukte områder, som foran komfyren.</li>
+</ul>
+<p>Et eksempel: Aisha har bodd i en leilighet i fire år. Veggene har noen små spikerhull og er litt bleknet, og parketten har lette bruksmerker. Utleier vil trekke 10 000 kr for «maling og pussing». Dette er normal slitasje etter fire års bruk – Aisha skal ikke betale for det. Utleier kan ikke trekke henne for å sette boligen tilbake i «som ny»-stand.</p>
+<h3>Eksempler på SKADE (kan trekkes)</h3>
+<ul>
+<li>Et stort hull i veggen etter at noe ble slått gjennom.</li>
+<li>Knust vindusrute eller ødelagt dør.</li>
+<li>Brennmerker eller dype kutt i benkeplaten.</li>
+<li>Vannskade fordi du ikke meldte fra om en lekkasje.</li>
+<li>Ødelagte hvitevarer på grunn av feil bruk.</li>
+<li>Vegger malt i en helt avvikende farge uten avtale, som må males om.</li>
+</ul>
+<p>Et eksempel: Jonas har bodd ett år i en leilighet og har malt stua knallrød uten å avtale det med utleier. Utleier må male over for å få boligen tilbake til normal stand. Her er det rimelig at utleier kan trekke for malingen, fordi dette går utover normal bruk.</p>
+<h3>Tidens betydning</h3>
+<p>Et viktig poeng: Hva som er «normalt» avhenger av hvor lenge du har bodd der, og hvor gammelt utstyret var fra før. En vegg som males har en forventet levetid; en parkett likeså. Hvis et gulv uansett var modent for utskifting på grunn av alder, kan du ikke holdes ansvarlig for at det er slitt – selv om du har bidratt litt til slitasjen.</p>
+<p>Eksempel: Et teppe i en bolig var allerede ti år gammelt da Lise flyttet inn. Etter tre år er teppet utslitt. Men teppet var uansett ved enden av sin levetid – Lise kan ikke holdes ansvarlig for hele utskiftingen bare fordi det ble helt utslitt mens hun bodde der.</p>
+<h3>Hvem avgjør om det er slitasje eller skade?</h3>
+<p>Hvis du og utleier er uenige, er det Husleietvistutvalget (HTU) som er rett instans. De vurderer konkret om noe er slitasje eller skade, og fastsetter et eventuelt erstatningsansvar. HTU er vant til akkurat denne typen saker, og de er rimelige og raske å bruke (mer i artikkel 26).</p>
+<h3>Et samlet eksempel: hva er hva?</h3>
+<p>Tobias har bodd i en leilighet i fem år med et depositum på 40 000 kr. Ved utflytting lager utleier en liste over ting han vil trekke for. La oss sortere dem:</p>
+<ul>
+<li><strong>Bleknet maling og noen spikerhull i veggene:</strong> normal slitasje etter fem år. <em>Kan ikke trekkes.</em></li>
+<li><strong>Lette bruksmerker i parketten foran sofaen:</strong> normal slitasje. <em>Kan ikke trekkes.</em></li>
+<li><strong>Et stort brennmerke i parketten etter et stearinlys som veltet:</strong> skade utover normal bruk. <em>Kan trekkes</em> (med fradrag for parkettens alder).</li>
+<li><strong>En knust skyvedør på et skap:</strong> skade. <em>Kan trekkes.</em></li>
+<li><strong>Manglende vask av kjøkken og bad:</strong> Tobias glemte å vaske. <em>Kan trekkes</em> for flyttevask.</li>
+</ul>
+<p>Av utleiers opprinnelige krav på 18 000 kr er det altså bare delene som gjelder brennmerket, skapdøren og vasken som er lovlige – kanskje rundt 8 000 kr til sammen. Resten, som handler om maling og slitasje, skal Tobias ikke betale for.</p>
+<h3>Hvorfor er dette så viktig for deg?</h3>
+<p>Dette er det punktet flest leietakere taper penger på unødvendig. Mange utleiere prøver – noen ganger i god tro – å trekke for at boligen ikke er «som ny». Men du skal aldri levere tilbake en nyere bolig enn den du flyttet inn i. Du skylder utleier den samme boligen, med fradrag for det vanlig bruk og tidens gang naturlig fører med seg. Husk: jo lenger du har bodd der, jo mer slitasje må utleier akseptere.</p>
+<h3>Hva du kan si til utleier</h3>
+<blockquote>
+<p>«Jeg har bodd her i flere år og brukt boligen helt normalt. Disse merkene er vanlig slitasje og elde, som etter husleieloven § 10-2 ikke kan trekkes fra depositumet. Hvis du mener noe er en faktisk skade, vil jeg gjerne se dokumentasjon på det.»</p>
+</blockquote>
+<p>En slik melding er saklig og viser at du kjenner reglene. Blir dere likevel ikke enige, er Husleietvistutvalget rett sted å få en avgjørelse.</p>
+<h3>Vanlige feller</h3>
+<ul>
+<li><strong>Du sammenligner med «nytt».</strong> Du skal levere boligen tilbake i innflyttingsstand minus vanlig slitasje – ikke som nyoppusset. Mange betaler for mye fordi de tror de skylder utleier en «som ny»-bolig.</li>
+<li><strong>Du mangler innflyttingsbilder.</strong> Uten bilder fra da du flyttet inn, kan utleier hevde at gamle merker er skader du har laget. Ta alltid bilder ved innflytting.</li>
+<li><strong>Du godtar trekk for maling og parkett etter lang botid.</strong> Etter mange års bruk er bleknet maling og slitt gulv normal slitasje, ikke noe du skal betale for.</li>
+<li><strong>Du signerer for raskt.</strong> Signer aldri på et trekk du er uenig i bare for å bli ferdig – da gir du fra deg pengene frivillig.</li>
+</ul>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Dokumenter ved innflytting.</strong> Ta bilder av all eksisterende slitasje og skade – da kan ikke utleier skylde på deg senere.</li>
+<li><strong>Dokumenter ved utflytting.</strong> Ta bilder som viser tilstanden når du leverer.</li>
+<li><strong>Sammenlign med innflyttingstilstanden, ikke med «nytt».</strong> Du skylder ikke utleier en nyoppusset bolig.</li>
+<li><strong>Husk at lang botid betyr mer akseptabel slitasje.</strong></li>
+<li><strong>Ikke godta trekk for slitasje</strong> – be utleier begrunne hvorfor det er en skade, og bring saken inn for HTU hvis dere er uenige.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Nei, utleier kan ikke ta av depositumet for normal slitasje og elde (§ 10-2). Du skal levere boligen i samme stand som da du flyttet inn, men med fradrag for vanlig bruk og aldring. Bare skader utover det normale kan trekkes. Dokumenter tilstanden ved inn- og utflytting, sammenlign med innflyttingsstand – ikke med «nytt» – og bring uenighet inn for Husleietvistutvalget.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

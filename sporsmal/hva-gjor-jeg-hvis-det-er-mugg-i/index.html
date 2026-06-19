@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva gjør jeg hvis det er mugg i leiligheten? — Rettsregel</title>
+<meta name="description" content="Mugg og fukt i en utleiebolig er som hovedregel utleiers ansvar. Hvis muggen ikke skyldes din egen bruk, har du krav på at utleier ordner opp – og du kan…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-det-er-mugg-i/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva gjør jeg hvis det er mugg i leiligheten?">
+<meta property="og:description" content="Mugg og fukt i en utleiebolig er som hovedregel utleiers ansvar. Hvis muggen ikke skyldes din egen bruk, har du krav på at utleier ordner opp – og du kan…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-det-er-mugg-i/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva gjør jeg hvis det er mugg i leiligheten?">
+<meta name="twitter:description" content="Mugg og fukt i en utleiebolig er som hovedregel utleiers ansvar. Hvis muggen ikke skyldes din egen bruk, har du krav på at utleier ordner opp – og du kan…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva gjør jeg hvis det er mugg i leiligheten?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Mugg og fukt i en utleiebolig er som hovedregel utleiers ansvar. Hvis muggen ikke skyldes din egen bruk, har du krav på at utleier ordner opp – og du kan ha rett til prisavslag (lavere husleie) for den perioden problemet varer. Det viktigste du gjør, er å melde fra skriftlig med en gang.</p>
+  <p class="sp-kilde">Bygger på Husleieloven §§ 2-2, 5-1, 2-11, 2-15</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/2-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-2</div>
+  <div class="related-card-title">Hvilken stand skal boligen være i når du flytter inn?</div>
+</a><a href="../../lover/husleieloven/5-1/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-1</div>
+  <div class="related-card-title">Dine plikter og utleierens plikter mens du bor der</div>
+</a><a href="../../lover/husleieloven/2-11/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-11</div>
+  <div class="related-card-title">Du kan kreve lavere husleie hvis boligen er mangelfull</div>
+</a><a href="../../lover/husleieloven/2-15/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-15</div>
+  <div class="related-card-title">Du kan holde tilbake husleien som sikkerhet</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Mugg er ekkelt, det lukter, og det kan være helsefarlig. Men det er også en av de vanligste sakene som havner hos Husleietvistutvalget (det er et offentlig organ som løser konflikter mellom leietakere og utleiere, forkortet HTU). Du er altså langt fra alene, og loven gir deg gode rettigheter.</p>
+<h3>Hvorfor er mugg vanligvis utleiers ansvar?</h3>
+<p>Når du leier en bolig, har du krav på at den er i den standen som er avtalt, og at den ellers passer til vanlig bolig (husleieloven kapittel 2, blant annet § 2-2, som handler om hvilke krav boligen skal oppfylle). En bolig med mugg og fukt oppfyller normalt ikke disse kravene. Da kalles det en "mangel" i lovens språk – altså noe som er feil eller dårligere enn det du har krav på.</p>
+<p>I tillegg sier loven at utleier i hele leieperioden skal holde boligen i den stand du har krav på (§ 5-1, som handler om utleiers plikt til å vedlikeholde boligen). Mugg som kommer av fukt i veggene, dårlig drenering, lekkasje, kuldebroer eller utett tak er bygningsfeil – og det er utleiers oppgave å fikse.</p>
+<p>Den store unntaket: Hvis muggen skyldes <strong>din egen bruk</strong>, snur ansvaret. Eksempel: Du tørker store mengder klær innendørs hver dag uten å lufte, dusjer uten å bruke vifte eller åpne vindu, og blokkerer ventiler. Da kan en del av ansvaret falle på deg. Men selv da har utleier et ansvar for at boligen faktisk lar seg ventilere skikkelig.</p>
+<h3>Eksempel: Det dukker opp svart mugg på badeveggen</h3>
+<p>Tenk deg at du oppdager svarte flekker i fugene og oppover veggen på badet. Slik går du fram:</p>
+<ol>
+<li><strong>Ta bilder med en gang.</strong> Datostemplede bilder er gull verdt hvis det blir uenighet senere.</li>
+<li><strong>Send skriftlig melding til utleier.</strong> SMS eller e-post holder, men skriv tydelig: "Hei, jeg har oppdaget mugg på badeveggen. Bilder er vedlagt. Kan du ordne dette så raskt som mulig?" Skriftlig er viktig fordi du da kan bevise at og når du varslet.</li>
+<li><strong>Be om en rask tilbakemelding</strong> og en plan for utbedring.</li>
+<li><strong>Hold av kopier av alt</strong> – meldinger, svar og bilder.</li>
+</ol>
+<p>Hvis muggen er liten og overflatisk (for eksempel litt svart i silikonfugen), kan det noen ganger holde å vaske med muggfjerner. Men hvis det kommer tilbake gang på gang, er det et tegn på et underliggende fuktproblem som utleier må undersøke.</p>
+<h3>Vanlige feller du bør unngå</h3>
+<p>Mange leietakere svekker sin egen sak uten å vite det. Her er de vanligste fellene:</p>
+<ul>
+<li><strong>Du venter for lenge med å melde fra.</strong> Du tenker kanskje at det går over, eller at du ikke vil mase. Men fukt sprer seg, og jo lenger du venter, desto mer ser det ut som om problemet har kommet fordi du ikke har sagt fra. Meld fra med en gang.</li>
+<li><strong>Du melder fra muntlig.</strong> En telefonsamtale i gangen teller lite hvis det blir uenighet. Send alltid en skriftlig melding (SMS eller e-post), så har du svart på hvitt at og når du varslet.</li>
+<li><strong>Du maler eller vasker over muggen selv og sletter sporene.</strong> Da blir det vanskeligere å vise hvor ille det var. Ta bilder før du gjør noe som helst.</li>
+<li><strong>Du slutter å betale husleie i protest.</strong> Det kan fort bli ditt eget mislighold. Vil du holde tilbake leie, må det gjøres riktig (se nedenfor).</li>
+</ul>
+<h3>Hva kan du kreve hvis utleier ikke fikser det?</h3>
+<p>Når noe er en mangel, gir loven deg flere muligheter (reglene står i kapittel 2, blant annet § 2-11 om hva du kan kreve ved en mangel):</p>
+<ul>
+<li><strong>Retting:</strong> Du kan kreve at utleier utbedrer feilen.</li>
+<li><strong>Prisavslag:</strong> Du kan kreve lavere husleie så lenge mangelen varer. Hvor mye avhenger av hvor alvorlig problemet er. En liten muggflekk i et bod gir lite avslag; mugg på soverommet som gjør at rommet ikke kan brukes, kan gi mye.</li>
+<li><strong>Erstatning:</strong> Hvis muggen har ødelagt tingene dine (for eksempel klær eller møbler), kan du kreve erstatning for det.</li>
+<li><strong>Holde tilbake leie:</strong> Du kan holde tilbake en del av husleien som "sikkerhet" til mangelen er ordnet (§ 2-15). Men vær forsiktig: Du må sette pengene på en sperret konto (deponeringskonto) som dere ikke får tilgang til hver for dere, og du må holde tilbake et rimelig beløp. Holder du tilbake for mye eller på feil måte, kan det selv bli et mislighold som gir utleier grunn til å reagere mot deg.</li>
+<li><strong>Heve avtalen:</strong> Hvis muggen er svært alvorlig og utleier ikke gjør noe, kan du i ytterste konsekvens si opp leieforholdet med øyeblikkelig virkning (heve). Dette er en kraftig løsning, så søk gjerne råd først.</li>
+</ul>
+<h3>Hva hvis utleier sier at det er din skyld?</h3>
+<p>Det er ganske vanlig at utleier først peker på leietakers lufting. Da er det nyttig å kunne vise at du har luftet og brukt boligen normalt. Hvis dere blir uenige om årsaken, kan en fagperson (for eksempel en takstmann eller en muggspesialist) undersøke. Ofte avslører en slik undersøkelse at det er en bygningsfeil bak.</p>
+<p>Får dere ikke til en løsning, kan du klage saken inn for <strong>Husleietvistutvalget (HTU)</strong>. Det er et lavterskeltilbud som koster lite, og du trenger ikke advokat. De avgjør saken på samme måte som en domstol.</p>
+<h3>Hva regnes egentlig som "din egen bruk"?</h3>
+<p>Siden dette skillet avgjør hvem som har ansvaret, er det greit å vite hva som ligger i det. Normal bruk av en bolig er at du dusjer, lager mat, tørker litt klær og puster. En bolig skal tåle dette. Du har altså ikke plikt til å leve "unaturlig" for å unngå fukt. Det utleier kan forvente, er at du:</p>
+<ul>
+<li>lufter normalt, gjerne med gjennomtrekk noen minutter morgen og kveld,</li>
+<li>bruker avtrekksvifte eller åpner vindu når du dusjer eller koker,</li>
+<li>ikke tetter igjen ventiler som er der for å slippe inn frisk luft,</li>
+<li>ikke tørker store mengder klær inne hver dag uten å lufte.</li>
+</ul>
+<p>Gjør du dette, og det likevel kommer mugg, peker det sterkt mot at det er noe galt med selve boligen – og da er det utleiers ansvar. Klarer du å vise at du bruker boligen fornuftig, står du mye sterkere hvis utleier prøver å skyve ansvaret over på deg.</p>
+<h3>Et viktig helse-poeng</h3>
+<p>Mugg kan gi hodepine, tett nese, hoste og forverring av astma og allergi. Hvis noen i husstanden blir syke, ta vare på dokumentasjon (for eksempel legebesøk). Det styrker både alvoret i saken og et eventuelt erstatningskrav. Ikke vent med å melde fra fordi du håper det går over av seg selv – fukt brer seg ofte, og jo tidligere det meldes, desto bedre står du.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Mugg og fukt er normalt utleiers ansvar (§ 5-1 og kapittel 2), med mindre det klart skyldes din egen bruk.</li>
+<li>Meld fra skriftlig med en gang, og ta bilder.</li>
+<li>Du kan kreve retting, prisavslag, erstatning for ødelagte ting og i alvorlige tilfeller heving.</li>
+<li>Du kan holde tilbake leie, men gjør det forsiktig og på en deponeringskonto.</li>
+<li>Blir dere uenige, hjelper Husleietvistutvalget (HTU) deg billig og enkelt.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

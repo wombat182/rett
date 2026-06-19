@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor mange kan bo i en leid leilighet? — Rettsregel</title>
+<meta name="description" content="Det finnes ingen fast tallgrense i husleieloven for hvor mange som kan bo i en leilighet.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-mange-kan-bo-i-en-leid-leilighet/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor mange kan bo i en leid leilighet?">
+<meta property="og:description" content="Det finnes ingen fast tallgrense i husleieloven for hvor mange som kan bo i en leilighet.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-mange-kan-bo-i-en-leid-leilighet/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor mange kan bo i en leid leilighet?">
+<meta name="twitter:description" content="Det finnes ingen fast tallgrense i husleieloven for hvor mange som kan bo i en leilighet.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvor mange kan bo i en leid leilighet?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det finnes ingen fast tallgrense i husleieloven for hvor mange som kan bo i en leilighet. Du bestemmer i hovedsak selv hvem som hører til husstanden din (§ 7-1), men boligen kan ikke bli klart overbefolket. En tommelfingerregel mange bruker, er omtrent to personer per soverom.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 7-1 og § 10-2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/7-1/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 7-1</div>
+  <div class="related-card-title">Hvem kan du ta inn i husstanden din?</div>
+</a><a href="../../lover/husleieloven/10-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 10-2</div>
+  <div class="related-card-title">Slik leverer du tilbake boligen når du flytter</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det finnes ingen fast tallgrense i husleieloven for hvor mange som kan bo i en leilighet. Du bestemmer i hovedsak selv hvem som hører til husstanden din (§ 7-1), men boligen kan ikke bli klart overbefolket. En tommelfingerregel mange bruker, er omtrent to personer per soverom.</p>
+<h3>Hvem bestemmer hvor mange som kan bo der?</h3>
+<p>Utgangspunktet i loven er at du som leietaker har stor frihet til å bestemme hvem som bor sammen med deg. Du kan ta inn ektefelle, samboer og nær familie uten å spørre utleier (§ 7-1). Men friheten er ikke ubegrenset – grensen går ved <strong>overbefolkning</strong>.</p>
+<p>Overbefolkning betyr at det bor så mange mennesker i boligen at det blir uforsvarlig: for stor slitasje, dårlig inneklima, økt brannfare og generelt for trangt til at folk kan bo skikkelig. Loven sier ikke et eksakt tall, fordi det kommer an på hvor stor boligen er og hvordan den er innredet.</p>
+<h3>Finnes det en konkret regel?</h3>
+<p>Loven selv gir ikke en fast tabell, men i praksis og i kommunale regler brukes ofte denne tommelfingerregelen:</p>
+<ul>
+<li><strong>Cirka to personer per soverom</strong> regnes som forsvarlig i en vanlig bolig.</li>
+<li>Stuen regnes vanligvis ikke som soverom.</li>
+</ul>
+<p>Det betyr at en toroms med ett soverom som regel egner seg for opptil to personer, en treroms med to soverom for opptil fire, og så videre. Dette er ikke en jernhard grense, men en pekepinn. Et stort soverom kan romme mer enn et bittelite, og en familie med små barn vurderes ofte litt mildere enn voksne fremmede.</p>
+<h3>Eksempler fra hverdagen</h3>
+<p><strong>"Vi er et par som vil ha barn – får vi plass?"</strong> Selvsagt. Et barn som fødes inn i familien er aldri et problem for "antallet". Du trenger ikke spørre utleier om lov til å få barn, og en familie på tre i en toroms regnes ikke som overbefolket.</p>
+<p><strong>"Kan jeg, kjæresten og to venner dele en toroms for å spare penger?"</strong> Her nærmer du deg grensen. Fire voksne i en toroms med ett soverom kan bli ansett som overbefolket. I tillegg er to av dem venner, ikke nær familie, så du må uansett ha utleiers samtykke for å ta dem inn (§ 7-1 andre ledd). Det tryggeste er å avklare dette skriftlig med utleier på forhånd.</p>
+<p><strong>"Familien min på fem vil flytte inn i hybelen min på 25 kvadratmeter."</strong> Det vil nesten helt sikkert regnes som overbefolket. Selv om de fleste er nær familie, setter overbefolkningsgrensen en stopper. Boligen er rett og slett for liten.</p>
+<h3>Hva med kortvarig besøk?</h3>
+<p>Det er stor forskjell på å <strong>bo</strong> et sted og å være på <strong>besøk</strong>. At svigerforeldrene er på besøk en helg, eller at en venn overnatter et par netter, er ikke "opptak i husstand" og teller ikke med i vurderingen av hvor mange som bor der. Du står helt fritt til å ha gjester.</p>
+<p>Det blir først et spørsmål om husstand når noen flytter inn for å bo der over tid, med tøy i skapet og folkeregistrert adresse hos deg.</p>
+<h3>Hva kan skje ved overbefolkning?</h3>
+<p>Hvis du fyller boligen med flere enn forsvarlig, kan dette bli et mislighold av leieavtalen. I praksis betyr det at utleier først bør gi deg en skriftlig advarsel og be deg ordne opp. Retter du deg ikke etter advarselen, kan utleier i alvorlige tilfeller ha grunnlag for å si opp eller heve leieavtalen.</p>
+<p>I tillegg fører overbefolkning ofte til mer slitasje og skader, og det kan bety at du må dekke utbedringskostnader når du flytter ut. Det er altså både en juridisk og en praktisk grunn til ikke å presse for mange inn.</p>
+<h3>Trygt råd: avklar på forhånd</h3>
+<p>Er du i tvil om antallet, gjør dette:</p>
+<ol>
+<li><strong>Les leiekontrakten.</strong> Noen kontrakter har en formulering om hvor mange personer boligen er ment for. En slik klausul kan ikke uthule retten din til å ta inn nær familie, men den sier noe om utleiers forventning.</li>
+<li><strong>Snakk med utleier før noen flytter inn.</strong> Det er mye lettere å bli enig på forhånd enn å rydde opp i en konflikt etterpå.</li>
+<li><strong>Få avtaler skriftlig.</strong> Hvis utleier sier ja til at en venn flytter inn, be om en kort bekreftelse på e-post eller SMS.</li>
+</ol>
+<h3>Hva sier kommunen om antall beboere?</h3>
+<p>I tillegg til husleieloven finnes det offentlige regler om hva en bolig kan brukes til. En bolig som er godkjent for én husstand, er ikke nødvendigvis godkjent for å bli stykket opp i mange hybler med mange beboere. Slike regler handler om brannsikkerhet, rømningsveier og forsvarlige boforhold, og håndheves av kommunen – ikke av utleier eller deg.</p>
+<p>For deg som leietaker betyr dette først og fremst at hvis utleier har "presset inn" altfor mange i en bolig som ikke er egnet for det, er det utleier som har ansvaret for at boligen er lovlig å bo i. Du som leietaker skal ikke straffes for utleiers ulovlige oppdeling, men det er greit å være klar over at sterkt overbefolkede boliger ofte også bryter med offentlige krav.</p>
+<h3>Hvorfor er overbefolkning et problem i praksis?</h3>
+<p>Det kan være fristende å fylle en bolig for å spare leie per person, men det er flere grunner til å la være:</p>
+<ul>
+<li><strong>Slitasje:</strong> Jo flere som bor der, desto raskere slites gulv, bad og kjøkken. Det kan gi deg et større utbedringskrav når du flytter ut (§ 10-2).</li>
+<li><strong>Brannsikkerhet:</strong> Trange boliger med mange mennesker og blokkerte rømningsveier er farlige.</li>
+<li><strong>Inneklima og trivsel:</strong> For mange på liten plass gir dårlig luft, fukt og slitsomme boforhold.</li>
+<li><strong>Konflikt med utleier:</strong> Overbefolkning kan bli et mislighold som i verste fall truer hele leieforholdet.</li>
+</ul>
+<p>Det er altså både hensynet til deg selv, til naboene og til boligen som ligger bak regelen. Bor dere innenfor det forsvarlige, har du full frihet – og det er nettopp det loven legger opp til.</p>
+<h3>Hva med å leie ut et rom til andre?</h3>
+<p>Noen ganger handler spørsmålet om antall egentlig om at du vil leie ut et rom for å spe på økonomien. Det er en annen situasjon enn å ta inn husstandsmedlemmer. Å leie ut et rom til en betalende leieboer er framleie, og det krever som hovedregel utleiers samtykke. Tar du inn en venn som betaler deg "husleie", er det altså ikke det samme som å la en samboer flytte inn – og her må du spørre utleier først.</p>
+<p>Skillet er viktig: nær familie og partner som deler hjemmet med deg, kan du ta inn uten å spørre (§ 7-1), men en betalende romkamerat krever samtykke. Er du usikker på hvilken kategori din situasjon faller i, spør heller utleier én gang for mye.</p>
+<h3>Tenk langsiktig på slitasje og depositum</h3>
+<p>Husk at jo flere som bor i boligen, desto større blir bruken av kjøkken, bad og fellesrom. Det kan bety mer å rydde og vaske den dagen du flytter ut, og i verste fall et utbedringskrav hvis slitasjen går ut over det vanlige (§ 10-2). Det betyr ikke at du skal la være å bo sammen med dem du er glad i – bare at det er lurt å være realistisk om hva en bolig tåler, og å holde den godt ved like underveis.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Det er ingen fast tallgrense i loven, men boligen kan ikke bli klart overbefolket.</li>
+<li>En vanlig tommelfingerregel er cirka to personer per soverom.</li>
+<li>Nær familie kan du ta inn uten å spørre; andre krever utleiers samtykke (§ 7-1).</li>
+<li>Besøk og overnatting teller ikke – det handler om hvem som faktisk bor der over tid.</li>
+<li>Avklar antall med utleier på forhånd, og få det skriftlig, så slipper du konflikt senere.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

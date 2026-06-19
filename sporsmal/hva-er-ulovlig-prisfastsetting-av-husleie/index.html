@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er ulovlig prisfastsetting av husleie? — Rettsregel</title>
+<meta name="description" content="Husleien skal være ett samlet beløp, og utleier kan ikke i tillegg kreve betaling for en lang rekke ting som egentlig hører til driften av boligen – som…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-ulovlig-prisfastsetting-av-husleie/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er ulovlig prisfastsetting av husleie?">
+<meta property="og:description" content="Husleien skal være ett samlet beløp, og utleier kan ikke i tillegg kreve betaling for en lang rekke ting som egentlig hører til driften av boligen – som…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-ulovlig-prisfastsetting-av-husleie/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er ulovlig prisfastsetting av husleie?">
+<meta name="twitter:description" content="Husleien skal være ett samlet beløp, og utleier kan ikke i tillegg kreve betaling for en lang rekke ting som egentlig hører til driften av boligen – som…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er ulovlig prisfastsetting av husleie?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Husleien skal være **ett samlet beløp**, og utleier kan ikke i tillegg kreve betaling for en lang rekke ting som egentlig hører til driften av boligen – som eiendomsskatt, renovasjon, forsikring eller kabel-TV. Krever utleier slike "skjulte" tillegg, er det ulovlig prisfastsetting. De eneste tilleggene som er tillatt, er strøm/brensel og målt vann/avløp – og bare hvis det er avtalt.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 3-1</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/3-1/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 3-1</div>
+  <div class="related-card-title">Hva kan utleieren kreve i husleie?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hovedregelen: husleien er ett beløp</h3>
+<p>Husleieloven (§ 3-1 og kapittel 4 om leieprisvern) bygger på et enkelt og leietakervennlig prinsipp: Som leietaker skal du bare trenge å forholde deg til <strong>én pris</strong>. Den prisen skal dekke det å bo i boligen, inkludert vedlikehold, reparasjoner og de vanlige kostnadene utleier har med å eie og drive eiendommen.</p>
+<p>Dette betyr at utleier <em>ikke</em> kan komme i etterkant og kreve at du dekker en haug med ekstra utgifter på toppen av den avtalte leien. Slike forsøk er det loven kaller ulovlige tilleggsytelser.</p>
+<h3>Hva er det utleier IKKE kan ta ekstra betalt for?</h3>
+<p>Forbrukerrådet er tydelige på dette. Utleier kan <strong>ikke</strong> kreve at du betaler i tillegg til leien for blant annet:</p>
+<ul>
+<li><strong>Eiendomsskatt</strong></li>
+<li><strong>Renovasjon</strong> (søppelhenting)</li>
+<li><strong>Feiing</strong> (av pipe/skorstein)</li>
+<li><strong>Kabel-TV / internett</strong> (med mindre det er avtalt som en egen, frivillig tilleggsytelse – men ikke noe utleier kan pålegge)</li>
+<li><strong>Forsikring</strong> av boligen</li>
+<li><strong>Utlevering av nøkler</strong></li>
+<li><strong>Vedlikehold, reparasjoner og utskifting</strong></li>
+<li><strong>Kostnader til å opprette depositumskonto</strong></li>
+</ul>
+<p>Alt dette er kostnader utleier som boligeier skal bære selv, og som anses å være "bakt inn" i den ordinære husleien. Prøver utleier å fakturere deg for slikt ved siden av, er det ulovlig.</p>
+<p><strong>Eksempel – Petter får en uventet regning:</strong>
+Petter har avtalt en husleie på 11 500 kroner i måneden. Etter et halvt år sender utleier ham en ekstra regning: "Din andel av eiendomsskatt og renovasjon: 1 800 kroner." Dette er ulovlig prisfastsetting. Petter trenger ikke betale dette. Han kan svare skriftlig at husleieloven ikke gir utleier rett til å kreve slike tillegg utover den avtalte leien.</p>
+<h3>De to lovlige unntakene: strøm og vann</h3>
+<p>Det finnes to – og bare to – ting utleier kan kreve betaling for <em>i tillegg</em> til leien, og bare hvis det er <strong>avtalt på forhånd</strong>:</p>
+<ol>
+<li><strong>Elektrisitet og brensel</strong> (strøm og for eksempel ved eller fyringsolje).</li>
+<li><strong>Vann og avløp – men kun når det betales etter målt forbruk</strong> (altså at det er installert vannmåler). Er det ikke vannmåler, kan utleier ikke ta betalt for vann og avløp i det hele tatt.</li>
+</ol>
+<p>Og et veldig viktig poeng: utleier kan <strong>ikke komme med krav om betaling for strøm, brensel eller vann i etterkant</strong> hvis dette ikke fremgår av leieavtalen fra starten. Står det ikke i kontrakten, kan ikke utleier plutselig begynne å fakturere for strøm halvveis i leieforholdet.</p>
+<p><strong>Eksempel – Lises strømavtale:</strong>
+I Lises kontrakt står det at hun i tillegg til husleien betaler et akontobeløp (forskudd) for strøm, som avregnes etter faktisk forbruk en gang i året. Dette er lovlig, fordi strøm er ett av de tillatte tilleggene og det er avtalt skriftlig. Hadde det derimot ikke stått noe om strøm i kontrakten, kunne ikke utleier krevd strømbetaling i tillegg.</p>
+<h3>Du har rett til å se regnskapet</h3>
+<p>Hvis du betaler for strøm, brensel eller vann i tillegg, har du rett til å kreve at utleier én gang i året legger frem et <strong>regnskap</strong> som viser hvor store kostnadene var og hvordan de er fordelt på boligene i eiendommen. Dette gjør at du kan kontrollere at du ikke betaler for mye, eller for andres forbruk.</p>
+<h3>Hvorfor er reglene slik?</h3>
+<p>Tanken bak loven er at du som leietaker skal kunne forholde deg til én forutsigbar pris, og slippe å bli overrasket av en strøm av småregninger i etterkant. Hvis utleier kunne fakturert for eiendomsskatt en måned, renovasjon den neste og forsikring den tredje, ville det vært nesten umulig for deg å vite hva det egentlig koster å bo der. Derfor sier loven: bak deg inn alt det vanlige i én leie, og hold deg til de få tilleggene som er uttrykkelig tillatt. Dette er et typisk eksempel på at husleieloven verner deg som den svakere parten i avtaleforholdet.</p>
+<h3>En vanlig felle: tillegg som "smyger seg inn" underveis</h3>
+<p>Et triks noen utleiere prøver, er å begynne å fakturere for tillegg som ikke sto i kontrakten fra start. Pass på dette:</p>
+<ul>
+<li>Plutselig kommer det en "felleskostnad" eller et "serviceavgift" på fakturaen som aldri var avtalt.</li>
+<li>Utleier sier at "strømmen har blitt så dyr" og begynner å kreve strøm i tillegg, selv om det ikke står ett ord om strøm i kontrakten.</li>
+<li>Du får en årlig "ekstraregning" for ting som egentlig er utleiers driftskostnader.</li>
+</ul>
+<p>Hovedregelen er klar: utleier kan ikke ensidig innføre nye betalingsforpliktelser midt i leieforholdet. Det som ikke var avtalt fra start (eller lovlig avtalt senere), kan du som regel avvise.</p>
+<p><strong>Eksempel – Nora får en ny linje på fakturaen:</strong>
+Nora har betalt 12 000 kroner i måneden i ett år. Plutselig står det "Felleskostnad bygg: 600 kr" på fakturaen. Dette var aldri avtalt, og det er ikke ett av de lovlige tilleggene. Nora kan be utleier dokumentere hvilken avtale dette bygger på – og når svaret uteblir, avvise kravet skriftlig.</p>
+<h3>Hva med selve leieprisen – kan den være "for høy"?</h3>
+<p>Ulovlig prisfastsetting handler mest om de skjulte tilleggene over. Selve grunnleien avtaler partene som regel fritt ved kontraktsinngåelse. Men loven har et vern mot <strong>urimelig høy leie</strong>: leien skal ikke være "urimelig" sammenlignet med hva som vanligvis betales for tilsvarende boliger på lignende vilkår (gjengs leie / markedsleie). Mener du grunnleien er urimelig høy, kan du ta det opp – mer om det i neste artikkel (artikkel 50).</p>
+<h3>Hva gjør du hvis du mistenker ulovlig prisfastsetting?</h3>
+<ol>
+<li><strong>Les kontrakten nøye.</strong> Hva er avtalt som husleie, og hva er eventuelt avtalt som tillegg (strøm/vann)?</li>
+<li><strong>Sjekk om tillegget er lovlig.</strong> Er det noe annet enn strøm/brensel eller målt vann/avløp? Da er det sannsynligvis ulovlig.</li>
+<li><strong>Be om spesifikasjon og regnskap.</strong> Du har krav på å vite hva du betaler for.</li>
+<li><strong>Protester skriftlig.</strong> Skriv en kort, vennlig melding der du viser til at husleieloven ikke tillater tillegget. Ta vare på kopi.</li>
+<li><strong>Kontakt Husleietvistutvalget (HTU)</strong> hvis dere ikke blir enige. Har du betalt ulovlige tillegg, kan du ha krav på å få pengene tilbake.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Husleien skal være ett samlet beløp som dekker vanlig drift og vedlikehold.</li>
+<li>Utleier kan ikke ta ekstra betalt for eiendomsskatt, renovasjon, feiing, forsikring, nøkkelutlevering, kabel-TV og lignende.</li>
+<li>De eneste lovlige tilleggene er strøm/brensel og målt vann/avløp – og bare hvis det er avtalt skriftlig fra start.</li>
+<li>Utleier kan ikke begynne å kreve strøm/vann i etterkant hvis det ikke står i kontrakten.</li>
+<li>Du har rett til årlig regnskap, og kan klage til HTU om utleier krever ulovlige tillegg.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

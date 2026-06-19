@@ -188,6 +188,11 @@ except ImportError:
     _SP_EKT_V2 = []
 
 try:
+    from sporsmal_husleieloven_v1 import SPORSMAL as _SP_HUS_V1
+except ImportError:
+    _SP_HUS_V1 = []
+
+try:
     from sporsmal_arveloven import SPORSMAL as _SP_ARVE
 except ImportError:
     _SP_ARVE = []
@@ -359,6 +364,7 @@ SPORSMAL = (_tag_lov(_SP_BASE, None)
             + _tag_lov(_SP_BILKJOP, "forbrukerkjøpsloven")
             + _tag_lov(_SP_BARNELOVA_V1, "barnelova")
             + _tag_lov(_SP_EKT_V2, "ekteskapsloven")
+            + _tag_lov(_SP_HUS_V1, "husleieloven")
             + _tag_lov(_SP_ARVE, "arveloven")
             + _tag_lov(_SP_BARNE, "barnelova")
             + _tag_lov(_SP_STRAFF, None)

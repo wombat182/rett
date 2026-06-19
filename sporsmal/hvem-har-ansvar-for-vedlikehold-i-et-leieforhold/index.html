@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem har ansvar for vedlikehold i et leieforhold? — Rettsregel</title>
+<meta name="description" content="Hovedregelen er enkel: Utleier har ansvaret for det meste av vedlikeholdet, mens du som leietaker bare har ansvar for det lille, daglige – som å bytte…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-har-ansvar-for-vedlikehold-i-et-leieforhold/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem har ansvar for vedlikehold i et leieforhold?">
+<meta property="og:description" content="Hovedregelen er enkel: Utleier har ansvaret for det meste av vedlikeholdet, mens du som leietaker bare har ansvar for det lille, daglige – som å bytte…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-har-ansvar-for-vedlikehold-i-et-leieforhold/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem har ansvar for vedlikehold i et leieforhold?">
+<meta name="twitter:description" content="Hovedregelen er enkel: Utleier har ansvaret for det meste av vedlikeholdet, mens du som leietaker bare har ansvar for det lille, daglige – som å bytte…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvem har ansvar for vedlikehold i et leieforhold?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hovedregelen er enkel: Utleier har ansvaret for det meste av vedlikeholdet, mens du som leietaker bare har ansvar for det lille, daglige – som å bytte lyspærer og sikringer, holde boligen ren og passe på at ting ikke ødelegges. Alt det store og kostbare er utleiers jobb.</p>
+  <p class="sp-kilde">Bygger på Husleieloven §§ 5-1, 5-3, 1-2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/5-1/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-1</div>
+  <div class="related-card-title">Dine plikter og utleierens plikter mens du bor der</div>
+</a><a href="../../lover/husleieloven/5-3/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-3</div>
+  <div class="related-card-title">Hvem er ansvarlig for vedlikehold?</div>
+</a><a href="../../lover/husleieloven/1-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 1-2</div>
+  <div class="related-card-title">Loven kan ikke fravikes til din ulempe</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hva betyr "vedlikehold"?</h3>
+<p>Vedlikehold betyr rett og slett å holde boligen i god stand – reparere, vedlikeholde og fornye ting som blir slitt eller ødelagt med tiden. Tenk på alt fra å male veggene på nytt, til å fikse en dryppende kran, til å skifte en ødelagt vaskemaskin.</p>
+<p>Husleieloven (lov 26. mars 1999 nr. 17) deler dette ansvaret mellom to parter:</p>
+<ul>
+<li><strong>Utleier</strong> = den som eier boligen og leier den ut.</li>
+<li><strong>Leietaker</strong> (også kalt "leier" eller "leieboer") = du som bor der og betaler husleie.</li>
+</ul>
+<h3>Hovedregelen: Utleier har det store ansvaret</h3>
+<p>Etter husleieloven § 5-1 skal utleier holde boligen i den stand som er avtalt og som loven krever gjennom hele leietiden. Det betyr at utleier har <strong>hovedansvaret</strong> for å vedlikeholde:</p>
+<ul>
+<li>selve bygningen og boligen,</li>
+<li>rør, ledninger og det elektriske anlegget,</li>
+<li>vegger, gulv, tak, vinduer og dører,</li>
+<li>varmtvannsbereder, varmeanlegg og andre faste installasjoner,</li>
+<li>hvitevarer som følger med boligen (komfyr, kjøleskap, oppvaskmaskin), når disse må <em>byttes ut</em> eller repareres på grunn av alder eller slitasje.</li>
+</ul>
+<p>Kort sagt: Hvis noe slutter å virke fordi det er gammelt, slitt eller går i stykker av seg selv, er det som regel utleiers regning.</p>
+<h3>Unntaket: Leietaker har ansvar for de små tingene</h3>
+<p>Husleieloven § 5-3 sier at du som leietaker har ansvar for det daglige, lille vedlikeholdet. Med mindre noe annet er avtalt, må du selv vedlikeholde og ved behov skifte ut:</p>
+<ul>
+<li><strong>dørlåser</strong> (for eksempel hvis låsen trenger smøring eller en enkel del),</li>
+<li><strong>kraner</strong> (for eksempel skifte en pakning som gjør at kranen drypper),</li>
+<li><strong>vannklosetter</strong> (toalettet – enklere vedlikehold),</li>
+<li><strong>elektriske kontakter og brytere</strong>,</li>
+<li><strong>varmtvannsbeholdere</strong> (vanlig vedlikehold, ikke selve utskiftingen ved havari),</li>
+<li><strong>inventar og utstyr</strong> i boligen som ikke er en del av selve eiendommen.</li>
+</ul>
+<p>I tillegg har du ansvar for å sjekke at <strong>røykvarsleren</strong> virker, skifte batteri, og holde <strong>brannslukningsutstyret</strong> i orden. Og selvfølgelig: holde boligen rein og ryddig.</p>
+<h3>Et viktig poeng: "Vedlikehold" er ikke det samme som "utskifting"</h3>
+<p>Her er noe mange blander sammen. Selv om du har ansvar for å <em>vedlikeholde</em> en kran eller en lås, betyr ikke det at du må <em>betale for en helt ny</em> hvis den gamle ryker av alder. Loven sier nemlig at hvis utleiers ting må <strong>skiftes ut</strong>, så er det utleiers ansvar – ikke ditt (§ 5-3).</p>
+<p><strong>Eksempel:</strong> Pakningen i kranen er slitt og kranen drypper. Å bytte pakningen er en liten jobb du har ansvar for. Men hvis hele kranen ryker og må byttes med en ny, er det utleiers regning.</p>
+<h3>Kan man avtale noe annet?</h3>
+<p>Ja. Loven sier "med mindre annet er avtalt". Utleier og leietaker kan altså avtale at leietaker skal ha <em>mer</em> vedlikeholdsansvar enn det loven legger opp til – men dette må stå tydelig i leiekontrakten. Ved leie av vanlig bolig kan man derimot ikke avtale at leietaker skal ha <em>mindre rettigheter</em> enn loven gir, hvis det går ut over leietaker (husleieloven er på mange punkter ufravikelig til fordel for leietaker, jf. § 1-2).</p>
+<p>Et godt råd: Les leiekontrakten nøye. Hvis det står at du har ansvar for "alt vedlikehold", bør du være på vakt – noen slike vidtrekkende klausuler kan være ugyldige hvis de gir deg mye mer ansvar enn rimelig.</p>
+<h3>Steg for steg: Slik tenker du</h3>
+<ol>
+<li><strong>Er det noe lite og daglig?</strong> (lyspære, sikring, pakning, rengjøring) → Ditt ansvar.</li>
+<li><strong>Er det noe stort, gammelt eller fast montert som har ryket?</strong> → Utleiers ansvar.</li>
+<li><strong>Er du i tvil?</strong> → Meld fra til utleier skriftlig (e-post eller SMS), beskriv problemet, og avtal hvem som ordner det. Da har du dokumentasjon.</li>
+</ol>
+<h3>Hvorfor er ansvaret delt slik?</h3>
+<p>Tanken bak loven er ganske rettferdig når man tenker over den. Utleier eier boligen og tjener penger på å leie den ut. Da er det også utleier som skal bære kostnadene ved at boligen slites og må vedlikeholdes over tid – det er en del av det å drive utleie. Du som leietaker betaler husleie for å bruke boligen, og da er det rimelig at du tar de helt små, daglige tingene som hører med til vanlig bruk – som å skifte en lyspære eller en sikring. Det ville vært upraktisk om du måtte ringe utleier hver gang en lyspære gikk.</p>
+<p>Samtidig er det viktig at de store kostnadene ikke veltes over på deg. Det er nettopp derfor loven er ufravikelig på mange punkter til fordel for leietaker (§ 1-2): For å hindre at utleiere skriver kontrakter som gir leietaker urimelig mye ansvar.</p>
+<h3>Hva med fellesarealer og uteområder?</h3>
+<p>I mange leieforhold – for eksempel i et bofellesskap eller en leilighet i et større bygg – er det også fellesarealer som trappeoppganger, vaskerom, boder og uteområder. Hovedregelen er at utleier har ansvar for vedlikeholdet av disse også, med mindre noe annet er avtalt. Hvis det for eksempel er avtalt at du skal måke snø foran inngangen din eller stelle en liten hageflekk, må dette stå tydelig i kontrakten.</p>
+<p><strong>Eksempel:</strong> Du leier en sokkelleilighet i et hus der utleier bor i etasjen over. Det er glatt og isete på trappa ned til din inngang. Hvem har ansvaret for å strø? Som utgangspunkt utleier – men dere kan ha avtalt at du tar din egen inngang. Sjekk kontrakten, og snakk sammen så det er klart på forhånd.</p>
+<h3>Vanlige misforståelser</h3>
+<ul>
+<li><strong>"Jeg leier, så jeg må fikse alt selv."</strong> Feil. Det er motsatt – utleier har det meste av ansvaret.</li>
+<li><strong>"Utleier sa at alt vedlikehold er mitt, så da er det det."</strong> Ikke nødvendigvis. En kontraktsklausul som gir deg urimelig mye ansvar kan være ugyldig.</li>
+<li><strong>"Jeg betalte for å bytte kranen som røk, så det er greit."</strong> Nei – utskifting av utleiers ting er utleiers regning. Du kan kreve pengene tilbake.</li>
+</ul>
+<h3>Hva gjør du hvis dere er uenige om ansvaret?</h3>
+<p>I praksis oppstår de fleste konfliktene nettopp i grenselandet: Var dette "lite, daglig vedlikehold" eller en større reparasjon? Var skaden din skyld eller vanlig slitasje? Her er en enkel oppskrift som beskytter deg:</p>
+<ol>
+<li><strong>Meld fra skriftlig.</strong> Send e-post eller SMS, ikke bare ring. Da har du svart på hvitt at du sa fra, og når.</li>
+<li><strong>Ta bilder.</strong> Et bilde av en lekkasje, et brennemerke eller en ødelagt komfyr er ofte avgjørende dokumentasjon senere.</li>
+<li><strong>Sett en rimelig frist.</strong> Be utleier ordne det innen for eksempel én til to uker – kortere hvis det haster (lekkasje, ingen varme, kjøleskap som dør).</li>
+<li><strong>Behold all kommunikasjon.</strong> Lag en egen mappe i e-posten for leieforholdet.</li>
+<li><strong>Bli dere ikke enige?</strong> Husleietvistutvalget (htu.no) kan avgjøre saken billig og raskt, uten at du trenger advokat.</li>
+</ol>
+<p>Husk at det som regel er <strong>utleier som må bevise</strong> at en skade skyldes deg, hvis han vil at du skal betale. Så lenge du har dokumentert tilstanden ved innflytting, står du sterkt.</p>
+<h3>Et praktisk eksempel som binder det sammen</h3>
+<p>Tenk deg at det er januar, og panelovnen på stua slutter å virke. Det er kaldt ute. Hvem har ansvaret? Panelovnen er en fast installasjon som hører til boligen, og som ryker av seg selv – altså <strong>utleiers ansvar</strong> (§ 5-1). Du melder fra skriftlig samme dag, tar et bilde av ovnen og termostaten, og ber utleier ordne det raskt fordi det er vinter. Hvis utleier drøyer, kan du i tillegg ha rett til prisavslag (lavere leie) for den kalde perioden og erstatning for ekstra strøm hvis du må bruke en elektrisk vifteovn i mellomtiden (mer om dette i senere artikler). Du skal altså ikke ut med en eneste krone for selve reparasjonen – det er en del av det utleier tjener penger på å ta seg av.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Utleier har hovedansvaret for vedlikehold av bolig, bygning og faste installasjoner (§ 5-1).</li>
+<li>Leietaker har ansvar for små, daglige ting: lyspærer, sikringer, pakninger, dørlåser, brytere, og å holde boligen rein (§ 5-3).</li>
+<li>Når utleiers ting må <em>byttes ut</em> helt, er det utleiers regning – ikke din.</li>
+<li>Du kan avtale mer ansvar i kontrakten, men les den nøye.</li>
+<li>I tvil: Meld fra skriftlig og avklar.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

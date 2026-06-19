@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg bli kastet ut for bråk? — Rettsregel</title>
+<meta name="description" content="Ja, men det skal mye til, og det skjer ikke over natten.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-bli-kastet-ut-for-brak/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg bli kastet ut for bråk?">
+<meta property="og:description" content="Ja, men det skal mye til, og det skjer ikke over natten.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-bli-kastet-ut-for-brak/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg bli kastet ut for bråk?">
+<meta name="twitter:description" content="Ja, men det skal mye til, og det skjer ikke over natten.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg bli kastet ut for bråk?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, men det skal mye til, og det skjer ikke over natten. En enkelt fest eller litt støy fører ikke til utkastelse. Men gjentatt og alvorlig bråk som plager naboer eller utleier, og som fortsetter etter skriftlig advarsel, kan være et vesentlig mislighold som gir utleier rett til å heve leieavtalen (§ 9-9). Utkastelse er den aller siste utveien.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 9-9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/9-9/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 9-9</div>
+  <div class="related-card-title">Når kan utleieren heve leieavtalen umiddelbart?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, men det skal mye til, og det skjer ikke over natten. En enkelt fest eller litt støy fører ikke til utkastelse. Men gjentatt og alvorlig bråk som plager naboer eller utleier, og som fortsetter etter skriftlig advarsel, kan være et vesentlig mislighold som gir utleier rett til å heve leieavtalen (§ 9-9). Utkastelse er den aller siste utveien.</p>
+<h3>Hva betyr "vesentlig mislighold"?</h3>
+<p>"Mislighold" betyr at du bryter pliktene dine etter leieavtalen eller loven. "Vesentlig" betyr at bruddet er alvorlig nok til at det rammer leieforholdet i kjernen. Bare vesentlig mislighold gir utleier rett til å <strong>heve</strong> avtalen, altså avslutte leieforholdet umiddelbart og kreve at du flytter (§ 9-9).</p>
+<p>Bråk kan være et slikt vesentlig mislighold, men da må det dreie seg om støy eller oppførsel som gir alvorlig skade eller plage for utleier, eiendommen eller de andre som bor der – ikke en enkelt høylytt kveld.</p>
+<h3>Hva sier loven?</h3>
+<p>Husleieloven (§ 9-9) lar utleier heve leieavtalen ved vesentlig mislighold. Et av tilfellene som nevnes, er at leieren "til tross for skriftlig advarsel fra utleieren fortsetter å opptre på en måte som er til alvorlig skade eller sjenanse for utleieren, eiendommen eller øvrige brukere".</p>
+<p>Legg merke til de viktige ordene:</p>
+<ul>
+<li><strong>"Skriftlig advarsel"</strong> – du skal som hovedregel ha fått en tydelig skriftlig advarsel først.</li>
+<li><strong>"Fortsetter"</strong> – du må ha fortsatt med den problematiske oppførselen etter advarselen.</li>
+<li><strong>"Alvorlig skade eller sjenanse"</strong> – det må være snakk om noe alvorlig, ikke bagateller.</li>
+</ul>
+<h3>Trinnene før en utkastelse</h3>
+<p>Det er greit å vite at en lovlig utkastelse går gjennom flere trinn. Du blir ikke kastet ut på dagen for en enkelt episode:</p>
+<ol>
+<li><strong>Naboklager / utleier reagerer</strong> på støy eller oppførsel.</li>
+<li><strong>Skriftlig advarsel</strong> fra utleier, der det tydelig fremgår hva problemet er og at det må opphøre.</li>
+<li><strong>Du får mulighet til å rette opp.</strong> Slutter bråket, er saken som regel ute av verden.</li>
+<li><strong>Fortsetter det alvorlige bråket,</strong> kan utleier heve avtalen ved vesentlig mislighold (§ 9-9).</li>
+<li><strong>Selve utkastelsen</strong> kan ikke utleier gjøre på egen hånd. Den må gå gjennom namsmyndighetene (tvangsfravikelse). Utleier kan ikke bytte lås eller kaste ut tingene dine selv.</li>
+</ol>
+<p>Dette gir deg flere sjanser til å ordne opp underveis.</p>
+<h3>Eksempler</h3>
+<p><strong>"Jeg hadde en bursdagsfest som ble litt høylytt en lørdag. Kan jeg kastes ut?"</strong> Nei. En enkelt fest, særlig om du har gitt naboene beskjed på forhånd, er ikke vesentlig mislighold. Det skal gjentatte og alvorlige problemer til.</p>
+<p><strong>"Naboene har klaget flere ganger på høy musikk hver natt, og jeg har fått en skriftlig advarsel, men jeg fortsetter."</strong> Her er du i faresonen. Vedvarende nattbråk etter skriftlig advarsel kan utgjøre vesentlig mislighold (§ 9-9). Det lureste du kan gjøre, er å ta advarselen på alvor og dempe deg umiddelbart.</p>
+<p><strong>"Det var en konflikt der jeg truet naboen min."</strong> Trusler og truende oppførsel mot naboer regnes som svært alvorlig og kan i seg selv gi grunnlag for heving, også raskere enn ved vanlig støy. Slik oppførsel bør aldri forekomme.</p>
+<h3>Hva regnes som "bråk"?</h3>
+<p>Bråk i denne sammenhengen handler om mer enn lyd. Det kan omfatte:</p>
+<ul>
+<li>Vedvarende høy musikk eller festing, særlig om natten.</li>
+<li>Truende eller aggressiv oppførsel mot naboer eller utleier.</li>
+<li>Gjentatte ordensforstyrrelser i fellesarealer.</li>
+<li>Annen oppførsel som klart sjenerer eller skader andre beboere.</li>
+</ul>
+<p>Vanlige hverdagslyder – barn som leker, en støvsuger på dagtid, et middagsselskap som avsluttes i rimelig tid – er ikke "bråk" i lovens forstand.</p>
+<h3>Hva gjør jeg hvis jeg får en advarsel?</h3>
+<p>Får du en skriftlig advarsel, ta den på alvor med en gang:</p>
+<ol>
+<li><strong>Les den nøye</strong> og finn ut nøyaktig hva som er problemet.</li>
+<li><strong>Endre oppførselen umiddelbart.</strong> Den enkleste måten å unngå utkastelse på er å la være å fortsette.</li>
+<li><strong>Svar utleier skriftlig</strong> og bekreft at du har forstått og vil rette deg.</li>
+<li><strong>Snakk med naboene</strong> hvis det passer. Ofte løser en god dialog det meste.</li>
+</ol>
+<p>Mener du at advarselen er urettferdig eller bygger på misforståelser, kan du si fra skriftlig og forklare din side – men la være å fortsette den omstridte oppførselen mens dere diskuterer.</p>
+<h3>Hva hvis utleier prøver å kaste meg ut uten grunn?</h3>
+<p>Utleier kan ikke bare kaste deg ut. Mener du at en heving eller utkastelse er urettmessig, kan du:</p>
+<ul>
+<li><strong>Protestere skriftlig</strong> og be om begrunnelse.</li>
+<li><strong>Nekte å flytte</strong> dersom du mener hevingen er ulovlig – utleier må da gå veien om namsmyndighetene, som vurderer saken.</li>
+<li><strong>Kontakte Husleietvistutvalget (HTU)</strong> for å få tvisten avgjort.</li>
+</ul>
+<h3>Forskjellen på oppsigelse og heving</h3>
+<p>To begreper blandes ofte sammen, men de er ulike:</p>
+<ul>
+<li><strong>Oppsigelse</strong> er en ordinær avslutning av leieforholdet med en oppsigelsestid (ofte tre måneder). Du blir altså boende ut oppsigelsestiden.</li>
+<li><strong>Heving</strong> er en umiddelbar avslutning på grunn av vesentlig mislighold (§ 9-9). Her kan utleier kreve at du flytter med en gang, uten oppsigelsestid.</li>
+</ul>
+<p>Bråk kan i alvorlige tilfeller gi grunnlag for heving, men også for oppsigelse. Det er strenge krav til begge deler når utleier vil bruke din oppførsel som grunn, og du har alltid rett til å bli hørt og til å rette opp.</p>
+<h3>Hva med naboer som bråker?</h3>
+<p>Mange opplever det motsatte: at det er naboen som lager bråk. Da kan du klage til utleier (eller til borettslaget/sameiet hvis naboen bor der), og be om at det tas tak i. Utleier eller laget har et ansvar for å sørge for god husorden. Vedvarende sjenanse fra en nabo etter skriftlig advarsel kan også for dem gi grunnlag for å gripe inn etter de samme reglene (§ 9-9). Du har altså rett til ro i ditt eget hjem, ikke bare en plikt til å la være å bråke selv.</p>
+<h3>Slik unngår du problemer</h3>
+<p>De fleste konflikter om støy lar seg unngå med litt folkeskikk:</p>
+<ol>
+<li><strong>Gi naboene beskjed</strong> på forhånd hvis du skal ha en sjelden fest.</li>
+<li><strong>Demp deg etter klokken 23,</strong> som er den vanlige grensen for nattero.</li>
+<li><strong>Ta en hyggelig prat</strong> med naboen hvis dere har ulike behov, før det blir en konflikt.</li>
+<li><strong>Reager raskt og positivt</strong> hvis noen ber deg dempe deg – det løser nesten alltid saken.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du kan i prinsippet kastes ut for bråk, men bare ved vesentlig og gjentatt mislighold (§ 9-9).</li>
+<li>En enkelt fest eller litt støy holder ikke – det må være alvorlig sjenanse.</li>
+<li>Du skal normalt ha skriftlig advarsel og mulighet til å rette opp først.</li>
+<li>Utleier kan ikke kaste deg ut selv – det må skje gjennom namsmyndighetene.</li>
+<li>Får du en advarsel, ta den på alvor og endre oppførselen med en gang.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

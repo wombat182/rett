@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på slitasje og skade? — Rettsregel</title>
+<meta name="description" content="Slitasje er den normale nedslitingen som skjer av seg selv når man bor et sted – den betaler du ikke for. Skade er noe som er ødelagt på grunn av et…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-slitasje-og-skade/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på slitasje og skade?">
+<meta property="og:description" content="Slitasje er den normale nedslitingen som skjer av seg selv når man bor et sted – den betaler du ikke for. Skade er noe som er ødelagt på grunn av et…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-slitasje-og-skade/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på slitasje og skade?">
+<meta name="twitter:description" content="Slitasje er den normale nedslitingen som skjer av seg selv når man bor et sted – den betaler du ikke for. Skade er noe som er ødelagt på grunn av et…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er forskjellen på slitasje og skade?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Slitasje er den normale nedslitingen som skjer av seg selv når man bor et sted – den betaler du ikke for. Skade er noe som er ødelagt på grunn av et uhell, uforsiktighet eller forsømmelse – det kan du bli ansvarlig for. Skillet avgjør hvem som betaler ved utflytting.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 10-2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/10-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 10-2</div>
+  <div class="related-card-title">Slik leverer du tilbake boligen når du flytter</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hvorfor er dette skillet så viktig?</h3>
+<p>Forskjellen på slitasje og skade er kanskje det viktigste å forstå i hele leieforholdet, fordi den avgjør om utleier kan trekke fra depositumet ditt. Misforståelser her fører til de aller fleste konfliktene mellom leietakere og utleiere.</p>
+<p>Den enkle regelen:
+- <strong>Slitasje</strong> → utleiers regning (du betaler ikke).
+- <strong>Skade</strong> → din regning (hvis du forårsaket den).</p>
+<h3>Definisjonene – forklart enkelt</h3>
+<p><strong>Slitasje</strong> (normal slit og elde) er den gradvise, naturlige nedslitingen som følger av vanlig bruk og av at tiden går. Det skjer uansett hvor forsiktig du er. Eksempel: Maling som blekner, gulv som blir litt matt, fuger som blir slitt.</p>
+<p><strong>Skade</strong> er en forringelse som går ut over det normale – noe er ødelagt på grunn av et uhell, uvøren bruk, eller fordi du forsømte noe du burde gjort. Eksempel: Et knust vindu, et brennemerke, en vannskade fordi du aldri luftet.</p>
+<p>Husleieloven § 10-2 sier at du skal levere tilbake boligen i samme stand som ved overtakelsen, <em>unntatt</em> vanlig slit og elde. Skader er altså ditt ansvar, slitasje er det ikke.</p>
+<h3>Sammenligningstabell: Slitasje vs. skade</h3>
+<table>
+<thead>
+<tr>
+<th>Vanlig slitasje (utleiers regning)</th>
+<th>Skade (din regning)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bleket maling på veggene</td>
+<td>Stort hull i veggen</td>
+</tr>
+<tr>
+<td>Litt slitt parkett der man går</td>
+<td>Dype riper eller brennemerker i parketten</td>
+</tr>
+<tr>
+<td>Små spikerhull etter bilder</td>
+<td>Mange/store hull eller ødelagt vegg</td>
+</tr>
+<tr>
+<td>Slitte fuger på badet</td>
+<td>Knust flis eller ødelagt baderomsinnredning</td>
+</tr>
+<tr>
+<td>Lett nedtråkket teppe</td>
+<td>Store, varige flekker på teppet</td>
+</tr>
+<tr>
+<td>Litt slitt kjøkkenbenk</td>
+<td>Brennmerke eller dypt kutt i benken</td>
+</tr>
+<tr>
+<td>Normal slitasje på dørhåndtak</td>
+<td>Ødelagt dør eller knust håndtak</td>
+</tr>
+<tr>
+<td>Hvitevarer slitt av alder</td>
+<td>Hvitevarer ødelagt av feil bruk</td>
+</tr>
+</tbody>
+</table>
+<h3>Gråsonene – og hvordan man vurderer dem</h3>
+<p>Noen ting er ikke svart-hvitt. Her er hva som teller når man skal avgjøre om noe er slitasje eller skade:</p>
+<p><strong>1. Hvor lenge har du bodd der?</strong>
+Jo lengre botid, jo mer slitasje er "normalt". Etter fem år forventes mye mer nedsliting enn etter seks måneder.</p>
+<p><strong>2. Hva er normal bruk?</strong>
+Litt søl og normale spor av et vanlig liv er slitasje. Grov uforsiktighet er skade.</p>
+<p><strong>3. Skyldes det forsømmelse?</strong>
+Hvis en skade kunne vært unngått ved vanlig stell (f.eks. lufting for å unngå mugg, tørke opp vann), kan det bli din regning selv om "skaden" utviklet seg gradvis.</p>
+<p><strong>4. Verdiforringelse (avskrivning):</strong>
+Selv om noe er skadet, kan ikke utleier kreve nyprisen hvis tingen allerede var gammel og slitt. Eksempel: Du ødelegger en 12 år gammel komfyr ved feil bruk. Utleier kan ikke kreve at du betaler for en helt ny komfyr, bare for restverdien av den gamle (som nesten var "avskrevet").</p>
+<h3>Konkrete eksempler på gråsoner</h3>
+<p><strong>Eksempel 1 – Muggsopp på badet:</strong> Er det slitasje eller skade? Det kommer an på årsaken. Skyldes det en skjult lekkasje eller dårlig ventilasjon i bygningen → utleiers ansvar. Skyldes det at du aldri luftet og lot fukten bygge seg opp → din skade.</p>
+<p><strong>Eksempel 2 – Hull etter bilder:</strong> Noen få, små spikerhull regnes vanligvis som normal bruk. Men har du laget 50 hull eller store skruehull, kan det bli din regning å sparkle og male.</p>
+<p><strong>Eksempel 3 – Slitt parkett:</strong> Lett slitasje der man går = slitasje. Men dype riper etter at du dro møbler over gulvet uten å løfte = skade.</p>
+<p><strong>Eksempel 4 – Flekk på gulvteppe:</strong> En liten, gammel flekk fra normal bruk = slitasje. En stor, fersk vinflekk du ikke gjorde noe med = skade.</p>
+<h3>Hvem må bevise hva?</h3>
+<p>Dette er viktig: Hvis utleier mener du har forårsaket en <strong>skade</strong> og vil trekke fra depositumet, er det i utgangspunktet <strong>utleier som må bevise</strong> at det er en skade (og ikke bare slitasje), og at den skyldes deg. Derfor er bilder fra både innflytting og utflytting så viktig – de viser den faktiske utviklingen. Uten dokumentasjon står utleier svakt, og du trenger ikke godta et trekk bare fordi utleier påstår at noe er skade. Tvert imot: Du kan kreve at utleier viser konkret hva som er ødelagt, og hvorfor det skulle være din skyld og ikke vanlig nedsliting over tid.</p>
+<h3>Steg for steg: Slik unngår du krangel ved utflytting</h3>
+<ol>
+<li><strong>Ved innflytting:</strong> Ta bilder av hvert rom, og noter alt som allerede er slitt eller skadet i overtakelsesprotokollen. Send gjerne bildene til utleier på e-post samme dag, så har dere felles datostempel.</li>
+<li><strong>Underveis:</strong> Ta tak i søl og småskader med en gang. En fersk flekk er ofte mulig å fjerne; en gammel blir varig.</li>
+<li><strong>Før utflytting:</strong> Vask grundig. Veldig mye av det utleiere kaller "skade", er egentlig bare skitt som ikke er vasket bort.</li>
+<li><strong>Ved utflytting:</strong> Ta nye bilder av hvert rom. Sammenlign med innflyttingsbildene.</li>
+<li><strong>Ved uenighet:</strong> Krev at utleier dokumenterer hva som er skade (ikke slitasje), og at det skyldes deg. La HTU avgjøre hvis dere ikke blir enige.</li>
+</ol>
+<h3>Et nyttig tankeeksperiment</h3>
+<p>Når du lurer på om noe er slitasje eller skade, still deg ett enkelt spørsmål: <em>"Ville dette ha skjedd uansett, bare av at noen bodde her over tid?"</em></p>
+<ul>
+<li>Hvis ja (blekede vegger, slitt gulv der man går, slitte fuger) → <strong>slitasje</strong>, ikke din regning.</li>
+<li>Hvis nei (et brennemerke, et knust vindu, en dyp ripe etter at du dro en sofa over gulvet) → <strong>skade</strong>, din regning.</li>
+</ul>
+<p>Dette enkle spørsmålet treffer riktig i de aller fleste tilfeller.</p>
+<h3>Hva med renhold – er skitt en skade?</h3>
+<p>Et område som ofte havner i konflikt, er renhold. Hvis boligen er skitten ved utflytting, er det ikke "slitasje" – det er manglende rengjøring, som er ditt ansvar. Mange utleiere kaller inntørket fett på komfyren eller kalk på badet for "skade", men egentlig er det bare skitt som ikke er vasket bort. Den gode nyheten er at dette er lett å unngå: Vask grundig før du flytter, så forsvinner mye av det utleier ellers kunne trukket deg for. Det som virkelig er skade (et brennemerke, en knust flis) lar seg ikke vaske bort – og det er den ekte forskjellen på en skitten overflate og en skadet overflate.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Ta bilder ved innflytting</strong> – dette er din beste forsikring.</li>
+<li><strong>Lag en overtakelsesprotokoll</strong> med utleier som beskriver tilstanden, gjerne med bilder.</li>
+<li><strong>Ta bilder ved utflytting</strong> også.</li>
+<li><strong>Vask grundig</strong> før du flytter – mye "skade" er egentlig bare manglende rengjøring.</li>
+<li><strong>Ikke godta trekk for slitasje</strong> – krev at utleier dokumenterer faktisk skade.</li>
+<li><strong>Be om verdivurdering</strong> – hvis noe gammelt er skadet, skal du bare betale restverdien.</li>
+<li><strong>Bruk Husleietvistutvalget</strong> ved uenighet om depositumet.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Slitasje = normal nedsliting over tid (utleiers regning, § 10-2).</li>
+<li>Skade = ødeleggelse fra uhell, uforsiktighet eller forsømmelse (din regning).</li>
+<li>Botid, normal bruk og forsømmelse avgjør gråsonene.</li>
+<li>Ved skade på gamle ting betaler du bare restverdien, ikke nyprisen.</li>
+<li>Utleier må som regel bevise at noe er en skade som skyldes deg.</li>
+<li>Bilder fra inn- og utflytting er ditt viktigste bevis.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

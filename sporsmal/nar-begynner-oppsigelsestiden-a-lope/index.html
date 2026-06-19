@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når begynner oppsigelsestiden å løpe? — Rettsregel</title>
+<meta name="description" content="Oppsigelsestiden begynner å løpe fra den 1. i måneden etter at oppsigelsen er kommet frem til den andre parten. Det er altså ikke datoen du sier opp som…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-begynner-oppsigelsestiden-a-lope/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når begynner oppsigelsestiden å løpe?">
+<meta property="og:description" content="Oppsigelsestiden begynner å løpe fra den 1. i måneden etter at oppsigelsen er kommet frem til den andre parten. Det er altså ikke datoen du sier opp som…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-begynner-oppsigelsestiden-a-lope/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når begynner oppsigelsestiden å løpe?">
+<meta name="twitter:description" content="Oppsigelsestiden begynner å løpe fra den 1. i måneden etter at oppsigelsen er kommet frem til den andre parten. Det er altså ikke datoen du sier opp som…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Når begynner oppsigelsestiden å løpe?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Oppsigelsestiden begynner å løpe fra **den 1. i måneden etter** at oppsigelsen er **kommet frem** til den andre parten. Det er altså ikke datoen du sier opp som teller, men hvilken måned oppsigelsen ble mottatt i. Resten av den måneden kommer "på toppen" av oppsigelsestiden.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Den lille regelen som overrasker mange</h3>
+<p>Mange tror at hvis de har tre måneders oppsigelsestid og sier opp 15. mai, så er de ferdige 15. august – tre måneder senere, dag for dag. <strong>Slik er det ikke.</strong> Oppsigelsestiden løper i hele kalendermåneder, og den starter ikke før den 1. i måneden <em>etter</em> at oppsigelsen kom frem.</p>
+<p>Det betyr at hvis du sier opp en gang i mai (uansett om det er den 1. eller den 31.), begynner de tre månedene å løpe fra 1. juni. Da blir du ferdig 31. august, ikke 15. august.</p>
+<h3>"Kommet frem" – hva betyr det?</h3>
+<p>Startpunktet knyttes til når oppsigelsen er <strong>"kommet frem"</strong> til mottakeren – altså når den har nådd den andre parten. For en e-post er det når den er levert i innboksen; for et brev når det ligger i postkassen; for en SMS når den er levert. Du trenger ikke bevise at utleier faktisk <em>leste</em> den – det holder at den er kommet frem på en forsvarlig måte. Derfor er det lurt å sende den slik at du kan dokumentere at den er levert, og gjerne be om en bekreftelse.</p>
+<h3>Eksempler som gjør regelen tydelig</h3>
+<p><strong>Eksempel 1 – Nora sier opp 3. mars:</strong>
+Oppsigelsen kom frem i mars. Oppsigelsestiden (tre måneder) løper fra 1. april: april, mai, juni. Nora er ferdig 30. juni og kan flytte 1. juli.</p>
+<p><strong>Eksempel 2 – Nora sier opp 28. mars i stedet:</strong>
+Fortsatt mars. Samme resultat: oppsigelsestiden løper fra 1. april, ferdig 30. juni. Det spiller ingen rolle om hun sier opp tidlig eller sent i mars.</p>
+<p><strong>Eksempel 3 – Nora sier opp 1. april:</strong>
+Nå kom oppsigelsen frem i april. Oppsigelsestiden løper fra 1. mai: mai, juni, juli. Ferdig 31. juli. Bare ved å vente fra 28. mars til 1. april flytter hun sluttdatoen en hel måned senere – og betaler en måned ekstra.</p>
+<p>Dette siste eksempelet er selve poenget med å forstå regelen: <strong>det kan koste deg en hel måneds husleie å sende oppsigelsen rett etter et månedsskifte i stedet for rett før.</strong></p>
+<h3>Den praktiske lærdommen: send før månedsskiftet</h3>
+<p>Hvis du har bestemt deg for å si opp, og det nærmer seg slutten av en måned, lønner det seg nesten alltid å sende oppsigelsen <strong>før</strong> måneden er omme. Da kommer den frem i inneværende måned, og oppsigelsestiden starter en måned tidligere enn om du venter til den 1. i neste måned.</p>
+<p><strong>Eksempel – Markus sparer en måned:</strong>
+Markus bestemmer seg den 30. juni for å flytte. Sender han oppsigelsen samme dag (30. juni), kommer den frem i juni, oppsigelsestiden løper fra 1. juli, og han er ferdig 30. september. Venter han bare to dager, til 2. juli, kommer den frem i juli, oppsigelsestiden løper fra 1. august, og han er ferdig 31. oktober. Forskjellen er en hel måneds husleie – kanskje 12 000–15 000 kroner – for to dagers somling.</p>
+<h3>Gjelder samme startpunkt uansett oppsigelsestidens lengde?</h3>
+<p>Ja. Enten oppsigelsestiden er én, to eller tre måneder (avhengig av hva som er avtalt eller lovens standard), løper den fra den 1. i måneden etter at oppsigelsen kom frem. Det er bare <em>lengden</em> som varierer; <em>starttidspunktet</em> beregnes likt.</p>
+<p><strong>Eksempel – to måneders avtalt oppsigelsestid:</strong>
+Lena har avtalt to måneders oppsigelsestid. Hun sier opp 9. august. Oppsigelsen kom frem i august, så oppsigelsestiden løper fra 1. september: september og oktober. Hun er ferdig 31. oktober.</p>
+<h3>Hvordan sikrer du at oppsigelsen er "kommet frem" på riktig dato?</h3>
+<p>Siden hele beregningen henger på hvilken måned oppsigelsen kom frem i, er det verdt å være litt nøye med hvordan du sender den, særlig hvis det nærmer seg et månedsskifte:</p>
+<ul>
+<li><strong>E-post</strong> regnes som kommet frem når den er levert i utleiers innboks. Send til riktig adresse, og be om en kort bekreftelse på at den er mottatt.</li>
+<li><strong>SMS</strong> regnes som kommet frem når den er levert til telefonen. Ta vare på meldingen.</li>
+<li><strong>Brev</strong> regnes som kommet frem når det ligger i postkassen. Sender du nær et månedsskifte, husk at vanlig postgang tar noen dager – da kan rekommandert sending være tryggere.</li>
+</ul>
+<p>Poenget er at du vil kunne dokumentere datoen i ettertid. En e-post med tidsstempel og en mottaksbekreftelse fjerner all tvil.</p>
+<p><strong>Eksempel – Ada sender brev for sent:</strong>
+Ada vil bli ferdig så raskt som mulig og legger oppsigelsen i posten 29. juni. Hun regner med at den kommer frem i juni. Men på grunn av en helg og treg postgang lander brevet hos utleier først 2. juli. Da regnes oppsigelsen som kommet frem i juli, oppsigelsestiden løper fra 1. august, og Ada må betale en måned lenger enn hun hadde tenkt. Hadde hun sendt en e-post 29. juni i stedet, ville den vært dokumentert kommet frem i juni. Lærdommen: nær et månedsskifte er e-post eller SMS tryggere enn vanlig post.</p>
+<h3>Et lengre eksempel som binder det sammen</h3>
+<p><strong>Eksempel – Jonas planlegger nøye:</strong>
+Jonas har bestemt seg for å flytte og betaler 12 500 kroner i måneden. Det er 27. mai. Han kunne ventet til han hadde funnet ny bolig, men han vet at hver måned han venter med å sende oppsigelsen, kan koste ham en hel ekstra måneds leie hvis han bommer på månedsskiftet. Derfor sender han en kort oppsigelse på e-post samme kveld, 27. mai, og ber om bekreftelse. Oppsigelsen kommer frem i mai, oppsigelsestiden løper fra 1. juni, og han er ferdig 31. august. Hadde han ventet til 2. juni med å sende, ville han vært bundet ut september – 12 500 kroner mer. De fem minuttene han brukte på e-posten 27. mai, var altså godt betalt.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li><strong>Send oppsigelsen før et månedsskifte</strong> hvis du vil komme tidligst mulig ut.</li>
+<li><strong>Sørg for at den "kommer frem"</strong> – send forsvarlig og be om bekreftelse.</li>
+<li><strong>Regn ut sluttdatoen</strong> straks: start fra 1. i neste måned, og tell oppsigelsestidens måneder.</li>
+<li><strong>Si opp skriftlig</strong> med dato, så starttidspunktet er udiskutabelt.</li>
+<li><strong>Ikke vent unødvendig</strong> – noen få dager kan bety en hel ekstra måned med leie.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Oppsigelsestiden løper fra den 1. i måneden etter at oppsigelsen kom frem.</li>
+<li>Det er måneden oppsigelsen mottas i som teller, ikke selve datoen.</li>
+<li>Sier du opp 3. eller 30. i en måned, blir sluttdatoen den samme.</li>
+<li>Send oppsigelsen før månedsskiftet – det kan spare deg en hel måneds husleie.</li>
+<li>Sørg for at oppsigelsen "kommer frem" og dokumenter datoen.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva gjør jeg hvis varmtvannet ikke virker? — Rettsregel</title>
+<meta name="description" content="Varmtvann er en helt vanlig og forventet del av en bolig, så hvis det ikke virker, er det en mangel som utleier i utgangspunktet må fikse. Meld fra…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-varmtvannet-ikke-virker/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva gjør jeg hvis varmtvannet ikke virker?">
+<meta property="og:description" content="Varmtvann er en helt vanlig og forventet del av en bolig, så hvis det ikke virker, er det en mangel som utleier i utgangspunktet må fikse. Meld fra…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-varmtvannet-ikke-virker/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva gjør jeg hvis varmtvannet ikke virker?">
+<meta name="twitter:description" content="Varmtvann er en helt vanlig og forventet del av en bolig, så hvis det ikke virker, er det en mangel som utleier i utgangspunktet må fikse. Meld fra…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva gjør jeg hvis varmtvannet ikke virker?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Varmtvann er en helt vanlig og forventet del av en bolig, så hvis det ikke virker, er det en mangel som utleier i utgangspunktet må fikse. Meld fra skriftlig, gi utleier en kort frist, og hvis det drar ut, kan du kreve prisavslag på husleien.</p>
+  <p class="sp-kilde">Bygger på Husleieloven §§ 2-2, 5-1, 5-3, 2-11, 2-15</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/2-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-2</div>
+  <div class="related-card-title">Hvilken stand skal boligen være i når du flytter inn?</div>
+</a><a href="../../lover/husleieloven/5-1/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-1</div>
+  <div class="related-card-title">Dine plikter og utleierens plikter mens du bor der</div>
+</a><a href="../../lover/husleieloven/5-3/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-3</div>
+  <div class="related-card-title">Hvem er ansvarlig for vedlikehold?</div>
+</a><a href="../../lover/husleieloven/2-11/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-11</div>
+  <div class="related-card-title">Du kan kreve lavere husleie hvis boligen er mangelfull</div>
+</a><a href="../../lover/husleieloven/2-15/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-15</div>
+  <div class="related-card-title">Du kan holde tilbake husleien som sikkerhet</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ingenting setter humøret på prøve som en iskald dusj en mørk vintermorgen. Den gode nyheten er at du har klare rettigheter her.</p>
+<h3>Hvorfor er manglende varmtvann en mangel?</h3>
+<p>Når du leier en vanlig bolig, har du krav på at den fungerer som en bolig skal (kapittel 2, blant annet § 2-2 om krav til boligen). Varmtvann er en selvfølge i en moderne bolig. Virker det ikke, oppfyller ikke boligen kravene, og det regnes som en mangel.</p>
+<p>Utleier har dessuten plikt til å holde boligen i forsvarlig stand i hele leietiden (§ 5-1 om utleiers vedlikeholdsplikt). Selv om leietaker etter loven har ansvar for <strong>å vedlikeholde</strong> varmtvannsberederen (§ 5-3, som gir leietaker ansvar for blant annet kraner, vannklosetter og varmtvannsbeholdere i den daglige bruken), så er det utleier som må <strong>skifte den ut</strong> hvis den er utslitt eller ødelagt. Skillet er enkelt sagt: Daglig stell og småting er ditt, men selve utskiftingen av en defekt bereder er utleiers.</p>
+<h3>Eksempel: Berederen er ødelagt og må skiftes</h3>
+<p>Husleietvistutvalget bruker selv akkurat dette eksempelet: Varmtvannsberederen er ødelagt og må skiftes ut. Leietaker sender skriftlig varsel til utleier, men utleier gjør ingenting. Tar det lang tid før utleier får den reparert, kan leietaker kreve en forholdsmessig reduksjon i husleien (prisavslag).</p>
+<p>"Forholdsmessig" betyr at avslaget skal stå i forhold til hvor stor ulempen er. Å være helt uten varmtvann i flere uker er en betydelig ulempe, og gir et merkbart avslag. Er du derimot bare uten varmtvann en dag eller to før det fikses, blir det lite eller ingenting å kreve.</p>
+<h3>Hvor mye prisavslag kan du regne med?</h3>
+<p>Det finnes ingen fast tabell, men tankegangen er at avslaget skal speile hvor mye dårligere boligen er for deg i perioden. Noen holdepunkter:</p>
+<ul>
+<li><strong>Kort avbrudd (en dag eller to):</strong> Ofte ingen praktisk betydning – du har neppe noe krav.</li>
+<li><strong>Flere dager til et par uker uten varmtvann:</strong> Et merkbart avslag for de aktuelle dagene, fordi det er en daglig ulempe.</li>
+<li><strong>Lang tid (uker eller måneder):</strong> Et større avslag, særlig hvis det gjør boligen tungvint å bo i.</li>
+</ul>
+<p>Husk at avslaget regnes fra den datoen du <strong>varslet skriftlig</strong> – derfor er det så viktig å sende meldingen tidlig og ta vare på den.</p>
+<h3>Slik går du fram steg for steg</h3>
+<ol>
+<li><strong>Sjekk det enkle først.</strong> Har sikringen gått? Står berederen på en bryter som kan ha blitt slått av? Er hovedstoppekranen åpen? Noen ganger er det en rask løsning, og da slipper alle bryet.</li>
+<li><strong>Meld fra skriftlig til utleier.</strong> SMS eller e-post: "Hei, vi har ikke varmtvann. Jeg har sjekket sikringen, men det hjelper ikke. Kan du ordne dette raskt?" Skriftlig melding er viktig fordi den beviser at og når du varslet – det er datoen et eventuelt prisavslag regnes fra.</li>
+<li><strong>Gi en rimelig, men kort frist.</strong> Varmtvann er noe folk trenger daglig, så her er det rimelig å forvente rask handling – gjerne et par dager, ikke uker.</li>
+<li><strong>Følg opp skriftlig hvis det ikke skjer noe.</strong> Skriv at du vil kreve prisavslag for perioden uten varmtvann, og at du vurderer å la en fagperson utbedre på utleiers regning hvis det ikke ordnes.</li>
+</ol>
+<h3>Hva kan du kreve?</h3>
+<p>Dette er en mangel, så de vanlige rettighetene gjelder (kapittel 2, blant annet § 2-11):</p>
+<ul>
+<li><strong>Retting:</strong> Utleier skal ordne det.</li>
+<li><strong>Prisavslag:</strong> Lavere husleie for perioden uten varmtvann.</li>
+<li><strong>Selv få det utbedret på utleiers regning:</strong> Hvis utleier ikke gjør noe innen rimelig tid etter at du har varslet, kan du i en del tilfeller få jobben gjort selv og kreve utgiftene dekket. Vær forsiktig: Varsle skriftlig først, og at du vil gjøre dette, slik at utleier får sjansen. Ta vare på kvittering.</li>
+<li><strong>Erstatning:</strong> Hvis du har hatt ekstra utgifter (for eksempel måtte dusje på treningssenter), kan du kreve disse dekket.</li>
+<li><strong>Holde tilbake leie:</strong> På samme måte som ved andre mangler, men gjør det med et rimelig beløp og helst på en deponeringskonto (§ 2-15).</li>
+</ul>
+<h3>Hva med kaldt vann eller for lite oppvarming generelt?</h3>
+<p>De samme prinsippene gjelder hvis det er problemer med oppvarming (radiator/varmekabler som ikke virker) eller helt manglende kaldtvann. Også dette er mangler utleier må rette, og du kan kreve prisavslag mens det står på. Husk at oppvarming og et levelig inneklima er en del av det du betaler for.</p>
+<h3>Vanlige feller</h3>
+<ul>
+<li><strong>Du "tar deg selv til rette" og bytter berederen uten å varsle.</strong> Da risikerer du å ikke få utgiftene dekket. Varsle skriftlig først, gi en frist, og skriv at du vil utbedre på utleiers regning hvis ingenting skjer.</li>
+<li><strong>Du venter med å si fra fordi det "snart blir helg".</strong> Prisavslaget regnes fra varseldatoen, så hver dag du venter, taper du potensielt penger.</li>
+<li><strong>Du sjekker ikke det enkle først.</strong> Mang en sak om "ødelagt bereder" var egentlig bare en sikring som hadde gått. Sjekk sikringsskap og brytere før du eskalerer.</li>
+<li><strong>Du betaler for utskifting du tror er din plikt.</strong> Daglig vedlikehold er ditt, men selve utskiftingen av en ødelagt bereder er utleiers ansvar.</li>
+</ul>
+<h3>Hvis utleier ikke samarbeider</h3>
+<p>Får du ikke utleier til å reagere, kan du ta saken til <strong>Husleietvistutvalget (HTU)</strong>. Det er billig, du trenger ikke advokat, og de kan både fastsette prisavslag og pålegge utleier å ordne feilen.</p>
+<h3>Eksempel: Utleier lover å fikse, men ingenting skjer</h3>
+<p>Tenk deg at du melder fra om manglende varmtvann, og utleier svarer "ja, jeg ordner det" – men det går to uker uten at noe skjer. Slik bør du gå videre: Send en ny, vennlig, men tydelig skriftlig melding der du minner om saken, setter en kort frist (for eksempel tre dager), og skriver klart at du vil kreve prisavslag for hele perioden uten varmtvann og vurderer å la en fagperson utbedre på utleiers regning hvis det ikke ordnes. Ta vare på alle meldingene. Denne skriftlige sporbarheten er det som gjør at du senere faktisk får gjennomslag for prisavslaget – både overfor utleier og eventuelt hos HTU. Mange utleiere setter fart nettopp når de ser at du dokumenterer og kjenner rettighetene dine.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Manglende varmtvann er en mangel utleier som hovedregel må rette (§ 5-1, kapittel 2).</li>
+<li>Du vedlikeholder berederen i hverdagen (§ 5-3), men utleier skifter den ut hvis den er ødelagt.</li>
+<li>Sjekk sikring og brytere først, meld så fra skriftlig.</li>
+<li>Du kan kreve retting, prisavslag, erstatning og noen ganger selv utbedre på utleiers regning.</li>
+<li>Husleietvistutvalget hjelper deg hvis utleier ikke ordner opp.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

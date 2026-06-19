@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem betaler for depositumskontoen? — Rettsregel</title>
+<meta name="description" content="Det er utleier som skal betale for å opprette depositumskontoen § 3-5.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-betaler-for-depositumskontoen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem betaler for depositumskontoen?">
+<meta property="og:description" content="Det er utleier som skal betale for å opprette depositumskontoen § 3-5.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-betaler-for-depositumskontoen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem betaler for depositumskontoen?">
+<meta name="twitter:description" content="Det er utleier som skal betale for å opprette depositumskontoen § 3-5.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvem betaler for depositumskontoen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det er utleier som skal betale for å opprette depositumskontoen (§ 3-5). Selv om kontoen står i ditt navn, er det utleier som har plikt til å dekke opprettelseskostnaden. Du som leietaker skal ikke betale gebyr for å få depositumet ditt sikret på riktig måte.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 3-5</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/3-5/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 3-5</div>
+  <div class="related-card-title">Depositum — reglene du må kjenne</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det er utleier som skal betale for å opprette depositumskontoen (§ 3-5). Selv om kontoen står i ditt navn, er det utleier som har plikt til å dekke opprettelseskostnaden. Du som leietaker skal ikke betale gebyr for å få depositumet ditt sikret på riktig måte.</p>
+<h3>Hva sier loven?</h3>
+<p>Husleieloven § 3-5 sier rett ut at «utleieren skal dekke kostnadene ved å opprette en depositumskonto». Dette er logisk: det er utleier som krever sikkerhet, og da er det også utleier som skal bære utgiften ved å sette opp den ordningen loven krever.</p>
+<p>I praksis tilbyr de fleste banker depositumskonto enten gratis eller mot et engangsgebyr. Gebyret varierer fra bank til bank, men ligger gjerne et sted mellom noen hundre kroner og rundt tusen kroner. Uansett størrelse er det altså utleier som skal ta regningen.</p>
+<h3>Et eksempel</h3>
+<p>Lars skal leie ut en sokkelleilighet og krever tre måneders depositum av sin nye leietaker, Emma. Lars går i banken sin og oppretter en depositumskonto i Emmas navn. Banken tar 600 kr for å opprette kontoen. Den regningen skal Lars betale – ikke Emma. Emma skal kun overføre selve depositumsbeløpet til kontoen, ikke ett øre mer.</p>
+<p>Hvis Lars hadde forsøkt å skyve gebyret over på Emma, for eksempel ved å kreve 600 kr ekstra i depositum, ville det vært i strid med loven.</p>
+<h3>Hva med renter og senere kostnader?</h3>
+<p>To viktige presiseringer:</p>
+<ul>
+<li><strong>Rentene er dine.</strong> Pengene står på en rentebærende konto, og rentene som påløper tilhører deg som leietaker (mer i artikkel 27). Utleier kan ikke ta rentene som «betaling» for kontoen.</li>
+<li><strong>Opprettelseskostnaden er utleiers.</strong> Det er den konkrete utgiften loven peker på. Eventuelle løpende kostnader er sjelden et tema, fordi depositumskontoer vanligvis ikke har månedlige gebyrer.</li>
+</ul>
+<h3>Hvorfor er det rimelig at utleier betaler?</h3>
+<p>Tankegangen bak regelen er enkel og logisk. Det er utleier som ønsker en sikkerhet, og det er utleier som krever at du binder opp pengene dine. Når loven pålegger en bestemt måte å gjøre dette på – en depositumskonto – er det naturlig at den som krever sikkerheten også betaler for å sette den opp. Du som leietaker «yter» allerede en stor tjeneste ved å binde opp pengene dine i hele leieperioden; da skal du ikke i tillegg måtte betale for selve ordningen.</p>
+<h3>Hva koster det egentlig?</h3>
+<p>Prisen for å opprette en depositumskonto varierer mellom bankene. Noen banker tilbyr det gratis, særlig hvis utleier allerede er kunde. Andre tar et engangsgebyr. Dette er ikke store summer i den store sammenhengen, men prinsippet er klart: regningen er utleiers.</p>
+<p>Et eksempel: Utleier Karl bruker en bank som tar 700 kr for å opprette depositumskontoen. En annen utleier, Ingrid, bruker en bank som tilbyr det gratis. I begge tilfeller er det utleier – ikke leietaker – som eventuelt betaler gebyret. Leietakeren skal i begge tilfeller bare overføre selve depositumsbeløpet.</p>
+<h3>Vanlige misforståelser</h3>
+<p>Noen utleiere prøver, ofte i god tro, å la leietaker dekke gebyret. Det skjer på ulike måter:</p>
+<ul>
+<li><strong>«Du ordner kontoen selv og betaler gebyret.»</strong> Feil – utleier skal dekke opprettelseskostnaden.</li>
+<li><strong>«Jeg legger 700 kr på depositumet for å dekke bankgebyret.»</strong> Feil – du skal bare betale selve depositumet, ikke gebyret på toppen.</li>
+<li><strong>«Rentene tar jeg som betaling for kontoen.»</strong> Feil – rentene er dine, og opprettelseskostnaden er uansett utleiers.</li>
+</ul>
+<p>Hvis du møter en av disse, kan du høflig vise til § 3-5 og forklare at det er utleier som skal dekke kostnaden ved å opprette depositumskontoen.</p>
+<h3>Et eksempel der utleier prøver seg</h3>
+<p>Thomas skal leie en leilighet og avtaler et depositum på 30 000 kr. Utleier sier: «Banken tar 800 kr for kontoen, så du overfører 30 800 kr.» Thomas kjenner reglene og svarer høflig: «Etter husleieloven § 3-5 er det du som skal dekke kostnaden ved å opprette depositumskontoen, så jeg overfører de 30 000 kr som avtalt.» Utleier, som egentlig bare prøvde seg, godtar dette uten videre. Thomas sparte 800 kr og fikk dessuten signalisert at han kjenner rettighetene sine.</p>
+<h3>Hva hvis utleier vil at du skal betale?</h3>
+<p>Si at utleier sier: «Du må selv ordne depositumskonto og betale gebyret.» Da kan du høflig vise til husleieloven § 3-5 og forklare at det er utleier som skal dekke opprettelseskostnaden. De fleste utleiere retter seg etter dette når de blir gjort oppmerksom på regelen.</p>
+<p>Skulle utleier likevel nekte, er ikke gebyret i seg selv noen stor sum, men det er et tegn på en utleier som enten ikke kjenner reglene eller ikke vil følge dem. Da bør du være ekstra nøye med resten av leieforholdet, og du kan eventuelt ta det opp med Husleietvistutvalget hvis det blir en større konflikt.</p>
+<h3>Hva du kan si til utleier</h3>
+<p>Hvis utleier prøver å velte gebyret over på deg, trenger du ikke krangle. Du kan formulere deg vennlig og bestemt, for eksempel slik:</p>
+<blockquote>
+<p>«Etter husleieloven § 3-5 er det du som utleier som dekker kostnaden ved å opprette depositumskontoen. Jeg overfører gjerne hele depositumet så snart kontoen er opprettet i mitt navn, men selve opprettelsen er din utgift.»</p>
+</blockquote>
+<p>De aller fleste utleiere godtar dette uten innvendinger, fordi det rett og slett er det loven sier. En slik melding viser også at du kjenner rettighetene dine, noe som ofte gjør resten av leieforholdet ryddigere.</p>
+<h3>Et eksempel der det går galt – og hvordan det burde vært</h3>
+<p>Ahmed får beskjed om å overføre 24 800 kr: 24 000 kr i depositum pluss 800 kr som utleier sier er «bankgebyret». Ahmed betaler uten å tenke seg om. Senere oppdager han at de 800 kronene var en utgift utleier skulle dekket. Slik burde det vært i stedet: utleier oppretter kontoen, dekker de 800 kronene selv, og Ahmed overfører kun de 24 000 kronene som er depositumet. Lærdommen er enkel – sjekk alltid at beløpet du overfører er nøyaktig depositumet, ikke ett øre mer.</p>
+<h3>Vanlige feller å passe på</h3>
+<ul>
+<li><strong>Gebyret lagt på toppen av depositumet.</strong> Hvis utleier ber deg overføre et «rundt» beløp som er litt høyere enn avtalt depositum, kan det skjule et bankgebyr du ikke skal betale. Regn alltid etter.</li>
+<li><strong>«Du ordner kontoen selv.»</strong> Det er greit at du oppretter kontoen rent praktisk, men selve opprettelseskostnaden er fortsatt utleiers å dekke.</li>
+<li><strong>Rentene «tatt» av utleier som betaling for kontoen.</strong> Rentene er dine uansett, og opprettelseskostnaden er en egen sak som ligger hos utleier.</li>
+<li><strong>Ingen kvittering.</strong> Be alltid om dokumentasjon på hva du har overført og at kontoen er i ditt navn, så du har det svart på hvitt.</li>
+</ul>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Be utleier opprette kontoen</strong> og dekke gebyret – det er utleiers plikt.</li>
+<li><strong>Overfør kun selve depositumsbeløpet</strong>, ikke noe ekstra for gebyr.</li>
+<li><strong>Sjekk kontoutskriften</strong> for å se at hele beløpet du overførte faktisk står inne, og at rentene tilhører deg.</li>
+<li><strong>Henvis til § 3-5</strong> hvis utleier prøver å velte kostnaden over på deg.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Utleier skal dekke kostnaden ved å opprette depositumskontoen (§ 3-5), selv om kontoen står i ditt navn. Du skal bare overføre selve depositumsbeløpet – aldri betale gebyr for kontoen. Rentene tilhører deg. Prøver utleier å skyve gebyret over på deg, kan du vise til loven.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

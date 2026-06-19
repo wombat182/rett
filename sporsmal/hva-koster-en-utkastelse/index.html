@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva koster en utkastelse? — Rettsregel</title>
+<meta name="description" content="En utkastelse koster penger, og det er du som leietaker som ender opp med å betale regningen hvis den blir gjennomført — i tillegg til den skyldige leien.…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-koster-en-utkastelse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva koster en utkastelse?">
+<meta property="og:description" content="En utkastelse koster penger, og det er du som leietaker som ender opp med å betale regningen hvis den blir gjennomført — i tillegg til den skyldige leien.…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-koster-en-utkastelse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva koster en utkastelse?">
+<meta name="twitter:description" content="En utkastelse koster penger, og det er du som leietaker som ender opp med å betale regningen hvis den blir gjennomført — i tillegg til den skyldige leien.…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva koster en utkastelse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En utkastelse koster penger, og det er du som leietaker som ender opp med å betale regningen hvis den blir gjennomført — i tillegg til den skyldige leien. Det påløper gebyrer til namsmannen, beregnet ut fra rettsgebyret (som fra 1. januar 2026 er 1 345 kroner). Selve begjæringen koster et par tusen kroner, og det kommer et tillegg når selve fravikelsen gjennomføres. Kommer det advokat eller inkasso inn i bildet, kan det bli dyrere. Derfor lønner det seg nesten alltid å gjøre opp før det går så langt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hvem betaler — og hvorfor du bør bry deg</h3>
+<p>Utleier legger ut for kostnadene i første omgang, men hvis utkastelsen gjennomføres, blir disse kostnadene som regel lagt til kravet mot deg. Det betyr at du som leietaker til slutt sitter igjen med regningen — på toppen av den skyldige leien og renter. Dette er en viktig grunn til å stoppe saken tidlig: jo lenger den får gå, jo større blir totalbeløpet du må betale for å stanse den.</p>
+<h3>Hvordan gebyrene regnes ut (2026)</h3>
+<p>Gebyrene fastsettes som et multiplum av <strong>rettsgebyret</strong>, som fra 1. januar 2026 er <strong>1 345 kroner</strong>. Rettsgebyret (ofte forkortet "R") er en standardsats som justeres jevnlig, og mange offentlige gebyrer regnes som et antall ganger denne satsen. For en fravikelsessak hos namsmannen betyr det grovt sett:</p>
+<ul>
+<li><strong>Et gebyr for selve begjæringen</strong> om fravikelse/tvangsfullbyrdelse. Dette betales selv om begjæringen senere trekkes eller avvises, og utgjør et par tusen kroner.</li>
+<li><strong>Et tilleggsgebyr når fravikelsen faktisk gjennomføres</strong> etter tvangsfullbyrdelsesloven kapittel 13. Til sammen kan en gjennomført fravikelse derfor komme opp i flere tusen kroner i rene gebyrer.</li>
+<li><strong>Et gebyr hvis du klager</strong> til tingretten på en avgjørelse (på nivå med ett rettsgebyr).</li>
+</ul>
+<p>De nøyaktige kronebeløpene endrer seg når rettsgebyret justeres, så det sikreste er å sjekke gjeldende satser hos namsmannen/politiet eller domstol.no, eller å be namsmannen om en spesifikasjon i din konkrete sak. I tillegg kan det komme kostnader til selve gjennomføringen og eventuell håndtering/lagring av eiendelene dine. Merk at saker etter selve husleieloven (for eksempel en tvist hos Husleietvistutvalget) i mange tilfeller er rimeligere eller fritatt for rettsgebyr — men en tvangssak om fravikelse hos namsmannen koster.</p>
+<h3>Hva med renter?</h3>
+<p>Når du skylder leie, påløper det også <strong>forsinkelsesrenter</strong> på det skyldige beløpet. Disse legges til kravet. Når du skal betale deg ut av en utkastelse, må du derfor regne med:</p>
+<ul>
+<li>den skyldige leien,</li>
+<li>forsinkelsesrenter,</li>
+<li>påløpte gebyrer og kostnader.</li>
+</ul>
+<p>Alt dette må dekkes for å stoppe utkastelsen. Det holder ikke å betale "bare leien" hvis det allerede har påløpt renter og gebyrer.</p>
+<p><em>Eksempel:</em> Sondre skylder 30 000 kroner i leie. Når saken har gått til namsmannen, har det i tillegg påløpt renter og gebyrer. For å stoppe utkastelsen må han betale hele summen — leie, renter og kostnadene — ikke bare de 30 000. Hadde han betalt rett etter § 4-18-varselet, ville han sluppet en god del av tilleggskostnadene.</p>
+<h3>Advokatkostnader</h3>
+<p>Noen utleiere bruker advokat eller inkassoselskap i prosessen. Da kan det komme ytterligere kostnader, og en del av disse kan bli lagt til kravet mot deg. Dette er nok en grunn til at totalbeløpet vokser jo lenger saken trekker ut.</p>
+<p>For deg som leietaker: du trenger ikke advokat for å betale deg ut eller for å komme med enkle innsigelser til namsmannen. Men hvis saken blir komplisert (for eksempel en tvist om en oppsigelses gyldighet), kan det være lurt å søke råd. Husk at det finnes gratis hjelp (se nedenfor), og at fri rettshjelp kan være aktuelt hvis du har lav inntekt.</p>
+<h3>Den dyreste utkastelsen er den du kunne unngått</h3>
+<p>Poenget med å forstå kostnadene er enkelt: <strong>det lønner seg nesten alltid å gjøre opp tidlig.</strong> Sammenlign:</p>
+<ul>
+<li><strong>Betaler du innen § 4-18-fristen:</strong> Du betaler den skyldige leien, kanskje litt renter. Ingen namsmannsgebyrer, ingen advokat. Billigst.</li>
+<li><strong>Betaler du etter at namsmannen er koblet inn, men før gjennomføring:</strong> Du må betale leie, renter OG gebyrer. Dyrere — men du blir boende.</li>
+<li><strong>Lar du det gå til gjennomføring:</strong> Du betaler alt det over, pluss eventuelle kostnader til gjennomføring og håndtering av eiendeler — og mister i tillegg hjemmet ditt. Klart dyrest.</li>
+</ul>
+<h3>Få hjelp med kostnadene</h3>
+<ul>
+<li><strong>NAV</strong> kan i noen tilfeller dekke skyldig husleie (og dermed stoppe utkastelsen) for å hindre at du blir bostedsløs. Kontakt dem tidlig.</li>
+<li><strong>Fri rettshjelp</strong> kan være aktuelt hvis du har lav inntekt og saken har stor velferdsmessig betydning. Sjekk vilkårene hos Statens sivilrettsforvaltning.</li>
+<li><strong>Gratis rådgivning</strong> får du hos Husleietvistutvalget og Forbrukerrådet.</li>
+</ul>
+<h3>Hva bør du gjøre?</h3>
+<ol>
+<li><strong>Be om en spesifikasjon</strong> av hva som kreves, så du ser nøyaktig hva leie, renter og gebyrer utgjør.</li>
+<li><strong>Betal så tidlig som mulig</strong> for å holde tilleggskostnadene nede.</li>
+<li><strong>Sjekk at gebyrene og rentene er riktige.</strong> Er noe feil, bestrid det skriftlig.</li>
+<li><strong>Søk hjelp</strong> hos NAV, og sjekk om du har rett på fri rettshjelp.</li>
+</ol>
+<h3>Et regneeksempel som viser hvorfor tidlig handling lønner seg</h3>
+<p>La oss si at du skylder 20 000 kroner i leie. Se hvordan totalbeløpet vokser jo lenger du venter:</p>
+<ul>
+<li><strong>Du betaler innen § 4-18-fristen:</strong> Du betaler de 20 000 kronene, kanskje med litt forsinkelsesrente. Ingen namsmannsgebyrer. Du beholder boligen, og det koster deg minimalt ekstra.</li>
+<li><strong>Du betaler etter at namsmannen er koblet inn:</strong> Nå har det kommet til gebyrer på flere tusen kroner og mer renter. Du må betale alt dette i tillegg til de 20 000 — men du beholder fortsatt boligen.</li>
+<li><strong>Du lar det gå til gjennomføring:</strong> Du betaler alt det over, pluss tilleggsgebyr for selve fravikelsen og eventuelle kostnader til håndtering av eiendelene dine — og du mister i tillegg hjemmet ditt.</li>
+</ul>
+<p>Tallene er omtrentlige, men poenget er tydelig: den samme gjelden blir dyrere og dyrere å gjøre opp jo lenger saken får løpe. Den billigste utkastelsen er den som aldri kommer i gang.</p>
+<h3>Hva med fri rettshjelp?</h3>
+<p>Hvis økonomien er stram, kan du i noen tilfeller ha rett til <strong>fri rettshjelp</strong> — altså at det offentlige dekker advokatutgifter helt eller delvis. Dette gjelder typisk hvis du har lav inntekt og formue under visse grenser, og saken har stor velferdsmessig betydning for deg (det å miste hjemmet kan være en slik sak). Du trenger ikke advokat for å betale deg ut eller for å sende enkle innsigelser til namsmannen, men ved en mer komplisert tvist kan det være verdt å undersøke. Husleietvistutvalget og Forbrukerrådet gir uansett gratis veiledning.</p>
+<h3>Kort oppsummert</h3>
+<p>En utkastelse koster penger, og du som leietaker betaler til slutt regningen hvis den gjennomføres — i tillegg til skyldig leie og renter. Gebyrene regnes ut fra rettsgebyret (1 345 kroner i 2026): det kommer ett gebyr for begjæringen og et tillegg når fravikelsen gjennomføres, til sammen flere tusen kroner, pluss eventuelle advokat- og gjennomføringskostnader. Når du skal betale deg ut, må du dekke leie, renter OG kostnader. Den klart billigste løsningen er å gjøre opp tidlig — helst innen § 4-18-fristen. Søk hjelp hos NAV og undersøk fri rettshjelp om økonomien er stram.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan sender jeg en sak til Husleietvistutvalget? — Rettsregel</title>
+<meta name="description" content="Det korte svaret: Du sender inn en klage via det elektroniske klageskjemaet på htu.no, logger inn med elektronisk ID, beskriver kravet ditt og laster opp…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-sender-jeg-en-sak-til-husleietvistutvalget/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan sender jeg en sak til Husleietvistutvalget?">
+<meta property="og:description" content="Det korte svaret: Du sender inn en klage via det elektroniske klageskjemaet på htu.no, logger inn med elektronisk ID, beskriver kravet ditt og laster opp…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-sender-jeg-en-sak-til-husleietvistutvalget/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan sender jeg en sak til Husleietvistutvalget?">
+<meta name="twitter:description" content="Det korte svaret: Du sender inn en klage via det elektroniske klageskjemaet på htu.no, logger inn med elektronisk ID, beskriver kravet ditt og laster opp…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvordan sender jeg en sak til Husleietvistutvalget?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det korte svaret: Du sender inn en klage via det elektroniske klageskjemaet på htu.no, logger inn med elektronisk ID, beskriver kravet ditt og laster opp bevisene dine. Det er gratis å sette i gang skjemaet, og du betaler gebyret (269 kr som leietaker) når klagen er registrert.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det korte svaret: Du sender inn en klage via det elektroniske klageskjemaet på htu.no, logger inn med elektronisk ID, beskriver kravet ditt og laster opp bevisene dine. Det er gratis å sette i gang skjemaet, og du betaler gebyret (269 kr som leietaker) når klagen er registrert.</p>
+<h3>Før du sender inn – samle dette</h3>
+<p>En god klage står og faller på dokumentasjonen. Ha klart:</p>
+<ul>
+<li><strong>Leiekontrakten</strong> (og inventarliste/innflyttingsprotokoll om du har)</li>
+<li><strong>Navn og kontaktinfo</strong> på motparten (utleier eller leietaker)</li>
+<li><strong>Bevis</strong> for kravet ditt: bilder, video, SMS/e-post, kvitteringer, kontoutskrifter</li>
+<li><strong>Et klart krav</strong> – hva du vil at HTU skal bestemme (din "påstand"), helst med et konkret beløp</li>
+</ul>
+<h3>Steg for steg: Slik sender Maria inn en sak</h3>
+<p>La oss følge Maria, som ikke har fått tilbake 12 000 kr av depositumet.</p>
+<p><strong>1. Gå til htu.no og finn klageskjemaet.</strong>
+På nettsiden velger Maria "Send inn klage". Skjemaet er digitalt og leder henne gjennom punktene.</p>
+<p><strong>2. Logg inn med elektronisk ID.</strong>
+Maria logger inn trygt (med f.eks. BankID via ID-porten). Da blir navnet og opplysningene hennes hentet automatisk, og hun slipper å fylle inn alt manuelt.</p>
+<p><strong>3. Fyll inn hvem saken gjelder.</strong>
+Maria oppgir seg selv som <strong>klager</strong> og utleieren som <strong>innklaget</strong> (den det klages på), med navn og kontaktinformasjon. Riktig adresse til utleier er viktig, fordi HTU må kunne <strong>forkynne</strong> (formelt overlevere) klagen til motparten.</p>
+<p><strong>4. Beskriv saken og kravet (påstanden).</strong>
+Maria skriver kort og saklig hva saken gjelder: "Jeg krever utbetalt 12 000 kr av depositumet. Utleier holder beløpet tilbake med påstand om dårlig vask, men jeg leverte boligen rengjort." Hun skriver hva hun krever – det er <strong>påstanden</strong> hennes. En tydelig påstand med konkret beløp gjør saken lettere å behandle.</p>
+<p><strong>5. Kryss av for sakskostnader og renter.</strong>
+I skjemaet er det et eget punkt: "Sakskostnader og renter". Maria krysser <strong>"Ja"</strong> for at motparten skal betale tilbake saksbehandlingsgebyret og eventuelle renter hvis hun vinner. Hun trenger ikke regne ut rentene selv – det holder å krysse av.</p>
+<p><strong>6. Last opp bevis.</strong>
+Maria laster opp leiekontrakten, bilder av den vaskede boligen med dato, og e-postene der hun ba om depositumet tilbake. Du kan også sende inn video som bevis. Gi gjerne filene tydelige navn.</p>
+<p><strong>7. Send inn.</strong>
+Maria sender skjemaet. Saken blir registrert hos HTU.</p>
+<p><strong>8. Betal gebyret.</strong>
+HTU sender en faktura så snart klagen er registrert – den kommer i din digitale postkasse (eller per post hvis du ikke har en). Maria betaler 269 kr. <strong>Saken behandles ikke før gebyret er betalt.</strong></p>
+<h3>Hva skjer etter at du har sendt inn?</h3>
+<ol>
+<li><strong>Forkynning:</strong> HTU sørger for at utleier får klagen.</li>
+<li><strong>Tilsvar:</strong> Utleier får mulighet til å svare (gi sitt <strong>tilsvar</strong>) og sende inn sine egne bevis.</li>
+<li><strong>Mekling eller behandling:</strong> HTU forsøker ofte mekling først, der partene kan bli enige (et <strong>forlik</strong>). Blir dere ikke enige, behandler HTU saken og fatter et <strong>vedtak</strong>.</li>
+<li><strong>Vedtak:</strong> Avgjørelsen sendes til begge parter. Den blir rettskraftig (bindende som en dom) hvis ingen tar saken til tingretten innen én måned.</li>
+</ol>
+<h3>Tips for en sterk sak</h3>
+<ul>
+<li><strong>Vær konkret med beløp.</strong> "Jeg krever 12 000 kr" er bedre enn "jeg vil ha tilbake depositumet".</li>
+<li><strong>Hold deg til fakta.</strong> Saklige beskrivelser veier tyngre enn følelser.</li>
+<li><strong>Sorter bevisene.</strong> Gi gjerne filene tydelige navn ("Bilde_kjøkken_utflytting.jpg").</li>
+<li><strong>Svar i tide</strong> hvis HTU ber om mer informasjon underveis.</li>
+<li><strong>Ta vare på kvittering</strong> for gebyret, så du kan kreve det tilbake.</li>
+</ul>
+<h3>Hva bør stå i selve beskrivelsen?</h3>
+<p>Når du skal forklare saken med egne ord, kan du følge en enkel struktur:</p>
+<ol>
+<li><strong>Kort om leieforholdet:</strong> hvor du leide, fra når til når, og hva som var avtalt leie og depositum.</li>
+<li><strong>Hva konflikten gjelder:</strong> for eksempel at utleier holder tilbake depositumet med påstand om dårlig vask.</li>
+<li><strong>Hvorfor du mener du har rett:</strong> at du leverte boligen rengjort, og at du har bilder som viser det.</li>
+<li><strong>Hva du krever (påstanden):</strong> det konkrete beløpet du vil ha.</li>
+</ol>
+<p>Du trenger ikke skrive langt eller bruke fine ord. Klart og konkret er best. Saksbehandlerne hos HTU er vant til å lese forklaringer fra vanlige folk.</p>
+<h3>Hva om jeg ikke har digital ID eller synes det er vanskelig?</h3>
+<p>De fleste klarer skjemaet selv. Trenger du hjelp, kan du:</p>
+<ul>
+<li>Kontakte HTU direkte (kontaktinfo på htu.no) – de veileder om selve prosessen.</li>
+<li>Få hjelp av en du stoler på til å fylle ut.</li>
+<li>La en <strong>fullmektig</strong> (for eksempel en venn eller advokat) representere deg.</li>
+</ul>
+<p>Mangler du digital postkasse, får du fakturaen i posten i stedet.</p>
+<h3>Eksempel: Utleier sender inn en sak</h3>
+<p>Det er ikke bare leietakere som klager. Hvis en utleier mener leietaker skylder husleie eller har laget skade, sender utleier inn på samme måte – men da er gebyret 2 071 kr. Også utleier laster opp kontrakt, bilder og kontoutskrift som bevis, og begge parter behandles likt.</p>
+<h3>Hva hvis jeg blir klaget inn?</h3>
+<p>Får du selv en klage mot deg (du er <strong>innklaget</strong>), skal du ikke få panikk. Du får mulighet til å sende et <strong>tilsvar</strong> med din side av saken og dine egne bevis. Svar saklig og innen fristen HTU setter. Du kan også sende en <strong>motklage</strong> hvis du mener motparten skylder deg noe. En motklage betyr at du fremmer ditt eget krav i samme sak, så begge sider blir behandlet samlet.</p>
+<h3>Vanlige feil som svekker en sak</h3>
+<p>For at saken din skal stå sterkt, unngå disse fellene:</p>
+<ul>
+<li><strong>Glemme å betale gebyret.</strong> Saken blir liggende til du betaler – sjekk den digitale postkassen.</li>
+<li><strong>Vage krav.</strong> "Jeg vil ha rettferdighet" hjelper ikke; skriv et konkret beløp og hva du krever.</li>
+<li><strong>Manglende bevis.</strong> Påstander uten dokumentasjon veier lite. Last opp bilder, kontrakt og meldinger.</li>
+<li><strong>Ikke svare HTU i tide.</strong> Ber HTU om mer informasjon, svar raskt.</li>
+<li><strong>Følelser fremfor fakta.</strong> Hold deg saklig; det er det dokumenterte som teller.</li>
+</ul>
+<h3>Hvor lang tid tar det?</h3>
+<p>Behandlingstiden varierer og kan på grunn av stor saksmengde ta flere måneder før selve behandlingen starter. Sjekk htu.no for oppdatert ventetid. Det er greit å vite på forhånd, så du ikke blir overrasket – men husk at en avgjørelse fra HTU til slutt har full kraft som en dom.</p>
+<h3>Hva slags bevis er sterkest?</h3>
+<p>Ikke alle bevis veier like tungt. Generelt teller skriftlig og datert dokumentasjon mest:</p>
+<ul>
+<li><strong>Bilder og video med dato</strong> av boligens tilstand er ofte avgjørende i vask- og skadesaker.</li>
+<li><strong>Skriftlig kommunikasjon</strong> (SMS, e-post) viser hva som faktisk ble sagt og avtalt.</li>
+<li><strong>Kontoutskrifter</strong> beviser hva som er betalt og når.</li>
+<li><strong>Kontrakt og protokoller</strong> viser hva dere avtalte fra start.</li>
+<li><strong>Skriftlige vitneforklaringer</strong> kan brukes, for eksempel fra noen som var med på vasken.</li>
+</ul>
+<p>Et muntlig "han sa at..." uten noe skriftlig er det svakeste. Derfor lønner det seg å legge viktige avtaler over på SMS eller e-post underveis i leieforholdet.</p>
+<h3>Kort oppsummert</h3>
+<p>Du sender inn en sak til HTU via det digitale klageskjemaet på htu.no: logg inn med elektronisk ID, oppgi motparten, beskriv kravet (påstanden) med konkret beløp, kryss av for at motparten skal betale sakskostnader, og last opp bevisene dine. Betal gebyret (269 kr som leietaker) når fakturaen kommer – saken behandles ikke før det er gjort. Deretter får motparten svare, og HTU mekler eller fatter et vedtak.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

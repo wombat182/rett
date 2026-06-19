@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan regnes indeksregulering av husleie ut? — Rettsregel</title>
+<meta name="description" content="Du finner hvor mange prosent KPI har steget siden leien sist ble fastsatt, og ganger leien med denne prosenten. Det enkleste er å bruke SSBs…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-regnes-indeksregulering-av-husleie-ut/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan regnes indeksregulering av husleie ut?">
+<meta property="og:description" content="Du finner hvor mange prosent KPI har steget siden leien sist ble fastsatt, og ganger leien med denne prosenten. Det enkleste er å bruke SSBs…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-regnes-indeksregulering-av-husleie-ut/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan regnes indeksregulering av husleie ut?">
+<meta name="twitter:description" content="Du finner hvor mange prosent KPI har steget siden leien sist ble fastsatt, og ganger leien med denne prosenten. Det enkleste er å bruke SSBs…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvordan regnes indeksregulering av husleie ut?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du finner hvor mange prosent KPI har steget siden leien sist ble fastsatt, og ganger leien med denne prosenten. Det enkleste er å bruke SSBs priskalkulator. Husk: maks én gang i året, og økningen kan aldri overstige KPI-endringen (§ 4-2).</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 4-2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/4-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 4-2</div>
+  <div class="related-card-title">Utleieren kan justere husleien med konsumprisindeksen</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Den enkle metoden (prosentmetoden)</h3>
+<p>Mange ganger oppgir SSB hvor mange prosent KPI har steget det siste året. Da er regnestykket lett:</p>
+<p><strong>Ny leie = gammel leie × (1 + prosentvis KPI-endring)</strong></p>
+<p>Eksempel: Leien er <strong>13 000 kr</strong> og KPI har steget <strong>3,0 %</strong> det siste året:</p>
+<ul>
+<li>13 000 × 1,03 = <strong>13 390 kr</strong></li>
+</ul>
+<p>Økningen ble 390 kr.</p>
+<p>Tips: «1 +» kommer av at du legger økningen oppå hele leien. 3 % skrives som 0,03, og 1 + 0,03 = 1,03. Ganger du leien med 1,03, får du gammel leie pluss 3 % i ett enkelt regnestykke.</p>
+<h3>Den nøyaktige metoden (med indekstall)</h3>
+<p>Husleieloven knytter justeringen til selve indekstallene. Den helt presise utregningen bruker KPI-tallet fra måneden da leien sist ble satt, og KPI-tallet fra justeringsmåneden:</p>
+<p><strong>Ny leie = gammel leie × (ny KPI ÷ gammel KPI)</strong></p>
+<p>Eksempel: Leien ble satt da KPI var <strong>130,0</strong>. Nå er KPI <strong>134,2</strong>.</p>
+<ul>
+<li>134,2 ÷ 130,0 = 1,0323 (altså ca. 3,23 % stigning)</li>
+<li>Ny leie = 12 000 × 1,0323 = <strong>12 388 kr</strong> (avrundet)</li>
+</ul>
+<p>Dette er den «riktige» måten, fordi den følger de faktiske indekstallene. Forskjellen fra den enkle prosentmetoden er som regel bare noen få kroner.</p>
+<h3>Steg for steg med SSBs priskalkulator</h3>
+<p>SSB har en gratis priskalkulator på ssb.no som gjør jobben for deg:</p>
+<ol>
+<li>Skriv inn beløpet (dagens leie).</li>
+<li>Velg måned og år da leien sist ble fastsatt.</li>
+<li>Velg måned og år du vil justere til.</li>
+<li>Kalkulatoren viser hva leien blir etter KPI-justering.</li>
+</ol>
+<p>Dette er den tryggeste måten, fordi du slipper å lete opp indekstallene selv. Bruk gjerne kalkulatoren som en fasit, og prosentmetoden som en rask kontroll i hodet.</p>
+<h3>Hvilken måned skal du bruke?</h3>
+<p>Det vanlige er å bruke <strong>samme måned</strong> ett år tilbake. Justerer du leien i mars 2026, sammenligner du KPI for mars 2026 med KPI for mars 2025. Noen kontrakter peker på en bestemt «basismåned» – les kontrakten din for å se hva som er avtalt. Uansett kan justeringen aldri overstige den faktiske KPI-endringen.</p>
+<h3>Tre fullstendige regneeksempler</h3>
+<p><strong>Eksempel 1 – moderat stigning</strong>
+- Leie: 8 000 kr, KPI-endring: 2,5 %
+- 8 000 × 1,025 = <strong>8 200 kr</strong> (økning 200 kr)</p>
+<p><strong>Eksempel 2 – høyere stigning</strong>
+- Leie: 15 000 kr, KPI-endring: 4,2 %
+- 15 000 × 1,042 = <strong>15 630 kr</strong> (økning 630 kr)</p>
+<p><strong>Eksempel 3 – med indekstall</strong>
+- Leie: 11 500 kr, gammel KPI 128,4, ny KPI 132,0
+- 132,0 ÷ 128,4 = 1,0280
+- 11 500 × 1,0280 = <strong>11 822 kr</strong> (avrundet, økning ca. 322 kr)</p>
+<h3>Hva hvis prisene har falt?</h3>
+<p>I sjeldne tilfeller kan KPI faktisk gå litt ned i en periode. Da blir tallet under 1 i regnestykket – for eksempel 0,995 ved et fall på 0,5 % – og leien skal egentlig justeres tilsvarende ned. I praksis lar mange utleiere leien stå uendret et år der KPI ikke har steget, men de kan uansett ikke øke den mer enn KPI tilsier.</p>
+<h3>Vanlige feil å se opp for</h3>
+<ul>
+<li><strong>Dobbel justering:</strong> Utleier justerer både med KPI og setter et helt nytt beløp. Bare KPI-delen er lovlig i et løpende år.</li>
+<li><strong>Feil periode:</strong> Utleier bruker mer enn ett års KPI-endring i én justering. Det er ikke tillatt – maks ett år av gangen.</li>
+<li><strong>Justering av tillegg:</strong> Strøm og felleskostnader skal ikke KPI-justeres, bare selve leien.</li>
+<li><strong>Avrunding oppover i stor stil:</strong> Småavrunding er greit, men avrunding som gir en merkbart høyere leie enn KPI tilsier, er det ikke.</li>
+<li><strong>Feil basismåned:</strong> Bruk samme måned i fjor som referanse, ikke en tilfeldig måned med ekstra høy prisvekst.</li>
+</ul>
+<h3>Trygge råd</h3>
+<ul>
+<li>Bruk SSBs priskalkulator – den er gratis og enkel.</li>
+<li>Ta vare på varselet og regnestykket skriftlig.</li>
+<li>Er du i tvil, regn selv med prosentmetoden som en rask kontroll.</li>
+<li>Sjekk at utleier bare har brukt ett års KPI-endring, ikke flere år samlet.</li>
+<li>Stemmer ikke tallene, kontakt utleier først, deretter eventuelt Husleietvistutvalget.</li>
+</ul>
+<h3>Et ekstra eksempel over to år (hvorfor du ikke kan slå sammen)</h3>
+<p>Tenk deg at utleier glemte å justere i fjor og nå vil «ta igjen» to års prisvekst i én økning. Leien er 10 000 kr, og KPI har steget 3 % det første året og 3 % det andre.</p>
+<ul>
+<li>En utleier som regner feil, ganger 10 000 × 1,06 (6 %) = <strong>10 600 kr</strong>.</li>
+<li>Men loven tillater bare ett års KPI per justering. Riktig nå er 10 000 × 1,03 = <strong>10 300 kr</strong>, og deretter eventuelt en ny justering neste år.</li>
+</ul>
+<p>Forskjellen er 300 kr i måneden – penger du ikke skal betale hvis utleier prøver å slå sammen to år.</p>
+<h3>Slik dobbeltsjekker du i hodet</h3>
+<p>Du trenger ikke kalkulator for et grovt overslag. 3 % av et beløp er omtrent beløpet delt på 33. For 12 000 kr: 12 000 ÷ 33 ≈ 360 kr. Det stemmer godt med 12 000 × 0,03 = 360 kr. Slike hoderegningstriks gjør at du raskt ser om et varslet beløp er i nærheten av riktig, eller om noe er galt.</p>
+<h3>Ofte stilte spørsmål</h3>
+<p><strong>Hvilken måneds KPI gjelder hvis varselet kom i mars, men leien gjelder fra april?</strong>
+Det vanlige er å bruke samme basismåned som ved forrige fastsettelse. Sjekk kontrakten; ofte er det en fast måned som er avtalt.</p>
+<p><strong>Hva hvis utleier og jeg får forskjellige tall?</strong>
+Bruk SSBs priskalkulator som fasit. Den regner med de offisielle tallene, og da slipper dere å krangle om desimaler.</p>
+<p><strong>Skal øre rundes opp eller ned?</strong>
+Småavrunding til nærmeste hele krone er greit. Det er den systematiske avrundingen oppover, som over tid gir en merkbart høyere leie enn KPI tilsier, du skal være obs på.</p>
+<h3>En kort oppskrift du kan lære utenat</h3>
+<ol>
+<li>Finn dagens leie.</li>
+<li>Finn KPI-endringen i prosent siden forrige fastsettelse (samme måned i fjor).</li>
+<li>Gjør prosenten om til en faktor: 3 % blir 1,03.</li>
+<li>Gang leien med faktoren.</li>
+<li>Sammenlign med utleiers varsel – og bruk SSBs priskalkulator hvis du vil ha fasiten.</li>
+</ol>
+<p>Denne fem-stegs-oppskriften dekker de aller fleste indeksreguleringer du vil møte som leietaker, og gjør at du raskt kan avsløre om et varsel ligger for høyt.</p>
+<h3>Kort oppsummert</h3>
+<p>Indeksregulering regnes ut ved å gange leien med KPI-endringen siden forrige fastsettelse, enten via prosentmetoden (leie × (1 + prosent)) eller med faktiske indekstall (leie × ny KPI ÷ gammel KPI). SSBs priskalkulator gjør det enkelt og trygt. Maks én gang i året, og aldri mer enn KPI-endringen (§ 4-2). Kontroller alltid at utleier har brukt riktig periode og bare selve leien – ikke strøm og tillegg.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

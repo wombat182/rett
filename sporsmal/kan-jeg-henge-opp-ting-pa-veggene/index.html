@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg henge opp ting på veggene? — Rettsregel</title>
+<meta name="description" content="Vanlig oppheng – noen bilder, en hylle, en knaggrekke – regnes normalt som helt vanlig bruk av boligen, og det kan du gjøre. Men du har ansvar for å…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-henge-opp-ting-pa-veggene/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg henge opp ting på veggene?">
+<meta property="og:description" content="Vanlig oppheng – noen bilder, en hylle, en knaggrekke – regnes normalt som helt vanlig bruk av boligen, og det kan du gjøre. Men du har ansvar for å…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-henge-opp-ting-pa-veggene/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg henge opp ting på veggene?">
+<meta name="twitter:description" content="Vanlig oppheng – noen bilder, en hylle, en knaggrekke – regnes normalt som helt vanlig bruk av boligen, og det kan du gjøre. Men du har ansvar for å…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Kan jeg henge opp ting på veggene?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Vanlig oppheng – noen bilder, en hylle, en knaggrekke – regnes normalt som helt vanlig bruk av boligen, og det kan du gjøre. Men du har ansvar for å reparere unormalt mange eller store hull ved utflytting. Skal du gjøre noe mer omfattende, for eksempel henge opp tunge ting som krever store inngrep, er det lurt å sjekke med utleier.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 5-2 og § 5-4</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/5-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-2</div>
+  <div class="related-card-title">Ro, orden og dyrehold</div>
+</a><a href="../../lover/husleieloven/5-4/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-4</div>
+  <div class="related-card-title">Kan utleieren gjøre om på boligen din?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Dette er et av de mest hverdagslige spørsmålene en leietaker har: Får jeg lov til å spikre opp et bilde? Svaret er som regel ja – men med noen nyanser det er greit å kjenne til.</p>
+<h3>Vanlig oppheng er vanlig bruk</h3>
+<p>Når du leier en bolig, har du rett til å bruke den som et hjem (§ 5-2, om vanlig bruk av boligen). Å henge opp bilder, speil, en klokke eller en liten hylle er en helt vanlig del av det å bo et sted. Slik vanlig bruk kan utleier i utgangspunktet ikke nekte deg, og det regnes ikke som en "forandring" av boligen.</p>
+<p>Det betyr at du normalt kan:
+- Henge opp bilder og plakater.
+- Sette opp en knaggrekke eller en lett hylle.
+- Henge opp et speil eller en lampe der det er tilrettelagt for det.</p>
+<h3>Grensen: Hva er "vanlig", og hva er for mye?</h3>
+<p>Her er nøkkelen at vanlig slitasje er greit, mens skader utover det vanlige er ditt ansvar. Noen få spikerhull etter bilder regnes som vanlig bruk og vanlig slitasje. Men hvis du borer hundre hull, lager store hull for plugger til tunge hyller, eller setter opp noe som krever inngrep i veggen, nærmer du deg en "forandring" som kan kreve utleiers samtykke (jf. § 5-4 om forandringer).</p>
+<p>Tommelfingerregelen: <strong>Jo større inngrep, jo mer bør du sjekke med utleier først.</strong> Et bilde på en spiker – bare gjør det. Et veggfestet TV-feste med store bolter i en betongvegg – spør først.</p>
+<h3>Eksempel: Jeg vil henge opp en stor bokhylle på veggen</h3>
+<p>En tung, veggmontert bokhylle krever ofte kraftige plugger og store hull, og noen ganger forsterkning i veggen. Dette er mer enn vanlig oppheng. Slik gjør du det trygt:
+1. <strong>Spør utleier skriftlig</strong> om det er greit, og nevn at det krever noen kraftigere fester.
+2. <strong>Spør om det er noe spesielt med veggen</strong> (rør, kabler, gips eller betong).
+3. <strong>Avtal at du fyller og maler over hullene ved utflytting,</strong> så slipper dere diskusjon.</p>
+<h3>Eksempel: Jeg vil bare henge opp noen familiebilder</h3>
+<p>Dette er klassisk vanlig bruk. Du kan henge dem opp uten å spørre. Det smarte er likevel å:
+- <strong>Bruke skånsomme fester</strong> der det er mulig (for eksempel små spikre eller selvklebende kroker beregnet for vegger).
+- <strong>Ta vare på et bilde av veggen før</strong> du begynner.
+- <strong>Fylle og male over hullene ved utflytting</strong> hvis det trengs, slik at veggen ser pen ut igjen.</p>
+<h3>Eksempel: Du har hengt opp en lett knaggrekke og noen rammer</h3>
+<p>Tenk deg at du har satt opp en knaggrekke i gangen og hengt opp fem-seks bilderammer rundt i leiligheten. Dette er klassisk vanlig bruk (§ 5-2), og du trenger ikke spørre. Det smarte er likevel å bruke skånsomme fester og ta et bilde av veggene før du begynner. Ved utflytting fyller du de små hullene med litt sparkel og maler over hvis det trengs, slik at veggene ser pene ut igjen. Da blir det aldri noe tema – de små hullene regnes som vanlig slitasje, og du har dessuten ryddet opp etter deg.</p>
+<h3>Ditt ansvar ved utflytting</h3>
+<p>Når du flytter ut, skal boligen leveres tilbake i samme stand som ved overtakelsen, bortsett fra vanlig slitasje (dette følger av reglene om tilbakelevering, blant annet kapittel 10). Noen få, små hull regnes ofte som vanlig slitasje. Men har du laget mange eller store hull, kan utleier kreve at du sparkler, fyller og eventuelt maler over – eller at du betaler for at det blir gjort.</p>
+<p>Derfor er det smart å:
+- <strong>Sparkle og male over hull selv</strong> før du leverer tilbake (gjør det fagmessig, jf. artikkel 114).
+- <strong>Ta bilder</strong> som viser at veggene er pene ved utflytting.</p>
+<h3>Hva med selvklebende kroker og teip?</h3>
+<p>Selvklebende kroker og teip kan virke skånsomt, men vær oppmerksom: Noen typer river med seg maling eller tapet når de fjernes, og kan faktisk lage større skade enn et lite spikerhull. Test forsiktig, og velg produkter beregnet for veggen du har.</p>
+<h3>Vanlige feller</h3>
+<ul>
+<li><strong>Du borer i blinde.</strong> I vegger kan det ligge rør og elektriske kabler. Bruk gjerne en enkel søker, og spør utleier om det er noe spesielt med veggen før du borer for tunge ting.</li>
+<li><strong>Du etterlater mange hull uten å reparere.</strong> Noen få små hull er vanlig slitasje, men en vegg full av hull kan utleier kreve at du sparkler og maler over. Fiks det før du leverer tilbake.</li>
+<li><strong>Du tror selvklebende alltid er trygt.</strong> Sterke limkroker kan rive løs maling eller tapet. Da kan skaden bli større enn et lite spikerhull ville gitt.</li>
+<li><strong>Du dokumenterer ikke veggene.</strong> Uten bilder fra inn- og utflytting blir det lett uenighet om hva som er nye hull og hva som var der fra før.</li>
+</ul>
+<h3>Eksempel: Du henger opp en flatskjerm-TV på veggen</h3>
+<p>En vegghengt TV krever ofte et stabilt feste med kraftige skruer eller bolter, og av og til borr i betong eller forsterkning i en gipsvegg. Dette er mer enn å henge opp et bilde, og nærmer seg en faktisk installasjon. Slik gjør du det trygt: Spør utleier skriftlig om det er greit, nevn at det krever solide fester, og spør om det er rør eller kabler i veggen du må unngå. Avtal at du fyller og maler over hullene ved utflytting. Da unngår du både skade på skjult anlegg og et erstatningskrav senere.</p>
+<h3>Slik holder du deg på trygg grunn</h3>
+<ol>
+<li><strong>Vanlig oppheng (bilder, små hyller): bare gjør det,</strong> men vær skånsom.</li>
+<li><strong>Tunge eller faste installasjoner: spør utleier skriftlig først.</strong></li>
+<li><strong>Ta bilder av veggene ved innflytting og utflytting.</strong></li>
+<li><strong>Fyll og mal over hull ved utflytting</strong> for å unngå krav.</li>
+<li><strong>Avtal gjerne på forhånd</strong> hva som forventes av deg ved utflytting.</li>
+</ol>
+<h3>Hvis dere blir uenige</h3>
+<p>Hvis utleier ved utflytting mener at du har laget for mange eller for store hull, og krever erstatning, mens du mener det er vanlig slitasje, kan <strong>Husleietvistutvalget (HTU)</strong> avgjøre. Bilder fra inn- og utflytting er igjen det viktigste beviset du kan ha.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Vanlig oppheng av bilder og lette hyller er vanlig bruk og er greit (§ 5-2).</li>
+<li>Mange eller store hull, og tunge faste installasjoner, kan kreve utleiers samtykke (§ 5-4).</li>
+<li>Du må reparere skader utover vanlig slitasje ved utflytting.</li>
+<li>Spør skriftlig før større inngrep, og fyll/mal over hull ved utflytting.</li>
+<li>Ta bilder ved inn- og utflytting; HTU avgjør hvis dere blir uenige.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

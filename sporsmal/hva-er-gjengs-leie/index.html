@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er gjengs leie? — Rettsregel</title>
+<meta name="description" content="Gjengs leie er et slags gjennomsnitt av hva liknende boliger på stedet leies ut for, på liknende vilkår. Det er ikke den høyeste prisen på markedet, men…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-gjengs-leie/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er gjengs leie?">
+<meta property="og:description" content="Gjengs leie er et slags gjennomsnitt av hva liknende boliger på stedet leies ut for, på liknende vilkår. Det er ikke den høyeste prisen på markedet, men…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-gjengs-leie/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er gjengs leie?">
+<meta name="twitter:description" content="Gjengs leie er et slags gjennomsnitt av hva liknende boliger på stedet leies ut for, på liknende vilkår. Det er ikke den høyeste prisen på markedet, men…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er gjengs leie?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Gjengs leie er et slags gjennomsnitt av hva liknende boliger på stedet leies ut for, på liknende vilkår. Det er ikke den høyeste prisen på markedet, men et bredere snitt av både gamle og nye leieavtaler. I et løpende leieforhold kan leien tidligst settes til gjengs leie etter 2 år og 6 måneder, med 6 måneders varsel (§ 4-3).</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 4-3</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/4-3/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 4-3</div>
+  <div class="related-card-title">Etter 2,5 år kan leien justeres til markedsnivå</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hva betyr «gjengs leie»?</h3>
+<p>Ordet «gjengs» betyr «vanlig» eller «alminnelig». Gjengs leie er altså den <strong>vanlige leien</strong> for boliger som ligner på din, i samme område, leid ut på sammenlignbare vilkår. Det avgjørende er hva som faktisk betales i leieforhold som allerede løper – ikke bare hva nye annonser roper ut.</p>
+<p>Tenk deg alle leiligheter på cirka 60 kvadratmeter i din bydel. Noen leies ut på helt ferske kontrakter til høy pris, andre på eldre kontrakter til lavere pris. Gjengs leie ligger et sted i midten – det er gjennomsnittet av disse.</p>
+<h3>Hva legges vekt på når gjengs leie fastsettes?</h3>
+<p>Når man skal finne gjengs leie for nettopp din bolig, ser man på ting som:</p>
+<ul>
+<li><strong>Størrelse</strong> (antall kvadratmeter og rom)</li>
+<li><strong>Beliggenhet</strong> (bydel, nærhet til sentrum, kollektivtransport)</li>
+<li><strong>Standard</strong> (oppussingsnivå, kjøkken, bad)</li>
+<li><strong>Hva som er inkludert</strong> (møblert/umøblert, om strøm eller internett er med)</li>
+<li><strong>Avtalevilkårene</strong> (lengde på leieforhold, oppsigelsestid)</li>
+</ul>
+<p>Boligen din sammenlignes så med liknende boliger som leies ut på liknende vilkår. Poenget er at man ikke skal sammenligne en liten kjellerleilighet med en nyoppusset toppleilighet – det skal være «epler mot epler».</p>
+<h3>Et illustrerende eksempel</h3>
+<p>Si at du betaler <strong>11 000 kr</strong> for en toroms leilighet. Leieforholdet har vart i tre år, og du har bare hatt KPI-justeringer. Utleier mener leien er lav og vil kreve gjengs leie.</p>
+<p>Man finner ut at liknende toroms leiligheter i området leies ut for mellom 11 500 og 14 000 kr, og at <strong>gjengs leie</strong> – snittet – ligger på rundt <strong>12 500 kr</strong>.</p>
+<ul>
+<li>Da kan leien settes opp fra 11 000 til 12 500 kr.</li>
+<li>Det er en økning på 1 500 kr (ca. 13,6 %), men fortsatt lavere enn de dyreste, helt ferske kontraktene på 14 000 kr.</li>
+<li>På årsbasis utgjør økningen 1 500 × 12 = <strong>18 000 kr</strong>.</li>
+</ul>
+<p>Legg merke til at gjengs leie (12 500 kr) ligger under de dyreste annonsene (14 000 kr). Det er fordi snittet også trekkes ned av eldre, rimeligere kontrakter.</p>
+<h3>Når kan gjengs leie kreves?</h3>
+<p>For å kreve gjengs leie i et løpende leieforhold må vilkårene i § 4-3 være oppfylt:</p>
+<ul>
+<li>Leieforholdet må ha vart i <strong>minst 2 år og 6 måneder</strong>.</li>
+<li>I denne tiden må leien <strong>bare</strong> ha vært endret med KPI – ingen andre justeringer.</li>
+<li>Det kreves <strong>6 måneders skriftlig varsel</strong>.</li>
+<li>Endringen kan tidligst skje <strong>ett år</strong> etter forrige leieendring.</li>
+</ul>
+<p>Både utleier og leietaker kan kreve tilpasning til gjengs leie. Det betyr at hvis markedet har falt og du betaler for mye, kan <strong>du</strong> kreve at leien settes <strong>ned</strong> til gjengs leie (se artikkel 40).</p>
+<h3>Hvem bestemmer hva gjengs leie er?</h3>
+<p>Blir dere ikke enige, kan hver av partene kreve at gjengs leie fastsettes av <strong>Husleietvistutvalget (HTU)</strong> eller en takstnemnd. HTU er et offentlig organ som behandler husleietvister rimelig og raskt, og det er som regel langt billigere enn domstolene. De innhenter opplysninger om leienivået i området og fastsetter et beløp. Du trenger ikke advokat for å bruke HTU, og terskelen for å sende inn en sak er lav.</p>
+<h3>Gjengs leie kan også gå nedover</h3>
+<p>Et viktig poeng: Gjengs leie er ikke bare et verktøy for å øke leien. Hvis leieprisene i ditt område har falt, kan gjengs leie være <strong>lavere</strong> enn det du betaler i dag. Da kan du som leietaker kreve leien satt ned til gjengs leie – på samme vilkår (2 år og 6 måneder, 6 måneders varsel). Mange leietakere kjenner ikke til denne rettigheten, men den kan være verdt mange tusen kroner i et fallende marked.</p>
+<h3>Vanlige feller</h3>
+<ul>
+<li><strong>Forveksling med markedsleie.</strong> Gjengs leie er et snitt, ikke toppris (se artikkel 36).</li>
+<li><strong>For tidlig krav.</strong> Har det ikke gått 2 år og 6 måneder, kan kravet avvises.</li>
+<li><strong>Bare dyre annonser som «bevis».</strong> De viser markedsleie, ikke gjengs leie.</li>
+</ul>
+<h3>Trygge råd</h3>
+<ul>
+<li>Sjekk om vilkårene faktisk er oppfylt før du godtar en gjengs-leie-økning (har det gått 2 år og 6 mnd? Bare KPI-justeringer i mellomtiden?).</li>
+<li>Be utleier dokumentere hva gjengs leie i området er.</li>
+<li>Undersøk selv hva liknende boliger faktisk leies ut for – ikke bare de dyreste annonsene.</li>
+<li>Husk at gjengs leie kan kreves begge veier – også av deg, hvis prisene har falt.</li>
+<li>Er du uenig, send saken til HTU. Det koster lite og er trygt.</li>
+</ul>
+<h3>Hvordan finner du ut hva gjengs leie er?</h3>
+<p>Du kan ikke slå opp ett eksakt tall, men du kan danne deg et godt bilde:</p>
+<ol>
+<li><strong>Se på finn.no og liknende:</strong> Noter prisene for boliger som ligner på din i samme område. Husk at annonser viser markedsleie (ferske kontrakter), som ligger i øvre del.</li>
+<li><strong>Snakk med naboer og bekjente:</strong> Hva betaler folk i tilsvarende leiligheter som har bodd en stund? Disse ligger ofte lavere.</li>
+<li><strong>Legg deg i midten:</strong> Gjengs leie er snittet av gamle og nye kontrakter, altså et sted mellom de laveste og de høyeste tallene du finner.</li>
+</ol>
+<p>Dette gir deg et anslag. Den endelige fasiten – hvis dere er uenige – settes av HTU eller en takstnemnd.</p>
+<h3>Et scenario der vilkårene IKKE er oppfylt</h3>
+<p>Du har bodd i leiligheten i bare 1 år og 8 måneder. Utleier sender varsel om gjengs leie på 13 000 kr. Er det greit?</p>
+<p>Nei. Det har ikke gått 2 år og 6 måneder ennå, så vilkåret i § 4-3 er ikke oppfylt. Du kan avvise kravet skriftlig og vise til at gjengs leie tidligst kan kreves etter 30 måneder. Inntil da kan utleier bare KPI-justere.</p>
+<h3>Ofte stilte spørsmål</h3>
+<p><strong>Er gjengs leie det samme over hele landet?</strong>
+Nei. Den fastsettes lokalt, ut fra leienivået i ditt område. Gjengs leie i Oslo sentrum er en helt annen enn på et mindre tettsted.</p>
+<p><strong>Kan utleier bruke de dyreste annonsene som «bevis» på gjengs leie?</strong>
+Nei. De viser markedsleie. Gjengs leie er et snitt som også tar med eldre, rimeligere kontrakter.</p>
+<h3>Kort oppsummert</h3>
+<p>Gjengs leie er den vanlige, gjennomsnittlige leien for liknende boliger på stedet, leid ut på liknende vilkår. Den ligger ofte mellom gamle og nye kontrakter, og kan tidligst kreves etter 2 år og 6 måneder med 6 måneders varsel (§ 4-3). Den kan brukes både for å øke og for å sette ned leien, og HTU kan fastsette beløpet rimelig og raskt hvis dere er uenige.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

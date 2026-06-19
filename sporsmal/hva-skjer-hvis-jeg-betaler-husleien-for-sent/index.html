@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer hvis jeg betaler husleien for sent? — Rettsregel</title>
+<meta name="description" content="Betaler du for sent, kan utleier kreve forsinkelsesrente av det skyldige beløpet fra forfallsdagen til du betaler, og eventuelt purregebyr. Betaler du…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-betaler-husleien-for-sent/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer hvis jeg betaler husleien for sent?">
+<meta property="og:description" content="Betaler du for sent, kan utleier kreve forsinkelsesrente av det skyldige beløpet fra forfallsdagen til du betaler, og eventuelt purregebyr. Betaler du…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-betaler-husleien-for-sent/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer hvis jeg betaler husleien for sent?">
+<meta name="twitter:description" content="Betaler du for sent, kan utleier kreve forsinkelsesrente av det skyldige beløpet fra forfallsdagen til du betaler, og eventuelt purregebyr. Betaler du…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva skjer hvis jeg betaler husleien for sent?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Betaler du for sent, kan utleier kreve **forsinkelsesrente** av det skyldige beløpet fra forfallsdagen til du betaler, og eventuelt **purregebyr**. Betaler du fortsatt ikke, kan utleier til slutt **si opp eller heve** leieforholdet og kreve deg utkastet. Men ingenting skjer over natten – du har rettigheter, og det finnes alltid en vei ut hvis du tar tak tidlig.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Forsinkelsesrente</h3>
+<p>Når leien ikke er betalt ved forfall, kan utleier kreve <strong>forsinkelsesrente</strong> av det forfalte beløpet. Forsinkelsesrente er en lovbestemt rente du må betale som «kompensasjon» for at betalingen kom for sent. Renten løper fra forfallsdagen og fram til du faktisk betaler.</p>
+<p>Satsen fastsettes av myndighetene to ganger i året. For <strong>første halvår 2026 er forsinkelsesrenten 12,00 % per år</strong>. (Sjekk alltid gjeldende sats hos Finanstilsynet, siden den endres hvert halvår, med virkning fra 1. januar og 1. juli.)</p>
+<p><strong>Regneeksempel:</strong> Du betaler en husleie på <strong>10 000 kr</strong> 20 dager for sent, med 12 % årlig forsinkelsesrente:</p>
+<ul>
+<li>Rente per dag: 10 000 × 12 % ÷ 365 = 10 000 × 0,12 ÷ 365 ≈ <strong>3,29 kr per dag</strong></li>
+<li>For 20 dager: 3,29 × 20 ≈ <strong>66 kr</strong></li>
+</ul>
+<p>Som du ser blir renten på en enkelt forsinkelse ofte ganske liten – men den vokser jo lenger du venter, og kommer på toppen av selve leien.</p>
+<p>Et eksempel til: Betaler du 12 000 kr hele 40 dager for sent:</p>
+<ul>
+<li>Rente per dag: 12 000 × 0,12 ÷ 365 ≈ <strong>3,95 kr</strong></li>
+<li>For 40 dager: 3,95 × 40 ≈ <strong>158 kr</strong></li>
+</ul>
+<h3>Purregebyr og inkasso</h3>
+<p>I tillegg til renten kan utleier sende en <strong>purring (betalingspåminnelse)</strong> og kreve et lite <strong>purregebyr</strong> etter inkassoreglene. Lar du regningen gå til <strong>inkasso</strong>, kommer det inkassosalær i tillegg, og beløpet kan vokse betydelig. Derfor lønner det seg alltid å betale – eller ta kontakt – så fort som mulig. En liten forsinkelse koster lite, men et inkassokrav kan legge på flere hundre eller tusen kroner.</p>
+<h3>Det alvorligste: oppsigelse, heving og utkastelse</h3>
+<p>Gjentatte eller vesentlige forsinkelser kan få større konsekvenser:</p>
+<ul>
+<li><strong>Oppsigelse:</strong> Vesentlig mislighold av betalingsplikten kan gi utleier saklig grunn til å si opp leieforholdet.</li>
+<li><strong>Heving:</strong> Ved <strong>vesentlig</strong> betalingsmislighold kan utleier i alvorlige tilfeller <strong>heve</strong> avtalen, det vil si avslutte den med umiddelbar virkning.</li>
+<li><strong>Utkastelse (fravikelse):</strong> Står det i kontrakten at du godtar utkastelse uten søksmål ved manglende betaling (en «tvangsfullbyrdelsesklausul»), kan utleier etter en lovbestemt prosess be namsmannen om å kaste deg ut. Du får da først et <strong>varsel</strong> med en frist (vanligvis 14 dager) til å betale eller flytte.</li>
+</ul>
+<p>Dette skjer <strong>ikke</strong> ved én enkelt forsinkelse på noen dager. Det kreves vesentlig mislighold, og du får alltid varsler og frister underveis.</p>
+<h3>Du har 14 dager til å rette opp</h3>
+<p>Det viktigste å vite: Ved et varsel om utkastelse for ubetalt leie har du normalt <strong>14 dager</strong> på deg til å betale det du skylder. Betaler du innen fristen, stanses utkastelsen. Dette er en sterk beskyttelse – en kortvarig betalingstrøbbel trenger ikke å koste deg hjemmet, så lenge du handler raskt.</p>
+<h3>Hva bør du gjøre hvis du ikke klarer å betale i tide?</h3>
+<ol>
+<li><strong>Ta kontakt med utleier med en gang.</strong> Mange utleiere er fleksible hvis du sier fra tidlig og foreslår en løsning, for eksempel betaling om noen dager.</li>
+<li><strong>Betal så mye du kan</strong>, og resten så snart som mulig – det reduserer både rente og risiko.</li>
+<li><strong>Be om en betalingsavtale</strong> hvis du trenger litt tid.</li>
+<li><strong>Søk hjelp:</strong> NAV kan i noen tilfeller hjelpe med å unngå utkastelse, og kommunens gjeldsrådgivning er gratis.</li>
+<li><strong>Kontakt HTU, Forbrukerrådet eller en leieboerforening</strong> hvis du er usikker på rettighetene dine.</li>
+</ol>
+<h3>Hva du IKKE bør gjøre</h3>
+<ul>
+<li><strong>Ikke ignorere purringer og varsler.</strong> Problemet vokser hvis du lar være å åpne posten.</li>
+<li><strong>Ikke vent på at det «ordner seg».</strong> Jo tidligere du handler, desto billigere og tryggere blir det.</li>
+<li><strong>Ikke betal mer enn du skylder.</strong> Sjekk at rente- og gebyrkrav er riktige; urimelige krav kan du bestride.</li>
+</ul>
+<h3>Trygge råd</h3>
+<ul>
+<li>Betal i god tid før forfall, og sett gjerne opp automatisk trekk.</li>
+<li>Får du betalingsproblemer, ta kontakt med utleier <strong>før</strong> forfall.</li>
+<li>Husk 14-dagersfristen ved varsel om utkastelse – betaler du innen fristen, stanses prosessen.</li>
+<li>Kontroller at forsinkelsesrente og gebyrer er korrekte (sjekk gjeldende sats hos Finanstilsynet).</li>
+<li>Søk gratis hjelp hos NAV, kommunens gjeldsrådgiver, Forbrukerrådet eller HTU.</li>
+</ul>
+<h3>Tidslinje: fra forsinkelse til utkastelse</h3>
+<p>For å vise at ingenting skjer over natten, her er den typiske rekkefølgen:</p>
+<ol>
+<li><strong>Forfallsdag passerer uten betaling.</strong> Forsinkelsesrente begynner å løpe.</li>
+<li><strong>Purring/betalingspåminnelse.</strong> Utleier minner deg på regningen, gjerne med et lite purregebyr.</li>
+<li><strong>Eventuelt inkassovarsel.</strong> Du får en ny frist (minst 14 dager) før saken kan gå til inkasso.</li>
+<li><strong>Varsel om fravikelse (utkastelse).</strong> Ved vedvarende mislighold sendes et formelt varsel med 14 dagers frist til å betale eller flytte.</li>
+<li><strong>Begjæring til namsmannen.</strong> Først hvis du fortsatt ikke har betalt eller flyttet.</li>
+</ol>
+<p>På hvert trinn kan du stoppe prosessen ved å betale eller ta kontakt. Du har altså flere sjanser underveis.</p>
+<h3>Et samlet regneeksempel</h3>
+<p>Du betaler husleien på 11 000 kr 30 dager for sent, og får i tillegg et purregebyr:</p>
+<ul>
+<li>Forsinkelsesrente: 11 000 × 0,12 ÷ 365 × 30 ≈ <strong>108 kr</strong></li>
+<li>Purregebyr (eksempel): ca. <strong>35 kr</strong></li>
+<li>Samlet ekstra: ca. <strong>143 kr</strong> på toppen av leien</li>
+</ul>
+<p>Beløpet er overkommelig hvis du betaler raskt – men lar du det gå til inkasso, kan salærene legge på flere hundre kroner ekstra. Det er derfor det alltid lønner seg å betale eller ta kontakt med en gang.</p>
+<h3>Ofte stilte spørsmål</h3>
+<p><strong>Kan jeg kastes ut for én forsinkelse?</strong>
+Nei. Det kreves vesentlig mislighold, og du får alltid varsel med 14 dagers frist før en eventuell utkastelse. Betaler du innen fristen, stanses prosessen.</p>
+<p><strong>Kan utleier ta fra depositumet ved forsinkelse?</strong>
+Depositumet er sikkerhet, men utleier kan ikke uten videre forsyne seg fra det – det er regler for hvordan depositum kan brukes. Ved uenighet kan HTU avgjøre.</p>
+<p><strong>Hvor finner jeg gjeldende forsinkelsesrente?</strong>
+Hos Finanstilsynet. Satsen settes på nytt 1. januar og 1. juli hvert år, så sjekk den aktuelle satsen før du regner.</p>
+<h3>Det viktigste å huske</h3>
+<p>En forsinkelse på noen dager er sjelden krise: renten er liten, og du får alltid varsler før noe alvorlig skjer. Men problemet vokser hvis du lar det ligge – purregebyr, inkassosalær og til slutt fare for utkastelse. Den klart beste strategien er derfor å ta kontakt med utleier med en gang du ser at du ikke rekker fristen, betale så mye du kan, og søke gratis hjelp hos NAV, kommunens gjeldsrådgiver, Forbrukerrådet eller HTU hvis du trenger det. Husk fremfor alt 14-dagersfristen ved varsel om utkastelse: betaler du innen den, stanses hele prosessen.</p>
+<h3>Kort oppsummert</h3>
+<p>Betaler du husleien for sent, kan utleier kreve forsinkelsesrente (12,00 % per år i første halvår 2026) og purregebyr, og ved vesentlig mislighold til slutt si opp, heve eller kreve deg utkastet. Men du får alltid varsler og frister – og ved varsel om utkastelse har du normalt 14 dager på å betale og stanse prosessen. Ta kontakt med utleier tidlig, og søk gratis hjelp om du trenger det.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

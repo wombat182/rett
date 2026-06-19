@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer med tingene mine ved utkastelse? — Rettsregel</title>
+<meta name="description" content="Tingene dine blir ikke bare kastet på gata. Ved en utkastelse skal eiendelene dine håndteres på en ordnet måte under namsmannens tilsyn. Hvis du ikke selv…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-med-tingene-mine-ved-utkastelse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer med tingene mine ved utkastelse?">
+<meta property="og:description" content="Tingene dine blir ikke bare kastet på gata. Ved en utkastelse skal eiendelene dine håndteres på en ordnet måte under namsmannens tilsyn. Hvis du ikke selv…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-med-tingene-mine-ved-utkastelse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer med tingene mine ved utkastelse?">
+<meta name="twitter:description" content="Tingene dine blir ikke bare kastet på gata. Ved en utkastelse skal eiendelene dine håndteres på en ordnet måte under namsmannens tilsyn. Hvis du ikke selv…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva skjer med tingene mine ved utkastelse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Tingene dine blir ikke bare kastet på gata. Ved en utkastelse skal eiendelene dine håndteres på en ordnet måte under namsmannens tilsyn. Hvis du ikke selv fjerner dem, blir de typisk registrert og lagret en periode, slik at du får mulighet til å hente dem. Utleier kan ikke kaste, beholde eller selge tingene dine på egen hånd som "betaling" for skyldig leie — det ville vært ulovlig selvtekt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Det skumle bildet stemmer ikke</h3>
+<p>Mange ser for seg at en utkastelse betyr at alt de eier blir slengt ut på fortauet i regnet. Slik foregår det ikke i Norge. Fordi utkastelsen skjer under namsmannens kontroll, skal også eiendelene dine behandles ryddig og lovlig. Du mister ikke automatisk tingene dine selv om du mister boligen.</p>
+<h3>Det beste: ta med tingene dine selv</h3>
+<p>Den klart enkleste og tryggeste løsningen er at du flytter eiendelene dine ut selv før utkastelsen gjennomføres. Da har du full kontroll, og du slipper lagringskostnader og bryderi. Hvis det går mot en utkastelse, bør du derfor – parallelt med at du prøver å stoppe den – planlegge for å få tingene dine i sikkerhet:</p>
+<ul>
+<li>Pakk ned og flytt det viktigste i god tid.</li>
+<li>Ta vare på verdisaker, dokumenter, medisiner og uunnværlige eiendeler først.</li>
+<li>Avtal eventuelt med venner eller et lager om midlertidig oppbevaring.</li>
+</ul>
+<p><em>Eksempel:</em> Ingrid ser at en utkastelse nærmer seg og klarer ikke å skaffe penger til å stoppe den. I stedet for å vente til siste dag, leier hun en liten lagerbod og flytter tingene sine dit i ukene før. Når dagen kommer, er boligen allerede tom, og hun slipper å bekymre seg for eiendelene.</p>
+<h3>Hvis du ikke har fjernet tingene</h3>
+<p>Hvis du ikke har flyttet ut eiendelene dine når namsmannen gjennomfører utkastelsen, skjer det ikke at de bare forsvinner. Eiendelene blir håndtert under namsmannens tilsyn. I praksis betyr det typisk at:</p>
+<ul>
+<li>Tingene blir <strong>registrert/oppgjort</strong> av namsmannen.</li>
+<li>De blir <strong>lagret</strong> i en periode, slik at du får mulighet til å hente dem.</li>
+<li>Du får <strong>beskjed</strong> om hvordan og hvor du kan få tak i dem.</li>
+</ul>
+<p>Det kan påløpe <strong>kostnader til oppbevaring</strong>, og disse kan du bli ansvarlig for. Derfor er det igjen en god grunn til å fjerne tingene selv hvis du kan.</p>
+<h3>Utleier kan IKKE bare ta tingene dine</h3>
+<p>Dette er svært viktig: utleier har <strong>ikke</strong> lov til å kaste, beholde eller selge eiendelene dine på egen hånd for å dekke skyldig leie. Å holde tingene dine "som pant" eller selge dem privat for å få inn pengene, er ulovlig selvtekt. Innkreving av skyldig leie og håndtering av eiendeler skal skje gjennom de lovlige kanalene, ikke ved at utleier forsyner seg.</p>
+<p><em>Eksempel:</em> Etter at Markus har flyttet, beholder utleier sykkelen og TV-en hans og sier de "dekker litt av det han skylder". Dette er ikke lov. Utleier kan ikke ta seg til rette i Markus' eiendeler. Markus kan kreve tingene tilbake, og utleier må eventuelt kreve inn skyldig leie på lovlig vis.</p>
+<h3>Hva med ting som blir igjen etter at du selv har flyttet?</h3>
+<p>Hvis du har flyttet, men latt igjen eiendeler i boligen, har utleier likevel ikke fri rett til å kaste alt umiddelbart. Utleier må normalt ta rimelig hensyn til verdiene og gi deg en mulighet til å hente det. Samtidig kan ikke du forvente at utleier oppbevarer tingene dine gratis i det uendelige — etterlater du ting, bør du gi beskjed og hente dem raskt. Verdiløst avfall og søppel stiller seg annerledes enn verdifulle eiendeler.</p>
+<p>Det tryggeste er alltid å rydde boligen helt når du flytter, og å avklare skriftlig med utleier hvis noe må stå igjen en kort stund.</p>
+<h3>Spesielt om viktige eiendeler</h3>
+<p>Noen ting er ekstra viktige å sikre tidlig:</p>
+<ul>
+<li><strong>Dokumenter:</strong> pass, ID, kontrakter, viktige papirer.</li>
+<li><strong>Medisiner og medisinsk utstyr.</strong></li>
+<li><strong>Verdisaker:</strong> smykker, elektronikk, kontanter.</li>
+<li><strong>Ting med affeksjonsverdi:</strong> bilder, arvestykker.</li>
+</ul>
+<p>Ikke la disse bli liggende igjen i håp om å hente dem senere. Ta dem med deg først.</p>
+<h3>Hva gjør du for å beskytte tingene dine?</h3>
+<ol>
+<li><strong>Prøv først å stoppe utkastelsen</strong> (betale, NAV, avtale) — da er problemet løst.</li>
+<li><strong>Hvis flytting blir nødvendig, fjern eiendelene selv i god tid.</strong> Dette er billigst og tryggest.</li>
+<li><strong>Sikre verdisaker, dokumenter og medisiner først.</strong></li>
+<li><strong>Hvis ting blir igjen,</strong> følg namsmannens informasjon om henting, og hent raskt for å begrense lagringskostnader.</li>
+<li><strong>Reager hvis utleier tar seg til rette</strong> i tingene dine — det er ulovlig, og du kan kreve dem tilbake og eventuelt erstatning.</li>
+</ol>
+<h3>En sjekkliste for å sikre tingene dine i tide</h3>
+<p>Hvis det går mot en utkastelse og du ikke får stoppet den, kan denne enkle rekkefølgen spare deg for mye bryderi:</p>
+<ol>
+<li><strong>Pakk det uunnværlige først:</strong> pass, ID, viktige papirer, medisiner, nøkler, lader og telefon.</li>
+<li><strong>Sikre verdisaker:</strong> elektronikk, smykker, kontanter, og ting med affeksjonsverdi som bilder og arvestykker.</li>
+<li><strong>Flytt møbler og større ting</strong> til et trygt sted — en lagerbod, hos familie eller venner.</li>
+<li><strong>Ta bilder av boligen</strong> når du er ferdig, som dokumentasjon på tilstanden.</li>
+<li><strong>Gi beskjed</strong> hvis noe likevel må stå igjen en kort stund, og avtal henting skriftlig med utleier.</li>
+</ol>
+<p>Jo mer du rydder ut selv, jo mindre risikerer du av lagringskostnader og uklarhet om hva som har skjedd med eiendelene.</p>
+<h3>Hva hvis utleier nekter deg å hente tingene?</h3>
+<p>Utleier kan ikke holde eiendelene dine tilbake som "gissel" for skyldig leie. Hvis utleier nekter deg å hente tingene dine, eller har låst dem inne, er det ulovlig. Da kan du:</p>
+<ul>
+<li><strong>Kreve tilgang</strong> til eiendelene dine.</li>
+<li><strong>Kontakte politiet</strong> hvis utleier har stengt deg ute fra hjemmet og tingene.</li>
+<li><strong>Dokumentere</strong> hva som mangler eller er skadet, med tanke på et eventuelt erstatningskrav.</li>
+<li><strong>Søke veiledning</strong> hos Husleietvistutvalget, som kan behandle krav som springer ut av leieforholdet.</li>
+</ul>
+<p><em>Eksempel:</em> Etter at Sofie har flyttet, sier utleier at hun ikke får hente sykkelen og kassene sine før hun har betalt det hun skylder. Dette er ulovlig. Sofie har rett til tingene sine uavhengig av leiegjelden, og utleier må kreve inn pengene på lovlig vis i stedet. Sofie dokumenterer det og krever eiendelene utlevert.</p>
+<h3>Kort oppsummert</h3>
+<p>Ved en utkastelse blir ikke tingene dine bare kastet ut — de håndteres ordnet under namsmannens tilsyn, og du får mulighet til å hente dem, selv om det kan påløpe lagringskostnader. Det beste er å flytte eiendelene dine selv i god tid, og sikre verdisaker, dokumenter og medisiner først. Utleier kan aldri kaste, beholde eller selge tingene dine på egen hånd for å dekke skyldig leie — det er ulovlig selvtekt. Skjer det, kan du kreve eiendelene tilbake og vurdere erstatning.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

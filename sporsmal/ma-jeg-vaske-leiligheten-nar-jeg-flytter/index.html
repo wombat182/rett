@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg vaske leiligheten når jeg flytter? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-vaske-leiligheten-nar-jeg-flytter/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg vaske leiligheten når jeg flytter?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-vaske-leiligheten-nar-jeg-flytter/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg vaske leiligheten når jeg flytter?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Må jeg vaske leiligheten når jeg flytter?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Når du flytter ut, plikter du å levere boligen rengjort (§ 10-2). Det gjelder selv om boligen ikke var helt ren da du flyttet inn. Hovedregelen er at boligen skal være så ren at den neste kan flytte rett inn uten å måtte vaske først. Gjør du ikke det, kan utleier trekke deg for kostnaden ved å vaske.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 10-2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/10-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 10-2</div>
+  <div class="related-card-title">Slik leverer du tilbake boligen når du flytter</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Når du flytter ut, plikter du å levere boligen rengjort (§ 10-2). Det gjelder selv om boligen ikke var helt ren da du flyttet inn. Hovedregelen er at boligen skal være så ren at den neste kan flytte rett inn uten å måtte vaske først. Gjør du ikke det, kan utleier trekke deg for kostnaden ved å vaske.</p>
+<h3>Hvorfor må jeg vaske?</h3>
+<p>Plikten til å vaske ved utflytting følger direkte av husleieloven (§ 10-2), som krever at boligen leveres tilbake "rengjort". Den samme plikten står som regel også i selve leiekontrakten. Vask er altså ikke noe utleier kan velge å kreve – det er en lovbestemt plikt du har som leietaker.</p>
+<p>Tanken bak er enkel og rettferdig: Den neste som flytter inn, skal slippe å overta skitten etter deg, akkurat som du har rett til å overta en ren bolig.</p>
+<h3>Hvor rent må det være?</h3>
+<p>Standarden er <strong>innflyttingsklar renhold</strong> – altså at neste leietaker skal kunne flytte rett inn uten å vaske først. Det betyr en grundig vask, ikke bare en rask overflatetørk. Det omfatter blant annet:</p>
+<ul>
+<li><strong>Kjøkken:</strong> rene benker, skap (også innvendig), og rengjøring inni komfyr, stekeovn, kjøleskap, fryser og kjøkkenvifte/filter.</li>
+<li><strong>Bad:</strong> fliser, dusj/badekar, toalett, vask, speil og sluk.</li>
+<li><strong>Gulv:</strong> vasket i alle rom, inkludert under det som har stått der.</li>
+<li><strong>Vinduer, lister, dørkarmer og overflater:</strong> tørket av for støv og skitt.</li>
+<li><strong>Sluk og avløp:</strong> renset.</li>
+</ul>
+<h3>Eksempler</h3>
+<p><strong>"Leiligheten var ganske skitten da jeg flyttet inn. Må jeg likevel vaske når jeg flytter ut?"</strong> Ja. Plikten til å levere rengjort gjelder uavhengig av hvordan det var da du flyttet inn (§ 10-2). Var boligen dårlig vasket ved innflytting, skulle du helst ha notert det i overtakelsesprotokollen og sagt fra den gangen. Men det fritar deg ikke fra å vaske ved utflytting.</p>
+<p><strong>"Jeg har vasket selv, men utleier sier det ikke er godt nok."</strong> Da bør dere se konkret på hva som mangler. Utleier kan kreve at boligen er innflyttingsklar, men kan ikke kreve mer enn det. Er det bare snakk om noen få punkter, kan du tilby å vaske ferdig selv før dere konkluderer. Ta bilder av det du har vasket, som dokumentasjon.</p>
+<p><strong>"Må jeg vaske bort vanlig slitasje også?"</strong> Nei. Du plikter å vaske, men du skal ikke utbedre vanlig slitasje og elde (§ 10-2). Et eldre, slitt gulv blir ikke nytt av å vaskes – det skal bare være rent, ikke som nytt.</p>
+<h3>Hva hvis jeg ikke vasker?</h3>
+<p>Leverer du boligen uvasket eller dårlig vasket, kan utleier få den vasket og kreve at du dekker den rimelige kostnaden. Dette kan trekkes fra depositumet ditt. Det er nesten alltid billigere og tryggere å vaske selv (eller leie inn vask du selv velger) enn å la utleier ordne det og sende deg regningen.</p>
+<p>Husk at utleier må kunne dokumentere et slikt krav, og at beløpet må være rimelig. Du har rett til å se hva du eventuelt blir trukket for.</p>
+<h3>Vaske selv eller leie inn hjelp?</h3>
+<p>Begge deler er lov. Du kan:</p>
+<ul>
+<li><strong>Vaske selv,</strong> så lenge resultatet er innflyttingsklart.</li>
+<li><strong>Leie inn et vaskebyrå</strong> du selv velger, hvis du heller vil det.</li>
+</ul>
+<p>Det viktige er at resultatet holder standarden – det er ikke et krav i seg selv at en proff gjør jobben (se neste artikkel om profesjonell vask). Velger du å vaske selv, lønner det seg å være grundig og å ta bilder etterpå.</p>
+<h3>Praktiske vasketips</h3>
+<ol>
+<li><strong>Sett av nok tid.</strong> Grundig flyttevask tar ofte en hel dag eller mer, særlig kjøkken og bad.</li>
+<li><strong>Begynn tomt.</strong> Vask når boligen er tømt for møbler, så kommer du til overalt.</li>
+<li><strong>Ikke glem det skjulte:</strong> inni hvitevarer, bak komfyren, oppå skap, sluk og vifte.</li>
+<li><strong>Bytt batteri i røykvarsler og skift utbrente pærer</strong> – dette regnes ofte med i en ordentlig overlevering.</li>
+<li><strong>Ta bilder til slutt</strong> av hvert rom, som bevis på at det var rent.</li>
+</ol>
+<h3>Hva med deler jeg deler med andre?</h3>
+<p>Bor du i et kollektiv eller en bolig med fellesarealer, kan det være uklart hvem som skal vaske hva. Et godt råd er å avtale med medbeboerne hvordan fellesvasken skal fordeles før noen flytter. Husk at du svarer for din egen del av boligen og din andel av fellesarealene. Blir fellesarealene stående uvasket, kan utleier rette krav mot dem som er ansvarlige. Klar fordeling på forhånd sparer dere for krangel.</p>
+<h3>Lønner det seg å vaske selv?</h3>
+<p>For mange er svaret ja. En grundig flyttevask tar tid, men den koster deg ingenting annet enn innsats og litt vaskemidler. Får utleier i stedet leid inn vask fordi du ikke gjorde jobben, kan regningen fort bli på flere tusen kroner, og den trekkes fra depositumet ditt. Velger du likevel å leie inn hjelp fordi du har dårlig tid, står du fritt til det – men da bør du sjekke at firmaet faktisk leverer innflyttingsklar standard, slik at du ikke betaler for en jobb som likevel underkjennes.</p>
+<h3>Vanlige tabber ved flyttevask</h3>
+<p>Det er noen klassiske steder folk glemmer, og som ofte trekker en ellers god flyttevask ned:</p>
+<ul>
+<li><strong>Innvendig i stekeovn og på stekeplater</strong> – ofte fettete og tilbrent.</li>
+<li><strong>Kjøleskap og fryser</strong> – skal være avrimet, vasket og luktfrie.</li>
+<li><strong>Kjøkkenvifte og fettfilter</strong> – samler mye fett over tid.</li>
+<li><strong>Sluk på bad og kjøkken</strong> – hår og smuss må fjernes.</li>
+<li><strong>Oppå og bak skap, samt lister og dørkarmer</strong> – samler mye støv.</li>
+</ul>
+<p>Tar du disse på alvor, er du godt på vei til en vask som holder mål.</p>
+<h3>Hva hvis jeg er uenig i at vasken ikke holdt mål?</h3>
+<p>Det hender at utleier mener boligen ikke var godt nok vasket, mens du selv synes du gjorde en grundig jobb. Da er dokumentasjon avgjørende. Har du tatt bilder rom for rom rett etter at du vasket, kan du vise nøyaktig hvordan det så ut da du leverte. Be utleier være konkret om hva som mangler, og om å vise bilder av det utleier mener er skittent. Ofte løser dette seg når begge ser de samme bildene. Vil utleier likevel trekke deg for vask, kan du kreve dokumentasjon på den faktiske kostnaden og la Husleietvistutvalget vurdere saken. De legger en praktisk og rimelig standard til grunn, ikke et krav om perfeksjon.</p>
+<h3>Hva med uteareal, bod og fellesvaskeri?</h3>
+<p>Plikten til å levere rengjort omfatter ikke bare selve leiligheten, men også det som hører til den. Har du en bod, en veranda eller en andel i et fellesvaskeri, skal også dette ryddes og settes i orden. Tøm boden for ting og søppel, rydd verandaen, og legg igjen fellesarealer slik du selv ville ønske å overta dem. Glemmer du boden, er det en typisk grunn til at utleier holder igjen en del av depositumet – så ha den med på sjekklisten din.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du må vaske boligen ved utflytting – det følger av loven (§ 10-2).</li>
+<li>Plikten gjelder selv om boligen ikke var ren da du flyttet inn.</li>
+<li>Standarden er innflyttingsklar: neste leietaker skal kunne flytte rett inn.</li>
+<li>Du skal vaske, men ikke utbedre vanlig slitasje og elde.</li>
+<li>Vasker du ikke, kan utleier få det gjort og trekke den rimelige kostnaden fra depositumet.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

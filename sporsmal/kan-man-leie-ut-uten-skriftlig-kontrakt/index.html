@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan man leie ut uten skriftlig kontrakt? — Rettsregel</title>
+<meta name="description" content="Ja, det er lov å leie ut uten en skriftlig kontrakt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-man-leie-ut-uten-skriftlig-kontrakt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan man leie ut uten skriftlig kontrakt?">
+<meta property="og:description" content="Ja, det er lov å leie ut uten en skriftlig kontrakt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-man-leie-ut-uten-skriftlig-kontrakt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan man leie ut uten skriftlig kontrakt?">
+<meta name="twitter:description" content="Ja, det er lov å leie ut uten en skriftlig kontrakt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan man leie ut uten skriftlig kontrakt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, det er lov å leie ut uten en skriftlig kontrakt. Husleieloven krever ikke skriftlighet for at avtalen skal være gyldig. Men det er en dårlig idé for begge parter, fordi det blir nesten umulig å bevise hva som ble avtalt hvis det oppstår uenighet – og begge parter kan uansett kreve at avtalen skrives ned (husleieloven § 1-4).</p>
+  <p class="sp-kilde">Bygger på Husleieloven §§ 1-4, 9-7, 3-5</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/1-4/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 1-4</div>
+  <div class="related-card-title">Trenger du skriftlig leieavtale?</div>
+</a><a href="../../lover/husleieloven/9-7/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 9-7</div>
+  <div class="related-card-title">Krav til utleierens oppsigelse</div>
+</a><a href="../../lover/husleieloven/3-5/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 3-5</div>
+  <div class="related-card-title">Depositum — reglene du må kjenne</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, det er lov å leie ut uten en skriftlig kontrakt. Husleieloven krever ikke skriftlighet for at avtalen skal være gyldig. Men det er en dårlig idé for begge parter, fordi det blir nesten umulig å bevise hva som ble avtalt hvis det oppstår uenighet – og begge parter kan uansett kreve at avtalen skrives ned (husleieloven § 1-4).</p>
+<h3>Lov, men ikke lurt</h3>
+<p>Som utleier kan du altså leie ut hybelen din til naboens datter med bare et muntlig «ja» og et håndtrykk. Avtalen gjelder. Men du setter deg selv i en sårbar situasjon: Hvis leietaker slutter å betale, eller hvis dere blir uenige om når hun skal flytte ut, har du lite å vise til.</p>
+<p>La oss se på Geir, som leier ut sokkelleiligheten sin uten kontrakt:</p>
+<blockquote>
+<p>Geir avtaler muntlig at studenten Nora skal betale 7 500 kr i måneden. Etter et år vil Geir bruke leiligheten selv og ber Nora flytte. Nora sier: «Vi avtalte aldri noen sluttdato, så jeg blir.» Uten en skriftlig avtale om varighet eller oppsigelse, blir det Geir som må bevise hva som gjaldt – og det er vanskelig.</p>
+</blockquote>
+<p>Når noe ikke er avtalt skriftlig, faller man ofte tilbake på lovens hovedregler, og de kan slå annerledes ut enn det partene egentlig tenkte.</p>
+<h3>Spesielt for utleiere: noen ting MÅ være skriftlig</h3>
+<p>Selv om selve avtalen kan være muntlig, finnes det viktige unntak hvor skriftlighet er et krav for at utleier skal kunne påberope seg noe:</p>
+<ul>
+<li><strong>Oppsigelse fra utleier.</strong> En oppsigelse fra utleiers side skal være skriftlig og begrunnet (husleieloven § 9-7). En muntlig oppsigelse er ikke gyldig. Sier Geir bare «du må flytte» over telefon, teller det ikke som en formell oppsigelse.</li>
+<li><strong>Tidsbestemt avtale.</strong> Skal du som utleier kunne avslutte leieforholdet automatisk på en bestemt dato, må leietaker ha fått skriftlig beskjed om at avtalen er tidsbestemt og om minstetiden ved inngåelsen.</li>
+</ul>
+<p>Med andre ord: Selv om utleier «kan» droppe kontrakt, mister han flere viktige verktøy hvis han gjør det.</p>
+<h3>Hvorfor lønner skriftlighet seg for utleier?</h3>
+<ul>
+<li><strong>Bevis ved manglende betaling.</strong> Skal du eventuelt få hjelp av namsmannen til å kreve inn skyldig leie eller kaste ut en leietaker som ikke betaler, trenger du dokumentasjon.</li>
+<li><strong>Klarhet om hva som er inkludert.</strong> Da slipper du krangler om strøm, internett og felleskostnader.</li>
+<li><strong>Trygghet rundt depositum.</strong> En skriftlig avtale gjør det lettere å vise hva depositumet dekker.</li>
+</ul>
+<blockquote>
+<p><strong>Hva gjør du som utleier?</strong>
+1. Bruk en ferdig standardkontrakt (Forbrukertilsynet og Leieboerforeningen har gratis maler). Du slipper å finne opp hjulet selv.
+2. Fyll inn leie, hva som er inkludert, depositum, varighet og oppsigelsestid.
+3. Lag en overtakelsesprotokoll med bilder ved innflytting.
+4. Opprett en ordentlig depositumskonto i leietakers navn.</p>
+</blockquote>
+<h3>Et tips om kontantbetaling</h3>
+<p>Noen leier ut «svart» og tar imot kontanter for å slippe å betale skatt. Vær klar over to ting: Leieinntekter skal som hovedregel skattlegges (med noen unntak, for eksempel hvis du leier ut mindre enn halvparten av egen bolig regnet etter utleieverdi), og uten dokumentasjon på betaling står du svakt hvis det oppstår en tvist. Skriftlighet og sporbar betaling beskytter deg.</p>
+<h3>Også for leietaker: krev en kontrakt</h3>
+<p>Hvis du er leietaker og utleier sier «vi trenger ingen papirer», så ikke godta det uten videre. Du har full rett til å kreve en skriftlig avtale (§ 1-4), og det beskytter deg minst like mye som utleier.</p>
+<blockquote>
+<p>Sofie flytter inn hos en utleier som ikke vil ha kontrakt. Etter et halvt år vil utleier brått at hun skal flytte «til neste uke». Uten kontrakt blir det vanskelig for Sofie å vise hvilket oppsigelsesvern hun har. Hadde de hatt en avtale, ville lovens oppsigelsesregler vært tydelige og hun hadde hatt tre måneders frist.</p>
+</blockquote>
+<p>For en leietaker er en manglende kontrakt ofte et faresignal: enten er utleier uerfaren, eller så ønsker han å unngå reglene. I begge tilfeller er det en god grunn til å be om en ordentlig avtale.</p>
+<blockquote>
+<p><strong>Hva gjør du som leietaker hvis utleier ikke vil ha kontrakt?</strong>
+1. Foreslå vennlig en gratis standardkontrakt fra Forbrukertilsynet.
+2. Får du nei, bekreft i hvert fall det viktigste på SMS (leie, dato, hva som er inkludert).
+3. Sørg for depositumskonto i ditt navn – aldri til utleiers private konto.
+4. Ta vare på all kommunikasjon og alle betalinger.</p>
+</blockquote>
+<h3>Hva med fremleie uten kontrakt?</h3>
+<p>Leier du videre boligen din til noen (fremleie), gjelder de samme rådene. Lag en skriftlig avtale med fremleietakeren din. Husk at du som hovedleietaker fortsatt er ansvarlig overfor din egen utleier, så hvis fremleietakeren ødelegger noe eller ikke betaler, er det du som sitter med regningen. Da er det ekstra viktig å ha alt skriftlig.</p>
+<h3>Et regneeksempel: hva risikerer utleier uten kontrakt?</h3>
+<p>La oss gjøre risikoen konkret for en småutleier. Geir leier ut sokkelleiligheten for 7 500 kr i måneden, men dropper kontrakten. Leietakeren slutter å betale. Etter tre måneder skylder hun 22 500 kr. Geir vil ha hjelp av namsmannen til å kreve inn pengene og få henne ut – men namsmannen trenger dokumentasjon på at det finnes en avtale, hva leien er, og at hun skylder penger. Uten en skriftlig kontrakt og sporbare betalinger blir prosessen mye tyngre, og Geir kan i verste fall tape pengene. Et kvarter med en standardkontrakt i starten kunne spart ham for titusener.</p>
+<h3>Hva med skatt på leieinntekter?</h3>
+<p>Mange tror at uten kontrakt slipper de skatt. Det stemmer ikke – leieinntekter skal som hovedregel skattlegges. Det finnes et viktig unntak: leier du ut mindre enn halvparten av din egen bolig (regnet etter utleieverdi), er inntekten ofte skattefri. Leier du ut hele boligen eller en stor del, er inntekten skattepliktig. Å hoppe over kontrakten gjør deg ikke skattefri – det gjør deg bare mer sårbar hvis noe går galt. Sjekk reglene på skatteetaten.no hvis du er i tvil.</p>
+<h3>Vanlige misforståelser</h3>
+<ul>
+<li><strong>«Uten kontrakt slipper jeg reglene i husleieloven.»</strong> Feil. Loven gjelder uansett, også for muntlige avtaler.</li>
+<li><strong>«En SMS holder som kontrakt.»</strong> En SMS er bevis, men en ordentlig kontrakt dekker langt flere punkter (depositum, varighet, oppsigelse) og er tryggere for begge.</li>
+<li><strong>«Vipps til min private konto er greit for depositum.»</strong> Nei. Depositum skal alltid på en sperret konto i leietakers navn (§ 3-5).</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Du kan leie ut uten skriftlig kontrakt – det er lov – men det er risikabelt for både utleier og leietaker. Visse ting, som oppsigelse fra utleier, må være skriftlig for å gjelde. Begge parter kan kreve en skriftlig avtale, og en manglende kontrakt er ofte et faresignal for leietaker. Husk at leieinntekter som hovedregel er skattepliktige uansett. Bruk en standardkontrakt, det tar fem minutter og sparer deg for mye trøbbel. Og opprett alltid en skikkelig depositumskonto.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

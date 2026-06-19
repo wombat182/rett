@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg leie ut på Airbnb når jeg leier? — Rettsregel</title>
+<meta name="description" content="Som hovedregel nei, ikke uten utleiers samtykke. Korttidsutleie via Airbnb og lignende regnes som fremleie, og du kan ikke fremleie uten utleiers…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-leie-ut-pa-airbnb-nar-jeg/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg leie ut på Airbnb når jeg leier?">
+<meta property="og:description" content="Som hovedregel nei, ikke uten utleiers samtykke. Korttidsutleie via Airbnb og lignende regnes som fremleie, og du kan ikke fremleie uten utleiers…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-leie-ut-pa-airbnb-nar-jeg/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg leie ut på Airbnb når jeg leier?">
+<meta name="twitter:description" content="Som hovedregel nei, ikke uten utleiers samtykke. Korttidsutleie via Airbnb og lignende regnes som fremleie, og du kan ikke fremleie uten utleiers…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Kan jeg leie ut på Airbnb når jeg leier?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Som hovedregel **nei, ikke uten utleiers samtykke**. Korttidsutleie via Airbnb og lignende regnes som fremleie, og du kan ikke fremleie uten utleiers godkjenning. Gjør du det på egen hånd, risikerer du å misligholde leieavtalen og bli sagt opp.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 7-2 og § 7-3</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/7-2/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 7-2</div>
+  <div class="related-card-title">Du kan ikke framleie uten utleierens samtykke</div>
+</a><a href="../../lover/husleieloven/7-3/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 7-3</div>
+  <div class="related-card-title">Du kan framleie et rom hvis du bor der selv</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Airbnb og lignende plattformer frister mange leietakere: Reis bort en helg, leier ut leiligheten, og tjen litt ekstra. Men her er det viktig å trå riktig, for reglene er strengere enn mange tror.</p>
+<h3>Airbnb er fremleie</h3>
+<p>Når du leier ut boligen din (eller deler av den) til andre på Airbnb, overlater du bruken av boligen til andre mot betaling – akkurat det loven kaller fremleie. At det er kortvarig (noen netter eller en helg), endrer ikke dette. Korttidsutleie regnes som fremleie og krever derfor utleiers samtykke.</p>
+<p>Hovedregelen gjelder med full styrke: <strong>Du kan ikke fremleie eller overlate bruksretten til andre uten samtykke fra utleieren</strong> (§ 7-2, om fremleie og overlating av bruksrett). Husleietvistutvalget er tydelig på at hovedregelen er at fremleie ikke er tillatt uten utleiers godkjenning – og Airbnb er fremleie.</p>
+<h3>Hvorfor er Airbnb ekstra sårbart?</h3>
+<p>Korttidsutleie skiller seg fra vanlig fremleie på måter som gjør utleiere ekstra skeptiske, og som ofte gir saklig grunn til å nekte:
+- <strong>Stadig nye, ukjente personer</strong> får tilgang til boligen.
+- <strong>Mer slitasje og risiko for skader</strong> enn ved én fast beboer.
+- <strong>Naboer kan bli forstyrret</strong> av fremmede som kommer og går, fester og bråk.
+- <strong>Ofte i strid med sameiets eller borettslagets regler</strong> og med utleiers interesser.</p>
+<p>Det er derfor uvanlig at utleier sier ja til ren Airbnb-virksomhet, og lett for utleier å ha en saklig grunn til å nekte. Mens en fast fremleietaker bor der over tid og kan vurderes på forhånd, er korttidsgjester ukjente personer som skiftes ut hele tiden – og det gjør risikoen for skader, bråk og naboklager langt høyere.</p>
+<h3>Eksempel: Jeg vil leie ut leiligheten på Airbnb noen helger i året</h3>
+<p>Tenk deg at du vil tjene litt ekstra ved å leie ut hele leiligheten på Airbnb noen helger. Selv om det "bare" er noen netter av gangen, er dette fremleie. Slik må du gå fram:
+1. <strong>Du må be utleier om samtykke</strong> før du i det hele tatt legger ut boligen.
+2. <strong>Forklar omfanget</strong> (for eksempel "kun noen få helger i året, alltid med ansvarlig gjest").
+3. <strong>Få et eventuelt ja skriftlig.</strong></p>
+<p>Hvis utleier sier nei, må du respektere det. Du har ikke den samme sterke beskyttelsen som ved vanlig fremleie ved fravær, fordi korttidsutleie til stadig nye personer lett gir saklig grunn til å nekte.</p>
+<h3>Eksempel: Jeg vil bare leie ut sofaen min når jeg selv er hjemme</h3>
+<p>Hvis du selv bor i boligen og leier ut et rom (eller sofaen) mens du er der, ligner dette mer på fremleie av en del av boligen (§ 7-3, se artikkel 119). Også dette krever godkjenning, men her står du noe sterkere: Utleier kan bare nekte ved saklig grunn eller klar overbefolkning. Likevel: Stadig skiftende Airbnb-gjester, selv i et enkelt rom, kan gi utleier saklig grunn til å nekte på grunn av ulempene det medfører. Vil du ha romkamerat på vanlig, mer stabilt vis, står du sterkere enn med hyppig korttidsutleie.</p>
+<h3>Konsekvensene av å la være å spørre</h3>
+<p>Dette er alvorlig nok til å gjentas: Hvis du driver Airbnb-utleie uten utleiers samtykke:
+- Det er <strong>ulovlig fremleie</strong> og dermed et <strong>mislighold</strong> av leieavtalen din.
+- Utleier kan kreve at det stanser.
+- I alvorlige eller gjentatte tilfeller kan det gi grunnlag for <strong>oppsigelse eller heving</strong> av din egen avtale – altså at du mister boligen.
+- Du er <strong>ansvarlig overfor utleier</strong> for alt Airbnb-gjestene måtte ødelegge.</p>
+<p>Den potensielle gevinsten er ofte liten sammenlignet med risikoen for å miste hjemmet ditt.</p>
+<h3>Hva med sameie- og borettslagsregler?</h3>
+<p>I tillegg til husleieloven kan det finnes egne regler i sameiet eller borettslaget som begrenser eller forbyr korttidsutleie. Slike regler gjelder uavhengig av hva du og utleier blir enige om. Selv om utleier skulle si ja, kan altså byggets egne regler sette en stopper for Airbnb-virksomhet.</p>
+<h3>Vanlige feller</h3>
+<ul>
+<li><strong>Du tenker at "noen netter" ikke er fremleie.</strong> Det er det. At det er kortvarig, endrer ikke at du overlater bruken av boligen til andre mot betaling. Du trenger samtykke.</li>
+<li><strong>Du regner med samme sterke beskyttelse som ved vanlig fremleie.</strong> Det har du ikke. Stadig skiftende gjester gir utleier saklig grunn til å nekte langt lettere enn ved én fast fremleietaker.</li>
+<li><strong>Du sjekker bare med utleier, ikke med bygget.</strong> Selv et ja fra utleier hjelper deg ikke hvis sameiets eller borettslagets regler forbyr korttidsutleie.</li>
+<li><strong>Du undervurderer risikoen.</strong> Den lille ekstrainntekten kan koste deg boligen, fordi ulovlig Airbnb-utleie er mislighold som i alvorlige tilfeller gir grunnlag for oppsigelse eller heving. HTU har behandlet saker der nettopp ulovlig Airbnb-utleie og støy ble regnet som vesentlig mislighold som ga utleier rett til å heve avtalen.</li>
+</ul>
+<h3>Hva med naboklager og støy?</h3>
+<p>Korttidsgjester kjenner verken huset, naboene eller husreglene, og fester, bråk og folk som kommer og går kan raskt skape naboklager. Slike klager er ikke bare et problem for naboene – de gir utleier en konkret, saklig grunn til å nekte og til å reagere mot deg. Selv om du skulle ha fått et muntlig ja, kan vedvarende naboplager føre til at utleier trekker tilbake velviljen. Tar du imot korttidsgjester, er du fullt ansvarlig for at de oppfører seg og ikke forstyrrer andre i bygget.</p>
+<h3>Slik gjør du det riktig (hvis du virkelig vil)</h3>
+<ol>
+<li><strong>Spør utleier skriftlig om samtykke</strong> før du gjør noe som helst.</li>
+<li><strong>Sjekk sameiets/borettslagets regler</strong> om korttidsutleie.</li>
+<li><strong>Få et eventuelt ja skriftlig,</strong> og avtal omfang og betingelser.</li>
+<li><strong>Husk at du er fullt ansvarlig</strong> for gjestene og eventuelle skader.</li>
+<li><strong>Ikke start uten samtykke</strong> – risikoen er at du mister boligen.</li>
+</ol>
+<h3>Hvis utleier sier nei</h3>
+<p>Ved korttidsutleie står utleier sterkt, fordi ulempene gir saklig grunn til å nekte. Du bør respektere et nei. Hvis du mener et avslag i en bestemt situasjon er klart usaklig (for eksempel ved utleie av et rom mens du selv bor der), kan du eventuelt få vurdert saken hos <strong>Husleietvistutvalget (HTU)</strong> – men vær realistisk: Ren Airbnb-virksomhet er noe utleiere som regel har god grunn til å nekte.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Airbnb og annen korttidsutleie regnes som fremleie og krever utleiers samtykke (§ 7-2).</li>
+<li>At det er kortvarig, endrer ikke at det er fremleie.</li>
+<li>Utleiere har ofte saklig grunn til å nekte på grunn av slitasje, ukjente gjester og naboplager.</li>
+<li>Uten samtykke er det ulovlig fremleie og mislighold – du kan miste boligen.</li>
+<li>Sjekk også sameiets/borettslagets regler; spør alltid skriftlig før du starter.</li>
+</ul>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

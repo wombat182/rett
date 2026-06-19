@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må depositum stå på egen depositumskonto? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-depositum-sta-pa-egen-depositumskonto/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må depositum stå på egen depositumskonto?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-depositum-sta-pa-egen-depositumskonto/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må depositum stå på egen depositumskonto?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Må depositum stå på egen depositumskonto?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Depositumet skal stå på en egen, særskilt depositumskonto i ditt navn (§ 3-5). Pengene er sperret for begge parter mens du bor der – verken du eller utleier kan ta ut noe på egen hånd. Utleier har ikke lov til å motta depositum kontant eller på sin private konto.</p>
+  <p class="sp-kilde">Bygger på Husleieloven § 3-5</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/3-5/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 3-5</div>
+  <div class="related-card-title">Depositum — reglene du må kjenne</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Depositumet skal stå på en egen, særskilt depositumskonto i ditt navn (§ 3-5). Pengene er sperret for begge parter mens du bor der – verken du eller utleier kan ta ut noe på egen hånd. Utleier har ikke lov til å motta depositum kontant eller på sin private konto.</p>
+<h3>Hva er en depositumskonto?</h3>
+<p>En depositumskonto er en spesiell type bankkonto som er laget nettopp for depositum. Den har tre helt sentrale egenskaper, alle hjemlet i husleieloven § 3-5:</p>
+<ol>
+<li><strong>Den står i leietakers navn.</strong> Det er du som er eier av kontoen og pengene, ikke utleier.</li>
+<li><strong>Den er sperret (båndlagt) for begge.</strong> Så lenge leieforholdet varer, kan ingen av dere ta ut penger uten den andres samtykke eller en avgjørelse fra banken/HTU.</li>
+<li><strong>Rentene tilhører deg.</strong> Pengene står på vanlige rentevilkår, og rentene er dine (mer i artikkel 27).</li>
+</ol>
+<p>Dette er en svært god ordning for deg som leietaker. Den hindrer at utleier bare forsyner seg av pengene dine, samtidig som utleier får trygghet for at pengene faktisk finnes hvis det skulle oppstå et berettiget krav.</p>
+<h3>Hvorfor er dette så viktig?</h3>
+<p>Forestill deg det motsatte. Hvis utleier fikk pengene rett inn på sin egen konto, hadde du i praksis ingen sikkerhet. Utleier kunne brukt pengene, blandet dem med sin egen økonomi, eller rett og slett nektet å betale tilbake. Da måtte du gått til sak for å få igjen <em>dine egne penger</em>.</p>
+<p>Med en sperret depositumskonto i ditt navn er pengene «frosset». Utleier kommer ikke til dem uten at du sier ja, eller uten å vinne fram med et krav. Og du kommer ikke til dem uten utleiers ja, eller uten å følge bankens prosedyre. Det skaper en rettferdig balanse.</p>
+<h3>Et eksempel</h3>
+<p>Maria skal leie en hybel til 7 000 kr i måneden, med to måneders depositum (14 000 kr). Utleier sender henne en SMS: «Bare Vipps depositumet til meg, så er vi i mål.» Det skal Maria ikke gjøre. Det riktige er:</p>
+<ul>
+<li>Utleier (eller Maria, men som regel utleier) oppretter en depositumskonto i Marias navn i en bank.</li>
+<li>Maria overfører 14 000 kr til denne kontoen.</li>
+<li>Pengene står sperret der til leieforholdet er over.</li>
+</ul>
+<p>Hvis Maria hadde Vippset pengene til utleier privat, ville hun mistet hele beskyttelsen loven gir henne. Skulle det oppstått uenighet ved utflytting, måtte hun selv jaget pengene.</p>
+<h3>Hva hvis utleier nekter å bruke depositumskonto?</h3>
+<p>Da bør varsellampene blinke. En seriøs utleier vet at depositum skal stå på depositumskonto. Hvis utleier insisterer på kontant eller privat konto, er det ofte et tegn på at noe ikke er som det skal. Du har full rett til å kreve en ordentlig depositumskonto.</p>
+<p>Et lite, men viktig poeng: Hvis du har betalt depositum på en ulovlig måte (kontant eller til privat konto), regnes det etter loven som om du har betalt forskuddsleie. Det betyr i praksis at du kan «bo opp» beløpet – altså la være å betale husleie inntil det innbetalte beløpet er brukt opp. Dette er en sterk regel som beskytter deg, men det enkleste er selvsagt å gjøre det riktig fra start. Mer om dette i artikkel 20.</p>
+<h3>Slik opprettes en depositumskonto i praksis</h3>
+<p>Det er enklere enn mange tror. En depositumskonto opprettes i en vanlig bank, og de fleste banker har egne digitale løsninger for nettopp dette. Den vanlige fremgangsmåten er:</p>
+<ol>
+<li>Utleier (eller dere sammen) tar kontakt med en bank og ber om å opprette en depositumskonto.</li>
+<li>Banken oppretter kontoen i <strong>ditt</strong> navn som leietaker.</li>
+<li>Begge parter legitimerer seg, og det registreres hvem som er utleier og hvem som er leietaker.</li>
+<li>Du overfører depositumsbeløpet til kontoen.</li>
+<li>Pengene står sperret til leieforholdet er over.</li>
+</ol>
+<p>Du trenger ikke å bruke samme bank som utleier, og du trenger ikke å være kunde i banken fra før. Det viktigste er at kontoen faktisk er en depositumskonto registrert i ditt navn – ikke en vanlig konto utleier styrer.</p>
+<h3>Sjekk at det faktisk er din konto</h3>
+<p>Når kontoen er opprettet, bør du få dokumentasjon på at den står i ditt navn. Be om dette skriftlig. Slik unngår du at utleier «glemmer» å sette depositumet på riktig type konto, eller setter det på en konto utleier selv kontrollerer.</p>
+<p>Eksempel: Sondre overfører 20 000 kr til en konto utleier har oppgitt, men sjekker ikke om det faktisk er en depositumskonto i hans eget navn. Det viser seg senere at det var utleiers egen konto. Sondre hadde da i praksis ingen sikkerhet. Hadde han bedt om dokumentasjon først, ville han oppdaget feilen før han betalte.</p>
+<h3>Bankene har også et ansvar</h3>
+<p>Bankene plikter å følge depositumsreglene. En bank skal ikke opprette en «depositumskonto» som i realiteten gir utleier fri tilgang til pengene, og banken skal følge lovens prosedyre når depositumet senere skal frigis (mer i artikkel 21 og 26). Dette er et ekstra sikkerhetsnett for deg: selv om utleier skulle prøve seg, er banken bundet av reglene.</p>
+<h3>Hva med renter og kostnader på kontoen?</h3>
+<p>To ting er greit å ha klart for seg. For det første: pengene står på vanlige rentevilkår, og rentene tilhører deg som leietaker (mer i artikkel 27). For det andre: det er utleier som skal dekke kostnaden ved å opprette depositumskontoen (mer i artikkel 19). Du skal altså bare overføre selve depositumsbeløpet – verken betale gebyr for kontoen eller gi fra deg rentene.</p>
+<p>Et eksempel: Nora oppretter ikke kontoen selv – utleier gjør det – men kontoen står likevel i Noras navn. Banken tar 600 kr for å opprette den. Den regningen er utleiers. Nora overfører bare de 16 000 kr som er selve depositumet, og rentene som påløper i leieperioden er hennes.</p>
+<h3>Vanlige feller å unngå</h3>
+<ul>
+<li><strong>«Bare vipps meg, så ordner vi konto senere.»</strong> Da står pengene aldri sperret. Krev at kontoen opprettes først.</li>
+<li><strong>Konto i utleiers navn.</strong> Det er ikke en lovlig depositumskonto. Be om skriftlig dokumentasjon på at kontoen er i ditt navn.</li>
+<li><strong>Overføring før kontoen finnes.</strong> Overfør aldri penger til en konto du ikke har fått bekreftet er en depositumskonto i ditt navn.</li>
+<li><strong>Manglende papirer.</strong> Be alltid om kontoavtalen og ta vare på kvitteringen for innbetalingen.</li>
+</ul>
+<h3>Praktisk fremgangsmåte</h3>
+<ol>
+<li><strong>Avtal depositumskonto i kontrakten.</strong> Det skal stå svart på hvitt hvor mye og at det settes på depositumskonto i ditt navn.</li>
+<li><strong>Be utleier opprette kontoen</strong> – det er utleier som skal dekke kostnaden (mer i artikkel 19).</li>
+<li><strong>Overfør depositumet</strong> først når kontoen er opprettet i ditt navn. Be om dokumentasjon på at kontoen finnes og er i ditt navn.</li>
+<li><strong>Aldri kontant, aldri Vipps til privatkonto, aldri til utleiers ordinære konto.</strong></li>
+<li><strong>Ta vare på papirene</strong> – kontoavtalen og kvittering for innbetalingen.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Ja, depositum skal stå på en egen depositumskonto i leietakers navn, sperret for begge parter (§ 3-5). Verken du eller utleier kan røre pengene på egen hånd, og rentene er dine. Betal aldri depositum kontant eller til utleiers private konto – krev en ordentlig depositumskonto, og overfør pengene først når kontoen er opprettet i ditt navn.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

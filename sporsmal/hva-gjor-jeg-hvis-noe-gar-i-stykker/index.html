@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva gjør jeg hvis noe går i stykker i leiligheten? — Rettsregel</title>
+<meta name="description" content="Meld fra til utleier skriftlig så raskt som mulig, beskriv problemet, ta bilder, og be utleier ordne det innen en rimelig frist. Ikke fiks det på egen…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-noe-gar-i-stykker/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva gjør jeg hvis noe går i stykker i leiligheten?">
+<meta property="og:description" content="Meld fra til utleier skriftlig så raskt som mulig, beskriv problemet, ta bilder, og be utleier ordne det innen en rimelig frist. Ikke fiks det på egen…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-noe-gar-i-stykker/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva gjør jeg hvis noe går i stykker i leiligheten?">
+<meta name="twitter:description" content="Meld fra til utleier skriftlig så raskt som mulig, beskriv problemet, ta bilder, og be utleier ordne det innen en rimelig frist. Ikke fiks det på egen…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva gjør jeg hvis noe går i stykker i leiligheten?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Meld fra til utleier skriftlig så raskt som mulig, beskriv problemet, ta bilder, og be utleier ordne det innen en rimelig frist. Ikke fiks det på egen hånd uten å gi utleier sjansen først – med mindre det haster akutt.</p>
+  <p class="sp-kilde">Bygger på Husleieloven §§ 5-7, 2-10, 2-15, 2-11, 2-13</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/husleieloven/5-7/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 5-7</div>
+  <div class="related-card-title">Dine rettigheter når noe går galt i leietiden</div>
+</a><a href="../../lover/husleieloven/2-10/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-10</div>
+  <div class="related-card-title">Du kan kreve at utleieren retter feil for egen regning</div>
+</a><a href="../../lover/husleieloven/2-15/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-15</div>
+  <div class="related-card-title">Du kan holde tilbake husleien som sikkerhet</div>
+</a><a href="../../lover/husleieloven/2-11/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-11</div>
+  <div class="related-card-title">Du kan kreve lavere husleie hvis boligen er mangelfull</div>
+</a><a href="../../lover/husleieloven/2-13/" class="related-card">
+  <div class="related-card-meta">Husleieloven § 2-13</div>
+  <div class="related-card-title">Du kan kreve erstatning for tap ved forsinkelse eller mangler</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Først: Pust rolig. Det meste ordner seg.</h3>
+<p>Når noe går i stykker, er det lett å bli stresset. Men husleieloven gir deg gode rettigheter, og de fleste feil er utleiers ansvar å fikse. Det viktigste du gjør, er å si fra på riktig måte.</p>
+<h3>Steg for steg: Slik gjør du det riktig</h3>
+<p><strong>Steg 1 – Stopp eventuell skade som utvikler seg</strong>
+Hvis det renner vann eller utvikler seg en skade, gjør det du kan for å begrense den (skru av vannet, tørk opp, sett en bøtte under lekkasjen). Du har en plikt til å begrense skade så langt det er rimelig. Hvis du lar en liten lekkasje bli til en stor vannskade fordi du ikke gjorde noe, kan du bli medansvarlig.</p>
+<p><strong>Steg 2 – Ta bilder (og gjerne video)</strong>
+Dokumentér feilen <em>med en gang</em>. Ta tydelige bilder. Dette er din beste forsikring hvis det blir uenighet senere.</p>
+<p><strong>Steg 3 – Meld fra skriftlig</strong>
+Send melding til utleier på <strong>e-post eller SMS</strong> – ikke bare ring. Du vil ha det skriftlig, slik at du kan bevise at du sa fra og når. I meldingen bør du:
+- beskrive hva som er galt,
+- si når du oppdaget det,
+- be utleier ordne det,
+- gjerne legge ved bilder.</p>
+<p><strong>Eksempel på melding:</strong></p>
+<blockquote>
+<p>"Hei! Jeg vil melde fra om at kjøleskapet sluttet å kjøle i dag (15. juni). Maten holder på å bli dårlig. Kan du ordne reparasjon eller bytte så raskt som mulig? Bilder er vedlagt. Mvh [navn]"</p>
+</blockquote>
+<p><strong>Steg 4 – Gi en rimelig frist</strong>
+Be utleier ordne feilen innen rimelig tid. Hva som er "rimelig" avhenger av hvor alvorlig feilen er:
+- Akutt (lekkasje, ikke noe varmtvann, kjøleskap som dør) → raskt, samme dag eller noen få dager.
+- Mindre alvorlig (en ovn som ikke virker om sommeren) → noen dager til et par uker kan være greit.</p>
+<p><strong>Steg 5 – Følg opp skriftlig hvis ingenting skjer</strong>
+Hvis utleier ikke svarer eller ikke ordner det, send en ny skriftlig påminnelse med en konkret frist. ("Hvis dette ikke er ordnet innen [dato], må jeg vurdere [tilbakehold av leie / å få det reparert på din regning].")</p>
+<h3>Hvilke rettigheter har du hvis feilen er en "mangel"?</h3>
+<p>Hvis noe går i stykker som er utleiers ansvar, har du en <strong>mangel</strong> ved leieforholdet (noe som ikke er slik det skal være – se artikkel 101). Da gir husleieloven § 5-7 deg flere muligheter:</p>
+<ul>
+<li><strong>Kreve retting</strong> – at utleier fikser det (§ 2-10).</li>
+<li><strong>Holde tilbake husleie</strong> – som sikkerhet til feilen er fikset (§ 2-15) – men gjør det riktig (artikkel 100).</li>
+<li><strong>Kreve prisavslag</strong> – lavere leie mens feilen varer (§ 2-11).</li>
+<li><strong>Kreve erstatning</strong> – for tap du får, f.eks. ødelagt mat (§ 2-13).</li>
+<li><strong>Heve avtalen</strong> – hvis feilen er svært alvorlig (§ 2-12).</li>
+</ul>
+<h3>Hva med det du har ansvar for selv?</h3>
+<p>Hvis det som gikk i stykker er noe <em>du</em> har ansvar for – som en lyspære eller en sikring – så fikser du det selv. Ingen grunn til å plage utleier med en lyspære.</p>
+<p>Er du i tvil om hvem som har ansvaret? Meld fra likevel. Da har du ryggen fri, og dere kan avklare det sammen. Husk at det du har ansvar for selv (§ 5-3), er bevisst valgt fordi det er smått og billig: lyspærer, sikringer, kranpakninger og smøring av lås. Står du overfor en stor og dyr reparasjon, er det nesten alltid utleiers regning – og da skal du melde fra og kreve at utleier ordner det, ikke betale selv.</p>
+<h3>Hva hvis det haster akutt og utleier ikke er å få tak i?</h3>
+<p>Hvis det er en akutt situasjon – for eksempel en vannlekkasje midt på natten – og du ikke får tak i utleier, kan du i nødstilfeller måtte handle for å begrense skaden (ringe rørlegger). Da bør du:
+1. Prøve å nå utleier først (ring, send melding – dokumentér forsøkene).
+2. Begrense skaden.
+3. Ta vare på kvitteringer.
+4. Kreve utgiftene dekket etterpå.</p>
+<p>Men vær forsiktig med å sette i gang dyre reparasjoner uten å ha gitt utleier sjansen – les artikkel 105 om når du kan rette selv og trekke fra i leien.</p>
+<h3>En enkel huskeregel</h3>
+<p>Når noe går i stykker, gå gjennom disse fire spørsmålene i hodet:</p>
+<ol>
+<li><strong>Haster det?</strong> (lekkasje, ingen varme, kjøleskap som dør) → begrens skaden først.</li>
+<li><strong>Er det mitt eget lille ansvar?</strong> (lyspære, sikring, pakning) → fiks det selv.</li>
+<li><strong>Er det utleiers ansvar?</strong> → meld fra skriftlig med bilde og en frist.</li>
+<li><strong>Får jeg et tap?</strong> (mat som råtner, må bo borte) → dokumentér det for senere krav.</li>
+</ol>
+<p>Med denne enkle rekkefølgen unngår du både å gjøre for mye selv og å gjøre for lite. Du begrenser skaden, fikser det som er ditt, og setter ballen over til utleier på en måte som er dokumentert og trygg.</p>
+<h3>Tre vanlige situasjoner – og hva du gjør</h3>
+<p><strong>Kjøleskapet ryker en søndag:</strong> Apparatet sluttet å kjøle, og maten holder på å bli dårlig. Flytt det du kan til et kaldt sted (begrens tapet), ta bilder, og meld fra skriftlig med en gang. Det er utleiers ansvar å ordne, og du kan kreve erstatning for mat som råtner.</p>
+<p><strong>En dryppende kran:</strong> Dette er ofte <em>ditt</em> eget vedlikeholdsansvar (§ 5-3) hvis det bare er en slitt pakning. Da fikser du det selv – en pakning koster nesten ingenting. Men er hele kranen ødelagt, er det utleiers regning. I tvil: meld fra, så er du på trygg grunn.</p>
+<p><strong>En lekkasje under vasken:</strong> Sett en bøtte under, tørk opp, og steng eventuelt vannet. Meld fra skriftlig straks med bilde. Lar du lekkasjen stå, kan du bli medansvarlig for vannskaden som oppstår.</p>
+<h3>Hvor lang frist er "rimelig"?</h3>
+<p>Det finnes ingen fast fasit, men en grei tommelfingerregel:</p>
+<ul>
+<li><strong>Akutt og alvorlig</strong> (lekkasje, ingen varme om vinteren, kjøleskap som dør): samme dag eller noen få dager.</li>
+<li><strong>Generende, men ikke kritisk</strong> (oppvaskmaskin, en ovn som ikke virker om sommeren): noen dager til et par uker.</li>
+<li><strong>Småting</strong> (en løs list, en knirkende dør): det kan vente til neste gang utleier likevel er innom.</li>
+</ul>
+<p>Jo mer det går ut over hverdagen din, jo kortere frist kan du sette.</p>
+<h3>Vanlige feil folk gjør</h3>
+<ul>
+<li>❌ Ringer i stedet for å skrive (ingen dokumentasjon).</li>
+<li>❌ Venter for lenge med å si fra (skaden blir verre).</li>
+<li>❌ Fikser dyrt på egen hånd uten å varsle utleier (kan miste retten til å få det dekket).</li>
+<li>❌ Slutter å betale hele husleien (kan føre til utkastelse – se artikkel 100).</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Begrens skaden, ta bilder, og meld fra skriftlig med en gang.</li>
+<li>Gi utleier en rimelig frist til å ordne det.</li>
+<li>Følg opp skriftlig hvis ingenting skjer.</li>
+<li>Du har rett til retting, prisavslag, erstatning og mer ved mangler (§ 5-7).</li>
+<li>Ikke sett i gang dyre reparasjoner selv uten å gi utleier sjansen – unntatt ved akutt fare.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/darlig-manglende-drenering-mangel-vedlikehold/">Dårlig eller manglende drenering rundt huset – mangel eller normalt vedlikehold?</a><a class="sp-relchip" href="../../sporsmal/er-det-lov-a-royke-i-en-leid/">Er det lov å røyke i en leid leilighet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
