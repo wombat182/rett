@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan selger kreve å rette mangelen selv? — Rettsregel</title>
+<meta name="description" content="Ja, det kan selger faktisk.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-selger-kreve-a-rette-mangelen-selv/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan selger kreve å rette mangelen selv?">
+<meta property="og:description" content="Ja, det kan selger faktisk.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-selger-kreve-a-rette-mangelen-selv/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan selger kreve å rette mangelen selv?">
+<meta name="twitter:description" content="Ja, det kan selger faktisk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan selger kreve å rette mangelen selv?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, det kan selger faktisk. Hvis du oppdager en mangel ved boligen du har kjøpt, har selgeren en lovfestet rett til å få fikse feilen selv før du kan kreve penger i stedet. Dette kalles selgers rett til retting eller utbedring (avhendingslova § 4-10). Det er lurt å kjenne til dette – ellers risikerer du å gjøre ting i feil rekkefølge og tape penger.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova § 4-10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/4-10/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-10</div>
+  <div class="related-card-title">Retting av mangler</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, det kan selger faktisk. Hvis du oppdager en mangel ved boligen du har kjøpt, har selgeren en lovfestet rett til å få fikse feilen selv før du kan kreve penger i stedet. Dette kalles selgers rett til retting eller utbedring (avhendingslova § 4-10). Det er lurt å kjenne til dette – ellers risikerer du å gjøre ting i feil rekkefølge og tape penger.</p>
+<h3>Hva betyr egentlig dette?</h3>
+<p>Tenk deg at Mariam kjøper en leilighet på Lillehammer for 3,4 millioner kroner. Et par måneder etter overtakelsen oppdager hun at avløpsrøret under kjøkkenvasken lekker, og at det skyldes en skjult feil fra før hun kjøpte. Mariams første tanke er kanskje å ringe en rørlegger, betale 18 000 kroner og sende regningen til selgeren.</p>
+<p>Men loven sier at selgeren har rett til å rette feilen selv først – forutsatt at det kan skje uten vesentlig ulempe for Mariam, og uten at hun har en særlig grunn til å si nei. Med andre ord: selgeren får en sjanse til å ordne opp. Først hvis han ikke gjør det innen rimelig tid, eller gjør en dårlig jobb, kan Mariam gå videre og kreve prisavslag (et fradrag i prisen) eller dekning av sine egne utgifter.</p>
+<p>Tanken bak regelen er rettferdig nok. Det er ofte billigere og enklere for selgeren å fikse feilen gjennom egne håndverkere enn å betale ut en stor pengesum. Samtidig skal ikke du som kjøper bli skadelidende av at selger får denne sjansen. Loven prøver altså å balansere begge parters interesser.</p>
+<h3>Hvorfor finnes denne regelen?</h3>
+<p>Det kan virke urettferdig at selger skal "slippe billigere unna" ved å rette selv. Men tenk på det fra en annen vinkel. Hvis du hadde fritt valg, kunne du i teorien bestilt den dyreste håndverkeren i byen og sendt regningen videre. Retting-regelen sørger for at utbedringen skjer på en fornuftig og rimelig måte. Den hindrer at små feil blåses opp til store pengekrav. For deg som kjøper er gevinsten at problemet faktisk blir løst – du sitter igjen med en bolig i orden, ikke bare en sjekk i hånden og en uløst feil.</p>
+<h3>Når kan du si nei til at selger retter?</h3>
+<p>Du må ikke alltid godta at selgeren kommer inn i hjemmet ditt med håndverkere. Du kan motsette deg retting hvis du har en god grunn. Eksempler:</p>
+<ul>
+<li><strong>Tillitsbrudd:</strong> Selgeren har allerede løyet om feil eller opptrådt uærlig. Da er det forståelig at du ikke vil ha ham eller hans folk inn igjen.</li>
+<li><strong>Vesentlig ulempe:</strong> Rettingen vil ta uker, kreve at du flytter ut, eller forstyrre livet ditt urimelig mye.</li>
+<li><strong>Selger nøler:</strong> Du har gitt beskjed, men selgeren drøyer og drøyer uten å gjøre noe konkret.</li>
+<li><strong>Dårlig håndverk:</strong> Selger har allerede forsøkt å rette, men gjorde en så elendig jobb at du ikke har tillit til et nytt forsøk.</li>
+</ul>
+<p>Klarer ikke selgeren å rette innen rimelig tid, faller hans rett bort. Da kan du ordne det selv og kreve pengene tilbake.</p>
+<h3>Hva hvis selger har boligselgerforsikring?</h3>
+<p>Mange selgere har det som heter boligselgerforsikring (tidligere kalt eierskifteforsikring). Da er det forsikringsselskapet som håndterer saken på selgers vegne. I praksis betyr det at det er forsikringsselskapet som vurderer om de vil tilby å rette feilen, eller om de heller vil betale deg et prisavslag. Du retter fortsatt kravet mot selgeren rent juridisk, men det er forsikringsselskapet som svarer. Husk at deres jurister jobber for selgeren – ikke for deg.</p>
+<h3>Slik går du frem, steg for steg</h3>
+<ol>
+<li><strong>Reklamer skriftlig og raskt.</strong> Send melding til selgeren (eller via meglerens kontaktinfo) så snart du oppdager mangelen. Beskriv feilen, og si at du mener det er en mangel. Skriftlig er viktig fordi du senere kan bevise at du sa fra i tide.</li>
+<li><strong>Spør hva selger vil gjøre.</strong> Inviter selgeren til å rette feilen. Sett gjerne en frist, for eksempel "innen tre uker".</li>
+<li><strong>Dokumenter alt.</strong> Ta bilder, ta vare på e-poster, og få en fagperson (rørlegger, takstmann) til å beskrive feilen skriftlig.</li>
+<li><strong>Vent på respons – men ikke evig.</strong> Gir selgeren ingen tilbakemelding, eller bare nøler, kan du gå videre.</li>
+<li><strong>Ordne selv hvis nødvendig.</strong> Hører du ingenting, eller gjør selger en dårlig jobb, kan du fikse feilen selv og kreve kostnaden dekket.</li>
+</ol>
+<h3>Et eksempel der det gikk galt</h3>
+<p>Jonas kjøpte enebolig på Gjøvik. Han oppdaget fukt i kjelleren og fikk umiddelbart panikk. Uten å si fra til selgeren bestilte han en entreprenør som rev opp gulvet og la nytt fuktsperresjikt – regning på 95 000 kroner. Da han sendte kravet til selger, ble det avvist: selgeren hadde aldri fått sjansen til å rette feilen selv, og kunne vist at han kunne fikset det for 40 000 kroner. Jonas endte med å få mye mindre dekket enn han hadde regnet med. Lærdommen er enkel: si alltid fra først, og la selger få sjansen.</p>
+<h3>Et eksempel der det gikk bra</h3>
+<p>Til sammenligning kjøpte Aisha en leilighet i Hamar og fant en lekkasje på badet. Hun reklamerte skriftlig samme dag og ba selger ordne opp. Selger, som hadde boligselgerforsikring, sendte en rørlegger som fikset feilen for selgers regning innen to uker. Aisha betalte ingenting og fikk problemet løst raskt. Fordi hun fulgte riktig rekkefølge, gikk alt knirkefritt.</p>
+<h3>Hvor lang tid er "rimelig tid"?</h3>
+<p>Et spørsmål mange lurer på er hvor lenge de må vente på at selger retter. Loven sier ikke et eksakt antall dager, men bruker uttrykket "rimelig tid". Hva som er rimelig avhenger av hvor alvorlig og hastende feilen er.</p>
+<ul>
+<li><strong>En aktiv vannlekkasje</strong> som gjør skade for hver dag som går, må ordnes raskt – gjerne i løpet av dager. Her kan du ikke forventes å vente i ukevis.</li>
+<li><strong>En kosmetisk feil</strong> uten hastverk, for eksempel en sprekk i en flis, kan selger få noe lengre tid på seg å ordne.</li>
+</ul>
+<p>Et godt råd: sett alltid en konkret, skriftlig frist når du ber selger rette. "Vennligst gi tilbakemelding innen 14 dager om hvordan du vil utbedre feilen" er tydeligere enn å bare vente og håpe. Da har du også et klart utgangspunkt hvis selger ikke leverer, og du må gå videre.</p>
+<h3>Hva hvis selger vil rette, men du vil ha penger?</h3>
+<p>Noen kjøpere foretrekker å få et prisavslag i stedet for at selger retter – kanskje fordi de stoler mer på sin egen håndverker, eller fordi de ikke vil ha fremmede folk inn i hjemmet. Her er det viktig å være ærlig: hovedregelen er at selger har retten til å rette først. Du kan ikke uten videre takke nei til en skikkelig retting og kreve penger i stedet.</p>
+<p>Men du har gode kort hvis det foreligger en av nei-grunnene over – tillitsbrudd, vesentlig ulempe eller dårlig håndverk. Eksempel: Omar kjøpte en bolig der selger allerede hadde forsøkt å skjule en muggskade med maling. Da selger tilbød å "rette" feilen selv, kunne Omar med rette si nei og heller kreve prisavslag, fordi tilliten var brutt. Vurder derfor situasjonen din konkret før du avviser et rettingstilbud.</p>
+<h3>Vanlige feller å unngå</h3>
+<ul>
+<li><strong>Å sette i gang reparasjon uten å si fra.</strong> Dette er den dyreste feilen, slik Jonas-eksempelet over viste. Reklamer alltid først.</li>
+<li><strong>Å gi beskjed muntlig over telefon.</strong> Da har du ingen bevis. Send alltid skriftlig, helst e-post med dato.</li>
+<li><strong>Å vente for lenge med å reklamere.</strong> Du må si fra innen rimelig tid etter at du oppdaget feilen, ellers kan du tape kravet.</li>
+<li><strong>Å godta en dårlig retting uten å klage.</strong> Hvis jobben ikke holder mål, dokumenter det med en gang og gi beskjed, slik at du kan gå videre til prisavslag.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Selger har rett til å rette mangelen selv først (§ 4-10), så lenge det ikke er til vesentlig ulempe for deg.</li>
+<li>Du kan også kreve at selger retter – det er ofte en god løsning for begge.</li>
+<li>Du kan si nei til retting hvis det er tillitsbrudd eller stor ulempe.</li>
+<li>Har selger boligselgerforsikring, er det forsikringsselskapet som håndterer saken.</li>
+<li>Reklamer alltid skriftlig og raskt, og ikke sett i gang dyre reparasjoner før selger har fått en sjanse.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

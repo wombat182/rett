@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på en skjult mangel og en synlig feil? — Rettsregel</title>
+<meta name="description" content="En synlig feil er noe du kunne sett eller fått vite om på visning eller i dokumentene — og som du dermed normalt ikke kan klage på etterpå. En skjult…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-en-skjult-mangel-og/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på en skjult mangel og en synlig feil?">
+<meta property="og:description" content="En synlig feil er noe du kunne sett eller fått vite om på visning eller i dokumentene — og som du dermed normalt ikke kan klage på etterpå. En skjult…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-en-skjult-mangel-og/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på en skjult mangel og en synlig feil?">
+<meta name="twitter:description" content="En synlig feil er noe du kunne sett eller fått vite om på visning eller i dokumentene — og som du dermed normalt ikke kan klage på etterpå. En skjult…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er forskjellen på en skjult mangel og en synlig feil?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En synlig feil er noe du kunne sett eller fått vite om på visning eller i dokumentene — og som du dermed normalt ikke kan klage på etterpå. En skjult mangel er noe som var usynlig og ukjent da du kjøpte, og som du derfor kan ha rett til å reklamere på. Skillet handler altså om hva du visste eller burde visst da du la inn budet.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova § 3-10 og § 3-7</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-10/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-10</div>
+  <div class="related-card-title">Kjøperens undersøkelsesplikt</div>
+</a><a href="../../lover/avhendingslova/3-7/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-7</div>
+  <div class="related-card-title">Selgerens plikt til å opplyse om feil</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hvorfor skillet er så viktig</h3>
+<p>Hele spørsmålet om du kan klage, henger ofte på dette ene: Hadde du grunn til å vite om feilen før du kjøpte? Loven sier at du ikke kan gjøre gjeldende som mangel noe du kjente til eller måtte kjenne til da avtalen ble inngått (avhendingsloven § 3-10). Det betyr: en synlig feil du burde oppdaget, er din risiko. En skjult mangel er selgers risiko.</p>
+<h3>Hva er en «synlig feil»?</h3>
+<p>En synlig feil er et forhold som:</p>
+<ul>
+<li>Var mulig å se ved en vanlig, aktsom visning.</li>
+<li>Eller var beskrevet i tilstandsrapport, salgsoppgave eller andre dokumenter.</li>
+<li>Eller var noe du faktisk fikk vite om muntlig av megler eller selger.</li>
+</ul>
+<p>Eksempel: Det er en stor, tydelig fuktskjold i taket i stua, godt synlig på visning. Ola velger å kjøpe likevel uten å spørre. Etterpå kan han ikke klage på akkurat denne fuktskaden — den var synlig, og han «aksepterte» den ved å kjøpe.</p>
+<p>Et annet eksempel: Tilstandsrapporten oppgir tydelig at «badet har overskredet forventet levetid og bør totalrenoveres». Når Lise senere oppdager at badet faktisk må renoveres, kan hun ikke klage. Hun var informert; det var en synlig (opplyst) feil.</p>
+<h3>Hva er en «skjult mangel»?</h3>
+<p>En skjult mangel er det motsatte:</p>
+<ul>
+<li>Den var ikke mulig å oppdage ved en vanlig visning.</li>
+<li>Den stod ikke i noen av salgsdokumentene.</li>
+<li>Du hadde ingen grunn til å regne med den ut fra boligens alder og pris.</li>
+</ul>
+<p>Eksempel: Bak en nymalt vegg i kjelleren skjuler det seg omfattende råte som ingen kunne se. Det stod ingenting om fukt i kjelleren i rapporten. Når Fatima oppdager råten etter innflytting, er dette en skjult mangel hun kan reklamere på.</p>
+<h3>Gråsonen: hva «burde» du oppdaget?</h3>
+<p>Det vanskeligste er forholdene midt imellom. Du har en viss undersøkelsesplikt: du forventes å se deg om på visningen som en alminnelig, fornuftig kjøper. Men du forventes ikke å rive opp gulv eller åpne vegger.</p>
+<p>Tenk på Bjørn som er på visning. I et hjørne av kjelleren er det en synlig vannflekk og en svak muggdoft. Han later som han ikke merker det og kjøper. Senere viser det seg å være en større fuktskade bak veggen.</p>
+<ul>
+<li>Det synlige tegnet (flekken og lukten) burde fått Bjørn til å undersøke nærmere eller spørre. Den delen kan trekke i hans disfavør.</li>
+<li>Men hvis den underliggende skaden var langt mer omfattende enn noe et synlig tegn tilsa, kan det skjulte omfanget likevel være en mangel.</li>
+</ul>
+<p>Her ser du at samme sak kan ha både en «synlig» og en «skjult» side.</p>
+<h3>En oversiktlig sammenligning</h3>
+<ul>
+<li>Synlig feil: kunne ses eller var opplyst → du bærer risikoen → normalt ingen klagerett (§ 3-10).</li>
+<li>Skjult mangel: usynlig og ikke opplyst → selger bærer risikoen → klagerett kan foreligge.</li>
+<li>Tegn på visning du ignorerte: utløser undersøkelsesplikt → kan svekke kravet ditt for den delen du burde sett.</li>
+</ul>
+<h3>Et fullstendig eksempel</h3>
+<p>Sandra kjøper en bolig fra 2006. På visning ser hun:
+- Et tydelig sprukket vindu i kjelleren (synlig).
+- I tilstandsrapporten står det at dreneringen er gammel og bør vurderes (opplyst).</p>
+<p>Etter innflytting oppdager hun i tillegg:
+- En skjult lekkasje i baderomsgulvet som ingen kunne se, og som ikke var nevnt noe sted.</p>
+<p>Resultatet:
+- Det sprukne vinduet: synlig, kan hun ikke klage på.
+- Den gamle dreneringen: opplyst i rapporten, kan hun ikke klage på.
+- Den skjulte baderomslekkasjen: skjult mangel, her kan hun ha et krav.</p>
+<p>Dette viser hvordan én og samme bolig kan inneholde alle tre kategoriene samtidig.</p>
+<h3>Undersøkelsesplikt og opplysningsplikt — to sider av samme sak</h3>
+<p>Det er nyttig å se de to pliktene sammen. Du har en undersøkelsesplikt: du skal se deg om som en fornuftig kjøper. Selgeren har en opplysningsplikt: han skal fortelle deg om forhold han kjenner til og som du har grunn til å få vite (avhendingsloven § 3-7). Disse to møtes i gråsonen.</p>
+<ul>
+<li>Hvis selgeren har opplyst tydelig om noe, og det var synlig, er det din risiko.</li>
+<li>Hvis selgeren visste om noe og tiet, og det var skjult for deg, er det selgers risiko — og du står ekstra sterkt.</li>
+<li>Hvis det var synlige tegn du burde reagert på, men selgeren også visste mer, blir det en vurdering av hvem som «kunne mest» om forholdet.</li>
+</ul>
+<p>Et viktig prinsipp: en synlig feil som selger aktivt har forsøkt å skjule eller bortforklare, kan likevel bli en mangel. Har selgeren for eksempel malt over et fuktskjold rett før visning nettopp for å skjule det, kan det «synlige» forholdet bli behandlet som skjult, fordi du ble villedet.</p>
+<h3>Et eksempel på aktiv skjuling</h3>
+<p>Tenk deg at selgeren har stilt en stor bokhylle foran en fuktskadet vegg på visningsdagen, slik at ingen kan se skaden. Etter overtakelsen flytter kjøperen hyllen og oppdager omfattende fukt. Selv om skaden i prinsippet var «på en synlig vegg», var den i praksis skjult fordi selgeren bevisst dekket den til. Da kan den behandles som en skjult mangel — og selgers handlemåte kan i tillegg svekke selgers stilling betydelig.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li>Vær aktiv på visning: se i kjeller og loft, kjenn etter lukt, åpne skap, og spør om alt du lurer på. Det reduserer risikoen for å overse synlige feil.</li>
+<li>Få svar skriftlig. Spør du om noe og får et betryggende svar, er det verdifullt om det senere viser seg å være feil.</li>
+<li>Les tilstandsrapport og salgsoppgave grundig. Alt som står der, regnes som opplyst.</li>
+<li>Reagerer du på et tegn (flekk, lukt, sprekk), undersøk eller still spørsmål FØR du byr — ikke etterpå.</li>
+<li>Oppdager du noe skjult etter innflytting, dokumenter det og reklamer raskt.</li>
+<li>Mistenker du at noe er bevisst skjult eller tildekket, ta bilder før du rører noe, og kontakt boligkjøperforsikring.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Forskjellen handler om hva du visste eller burde visst da du kjøpte. Synlige feil — det du kunne se eller fikk opplyst — bærer du selv risikoen for, og kan normalt ikke klage på (avhendingsloven § 3-10). Skjulte mangler — det usynlige og uopplyste — er selgers risiko, og her kan du ha klagerett. Vær oppmerksom på tegn på visning, for de utløser en plikt til å undersøke nærmere. Jo grundigere du er før kjøpet, desto tryggere står du etterpå.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

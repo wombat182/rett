@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gjelder avhendingsloven ved kjøp av nybygg? — Rettsregel</title>
+<meta name="description" content="Det kommer an på.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/gjelder-avhendingsloven-ved-kjop-av-nybygg/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Gjelder avhendingsloven ved kjøp av nybygg?">
+<meta property="og:description" content="Det kommer an på.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/gjelder-avhendingsloven-ved-kjop-av-nybygg/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gjelder avhendingsloven ved kjøp av nybygg?">
+<meta name="twitter:description" content="Det kommer an på.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Gjelder avhendingsloven ved kjøp av nybygg?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det kommer an på. Avhendingsloven gjelder når du kjøper en ferdig oppført bolig - også en nyoppført bolig som allerede står klar. Men kjøper du en bolig som ennå ikke er ferdigbygd fra en profesjonell utbygger, gjelder normalt bustadoppføringslova i stedet. Skillet handler om hvorvidt boligen er ferdig på avtaletidspunktet.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det kommer an på. Avhendingsloven gjelder når du kjøper en <strong>ferdig oppført</strong> bolig - også en nyoppført bolig som allerede står klar. Men kjøper du en bolig som ennå <strong>ikke er ferdigbygd</strong> fra en profesjonell utbygger, gjelder normalt bustadoppføringslova i stedet. Skillet handler om hvorvidt boligen er ferdig på avtaletidspunktet.</p>
+<h3>Det avgjørende spørsmålet</h3>
+<p>For å vite hvilken lov som gjelder, må du stille ett enkelt spørsmål: <strong>Var boligen ferdig bygd da jeg inngikk avtalen?</strong></p>
+<ul>
+<li><strong>Ja, ferdig bygd:</strong> Da gjelder som hovedregel <strong>avhendingslova</strong> (lov om avhending av fast eigedom). Dette gjelder selv om boligen er helt ny og aldri har vært bebodd - så lenge den var ferdig oppført da du kjøpte.</li>
+<li><strong>Nei, ikke ferdig - kjøpt på prospekt/under oppføring fra utbygger:</strong> Da gjelder normalt <strong>bustadoppføringslova</strong> (lov om avtalar med forbrukar om oppføring av ny bustad).</li>
+</ul>
+<p>Det er altså ikke alderen på boligen som avgjør, men om den var ferdig på kjøpstidspunktet og om selger er en profesjonell utbygger.</p>
+<h3>Hvorfor finnes det to lover?</h3>
+<p>De to lovene beskytter litt ulike situasjoner:</p>
+<ul>
+<li><strong>Avhendingslova</strong> er laget for kjøp og salg av en eksisterende, ferdig bolig. Her kan du se, ta og føle på det du kjøper.</li>
+<li><strong>Bustadoppføringslova</strong> er laget for situasjonen der du kjøper noe som ikke finnes ennå - det skal bygges. Da trenger du ekstra beskyttelse, fordi du betaler for noe du ikke kan inspisere før det står ferdig. Loven gir blant annet krav om at utbygger stiller <strong>garanti</strong> for arbeidet.</li>
+</ul>
+<h3>Eksempel 1: Nyoppført, men ferdig bolig - avhendingslova</h3>
+<p>Tenk deg at Selma kjøper en helt ny enebolig i et nybyggområde. Huset er ferdig, malt, med ferdig hage, og selges av et utbyggerfirma som har bygget det ferdig før salget. Selma kan gå på visning og se den faktiske boligen.</p>
+<p>Her gjelder <strong>avhendingslova</strong>, fordi boligen var ferdig oppført da Selma kjøpte. Selv om huset er splitter nytt, kjøper hun en ferdig eiendom - akkurat som ved et bruktkjøp, bare uten tidligere beboere.</p>
+<h3>Eksempel 2: Kjøp på tegninger - bustadoppføringslova</h3>
+<p>Tenk deg i stedet at Jonas kjøper en leilighet i et leilighetsbygg som ennå ikke er bygd. Han ser bare tegninger, en planløsning og en illustrasjon. Bygget skal stå ferdig om halvannet år, og selges av en profesjonell utbygger.</p>
+<p>Her gjelder normalt <strong>bustadoppføringslova</strong>, fordi boligen ikke var ferdig da Jonas kjøpte, og fordi han kjøper av en næringsdrivende utbygger. Jonas får dermed beskyttelsen denne loven gir - blant annet garanti fra utbygger og særlige regler om forsinkelse og mangler ved nybygg.</p>
+<h3>Hva er forskjellen i praksis for deg?</h3>
+<p>For deg som kjøper er de viktigste praktiske forskjellene:</p>
+<ul>
+<li><strong>Garanti:</strong> Etter bustadoppføringslova § 12 skal en profesjonell utbygger stille garanti for oppfyllelsen av avtalen. Dette gir deg en sikkerhet hvis utbygger ikke leverer som avtalt. Avhendingslova har ikke et tilsvarende garantikrav.</li>
+<li><strong>Forskudd og betaling:</strong> Bustadoppføringslova har regler om at du normalt ikke skal betale før garanti er stilt, og om hvordan delbetalinger kan kreves.</li>
+<li><strong>Mangler og forsinkelse:</strong> Begge lover gir deg rettigheter ved mangler og forsinkelse, men de er bygd opp litt ulikt og tilpasset henholdsvis ferdig bolig og bolig under oppføring.</li>
+</ul>
+<h3>En grei huskeregel</h3>
+<p>Spør deg selv: "Kunne jeg gått inn i selve boligen og sett den slik den faktisk er da jeg kjøpte?"</p>
+<ul>
+<li>Hvis ja → ferdig bolig → <strong>avhendingslova</strong>.</li>
+<li>Hvis nei, jeg kjøpte på tegninger/prospekt fra en utbygger → bolig under oppføring → <strong>bustadoppføringslova</strong>.</li>
+</ul>
+<p>Det finnes mellomtilfeller (for eksempel der boligen er nesten ferdig), og grensen kan i enkelte tilfeller være sammensatt. Er du i tvil, spør megleren hvilken lov som gjelder for akkurat ditt kjøp - det skal fremgå av salgsoppgaven og kontrakten.</p>
+<h3>Hvorfor er det viktig å vite hvilken lov som gjelder?</h3>
+<p>Fordi rettighetene dine - og fristene dine - kan være litt forskjellige. Hvis du for eksempel kjøper en bolig under oppføring og tror avhendingslova gjelder, kan du gå glipp av viktig beskyttelse som garantireglene gir deg. Og motsatt: kjøper du en ferdig nyoppført bolig, gjelder avhendingslovas regler om mangler og opplysningsplikt på vanlig måte.</p>
+<h3>Hva med selger som er privatperson?</h3>
+<p>Hvis du kjøper en nyoppført bolig fra en privatperson som selv har bygd den til eget bruk og nå selger den ferdig, gjelder normalt avhendingslova - fordi boligen er ferdig og selger ikke er en utbygger som bygger på oppdrag for deg. Det er kombinasjonen "ikke ferdig" + "profesjonell utbygger som bygger for deg" som typisk utløser bustadoppføringslova.</p>
+<h3>Garantien i bustadoppføringslova - tall du bør kjenne</h3>
+<p>Den kanskje viktigste forskjellen for deg som kjøper er garantikravet i bustadoppføringslova § 12. Når en profesjonell utbygger bygger en ny bolig for deg, må utbygger stille en garanti som sikkerhet. Garantien skal som hovedregel utgjøre minst 10 prosent av kjøpesummen frem til overtakelse, og minst 5 prosent av kjøpesummen i fem år etter overtakelse. På en leilighet til 4 000 000 kroner betyr det en garanti på minst 400 000 kroner frem til overtakelse, og minst 200 000 kroner i fem år etter. Denne sikkerheten beskytter deg blant annet hvis utbygger går konkurs eller ikke retter mangler. Avhendingslova har ikke noe tilsvarende garantikrav - der må du forholde deg til selger uten denne ekstra sikringen.</p>
+<h3>Dagmulkt ved forsinkelse - et eksempel</h3>
+<p>Bustadoppføringslova gir deg også rett til dagmulkt hvis boligen blir forsinket. Dagmulkten utgjør normalt minst én promille (1/1000) av kjøpesummen per kalenderdag forsinkelsen varer, og kan kreves for inntil 100 dager. Tenk deg at Jonas kjøper en leilighet til 4 000 000 kroner med avtalt overtakelse 1. september, men utbygger blir 30 dager forsinket. Da kan Jonas ha krav på dagmulkt på rundt 4 000 kroner per dag, altså omkring 120 000 kroner for de 30 dagene. Dette er en kompensasjon du normalt ikke har på samme måte ved et vanlig bruktkjøp under avhendingslova, og det er en av grunnene til at det er viktig å vite hvilken lov som gjelder.</p>
+<h3>Et grensetilfelle: nesten ferdig bolig</h3>
+<p>Hva med en bolig som er nesten ferdig - for eksempel der bare det utvendige gjenstår når du kjøper? Slike mellomtilfeller kan være sammensatte. Hovedregelen er fortsatt: var boligen i det vesentlige ferdig oppført da du avtalte kjøpet, trekker det mot avhendingslova; gjensto det vesentlig byggearbeid som utbygger skal utføre, trekker det mot bustadoppføringslova. Fordi grensen kan være uklar, er det lurt å be megler eller utbygger om en skriftlig avklaring på hvilket regelverk de mener gjelder, slik at du vet hvilke rettigheter og frister du har.</p>
+<h3>Kort oppsummert</h3>
+<p>Avhendingslova gjelder når du kjøper en ferdig oppført bolig - også en helt ny en som står klar. Men kjøper du en bolig som ennå ikke er ferdigbygd fra en profesjonell utbygger, gjelder normalt bustadoppføringslova, som gir deg ekstra beskyttelse som garanti fra utbygger. Huskeregelen er: kunne du sett den ferdige boligen da du kjøpte, er det avhendingslova; kjøpte du på tegninger fra en utbygger, er det bustadoppføringslova. Er du i tvil, spør megler hvilken lov som gjelder for ditt kjøp.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

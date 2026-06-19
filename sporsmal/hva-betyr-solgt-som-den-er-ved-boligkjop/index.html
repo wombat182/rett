@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr «solgt som den er» ved boligkjøp? — Rettsregel</title>
+<meta name="description" content="Kort fortalt: «Solgt som den er» også skrevet «as is» eller «i den stand den var ved besiktigelsen» er en setning selgeren før i tiden brukte for å…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-solgt-som-den-er-ved-boligkjop/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr «solgt som den er» ved boligkjøp?">
+<meta property="og:description" content="Kort fortalt: «Solgt som den er» også skrevet «as is» eller «i den stand den var ved besiktigelsen» er en setning selgeren før i tiden brukte for å…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-solgt-som-den-er-ved-boligkjop/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr «solgt som den er» ved boligkjøp?">
+<meta name="twitter:description" content="Kort fortalt: «Solgt som den er» også skrevet «as is» eller «i den stand den var ved besiktigelsen» er en setning selgeren før i tiden brukte for å…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva betyr «solgt som den er» ved boligkjøp?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort fortalt: «Solgt som den er» (også skrevet «as is» eller «i den stand den var ved besiktigelsen») er en setning selgeren før i tiden brukte for å fraskrive seg ansvar for feil og mangler. Etter at avhendingsloven ble endret 1. januar 2022, har et slikt generelt forbehold ingen virkning når du kjøper bolig som vanlig forbruker. Selgeren kan altså ikke lenger gjemme seg bak «som den er» for å sl</p>
+  <p class="sp-kilde">Bygger på Avhendingslova § 3-9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-9/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-9</div>
+  <div class="related-card-title">Eiendommen solgt «som den er»</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort fortalt: «Solgt som den er» (også skrevet «as is» eller «i den stand den var ved besiktigelsen») er en setning selgeren før i tiden brukte for å fraskrive seg ansvar for feil og mangler. Etter at avhendingsloven ble endret 1. januar 2022, har et slikt generelt forbehold ingen virkning når du kjøper bolig som vanlig forbruker. Selgeren kan altså ikke lenger gjemme seg bak «som den er» for å slippe unna ansvar.</p>
+<h3>Hva ordene egentlig betyr</h3>
+<p>«Avhendingsloven» er navnet på loven som styrer kjøp og salg av bolig og annen fast eiendom mellom private (lov 3. juli 1992 nr. 93). Den bruker litt gammeldags språk, og «avhending» betyr rett og slett salg.</p>
+<p>Et «forbehold» er en reservasjon: selgeren sier på forhånd «jeg tar ikke ansvar for ditt og datt». Et «generelt» eller «alminnelig» forbehold er et som ikke peker på noe konkret — det dekker alt og ingenting samtidig, som «boligen selges som den er».</p>
+<p>Tenk deg at Kari kjøper en enebolig fra 1985 av Per. I salgsoppgaven stod det med liten skrift «Eiendommen selges som den er». Tidligere betydde dette at Per kunne lene seg tilbake og si: «Du fikk jo beskjed, dette er ditt problem nå.» Etter lovendringen virker ikke et slikt generelt forbehold lenger overfor en forbrukerkjøper som Kari.</p>
+<h3>Hvorfor ble regelen endret?</h3>
+<p>Før 2022 ble nesten alle brukte boliger i Norge solgt «som den er». I praksis betydde det at kjøpere måtte oppdage svært alvorlige feil for å nå frem med et krav. Mange satt igjen med store regninger for skjulte skader. Stortinget mente dette var urimelig, og målet med endringen var «tryggere bolighandel» — at risikoen skulle fordeles mer rettferdig mellom selger og kjøper.</p>
+<p>Etter endringen sier loven uttrykkelig at ved forbrukerkjøp har «som den er»-forbehold og lignende generelle forbehold ingen virkning (avhendingsloven § 3-9 andre ledd, altså den andre delen av paragraf 3-9). Det samme gjelder forbehold som er så vage at de ikke gir kjøperen reell informasjon å vurdere ut fra.</p>
+<h3>Hva er et «forbrukerkjøp»?</h3>
+<p>Dette er viktig, for de nye reglene gjelder bare forbrukerkjøp. Et forbrukerkjøp er når en privatperson (du) kjøper bolig fra en selger som opptrer i næringsvirksomhet, ELLER — og dette er det vanligste — der loven likestiller deg med en forbruker fordi du kjøper en bolig til eget bruk gjennom megler.</p>
+<p>I praksis: kjøper du en bolig til deg selv og familien din, er du som regel forbruker. Selger du derimot to næringseiendommer til hverandre, gjelder andre regler, og der kan «som den er» fortsatt stå seg.</p>
+<h3>Hva betyr dette for deg som kjøper i dag?</h3>
+<p>Selv om setningen «solgt som den er» fremdeles dukker opp i mange salgsoppgaver — gamle vaner sitter løst — kan du som forbrukerkjøper se bort fra den som en generell ansvarsfraskrivelse. Det betyr likevel ikke at selgeren har ansvar for absolutt alt. Boligen kan fortsatt ha en mangel, men nå vurderes det etter de vanlige reglene: Hadde du grunn til å forvente noe annet enn det du fikk?</p>
+<p>La oss si at Ahmed kjøper en leilighet fra 2002 for 4,2 millioner kroner. To måneder etter overtakelsen oppdager han at det er omfattende råteskader bak baderomsveggen som ingen visste om. Tidligere ville «som den er» gjort dette vanskelig. Nå spør man i stedet: Var dette noe Ahmed hadde grunn til å regne med ved en leilighet fra 2002 til denne prisen? Råte i en så ung bolig er normalt ikke forventet, og da kan det være en mangel selgeren må svare for.</p>
+<h3>Selger kan fortsatt ta konkrete forbehold</h3>
+<p>Det er én viktig nyanse. Selgeren har fortsatt lov til å ta spesifikke, konkrete forbehold. Forskjellen er at de må være presise nok til at du faktisk kan vurdere risikoen før du legger inn bud.</p>
+<ul>
+<li>Generelt (virker IKKE): «Boligen selges som den er.»</li>
+<li>Konkret (kan virke): «Dreneringen rundt huset er fra byggeåret 1979 og er ikke skiftet. Selger tar forbehold om at den kan være moden for utskifting, anslått kostnad 150 000–250 000 kroner.»</li>
+</ul>
+<p>I det andre eksempelet vet du nøyaktig hva du går til, og kan ta det med i regnestykket ditt. Da kan du ikke klage på akkurat dette i ettertid.</p>
+<h3>Gjelder det samme for nybygg og borettslag?</h3>
+<p>Et naturlig spørsmål er om dette bare gjelder vanlige eneboliger. Avhendingsloven gjelder kjøp av fast eiendom mellom private og brukte boliger, inkludert eierseksjoner (selveierleiligheter). For helt nye boliger du kjøper direkte fra utbygger gjelder ofte en annen lov, bustadoppføringslova, som har sitt eget — og minst like sterke — forbrukervern. For andeler i borettslag er det egne regler, men prinsippet om at generelle ansvarsfraskrivelser ikke skal kunne overkjøre forbrukervernet, går igjen i hele systemet. Poenget for deg er: uansett hvilken bolig du kjøper som privatperson til eget bruk, kan ikke en løs «som den er»-frase frata deg vernet ditt.</p>
+<h3>Hva betyr endringen for budrunden?</h3>
+<p>En sideeffekt verdt å nevne er at endringen påvirker hele kjøpsprosessen, ikke bare hva som skjer hvis det går galt. Fordi selgeren ikke lenger kan skjule seg bak en generell frase, har det blitt enda viktigere for selgere å fremlegge en god tilstandsrapport. For deg som kjøper betyr det at du som regel får mer informasjon på bordet før du byr. Du bør bruke denne informasjonen aktivt:</p>
+<ul>
+<li>Sett deg grundig inn i tilstandsrapporten før budrunden.</li>
+<li>Bruk opplyste svakheter til å vurdere hva boligen faktisk er verdt for deg.</li>
+<li>Husk at det du har fått opplyst, normalt ikke kan påklages senere — så vurder det nøye nå.</li>
+</ul>
+<p>På denne måten er «som den er»-endringen egentlig en del av et større mål: at både kjøper og selger skal handle med åpne øyne.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li>Ikke la deg skremme av ordene «solgt som den er» i annonsen. Som forbruker er du beskyttet uansett.</li>
+<li>Les tilstandsrapporten nøye, for det selger faktisk har opplyst der, kan du som regel ikke klage på senere.</li>
+<li>Skill mellom generelle floskler og konkrete forbehold. Et konkret forbehold med tall og beskrivelse er noe du må forholde deg til.</li>
+<li>Ta vare på salgsoppgave, takst og all kommunikasjon. Det blir gull verdt hvis det oppstår en tvist.</li>
+<li>Spør megleren skriftlig om det er tatt noen konkrete forbehold, og be om å få det presisert.</li>
+<li>Er du i tvil etter overtakelsen, kontakt boligkjøperforsikringen din eller Forbrukerrådet før du gjør noe forhastet.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>«Solgt som den er» var tidligere selgerens måte å skyve ansvaret over på kjøperen. Etter lovendringen 1. januar 2022 har et slikt generelt forbehold ingen virkning i forbrukerkjøp (avhendingsloven § 3-9 andre ledd). Boligen kan fortsatt ha mangler, men det avgjøres nå ut fra hva du som kjøper hadde grunn til å forvente. Selger kan bare reservere seg gjennom konkrete, spesifikke forbehold du faktisk kan ta stilling til. Du står derfor langt sterkere som boligkjøper i dag enn for noen år siden.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

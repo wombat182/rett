@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gjelder angrerett ved boligkjøp? — Rettsregel</title>
+<meta name="description" content="Nei.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/gjelder-angrerett-ved-boligkjop/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Gjelder angrerett ved boligkjøp?">
+<meta property="og:description" content="Nei.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/gjelder-angrerett-ved-boligkjop/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gjelder angrerett ved boligkjøp?">
+<meta name="twitter:description" content="Nei.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Gjelder angrerett ved boligkjøp?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei. Det finnes ingen angrerett når du kjøper bolig i det vanlige boligmarkedet. Når budet ditt er akseptert, har du inngått en bindende avtale, og du kan ikke ombestemme deg og trekke deg uten å risikere å måtte betale erstatning. Dette overrasker mange, så det er viktig å forstå før du legger inn bud.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Nei. Det finnes ingen angrerett når du kjøper bolig i det vanlige boligmarkedet. Når budet ditt er akseptert, har du inngått en bindende avtale, og du kan ikke ombestemme deg og trekke deg uten å risikere å måtte betale erstatning. Dette overrasker mange, så det er viktig å forstå før du legger inn bud.</p>
+<h3>Hva er angrerett, og hvorfor gjelder den ikke her?</h3>
+<p>Angrerett betyr at du innen en viss frist kan trekke deg fra et kjøp uten å oppgi grunn, slik du for eksempel kan ved netthandel. Denne retten følger av angrerettloven, som gjelder for mange forbrukerkjøp av varer og tjenester.</p>
+<p>Men angrerettloven gjelder ikke for kjøp av fast eiendom på vanlig måte. Et boligkjøp er altså unntatt. Det betyr at når du har lagt inn et bud som blir akseptert, er handelen i prinsippet i boks, og du kan ikke bare ombestemme deg dagen etter.</p>
+<p>Grunnen er at boligkjøp er en stor og spesiell type avtale med egne regler i avhendingsloven, der hele systemet bygger på at en aksept av et bud skaper en bindende avtale.</p>
+<h3>Eksempel: Nora som ombestemte seg</h3>
+<p>Nora la inn et bud på 4,1 millioner kroner på en leilighet i Stavanger etter en visning. Budet ble akseptert av selger samme kveld. To dager senere fant hun en annen leilighet hun likte bedre, og ville trekke seg fra den første.</p>
+<p>Nora trodde hun hadde en slags angrerett. Det hadde hun ikke. Da hun trakk seg, sto selger igjen med en bolig som måtte legges ut på nytt. Selger kunne kreve erstatning for tapet, for eksempel hvis boligen ble solgt for mindre andre gang, pluss ekstra meglerkostnader. Nora endte med å betale et betydelig beløp for å komme seg ut av avtalen.</p>
+<p>Dette illustrerer poenget: et akseptert bud er en forpliktelse, ikke en uforpliktende interesse.</p>
+<h3>Hva med nye boliger og forbrukerkjøp?</h3>
+<p>Det finnes nyanser som forvirrer mange:</p>
+<ul>
+<li><strong>Kjøp av brukt bolig fra privatperson</strong> reguleres av avhendingsloven, og det er ingen angrerett.</li>
+<li><strong>Kjøp av ny bolig fra utbygger</strong> kan reguleres av bustadoppføringslova, men heller ikke der finnes en generell angrerett som lar deg ombestemme deg fritt.</li>
+<li>Diskusjonen om en mulig fremtidig angrerett dukker av og til opp i offentligheten, blant annet har Forbrukerrådet foreslått en angrerett for boliger som selges uten tilstandsrapport. Men dette er foreløpig et forslag, ikke gjeldende rett. Per i dag har du ikke angrerett.</li>
+</ul>
+<p>Med andre ord: uansett om boligen er ny eller brukt, kan du ikke regne med å kunne angre etter at budet er akseptert.</p>
+<h3>Hva betyr dette i praksis for deg?</h3>
+<p>Fordi du ikke kan angre, må du gjøre hjemmeleksa FØR du byr:</p>
+<ol>
+<li><strong>Gå grundig på visning.</strong> Se på alt, still spørsmål, og ta gjerne med en fagperson hvis du er usikker.</li>
+<li><strong>Les salgsoppgaven og tilstandsrapporten nøye.</strong> Det er nå, ikke etterpå, du skal oppdage røde flagg.</li>
+<li><strong>Avklar økonomien.</strong> Sjekk med banken hvor mye du kan låne, og skaff finansieringsbevis.</li>
+<li><strong>Ta forbehold i budet hvis noe er uavklart.</strong> Du kan for eksempel by med et skriftlig forbehold om at noe viktig blir avklart. Hvis forbeholdet ikke innfris, er du ikke bundet. Dette er den nærmeste "nødutgangen" du har.</li>
+<li><strong>Sett en realistisk maksgrense</strong> før budrunden, så du ikke byr deg ut av fornuften.</li>
+</ol>
+<h3>Forskjellen på å angre og å oppdage en mangel</h3>
+<p>Det er viktig å ikke blande to ulike ting:</p>
+<ul>
+<li><strong>Å angre</strong> betyr at du ombestemmer deg uten at noe er galt med boligen. Det har du ikke rett til.</li>
+<li><strong>Å reklamere på en mangel</strong> betyr at boligen viser seg å være i dårligere stand enn du hadde grunn til å vente. Da har du rettigheter etter avhendingsloven, for eksempel prisavslag eller heving i alvorlige tilfeller.</li>
+</ul>
+<p>Du kan altså ikke gå fra kjøpet fordi du ombestemte deg, men du kan ha krav hvis selger har holdt tilbake informasjon eller boligen har skjulte feil.</p>
+<h3>Vanlige misforståelser om angrerett ved bolig</h3>
+<p>Det florerer av myter på dette området. Her er noen vi ofte møter:</p>
+<ul>
+<li><strong>"Jeg har 14 dagers angrerett, det har jeg jo på alt annet."</strong> Nei. Den lovbestemte angrefristen ved netthandel gjelder ikke boligkjøp.</li>
+<li><strong>"Jeg signerte jo ikke kontrakt ennå, bare ga et bud."</strong> Det er nettopp budaksepten som binder, ikke kontrakten. Kontrakten er bare en nedskriving av en avtale som allerede er inngått.</li>
+<li><strong>"Megler sa det går nok greit å trekke seg."</strong> Stol aldri på muntlige løsninger. Be om alt skriftlig, og husk at det er selger, ikke megler, som eventuelt må godta at du slipper ut av avtalen.</li>
+<li><strong>"Boligen var dyrere enn jeg trodde, da kan jeg vel gå fra det."</strong> At du fikk dårlig råd er din risiko, ikke en grunn til å angre.</li>
+</ul>
+<h3>Hva kan du gjøre hvis du virkelig ikke vil ha boligen?</h3>
+<p>Selv om du ikke har angrerett, er ikke alt nødvendigvis tapt. Du kan:</p>
+<ol>
+<li><strong>Snakke med selger og megler så tidlig som mulig.</strong> Kanskje finnes det en interessent som bød nest høyest og fortsatt er interessert. Da kan partene noen ganger bli enige om en løsning.</li>
+<li><strong>Tilby en kompensasjon.</strong> Hvis selger må selge på nytt og taper penger, kan en frivillig avtale om å dekke selgers tap være billigere enn en konflikt.</li>
+<li><strong>Sjekke om du hadde et gyldig forbehold.</strong> Hadde du tatt et reelt forbehold som ikke er innfridd, er du kanskje ikke bundet likevel.</li>
+</ol>
+<p>Det viktigste er å handle raskt og ærlig, ikke å ignorere problemet i håp om at det går over.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Det finnes ingen angrerett ved kjøp av bolig i det vanlige markedet; angrerettloven gjelder ikke fast eiendom på vanlig måte.</li>
+<li>Når budet ditt er akseptert, har du en bindende avtale, og du kan ikke trekke deg uten risiko for erstatning.</li>
+<li>Dette gjelder både brukt bolig (avhendingsloven) og i praksis ny bolig.</li>
+<li>Forslag om angrerett for boliger uten tilstandsrapport er foreløpig bare et forslag.</li>
+<li>Gjør all undersøkelse FØR du byr: visning, salgsoppgave, finansiering.</li>
+<li>Bruk skriftlige forbehold i budet hvis noe er uavklart; det er den nærmeste nødutgangen du har.</li>
+<li>Å angre er noe annet enn å reklamere på en faktisk mangel, der du har rettigheter.</li>
+</ul>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

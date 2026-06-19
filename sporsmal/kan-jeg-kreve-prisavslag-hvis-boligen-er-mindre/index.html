@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg kreve prisavslag hvis boligen er mindre enn oppgitt? — Rettsregel</title>
+<meta name="description" content="Ja, ofte kan du det.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-kreve-prisavslag-hvis-boligen-er-mindre/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg kreve prisavslag hvis boligen er mindre enn oppgitt?">
+<meta property="og:description" content="Ja, ofte kan du det.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-kreve-prisavslag-hvis-boligen-er-mindre/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg kreve prisavslag hvis boligen er mindre enn oppgitt?">
+<meta name="twitter:description" content="Ja, ofte kan du det.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg kreve prisavslag hvis boligen er mindre enn oppgitt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, ofte kan du det. Hvis arealavviket er stort nok eller arealet var uriktig opplyst slik at det utgjør en mangel, kan du kreve prisavslag etter avhendingsloven § 4-12. Prisavslag betyr at du får tilbake en del av kjøpesummen fordi du fikk en dårligere bolig enn avtalt.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova § 4-12 og § 3-1</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/4-12/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-12</div>
+  <div class="related-card-title">Prisavslag</div>
+</a><a href="../../lover/avhendingslova/3-1/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-1</div>
+  <div class="related-card-title">Hva er en mangel ved en eiendom</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, ofte kan du det. Hvis arealavviket er stort nok eller arealet var uriktig opplyst slik at det utgjør en mangel, kan du kreve prisavslag etter avhendingsloven § 4-12. Prisavslag betyr at du får tilbake en del av kjøpesummen fordi du fikk en dårligere bolig enn avtalt.</p>
+<h3>Hva er egentlig et prisavslag?</h3>
+<p>Et prisavslag er en sum penger du får tilbake fra selger fordi boligen har en mangel. Tanken er enkel: du betalte for én vare, men fikk en mindreverdig en, og da skal prisen justeres ned tilsvarende. Du beholder boligen – du får bare litt av kjøpesummen tilbake.</p>
+<p>For arealavvik er prisavslaget ment å gjenspeile verdien av det arealet du ikke fikk.</p>
+<h3>Hvordan regnes prisavslaget ved arealavvik?</h3>
+<p>Her finnes det to hovedmåter, og ved arealavvik brukes ofte en forholdsmessig verdireduksjon. Det betyr at prisavslaget settes til den andelen av kjøpesummen som svarer til den manglende verdien. I praksis tar man gjerne utgangspunkt i kvadratmeterprisen.</p>
+<p><strong>Eksempel – Henrik:</strong> Henrik betalte 4 200 000 kroner for en leilighet oppgitt til 84 kvadratmeter. Faktisk areal var 78 kvadratmeter – et avvik på 6 kvadratmeter, altså rundt 7,1 prosent.</p>
+<p>Slik kan prisavslaget regnes:</p>
+<ul>
+<li>Kvadratmeterpris: 4 200 000 / 84 = 50 000 kroner per kvadratmeter.</li>
+<li>Manglende areal: 6 kvadratmeter.</li>
+<li>Råberegning: 6 × 50 000 = 300 000 kroner.</li>
+</ul>
+<p>Men her er en viktig nyanse: prisavslaget settes vanligvis ikke krone for krone etter kvadratmeter. Domstolene legger ofte til grunn at de manglende kvadratmeterne ikke er like mye verdt som en gjennomsnittlig kvadratmeter, fordi mye av boligens verdi ligger i selve det å ha en bolig (beliggenhet, kjøkken, bad), ikke bare i de siste kvadratmeterne. Derfor blir prisavslaget ofte noe lavere enn den rene kvadratmeterberegningen – kanskje i størrelsesorden 150 000–250 000 kroner i Henriks tilfelle, avhengig av en konkret vurdering.</p>
+<h3>Egenandelen på 10 000 kroner</h3>
+<p>Etter en lovendring som trådte i kraft 1. januar 2022, må kjøperen selv bære de første 10 000 kronene av det samlede mangelskravet (avhendingsloven § 3-1 fjerde ledd). Dette kalles ofte en «egenandel». Den trekkes fra én gang – fra summen av alle mangler til sammen, ikke fra hver enkelt mangel.</p>
+<p>For Henrik: hvis prisavslaget for arealavviket settes til 200 000 kroner og det ikke er andre mangler, blir resultatet 200 000 − 10 000 = 190 000 kroner.</p>
+<p>Har han i tillegg en fuktskade som gir 50 000 kroner i prisavslag, legges de sammen først: 200 000 + 50 000 = 250 000, og deretter trekkes egenandelen én gang: 250 000 − 10 000 = 240 000 kroner.</p>
+<h3>Hvorfor blir prisavslaget ofte lavere enn kvadratmeterregningen?</h3>
+<p>Mange blir overrasket over at prisavslaget for arealavvik ikke bare blir «manglende kvadratmeter ganger kvadratmeterpris». Grunnen er logisk når man tenker etter. Kvadratmeterprisen er et gjennomsnitt for hele boligen, men de siste kvadratmeterne er ikke alltid like verdifulle som de første. Den første kvadratmeteren gir deg et sted å bo, et kjøkken, et bad – grunnfunksjonene. De siste kvadratmeterne gir litt ekstra plass. Når et rom er noe mindre enn antatt, mister du litt ekstra plass, men ikke nødvendigvis selve bofunksjonen. Derfor lander domstolene ofte på en lavere verdi per manglende kvadratmeter enn gjennomsnittsprisen. Dette er greit å vite, slik at du ikke setter forventningene høyere enn realistisk og blir unødig skuffet i forhandlingene.</p>
+<h3>Når får du ikke prisavslag?</h3>
+<ul>
+<li>Hvis avviket er så lite at det ikke regnes som en mangel (under tommelfingerregelen og uten andre skjerpende forhold).</li>
+<li>Hvis du visste om det rette arealet da du kjøpte.</li>
+<li>Hvis du reklamerte for sent.</li>
+</ul>
+<h3>Steg for steg: slik krever du prisavslag for arealavvik</h3>
+<ul>
+<li>Dokumenter avviket med en uavhengig oppmåling.</li>
+<li>Regn ut kvadratmeterpris og manglende areal.</li>
+<li>Reklamer skriftlig til selger «innen rimelig tid» etter at du oppdaget avviket.</li>
+<li>Sett fram et konkret, begrunnet krav om prisavslag, men vær åpen for at endelig sum vurderes konkret.</li>
+<li>Husk at egenandelen på 10 000 kroner trekkes fra totalen.</li>
+<li>Kontakt selgers boligselgerforsikring (selskapet som forsikrer selger) hvis det finnes en slik – kravet rettes da gjerne dit.</li>
+<li>Få bistand fra Forbrukerrådet eller advokat hvis selger avviser kravet.</li>
+</ul>
+<h3>En ekstra regneøvelse</h3>
+<p>Sara betalte 2 800 000 kroner for en leilighet oppgitt til 56 kvadratmeter, men faktisk areal var 51. Kvadratmeterpris: 2 800 000 / 56 = 50 000 kroner. Manglende areal: 5 kvadratmeter. Råberegning: 250 000 kroner. Etter en konkret verdivurdering kan prisavslaget bli lavere, og etter egenandelen trekkes 10 000 kroner fra det endelige beløpet.</p>
+<h3>Hva hvis selger sier at arealet bare var «omtrentlig»?</h3>
+<p>En vanlig innvending fra selgersiden er at arealet i annonsen bare var et anslag, og at du ikke kunne stole på det. Her er det viktig å vite at forbehold må være tydelige og konkrete for å ha særlig vekt. En generell setning langt nede i salgsoppgaven om at «areal er omtrentlig angitt» fritar ikke uten videre selger for ansvar når avviket er reelt og betydelig. Hvis arealet er presentert som et konkret tall i annonsen og salgsoppgaven, har du normalt grunn til å stole på det. Du som vanlig forbruker kan ikke forventes å måle opp boligen selv på visning. Så ikke la deg avspise med et generelt forbehold – be selgersiden forklare konkret hvorfor det oppgitte tallet skulle vært ansett som usikkert.</p>
+<h3>Hva med boligselgerforsikring?</h3>
+<p>De fleste som selger bolig, tegner en boligselgerforsikring (tidligere kalt eierskifteforsikring). Det betyr at det ofte er et forsikringsselskap, ikke privatpersonen, som vurderer og svarer på kravet ditt. Det er nyttig å vite, for det betyr at du ikke skal være redd for å «ta pengene fra en vanlig familie» – kravet håndteres av et selskap som er vant til denne typen saker. Du retter da reklamasjonen til selger, men selskapet overtar den videre dialogen. Hvis selskapet avviser kravet, kan du klage videre, og i siste instans bringe saken inn for Finansklagenemnda eller domstolene.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, du kan kreve prisavslag (§ 4-12) hvis boligen er mindre enn oppgitt og avviket utgjør en mangel. Prisavslaget settes ofte som en forholdsmessig verdireduksjon med utgangspunkt i kvadratmeterpris, men blir vanligvis lavere enn ren kvadratmeterberegning. Husk egenandelen på 10 000 kroner (§ 3-1 fjerde ledd, gjelder fra 1.1.2022), som trekkes én gang fra det samlede kravet. Dokumenter avviket og reklamer i tide.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

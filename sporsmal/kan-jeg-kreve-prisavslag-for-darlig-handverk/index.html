@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg kreve prisavslag for dårlig håndverk? — Rettsregel</title>
+<meta name="description" content="Ja, du kan kreve prisavslag for dårlig håndverk hvis arbeidet er utført så dårlig at boligen er i klart dårligere stand enn du hadde grunn til å regne…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-kreve-prisavslag-for-darlig-handverk/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg kreve prisavslag for dårlig håndverk?">
+<meta property="og:description" content="Ja, du kan kreve prisavslag for dårlig håndverk hvis arbeidet er utført så dårlig at boligen er i klart dårligere stand enn du hadde grunn til å regne…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-kreve-prisavslag-for-darlig-handverk/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg kreve prisavslag for dårlig håndverk?">
+<meta name="twitter:description" content="Ja, du kan kreve prisavslag for dårlig håndverk hvis arbeidet er utført så dårlig at boligen er i klart dårligere stand enn du hadde grunn til å regne…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg kreve prisavslag for dårlig håndverk?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, du kan kreve prisavslag for dårlig håndverk hvis arbeidet er utført så dårlig at boligen er i klart dårligere stand enn du hadde grunn til å regne med, og det ikke var tydelig opplyst. Det avgjørende er hvor dårlig arbeidet er, hva som sto i salgspapirene, og hva det koster å rette opp.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova §§ 3-1, 3-2, 3-8, 4-19, 4-12</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-1/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-1</div>
+  <div class="related-card-title">Hva er en mangel ved en eiendom</div>
+</a><a href="../../lover/avhendingslova/3-2/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-2</div>
+  <div class="related-card-title">Generelle krav til tilstanden</div>
+</a><a href="../../lover/avhendingslova/3-8/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-8</div>
+  <div class="related-card-title">Uriktig opplysning om eiendommen</div>
+</a><a href="../../lover/avhendingslova/4-19/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-19</div>
+  <div class="related-card-title">Reklamasjon — frister for å klage</div>
+</a><a href="../../lover/avhendingslova/4-12/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-12</div>
+  <div class="related-card-title">Prisavslag</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hva mener vi med "dårlig håndverk"?</h3>
+<p>Dårlig håndverk er arbeid som er utført så slett at det ikke holder vanlig faglig standard. Det er ikke det samme som at noe er gammelt eller slitt, det handler om kvaliteten på selve utførelsen. Typiske eksempler:</p>
+<ul>
+<li><strong>Bad uten skikkelig fall til sluk</strong>, så vannet blir stående på gulvet.</li>
+<li><strong>Fliser som løsner</strong> fordi de er lagt på feil underlag eller med feil lim.</li>
+<li><strong>Skjevt lagt parkett</strong> med store sprekker og knirk.</li>
+<li><strong>Manglende eller feil membran</strong> på våtrom, som gir lekkasje.</li>
+<li><strong>Malingsarbeid som flasser</strong> fordi underlaget ikke var forbehandlet.</li>
+<li><strong>Snekkerarbeid som ikke er i vater eller lodd</strong>, med synlige skjevheter.</li>
+<li><strong>Dårlig tetting rundt vinduer og dører</strong> som gir trekk og fukt.</li>
+</ul>
+<h3>Når gir dårlig håndverk grunnlag for prisavslag?</h3>
+<p>Loven sier at boligen har en mangel hvis den er i vesentlig dårligere stand enn du hadde grunn til å regne med ut fra pris og opplysninger (§ 3-1 og § 3-2). For dårlig håndverk er disse spørsmålene viktige:</p>
+<ol>
+<li><strong>Hvor ille er arbeidet?</strong> Småfeil som er normale i en brukt bolig gir ikke grunnlag. Men arbeid som svikter sin funksjon, for eksempel et bad som lekker, er en reell mangel.</li>
+<li><strong>Hva ble opplyst?</strong> Hvis badet er solgt som "nyrenovert og fagmessig utført", men er fullt av feil, har du fått en uriktig opplysning (§ 3-8). Var feilene synlige og beskrevet med TG2/TG3 i tilstandsrapporten, er det vanskeligere å klage.</li>
+<li><strong>Burde du sett det på visning?</strong> Helt åpenbare feil du kunne oppdaget ved en vanlig undersøkelse, kan du ikke alltid klage på i ettertid. Men skjult dårlig arbeid bak fliser og vegger oppdager man sjelden på en visning.</li>
+</ol>
+<p>Eksempel: Ahmed kjøpte en leilighet der badet var pusset opp året før salget, beskrevet som "totalrenovert av rørlegger og flislegger". Et halvt år etter innflytting begynte naboen under å klage på fuktflekker i taket. En takstmann avdekket at membranen var lagt feil og at fallet til sluket gikk feil vei. Dette var dårlig håndverk i strid med opplysningene, og Ahmed fikk prisavslag.</p>
+<p>Et eksempel på det motsatte: Hanne klaget på at parketten i stua hadde noen knirk og at en list ikke satt helt rett. En fagperson vurderte at dette var innenfor det som må aksepteres i en brukt bolig, og at gulvet fungerte som det skulle. Her var det snakk om småfeil av kosmetisk art, ikke en mangel. Lærdommen er at terskelen for "dårlig håndverk" som mangel ligger der hvor arbeidet enten svikter sin funksjon eller klart bryter med faglig standard, ikke ved enhver liten skjønnhetsfeil.</p>
+<h3>Hva koster det å rette opp dårlig håndverk?</h3>
+<ul>
+<li><strong>Legge om fliser som har løsnet (mindre flate):</strong> ca. 15 000–50 000 kr.</li>
+<li><strong>Rive og bygge opp igjen et bad med riktig membran og fall:</strong> ca. 150 000–350 000 kr.</li>
+<li><strong>Slipe og legge ny parkett i en stue:</strong> ca. 30 000–80 000 kr.</li>
+<li><strong>Utbedre dårlig malingsarbeid (sparkling, grunning, ny maling):</strong> ca. 10 000–40 000 kr per rom.</li>
+<li><strong>Rette opp skjevt eller manglende fall på terrasse/balkong:</strong> ca. 30 000–100 000 kr.</li>
+</ul>
+<h3>Steg for steg</h3>
+<ol>
+<li><strong>Dokumenter feilene</strong> med bilder, og noter når og hvordan de viste seg (for eksempel lekkasje, knirk, sprekker).</li>
+<li><strong>Få en fagvurdering.</strong> En takstmann eller relevant håndverker bør beskrive hva som er galt og hvorfor det ikke holder faglig standard. Dette er kjernen i et prisavslagskrav.</li>
+<li><strong>Sammenlign med salgspapirene.</strong> Hva ble sagt om arbeidet? Hvilken TG fikk det aktuelle rommet eller bygningsdelen?</li>
+<li><strong>Innhent pristilbud</strong> på utbedring.</li>
+<li><strong>Reklamer skriftlig</strong> til selger eller boligselgerforsikringen, med fagrapport, bilder og tilbud (§ 4-19). Vær rask, klag innen rimelig tid etter at du oppdaget feilen.</li>
+</ol>
+<h3>Hvilke krav kan du stille?</h3>
+<ul>
+<li><strong>Prisavslag (§ 4-12)</strong> som hovedregel tilsvarer det det koster å utbedre mangelen.</li>
+<li><strong>Retting (§ 4-10)</strong> der selger fikser feilen.</li>
+<li><strong>Erstatning (§ 4-14)</strong> for følgeskader, for eksempel fuktskade hos naboen under eller på egen bolig.</li>
+<li><strong>Heving (§ 4-13)</strong> bare ved svært alvorlige og omfattende mangler.</li>
+</ul>
+<p>Noen praktiske poeng å huske:</p>
+<ul>
+<li><strong>Egenandel på 10 000 kr (§ 3-1):</strong> Etter 2022-reglene må mangelen normalt overstige denne terskelen før du har krav på prisavslag. Mange enkeltfeil i dårlig håndverk når over dette når man legger sammen, men en liten skjevhet alene gjør det ikke.</li>
+<li><strong>Fradrag for standardheving:</strong> Hvis utbedringen gir deg en klart bedre standard enn du hadde krav på, kan prisavslaget reduseres tilsvarende.</li>
+<li><strong>Femårsfristen:</strong> Du kan uansett ikke reklamere senere enn fem år etter overtakelse, så vær oppmerksom på feil som først dukker opp etter en stund.</li>
+</ul>
+<h3>Hva skiller en mangel fra vanlig slitasje?</h3>
+<p>Dette er det vanskeligste og viktigste skillet i slike saker, så her er noen huskeregler:</p>
+<ul>
+<li><strong>Funksjonen.</strong> Gjør feilen at noe ikke virker som det skal? Et bad som lekker, fliser som faller av, et gulv som ikke tåler vanlig bruk. Da er det en mangel, ikke bare slitasje.</li>
+<li><strong>Opplysningene.</strong> Ble arbeidet fremstilt som nytt og fagmessig? Da har du krav på at det faktisk er det. Var det beskrevet som gammelt og slitt, må du regne med mer.</li>
+<li><strong>Alderen.</strong> Et 25 år gammelt bad som er slitt er forventet. Et bad pusset opp i fjor som allerede lekker er ikke det.</li>
+<li><strong>Synligheten.</strong> Feil du enkelt kunne sett på visning, kan du sjelden klage på i ettertid. Skjult dårlig arbeid bak fliser og vegger er en annen sak.</li>
+</ul>
+<h3>Slik bygger du en god sak</h3>
+<ol>
+<li><strong>Få en uavhengig fagperson</strong> til å beskrive feilen og slå fast at den bryter med faglig standard. Dette er selve fundamentet i kravet.</li>
+<li><strong>Knyt feilen til opplysningene</strong> i salgspapirene. Var noe oppgitt som fagmessig utført?</li>
+<li><strong>Hent et konkret pristilbud</strong> på utbedring, slik at kravet ditt har et tall.</li>
+<li><strong>Reklamer skriftlig og i tide.</strong> Beskriv feilen tydelig, legg ved rapport, bilder og tilbud, og si klart hva du krever.</li>
+</ol>
+<p>Mange dårlig-håndverk-saker løses ved en minnelig avtale når du møter selger eller forsikringsselskapet med en ryddig fagrapport. Blir det ikke enighet, kan saken bringes inn for Finansklagenemnda eller forliksrådet.</p>
+<h3>Kort oppsummert</h3>
+<p>Du kan kreve prisavslag for dårlig håndverk når arbeidet svikter sin funksjon eller er klart under faglig standard, og det ikke var tydelig opplyst. Vanlig slitasje og småfeil teller ikke. Dokumenter feilene, få en fagrapport som forklarer hvorfor arbeidet ikke holder mål, hent pristilbud, og reklamer skriftlig og raskt. Prisavslaget tilsvarer normalt utbedringskostnaden, med fradrag for standardheving og hensyn til egenandelen på 10 000 kr.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

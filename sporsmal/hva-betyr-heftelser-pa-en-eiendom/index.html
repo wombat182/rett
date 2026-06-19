@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr heftelser på en eiendom? — Rettsregel</title>
+<meta name="description" content="Heftelser er rettigheter eller forpliktelser som hviler på en eiendom - typisk pant lån med sikkerhet i boligen, servitutter bruksrettigheter for andre…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-heftelser-pa-en-eiendom/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr heftelser på en eiendom?">
+<meta property="og:description" content="Heftelser er rettigheter eller forpliktelser som hviler på en eiendom - typisk pant lån med sikkerhet i boligen, servitutter bruksrettigheter for andre…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-heftelser-pa-en-eiendom/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr heftelser på en eiendom?">
+<meta name="twitter:description" content="Heftelser er rettigheter eller forpliktelser som hviler på en eiendom - typisk pant lån med sikkerhet i boligen, servitutter bruksrettigheter for andre…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva betyr heftelser på en eiendom?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Heftelser er rettigheter eller forpliktelser som hviler på en eiendom - typisk pant (lån med sikkerhet i boligen), servitutter (bruksrettigheter for andre) eller andre begrensninger. De står registrert i grunnboka hos Kartverket. Som kjøper bør du alltid sjekke hvilke heftelser som følger med eiendommen.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova § 3-7 og § 4-17</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-7/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-7</div>
+  <div class="related-card-title">Selgerens plikt til å opplyse om feil</div>
+</a><a href="../../lover/avhendingslova/4-17/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-17</div>
+  <div class="related-card-title">Rettsmangel — noen andre har rettigheter i boligen din</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Heftelser er rettigheter eller forpliktelser som hviler på en eiendom - typisk pant (lån med sikkerhet i boligen), servitutter (bruksrettigheter for andre) eller andre begrensninger. De står registrert i grunnboka hos Kartverket. Som kjøper bør du alltid sjekke hvilke heftelser som følger med eiendommen.</p>
+<h3>Heftelser forklart enkelt</h3>
+<p>Tenk deg eiendommen som et hus med en del "knagger" på. På noen av knaggene henger det rettigheter eller forpliktelser som ikke nødvendigvis forsvinner selv om eieren skifter. Disse "knaggene" er heftelser. Noen er praktiske og helt ufarlige, andre kan begrense hva du får lov til å gjøre med boligen. Derfor er det viktig å vite hvilke som finnes.</p>
+<h3>De vanligste typene heftelser</h3>
+<p><strong>Pant (panterettigheter)</strong>
+Pant betyr at noen - oftest en bank - har sikkerhet i eiendommen for et lån. Hvis lånet ikke betales, kan panthaver i ytterste konsekvens kreve boligen tvangssolgt. Når du kjøper en bolig, skal selgers gamle pantelån normalt <strong>slettes</strong> i forbindelse med oppgjøret, slik at du overtar boligen uten selgers gjeld hengende ved. Ditt eget nye boliglån blir så tinglyst som pant.</p>
+<p><strong>Servitutter (bruksrettigheter)</strong>
+En servitutt er en rett en annen har til å bruke eiendommen din på en bestemt måte, eller en begrensning på hva du kan gjøre. Eksempler:
+- <strong>Veirett:</strong> Naboen har rett til å kjøre over din tomt for å komme til sin egen.
+- <strong>Ledningsrett:</strong> Kommunen eller en nabo har rett til å ha vann- eller kloakkledninger gjennom tomten.
+- <strong>Boplikt eller byggebegrensninger</strong> som følger eiendommen.</p>
+<p><strong>Andre heftelser</strong>
+Det kan også finnes for eksempel borett, forkjøpsrett, eller leieavtaler tinglyst på eiendommen.</p>
+<h3>Grunnboka - din kilde til sannhet</h3>
+<p>Alle tinglyste heftelser står i <strong>grunnboka</strong>, det offentlige registeret Kartverket fører over fast eiendom. Her ser du hvem som eier eiendommen, hvilke pantelån som er registrert, og hvilke servitutter og andre rettigheter som er tinglyst. Du kan bestille en bekreftet grunnboksutskrift fra Kartverket - den koster 260 kroner (sats for 2026). Megler legger normalt ved relevant grunnboksinformasjon i salgsoppgaven, men du kan også sjekke selv.</p>
+<h3>Et eksempel som viser hvorfor dette betyr noe</h3>
+<p>Tenk deg at Nora vurderer å kjøpe en hytte med fin sjøutsikt. I grunnboka oppdager hun en tinglyst veirett: naboen bak har rett til å kjøre over hyttetomten hennes for å komme til sin egen hytte. Det betyr at hun ikke kan sperre veien eller bygge der.</p>
+<p>Dette er ikke nødvendigvis et problem - mange eiendommer har slike rettigheter, og det er helt vanlig. Men det er bedre at Nora vet det før kjøpet enn at hun blir overrasket etterpå når naboen kjører forbi stuevinduet hver helg. Kunnskap om heftelsene gjør at hun kan ta et informert valg.</p>
+<h3>Pant som skal slettes - et viktig poeng ved oppgjøret</h3>
+<p>La oss si at Bjørn kjøper en leilighet av Kari. Kari har et boliglån på 2 millioner kroner med pant i leiligheten. Når Bjørn kjøper, brukes en del av kjøpesummen til å innfri Karis lån, og banken sletter pantet. Megleren passer på at dette skjer i riktig rekkefølge, slik at Bjørn overtar leiligheten uten Karis gamle pant hengende ved.</p>
+<p>Dette er en av grunnene til at oppgjøret går via megler og klientkonto: det sikrer at gammelt pant slettes og at du får en "ren" eiendom. I kontrakten skal det stå hvilke heftelser som skal slettes før overtakelse.</p>
+<h3>Heftelser som følger med - og som du må godta</h3>
+<p>Ikke alle heftelser slettes. Servitutter som veirett, ledningsrett og lignende følger ofte med eiendommen og overtas av deg som ny eier. Det er helt normalt. Poenget er at du skal kjenne til dem før kjøpet, slik at du vet hva du faktisk kjøper. Salgsoppgaven skal opplyse om tinglyste heftelser, og selger har plikt til å gi deg korrekte opplysninger (avhendingslova § 3-7 om manglende opplysninger).</p>
+<h3>Hva hvis det dukker opp en heftelse du ikke fikk vite om?</h3>
+<p>Hvis det viser seg å hvile en heftelse på eiendommen som du ikke var kjent med, og som du ikke burde regnet med, kan dette være en mangel (avhendingslova § 4-17 om rettsmangler og manglende heimel). Da kan du ha krav mot selger - for eksempel prisavslag eller erstatning. Derfor er det så viktig å sjekke grunnboka og lese salgsoppgaven nøye, og å reklamere raskt hvis noe ikke stemmer.</p>
+<h3>Sjekkliste for heftelser før du kjøper</h3>
+<ul>
+<li>[ ] Les avsnittet om heftelser i salgsoppgaven.</li>
+<li>[ ] Be megler om grunnboksutskrift, eller bestill selv fra Kartverket (260 kr).</li>
+<li>[ ] Sjekk hvilke pant som er registrert - og at de skal slettes ved salg.</li>
+<li>[ ] Se etter servitutter (veirett, ledningsrett, byggebegrensninger).</li>
+<li>[ ] Spør megler om noe er uklart, særlig rettigheter som begrenser bruken.</li>
+<li>[ ] Kontroller at kontrakten sier hvilke heftelser som slettes før overtakelse.</li>
+</ul>
+<h3>Slik leser du en grunnboksutskrift</h3>
+<p>En grunnboksutskrift kan se litt kryptisk ut første gang, men den er enklere enn den ser ut. Den er som regel delt i seksjoner:</p>
+<ul>
+<li><strong>Hjemmelsopplysninger:</strong> Hvem som eier eiendommen i dag, og hva som ble betalt sist den ble overført.</li>
+<li><strong>Pengeheftelser:</strong> Pant og lån som er registrert. Her ser du for eksempel "Pantedokument" med et beløp og hvilken bank som er panthaver. Dette er typisk det som skal slettes når du kjøper.</li>
+<li><strong>Servitutter:</strong> Tinglyste rettigheter som veirett, ledningsrett, byggebegrensninger og lignende. Disse følger ofte med eiendommen.</li>
+</ul>
+<p>Et lite tips: noen gamle servitutter har kryptiske formuleringer fra mange tiår tilbake. Forstår du ikke hva en servitutt betyr, be megler om en forklaring - eller bestill kopi av selve det tinglyste dokumentet fra Kartverket (260 kroner) for å se hva som faktisk står.</p>
+<h3>Et eksempel med tall: pant som overstiger kjøpesummen</h3>
+<p>Tenk deg at Bjørn vil kjøpe en leilighet for 3 000 000 kroner, men i grunnboka står det registrert pant på 3 500 000 kroner fra selgers bank. Betyr det at Bjørn arver gjelden? Nei. Pantet er bare en sikkerhetsramme, ikke nødvendigvis det selger faktisk skylder. Megleren innhenter en såkalt restgjeldsbekreftelse fra banken, som viser hva selger virkelig skylder - kanskje bare 2 200 000 kroner. Den summen innfris av kjøpesummen, og pantet slettes. Bjørn overtar en ren leilighet. Poenget: ikke bli skremt av et høyt panttall i grunnboka - det viktige er at megleren sørger for at alt selgers pant slettes ved oppgjøret.</p>
+<h3>Hvorfor servitutter sjelden er noe å frykte</h3>
+<p>De fleste eiendommer har én eller flere servitutter, og de aller fleste er helt udramatiske: en felles avkjørsel, en kloakkledning i bakken, eller en rett naboen har til å vedlikeholde et gjerde. Du skal ikke bli skremt av ordet "heftelse". Poenget er å vite hva som finnes, slik at du ikke blir overrasket. Skulle det derimot dukke opp noe som vesentlig begrenser bruken din - for eksempel en byggeforbudssone over halve tomten - er det noe du bør vurdere nøye før du byr, og noe selger har plikt til å opplyse om.</p>
+<h3>Kort oppsummert</h3>
+<p>Heftelser er rettigheter eller forpliktelser som hviler på en eiendom - mest typisk pant (lån med sikkerhet i boligen) og servitutter (bruksrettigheter som veirett). De står i grunnboka hos Kartverket, og du kan bestille en utskrift for 260 kroner. Selgers gamle pantelån skal normalt slettes ved oppgjøret, mens servitutter ofte følger med. Sjekk alltid heftelsene før du kjøper, les salgsoppgaven nøye, og reklamer raskt hvis det dukker opp en heftelse du ikke fikk vite om.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

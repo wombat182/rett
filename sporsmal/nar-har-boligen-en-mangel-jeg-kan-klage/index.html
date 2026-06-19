@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når har boligen en mangel jeg kan klage på? — Rettsregel</title>
+<meta name="description" content="Du kan klage når boligen er i dårligere stand enn du hadde grunn til å forvente – og når avviket er stort nok til at det går ut over egenandelen på 10 000…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-har-boligen-en-mangel-jeg-kan-klage/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når har boligen en mangel jeg kan klage på?">
+<meta property="og:description" content="Du kan klage når boligen er i dårligere stand enn du hadde grunn til å forvente – og når avviket er stort nok til at det går ut over egenandelen på 10 000…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-har-boligen-en-mangel-jeg-kan-klage/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når har boligen en mangel jeg kan klage på?">
+<meta name="twitter:description" content="Du kan klage når boligen er i dårligere stand enn du hadde grunn til å forvente – og når avviket er stort nok til at det går ut over egenandelen på 10 000…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Når har boligen en mangel jeg kan klage på?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du kan klage når boligen er i dårligere stand enn du hadde grunn til å forvente – og når avviket er stort nok til at det går ut over egenandelen på 10 000 kroner. Det avgjørende er ikke om noe er feil i absolutt forstand, men om det er verre enn det du med rimelighet kunne regne med ut fra pris, alder og opplysningene du fikk. Reglene finnes i avhendingsloven §§ 3-1 til 3-8.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova §§ 3-1, 3-2, 3-8, 3-7, 3-9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-1/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-1</div>
+  <div class="related-card-title">Hva er en mangel ved en eiendom</div>
+</a><a href="../../lover/avhendingslova/3-2/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-2</div>
+  <div class="related-card-title">Generelle krav til tilstanden</div>
+</a><a href="../../lover/avhendingslova/3-8/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-8</div>
+  <div class="related-card-title">Uriktig opplysning om eiendommen</div>
+</a><a href="../../lover/avhendingslova/3-7/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-7</div>
+  <div class="related-card-title">Selgerens plikt til å opplyse om feil</div>
+</a><a href="../../lover/avhendingslova/3-9/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-9</div>
+  <div class="related-card-title">Eiendommen solgt «som den er»</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Du kan klage når boligen er i dårligere stand enn du hadde grunn til å forvente – og når avviket er stort nok til at det går ut over egenandelen på 10 000 kroner. Det avgjørende er ikke om noe er feil i absolutt forstand, men om det er verre enn det du med rimelighet kunne regne med ut fra pris, alder og opplysningene du fikk. Reglene finnes i avhendingsloven §§ 3-1 til 3-8.</p>
+<h3>Forventning er nøkkelen</h3>
+<p>La oss møte Petter. Han kjøpte en enebolig fra 1968 for 5,2 millioner kroner. Tre uker etter overtakelse oppdager han at det drypper fra et rør under kjøkkenvasken. Har boligen en mangel?</p>
+<p>Svar: Det kommer an på. Et lite, lett synlig rør som er løst, og som koster 1 500 kroner å fikse, vil neppe være en mangel – både fordi det er bagatellmessig, fordi man må forvente noe slitasje på et hus fra 1968, og fordi det ligger under egenandelen på 10 000 kroner. Men hvis dryppingen skyldes en omfattende, skjult råteskade under hele kjøkkengulvet til 180 000 kroner, er bildet helt annerledes.</p>
+<p>Poenget: Samme symptom kan være «greit nok» eller en alvorlig mangel, avhengig av omfang og hva du hadde grunn til å forvente.</p>
+<h3>De tre situasjonene der du oftest har et krav</h3>
+<p><strong>Situasjon A: Skjulte feil som er verre enn forventet (avhl. § 3-2).</strong>
+Boligen har en mangel hvis den er i vesentlig dårligere stand enn du hadde grunn til å vente. «Vesentlig» betyr at det skal litt til – små avvik teller normalt ikke. Eksempel: Linnea kjøpte en leilighet og oppdaget omfattende skjult muggsopp bak panelet i soverommet. Det var ikke nevnt noe sted, og kostet 95 000 kroner å utbedre. Klart over terskelen.</p>
+<p><strong>Situasjon B: Selger sa noe som ikke stemte (avhl. § 3-8).</strong>
+Fikk du uriktige opplysninger som påvirket kjøpet ditt, har boligen en mangel – uansett om selger var i god tro. Eksempel: På visning sa selger at «taket ble lagt om i 2018». I virkeligheten var taket fra 2003 og modent for utskifting. Den feilopplysningen virket inn på prisen Hassan var villig til å betale.</p>
+<p><strong>Situasjon C: Selger holdt tilbake noe viktig (avhl. § 3-7).</strong>
+Visste selger om et negativt forhold du burde fått vite om, og forholdet ble fortiet, er det en mangel. Eksempel: Naboforholdet var elendig, med en pågående nabokonflikt om tomtegrense og en verserende sak. Selger nevnte det ikke, selv om dette er noe en kjøper normalt vil vite om.</p>
+<h3>Bagatellgrensen og egenandelen – to terskler nedenfra</h3>
+<p>To ting kan stoppe en sak selv om noe «er feil». For det første må avviket etter § 3-2 være «vesentleg» – altså ikke en bagatell. For det andre må tapet etter lovendringen i 2022 overstige egenandelen på 10 000 kroner samlet (avhl. § 3-1 fjerde ledd).</p>
+<p>Eksempel: Fredrik finner en sprukken takstein (2 500 kr), en løs listverk (800 kr) og en defekt stikkontakt (1 200 kr). Til sammen 4 500 kroner. Det er både i grenseland for hva som er «vesentlig», og klart under egenandelen. Her har han neppe en sak. Men finner han i tillegg en skjult råteskade til 40 000 kroner, regnes alt sammen, egenandelen trekkes én gang, og han sitter igjen med et reelt krav.</p>
+<h3>Et eksempel der det IKKE er en mangel</h3>
+<p>Det er like nyttig å se når svaret er nei. Thea kjøpte en enebolig fra 1985. Tilstandsrapporten hadde TG2 på badet, med merknad om at membranen nærmet seg teknisk levetid. To år senere må badet pusses opp. Thea blir skuffet, men dette er neppe en mangel: hun ble advart i rapporten, boligen er av en alder der bad må påregnes utskiftet, og prisen reflekterte standarden. Forventningen hennes var rett og slett ikke berettiget.</p>
+<h3>«Som den er» betyr ikke at du står uten vern</h3>
+<p>Mange tror at hvis boligen ble solgt «som den er», kan de ikke klage på noe. Det er feil. Etter lovendringen i 2022 kan «som den er»-forbehold ikke lenger brukes ved salg til forbrukere (avhl. § 3-9 gjelder nå i hovedsak næringssalg). Selger har likevel fortsatt ansvar for skjulte feil som gjør boligen vesentlig dårligere enn forventet, og for manglende og uriktige opplysninger.</p>
+<h3>Når har du IKKE et krav?</h3>
+<ul>
+<li>Når feilen var godt synlig eller tydelig beskrevet i tilstandsrapporten.</li>
+<li>Når du kjente til forholdet før kjøpet (avhl. § 3-10).</li>
+<li>Når tapet er under egenandelen på 10 000 kroner samlet, og det ikke finnes andre mangler å regne sammen med.</li>
+<li>Når det bare er normal slitasje ut fra boligens alder.</li>
+</ul>
+<h3>Undersøkelsesplikten din – en felle å være klar over</h3>
+<p>Loven forventer at du undersøkte boligen før kjøpet, i hvert fall så godt du kunne ut fra omstendighetene (avhl. § 3-10). Det du så, eller åpenbart burde sett, på visning, kan du normalt ikke klage på senere. Var det synlige vannflekker i kjellertaket, og du lot være å spørre, står du svakere.</p>
+<p>Eksempel: Marius gikk på visning og la merke til at parketten buet seg i gangen, men tenkte ikke mer over det. Etterpå viser det seg å være fukt under gulvet. Fordi tegnet var synlig og han burde undersøkt nærmere, kan kravet hans bli redusert eller falle bort. Den som ser noe mistenkelig på visning, bør spørre – og helst få svaret skriftlig.</p>
+<h3>Slik vurderer du om du har en sak</h3>
+<ol>
+<li><strong>Beskriv avviket.</strong> Hva er faktisk feil, og hvor mye koster det å rette?</li>
+<li><strong>Sammenlign med forventningen.</strong> Hva sa annonse, prospekt og tilstandsrapport? Hva slags bolig, alder og pris?</li>
+<li><strong>Sjekk opplysningene.</strong> Ble noe sagt eller skrevet som var feil, eller holdt tilbake?</li>
+<li><strong>Regn på egenandelen.</strong> Overstiger tapet 10 000 kroner samlet?</li>
+<li><strong>Dokumentér.</strong> Ta bilder, ta vare på annonse og prospekt, og få gjerne en fagperson til å vurdere.</li>
+<li><strong>Var feilen skjult?</strong> Kunne du sett den på visning, står du svakere.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Du har en mangel du kan klage på når boligen er vesentlig dårligere enn forventet (§ 3-2), når du fikk uriktige opplysninger (§ 3-8), eller når viktig informasjon ble holdt tilbake (§ 3-7). «Som den er»-salg gir ikke lenger selger fritt leide ved forbrukersalg. Husk å regne med egenandelen på 10 000 kroner, og at du ikke kan klage på det som var synlig eller kjent for deg ved kjøpet. Er du i tvil, dokumentér grundig og innhent en faglig vurdering før du går videre.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

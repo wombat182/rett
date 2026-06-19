@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvilke omkostninger kommer i tillegg til kjøpesummen? — Rettsregel</title>
+<meta name="description" content="Når du kjøper bolig, er kjøpesummen bare en del av regningen.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvilke-omkostninger-kommer-i-tillegg-til-kjopesummen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvilke omkostninger kommer i tillegg til kjøpesummen?">
+<meta property="og:description" content="Når du kjøper bolig, er kjøpesummen bare en del av regningen.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvilke-omkostninger-kommer-i-tillegg-til-kjopesummen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvilke omkostninger kommer i tillegg til kjøpesummen?">
+<meta name="twitter:description" content="Når du kjøper bolig, er kjøpesummen bare en del av regningen.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvilke omkostninger kommer i tillegg til kjøpesummen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Når du kjøper bolig, er kjøpesummen bare en del av regningen. I tillegg kommer omkostninger - først og fremst dokumentavgift, tinglysingsgebyrer og eventuelt boligkjøperforsikring. På en vanlig selveierbolig utgjør omkostningene typisk rundt 2,5-3 prosent av kjøpesummen. Du må ha disse pengene klare ved overtakelse.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Når du kjøper bolig, er kjøpesummen bare en del av regningen. I tillegg kommer omkostninger - først og fremst dokumentavgift, tinglysingsgebyrer og eventuelt boligkjøperforsikring. På en vanlig selveierbolig utgjør omkostningene typisk rundt 2,5-3 prosent av kjøpesummen. Du må ha disse pengene klare ved overtakelse.</p>
+<h3>Kort om hva "omkostninger" er</h3>
+<p>Omkostninger er alle de ekstra kostnadene som påløper for å gjennomføre selve kjøpet og få boligen registrert på deg. De er ikke en del av prisen til selger, men noe du betaler til staten, Kartverket eller eventuelt et forsikringsselskap. I salgsoppgaven står de ofte oppgitt som "Omkostninger" rett under prisantydningen, og du bør alltid lese den linjen nøye.</p>
+<h3>De faste postene - med tall</h3>
+<p>La oss følge Kristin, som kjøper en selveierleilighet i Trondheim for 3 600 000 kroner. Slik ser omkostningene hennes ut med 2026-satser:</p>
+<table>
+<thead>
+<tr>
+<th>Post</th>
+<th>Beløp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dokumentavgift (2,5 % av 3 600 000)</td>
+<td>90 000 kr</td>
+</tr>
+<tr>
+<td>Tinglysingsgebyr skjøte</td>
+<td>545 kr</td>
+</tr>
+<tr>
+<td>Tinglysingsgebyr pantedokument (lån)</td>
+<td>545 kr</td>
+</tr>
+<tr>
+<td><strong>Sum faste omkostninger</strong></td>
+<td><strong>91 090 kr</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Hvis Kristin også kjøper boligkjøperforsikring (mer om det under), kan det komme noen tusenlapper i tillegg, avhengig av selskap og boligtype.</p>
+<h3>Boligkjøperforsikring - frivillig, men nyttig</h3>
+<p>Boligkjøperforsikring er en forsikring som gir deg juridisk hjelp dersom du oppdager mangler ved boligen etter kjøpet og vil reise krav mot selger. Den dekker advokatbistand og saksomkostninger. Den er frivillig, og prisen varierer ofte fra rundt 4 000 til godt over 10 000 kroner avhengig av boligtype og pris.</p>
+<p>Merk at dette er forsikring for <strong>kjøperen</strong>. Den må ikke forveksles med selgers forsikring (boligselgerforsikring/eierskifteforsikring), som selgeren tegner for å beskytte seg selv.</p>
+<p>Mange synes boligkjøperforsikring gir trygghet, særlig i en bransje der det av og til oppstår uenighet om skjulte feil. Men det er ditt valg, og du bør ikke føle deg presset til å kjøpe den på stedet.</p>
+<h3>Borettslag: helt andre tall</h3>
+<p>Kjøper du borettslagsandel i stedet for selveierbolig, ser regnestykket helt annerledes ut, fordi du slipper dokumentavgiften.</p>
+<p>Tenk deg at Jonas kjøper en borettslagsleilighet i Bergen for 3 600 000 kroner - samme pris som Kristins selveierleilighet. Hans omkostninger:</p>
+<ul>
+<li>Gebyr for tinglysing av pant i andelen: 545 kr</li>
+<li>Eventuelt et lite eierskifte-/andelsovergangsgebyr til forretningsføreren: vanligvis noen tusenlapper</li>
+<li>Eventuell boligkjøperforsikring: frivillig</li>
+</ul>
+<p>Jonas slipper altså de 90 000 kronene i dokumentavgift som Kristin må betale. Det er en betydelig forskjell på to like dyre boliger, og verdt å regne på.</p>
+<p>Vær oppmerksom på en ting med borettslag: det finnes ofte <strong>fellesgjeld</strong>. Det er lån som hele borettslaget har, og din andel av den betaler du gjennom de månedlige felleskostnadene. Fellesgjelden er ikke en "omkostning" ved kjøpet, men den påvirker hvor mye du faktisk betaler totalt over tid. Prisantydningen viser bare innskuddet/andelsverdien - sjekk alltid hva den totale prisen blir når du legger til andel av fellesgjeld.</p>
+<h3>Det du IKKE trenger å betale for å kjøpe</h3>
+<p>Det er greit å vite hva som ikke er en kjøpsomkostning, så du ikke blir lurt:</p>
+<ul>
+<li><strong>Meglerhonoraret</strong> betales av selgeren, ikke av deg som kjøper.</li>
+<li><strong>Takst/tilstandsrapport</strong> bestiller og betaler selgeren.</li>
+<li><strong>Eiendomsskatt og kommunale avgifter</strong> løper videre etter overtakelse, men er ikke en engangsomkostning ved kjøpet. De fordeles mellom kjøper og selger etter overtakelsesdato.</li>
+</ul>
+<h3>Glem ikke flyttekostnadene</h3>
+<p>Når du legger budsjettet, husk at det også kommer kostnader rundt selve flyttingen som ikke har noe med jussen å gjøre: flyttebyrå eller leiebil, ny strømavtale, internett, eventuell oppussing og møbler. Disse er ikke "omkostninger" i juridisk forstand, men de tømmer kontoen like effektivt. Et godt råd er å sette av en buffer på noen titusen kroner til det uforutsette.</p>
+<h3>Slik regner du ut totalsummen din</h3>
+<p>La oss sette opp en enkel oppskrift du kan bruke for hvilken som helst selveierbolig:</p>
+<ol>
+<li>Skriv ned prisantydningen (eller forventet budsum).</li>
+<li>Gang med 0,025 for å finne dokumentavgiften.</li>
+<li>Legg til 545 kr for skjøte og 545 kr for pantedokument.</li>
+<li>Legg til eventuell boligkjøperforsikring.</li>
+<li>Summen er det du trenger utover lån og egenkapital til selve kjøpesummen.</li>
+</ol>
+<p>Eksempel for en bolig til 5 000 000 kr: 5 000 000 × 0,025 = 125 000 kr i dokumentavgift, pluss 1 090 kr i gebyrer = <strong>126 090 kroner i omkostninger</strong>. Det er mye penger som må være på plass når oppgjøret skal skje.</p>
+<h3>Hvor i salgsoppgaven finner du omkostningene?</h3>
+<p>I en typisk salgsoppgave står prisantydningen øverst, og rett under den en linje som heter "Omkostninger" eller "Kjøper må i tillegg betale". Der er som regel dokumentavgift og tinglysingsgebyrer spesifisert med konkrete tall, beregnet ut fra prisantydningen. Et viktig poeng: hvis du byr over prisantydning, øker også dokumentavgiften, fordi den regnes av den faktiske kjøpesummen. Byr Kristin 3 600 000 kroner men ender opp med å vinne budrunden på 3 850 000 kroner, blir dokumentavgiften 96 250 kroner i stedet for 90 000 - altså 6 250 kroner mer enn det som sto i salgsoppgaven. Husk dette i en het budrunde: hver hundretusenlapp du byr over, koster deg 2 500 kroner ekstra i avgift.</p>
+<h3>Forskjellen på "omkostninger" og "totalpris"</h3>
+<p>Noen salgsoppgaver oppgir både en prisantydning og en "totalpris". For en selveierbolig er totalprisen ganske enkelt prisantydning pluss omkostninger. For et borettslag kan "totalpris" derimot bety noe annet: innskudd (det du betaler/låner) pluss andel av fellesgjeld. Det er lett å blande disse sammen. Sørg for at du forstår nøyaktig hva totalprisen inkluderer, slik at du sammenligner epler med epler når du vurderer to boliger.</p>
+<h3>Et regneeksempel som setter alt sammen</h3>
+<p>La oss ta en full gjennomgang for Kristin, som ender opp med å kjøpe selveierleiligheten for 3 750 000 kroner etter budrunde:</p>
+<ul>
+<li>Kjøpesum: 3 750 000 kr</li>
+<li>Dokumentavgift (2,5 %): 93 750 kr</li>
+<li>Tinglysingsgebyr skjøte: 545 kr</li>
+<li>Tinglysingsgebyr pantedokument: 545 kr</li>
+<li>Boligkjøperforsikring: ca. 6 000 kr</li>
+<li><strong>Sum omkostninger: ca. 100 840 kr</strong></li>
+<li><strong>Totalt å skaffe (kjøpesum + omkostninger): ca. 3 850 840 kr</strong></li>
+</ul>
+<p>Av dette dekker hun det meste med boliglån, men omkostningene og egenkapitalen må hun ha spart. Når hun ser hele regnestykket samlet, blir det tydelig hvor viktig det er å regne på omkostningene på forhånd.</p>
+<h3>Omkostninger er som regel egenkapital - ikke lån</h3>
+<p>Et poeng som overrasker mange førstegangskjøpere: bankene regner vanligvis omkostningene som noe du skal dekke med egne, oppsparte penger, ikke med boliglånet. Bankene låner deg som hovedregel inntil 85 prosent av boligens verdi, og de drøyt 90 000 kronene i omkostninger på en tremillionersbolig kommer som regel i tillegg til de 15 prosentene du selv må stille med. For Kristin betyr det at hun ikke bare må ha spart 15 prosent av kjøpesummen, men også de rundt 91 000-100 000 kronene i omkostninger oppå det. Det er klokt å spørre banken konkret om de regner omkostningene inn i lånet eller ikke - svaret avgjør hvor mye du faktisk trenger på konto før du kan by.</p>
+<h3>Vanlige misforståelser om omkostninger</h3>
+<p>La oss rydde opp i noen ting folk ofte tror feil om:</p>
+<ul>
+<li><strong>"Omkostningene er en fast sum."</strong> Nei - dokumentavgiften er 2,5 prosent av faktisk kjøpesum, så jo høyere du byr, jo høyere blir avgiften. Tallet i salgsoppgaven er bare et anslag basert på prisantydningen.</li>
+<li><strong>"Megler tar et kutt av omkostningene mine."</strong> Nei - meglerhonoraret betales av selger. Dine omkostninger går til staten og Kartverket, ikke til megleren.</li>
+<li><strong>"Borettslag er alltid billigst totalt."</strong> Ikke nødvendigvis. Du sparer dokumentavgiften, men borettslag har ofte fellesgjeld og høyere felleskostnader. Se på totalbildet over tid, ikke bare omkostningene ved kjøpet.</li>
+</ul>
+<h3>Sjekk om selger dekker noe av omkostningene</h3>
+<p>I noen salg - særlig nybygg fra utbygger - står det at "selger dekker dokumentavgift" eller at omkostningene er inkludert i prisen. Dette er et salgsargument utbyggere bruker for å gjøre boligen mer attraktiv. Les salgsoppgaven nøye: hvis det står at omkostningene er inkludert, sparer du potensielt titusenvis av kroner. Men ta ingenting for gitt - sjekk hva som faktisk er avtalt, og få det skriftlig i kontrakten.</p>
+<h3>Kort oppsummert</h3>
+<p>I tillegg til kjøpesummen kommer omkostninger - hovedsakelig dokumentavgift på 2,5 prosent og tinglysingsgebyrer på 545 kroner per dokument. På en selveierbolig utgjør dette typisk rundt 2,5-3 prosent av prisen. Borettslag slipper dokumentavgift og blir derfor billigere i omkostninger. Boligkjøperforsikring er frivillig. Regn alltid ut totalsummen før du byr, og legg inn en buffer til flytting og uforutsette utgifter.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

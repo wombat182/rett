@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva gjør jeg hvis det er for høye radonverdier? — Rettsregel</title>
+<meta name="description" content="For høye radonverdier kan være en mangel hvis du ikke ble opplyst om radonrisikoen, eller hvis det ble gitt feil opplysninger om radonmålinger. Men radon…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-det-er-for-hoye/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva gjør jeg hvis det er for høye radonverdier?">
+<meta property="og:description" content="For høye radonverdier kan være en mangel hvis du ikke ble opplyst om radonrisikoen, eller hvis det ble gitt feil opplysninger om radonmålinger. Men radon…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-det-er-for-hoye/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva gjør jeg hvis det er for høye radonverdier?">
+<meta name="twitter:description" content="For høye radonverdier kan være en mangel hvis du ikke ble opplyst om radonrisikoen, eller hvis det ble gitt feil opplysninger om radonmålinger. Men radon…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva gjør jeg hvis det er for høye radonverdier?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>For høye radonverdier kan være en mangel hvis du ikke ble opplyst om radonrisikoen, eller hvis det ble gitt feil opplysninger om radonmålinger. Men radon er usynlig og må måles, så det er sjelden selger eller du visste om det på forhånd. Det avgjørende er hva som sto i salgspapirene og hvilke verdier som er målt.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova §§ 3-1, 3-2, 3-8, 3-7, 4-19</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-1/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-1</div>
+  <div class="related-card-title">Hva er en mangel ved en eiendom</div>
+</a><a href="../../lover/avhendingslova/3-2/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-2</div>
+  <div class="related-card-title">Generelle krav til tilstanden</div>
+</a><a href="../../lover/avhendingslova/3-8/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-8</div>
+  <div class="related-card-title">Uriktig opplysning om eiendommen</div>
+</a><a href="../../lover/avhendingslova/3-7/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-7</div>
+  <div class="related-card-title">Selgerens plikt til å opplyse om feil</div>
+</a><a href="../../lover/avhendingslova/4-19/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-19</div>
+  <div class="related-card-title">Reklamasjon — frister for å klage</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hva er radon, egentlig?</h3>
+<p>Radon er en radioaktiv gass uten lukt eller farge. Den siver opp fra grunnen og kan samle seg inne i boligen, særlig i kjeller og første etasje. Over tid øker høye radonnivåer risikoen for lungekreft. Det er derfor myndighetene anbefaler at alle bør måle radon.</p>
+<p>Verdiene måles i becquerel per kubikkmeter luft (Bq/m³). Strålevernet (DSA) opererer med to viktige grenser:</p>
+<ul>
+<li><strong>Tiltaksgrense på 100 Bq/m³:</strong> Er årsgjennomsnittet over dette, bør du gjøre tiltak for å få nivået ned.</li>
+<li><strong>Grenseverdi på 200 Bq/m³:</strong> Nivået bør uansett aldri overstige dette i rom der folk oppholder seg.</li>
+</ul>
+<p>For utleieboliger er disse grensene ikke bare en anbefaling, men et krav i strålevernforskriften. Leier du ut en del av boligen, må radonnivået være under 200 Bq/m³, og du må gjøre tiltak dersom det er over 100 Bq/m³.</p>
+<h3>Når er radon en mangel ved boligen?</h3>
+<p>Radon vurderes opp mot hva du som kjøper hadde grunn til å regne med (§ 3-1 og § 3-2). Typiske situasjoner der det blir en mangel:</p>
+<ul>
+<li><strong>Selger oppga at radon var målt og lå lavt, men det stemte ikke</strong> (uriktig opplysning, § 3-8).</li>
+<li><strong>Selger visste at boligen lå i et område med kjent høy radonforekomst og hadde målt høye verdier, men holdt det skjult</strong> (§ 3-7).</li>
+<li><strong>Boligen markedsføres med en godkjent utleiedel, men radonnivået i utleiedelen er over grenseverdien</strong>, slik at den ikke lovlig kan leies ut.</li>
+</ul>
+<p>Eksempel: Familien Holm kjøpte en enebolig i et område på Østlandet som er kjent for radon. Selger krysset av i egenerklæringen for at radon var målt og var "i orden". Etter innflytting målte familien selv og fikk 480 Bq/m³ i kjellerstua, langt over grenseverdien. Siden selgers opplysning var feil, var dette en mangel.</p>
+<p>Motsatt: Hvis ingenting var opplyst om radon, og du heller ikke spurte, kan det være vanskeligere å nå frem, fordi radon er noe du selv kan måle. Da kommer det an på en helhetsvurdering.</p>
+<p>Et eksempel på det motsatte: Tobias kjøpte en leilighet i andre etasje i et nyere bygg. Han målte 130 Bq/m³, altså over tiltaksgrensen, men under grenseverdien. Bygget lå ikke i et kjent radonområde, og ingenting var opplyst feil. Et enkelt ventilasjonstiltak kostet ham rundt 8 000 kr. Siden kostnaden lå under egenandelen og det ikke var gitt feil opplysninger, måtte han dekke det selv. Dette illustrerer at moderate radonverdier i en vanlig leilighet ofte ikke gir grunnlag for å klage.</p>
+<h3>Spesielt om utleie</h3>
+<p>Hvis du kjøpte boligen nettopp for å leie ut en del av den, er radon ekstra viktig. For utleieboliger er grensene et juridisk krav, ikke bare en anbefaling. Det betyr:</p>
+<ul>
+<li>Du må kunne dokumentere at radonnivået i utleiedelen er under grenseverdien på 200 Bq/m³.</li>
+<li>Er nivået mellom 100 og 200 Bq/m³, må du gjøre tiltak for å få det så lavt som praktisk mulig.</li>
+<li>Klarer du ikke dette, kan du ikke lovlig leie ut, og da blir et tapt leiepotensial en del av regnestykket overfor selger.</li>
+</ul>
+<p>Var utleiedelen markedsført som klar til bruk, men radonnivået er for høyt, styrker det kravet ditt betraktelig.</p>
+<h3>Hva koster radontiltak?</h3>
+<p>Den gode nyheten er at radontiltak ofte er rimeligere enn folk frykter:</p>
+<ul>
+<li><strong>Radonmåling (sporfilm over to vintermåneder):</strong> ca. 500–1 500 kr.</li>
+<li><strong>Tetting av sprekker og gjennomføringer i kjellergulv:</strong> ca. 5 000–15 000 kr.</li>
+<li><strong>Radonbrønn med vifte under huset:</strong> ca. 15 000–35 000 kr.</li>
+<li><strong>Radonsug / ventilasjonstiltak i hele boligen:</strong> ca. 20 000–50 000 kr.</li>
+<li><strong>Omfattende tiltak ved nybyggnivå (radonsperre under hele plata):</strong> kan bli vesentlig dyrere, men er sjelden aktuelt i eksisterende bolig.</li>
+</ul>
+<h3>Hva sier salgspapirene egentlig?</h3>
+<p>I egenerklæringen som selger fyller ut, er det ofte et eget punkt om radon. Selger kan krysse av for "ja", "nei" eller "vet ikke" på om radon er målt, og oppgi eventuelle verdier. Her er det viktig å lese nøye:</p>
+<ul>
+<li>Krysset selger av for at radon <strong>ikke er målt</strong> eller "vet ikke", har du i praksis fått beskjed om at dette er uavklart. Da har du som kjøper en oppfordring til å undersøke selv, og det blir vanskeligere å klage hvis du senere måler høyt.</li>
+<li>Oppga selger derimot <strong>konkrete, lave måleverdier</strong> som viser seg å være feil, står du langt sterkere. Da er det en uriktig opplysning.</li>
+</ul>
+<p>Denne forskjellen avgjør ofte utfallet, så finn frem egenerklæringen og les akkurat hva som ble krysset av.</p>
+<h3>Slik går du frem</h3>
+<ol>
+<li><strong>Mål radon riktig.</strong> En skikkelig måling skjer i fyringssesongen (oktober–april) over minst to måneder med sporfilm. Korttidsmålinger gir kun en pekepinn.</li>
+<li><strong>Dokumenter resultatet</strong> med rapport fra målefirmaet.</li>
+<li><strong>Sjekk salgspapirene.</strong> Ble radon nevnt? Ble det oppgitt målinger eller en avkrysning i egenerklæringen?</li>
+<li><strong>Innhent tilbud på radontiltak</strong> fra et firma som driver med radonsanering.</li>
+<li><strong>Reklamer skriftlig</strong> til selger eller boligselgerforsikringen, med målerapport og pristilbud.</li>
+<li><strong>Hold fristen.</strong> Klag innen rimelig tid etter at du fikk måleresultatet (§ 4-19).</li>
+</ol>
+<h3>Hvilke krav kan du stille?</h3>
+<ul>
+<li><strong>Prisavslag (§ 4-12)</strong> tilsvarende kostnaden ved tiltak, dersom radonen utgjør en mangel.</li>
+<li><strong>Retting (§ 4-10)</strong> der selger ordner tiltaket.</li>
+<li><strong>Erstatning (§ 4-14)</strong> for følgekostnader, særlig om du mistet leieinntekt fordi utleiedelen ikke kunne brukes.</li>
+</ul>
+<p>Husk egenandelen på 10 000 kr (§ 3-1). Siden enkle radontiltak ofte koster mindre enn dette, kan du måtte dekke kostnaden selv hvis selger ikke har gitt feil opplysninger.</p>
+<h3>Et godt råd uansett</h3>
+<p>Selv om du ikke skulle ha et krav mot selger, bør du gjøre radontiltak hvis verdiene er høye. Radon er en av de viktigste årsakene til lungekreft i Norge etter røyking, og tiltakene er som regel rimelige sammenlignet med helsegevinsten. Mål derfor radon i din egen bolig uansett, gjerne ved første anledning etter at du har flyttet inn, og før du eventuelt pusser opp kjelleren. Da kan en radonsperre legges ned billig samtidig med annet arbeid.</p>
+<h3>Kort oppsummert</h3>
+<p>For høye radonverdier er sjelden en mangel i seg selv, men blir det hvis selger ga feil opplysninger eller skjulte kjent radonrisiko, eller hvis en lovet utleiedel ikke lovlig kan leies ut. Mål riktig over to vintermåneder, hent tilbud på tiltak, og reklamer skriftlig. Tiltaksgrensen er 100 Bq/m³ og grenseverdien 200 Bq/m³. Tiltakene er ofte rimelige, mellom 5 000 og 50 000 kr.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

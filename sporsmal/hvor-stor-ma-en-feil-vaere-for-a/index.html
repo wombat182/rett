@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor stor må en feil være for å regnes som en mangel? — Rettsregel</title>
+<meta name="description" content="Det finnes ingen fast prosentgrense lenger. En feil er en «mangel» når boligen avviker fra det du som kjøper hadde grunn til å forvente — eller fra det…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-stor-ma-en-feil-vaere-for-a/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor stor må en feil være for å regnes som en mangel?">
+<meta property="og:description" content="Det finnes ingen fast prosentgrense lenger. En feil er en «mangel» når boligen avviker fra det du som kjøper hadde grunn til å forvente — eller fra det…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-stor-ma-en-feil-vaere-for-a/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor stor må en feil være for å regnes som en mangel?">
+<meta name="twitter:description" content="Det finnes ingen fast prosentgrense lenger. En feil er en «mangel» når boligen avviker fra det du som kjøper hadde grunn til å forvente — eller fra det…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvor stor må en feil være for å regnes som en mangel?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det finnes ingen fast prosentgrense lenger. En feil er en «mangel» når boligen avviker fra det du som kjøper hadde grunn til å forvente — eller fra det selgeren har lovet eller opplyst. Men i forbrukerkjøp er det én tallgrense å være klar over: De første 10 000 kronene av det samlede kravet bærer du selv (avhendingsloven § 3-1 fjerde ledd). Feilen må altså «koste» mer enn det før du sitter igjen med noe.</p>
+  <p class="sp-kilde">Bygger på Avhendingslova §§ 3-1, 3-7, 3-8, 4-19, 3-10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/3-1/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-1</div>
+  <div class="related-card-title">Hva er en mangel ved en eiendom</div>
+</a><a href="../../lover/avhendingslova/3-7/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-7</div>
+  <div class="related-card-title">Selgerens plikt til å opplyse om feil</div>
+</a><a href="../../lover/avhendingslova/3-8/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-8</div>
+  <div class="related-card-title">Uriktig opplysning om eiendommen</div>
+</a><a href="../../lover/avhendingslova/4-19/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-19</div>
+  <div class="related-card-title">Reklamasjon — frister for å klage</div>
+</a><a href="../../lover/avhendingslova/3-10/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-10</div>
+  <div class="related-card-title">Kjøperens undersøkelsesplikt</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hva er en «mangel»?</h3>
+<p>En mangel er kort sagt at boligen ikke er slik den skulle være. Det kan skyldes:</p>
+<ul>
+<li>At boligen er i dårligere stand enn du hadde grunn til å forvente ut fra alder, pris og opplysninger.</li>
+<li>At selgeren har gitt deg uriktige opplysninger (sagt at taket var nytt, men det var det ikke).</li>
+<li>At selgeren har holdt tilbake informasjon han kjente til og som du hadde grunn til å få (avhendingsloven § 3-7 om manglende opplysninger).</li>
+<li>At boligen ikke svarer til det som er avtalt eller lovet konkret.</li>
+</ul>
+<p>Legg merke til at det ikke handler om at feilen må være «stor» i seg selv, men om at den representerer et avvik fra det forventede.</p>
+<h3>Det gamle systemet er borte for forbrukere</h3>
+<p>Før 2022 lette domstolene etter en feil som var «vesentlig», og brukte ofte en uoffisiell prosentregel: utbedringen måtte gjerne utgjøre rundt 5–6 prosent av kjøpesummen. For deg som forbrukerkjøper gjelder ikke denne høye terskelen på samme måte lenger. Du trenger ikke å bevise at feilen sluker en stor andel av kjøpesummen.</p>
+<h3>Den nye tallgrensen: 10 000 kroner</h3>
+<p>Samtidig som vesentlighetsterskelen ble senket, innførte loven en beløpsgrense — en slags egenandel — på 10 000 kroner for forbrukerkjøp (avhendingsloven § 3-1 fjerde ledd). Slik fungerer den:</p>
+<ul>
+<li>Den gjelder det SAMLEDE mangelskravet, ikke hver enkelt feil for seg.</li>
+<li>Trekkes fra når det først er konstatert at det foreligger en mangel.</li>
+<li>Hensikten er å sile bort de helt små kravene, slik at ikke enhver bagatell havner i en tvist.</li>
+</ul>
+<p>Eksempel: Nora kjøper en bolig og finner tre forhold som hver for seg er mangler: en lekkasje til 25 000 kroner, en feil i det elektriske til 12 000 kroner og en sprekk til 8 000 kroner. Til sammen 45 000 kroner. Beløpsgrensen på 10 000 kroner trekkes fra én gang fra totalen, ikke fra hver post. Nora kan da i utgangspunktet kreve 35 000 kroner.</p>
+<h3>Et fullstendig regneeksempel</h3>
+<p>Magnus kjøper en enebolig fra 2010 for 6 millioner kroner. Etter overtakelsen dukker det opp:</p>
+<ul>
+<li>Skjult råteskade i yttervegg: 70 000 kroner å utbedre.</li>
+<li>Feilmontert avtrekk på badet: 15 000 kroner.</li>
+</ul>
+<p>Steg for steg:
+1. Er dette mangler? Begge er avvik fra det Magnus hadde grunn til å forvente i et hus fra 2010 til denne prisen, og var ikke opplyst. Ja, dette er mangler.
+2. Hva er samlet krav? 70 000 + 15 000 = 85 000 kroner.
+3. Trekk fra beløpsgrensen på 10 000 kroner én gang: 85 000 − 10 000 = 75 000 kroner.
+4. Magnus kan i utgangspunktet kreve rundt 75 000 kroner (forutsatt at de øvrige vilkårene er oppfylt og at han har reklamert i tide).</p>
+<h3>Hva med helt små feil?</h3>
+<p>Hvis det eneste du finner er en liten feil til 6 000 kroner, vil beløpsgrensen i praksis «spise opp» kravet. Da sitter du igjen med null, fordi feilen er mindre enn 10 000 kroner. Slike bagateller er ment å falle utenfor. Finner du derimot flere små feil som til sammen overstiger grensen, regnes de sammen.</p>
+<h3>Hva slags «mangel» kan det være?</h3>
+<p>Det hjelper å vite at en mangel kan oppstå på flere måter, ikke bare ved fysiske byggfeil. Loven regner blant annet disse som mangler:</p>
+<ul>
+<li>Tilstandsmangel: boligen er i dårligere fysisk stand enn forventet (råte, lekkasje, setningsskade).</li>
+<li>Opplysningssvikt: selger holdt tilbake noe han kjente til og som du hadde grunn til å få vite (avhendingsloven § 3-7).</li>
+<li>Uriktig opplysning: selger eller megler ga deg gal informasjon du stolte på (§ 3-8). For eksempel «taket er fra 2019» når det egentlig var fra 2004.</li>
+<li>Arealsvikt: boligen er vesentlig mindre enn oppgitt.</li>
+<li>Manglende dokumentasjon eller ulovlige forhold: for eksempel et rom innredet til varig opphold uten godkjenning.</li>
+</ul>
+<p>Poenget er at «hvor stor må feilen være» ikke bare handler om kroner i bygningsskade — en uriktig opplysning kan i seg selv være en mangel, selv om selve den fysiske feilen er moderat.</p>
+<h3>Et eksempel på opplysningssvikt</h3>
+<p>Camilla kjøper en bolig for 4,8 millioner kroner. Selgeren visste at kjelleren hadde hatt gjentatte fuktproblemer, men nevnte det ikke. Etter innflytting kommer fukten tilbake. Selv om utbedringen «bare» koster 30 000 kroner, er det at selgeren holdt tilbake kjent informasjon i seg selv en mangel (avhendingsloven § 3-7). Her er det ikke størrelsen på reparasjonen som er avgjørende, men at Camilla ble fratatt informasjon hun hadde krav på.</p>
+<h3>Andre vilkår du må huske</h3>
+<p>Selv om en feil er stor nok, må du også:</p>
+<ul>
+<li>Reklamere i tide. Du må klage til selger «innen rimeleg tid» etter at du oppdaget eller burde ha oppdaget feilen (avhendingsloven § 4-19). Vent ikke!</li>
+<li>Holde deg innenfor den absolutte fristen på fem år etter overtakelsen.</li>
+<li>Ikke ha akseptert feilen på forhånd. Det som stod i tilstandsrapport eller salgsoppgave, kan du normalt ikke klage på (avhendingsloven § 3-10).</li>
+</ul>
+<h3>Praktiske råd</h3>
+<ul>
+<li>Tenk i kroner, ikke prosent. Spør: Overstiger summen av feilene 10 000 kroner, og er de avvik fra det forventede?</li>
+<li>Legg sammen flere feil. Du trenger ikke at hver enkelt feil er stor.</li>
+<li>Få et skriftlig kostnadsoverslag fra håndverker raskt. Det viser både at feilen er reell og hvor mye den koster.</li>
+<li>Reklamer skriftlig til selger så snart du oppdager noe — vent ikke på at alt skal kartlegges.</li>
+<li>Sjekk om du har boligkjøperforsikring. Den kan ta saken videre på dine vegne.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Det finnes ingen fast prosentgrense lenger for hvor stor en feil må være. Avgjørende er om boligen avviker fra det du hadde grunn til å forvente, eller fra det selgeren lovet eller opplyste. Den eneste faste tallgrensen er beløpsgrensen på 10 000 kroner, som trekkes én gang fra det samlede mangelskravet (avhendingsloven § 3-1 fjerde ledd). Overstiger feilene dette beløpet, og har du reklamert i tide, kan du ha et reelt krav — også for feil som tidligere ville vært «for små».</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

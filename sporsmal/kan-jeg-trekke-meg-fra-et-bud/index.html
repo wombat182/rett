@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg trekke meg fra et bud? — Rettsregel</title>
+<meta name="description" content="Det korte svaret er: du kan trekke et bud så lenge det ikke er kommet fram til selger eller megler og blitt akseptert.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-trekke-meg-fra-et-bud/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg trekke meg fra et bud?">
+<meta property="og:description" content="Det korte svaret er: du kan trekke et bud så lenge det ikke er kommet fram til selger eller megler og blitt akseptert.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-trekke-meg-fra-et-bud/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg trekke meg fra et bud?">
+<meta name="twitter:description" content="Det korte svaret er: du kan trekke et bud så lenge det ikke er kommet fram til selger eller megler og blitt akseptert.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Kan jeg trekke meg fra et bud?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det korte svaret er: du kan trekke et bud så lenge det ikke er kommet fram til selger eller megler og blitt akseptert. Men i det øyeblikket budet ditt er akseptert, er du bundet, og da kan du i praksis ikke trekke deg uten å risikere å måtte betale erstatning. Tidspunktet er altså helt avgjørende.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det korte svaret er: du kan trekke et bud så lenge det ikke er kommet fram til selger eller megler og blitt akseptert. Men i det øyeblikket budet ditt er akseptert, er du bundet, og da kan du i praksis ikke trekke deg uten å risikere å måtte betale erstatning. Tidspunktet er altså helt avgjørende.</p>
+<h3>Når kan du faktisk trekke et bud?</h3>
+<p>Et bud kan trekkes tilbake (kalles å "kalle tilbake" budet) helt fram til det er kommet til selgers kunnskap. I praksis betyr det at hvis du ringer megleren og trekker budet før selger har sagt ja, kan du komme deg unna. Men dette vinduet er ofte svært kort, fordi budrunder går raskt og selger kan akseptere når som helst innenfor fristen du har satt.</p>
+<p>I praksis skjer aksept ofte i løpet av minutter i en hektisk budrunde. Da rekker du sjelden å ombestemme deg.</p>
+<h3>Når er det for sent?</h3>
+<p>Når selger har akseptert budet ditt innenfor fristen, er avtalen bindende inngått. Da hjelper det ikke å si at du ombestemte deg. Du har ingen angrerett (som forklart i forrige artikkel), og selger kan holde deg til avtalen.</p>
+<p>Konsekvensene av å bryte avtalen kan bli:</p>
+<ul>
+<li>Erstatning for selgers tap, for eksempel differansen hvis boligen selges billigere på nytt.</li>
+<li>Ekstra kostnader til ny markedsføring og megler.</li>
+<li>I verste fall krav om at du fullfører kjøpet (selv om det vanligste er et erstatningskrav).</li>
+</ul>
+<h3>Eksempel: Per som rakk det med et nødskrik</h3>
+<p>Per la inn et bud på 3,3 millioner kroner på en bolig i Tromsø med akseptfrist klokka 14:00. Klokka 13:45 fikk han en telefon fra banken om at finansieringen var mindre romslig enn antatt. Han ringte umiddelbart megleren og trakk budet. Fordi selger ennå ikke hadde akseptert, var Per fri.</p>
+<p>Hadde han ringt klokka 14:05, etter at selger hadde sagt ja klokka 13:58, ville han vært bundet. Forskjellen på noen minutter avgjorde alt.</p>
+<h3>Eksempel: Lise som ble bundet</h3>
+<p>Lise bød 2,9 millioner på en leilighet i Kristiansand. Megleren ringte og bekreftet at selger hadde akseptert budet. Kvelden etter ombestemte Lise seg. Hun forsøkte å trekke seg, men det var for sent. Selger hadde allerede akseptert, og avtalen var bindende. Lise måtte til slutt betale en erstatning for å slippe ut av kjøpet.</p>
+<h3>Praktiske råd for å unngå å bli fanget</h3>
+<ol>
+<li><strong>By aldri før du er sikker.</strong> Et bud er ikke en uforpliktende interessemarkering. Vær like sikker når du byr som når du signerer kontrakt.</li>
+<li><strong>Sett en akseptfrist du er komfortabel med.</strong> Du bestemmer selv hvor lenge budet ditt skal stå. Ikke gi en lengre frist enn nødvendig, men husk reglene om minste budfrist (se artikkelen om budrunder).</li>
+<li><strong>Avklar finansieringen FØR du byr.</strong> Snakk med banken og ha et finansieringsbevis klart.</li>
+<li><strong>Bruk forbehold hvis noe er uavklart.</strong> Et skriftlig forbehold (for eksempel om at noe konkret blir avklart) kan gi deg en lovlig vei ut hvis forbeholdet ikke innfris. Men et forbehold som er for vagt eller useriøst kan bli sett bort fra.</li>
+<li><strong>Ikke stol på muntlige løfter om at "det går nok greit å trekke seg".</strong> Be alltid om skriftlig bekreftelse.</li>
+</ol>
+<h3>Hva med forbehold som en nødutgang?</h3>
+<p>Forbehold er den ryddige måten å sikre seg på. Eksempler:</p>
+<ul>
+<li>"Budet gjelder under forutsetning av at jeg får solgt min nåværende bolig innen [dato]."</li>
+<li>"Budet forutsetter at takstmann bekrefter at det elektriske er i orden."</li>
+</ul>
+<p>Hvis et slikt forbehold er klart formulert og ikke innfris, blir du ikke bundet. Men du kan ikke bruke et forbehold som påskudd hvis det egentlig var oppfylt. Forbehold må være ekte og tatt på forhånd, ikke noe du finner på etterpå for å slippe unna.</p>
+<h3>Hva med budet før visning?</h3>
+<p>Noen ganger føler kjøpere seg presset til å by raskt. Husk at i et ordinært salg gjennom megler skal det ikke aksepteres bud før klokka 12:00 første virkedag etter siste annonserte visning. Det gir deg litt pusterom til å tenke deg om før du byr, og er der nettopp for å beskytte deg mot forhastede beslutninger.</p>
+<h3>Forskjellen på å trekke et bud og å la fristen løpe ut</h3>
+<p>To ting blandes ofte sammen:</p>
+<ul>
+<li><strong>Å trekke et bud</strong> betyr at du aktivt kaller budet tilbake før det er akseptert. Dette må skje før selger har sagt ja.</li>
+<li><strong>Å la akseptfristen løpe ut</strong> betyr at budet ditt rett og slett faller bort av seg selv hvis selger ikke aksepterer innen fristen. Da er du fri, helt automatisk.</li>
+</ul>
+<p>Dette er grunnen til at du bør tenke nøye gjennom hvor lang akseptfrist du setter. Setter du en kort frist, har budet ditt en innebygd "selvdestruksjon" hvis selger nøler. Da slipper du å stå bundet lenger enn du ønsker.</p>
+<h3>Eksempel: Akseptfristen som reddet Henrik</h3>
+<p>Henrik var litt usikker på en bolig i Fredrikstad. Han bød 3,0 millioner, men satte en kort akseptfrist på 30 minutter, fordi han ville ha en rask avklaring. Selger nølte og rakk ikke å bestemme seg innen fristen. Da falt budet bort av seg selv. Henrik fikk tenkt seg om over natten, og innså at boligen ikke var riktig for ham likevel. Den korte fristen ga ham en naturlig vei ut uten at han måtte gjøre noe aktivt.</p>
+<h3>Hva med å trekke et forbehold eller endre budet?</h3>
+<p>Noen ganger ønsker du ikke å trekke hele budet, men å justere det, for eksempel fjerne et forbehold for å gjøre budet mer attraktivt, eller forlenge fristen. Det kan du gjøre ved å gi et nytt bud gjennom megler før det gamle er akseptert. Et nytt bud erstatter da det forrige. Men vær klar over at også det nye budet er bindende straks det er formidlet og eventuelt akseptert. Vær derfor like påpasselig hver gang du endrer noe.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du kan trekke et bud så lenge det ikke er akseptert av selger; etter aksept er du bundet.</li>
+<li>Vinduet er ofte svært kort, fordi aksept kan skje på minutter.</li>
+<li>Å bryte en bindende avtale kan utløse erstatningsansvar for selgers tap og ekstra kostnader.</li>
+<li>By aldri før du er helt sikker og har finansieringen i orden.</li>
+<li>Sett en akseptfrist du er trygg på, og bruk ekte, skriftlige forbehold hvis noe er uavklart.</li>
+<li>Stol ikke på muntlige løfter om at det er greit å trekke seg; be om skriftlig.</li>
+<li>Reglene om minste budfrist gir deg litt tid til å tenke før du byr.</li>
+</ul>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

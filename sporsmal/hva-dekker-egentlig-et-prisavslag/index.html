@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva dekker egentlig et prisavslag? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Et prisavslag skal dekke selve verdiforringelsen av boligen på grunn av mangelen – og i praksis betyr det som regel det det koster å fikse…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-dekker-egentlig-et-prisavslag/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva dekker egentlig et prisavslag?">
+<meta property="og:description" content="Kort sagt: Et prisavslag skal dekke selve verdiforringelsen av boligen på grunn av mangelen – og i praksis betyr det som regel det det koster å fikse…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-dekker-egentlig-et-prisavslag/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva dekker egentlig et prisavslag?">
+<meta name="twitter:description" content="Kort sagt: Et prisavslag skal dekke selve verdiforringelsen av boligen på grunn av mangelen – og i praksis betyr det som regel det det koster å fikse…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva dekker egentlig et prisavslag?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Et prisavslag skal dekke selve verdiforringelsen av boligen på grunn av mangelen – og i praksis betyr det som regel det det koster å fikse feilen. Men prisavslaget dekker ikke alt. Her går vi grundig gjennom hva som er innenfor og utenfor (avhendingslova § 4-12).</p>
+  <p class="sp-kilde">Bygger på Avhendingslova § 4-12 og § 3-1</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/avhendingslova/4-12/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 4-12</div>
+  <div class="related-card-title">Prisavslag</div>
+</a><a href="../../lover/avhendingslova/3-1/" class="related-card">
+  <div class="related-card-meta">Avhendingslova § 3-1</div>
+  <div class="related-card-title">Hva er en mangel ved en eiendom</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: Et prisavslag skal dekke selve verdiforringelsen av boligen på grunn av mangelen – og i praksis betyr det som regel det det koster å fikse feilen. Men prisavslaget dekker ikke alt. Her går vi grundig gjennom hva som er innenfor og utenfor (avhendingslova § 4-12).</p>
+<h3>Grunnprinsippet</h3>
+<p>Prisavslag er kompensasjon for at boligen du kjøpte var mindre verdt enn du betalte for, på grunn av en mangel. Loven sier at prisavslaget skal svare til forholdet mellom nedsatt og avtalt pris. Men i praksis bruker man ofte en enklere regel: prisavslaget settes lik det det koster å utbedre mangelen.</p>
+<p>Eksempel: Camilla kjøper bolig og oppdager at taket må legges om på grunn av en skjult mangel. Omleggingen koster 160 000 kroner. Da er utgangspunktet at prisavslaget blir 160 000 kroner – minus egenandel.</p>
+<h3>Hva prisavslaget typisk dekker</h3>
+<ul>
+<li><strong>Materialer og arbeid for å utbedre mangelen.</strong> Selve reparasjonskostnaden er kjernen.</li>
+<li><strong>Nødvendige følgearbeider.</strong> Må man rive en vegg for å komme til en lekkasje, dekkes også rivingen og gjenoppbyggingen.</li>
+<li><strong>Verdiforringelse som ikke kan utbedres.</strong> Hvis noe ikke lar seg fikse fullt ut, kan prisavslaget gjenspeile den varige verdireduksjonen boligen sitter igjen med.</li>
+</ul>
+<h3>Hva prisavslaget vanligvis IKKE dekker</h3>
+<p>Dette er viktig, for mange tror prisavslaget dekker "alt vondt":</p>
+<ul>
+<li><strong>Egne følgeskader og tap utover utbedringen</strong> hører ofte hjemme under erstatning, ikke prisavslag. Eksempel: ødelagte møbler etter en vannlekkasje kan kreves som erstatning, men er ikke en del av prisavslaget.</li>
+<li><strong>Egeninnsats og bryderi.</strong> Tiden og frustrasjonen din kompenseres normalt ikke.</li>
+<li><strong>Standardforbedring.</strong> Får du nytt og bedre enn det gamle, kan prisavslaget reduseres tilsvarende fordelen.</li>
+<li><strong>Egenandelen.</strong> De første 10 000 kronene (§ 3-1 fjerde ledd) må du dekke selv.</li>
+</ul>
+<h3>Et grundig eksempel</h3>
+<p>Familien Lunde kjøpte en bolig i Gjøvik for 5 millioner kroner. Etter innflytting fant de ut at avløpsrørene var feilmontert – en skjult mangel. Slik så regnestykket ut:</p>
+<ul>
+<li>Utbedring av rørene: 90 000 kroner.</li>
+<li>Riving og gjenoppbygging av en innebygd vegg for å komme til: 35 000 kroner.</li>
+<li>Vannskade på et gulv som følge av lekkasjen: 20 000 kroner.</li>
+</ul>
+<p>Prisavslaget dekket utbedringen og følgearbeidene (90 000 + 35 000 = 125 000 kroner). Vannskaden på gulvet ble behandlet som erstatning (20 000 kroner), fordi det var en konsekvens av mangelen, ikke selve utbedringen. Til slutt ble egenandelen på 10 000 kroner trukket fra det samlede kravet. Familien fikk dekket 135 000 kroner totalt (125 000 + 20 000 minus 10 000).</p>
+<h3>Prisavslag versus erstatning – hva er forskjellen?</h3>
+<p>Mange blander disse to begrepene, men forskjellen er viktig:</p>
+<ul>
+<li><strong>Prisavslag</strong> handler om verdien av boligen – at den var mindre verdt enn prisen tilsa. Du trenger ikke bevise at selger gjorde noe galt. Det holder at det er en mangel.</li>
+<li><strong>Erstatning</strong> dekker økonomisk tap du har lidd som følge av mangelen, for eksempel ødelagt innbo, ekstra boutgifter eller utgifter til fagfolk. Erstatning krever ofte at selger kan bebreides, eller at vilkårene for kontrollansvar er oppfylt.</li>
+</ul>
+<p>Ofte kombineres de to: prisavslag for å fikse selve feilen, og erstatning for følgetapene. Det kan derfor lønne seg å være bevisst på hvilken "boks" hver kostnad hører hjemme i når du setter opp kravet.</p>
+<h3>Hva med små mangler under 10 000 kroner?</h3>
+<p>Her er en konsekvens av egenandelsregelen mange ikke tenker på: Hvis det samlede mangelskravet ditt er under 10 000 kroner, sitter du i praksis igjen uten noe prisavslag, fordi egenandelen "spiser opp" hele kravet. Det betyr at småfeil til noen få tusen kroner sjelden er verdt å forfølge alene.</p>
+<p>Det lønner seg å samle opp flere mangler, siden egenandelen gjelder det samlede kravet, ikke hver enkelt feil. Eksempel: Har du tre småfeil på henholdsvis 4 000, 5 000 og 6 000 kroner, blir summen 15 000 kroner. Trekker du fra egenandelen på 10 000, sitter du igjen med 5 000 kroner. Hadde du forfulgt hver feil for seg, ville egenandelen slått ut hver gang.</p>
+<h3>Slik dokumenterer du kravet ditt</h3>
+<ol>
+<li>Få skriftlig bekreftelse fra fagperson på at det er en mangel.</li>
+<li>Innhent kostnadsoverslag for utbedring (gjerne to-tre).</li>
+<li>Skill tydelig mellom utbedringskostnad (prisavslag) og følgetap (erstatning).</li>
+<li>Reklamer skriftlig til selger.</li>
+<li>Husk å regne med egenandelen i sluttsummen.</li>
+</ol>
+<h3>Et siste eksempel som viser nyansene</h3>
+<p>Markus kjøpte leilighet og fant at parketten var lagt feil og bulet seg på grunn av manglende underlag. Utbedring kostet 70 000 kroner. Men siden han fikk helt ny parkett til erstatning for en som allerede var ti år gammel, ble prisavslaget redusert med et standardforbedringsfradrag på 15 000 kroner. Etter dette og egenandelen på 10 000 kroner satt han igjen med 45 000 kroner. Eksempelet viser hvordan både standardforbedring og egenandel kan trekke ned sluttsummen.</p>
+<h3>Når prisavslaget ikke følger reparasjonskostnaden</h3>
+<p>I de aller fleste tilfeller settes prisavslaget lik utbedringskostnaden. Men det finnes unntak der man i stedet ser på den rene verdiforringelsen. Tenk deg at en mangel knapt påvirker boligens bruksverdi eller markedsverdi, men likevel ville vært dyr å rette fullstendig. Da kan prisavslaget settes lavere enn reparasjonskostnaden, fordi selve verditapet er lite.</p>
+<p>Eksempel: Vibeke kjøpte en bolig der det viste seg at en bod var noen kvadratmeter mindre enn opplyst. Å "rette" dette var umulig, og bruksverdien var nesten upåvirket. I et slikt tilfelle handler prisavslaget om hvor mye mindre boligen faktisk er verdt på grunn av avviket – ikke om en reparasjonskostnad. Slike saker krever ofte en verdivurdering fra en takstmann.</p>
+<h3>Hvorfor det lønner seg å forstå skillet</h3>
+<p>Når du vet hva prisavslaget faktisk dekker, blir du langt bedre rustet i en forhandling. Du kan da argumentere riktig: prisavslag for utbedringen, og erstatning for følgetapene dine. Mange kjøpere taper penger rett og slett fordi de ikke skiller mellom postene, og dermed glemmer å kreve erstatning for for eksempel ødelagt innbo eller ekstra boutgifter. Vær derfor systematisk: list opp hver enkelt kostnad og plasser den i riktig kategori før du sender kravet.</p>
+<h3>En enkel sjekkliste for kravet ditt</h3>
+<p>For å hjelpe deg å sette opp et fullstendig krav, kan du gå gjennom disse punktene:</p>
+<ol>
+<li><strong>Hva koster det å fikse selve feilen?</strong> Dette er kjernen i prisavslaget. Innhent gjerne to-tre kostnadsoverslag.</li>
+<li><strong>Hvilke følgearbeider kreves?</strong> Riving, gjenoppbygging, maling og rydding som er nødvendig for å komme til feilen, hører også med i prisavslaget.</li>
+<li><strong>Har mangelen ødelagt noe av dine eiendeler?</strong> Ødelagte møbler, gulv, klær eller annet innbo kreves som erstatning – en egen post.</li>
+<li><strong>Har du hatt ekstra utgifter?</strong> Midlertidig bolig, ekstra strøm, utgifter til fagfolk for å kartlegge feilen – dette er også erstatning.</li>
+<li><strong>Får du noe nytt og bedre enn det gamle?</strong> Da må du regne med et standardforbedringsfradrag som trekker ned prisavslaget.</li>
+<li><strong>Trekk til slutt fra egenandelen på 10 000 kroner</strong> fra det samlede kravet.</li>
+</ol>
+<p>Eksempel på et ferdig oppsett: Nina fant en lekkasje som ga 80 000 kroner i utbedring (prisavslag), 30 000 kroner i ødelagt parkett (erstatning) og 12 000 kroner i utgifter til en fuktrapport (erstatning). Samlet krav før egenandel: 122 000 kroner. Etter egenandelen på 10 000 kroner: 112 000 kroner. Ved å dele kravet i tydelige poster fikk Nina med alt hun hadde rett på.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Prisavslag dekker normalt det det koster å utbedre mangelen (§ 4-12).</li>
+<li>Det dekker materialer, arbeid og nødvendige følgearbeider.</li>
+<li>Det dekker som regel ikke følgeskader på innbo, egeninnsats eller bryderi – det hører under erstatning.</li>
+<li>Egenandelen på 10 000 kroner trekkes fra (gjelder fra 2022).</li>
+<li>Krav under 10 000 kroner blir i praksis "spist opp" av egenandelen – samle gjerne opp flere mangler.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-takst-for-jeg-klager/">Bør jeg innhente takst før jeg klager?</a><a class="sp-relchip" href="../../sporsmal/dekker-innboforsikringen-advokat-i-en-boligtvist/">Dekker innboforsikringen advokat i en boligtvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
