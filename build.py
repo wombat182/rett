@@ -3989,6 +3989,8 @@ SPORSMAL_KAT_MAP = {
     "velferd": "helse-og-velferd",
     "innvandring": "innvandring-og-statsborgerskap",
     "skatt": "skatt-og-avgift",
+    "penger": "penger-og-gjeld",
+    "selskap": "selskap",
     "tjenester": "selskap",
 }
 
