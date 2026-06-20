@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan reklamerer jeg på en håndverkertjeneste? — Rettsregel</title>
+<meta name="description" content="Du reklamerer ved å gi håndverkeren tydelig beskjed om at noe er feil med arbeidet, helst på e-post eller SMS slik at du kan bevise det senere. Beskriv…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-reklamerer-jeg-pa-en-handverkertjeneste/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan reklamerer jeg på en håndverkertjeneste?">
+<meta property="og:description" content="Du reklamerer ved å gi håndverkeren tydelig beskjed om at noe er feil med arbeidet, helst på e-post eller SMS slik at du kan bevise det senere. Beskriv…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-reklamerer-jeg-pa-en-handverkertjeneste/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan reklamerer jeg på en håndverkertjeneste?">
+<meta name="twitter:description" content="Du reklamerer ved å gi håndverkeren tydelig beskjed om at noe er feil med arbeidet, helst på e-post eller SMS slik at du kan bevise det senere. Beskriv…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hvordan reklamerer jeg på en håndverkertjeneste?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du reklamerer ved å gi håndverkeren tydelig beskjed om at noe er feil med arbeidet, helst på e-post eller SMS slik at du kan bevise det senere. Beskriv hva som er galt, vis gjerne bilder, og si hva du ønsker at håndverkeren skal gjøre. Gjør det så fort som mulig etter at du oppdaget feilen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr egentlig «å reklamere»?</h3>
+<p>«Å reklamere» høres formelt ut, men det betyr rett og slett å klage til håndverkeren fordi jobben ikke ble slik den skulle. Det er ikke et juridisk skjema du må fylle ut, og du trenger ingen advokat for å gjøre det. Du gir bare beskjed: «Dette stemmer ikke, og jeg vil ha det rettet.»</p>
+<p>I loven kalles en feil ved arbeidet en «mangel». En mangel er når resultatet ikke er slik dere avtalte, eller ikke holder den kvaliteten man med rimelighet kan forvente av en fagperson (håndverkertjenesteloven § 17, som handler om når en tjeneste har en mangel). Et skjevt flislagt bad, en kran som lekker, eller en dør som ikke lukker seg ordentlig kan være mangler. En forsinkelse er noe annet – det er ikke en mangel ved selve resultatet, men en forsinkelse i tid, og reguleres av andre regler.</p>
+<h3>Steg for steg: slik gjør du det</h3>
+<p>Tenk på Marit i Trondheim. Hun fikk lagt nytt parkettgulv i stua i april 2026, og etter to uker la hun merke til at flere bord hadde løsnet i skjøtene. Slik gikk hun frem, og slik bør du også gjøre:</p>
+<ol>
+<li><strong>Dokumenter feilen.</strong> Ta bilder eller video. Marit tok nærbilder av de løse skjøtene og en oversikt over hele gulvet.</li>
+<li><strong>Finn frem avtalen.</strong> Tilbud, kontrakt, faktura og meldinger – alt som viser hva dere ble enige om.</li>
+<li><strong>Skriv en kort, tydelig melding.</strong> Forklar hva som er galt, når du oppdaget det, og hva du vil ha gjort.</li>
+<li><strong>Send skriftlig.</strong> E-post er best. Da har du dato og innhold svart på hvitt.</li>
+<li><strong>Be om et svar innen en frist.</strong> For eksempel: «Jeg ber om tilbakemelding innen 14 dager.»</li>
+<li><strong>Ta vare på alt.</strong> Lagre kopier av all kommunikasjon i en egen mappe.</li>
+</ol>
+<h3>Hva bør du kreve?</h3>
+<p>Når du reklamerer, kan du be om at håndverkeren retter feilen gratis – det kalles «retting» eller «utbedring» (§ 24, om at håndverkeren har rett og plikt til å rette mangelen). Lar ikke feilen seg rette, eller blir det urimelig dyrt, kan du ha krav på prisavslag eller å heve avtalen. Hvis feilen har påført deg et økonomisk tap, for eksempel vannskade fra en feilmontert kran, kan du også kreve erstatning (§ 28, om erstatning for tap som følge av mangelen).</p>
+<p>Som hovedregel skal håndverkeren få sjansen til å rette feilen selv før du henter inn noen andre til å gjøre jobben. Hopper du over det steget og betaler en annen, risikerer du å ikke få dekket utgiften. Unntaket er hvis det haster akutt – for eksempel en aktiv vannlekkasje som må stoppes med en gang.</p>
+<h3>Mal du kan bruke</h3>
+<blockquote>
+<p>Emne: Reklamasjon – parkettlegging stue, oppdrag fullført 15.04.2026</p>
+<p>Hei,</p>
+<p>Jeg viser til arbeidet dere utførte hos meg i Storgata 4, der dere la nytt parkettgulv i stua. Arbeidet ble avsluttet 15. april 2026.</p>
+<p>Etter cirka to uker oppdaget jeg at flere bord har løsnet i skjøtene (se vedlagte bilder). Dette er en mangel ved arbeidet, og jeg reklamerer herved på dette.</p>
+<p>Jeg ber om at dere retter feilen uten kostnad for meg. Jeg ønsker tilbakemelding om når dere kan komme, og ber om svar innen 14 dager.</p>
+<p>Vennlig hilsen
+Marit Hansen
+Telefon: 900 00 000</p>
+</blockquote>
+<p>Du kan kopiere denne malen og bytte ut detaljene med din egen sak. Den trenger ikke være lang – det viktigste er at den er tydelig på hva som er galt, og hva du ønsker.</p>
+<h3>Hva om håndverkeren ikke svarer?</h3>
+<p>Får du ikke svar, send en purring og vis til den første meldingen. Hjelper det fortsatt ikke, kan du klage til <strong>Forbrukerrådet</strong>, som tilbyr gratis mekling. Du kan også ta saken videre til <strong>Forbrukerklageutvalget</strong> eller en relevant klagenemnd hvis håndverkeren er tilknyttet en slik. Det viktigste er at du har reklamert i tide og skriftlig, slik at du kan bevise hva som skjedde.</p>
+<h3>Vanlige feil folk gjør</h3>
+<ul>
+<li><strong>De venter for lenge.</strong> «Jeg tar det neste gang han er innom» blir fort til måneder, og da kan retten være tapt.</li>
+<li><strong>De klager bare muntlig.</strong> Uten noe skriftlig blir det ord mot ord senere.</li>
+<li><strong>De fikser feilen selv i sinne.</strong> Da mister håndverkeren sjansen til å rette, og du kan miste retten til å få dekket kostnaden.</li>
+<li><strong>De betaler hele regningen før feilen er ordnet.</strong> Du kan ha rett til å holde tilbake en passende del av betalingen til feilen er rettet (§ 25, om tilbakeholdsrett).</li>
+</ul>
+<h3>Tenk på fristene</h3>
+<p>Du må reklamere «innen rimelig tid» etter at du oppdaget eller burde ha oppdaget feilen (§ 22). Vent ikke. Marit reklamerte allerede dagen etter at hun så de løse bordene – det er helt riktig fremgangsmåte. Jo raskere du sier fra, desto sterkere står du.</p>
+<h3>Hva med små jobber og handyman-tjenester?</h3>
+<p>Reklamasjonsretten gjelder enten du har leid et stort byggefirma eller en lokal altmuligmann. Loven skiller ikke på størrelsen på oppdraget – det avgjørende er at det er en næringsdrivende som har utført en tjeneste for deg som privatperson. Fikset noen den knirkete trappa di, monterte en lampe eller satte opp et gjerde mot betaling, gjelder de samme reglene. Også her bør du reklamere skriftlig og raskt hvis noe er galt.</p>
+<p>Et tips: jo mindre og mer uformell jobben er, desto viktigere er det å ha noe skriftlig. Ved store oppdrag finnes ofte kontrakter og fakturaer, men ved en rask handyman-jobb betalt med Vipps er det fort lite spor. Send da gjerne en kort melding både ved bestilling og ved en eventuell klage, slik at det finnes en historikk.</p>
+<h3>Et siste råd: vær saklig og høflig</h3>
+<p>Selv om du er frustrert, lønner det seg å holde tonen saklig i reklamasjonen. En vennlig, men tydelig melding der du forklarer feilen og hva du ønsker, gir håndverkeren en grunn til å ordne opp uten konflikt. De fleste seriøse håndverkere vil rette en feil hvis de blir gjort oppmerksom på den på en grei måte. Sparker du fra deg med en gang, blir det lettere en opphetet sak enn en løsning. Du kan alltid skjerpe tonen senere hvis han ikke svarer.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Å reklamere er å gi håndverkeren beskjed om at noe er feil – ingen advokat trengs.</li>
+<li>Dokumenter med bilder, finn frem avtalen, og skriv en tydelig melding.</li>
+<li>Send skriftlig (e-post), og be om svar innen en frist.</li>
+<li>Krev som regel at håndverkeren retter feilen først, gratis.</li>
+<li>Du kan holde tilbake en del av betalingen til feilen er rettet.</li>
+<li>Reklamer raskt – innen rimelig tid etter at du oppdaget feilen.</li>
+<li>Får du ikke løsning, kontakt Forbrukerrådet.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

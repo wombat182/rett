@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem søker om byggetillatelse – jeg eller entreprenøren? — Rettsregel</title>
+<meta name="description" content="Når du bygger ny bolig, er det du som er tiltakshaver den som står bak byggetiltaket og «eier» prosjektet overfor kommunen. Men for de fleste nybygg kan…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-soker-om-byggetillatelse-jeg-eller-entreprenoren/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem søker om byggetillatelse – jeg eller entreprenøren?">
+<meta property="og:description" content="Når du bygger ny bolig, er det du som er tiltakshaver den som står bak byggetiltaket og «eier» prosjektet overfor kommunen. Men for de fleste nybygg kan…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-soker-om-byggetillatelse-jeg-eller-entreprenoren/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem søker om byggetillatelse – jeg eller entreprenøren?">
+<meta name="twitter:description" content="Når du bygger ny bolig, er det du som er tiltakshaver den som står bak byggetiltaket og «eier» prosjektet overfor kommunen. Men for de fleste nybygg kan…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvem søker om byggetillatelse – jeg eller entreprenøren?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Når du bygger ny bolig, er det du som er **tiltakshaver** (den som står bak byggetiltaket og «eier» prosjektet overfor kommunen). Men for de fleste nybygg kan ikke du selv sende inn søknaden. Det må gjøres av et **ansvarlig foretak** med **ansvarsrett** – en såkalt **ansvarlig søker**. I praksis er dette nesten alltid entreprenøren eller arkitekten. Du står bak; et fagfolk-foretak søker på dine vegne.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 23, 12, 20, 6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/23/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 23</div>
+  <div class="related-card-title">Når utbyggers regning blir urettferdig stor</div>
+</a><a href="../../lover/bustadoppforingslova/12/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 12</div>
+  <div class="related-card-title">Bankgarantien som beskytter deg mot konkurs</div>
+</a><a href="../../lover/bustadoppforingslova/20/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 20</div>
+  <div class="related-card-title">Slik kansellerer du byggekontrakten</div>
+</a><a href="../../lover/bustadoppforingslova/6/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 6</div>
+  <div class="related-card-title">Erstatning ved personskade eller tingskade</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Forskjellen på tiltakshaver og ansvarlig søker</h3>
+<p>Disse to ordene blandes ofte sammen, så la oss gjøre dem tydelige.</p>
+<ul>
+<li><strong>Tiltakshaver</strong> = deg. Du er byggherren. Det er din tomt, ditt hus og din drøm. Du har det overordnede eierskapet til prosjektet (plan- og bygningsloven, ofte forkortet pbl, bruker dette begrepet).</li>
+<li><strong>Ansvarlig søker</strong> = et profesjonelt foretak som har <strong>ansvarsrett</strong>, altså en formell godkjenning til å ta ansvar overfor kommunen. Dette foretaket fyller ut søknaden, varsler naboene, samler inn dokumentasjon fra de andre fagfolkene og er kommunens kontaktpunkt (pbl § 23-1 og byggesaksforskriften SAK10 § 12-2).</li>
+</ul>
+<p>Tenk på det slik: Du er oppdragsgiveren. Den ansvarlige søkeren er prosjektets «sjåfør» mot kommunen. Du bestemmer reisemålet; de holder i rattet på veien dit.</p>
+<h3>Hvorfor kan jeg ikke bare søke selv?</h3>
+<p>For søknadspliktige byggetiltak som et helt nytt bolighus (pbl § 20-1) krever loven at fagfolk står ansvarlig. Tanken er forbrukervern: et nybygg er teknisk komplisert, og det skal være kvalifiserte foretak som svarer for prosjektering, utførelse og kontroll. Det beskytter deg. Hadde du måttet ta hele det offentlige ansvaret selv, ville du også sittet med skylda hvis noe ikke var i tråd med tekniske krav – og det er sjelden i din interesse.</p>
+<p>Det finnes ett unntak som heter <strong>selvbygger</strong> (SAK10 § 6-8). Hvis du selv er kvalifisert, eller skal bo i boligen og kan vise at du klarer oppgaven, kan kommunen i visse tilfeller godkjenne deg som ansvarlig for deler av tiltaket. Men dette er unntaket, ikke regelen – og det legger mye ansvar på dine egne skuldre. De fleste forbrukere bør la fagfolk ta søkerrollen.</p>
+<h3>Hvordan fungerer det i en totalentreprise?</h3>
+<p>De fleste forbrukere som bygger nytt, kjøper en <strong>totalentreprise</strong>. Det betyr at én entreprenør tar ansvar for både å tegne (prosjektere) og bygge (utføre) huset.</p>
+<p><strong>Eksempel:</strong> Familien Berg i Sandefjord skal bygge enebolig. De signerer kontrakt med Sørlandshus AS på en totalentreprise. Sørlandshus tar da rollen som ansvarlig søker, fyller ut byggesøknaden, sender nabovarsler og leverer alt til kommunen. Berg-familien skriver under som tiltakshavere, men slipper papirarbeidet mot kommunen.</p>
+<p><strong>Et annet eksempel:</strong> Sara i Tromsø kjøper et ferdig kataloghus fra en hustypeleverandør. Leverandøren har et fast samarbeid med lokale fagfolk, og deres prosjektleder er ansvarlig søker. Sara må bare levere noen opplysninger om tomta og signere – resten ordner de.</p>
+<p><strong>Et tredje eksempel:</strong> Hassan og Mari i Skien velger en delt løsning: De engasjerer en arkitekt til å tegne huset, og en entreprenør til å bygge. Da må de tidlig avklare hvem av de to som tar søkerrollen. Arkitekten påtar seg å være ansvarlig søker, og koordinerer dokumentasjonen fra entreprenøren. Uten denne avklaringen kunne søknaden blitt liggende fordi «alle trodde den andre ordnet det».</p>
+<h3>Hva må jeg passe på i kontrakten?</h3>
+<p>Selv om entreprenøren gjør jobben, bør du forsikre deg om at ansvaret er tydelig plassert. Sjekklisten din:</p>
+<ol>
+<li><strong>Står det svart på hvitt at entreprenøren er ansvarlig søker?</strong> Be om at det skrives inn i kontrakten. Da slipper du tvil senere.</li>
+<li><strong>Hvem dekker byggesaksgebyret til kommunen?</strong> Som tiltakshaver er du formelt ansvarlig for at gebyret betales (SAK10 § 12-1), men i en totalentreprise legges dette ofte inn i totalprisen. Få det avklart.</li>
+<li><strong>Har foretaket faktisk ansvarsrett?</strong> Et seriøst byggefirma fyller ut en erklæring om ansvarsrett. Du kan be om å se den.</li>
+<li><strong>Hvem søker om ferdigattest til slutt?</strong> Det er den ansvarlige søkeren som søker (mer om dette i en egen artikkel), men avklar tidlig at de tar denne jobben helt i mål.</li>
+<li><strong>Hvem sender nabovarslene?</strong> Dette inngår i søkerrollen, men forsikre deg om at det faktisk blir gjort i tide, så ikke prosjektet forsinkes.</li>
+</ol>
+<h3>Hva skjer steg for steg?</h3>
+<p>Slik ser en typisk søknadsprosess ut når entreprenøren søker for deg:</p>
+<ol>
+<li>Du og entreprenøren blir enige om hustype, plassering og tegninger.</li>
+<li>Entreprenøren (ansvarlig søker) sender <strong>nabovarsel</strong> til naboene.</li>
+<li>Naboene får en frist til å uttale seg.</li>
+<li>Entreprenøren samler tegninger, situasjonsplan og dokumentasjon, og sender <strong>byggesøknaden</strong> til kommunen.</li>
+<li>Kommunen behandler søknaden og gir (forhåpentligvis) <strong>byggetillatelse</strong>.</li>
+<li>Bygging settes i gang.</li>
+<li>Når huset er ferdig, søker entreprenøren om <strong>ferdigattest</strong>.</li>
+</ol>
+<p>Du som tiltakshaver følger med, signerer der det trengs, og leverer opplysninger – men slipper å være saksbehandler.</p>
+<h3>Hva med tiltak som ikke krever ansvarlig søker?</h3>
+<p>Ikke alle byggetiltak er like store. For et helt nytt bolighus er hovedregelen at det kreves ansvarlig søker med ansvarsrett. Men mindre tiltak kan ha enklere regler. En liten garasje, et lite tilbygg eller en bod under bestemte størrelser kan i noen tilfeller forestås av deg som tiltakshaver selv, eller til og med være unntatt søknadsplikt (plan- og bygningsloven §§ 20-4 og 20-5). For et fullt boligbygg er du likevel nesten alltid avhengig av profesjonell hjelp til søknaden.</p>
+<p><strong>Eksempel:</strong> Familien Lunde i Gjøvik bygde først en enebolig med entreprenøren som ansvarlig søker. Året etter satte de opp en liten frittstående bod på 14 kvadratmeter. Den kunne de håndtere selv uten ansvarlig søker, fordi den var liten nok. To helt ulike regler for samme familie – det illustrerer hvorfor størrelse og type tiltak avgjør hvem som må søke.</p>
+<p>Poenget for deg som bygger ny bolig: ta utgangspunkt i at du trenger et profesjonelt foretak som ansvarlig søker, og bekreft alltid med kommunen eller entreprenøren hva som gjelder akkurat ditt tiltak.</p>
+<h3>Et lite varsko</h3>
+<p>Pass deg for avtaler der entreprenøren overlater søkeransvaret til deg uten at du forstår hva det innebærer. Hvis du plutselig blir stående som ansvarlig søker uten fagkompetanse, kan du få et ansvar du ikke er rustet for. Spør alltid: «Hvem er ansvarlig søker i mitt prosjekt?» – og få svaret skriftlig. Et seriøst firma svarer tydelig på dette uten å nøle. Er du i tvil, kan du alltid ringe byggesaksavdelingen i kommunen din – de gir gratis veiledning om hvem som må stå som søker.</p>
+<h3>Kort oppsummert</h3>
+<p>Du er tiltakshaver og står bak byggeprosjektet, men for et nybygg må et profesjonelt foretak med ansvarsrett være ansvarlig søker mot kommunen. I en totalentreprise er dette normalt entreprenøren. Sørg for at det står tydelig i kontrakten hvem som søker, hvem som betaler gebyret, hvem som sender nabovarsler, og at foretaket faktisk har ansvarsrett. Da starter byggeprosjektet på trygg grunn.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg betale for arbeid jeg ikke har bestilt? — Rettsregel</title>
+<meta name="description" content="Som hovedregel nei. Du skal normalt ikke betale for arbeid du verken har bestilt eller godkjent. Dukker det opp behov for ekstraarbeid, skal håndverkeren…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-betale-for-arbeid-jeg-ikke-har/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg betale for arbeid jeg ikke har bestilt?">
+<meta property="og:description" content="Som hovedregel nei. Du skal normalt ikke betale for arbeid du verken har bestilt eller godkjent. Dukker det opp behov for ekstraarbeid, skal håndverkeren…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-betale-for-arbeid-jeg-ikke-har/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg betale for arbeid jeg ikke har bestilt?">
+<meta name="twitter:description" content="Som hovedregel nei. Du skal normalt ikke betale for arbeid du verken har bestilt eller godkjent. Dukker det opp behov for ekstraarbeid, skal håndverkeren…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Må jeg betale for arbeid jeg ikke har bestilt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Som hovedregel nei. Du skal normalt ikke betale for arbeid du verken har bestilt eller godkjent. Dukker det opp behov for ekstraarbeid, skal håndverkeren kontakte deg og spørre først (håndverkertjenesteloven § 9). Det finnes noen få unntak – for eksempel hvis arbeidet haster for å unngå skade, eller kostnaden er ubetydelig.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Utgangspunktet: du bestemmer over din egen lommebok</h3>
+<p>Det er du som har bestilt jobben, og det er du som skal betale. Derfor er hovedregelen enkel og rettferdig: Håndverkeren kan ikke bare gjøre ekstra arbeid på eget initiativ og sende deg regningen. Han må spørre deg først, slik at du får sjansen til å si ja eller nei – og til å vite hva det koster.</p>
+<p>Dette kalles <strong>tilleggsarbeid</strong>, og vi forklarer begrepet grundig i artikkel 39 og 40. Her ser vi på selve kjernespørsmålet: må du betale for noe du ikke har godkjent?</p>
+<h3>Regneeksempel: ekstraarbeid uten å spørre</h3>
+<p>Tømrer Espen er hyret for å legge nytt gulv hos Kari for en avtalt sum. Mens han jobber, ser han at noen vinduskarmer er slitte. Uten å si fra pusser, grunner og maler han alle karmene, og legger på 9 000 kroner ekstra på regningen.</p>
+<p>Kari bestilte aldri dette. Espen spurte henne ikke. Karmene var ikke i ferd med å råtne, og 9 000 kroner er ikke en ubetydelig sum. Da må Kari som hovedregel IKKE betale for dette. Espen tok en sjanse på egen risiko da han satte i gang uten å spørre.</p>
+<h3>De viktige unntakene</h3>
+<p>Loven åpner for at håndverkeren noen ganger kan utføre ekstraarbeid uten å spørre først. Det gjelder særlig i disse tilfellene:</p>
+<ul>
+<li><strong>Det haster for å unngå skade.</strong> Hvis han må handle raskt for å hindre at noe blir ødelagt, og det ikke er tid til å få tak i deg.</li>
+<li><strong>Kostnaden er ubetydelig.</strong> Hvis ekstraarbeidet koster lite, eller er lite sammenlignet med den avtalte prisen, kan han gjøre det og fakturere for det.</li>
+<li><strong>Han har forsøkt å nå deg uten å lykkes</strong>, og han med rimelighet kan gå ut fra at du vil ha arbeidet gjort.</li>
+</ul>
+<p>Eksempel på unntak: Rørlegger Siri bytter en kran hos Per. Hun oppdager at en liten pakning rett ved er sprukken og vil føre til lekkasje om kort tid. Pakningen koster 80 kroner og tar to minutter å bytte. Dette er både ubetydelig og forebygger skade. Her kan Siri bytte pakningen og ta de 80 kronene uten å ringe Per først.</p>
+<h3>Et grensetilfelle</h3>
+<p>Tenk deg at maler Tor er hyret for å male stua. Han ser at taklista løsner litt og fester den med et par spikre mens han er i gang – fem minutters jobb. Det vil de fleste regne som ubetydelig, og Tor kan trygt gjøre det. Men hvis han i stedet bestemmer seg for å bytte hele taklista i flere rom til 6 000 kroner uten å spørre, er vi over i noe helt annet: en betydelig kostnad som krever ditt samtykke. Grensen går altså ved hvor stort og hvor inngripende ekstraarbeidet er.</p>
+<h3>Hva gjør du hvis du får regning for noe du ikke bestilte?</h3>
+<ol>
+<li><strong>Sjekk hva som faktisk er fakturert.</strong> Be om en spesifisert regning (§ 36) hvis det er uklart.</li>
+<li><strong>Skill mellom det avtalte og det ekstra.</strong> Hva godkjente du, og hva er lagt på i tillegg?</li>
+<li><strong>Vurder om et unntak gjelder.</strong> Hastet det? Var det ubetydelig? Forsøkte han å nå deg?</li>
+<li><strong>Bestrid skriftlig</strong> den delen du mener du ikke skal betale. Forklar hvorfor: «Dette arbeidet ble verken bestilt eller godkjent, og jeg ble ikke kontaktet, jf. håndverkertjenesteloven § 9.»</li>
+<li><strong>Betal den ubestridte delen.</strong> Da viser du at du opptrer ryddig, og uenigheten gjelder bare det omstridte beløpet.</li>
+</ol>
+<h3>Hva hvis dere er uenige?</h3>
+<p>Står dere fast, kan du kontakte Forbrukerrådet for veiledning, og saken kan eventuelt bringes inn for behandling i et klageorgan. Ta vare på all kommunikasjon, alle tilbud, avtaler og fakturaer – dokumentasjon avgjør ofte slike saker. Jo bedre du har skrevet ned hva som ble avtalt, og hva som ikke ble det, jo sterkere står du.</p>
+<h3>Hva med arbeid du «på en måte» godkjente?</h3>
+<p>Mange konflikter handler ikke om svart-hvitt, men om gråsoner. Sa du egentlig ja? Tenk deg at håndverkeren under jobben sier i forbifarten: «Jeg fikser den løse listen også, jeg», og du nikker uten å tenke over at det koster ekstra. Har du da godkjent det?</p>
+<p>Her er det viktig å vite at et samtykke gjerne kan gis muntlig, og at det ikke alltid trenger å være formelt. Men jo større kostnaden er, jo mer skal det til for at et løst «mhm» regnes som en bindende aksept av en ekstra regning. For å unngå slike gråsoner: når håndverkeren foreslår noe ekstra, spør alltid «hva koster det?» før du sier ja. Da er det helt klart for begge hva du har godkjent, og du slipper å diskutere i etterkant om et nikk var et ja til 300 kroner eller 3 000 kroner.</p>
+<h3>Et eksempel der forbrukeren slapp å betale</h3>
+<p>Tømrer Vidar la ny terrasse for Siri til avtalt pris. På eget initiativ bygde han også en liten trapp ned til hagen og fakturerte 7 000 kroner ekstra. Siri hadde aldri bedt om trappen, ble aldri spurt, og trappen hastet ikke. Da Siri bestred beløpet skriftlig med henvisning til § 9, måtte Vidar gi seg: en helt ny konstruksjon til 7 000 kroner er verken ubetydelig eller noe som haster, og han hadde ikke innhentet samtykke. Siri betalte for terrassen hun bestilte, og ikke for trappen hun ikke bestilte.</p>
+<h3>Kort oppsummert</h3>
+<p>Du skal som hovedregel ikke betale for arbeid du verken har bestilt eller godkjent. Håndverkeren plikter å kontakte deg og spørre før han gjør tilleggsarbeid (§ 9). Unntakene er snevre: at det haster for å unngå skade, at kostnaden er ubetydelig, eller at han ikke fikk tak i deg og med rimelighet kunne anta at du ville ha jobben gjort. Får du regning for uautorisert arbeid, bestrid den delen skriftlig og betal resten.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

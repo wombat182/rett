@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis håndverkeren ga meg dårlige råd? — Rettsregel</title>
+<meta name="description" content="Håndverkeren er fagpersonen, og du har krav på å bli veiledet ordentlig. Gir håndverkeren deg dårlige eller direkte feilaktige råd som du følger og taper…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-ga-meg-darlige-rad/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis håndverkeren ga meg dårlige råd?">
+<meta property="og:description" content="Håndverkeren er fagpersonen, og du har krav på å bli veiledet ordentlig. Gir håndverkeren deg dårlige eller direkte feilaktige råd som du følger og taper…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-ga-meg-darlige-rad/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis håndverkeren ga meg dårlige råd?">
+<meta name="twitter:description" content="Håndverkeren er fagpersonen, og du har krav på å bli veiledet ordentlig. Gir håndverkeren deg dårlige eller direkte feilaktige råd som du følger og taper…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis håndverkeren ga meg dårlige råd?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Håndverkeren er fagpersonen, og du har krav på å bli veiledet ordentlig. Gir håndverkeren deg dårlige eller direkte feilaktige råd som du følger og taper på, kan det i seg selv være en mangel. Loven pålegger nemlig håndverkeren en veiledningsplikt – og en plikt til å fraråde når du er i ferd med å gjøre noe ufornuftig.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Du betaler også for fagkunnskapen</h3>
+<p>Når du leier inn en håndverker, kjøper du ikke bare to hender og litt verktøy. Du kjøper fagkunnskap. Derfor sier håndverkertjenesteloven at håndverkeren skal ivareta dine interesser og veilede deg (veiledningsplikten følger av håndverkertjenesteloven § 5, som handler om hvordan tjenesten skal utføres). I tillegg har håndverkeren en egen <strong>frarådingsplikt</strong>: oppdager han at tjenesten ikke vil lønne seg for deg, eller at det du ønsker er en dårlig idé, skal han si ifra (frarådingsplikten i § 7).</p>
+<p>Bryter håndverkeren disse pliktene, og du følger de dårlige rådene og lider tap, kan resultatet bli ansett som mangelfullt.</p>
+<h3>Eksempler på dårlige råd</h3>
+<ul>
+<li><strong>Feil materialvalg.</strong> Rørleggeren Sondre anbefalte en billig type rør som ikke tåler varmen i et baderom. Etter kort tid begynner de å sprekke. Han burde frarådet dette.</li>
+<li><strong>Unødvendig dyr løsning.</strong> Snekkeren Vibeke rådet deg til å rive en hel vegg for 80 000 kroner, da en langt enklere og billigere løsning ville løst problemet. Hun ivaretok ikke interessene dine.</li>
+<li><strong>Råd som bryter med forskrifter.</strong> Elektrikeren Kjell sa at «det går fint» å legge en bestemt kurs uten jordfeilbryter. Det er i strid med regelverket, og rådet er direkte farlig.</li>
+<li><strong>Frarådet ikke et håpløst prosjekt.</strong> Maleren Astrid malte over en fuktskadet vegg du ba om, uten å si at maling ikke løser fuktproblemet og at det vil komme tilbake. Hun burde frarådet å male før fukten var fikset.</li>
+</ul>
+<h3>Når er rådet «dårlig nok» til å gi deg en sak?</h3>
+<p>Det holder ikke at du i ettertid skulle ønske du hadde valgt annerledes. Rådet må bryte med det en dyktig fagperson skulle ha gitt. Spørsmålet er om håndverkeren handlet slik en fornuftig fagperson ville gjort i samme situasjon. Ga han et råd som var faglig forsvarlig på det tidspunktet, er du som regel bundet av valget ditt – selv om det viste seg uheldig.</p>
+<p>Men ga han et råd som strider mot vanlig fagkunnskap, mot forskrifter, eller som han burde ha skjønt ville påføre deg tap, da har han brutt veilednings- eller frarådingsplikten.</p>
+<h3>Slik dokumenterer du rådgivningen</h3>
+<p>Dette er ofte den vanskeligste delen, fordi råd gjerne gis muntlig på stedet. Likevel:</p>
+<ol>
+<li><strong>Skriv ned hva som ble sagt,</strong> så snart som mulig etterpå. Dato, hvem som var til stede, hva rådet gikk ut på.</li>
+<li><strong>Be om råd skriftlig fremover.</strong> Når du står overfor et valg, send en e-post: «Du anbefalte løsning A fremfor B – kan du bekrefte det og kort begrunne hvorfor?» Da har du det svart på hvitt.</li>
+<li><strong>Ta vare på all kommunikasjon.</strong> Meldinger, e-poster, tilbud – alt kan vise hva som ble anbefalt.</li>
+<li><strong>Hent en uavhengig faglig vurdering</strong> av om rådet var forsvarlig. En annen fagperson kan bekrefte at rådet var dårlig.</li>
+</ol>
+<h3>Hva kan du kreve?</h3>
+<p>Følger du dårlige råd og det fører til en mangel eller et tap, har du de vanlige rettighetene:</p>
+<ul>
+<li><strong>Retting</strong> av det som ble feil.</li>
+<li><strong>Prisavslag</strong> hvis resultatet er dårligere enn det skulle vært.</li>
+<li><strong>Erstatning</strong> for det økonomiske tapet rådet påførte deg – for eksempel at du måtte gjøre om hele jobben, eller at en vannskade oppsto.</li>
+</ul>
+<p>Hvis frarådingsplikten ble brutt – håndverkeren burde sagt ifra om at prosjektet ikke lønte seg – kan det i tillegg påvirke hvor mye du må betale. I noen tilfeller kan du slippe å betale for arbeid som aldri burde vært satt i gang.</p>
+<h3>En viktig nyanse: ditt eget ansvar</h3>
+<p>Hvis du derimot insisterte på en bestemt løsning <strong>etter</strong> at håndverkeren tydelig hadde frarådet den, står du svakere. Da har han gjort jobben sin ved å advare deg, og du tok valget mot bedre vitende. Derfor er det også i din interesse at frarådinger blir dokumentert – det viser hvem som visste hva.</p>
+<h3>Når flere fagfolk er involvert</h3>
+<p>Av og til er problemet at to håndverkere har gitt motstridende råd, eller at den ene mener den andre tok feil. Maleren sier underlaget var for fuktig, snekkeren mener malingen var feil type. Da kan det være vanskelig å plassere ansvaret. Her er det ekstra nyttig med en uavhengig tredjepart som kan vurdere hvem som faktisk ga det dårlige rådet. Behold all kommunikasjon med begge, så du har oversikt over hvem som sa hva og når.</p>
+<h3>Råd om penger og lønnsomhet</h3>
+<p>Veiledningsplikten handler ikke bare om det tekniske. Den dekker også om jobben i det hele tatt lønner seg for deg. Hvis håndverkeren skjønner at en reparasjon blir så dyr at det ville vært bedre å bytte ut tingen helt, skal han si ifra. Rørleggeren Sondre som bruker 15 000 kroner på å lappe en gammel varmtvannsbereder som uansett må byttes om et halvår, har ikke ivaretatt interessene dine. Du kan da ha en sak knyttet til frarådingsplikten, fordi du skulle vært advart om at pengene var dårlig brukt.</p>
+<h3>Hvor får du hjelp?</h3>
+<p>Forbrukerrådet kan veilede deg om du er usikker på om du har en sak. Blir dere ikke enige, kan saken bringes inn for Forbrukerklageutvalget. Husk å reklamere skriftlig innen rimelig tid etter at du oppdaget at rådet var dårlig (jf. reklamasjonsreglene i håndverkertjenesteloven § 19).</p>
+<h3>Et utdypende eksempel: badet til Marius og Linnea</h3>
+<p>For å se hvordan dette spiller seg ut i praksis, kan vi følge en konkret sak. Marius og Linnea skulle pusse opp et eldre baderom og hentet inn rørleggeren Ola for å flytte sluk og legge nytt opplegg. De fortalte tydelig at de ønsket gulvvarme, og spurte Ola om det var noe spesielt de måtte tenke på. Ola svarte at «det ordner seg underveis», og anbefalte en bestemt type membran som han hadde liggende fra et tidligere oppdrag.</p>
+<p>Problemet var at membranen Ola anbefalte ikke var beregnet for kombinasjon med vannbåren gulvvarme på akkurat den måten han la den. Et halvt år etter at badet sto ferdig, begynte det å lukte fukt, og en fuktmåling viste at vann hadde trukket inn under membranen. Regningen for å rive og bygge opp badet på nytt kom på 140 000 kroner.</p>
+<p>Her er det avgjørende poenget: en dyktig rørlegger skulle ha visst at materialvalget var uforsvarlig, og skulle enten ha frarådet løsningen eller valgt et egnet produkt. Fordi Ola ga et råd som brøt med vanlig fagkunnskap, og kundene fulgte rådet i god tro, ble resultatet ansett som en mangel. Marius og Linnea kunne kreve at Ola dekket utbedringen, fordi tapet var en direkte følge av den dårlige rådgivningen. Hadde de derimot selv insistert på den billige membranen etter at Ola hadde advart skriftlig, ville bildet vært et helt annet.</p>
+<h3>Vanlige feil folk gjør når de har fått dårlige råd</h3>
+<p>Selv når rådet faktisk var dårlig, er det noen typiske feil som kan svekke saken din. Vær oppmerksom på disse:</p>
+<ul>
+<li><strong>Du venter for lenge med å si ifra.</strong> Oppdager du at rådet var dårlig, men lar det gå måned etter måned uten å reklamere, kan du tape retten din. Reklamer skriftlig så snart du forstår at noe er galt.</li>
+<li><strong>Du godtar en muntlig «beklagelse» og lar saken ligge.</strong> En håndverker som sier «det var dumt, det der» har ikke dermed påtatt seg ansvar i juridisk forstand. Få en eventuell enighet om utbedring ned på papir.</li>
+<li><strong>Du betaler hele regningen før problemet er løst.</strong> Har du fortsatt penger til gode, kan tilbakeholdsretten være ditt sterkeste pressmiddel. Betaler du alt, mister du dette presset.</li>
+<li><strong>Du blander sammen smak og svikt.</strong> Et råd du i ettertid angrer på, er ikke det samme som et faglig uforsvarlig råd. Vær ærlig på hvilken kategori saken din havner i.</li>
+<li><strong>Du dokumenterer ikke rådet før konflikten oppstår.</strong> De fleste råd gis muntlig, og uten et spor blir det ord mot ord. En kort bekreftelses-e-post i forkant er gull verdt.</li>
+</ul>
+<h3>Slik formulerer du en bekreftelses-e-post</h3>
+<p>Et enkelt grep som beskytter deg, er å sende håndverkeren en kort e-post hver gang du står overfor et valg basert på rådene hans. Den trenger ikke være lang. Et eksempel kan være: «Hei Ola. Takk for befaringen i dag. Slik jeg forsto deg, anbefaler du løsning A fremfor B, fordi du mener B ikke vil tåle fukten på badet. Kan du bekrefte at dette er din anbefaling? Da går vi for løsning A.» En slik melding gjør to ting på én gang: den fester rådgivningen skriftlig, og den gir håndverkeren en ny anledning til å fraråde dersom du har misforstått noe. Svarer han bekreftende, har du dokumentert akkurat hva fagpersonen anbefalte – og det er nettopp den dokumentasjonen som avgjør de fleste saker om dårlige råd.</p>
+<h3>Kort oppsummert</h3>
+<p>Du betaler for håndverkerens fagkunnskap, og loven gir deg krav på god veiledning og en frarådingsplikt når noe ikke lønner seg. Får du dårlige eller feilaktige råd som du følger og taper på, kan det være en mangel som gir rett til retting, prisavslag eller erstatning. Dokumenter rådgivningen så godt du kan – helst skriftlig – og hent gjerne en uavhengig fagvurdering. Husk samtidig at dersom du insisterte på noe etter en tydelig fraråding, bærer du selv en større del av ansvaret.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis prisen blir høyere enn forventet? — Rettsregel</title>
+<meta name="description" content="Det kommer an på hvilken type avtale du har. Har du fastpris, gjelder den prisen, med mindre du selv har bestilt endringer eller kontrakten åpner for…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-prisen-blir-hoyere-enn-forventet/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis prisen blir høyere enn forventet?">
+<meta property="og:description" content="Det kommer an på hvilken type avtale du har. Har du fastpris, gjelder den prisen, med mindre du selv har bestilt endringer eller kontrakten åpner for…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-prisen-blir-hoyere-enn-forventet/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis prisen blir høyere enn forventet?">
+<meta name="twitter:description" content="Det kommer an på hvilken type avtale du har. Har du fastpris, gjelder den prisen, med mindre du selv har bestilt endringer eller kontrakten åpner for…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Hva hvis prisen blir høyere enn forventet?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det kommer an på hvilken type avtale du har. Har du fastpris, gjelder den prisen, med mindre du selv har bestilt endringer eller kontrakten åpner for prisjustering. Har du regningsarbeid med et prisoverslag, kan sluttsummen ikke overstige overslaget vesentlig, og høyst med 15 prosent (bustadoppføringslova § 41). Blir prisen høyere enn dette uten god grunn, har du rett til å protestere.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 41</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/41/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 41</div>
+  <div class="related-card-title">Hva er prisen hvis dere ikke avtalte noe?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Først: Hva slags avtale har du?</h3>
+<p>Det er to hovedtyper, og det er helt avgjørende hvilken du har:</p>
+<ol>
+<li>
+<p>Fastpris (fastprisavtale): Du betaler en avtalt sum uansett hva det koster entreprenøren. Risikoen for at materialer eller arbeid blir dyrere, ligger hos entreprenøren, ikke deg, så lenge du ikke har bestilt endringer.</p>
+</li>
+<li>
+<p>Regningsarbeid: Du betaler for faktisk medgått tid og materialer. Her er prisen mer usikker, men loven gir deg en sikkerhetsventil hvis det er gitt et prisoverslag.</p>
+</li>
+</ol>
+<p>Finn frem kontrakten og se hva som står. Dette ene spørsmålet avgjør mye av hva du kan kreve.</p>
+<h3>Eksempel: Fastpris som holder</h3>
+<p>Kristin har fastprisavtale på 3 900 000 kroner. Entreprenøren oppdager at materialene ble dyrere enn de trodde da de regnet på jobben. Entreprenøren ber Kristin om 120 000 kroner ekstra.</p>
+<p>Kristin sier nei, og hun har rett. Med fastpris er det entreprenøren som bærer denne risikoen. Det eneste unntaket ville vært hvis kontrakten uttrykkelig hadde åpnet for prisjustering (for eksempel indeksregulering), eller hvis Kristin selv hadde bestilt endringer. Verken det ene eller det andre er tilfelle her, så fastprisen står.</p>
+<h3>Eksempel: Regningsarbeid og 15-prosentgrensen</h3>
+<p>Tobias bygger på regning. Entreprenøren ga et prisoverslag på 600 000 kroner for arbeidet. Til slutt kommer regningen på 710 000 kroner.</p>
+<p>15 prosent over 600 000 er 90 000, altså en øvre grense på 690 000 kroner. Regningen på 710 000 overstiger dette. Tobias kan da kreve at beløpet settes ned til 690 000 kroner, med mindre noe annet var uttrykkelig avtalt eller deler av økningen skyldes endringer Tobias selv bestilte. Han bør be om en spesifikasjon for å se hva som faktisk ligger bak økningen.</p>
+<h3>Vanlige grunner til at prisen øker</h3>
+<ul>
+<li>Du har bestilt tilvalg eller endringer (helt lovlig, men du betaler).</li>
+<li>Kontrakten har en avtalt indeksregulering (se egen artikkel om dette).</li>
+<li>Det er regningsarbeid, og det tok mer tid eller materialer enn antatt.</li>
+<li>Entreprenøren har funnet uforutsette forhold, for eksempel dårlig grunn (men dette må vurderes konkret, og kan ikke uten videre veltes over på deg).</li>
+</ul>
+<p>Hvis ingen av disse gjelder, og du har fastpris, skal prisen stå fast.</p>
+<h3>Slik går du frem hvis prisen øker</h3>
+<ol>
+<li>Be om en spesifisert oversikt over hva økningen skyldes.</li>
+<li>Skill ut hva som er endringer du selv bestilte (det betaler du), og hva entreprenøren prøver å velte over på deg uten grunnlag.</li>
+<li>Sjekk om kontrakten har en klausul om prisjustering eller indeksregulering.</li>
+<li>Protester skriftlig hvis prisen øker uten avtalt grunnlag.</li>
+<li>Hold tilbake et passende, forholdsmessig beløp i sluttoppgjøret hvis dere er uenige, og be om avklaring.</li>
+</ol>
+<h3>Hvor får du hjelp?</h3>
+<p>Hvis dere ikke blir enige, kan du kontakte Forbrukerrådet for veiledning. Mange tvister handler nettopp om prisøkninger, og det finnes ordninger for å løse slike uenigheter uten at du må gå til retten.</p>
+<h3>Eksempel: Når en del av økningen er din egen bestilling</h3>
+<p>La oss si Markus har fastpris på 4 100 000 kroner. Sluttregningen lyder på 4 320 000, altså 220 000 mer enn han trodde. Han blir først bekymret, men når han ber om spesifikasjon, ser han:</p>
+<ul>
+<li>Oppgradert kjøkken han selv bestilte: 95 000 kr</li>
+<li>Ekstra bad han selv bestilte: 110 000 kr</li>
+<li>Avtalt indeksregulering: 15 000 kr</li>
+</ul>
+<p>Til sammen 220 000 kroner. Alt er enten endringer Markus selv har bestilt, eller en regulering han har avtalt. Da er økningen helt i orden. Lærdommen: en høyere sluttregning er ikke automatisk urimelig. Sjekk ALLTID hva den består av før du protesterer.</p>
+<h3>Forskuddsbetaling og sikkerhet</h3>
+<p>Et tips for trygghet: vær forsiktig med å betale store summer på forskudd, altså før arbeidet er gjort. Betalingen bør følge fremdriften i byggingen. Entreprenøren skal også stille en garanti (sikkerhet) for oppfyllelse av avtalen. Hvis du har betalt mye på forskudd, kan det også finnes regler om sikkerhet for forskuddet. Dette beskytter pengene dine hvis noe skulle gå galt underveis.</p>
+<h3>Ikke aksepter en høyere pris i stillhet</h3>
+<p>Hvis du betaler en for høy regning uten å si ifra, kan det bli oppfattet som at du har godtatt den. Derfor: protester skriftlig FØR du betaler det omstridte beløpet, eller betal det ubestridte og hold tilbake det du mener er feil, samtidig som du forklarer hvorfor. Da har du markert tydelig at du ikke godtar prisøkningen, og du beholder forhandlingskortene dine.</p>
+<h3>Ro i magen er også en verdi</h3>
+<p>Det kan oppleves stressende når en regning blir høyere enn ventet. Men husk at du har gode rettigheter: fastpris er fastpris, regningsarbeid har et 15-prosenttak, og alt ekstra skal være avtalt. Pust rolig, finn frem papirene, og ta det steg for steg. De aller fleste uenigheter løser seg når begge parter ser på den skriftlige avtalen sammen. Og skulle dere ikke bli enige, finnes det hjelp å få hos Forbrukerrådet, som veileder forbrukere i nettopp slike byggesaker.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li>Finn frem kontrakten og sjekk om det står fastpris eller regning.</li>
+<li>Sjekk om kontrakten har en klausul om prisjustering eller indeksregulering.</li>
+<li>Be om en spesifisert oversikt over hva økningen skyldes.</li>
+<li>Protester skriftlig hvis grunnlaget mangler.</li>
+<li>Kontakt Forbrukerrådet hvis dere står fast.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Med fastpris gjelder fastprisen, og entreprenøren kan ikke kreve mer bare fordi det ble dyrere, med mindre du har bestilt endringer eller kontrakten åpner for prisjustering. Ved regningsarbeid med prisoverslag kan sluttsummen ikke overstige overslaget med mer enn 15 prosent (buofl. § 41). Sjekk kontrakten, krev spesifikasjon, protester skriftlig hvis grunnlaget mangler, og søk hjelp hos Forbrukerrådet ved uenighet. Husk samtidig at en høyere sluttregning ikke automatisk er urimelig: ofte skyldes den endringer du selv har bestilt eller en regulering du har avtalt. Sjekk derfor alltid hva økningen består av før du konkluderer.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

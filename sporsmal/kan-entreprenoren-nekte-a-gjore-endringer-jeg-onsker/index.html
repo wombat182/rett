@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan entreprenøren nekte å gjøre endringer jeg ønsker? — Rettsregel</title>
+<meta name="description" content="Ja, i visse tilfeller kan entreprenøren si nei.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-entreprenoren-nekte-a-gjore-endringer-jeg-onsker/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan entreprenøren nekte å gjøre endringer jeg ønsker?">
+<meta property="og:description" content="Ja, i visse tilfeller kan entreprenøren si nei.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-entreprenoren-nekte-a-gjore-endringer-jeg-onsker/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan entreprenøren nekte å gjøre endringer jeg ønsker?">
+<meta name="twitter:description" content="Ja, i visse tilfeller kan entreprenøren si nei.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan entreprenøren nekte å gjøre endringer jeg ønsker?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, i visse tilfeller kan entreprenøren si nei. Selv om du som forbruker har en sterk rett til å bestille endringer, er den ikke ubegrenset. Det finnes konkrete situasjoner der entreprenøren lovlig kan avvise et endringsønske (bustadoppføringslova § 9).</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/9/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 9</div>
+  <div class="related-card-title">Din rett til å kreve endringer underveis</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, i visse tilfeller kan entreprenøren si nei. Selv om du som forbruker har en sterk rett til å bestille endringer, er den ikke ubegrenset. Det finnes konkrete situasjoner der entreprenøren lovlig kan avvise et endringsønske (bustadoppføringslova § 9).</p>
+<h3>Tre hovedgrunner entreprenøren kan vise til</h3>
+<p><strong>1. Endringen henger ikke sammen med prosjektet.</strong> Du kan kreve endringer og tilleggsarbeid som <em>står i sammenheng</em> med det avtalte og ikke er <em>vesentlig annerledes</em> i omfang eller karakter (§ 9). Ber du om noe som egentlig er et helt nytt og urelatert prosjekt, kan entreprenøren nekte.</p>
+<p>Eksempel: Du bygger en enebolig, men vil at entreprenøren midt i prosjektet skal sette opp en stor driftsbygning til hester på nabotomta. Det er noe vesentlig annet enn boligen som bygges – entreprenøren kan si nei.</p>
+<p><strong>2. Endringen vil gi entreprenøren en uforholdsmessig ulempe.</strong> Du kan ikke kreve en endring hvis den fører til en ulempe for entreprenøren som ikke står i rimelig forhold til din interesse i å få den gjennomført (§ 9). Her gjøres en avveining: Hvor viktig er endringen for deg, kontra hvor mye bryderi den skaper for ham?</p>
+<p>Eksempel på ulempe entreprenøren kan vise til: at endringen krever spesialkompetanse han ikke har, at den vil forsinke andre oppdrag betydelig, eller at den kompliserer logistikken på byggeplassen vesentlig. Også reell usikkerhet om din betalingsevne for det ekstra arbeidet kan spille inn i vurderingen.</p>
+<p><strong>3. Endringen overstiger en avtalt 15-prosentgrense.</strong> Som nevnt i forrige artikkel kan det være avtalt på forhånd at du ikke kan kreve endringer som endrer vederlaget med 15 prosent eller mer (§ 9). Er en slik klausul med i kontrakten, kan entreprenøren avvise endringer som sprenger denne rammen.</p>
+<h3>Et balansert eksempel</h3>
+<p>Familien Holt bygger hus til 5 000 000 med en kontrakt som inneholder 15-prosentklausulen. De ønsker seg flere ting:</p>
+<ul>
+<li>Et oppgradert kjøkken til 120 000 ekstra: <strong>innenfor</strong> – entreprenøren utfører det uten problem.</li>
+<li>Senere en full kjelleretasje med en ekstra utleieleilighet til 950 000 ekstra: Dette sprenger 15-prosentgrensen, som ligger på 750 000, <em>og</em> det er en betydelig utvidelse av prosjektet. Entreprenøren kan <strong>nekte</strong> dette – men kan også velge å si ja om det passer ham, gjerne med en ny eller justert avtale og en oppdatert frist.</li>
+</ul>
+<p>Poenget er at de vanlige, mindre ønskene nesten alltid går greit, mens de store utvidelsene er der entreprenøren har en reell mulighet til å si nei.</p>
+<h3>Hva betyr dette i praksis for deg?</h3>
+<p>De aller fleste vanlige endringsønsker – materialvalg, mindre justeringer av planløsningen, ekstra stikkontakter, oppgraderinger av overflater – ligger godt innenfor det entreprenøren plikter å utføre. Det er først ved de store eller helt urelaterte ønskene at en nektelse kan være lovlig. Du skal altså ikke være redd for å be om vanlige tilpasninger.</p>
+<p>Hvis entreprenøren først nekter, har du krav på en saklig begrunnelse. «Jeg orker ikke» eller «det passer dårlig» holder ikke alene. Be ham forklare <em>hvilken</em> av de tre grunnene over som faktisk gjelder i ditt tilfelle.</p>
+<h3>Råd hvis du møter et nei</h3>
+<ol>
+<li>Spør om den konkrete grunnen til avslaget (§ 9).</li>
+<li>Sjekk selv om endringen faktisk henger sammen med prosjektet.</li>
+<li>Sjekk om kontrakten har en 15-prosentklausul.</li>
+<li>Foreslå en løsning – kanskje en justert utforming, eller en ny separat avtale med egen frist.</li>
+<li>Er du fortsatt uenig i avslaget, kontakt Forbrukerrådet eller en aktuell klagenemnd.</li>
+</ol>
+<h3>En vennlig påminnelse</h3>
+<p>God dialog løser det aller meste. Mange «nei» blir til «ja» når entreprenøren forstår hvor viktig endringen er for deg, og når dere sammen finner en grei måte å prise og fristforskyve den på. Ta endringssamtalen tidlig, vær konkret om hva du ønsker, og få alltid resultatet skriftlig i en endringsordre. Da bygger dere både hus og et godt samarbeid.</p>
+<h3>Hva hvis entreprenøren utfører en endring uten din bestilling?</h3>
+<p>Det går også andre veien. Entreprenøren kan ikke uten videre gjennomføre endringer på egen hånd og kreve betalt for dem. Som hovedregel skal arbeidet utføres slik dere har avtalt. Oppdager du at noe er gjort annerledes enn tegningene viser, uten at du har bedt om det, har du grunn til å ta det opp. Du skal ikke betale for endringer du ikke har bestilt, og du kan i mange tilfeller kreve at arbeidet rettes slik at det stemmer med avtalen. Dette er den andre siden av samme sak: skriftlige endringsordrer beskytter begge parter mot misforståelser om hva som faktisk var bestilt.</p>
+<h3>En balansert tilnærming lønner seg</h3>
+<p>Husk at du og entreprenøren skal samarbeide gjennom et langt prosjekt. Det lønner seg å være ryddig og rimelig begge veier. Forstår du at en endring faktisk er upraktisk eller fordyrende for entreprenøren, kan dere ofte finne en mellomløsning. Og krever du dine rettigheter på en vennlig og konkret måte – med henvisning til hva som er avtalt – er sjansen størst for at dere lander en god løsning uten konflikt. De fleste byggeprosjekter går fint nettopp fordi begge parter snakker sammen underveis.</p>
+<h3>Hva gjør du hvis dere blir stående uenige?</h3>
+<p>Skulle dere likevel ikke bli enige om en endring – enten om den i det hele tatt skal gjøres, eller om prisen for den – er det lurt å ikke la konflikten stoppe resten av prosjektet. Skill det omstridte punktet fra det dere er enige om, slik at byggingen kan gå videre på alt det andre. Be om en skriftlig begrunnelse for entreprenørens standpunkt, og ta gjerne kontakt med Forbrukerrådet for veiledning om hvor grensene faktisk går i ditt tilfelle. Mange uenigheter handler om misforståelser som lar seg løse med litt avklaring. Står dere fortsatt fast, finnes klagenemnder som kan vurdere saken. Poenget er å holde tonen ryddig og prosjektet i gang mens dere finner en løsning.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, entreprenøren kan i visse tilfeller nekte endringer: når de ikke henger sammen med prosjektet eller er vesentlig annerledes, når de gir ham en uforholdsmessig ulempe sett mot din interesse, eller når de sprenger en avtalt 15-prosentgrense (§ 9). Vanlige endringer plikter han som regel å utføre. Krev alltid en saklig begrunnelse ved et avslag – og søk god dialog for å finne en løsning.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

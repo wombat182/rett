@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva kan jeg kreve hvis håndverkeren har gjort feil? — Rettsregel</title>
+<meta name="description" content="Når håndverkeren har levert en mangelfull tjeneste, sitter du ikke maktesløs igjen.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-kan-jeg-kreve-hvis-handverkeren-har-gjort/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva kan jeg kreve hvis håndverkeren har gjort feil?">
+<meta property="og:description" content="Når håndverkeren har levert en mangelfull tjeneste, sitter du ikke maktesløs igjen.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-kan-jeg-kreve-hvis-handverkeren-har-gjort/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva kan jeg kreve hvis håndverkeren har gjort feil?">
+<meta name="twitter:description" content="Når håndverkeren har levert en mangelfull tjeneste, sitter du ikke maktesløs igjen.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva kan jeg kreve hvis håndverkeren har gjort feil?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Når håndverkeren har levert en mangelfull tjeneste, sitter du ikke maktesløs igjen. Loven gir deg en hel verktøykasse: du kan holde tilbake penger, kreve at feilen rettes, få prisavslag, la andre fikse jobben på håndverkerens regning, heve avtalen eller kreve erstatning. Det viktigste er at du sier fra skriftlig og gir håndverkeren en sjanse til å ordne opp.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Når håndverkeren har levert en mangelfull tjeneste, sitter du ikke maktesløs igjen. Loven gir deg en hel verktøykasse: du kan holde tilbake penger, kreve at feilen rettes, få prisavslag, la andre fikse jobben på håndverkerens regning, heve avtalen eller kreve erstatning. Det viktigste er at du sier fra skriftlig og gir håndverkeren en sjanse til å ordne opp.</p>
+<h3>Først: Hva regnes egentlig som en "feil"?</h3>
+<p>En feil – juristene kaller det en <strong>mangel</strong> – er at tjenesten ikke ble slik den skulle. Det betyr at arbeidet ikke holder den kvaliteten du med rimelighet kunne forvente, at det ikke ble gjort fagmessig, eller at håndverkeren brøt avtalen dere inngikk. Håndverkertjenesteloven sier at arbeidet skal utføres fagmessig og forsvarlig, og at håndverkeren skal ivareta dine interesser. Holder ikke resultatet det nivået, foreligger det en mangel.</p>
+<p>Et par eksempler:</p>
+<ul>
+<li><strong>Lise</strong> fikk lagt nytt baderomsgulv, men allerede etter to uker løsnet flisene fordi membranen var lagt feil. Klar mangel.</li>
+<li><strong>Omar</strong> bestilte maling av husfasaden i to strøk, men maleren tok bare ett. Avtalen ble brutt – også en mangel.</li>
+<li><strong>Familien Berg</strong> fikk montert et kjøkken der skapdørene ikke gikk i flukt og en sokkel manglet helt. Ikke fagmessig utført.</li>
+<li><strong>Geir</strong> fikk byttet sikringsskap, men elektrikeren glemte å jorde et kurs. Et brudd på faglige krav – og en mangel som i tillegg kan være farlig.</li>
+</ul>
+<p>Det er verdt å merke seg at en mangel ikke trenger å være håndverkerens "skyld" i moralsk forstand. Det holder at resultatet ikke ble som det skulle. Du trenger altså ikke å bevise at håndverkeren var slurvete – bare at tjenesten har en feil.</p>
+<h3>Hele verktøykassen din – seks muligheter</h3>
+<p>Her er det du kan kreve. Hvilke du bruker, avhenger av hvor alvorlig feilen er:</p>
+<ol>
+<li><strong>Holde betalingen tilbake</strong> – du kan beholde nok av pengene til å dekke kravet ditt, som et pressmiddel (§ 23).</li>
+<li><strong>Kreve retting</strong> – at håndverkeren utbedrer feilen gratis for deg (§ 24).</li>
+<li><strong>Kreve prisavslag</strong> – hvis feilen ikke blir rettet, betaler du mindre (§ 25).</li>
+<li><strong>Dekningsutbedring</strong> – la en annen fagperson rette feilen og krev kostnaden dekket av den opprinnelige håndverkeren (§ 25, jf. § 24).</li>
+<li><strong>Heve avtalen</strong> – hvis feilen er alvorlig nok, kan du si opp hele avtalen (§ 26).</li>
+<li><strong>Kreve erstatning</strong> – for økonomisk tap feilen har påført deg utover selve mangelen (§ 28).</li>
+</ol>
+<p>Disse kravene kan ofte <strong>kombineres</strong>. Du kan for eksempel få feilen rettet gratis og samtidig kreve erstatning for en følgeskade.</p>
+<h3>Den gylne regelen: Gi beskjed og en frist</h3>
+<p>Det aller viktigste rådet er enkelt: <strong>Si fra skriftlig og gi håndverkeren en rimelig frist til å rette.</strong> Håndverkeren har nemlig rett til å rette feilen selv før du gjør noe annet. Hopper du over dette steget og bare hyrer inn en annen, risikerer du å tape deler av kravet ditt.</p>
+<p>Slik gjør du det praktisk:</p>
+<ul>
+<li><strong>Reklamer</strong> – det vil si klag skriftlig så fort du oppdager feilen. Send e-post eller SMS, ikke bare ring.</li>
+<li><strong>Beskriv feilen konkret</strong> og legg ved bilder. "Tre fliser på badegulvet har løsnet, se vedlagte foto."</li>
+<li><strong>Sett en frist</strong>, gjerne 14 dager, til å komme og rette.</li>
+<li><strong>Ta vare på alt</strong> – avtale, faktura, meldinger og bilder.</li>
+</ul>
+<p>At du reklamerer i tide er ikke bare en formalitet. Klager du ikke innen rimelig tid etter at du oppdaget eller burde ha oppdaget feilen, kan du miste retten til å gjøre kravet gjeldende. Som tommelfingerregel: si fra med en gang.</p>
+<h3>Et eksempel fra start til slutt</h3>
+<p><strong>Jonas</strong> betalte 90 000 kroner for nytt våtrom. Etter en måned oppdaget han fukt i veggen. Han sendte e-post med bilder og ga rørleggeren 14 dager til å se på saken. Rørleggeren kom, fant en lekkasje og rettet feilen gratis. Jonas slapp å betale noe ekstra – akkurat slik loven legger opp til.</p>
+<p>Hadde rørleggeren nektet eller somlet, kunne Jonas gått videre til prisavslag, dekningsutbedring eller heving – og krevd erstatning for vannskaden i tillegg. Poenget er at det første kravet, retting, åpner døren til alle de andre hvis det ikke fører frem.</p>
+<h3>Hvilket krav passer i din situasjon?</h3>
+<ul>
+<li><strong>Vil du ha tjenesten riktig utført?</strong> Velg retting.</li>
+<li><strong>Vil du heller ha penger tilbake?</strong> Velg prisavslag.</li>
+<li><strong>Nekter håndverkeren å gjøre noe?</strong> Bruk dekningsutbedring eller prisavslag.</li>
+<li><strong>Er hele jobben mislykket?</strong> Vurder heving.</li>
+<li><strong>Har feilen skapt skade eller ekstra utgifter?</strong> Krev erstatning i tillegg.</li>
+</ul>
+<h3>Hvis dere ikke blir enige</h3>
+<p>Står du fast, er <strong>Forbrukerrådet</strong> et godt sted å starte. De mekler gratis mellom deg og håndverkeren. Fører ikke meklingen frem, kan saken bringes inn for et klageorgan eller forliksrådet. Da er den skriftlige dokumentasjonen din avgjørende – derfor er det så viktig å skrive ned alt fra første stund.</p>
+<h3>Tre vanlige misforståelser</h3>
+<p>Mange forbrukere tror feilaktig at de står svakere enn de gjør. Her er tre myter det er verdt å rydde av veien:</p>
+<ul>
+<li><strong>"Jeg har allerede betalt, så da er det for sent."</strong> Feil. Du kan kreve penger tilbake gjennom prisavslag, dekningsutbedring eller erstatning selv om hele fakturaen er betalt.</li>
+<li><strong>"Jeg må bevise at håndverkeren slurvet."</strong> Feil. Du må vise at det foreligger en mangel – ikke at håndverkeren var uaktsom. Det holder at resultatet ikke ble fagmessig.</li>
+<li><strong>"En muntlig avtale teller ikke."</strong> Feil. Muntlige avtaler er bindende. Problemet er bare at de er vanskeligere å bevise – derfor anbefales alltid skriftlighet.</li>
+</ul>
+<h3>Et siste praktisk råd: Skriv en god reklamasjon</h3>
+<p>En tydelig reklamasjon gjør hele veien videre enklere. En god mal er:</p>
+<ol>
+<li><strong>Hvem og hva:</strong> "Dere utførte [arbeid] hos meg den [dato]."</li>
+<li><strong>Hva er feil:</strong> "Jeg har oppdaget følgende mangel: [beskrivelse], se vedlagte bilder."</li>
+<li><strong>Hva du krever:</strong> "Jeg krever at feilen rettes for deres regning."</li>
+<li><strong>Frist:</strong> "Jeg ber om tilbakemelding innen [dato]."</li>
+</ol>
+<p>Send dette på e-post eller SMS, og ta vare på kopien. Med en slik reklamasjon i hånden har du lagt grunnlaget for alle de seks kravene loven gir deg.</p>
+<h3>Kort oppsummert</h3>
+<p>Ved en mangel har du seks muligheter: holde tilbake betaling, kreve retting, prisavslag, dekningsutbedring, heving eller erstatning – og flere av dem kan kombineres. Start alltid med å reklamere skriftlig og gi håndverkeren en rimelig frist til å rette. Da står du sterkest – og taper ikke kravet ditt på en formell glipp. Blir dere ikke enige, hjelper Forbrukerrådet deg videre.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

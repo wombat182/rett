@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer hvis jeg reklamerer for sent? — Rettsregel</title>
+<meta name="description" content="Reklamerer du for sent, kan du miste retten til å klage på feilen. Da kan du ikke lenger kreve at håndverkeren retter den gratis, gir prisavslag eller…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-reklamerer-for-sent-hvtjl/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer hvis jeg reklamerer for sent?">
+<meta property="og:description" content="Reklamerer du for sent, kan du miste retten til å klage på feilen. Da kan du ikke lenger kreve at håndverkeren retter den gratis, gir prisavslag eller…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-reklamerer-for-sent-hvtjl/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer hvis jeg reklamerer for sent?">
+<meta name="twitter:description" content="Reklamerer du for sent, kan du miste retten til å klage på feilen. Da kan du ikke lenger kreve at håndverkeren retter den gratis, gir prisavslag eller…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva skjer hvis jeg reklamerer for sent?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Reklamerer du for sent, kan du **miste retten** til å klage på feilen. Da kan du ikke lenger kreve at håndverkeren retter den gratis, gir prisavslag eller annet – selv om feilen er reell. Det gjelder både hvis du bommer på «rimelig tid» og hvis du bommer på toårs- eller femårsgrensen (håndverkertjenesteloven § 22).</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hovedkonsekvensen: du taper kravet</h3>
+<p>Reklamasjonsreglene er strenge. Poenget med en frist er nettopp at den får følger om den brytes. Reklamerer du for sent, kan håndverkeren si: «Beklager, dette har du reklamert for sent på», og du står igjen uten krav – selv om feilen åpenbart er hans skyld.</p>
+<p>Det føles urettferdig, men slik er systemet bygget opp. Det skal være en balanse mellom forbrukerens behov for vern og håndverkerens behov for å kunne legge gamle oppdrag bak seg. Derfor er det så viktig å si fra i tide.</p>
+<h3>To måter å reklamere «for sent» på</h3>
+<ol>
+<li><strong>Du brøt den relative fristen</strong> – du oppdaget feilen, men ventet for lenge med å si fra («rimelig tid» er passert).</li>
+<li><strong>Du brøt den absolutte fristen</strong> – det har gått mer enn 2 år (eller 5 år ved varig arbeid) siden oppdraget ble avsluttet.</li>
+</ol>
+<p>Begge kan koste deg kravet, hver for seg.</p>
+<h3>Eksempler</h3>
+<ul>
+<li><strong>For sent på relativ frist:</strong> Geir oppdaget i mars 2026 at det dryppet fra et nytt rør under vasken. Han tenkte «det er ikke så farlig» og reklamerte først i november 2026 – åtte måneder senere. Håndverkeren kan med god grunn hevde at dette er for sent, selv om badet hadde femårsfrist.</li>
+<li><strong>For sent på absolutt frist:</strong> Anne fikk reparert symaskinen i januar 2024. I februar 2026 oppdaget hun at samme feil var tilbake. Toårsfristen gikk ut i januar 2026 – hun er én måned for sent ute, og kan ha tapt kravet.</li>
+</ul>
+<h3>Når slipper du unna fristen?</h3>
+<p>Det finnes ett viktig unntak: Har håndverkeren opptrådt <strong>grovt uaktsomt</strong> eller i strid med redelighet og god tro – altså vært uærlig eller jukset – kan han ikke påberope seg at du reklamerte for sent (§ 22). Da gjelder ikke fristen på vanlig måte.</p>
+<p><strong>Eksempel:</strong> Et firma malte over en kjent råteskade for å skjule den. Da kunden oppdaget det først etter at fristen var ute, kunne firmaet likevel ikke gjemme seg bak fristen, fordi de hadde opptrådt uærlig. Dette unntaket er ment å hindre at uærlige aktører tjener på å skjule feil til fristen er gått ut.</p>
+<h3>Hva kan du gjøre hvis du frykter at du er sent ute?</h3>
+<p>Ikke gi opp før du har sjekket:</p>
+<ol>
+<li><strong>Reklamer likevel – med en gang.</strong> Jo før, jo bedre. Kanskje håndverkeren ordner opp uansett, eller ikke gjør innsigelse mot fristen.</li>
+<li><strong>Vurder den relative fristen nøye.</strong> Når oppdaget du egentlig feilen? Hvis den nettopp har vist seg, kan du være innenfor selv om jobben er flere år gammel.</li>
+<li><strong>Sjekk om det er fem år, ikke to.</strong> Mange tror feilaktig at de har to år når de egentlig har fem fordi det gjelder bygning.</li>
+<li><strong>Vurder om håndverkeren har vært uærlig.</strong> Da kan fristen falle bort helt.</li>
+<li><strong>Kontakt Forbrukerrådet</strong> for en gratis vurdering før du gir opp.</li>
+</ol>
+<h3>Ikke forveksle reklamasjonsfrist med foreldelse</h3>
+<p>En egen ting du bør være klar over: i tillegg til reklamasjonsfristen finnes det egne regler om foreldelse av pengekrav. Selv om du har reklamert i tide, kan et pengekrav i prinsippet foreldes hvis det går svært lang tid uten at du tar det videre. For de fleste forbrukere er hovedpoenget likevel å reklamere raskt – da er du på trygg grunn.</p>
+<h3>Lærdommen</h3>
+<p>Den klart beste strategien er å aldri havne her: reklamer raskt og skriftlig. Det koster deg ingenting å sende en e-post for tidlig, men det kan koste deg hele kravet å sende den for sent. Tenk på den skriftlige reklamasjonen som en billig forsikring.</p>
+<h3>Hva hvis håndverkeren sier «for sent» – men du er uenig?</h3>
+<p>Det er ikke uvanlig at en håndverker avviser en klage med at den kom «for sent». Men det er ikke håndverkeren som har det siste ordet. Hvis du mener du var innenfor, kan du holde fast ved kravet ditt og ta saken videre. Slik går du frem:</p>
+<ol>
+<li><strong>Be om begrunnelsen skriftlig.</strong> «Hvorfor mener dere det er for sent?» Da får du frem hva uenigheten egentlig gjelder.</li>
+<li><strong>Dokumenter når du oppdaget feilen.</strong> Bilder med dato, meldinger, en logg over hva som skjedde når.</li>
+<li><strong>Sjekk hvilken frist som faktisk gjelder.</strong> Mange håndverkere viser til to år når det egentlig er fem.</li>
+<li><strong>Vurder om de har vært uærlige.</strong> Har de skjult noe, kan fristen falle bort.</li>
+<li><strong>Kontakt Forbrukerrådet.</strong> De vurderer saken gratis og kan mekle. Mener de at du har rett, styrker det din posisjon betydelig.</li>
+</ol>
+<h3>Hva mister du egentlig – og hva beholder du?</h3>
+<p>Selv om hovedkonsekvensen av for sen reklamasjon er at du taper kravet på den konkrete feilen, er det verdt å vite hva som faller bort og hva som ikke gjør det:</p>
+<ul>
+<li><strong>Du kan tape</strong> retten til gratis retting, prisavslag, heving og erstatning for nettopp den feilen du reklamerte for sent på.</li>
+<li><strong>Du beholder</strong> retten til å reklamere på andre, nye feil som dukker opp innenfor fristene. At du var for sent ute med én feil, smitter ikke over på resten.</li>
+<li><strong>Du beholder</strong> alltid muligheten til å påberope deg unntaket hvis håndverkeren har vært uærlig.</li>
+</ul>
+<p>Med andre ord: en bom på én frist er ikke verdens undergang for hele forholdet, men det kan koste deg dyrt akkurat for den feilen det gjelder.</p>
+<h3>Et eksempel på at det lønner seg å ikke gi seg</h3>
+<p>Solveig fikk avslag fra håndverkeren med beskjed om at toårsfristen var ute på badet hennes. Hun trodde nesten på det og var i ferd med å gi opp. Men et bad har fem års reklamasjonsfrist, ikke to – håndverkeren tok rett og slett feil, enten med vilje eller av uvitenhet. Solveig kontaktet Forbrukerrådet, fikk bekreftet at hun var innenfor, og endte med at feilen ble rettet. Lærdommen: ikke godta et «for sent» uten å sjekke selv.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>For sen reklamasjon kan bety at du taper kravet helt.</li>
+<li>Du kan bomme både på «rimelig tid» og på 2/5-årsgrensen.</li>
+<li>Unntak: Har håndverkeren vært uærlig eller grovt uaktsom, faller fristen bort.</li>
+<li>Reklamer likevel, sjekk om du har fem år, og vurder oppdagelsestidspunktet.</li>
+<li>Vær også oppmerksom på egne foreldelsesregler for pengekrav.</li>
+<li>Beste råd: si fra raskt og skriftlig så du aldri risikerer dette.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-det-en-mangel-hvis-arbeidet-ikke-holder/">Er det en mangel hvis arbeidet ikke holder mål?</a><a class="sp-relchip" href="../../sporsmal/reklamasjonsrett-etter-garanti/">Har jeg reklamasjonsrett selv om garantien er utløpt?</a><a class="sp-relchip" href="../../sporsmal/hva-betyr-a-reklamere-innen-rimelig-tid/">Hva betyr å reklamere innen rimelig tid?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

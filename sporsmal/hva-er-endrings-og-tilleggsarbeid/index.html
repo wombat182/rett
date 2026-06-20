@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er endrings- og tilleggsarbeid? — Rettsregel</title>
+<meta name="description" content="Endrings- og tilleggsarbeid er rett og slett arbeid som kommer i tillegg til, eller i stedet for, det dere opprinnelig avtalte.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-endrings-og-tilleggsarbeid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er endrings- og tilleggsarbeid?">
+<meta property="og:description" content="Endrings- og tilleggsarbeid er rett og slett arbeid som kommer i tillegg til, eller i stedet for, det dere opprinnelig avtalte.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-endrings-og-tilleggsarbeid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er endrings- og tilleggsarbeid?">
+<meta name="twitter:description" content="Endrings- og tilleggsarbeid er rett og slett arbeid som kommer i tillegg til, eller i stedet for, det dere opprinnelig avtalte.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er endrings- og tilleggsarbeid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Endrings- og tilleggsarbeid er rett og slett arbeid som kommer i tillegg til, eller i stedet for, det dere opprinnelig avtalte. En endring er at noe gjøres annerledes enn planlagt, mens tilleggsarbeid er noe nytt som kommer i tillegg. Begge deler kan påvirke både prisen og tidsfristen.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 9, 42, 43</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/9/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 9</div>
+  <div class="related-card-title">Din rett til å kreve endringer underveis</div>
+</a><a href="../../lover/bustadoppforingslova/42/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 42</div>
+  <div class="related-card-title">Hva koster det å endre planene?</div>
+</a><a href="../../lover/bustadoppforingslova/43/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 43</div>
+  <div class="related-card-title">Ekstrautgifter fordi du rotet det til</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Endrings- og tilleggsarbeid er rett og slett arbeid som kommer i tillegg til, eller i stedet for, det dere opprinnelig avtalte. En <strong>endring</strong> er at noe gjøres annerledes enn planlagt, mens <strong>tilleggsarbeid</strong> er noe nytt som kommer i tillegg. Begge deler kan påvirke både prisen og tidsfristen.</p>
+<h3>Forskjellen forklart enkelt</h3>
+<ul>
+<li><strong>Endring:</strong> Du bytter ut noe i den opprinnelige planen. For eksempel: dere hadde avtalt laminat på gulvet, men ombestemmer dere til parkett. Selve gulvet skulle uansett legges – men nå med et annet og dyrere materiale.</li>
+<li><strong>Tilleggsarbeid:</strong> Du ber om noe som ikke var med i avtalen i det hele tatt. For eksempel: en ekstra carport, eller varmekabler i et rom der det ikke var planlagt.</li>
+</ul>
+<p>I praksis flyter de litt over i hverandre, og loven behandler dem stort sett likt når det gjelder pris og dokumentasjon (bustadoppføringslova § 9 og §§ 42–43).</p>
+<h3>Konkrete eksempler</h3>
+<p>Familien Lie bygger enebolig. Underveis skjer dette:</p>
+<ul>
+<li>De bytter fra standard kjøkken til et dyrere modellkjøkken – <strong>endring</strong>.</li>
+<li>De ber om en ekstra stikkontakt på hvert soverom – <strong>tilleggsarbeid</strong>.</li>
+<li>De vil flytte en innervegg 40 cm for å få større bad – <strong>endring</strong>.</li>
+<li>De bestiller en utvendig bod som ikke var i tegningene – <strong>tilleggsarbeid</strong>.</li>
+</ul>
+<p>Alt dette kan entreprenøren kreve betalt for, fordi det går ut over eller endrer det som opprinnelig var avtalt.</p>
+<h3>Hvorfor er dette viktig å forstå?</h3>
+<p>Fordi det er nettopp her byggebudsjettet ofte sprekker. Mange forbrukere undervurderer hvor fort små «mens vi først er i gang»-ønsker summerer seg opp. Hver enkelt endring kan virke ubetydelig, men 15 endringer à 20 000 kroner blir fort 300 000 kroner ekstra. Det er reelle penger som ikke var med i det opprinnelige budsjettet.</p>
+<p>Derfor er det avgjørende at endringer og tillegg <strong>prises skriftlig før de utføres</strong>. Entreprenøren kan kreve at avtaler om endringer og tilleggsarbeid settes opp skriftlig (§ 9), og det er en fordel for begge parter – ikke minst for deg, så du vet nøyaktig hva regningen blir før du sier ja.</p>
+<h3>Hva er en endringsordre?</h3>
+<p>En endringsordre er det praktiske dokumentet som beskriver en bestilt endring: hva som skal gjøres, hva det koster, og om det påvirker ferdigfristen. Tenk på det som en liten mini-kontrakt for hver enkelt endring. Standardblankettene har ofte egne skjemaer for nettopp dette, og det henger sammen med reglene om justering (§ 42) og tillegg (§ 43).</p>
+<p>Et godt eksempel: Når familien Lie bestiller modellkjøkkenet, signerer de en endringsordre der det står «pluss 85 000 kroner, ingen endring i ferdigstillelsesdato». Da er det ingen tvil senere – hverken om prisen eller om at det ikke skulle forsinke prosjektet.</p>
+<h3>Påvirker endringer også tiden?</h3>
+<p>Ja, det gjør de ofte. Mer arbeid kan bety at boligen blir ferdig senere. En god endringsordre sier derfor også om – og hvor mye – fristen forskyves. Spør alltid: «Påvirker dette ferdigdatoen, og i så fall med hvor lenge?» Da unngår du å bli overrasket, og du unngår å tro at entreprenøren er forsinket når forsinkelsen egentlig skyldes dine egne bestillinger.</p>
+<h3>Hvem dekker hva?</h3>
+<p>Et nyttig skille: Endringer og tillegg du selv bestiller, betaler du for. Men hvis entreprenøren utfører noe ekstra uten at du har bedt om det, kan han ikke uten videre kreve betalt for det. Derfor er den skriftlige bestillingen så viktig – den dokumenterer at det faktisk var du som ønsket endringen.</p>
+<h3>Steg for steg når du ønsker en endring</h3>
+<ol>
+<li>Be om pris og tidskonsekvens skriftlig før arbeidet starter.</li>
+<li>Få en endringsordre som beskriver arbeidet konkret.</li>
+<li>Sjekk at den sier både pris og eventuell ny frist.</li>
+<li>Signer før entreprenøren går i gang med endringen.</li>
+<li>Ta vare på alle endringsordrer – de er en del av sluttoppgjøret.</li>
+<li>Hold en løpende oversikt over hvor mye endringene summerer seg til.</li>
+</ol>
+<h3>Vanlige typer endringer ved nybygg</h3>
+<p>For å gi deg et bilde av hva slags endringer som dukker opp i et typisk husprosjekt, her er noen som går igjen:</p>
+<ul>
+<li><strong>Kjøkken og bad:</strong> oppgradering til dyrere innredning, fliser, armaturer eller hvitevarer.</li>
+<li><strong>Gulv og overflater:</strong> bytte fra laminat til parkett, eller fra standard til spesialmaling.</li>
+<li><strong>Elektro:</strong> flere stikkontakter, smarthus-løsninger, downlights, utelys.</li>
+<li><strong>Planløsning:</strong> flytte eller fjerne innervegger, utvide rom, legge til en bod.</li>
+<li><strong>Utvendig:</strong> carport, terrasse, levegg eller annen utomhus-løsning som ikke var med.</li>
+</ul>
+<p>Hver av disse er fullt mulige å bestille, men hver av dem koster, og summen blir fort betydelig. Det er helt vanlig at et husprosjekt ender 5–10 prosent dyrere enn opprinnelig avtalt nettopp på grunn av slike valg underveis.</p>
+<h3>Et tips: skill mellom «må ha» og «kjekt å ha»</h3>
+<p>Et godt råd for å holde budsjettet er å dele endringsønskene dine i to: det du virkelig trenger, og det som bare er hyggelig. Ta de viktige endringene tidlig, mens de er enkle og rimelige å gjennomføre. Vent med «kjekt å ha»-tingene til du ser hvor budsjettet ligger. Mange endringer er dessuten billigere å gjøre tidlig i byggeprosessen enn etter at noe allerede er bygget og må rives eller bygges om.</p>
+<h3>Hva med fradrag hvis du fjerner noe?</h3>
+<p>Endringer går ikke bare oppover i pris. Velger du bort noe som var med i den opprinnelige avtalen, skal det normalt gi et fradrag. Bestemmer du deg for enklere kjøkken enn det som var inkludert, eller dropper en planlagt bod, skal prisen settes tilsvarende ned. Dette er den andre siden av justeringsreglene (§ 42): vederlaget justeres begge veier. Pass derfor på at endringsordrene også fanger opp det du tar <em>bort</em>, ikke bare det du legger til. Et nyttig grep er å be om et samlet endringsregnskap mot slutten, der både tillegg og fradrag er ført opp, slik at sluttsummen blir riktig.</p>
+<h3>Kort oppsummert</h3>
+<p>Endringsarbeid er å gjøre noe annerledes enn avtalt; tilleggsarbeid er noe helt nytt i tillegg. Begge kan koste ekstra og påvirke fristen, og bør alltid prises skriftlig på forhånd via en endringsordre (§ 9, §§ 42–43). Det er her budsjetter sprekker – så hold orden på hver eneste endring, og pass på at du betaler for det du faktisk har bestilt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

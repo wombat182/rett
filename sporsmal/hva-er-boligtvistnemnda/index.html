@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er Boligtvistnemnda? — Rettsregel</title>
+<meta name="description" content="Boligtvistnemnda er et nøytralt klageorgan som løser tvister mellom forbrukere og entreprenører/utbyggere om oppføring og kjøp av ny bolig. Den er…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-boligtvistnemnda/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er Boligtvistnemnda?">
+<meta property="og:description" content="Boligtvistnemnda er et nøytralt klageorgan som løser tvister mellom forbrukere og entreprenører/utbyggere om oppføring og kjøp av ny bolig. Den er…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-boligtvistnemnda/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er Boligtvistnemnda?">
+<meta name="twitter:description" content="Boligtvistnemnda er et nøytralt klageorgan som løser tvister mellom forbrukere og entreprenører/utbyggere om oppføring og kjøp av ny bolig. Den er…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er Boligtvistnemnda?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Boligtvistnemnda er et **nøytralt klageorgan** som løser tvister mellom forbrukere og entreprenører/utbyggere om oppføring og kjøp av ny bolig. Den er opprettet ved avtale mellom **Boligprodusentenes Forening**, **BNL Håndverk** og **Forbrukerrådet**, og består av medlemmer fra både bransjesiden og forbrukersiden, ledet av en uavhengig jurist. Behandlingen er **gratis for deg som forbruker**, og den er et rimeligere og raskere alternativ til en rettssak.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>En «mini-domstol» for boligbygging</h3>
+<p>Tenk på Boligtvistnemnda som en spesialisert, uformell instans som er ekspert på akkurat din type sak. I stedet for å gå til en alminnelig domstol – som er dyrt og tidkrevende – kan en forbruker og en entreprenør få tvisten sin vurdert av et utvalg som kjenner bustadoppføringslova godt. Resultatet er en grundig og nøytral avgjørelse.</p>
+<h3>Hvem står bak nemnda?</h3>
+<p>Nemnda er bygget på et balansert samarbeid mellom dem som representerer bransjen og dem som representerer forbrukerne:</p>
+<ul>
+<li><strong>Boligprodusentenes Forening</strong> – bransjeorganisasjon for produsenter og leverandører av boliger.</li>
+<li><strong>BNL Håndverk / byggenæringen</strong> – på håndverker- og entreprenørsiden.</li>
+<li><strong>Forbrukerrådet</strong> – som ivaretar forbrukernes interesser.</li>
+</ul>
+<p>At både bransjen og Forbrukerrådet står bak, er nettopp det som gjør nemnda troverdig. Ingen av sidene «eier» den alene.</p>
+<h3>Hvordan er nemnda satt sammen?</h3>
+<p>Boligtvistnemnda består av flere medlemmer. Noen er oppnevnt av bransjeorganisasjonene, og et tilsvarende antall er oppnevnt av Forbrukerrådet. <strong>Lederen</strong> er en uavhengig jurist (i praksis en professor i juss) som er oppnevnt av partene i fellesskap og er <strong>nøytral</strong> i forhold til både byggebransjen og forbrukerne. Denne balansen sikrer at avgjørelsene ikke favoriserer den ene siden.</p>
+<p>I tillegg har nemnda et <strong>sekretariat</strong> som er nøytralt og upartisk. Sekretariatet tar imot alle saker og sørger for at en sak er så godt opplyst som mulig før nemnda behandler den. Det betyr at saken blir grundig forberedt før den avgjøres.</p>
+<h3>Hva nemnda behandler</h3>
+<p>Nemnda tar tvister om:</p>
+<ul>
+<li>kjøp av ny bolig, med eller uten tomt,</li>
+<li>byggesett (ferdighuspakker) med eller uten tomt,</li>
+<li>avtaler om boligoppføring og arbeid som utføres som del av slik oppføring.</li>
+</ul>
+<p>Den behandler saker etter bustadoppføringslova, og også etter avhendingslova for nyere boliger. <strong>Forutsetningen</strong> er at firmaet er medlem av en av bransjeorganisasjonene bak nemnda.</p>
+<h3>Et eksempel på balansen i nemnda</h3>
+<p>Tenk deg at familien Aas klager på at terrassedøren slipper inn trekk. Utbyggeren mener døren er innenfor toleransekravene. Når saken behandles, sitter det både medlemmer oppnevnt av bransjen og medlemmer oppnevnt av Forbrukerrådet rundt bordet, med en uavhengig jurist som leder. Det betyr at saken vurderes fra flere ståsteder samtidig: den byggfaglige virkeligheten og forbrukerens berettigede forventninger. Resultatet blir en avgjørelse som ingen av sidene kan avfeie som ensidig. Nettopp denne balanserte sammensetningen er grunnen til at avgjørelsene har høy troverdighet, og at partene som regel retter seg etter dem.</p>
+<h3>Hvordan en sak behandles</h3>
+<p>La oss følge et tenkt eksempel. Familien Nordby er uenig med utbyggeren om at parketten i stua «kuler seg» kort tid etter overtakelse. De har reklamert skriftlig, men kommer ikke til enighet. Slik går saken videre:</p>
+<ol>
+<li><strong>Reklamasjon først.</strong> Nordby har allerede klaget skriftlig og gitt utbyggeren mulighet til å svare. Dette er et krav for at nemnda skal ta saken.</li>
+<li><strong>Klage til sekretariatet.</strong> De sender inn saken med kontrakt, bilder, korrespondanse og en sakkyndig rapport.</li>
+<li><strong>Forberedelse.</strong> Det nøytrale sekretariatet sørger for at saken er godt dokumentert fra begge sider.</li>
+<li><strong>Behandling og avgjørelse.</strong> Nemnda vurderer saken skriftlig og gir sin avgjørelse.</li>
+</ol>
+<p>For Nordby ble dette en langt enklere og billigere prosess enn en rettssak.</p>
+<h3>Hva en avgjørelse betyr i praksis</h3>
+<p>En avgjørelse fra Boligtvistnemnda er en faglig sterk og nøytral vurdering. Den er ikke en rettskraftig dom på samme måte som en domstolsavgjørelse, men i praksis retter de fleste seg etter den. Er en av partene uenig, kan saken fortsatt bringes inn for domstolene – men nemndas avgjørelse er da et tungtveiende utgangspunkt.</p>
+<h3>Hvorfor dette er bra for deg som forbruker</h3>
+<ul>
+<li><strong>Lav terskel:</strong> du slipper kostbar prosess for å få en vurdering.</li>
+<li><strong>Faglig tyngde:</strong> nemnda kan bustadoppføringslova og bransjen.</li>
+<li><strong>Balanse:</strong> sammensetningen sikrer at både bransje og forbruker er representert, med en uavhengig leder.</li>
+<li><strong>Gratis for deg:</strong> kostnadene bæres av bransjesiden, ikke av forbrukeren.</li>
+</ul>
+<h3>Hva nemnda IKKE er</h3>
+<p>For å unngå misforståelser er det greit å vite hva Boligtvistnemnda ikke gjør:</p>
+<ul>
+<li>Den er <strong>ikke en domstol</strong> og avsier ikke en rettskraftig dom. Avgjørelsen er likevel tungtveiende, og de fleste retter seg etter den.</li>
+<li>Den behandler <strong>ikke saker mot firmaer som ikke er medlem</strong> av de aktuelle bransjeorganisasjonene.</li>
+<li>Den er <strong>ikke en inkassosentral</strong> og kan ikke hente penger ut av et konkursbo. Ved konkurs er det garantiene som gjelder.</li>
+<li>Den tar normalt <strong>ikke tvister om eldre, brukte boliger</strong> som faller utenfor mandatet.</li>
+</ul>
+<h3>Litt om bakteppet</h3>
+<p>At både bransjen og Forbrukerrådet i fellesskap har opprettet et slikt klageorgan, er en del av en bevisst forbrukerpolitikk i Norge: tvister mellom forbrukere og næringsdrivende skal kunne løses på en rimelig og rettferdig måte uten at den enkelte må ta den økonomiske risikoen ved en rettssak. Boligtvistnemnda er bransjens og forbrukermyndighetenes felles svar på dette innenfor boligbygging. For deg betyr det at du har et trygt sikkerhetsnett dersom drømmehuset skulle by på problemer.</p>
+<h3>Sekretariatets rolle – din praktiske kontakt</h3>
+<p>I praksis er det sekretariatet du forholder deg til når du sender inn en sak. Sekretariatet er nøytralt og hjelper med å få saken godt opplyst fra begge sider før nemnda behandler den. Det betyr at du ikke trenger å være jurist for å føre saken din: du leverer dokumentasjonen, og sekretariatet sørger for at saken er klar til behandling. Denne lave terskelen er noe av det som gjør nemnda så verdifull for vanlige forbrukere – du får en grundig vurdering uten å måtte navigere et komplisert rettssystem alene.</p>
+<h3>Hvor finner du mer informasjon?</h3>
+<p>Vil du vite mer om nemnda, hvem som kan klage, og hvordan du går frem, finner du oppdatert informasjon hos bransjeorganisasjonene som står bak (blant annet Boligprodusentenes Forening) og hos Forbrukerrådet. Der finner du også klageskjema og kontaktinformasjon til sekretariatet. Det kan være lurt å lese seg opp før du sender inn, slik at du får med all relevant dokumentasjon fra start.</p>
+<h3>Kort oppsummert</h3>
+<p>Boligtvistnemnda er et nøytralt klageorgan for tvister om oppføring og kjøp av ny bolig, opprettet i samarbeid mellom <strong>Boligprodusentenes Forening</strong>, <strong>BNL Håndverk</strong> og <strong>Forbrukerrådet</strong>. Den ledes av en uavhengig jurist, har et nøytralt sekretariat, og behandler saker etter bustadoppføringslova og avhendingslova for nyere boliger – forutsatt at firmaet er medlem. For deg som forbruker er behandlingen gratis, og den gir en rimelig og grundig vei til en nøytral avgjørelse uten å måtte gå til retten.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

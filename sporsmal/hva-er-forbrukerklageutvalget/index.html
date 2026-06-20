@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er Forbrukerklageutvalget? — Rettsregel</title>
+<meta name="description" content="Forbrukerklageutvalget ofte forkortet FKU er et offentlig, domstollignende organ som avgjør tvister mellom forbrukere og næringsdrivende – blant annet om…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forbrukerklageutvalget/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er Forbrukerklageutvalget?">
+<meta property="og:description" content="Forbrukerklageutvalget ofte forkortet FKU er et offentlig, domstollignende organ som avgjør tvister mellom forbrukere og næringsdrivende – blant annet om…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forbrukerklageutvalget/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er Forbrukerklageutvalget?">
+<meta name="twitter:description" content="Forbrukerklageutvalget ofte forkortet FKU er et offentlig, domstollignende organ som avgjør tvister mellom forbrukere og næringsdrivende – blant annet om…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er Forbrukerklageutvalget?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Forbrukerklageutvalget (ofte forkortet FKU) er et offentlig, domstollignende organ som avgjør tvister mellom forbrukere og næringsdrivende – blant annet om håndverkertjenester. I motsetning til mekling fatter utvalget et vedtak, altså en bindende avgjørelse, hvis ikke en av partene tar saken videre til domstolen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Forbrukerklageutvalget (ofte forkortet FKU) er et offentlig, domstollignende organ som avgjør tvister mellom forbrukere og næringsdrivende – blant annet om håndverkertjenester. I motsetning til mekling fatter utvalget et <strong>vedtak</strong>, altså en bindende avgjørelse, hvis ikke en av partene tar saken videre til domstolen.</p>
+<h3>Hva er Forbrukerklageutvalget?</h3>
+<p>Mens Forbrukerrådet <em>mekler</em> og prøver å få partene til å bli enige, <em>avgjør</em> Forbrukerklageutvalget saken. Det er et nøytralt utvalg som vurderer dokumentasjonen fra begge sider og bestemmer hvem som har rett etter loven. Utvalget behandler saker etter blant annet håndverkertjenesteloven, forbrukerkjøpsloven og angrerettloven.</p>
+<p>Du kan se på det som et trinn mellom mekling og rettssak: rimeligere og enklere enn å gå til retten, men med en reell avgjørelse i den andre enden.</p>
+<h3>Et viktig vilkår: mekling først</h3>
+<p>Du kan ikke gå rett til Forbrukerklageutvalget. Saken må først ha vært til <strong>mekling hos Forbrukerrådet</strong> uten at dere ble enige. Rekkefølgen er altså:</p>
+<ol>
+<li>Skriftlig reklamasjon til håndverkeren.</li>
+<li>Mekling hos Forbrukerrådet (artikkel 107).</li>
+<li>Blir dere ikke enige → saken kan sendes til Forbrukerklageutvalget.</li>
+</ol>
+<h3>Slik foregår behandlingen</h3>
+<ol>
+<li><strong>Saken sendes videre.</strong> Etter mislykket mekling kan saken bringes inn for utvalget.</li>
+<li><strong>Skriftlig behandling.</strong> Behandlingen er som regel skriftlig. Begge parter får legge frem sin versjon og dokumentasjon.</li>
+<li><strong>Vedtak.</strong> Utvalget vurderer saken og fatter et vedtak om hvem som har rett.</li>
+<li><strong>Virkning.</strong> Vedtaket er bindende for partene – med mindre en av dem bringer saken inn for domstolen innen en gitt frist.</li>
+</ol>
+<p>Hele prosessen fra klage til vedtak tar gjerne noen måneder.</p>
+<h3>Hva betyr "bindende"?</h3>
+<p>At vedtaket er bindende, betyr at det gjelder på samme måte som en dom hvis ingen av partene tar saken til retten innen fristen. Får du medhold og håndverkeren ikke retter seg etter vedtaket, kan du i praksis følge det opp som et krav. Det gir vedtaket reell tyngde – langt mer enn en uforpliktende mekling.</p>
+<h3>Hvorfor er dette et godt alternativ til retten?</h3>
+<p>Tenk på forskjellen mellom å gå til Forbrukerklageutvalget og å gå rett til en domstol:</p>
+<ul>
+<li><strong>Kostnad:</strong> Utvalget er normalt gratis eller svært rimelig. En rettssak kan koste mye, særlig med advokat.</li>
+<li><strong>Risiko:</strong> Taper du i retten, kan du måtte dekke motpartens saksomkostninger. I utvalget risikerer du i praksis lite mer enn tiden din.</li>
+<li><strong>Enkelhet:</strong> Behandlingen i utvalget er skriftlig og lagt opp for vanlige folk. En rettssak er mer formell og krevende.</li>
+<li><strong>Tyngde:</strong> Vedtaket er likevel bindende hvis ingen tar saken videre.</li>
+</ul>
+<p>For de aller fleste forbrukere er dette en trygg og fornuftig vei: du får en reell avgjørelse uten den økonomiske risikoen en rettssak innebærer. Det er nettopp derfor systemet er bygget slik.</p>
+<h3>Mekling eller utvalg – hva er forskjellen?</h3>
+<p>Siden mange blander disse to trinnene, er det nyttig å sette dem opp mot hverandre:</p>
+<ul>
+<li><strong>Mekling (Forbrukerrådet):</strong> En nøytral person prøver å få partene til å bli <em>enige</em>. Ingen blir tvunget til noe. Løsningen bygger på frivillighet. Resultatet kan bli et kompromiss.</li>
+<li><strong>Utvalg (Forbrukerklageutvalget):</strong> Et organ <em>avgjør</em> hvem som har rett etter loven, og fatter et bindende vedtak. Her trenger ikke partene bli enige – utvalget bestemmer.</li>
+</ul>
+<p>Med andre ord: mekling forsøker å bygge bro, mens utvalget faller ned på et resultat. Derfor er mekling alltid det første forsøket, og utvalget reservert for saker der meklingen ikke nådde frem.</p>
+<h3>Et eksempel</h3>
+<p>Familien Berg fikk pusset opp kjøkkenet, men benkeplaten var feil montert og sprakk. De reklamerte skriftlig, men håndverkeren nektet å rette. De gikk til Forbrukerrådet for mekling – uten resultat. Saken ble derfor sendt til Forbrukerklageutvalget. Etter en skriftlig behandling konkluderte utvalget med at familien hadde krav på prisavslag. Vedtaket var bindende, og håndverkeren rettet seg etter det.</p>
+<h3>Hva koster det?</h3>
+<p>Å bringe en sak inn for Forbrukerklageutvalget er normalt <strong>gratis eller svært rimelig</strong> for forbrukeren. Du trenger ikke advokat – behandlingen er lagt opp slik at vanlige folk skal kunne bruke den selv. Det gjør FKU til et godt alternativ for de som ikke ønsker å ta kostnaden og risikoen ved en rettssak.</p>
+<h3>Hva kan utvalget bestemme?</h3>
+<p>Forbrukerklageutvalget vurderer saken etter loven og kan komme til ulike resultater, avhengig av hva saken gjelder. I en håndverkersak kan det for eksempel bli slått fast at du har krav på at en mangel rettes, at du har rett til et prisavslag, at du kan heve avtalen, eller at du har krav på erstatning for et tap. Utvalget kan også komme til at håndverkeren har rett, og at du må betale regningen. Det er altså en reell vurdering der begge utfall er mulige – akkurat som i en domstol.</p>
+<h3>Forberedelse er nøkkelen</h3>
+<p>Siden behandlingen er skriftlig, teller dokumentasjonen din ekstra mye. Utvalget ser ikke badet ditt med egne øyne – de leser det du sender inn. Derfor lønner det seg å:</p>
+<ul>
+<li>Skrive en ryddig og kronologisk fremstilling av hva som skjedde.</li>
+<li>Legge ved tydelige bilder med forklaring.</li>
+<li>Vedlegge kontrakt, reklamasjon, tilbud og relevant korrespondanse.</li>
+<li>Eventuelt legge ved en rapport fra en uavhengig fagperson hvis kvaliteten er omstridt.</li>
+</ul>
+<p>Jo lettere du gjør det for utvalget å forstå saken, desto bedre er sjansene dine.</p>
+<h3>Hva om du er uenig i vedtaket?</h3>
+<p>Er du uenig i utvalgets avgjørelse, er ikke veien stengt. Hver av partene kan bringe saken inn for de ordinære domstolene innen en bestemt frist etter vedtaket. Gjør ingen av partene det, blir vedtaket stående og gjelder som en rettskraftig avgjørelse. For de fleste forbrukere er imidlertid et vedtak fra Forbrukerklageutvalget en god og rimelig slutt på saken, uten behov for å gå videre til retten.</p>
+<h3>Når er Forbrukerklageutvalget riktig vei?</h3>
+<ul>
+<li>Når håndverkeren <strong>ikke</strong> er medlem i en bransjeforening med egen klagenemnd (som Håndverkerklagenemnda).</li>
+<li>Når meklingen hos Forbrukerrådet ikke har ført frem.</li>
+<li>Når du ønsker en bindende avgjørelse uten å gå til retten.</li>
+</ul>
+<p>Er håndverkeren medlem i en tilknyttet bransjeforening, behandles saken i stedet av Håndverkerklagenemnda (artikkel 109). Sjekk derfor alltid medlemskap først, eller spør Forbrukerrådet om hvilken vei som gjelder for deg.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Forbrukerklageutvalget (FKU) er et domstollignende organ som avgjør forbrukertvister, blant annet om håndverkertjenester.</li>
+<li>Det fatter et bindende vedtak – ikke bare mekling.</li>
+<li>Saken må først ha vært til mekling hos Forbrukerrådet uten resultat.</li>
+<li>Behandlingen er skriftlig og normalt gratis eller svært rimelig.</li>
+<li>Vedtaket gjelder som en dom hvis ingen tar saken til retten innen fristen.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-betyr-det-at-selgeren-er-naeringsdrivende-pa-en-markedsplass/">Hva betyr det at selgeren er næringsdrivende på en markedsplass?</a><a class="sp-relchip" href="../../sporsmal/selger-avviser-klage/">Hva bør jeg gjøre hvis selger avviser klagen min?</a><a class="sp-relchip" href="../../sporsmal/selger-gar-konkurs/">Hva gjør jeg hvis selger går konkurs?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

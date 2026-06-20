@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er tilleggsarbeid? — Rettsregel</title>
+<meta name="description" content="Tilleggsarbeid er arbeid som dukker opp utover det dere opprinnelig avtalte – ekstra oppgaver eller materialer som det er behov for når jobben er i gang.…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-tilleggsarbeid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er tilleggsarbeid?">
+<meta property="og:description" content="Tilleggsarbeid er arbeid som dukker opp utover det dere opprinnelig avtalte – ekstra oppgaver eller materialer som det er behov for når jobben er i gang.…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-tilleggsarbeid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er tilleggsarbeid?">
+<meta name="twitter:description" content="Tilleggsarbeid er arbeid som dukker opp utover det dere opprinnelig avtalte – ekstra oppgaver eller materialer som det er behov for når jobben er i gang.…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er tilleggsarbeid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Tilleggsarbeid er arbeid som dukker opp utover det dere opprinnelig avtalte – ekstra oppgaver eller materialer som det er behov for når jobben er i gang. Hovedregelen er at håndverkeren må kontakte deg og innhente samtykke før han utfører tilleggsarbeidet (håndverkertjenesteloven § 9).</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>En enkel definisjon</h3>
+<p>Tenk på det opprinnelige oppdraget som en avtale med klare rammer: «Bytt taket på garasjen.» Tilleggsarbeid er alt som faller utenfor disse rammene, men som likevel dukker opp underveis fordi det viser seg å være nødvendig eller naturlig å gjøre samtidig.</p>
+<p>Det typiske er at håndverkeren oppdager noe han ikke kunne se på forhånd: råte under flisene, et rør som er feil montert, et bjelkelag som ikke tåler vekten, eller et elektrisk anlegg som ikke er forskriftsmessig. Slike funn er ikke en del av den opprinnelige avtalen, men de må ofte håndteres for at hovedjobben skal bli bra og varig.</p>
+<h3>Eksempler på tilleggsarbeid</h3>
+<ul>
+<li><strong>Baderomsoppussing:</strong> Når de gamle flisene er fjernet, viser det seg at sluket er ødelagt og må byttes.</li>
+<li><strong>Gulvlegging:</strong> Når teppet rives opp, er undergulvet råttent og må skiftes.</li>
+<li><strong>Maling utvendig:</strong> Når malingen skrapes av, er kledningen morken på noen bord og må byttes.</li>
+<li><strong>Kjøkkenmontering:</strong> Det viser seg at veggen ikke er rett, og må rettes opp før skapene kan henges.</li>
+<li><strong>Elektrikerarbeid:</strong> Når en kontakt skal byttes, oppdages en gammel og farlig kobling som bør utbedres.</li>
+</ul>
+<p>Felles for alle: det var ikke en del av den opprinnelige avtalen, men det dukket opp underveis og er ofte fornuftig å ta mens håndverkeren likevel er på plass.</p>
+<h3>Tilleggsarbeid er ikke det samme som slurv</h3>
+<p>Det er en viktig forskjell på ekte tilleggsarbeid og arbeid som måtte gjøres om igjen fordi håndverkeren gjorde en feil. Hvis maler Tor må male en vegg om igjen fordi han brukte feil maling, er det IKKE tilleggsarbeid – det er hans egen feilretting, og det skal du ikke betale ekstra for. Ekte tilleggsarbeid er noe nytt som det faktisk var behov for, ikke en reparasjon av håndverkerens egne tabber. Hold disse to fra hverandre, så slipper du å betale for andres feil.</p>
+<h3>Regneeksempel: tilleggsarbeid som gjøres riktig</h3>
+<p>Murer Hassan pusser opp badet til Lene for en avtalt pris på 80 000 kroner. Når han river gulvet, finner han råte i bjelkelaget. Han stopper, tar bilder, ringer Lene og forklarer: «Bjelkelaget er råttent. Det må byttes før jeg kan gå videre. Det vil koste cirka 18 000 kroner ekstra og ta to dager mer.»</p>
+<p>Lene sier ja. Da blir regnestykket:</p>
+<ul>
+<li>Avtalt oppussing: 80 000 kr</li>
+<li>Godkjent tilleggsarbeid (bjelkelag): 18 000 kr</li>
+<li><strong>Sum: 98 000 kr</strong></li>
+</ul>
+<p>Her er tilleggsarbeidet håndtert helt riktig: Hassan oppdaget noe uforutsett, stoppet opp, kontaktet Lene, og fikk hennes samtykke før han fortsatte. Lene betaler med god samvittighet, fordi hun selv sa ja og kjente prisen på forhånd.</p>
+<h3>Hvorfor håndverkeren må spørre</h3>
+<p>Poenget med regelen er å beskytte deg mot ubehagelige overraskelser på regningen. Tilleggsarbeid kan fort koste mye. Når håndverkeren må kontakte deg, får du:</p>
+<ul>
+<li><strong>Oversikt</strong> over hva som må gjøres og hvorfor.</li>
+<li><strong>Et prisanslag</strong> før arbeidet starter.</li>
+<li><strong>Valgmuligheten</strong> til å si ja, be om et rimeligere alternativ, eller hente en ny vurdering.</li>
+</ul>
+<h3>Tilleggsarbeid og uforutsette forhold</h3>
+<p>Noen ganger oppdager håndverkeren forhold som endrer jobben vesentlig – for eksempel at hele konstruksjonen er i dårligere stand enn antatt. Da kan han ha en plikt til å stoppe opp og rådføre seg med deg før han går videre, slik at du kan ta stilling til om jobben skal fortsette, endres eller avbrytes. Du skal ikke vekkes til en ferdig, doblet regning fordi noe uforutsett dukket opp. Du skal informeres mens du fortsatt har et reelt valg.</p>
+<h3>Tilleggsarbeid kan også gi deg nye muligheter</h3>
+<p>Tilleggsarbeid er ikke alltid bare en kjedelig ekstrautgift – noen ganger er det en sjanse til å gjøre ting riktig mens veggen eller gulvet uansett er åpent. Når murer Hassan fra eksempelet over fant råte i bjelkelaget, var badet allerede revet. Da kostet det lite ekstra arbeid å samtidig isolere bedre eller legge til rette for varmekabler, sammenlignet med å gjøre det som en egen jobb senere. Bruk derfor anledningen til å spørre: «Siden det uansett er åpent nå, er det noe lurt jeg bør gjøre samtidig?» Det kan spare deg for en dyr ny jobb om noen år. Men husk: alt slikt er tilleggsarbeid eller endringer som skal avtales og prises, ikke noe håndverkeren bare gjør på egen hånd.</p>
+<h3>Forskjellen på tilleggsarbeid og et nytt oppdrag</h3>
+<p>Det går en grense mellom tilleggsarbeid (noe som henger sammen med den jobben du bestilte) og et helt nytt oppdrag (noe som egentlig er en separat jobb). Hvis tømreren som legger gulvet ditt samtidig tilbyr seg å bygge en helt ny carport ute, er ikke det «tilleggsarbeid» til gulvjobben – det er et nytt oppdrag som dere må avtale helt for seg, med egen pris og egne rammer. Dette er greit å være klar over, så du vet at en stor ny jobb alltid skal avtales ordentlig, uansett hvor naturlig det føles å la samme håndverker fortsette.</p>
+<h3>Tilleggsarbeid og prisoverslag</h3>
+<p>Hadde du opprinnelig fått et prisoverslag på hovedjobben, er det viktig å vite hvordan tilleggsarbeid spiller inn. Et prisoverslag kan etter loven ikke overskrides vesentlig, og uansett ikke med mer enn 15 prosent (§ 33). Men godkjent tilleggsarbeid kommer i tillegg til denne rammen – det er jo noe nytt du har sagt ja til. Sa elektrikeren at jobben ville koste rundt 30 000 kroner (prisoverslag), og du senere godkjente et tilleggsarbeid på 8 000 kroner, så er det helt riktig at sluttsummen blir cirka 38 000 kroner. 15-prosentgrensen gjelder selve overslaget for den opprinnelige jobben, ikke for arbeid du i ettertid bevisst har bedt om i tillegg. Derfor er det lurt å be om et eget prisanslag for tilleggsarbeidet, slik at du har kontroll på begge deler hver for seg.</p>
+<h3>Slik bør du håndtere tilleggsarbeid</h3>
+<ol>
+<li><strong>Be om beskjed på forhånd.</strong> Si allerede ved avtaleinngåelsen: «Hvis du finner noe ekstra, vil jeg vite det før du gjør noe.»</li>
+<li><strong>Krev pris og begrunnelse</strong> når tilleggsarbeid dukker opp.</li>
+<li><strong>Få godkjenningen skriftlig</strong>, gjerne på SMS: «OK til å bytte bjelkelag for ca. 18 000 kr.»</li>
+<li><strong>Ta bilder</strong> av det som oppdages, så har dere felles dokumentasjon.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Tilleggsarbeid er ekstra arbeid eller materialer som dukker opp utover den opprinnelige avtalen, ofte fordi håndverkeren oppdager noe uforutsett underveis. Hovedregelen er klar: han skal kontakte deg og få samtykke før han utfører det (§ 9). Det er ikke det samme som feilretting, som du aldri skal betale ekstra for. Be alltid om pris og begrunnelse, og få godkjenningen skriftlig.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

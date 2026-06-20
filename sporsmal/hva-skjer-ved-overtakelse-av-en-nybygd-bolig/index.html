@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer ved overtakelse av en nybygd bolig? — Rettsregel</title>
+<meta name="description" content="Overtakelse er det øyeblikket boligen formelt går over fra entreprenøren til deg. Den skjer normalt gjennom en overtakelsesforretning – et møte der dere…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-ved-overtakelse-av-en-nybygd-bolig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer ved overtakelse av en nybygd bolig?">
+<meta property="og:description" content="Overtakelse er det øyeblikket boligen formelt går over fra entreprenøren til deg. Den skjer normalt gjennom en overtakelsesforretning – et møte der dere…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-ved-overtakelse-av-en-nybygd-bolig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer ved overtakelse av en nybygd bolig?">
+<meta name="twitter:description" content="Overtakelse er det øyeblikket boligen formelt går over fra entreprenøren til deg. Den skjer normalt gjennom en overtakelsesforretning – et møte der dere…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva skjer ved overtakelse av en nybygd bolig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Overtakelse er det øyeblikket boligen formelt går over fra entreprenøren til deg. Den skjer normalt gjennom en **overtakelsesforretning** – et møte der dere går gjennom boligen sammen, noterer mangler og gjenstående arbeid i en protokoll, og avgjør om du overtar. Fra overtakelsen går ansvaret (risikoen) for boligen over på deg.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 14 og § 15</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/14/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 14</div>
+  <div class="related-card-title">Dagen du tar over boligen</div>
+</a><a href="../../lover/bustadoppforingslova/15/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 15</div>
+  <div class="related-card-title">Slik fungerer overtakelsesforretningen</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Et avgjørende vendepunkt</h3>
+<p>Overtakelsen er kanskje den viktigste dagen i hele byggeprosjektet. Det er da nøklene formelt skifter eier, og flere viktige ting "slår inn" på én gang. Derfor er det smart å forstå hva som faktisk skjer – og hvorfor du ikke bør ta dette lett på.</p>
+<p>Loven beskriver dette i bustadoppføringslova § 14 (om overtaking). Hovedregelen er klar: Overtaking skjer ved en <strong>overtakingsforretning</strong>.</p>
+<h3>Hva som faktisk foregår</h3>
+<p>På en overtakelsesforretning møtes du og entreprenøren (ofte med en representant fra firmaet) i den ferdige boligen. Sammen gjør dere dette:</p>
+<ol>
+<li><strong>Går gjennom boligen rom for rom.</strong> Dere ser etter at alt er ferdigstilt og i avtalt stand. Denne gjennomgangen kalles ofte ferdigbefaring eller overtakelsesbefaring.</li>
+<li><strong>Noterer alle avvik.</strong> Mangler, feil og arbeid som gjenstår skrives ned.</li>
+<li><strong>Fører en overtakelsesprotokoll.</strong> Det er et skriftlig dokument der alt dere er enige (og uenige) om føres inn. Begge parter skal få et signert eksemplar (§ 14).</li>
+<li><strong>Avgjør om du overtar.</strong> Som hovedregel overtar du, men du kan nekte hvis det er alvorlige mangler (mer om det senere).</li>
+</ol>
+<h3>Tre ting som "slår inn" ved overtakelsen</h3>
+<p>Det er flere grunner til at overtakelsen er et juridisk vendepunkt:</p>
+<ul>
+<li><strong>Risikoen går over på deg.</strong> Etter at du har overtatt, er det normalt du som bærer ansvaret hvis boligen skades – for eksempel av brann, vannlekkasje eller innbrudd. Derfor er det viktig at boligforsikringen din er på plass fra overtakelsesdagen.</li>
+<li><strong>Mangler vurderes ut fra tilstanden ved overtakelsen.</strong> Loven sier at om det er en mangel eller ikke, bedømmes ut fra hvordan boligen var på overtakelsestidspunktet – selv om mangelen først blir oppdaget senere (§ 14). Tilstanden akkurat den dagen er altså fasiten.</li>
+<li><strong>Reklamasjonsfristene begynner å løpe.</strong> Etter overtakelsen starter klokka for når du må klage på feil du oppdager.</li>
+</ul>
+<h3>Et eksempel som viser hvorfor det betyr noe</h3>
+<p>Mari overtok leiligheten sin og signerte protokollen uten å se nøye etter. To uker senere oppdaget hun en stygg ripe i parketten og at en stikkontakt ikke virket. Fordi disse manglene <strong>fantes ved overtakelsen</strong>, hadde hun fortsatt rett til å klage – men det ble mye vanskeligere å bevise at de var der fra før, siden de ikke stod i protokollen. Hadde hun notert dem på selve forretningen, hadde saken vært krystallklar.</p>
+<h3>Hva betyr egentlig "risiko går over"?</h3>
+<p>"Risiko" høres juridisk og skummelt ut, men poenget er enkelt: Hvem må bære tapet hvis noe uforutsett skjer med boligen – uten at noen har skyld? Før overtakelsen er det entreprenøren som bærer denne risikoen. Brenner halve huset ned i byggeperioden, er det entreprenørens problem å bygge opp igjen.</p>
+<p>Etter overtakelsen flytter dette ansvaret seg over på deg. Skjer det en vannlekkasje, en brann eller et innbrudd etter at du har overtatt, er det normalt din forsikring som må ta det – ikke entreprenøren. Nettopp derfor er det helt avgjørende at du har boligforsikringen på plass <strong>fra og med overtakelsesdagen</strong>. Mange glemmer dette i all flyttehektikken, og det kan bli en dyr glipp hvis uhellet er ute før forsikringen er tegnet.</p>
+<h3>Sluttoppgjøret hører også hjemme her</h3>
+<p>På overtakelsen kommer ofte spørsmålet om sluttoppgjøret – den siste delen av betalingen. Her er et grunnleggende råd: Ikke betal alt før manglene er håndtert. Du har rett til å holde tilbake en del av pengene som sikkerhet for at gjenstående arbeid og mangler faktisk blir rettet. Dette er et av de viktigste pressmidlene du har, og det henger tett sammen med overtakelsen. Noter i protokollen hvor mye du holder tilbake og hvorfor.</p>
+<h3>Hva om ingen forretning holdes?</h3>
+<p>Loven har en praktisk regel: Hvis arbeidet er fullført og du har <strong>flyttet inn</strong>, regnes boligen som overtatt selv om det ikke ble holdt noen formell overtakingsforretning (§ 14). Derfor bør du ikke flytte inn før gjennomgangen er gjort og protokollen er ført – ellers kan du ha "overtatt" uten å ha sikret deg dokumentasjonen.</p>
+<h3>Forskjellen på å overta og å nekte</h3>
+<p>På overtakelsesforretningen står du i praksis overfor et valg, avhengig av hvordan boligen ser ut:</p>
+<ul>
+<li><strong>Du kan overta</strong> – som er hovedregelen. Selv om det finnes mindre mangler, noterer du dem i protokollen, avtaler retting, og overtar.</li>
+<li><strong>Du kan overta med forbehold</strong> – du overtar, men holder tilbake penger og krever at manglene rettes.</li>
+<li><strong>Du kan nekte å overta</strong> – men bare hvis det foreligger mangler som gir rimelig grunn til å nekte (bustadoppføringslova § 15). Dette er reservert for de alvorlige tilfellene.</li>
+</ul>
+<p>For de fleste ender det med at man overtar, gjerne med noen forbehold. Det er sjelden nødvendig å nekte helt – men det er godt å vite at muligheten finnes når boligen virkelig ikke holder mål.</p>
+<h3>Slik forbereder du deg</h3>
+<ul>
+<li>[ ] Avtal tidspunkt i god tid, og sett av nok tid (regn med 1–2 timer).</li>
+<li>[ ] Ta gjerne med en fagperson eller en kyndig venn.</li>
+<li>[ ] Ha med kontrakt, tegninger og en liste over hva som var avtalt.</li>
+<li>[ ] Ta med kamera/mobil for å fotografere avvik.</li>
+<li>[ ] Sørg for at boligforsikringen gjelder fra denne dagen.</li>
+</ul>
+<h3>Dette skjer i tiden rett etter overtakelsen</h3>
+<p>Overtakelsen er ikke nødvendigvis slutten på kontakten med entreprenøren. Etter at du har overtatt, skjer gjerne dette:</p>
+<ul>
+<li>Entreprenøren retter de manglene og det gjenstående arbeidet dere noterte i protokollen, innen avtalte frister.</li>
+<li>Du betaler ut det resterende av sluttoppgjøret etter hvert som manglene rettes.</li>
+<li>Reklamasjonstiden løper, slik at du fortsatt kan klage på feil som dukker opp senere.</li>
+<li>Ofte holdes en <strong>ettårsbefaring</strong> der dere går gjennom boligen igjen etter et år for å fange opp feil som har vist seg over tid.</li>
+</ul>
+<p>Overtakelsen markerer altså starten på en ny fase like mye som slutten på byggefasen. Det er greit å vite, så du ikke tror alt må være hundre prosent perfekt akkurat på overtakelsesdagen.</p>
+<h3>Kort oppsummert</h3>
+<p>Ved overtakelse av nybygg møtes du og entreprenøren, går gjennom boligen, noterer alle mangler i en protokoll og avgjør om du overtar. Fra det øyeblikket bærer du risikoen for boligen, tilstanden låses som grunnlag for mangelsvurderingen, og reklamasjonsfristene starter. Vær grundig – dette er ikke en formalitet, men et reelt vendepunkt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

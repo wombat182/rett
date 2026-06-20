@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis resultatet ikke ble som avtalt? — Rettsregel</title>
+<meta name="description" content="Når sluttresultatet avviker fra det dere ble enige om, foreligger det normalt en mangel – og da har du krav på å få det rettet uten ekstra kostnad.…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-resultatet-ikke-ble-som-avtalt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis resultatet ikke ble som avtalt?">
+<meta property="og:description" content="Når sluttresultatet avviker fra det dere ble enige om, foreligger det normalt en mangel – og da har du krav på å få det rettet uten ekstra kostnad.…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-resultatet-ikke-ble-som-avtalt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis resultatet ikke ble som avtalt?">
+<meta name="twitter:description" content="Når sluttresultatet avviker fra det dere ble enige om, foreligger det normalt en mangel – og da har du krav på å få det rettet uten ekstra kostnad.…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis resultatet ikke ble som avtalt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Når sluttresultatet avviker fra det dere ble enige om, foreligger det normalt en mangel – og da har du krav på å få det rettet uten ekstra kostnad. Nøkkelen ligger i hva «avtalt» faktisk betyr i din sak, og hvor godt du kan dokumentere det. Reklamer skriftlig, vis til avtalen, og krev at håndverkeren ordner opp.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva ligger i «som avtalt»?</h3>
+<p>Håndverkertjenesteloven sier at det er en mangel når resultatet ikke svarer til det du har grunn til å kreve – blant annet det dere uttrykkelig har avtalt (håndverkertjenesteloven § 17, mangelbestemmelsen). «Avtalt» er bredere enn mange tror. Det omfatter:</p>
+<ul>
+<li><strong>Det som står skriftlig</strong> i kontrakt, tilbud, e-post eller SMS.</li>
+<li><strong>Det dere ble muntlig enige om.</strong> Muntlige avtaler gjelder også – problemet er bare at de er vanskeligere å bevise.</li>
+<li><strong>Det som følger av sammenhengen.</strong> Hvis du bestilte «fliser i full mannshøyde på baderomsveggen», og håndverkeren bare flisla halvveis opp, er det et avvik selv om centimeterhøyden ikke står svart på hvitt.</li>
+<li><strong>Vanlige forventninger til faget.</strong> Selv uten en detaljert avtale skal arbeidet være fagmessig utført og holde vanlig god standard (kravet til fagmessighet i § 5).</li>
+</ul>
+<h3>Eksempler fra virkeligheten</h3>
+<p>Snekkeren Geir skulle montere et kjøkken med pekskap (skap uten håndtak som åpnes ved trykk). Han monterte vanlige skap med synlige håndtak. Det er ikke som avtalt, uansett hvor pent det ellers ble.</p>
+<p>Maleren Linn avtalte to strøk maling i en bestemt fargekode. Veggen ble dekket med ett strøk, og den gamle fargen skinner gjennom. Da er resultatet et avvik fra avtalen.</p>
+<p>Murermesteren Ahmed fikk i oppdrag å legge skifer med fall mot sluk på terrassen. Vannet blir liggende i dammer fordi fallet mangler. Her er det både avtalt resultat og faglig standard som svikter.</p>
+<h3>Forskjellen på «ikke som avtalt» og «bare ikke det jeg så for meg»</h3>
+<p>Dette er viktig. Det er ikke nok at resultatet ble annerledes enn du forestilte deg i hodet. Det må foreligge et <strong>objektivt avvik</strong> fra det dere faktisk avtalte eller det du med rette kunne forvente. Hadde du en uuttalt drøm om at det skulle bli «litt mer luksuriøst», men avtalen og prisen pekte mot en helt vanlig standard, er det vanskelig å nå fram. Derfor er en god, tydelig avtale din beste forsikring.</p>
+<h3>Slik går du fram</h3>
+<ol>
+<li><strong>Sammenlign resultat og avtale.</strong> Sett deg ned med kontrakten, tilbudet og meldingene. Skriv en konkret liste: «Avtalt: X. Levert: Y.»</li>
+<li><strong>Dokumenter avviket.</strong> Bilder, video og gjerne mål. Hvis det handler om feil flis, feil farge eller feil plassering, fotografer slik at avviket er tydelig.</li>
+<li><strong>Reklamer skriftlig og presist.</strong> Beskriv hvert avvik, vis til hva som var avtalt, og krev retting. Vær konkret og saklig – unngå sinte formuleringer, hold deg til fakta.</li>
+<li><strong>Gi håndverkeren rett til å rette.</strong> Hovedregelen er at håndverkeren skal få anledning til å rette opp på egen regning før du krever noe annet. Sett en rimelig frist.</li>
+<li><strong>Be om bekreftelse på hva som skal gjøres.</strong> Få håndverkerens svar skriftlig, så dere er enige om hva rettingen omfatter.</li>
+</ol>
+<h3>Hva kan du kreve?</h3>
+<ul>
+<li><strong>Retting:</strong> Det vanligste. Håndverkeren utbedrer slik at resultatet blir som avtalt, uten kostnad for deg.</li>
+<li><strong>Prisavslag:</strong> Hvis retting ikke skjer, eller det ikke lar seg gjøre, kan du kreve at prisen settes ned. Prisavslaget skal normalt svare til det det koster å få rettet, eller til verdiforskjellen.</li>
+<li><strong>Erstatning:</strong> Har avviket gitt deg et økonomisk tap utover selve mangelen – for eksempel ødelagt parkett fordi flisleggingen lekket – kan du kreve dette dekket.</li>
+<li><strong>Heving:</strong> Bare ved vesentlige avvik, der hele resultatet blir så annerledes at avtalen mister sin verdi for deg.</li>
+</ul>
+<h3>Når håndverkeren er uenig</h3>
+<p>Det skjer ofte at håndverkeren mener han har levert som avtalt. Da blir bevisene avgjørende. Står det «vanlig standard» i avtalen, må man vurdere hva som er vanlig i faget. Her kan en uavhengig fagperson, for eksempel en takstmann eller en annen håndverker, lage en skriftlig vurdering som styrker saken din. Det koster litt, men kan være verdt det i en tvist.</p>
+<h3>Hvem skal rette – og når?</h3>
+<p>Et spørsmål som ofte dukker opp er om du må la den samme håndverkeren rette opp, selv om du har mistet tilliten til ham. Hovedregelen er ja: han skal få sjansen til å rette, og du kan ikke uten videre hyre en dyrere konkurrent og sende ham regningen. Men hvis håndverkeren nekter, trenerer, eller gjentatte ganger leverer dårlig arbeid, kan retten til å rette gå tapt. Da kan du la andre gjøre jobben og kreve merkostnaden dekket. Gi alltid en skriftlig frist først, og dokumenter at den ikke ble holdt.</p>
+<p>Retting skal dessuten skje uten vesentlig ulempe for deg og innen rimelig tid. Må håndverkeren komme tilbake fem ganger, eller drar utbedringen ut i månedsvis, er det i seg selv et argument for at du kan kreve en annen løsning, som prisavslag.</p>
+<h3>Lite avvik – stor sak?</h3>
+<p>Ikke alle avvik er like alvorlige. Et bittelite avvik som ingen praktisk betydning har, gir kanskje bare et lite prisavslag, ikke full omgjøring. Domstolene og Forbrukerklageutvalget veier hvor stort avviket er, hva det betyr for bruken, og hva det koster å rette. En skjev list som knapt synes, behandles annerledes enn et kjøkken montert i feil høyde. Vær derfor realistisk: jo større og mer praktisk betydningsfullt avviket er, jo sterkere krav kan du stille.</p>
+<h3>Husk fristen</h3>
+<p>Reklamer innen rimelig tid etter at du oppdaget avviket (jf. håndverkertjenesteloven § 19). Ved arbeid på bolig og annen fast eiendom har du en ytre reklamasjonsfrist på fem år. Vent likevel ikke – jo før du sier ifra, jo bedre.</p>
+<h3>Kort oppsummert</h3>
+<p>Når resultatet avviker fra det dere avtalte, er det normalt en mangel, og du har rett til å få det rettet kostnadsfritt. Sammenlign nøye det avtalte med det leverte, dokumenter avviket, og reklamer skriftlig og presist. Gi håndverkeren sjansen til å rette først; deretter kan du kreve prisavslag eller erstatning, og ved store avvik heving. En tydelig avtale er ditt sterkeste kort – og ved uenighet kan en uavhengig fagvurdering avgjøre saken.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

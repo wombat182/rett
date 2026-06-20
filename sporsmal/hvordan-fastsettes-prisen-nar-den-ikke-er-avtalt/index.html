@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan fastsettes prisen når den ikke er avtalt? — Rettsregel</title>
+<meta name="description" content="Har dere ikke avtalt en pris på forhånd, skal du betale «gjengs pris» – altså det tilsvarende tjenester vanligvis koster på det tidspunktet avtalen ble…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-fastsettes-prisen-nar-den-ikke-er-avtalt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan fastsettes prisen når den ikke er avtalt?">
+<meta property="og:description" content="Har dere ikke avtalt en pris på forhånd, skal du betale «gjengs pris» – altså det tilsvarende tjenester vanligvis koster på det tidspunktet avtalen ble…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-fastsettes-prisen-nar-den-ikke-er-avtalt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan fastsettes prisen når den ikke er avtalt?">
+<meta name="twitter:description" content="Har dere ikke avtalt en pris på forhånd, skal du betale «gjengs pris» – altså det tilsvarende tjenester vanligvis koster på det tidspunktet avtalen ble…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hvordan fastsettes prisen når den ikke er avtalt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Har dere ikke avtalt en pris på forhånd, skal du betale «gjengs pris» – altså det tilsvarende tjenester vanligvis koster på det tidspunktet avtalen ble inngått. Finnes det ingen slik vanlig pris, skal du betale det som er rimelig ut fra arbeidets art, omfang og utførelse (håndverkertjenesteloven § 32 første ledd).**</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det skjer overraskende ofte: en jobb blir bestilt over telefon eller på sparket, uten at noen sa noe om prisen. Vannlekkasje en søndag, en strømstans midt på natten, en dør som plutselig ikke vil lukke seg. Når regningen så kommer, lurer du på om beløpet er greit. Da er det godt å vite hvilke regler som gjelder – for du står langt fra rettsløs.</p>
+<h3>Utgangspunktet: dere bestemmer selv</h3>
+<p>Først og fremst: dere står fritt til å avtale prisen. Har dere blitt enige om et beløp, en timepris eller en fastpris, er det den avtalen som gjelder. Det er bare når prisen <em>ikke</em> følger av avtalen at lovens reserveløsning trer inn. Tenk på § 32 første ledd som en regel som fyller hullet når ingen sa noe om penger.</p>
+<h3>Gjengs pris – den vanlige prisen</h3>
+<p>Står det ingenting om pris i avtalen, sier § 32 første ledd at prisen skal «reknes ut på vanlig måte for tilsvarende tjenester på avtaletiden». Dette kalles <strong>gjengs pris</strong>, og betyr rett og slett den prisen som er vanlig i markedet for samme type jobb på det tidspunktet du inngikk avtalen.</p>
+<p>To viktige presiseringer:</p>
+<ul>
+<li>Det er prisnivået <strong>da avtalen ble inngått</strong> som teller – ikke da regningen kom.</li>
+<li>Prisen må ikke være <strong>urimelig</strong>. Selv om en håndverker tar mer enn vanlig, beskytter loven deg mot et urimelig nivå.</li>
+</ul>
+<h3>Hva om det ikke finnes en vanlig pris?</h3>
+<p>Noen jobber er så spesielle at det ikke finnes en tydelig markedspris. Da sier loven at du skal betale det som er <strong>rimelig</strong> etter:</p>
+<ul>
+<li><strong>tjenestens art</strong> – hva slags jobb det er,</li>
+<li><strong>omfang</strong> – hvor stor og tidkrevende den er,</li>
+<li><strong>utføring</strong> – kvaliteten og standarden på arbeidet, og</li>
+<li><strong>forholdene ellers</strong>.</li>
+</ul>
+<p>Forskjellen på gjengs pris og rimelig pris er egentlig liten. I begge tilfeller leter man etter holdepunkter i markedet – ved gjengs pris finnes det direkte sammenlignbare tjenester, mens man ellers må finne de best mulige parallellene.</p>
+<h3>Et eksempel</h3>
+<p>Ingrid får en elektriker hjem for å fikse en kortslutning. Ingen snakket om pris på forhånd. Jobben tok to timer. For å vurdere om regningen er grei, kan Ingrid sjekke hva elektrikere i området vanligvis tar i timen for slikt arbeid – for eksempel ved å innhente priser fra et par andre firmaer. Ligger regningen på linje med det vanlige nivået, er den i orden. Ligger den langt over, kan hun ha grunnlag for å bestride den.</p>
+<h3>Et eksempel til: utrykning utenfor arbeidstid</h3>
+<p>Magnus får en rørlegger på akutt utrykning en lørdag kveld. Her er gjengs pris ofte høyere enn på en vanlig hverdag, fordi utrykning på kveld og helg normalt koster mer i markedet. Det er fortsatt gjengs pris – men målt mot hva andre tar for <em>samme type</em> utrykning til <em>samme tid på døgnet</em>. Poenget er at sammenligningen må være ærlig: man sammenligner helgeutrykning med helgeutrykning, ikke med en planlagt jobb på dagtid.</p>
+<h3>Håndverkeren skal velge den rimeligste måten</h3>
+<p>Et viktig vern: dersom det ikke er avtalt fast pris, plikter håndverkeren å utføre jobben på den rimeligste tilfredsstillende måten (§ 32 fjerde ledd, sett sammen med § 5). Velger han en unødvendig dyr framgangsmåte, kan han som hovedregel bare kreve betalt som om han hadde gjort det på den billigste forsvarlige måten. Han kan altså ikke ta seg god tid og sende deg regningen for sløsingen.</p>
+<h3>Husk merverdiavgift</h3>
+<p>En prisangivelse regnes som inkludert mva. og andre offentlige avgifter, med mindre du visste at avgiften ikke var med (§ 32 tredje ledd). En håndverker kan altså ikke overraske deg med mva. på toppen, hvis han ikke gjorde deg uttrykkelig oppmerksom på det på forhånd.</p>
+<h3>Slik sikrer du deg</h3>
+<ol>
+<li><strong>Be alltid om pris på forhånd</strong> – helst skriftlig. Det fjerner usikkerheten.</li>
+<li><strong>Spør om det er fastpris eller timepris</strong>, og om mva. er inkludert.</li>
+<li><strong>Innhent flere tilbud</strong> ved større jobber, så vet du hva som er vanlig nivå.</li>
+<li><strong>Ta vare på dokumentasjon</strong> på hva som ble sagt.</li>
+<li><strong>Sjekk regningen mot markedet</strong> hvis ingen pris ble avtalt.</li>
+</ol>
+<h3>Hva med timepris uten avtalt timetall?</h3>
+<p>En vanlig variant er at dere ble enige om en timepris, men ikke om hvor mange timer jobben skulle ta. Da er selve timeprisen avtalt og bindende, men du er fortsatt beskyttet av rimelighetskravet og av plikten til å jobbe på den rimeligste måten. Håndverkeren kan altså ikke bruke unødvendig mange timer og sende deg regningen for sløsingen.</p>
+<p>Et eksempel: Eva avtaler 800 kroner timen med en snekker, men ingen sa noe om hvor lang tid det skulle ta. Snekkeren bruker 30 timer på en jobb som en fagperson normalt gjør på 18. Eva kan med god grunn bestride de unødvendige timene, fordi arbeidet skulle vært utført effektivt og rimelig.</p>
+<h3>Når regningen kommer uten at noe ble avtalt</h3>
+<p>Får du en regning der verken pris eller omfang ble snakket om, gjør du klokt i å be om en spesifisert oppstilling: hvor mange timer, hvilken timepris, og hvilke materialer. Da kan du sammenligne hvert ledd med det som er vanlig. Det er lettere å bestride «for mange timer» eller «for høy timepris» når du ser tallene hver for seg enn når alt er slått sammen til én sum.</p>
+<h3>Et siste poeng om timepris kontra fast pris</h3>
+<p>Når ingen pris er avtalt, ender man ofte opp med en utregning basert på timer og materialer. Det er greit, men vær oppmerksom på at en timebasert regning kan bli uforutsigbar. Neste gang lønner det seg derfor å be om enten en fastpris eller et prisoverslag, slik at du har et tak å forholde deg til. Da slipper du å måtte sammenligne deg fram til hva som er rimelig i ettertid.</p>
+<h3>Kort oppsummert</h3>
+<p>Uten avtalt pris betaler du gjengs pris – den vanlige markedsprisen for tilsvarende jobb på avtaletiden – så lenge den ikke er urimelig (§ 32 første ledd). Finnes ingen vanlig pris, betaler du det rimelige ut fra art, omfang og utførelse. Håndverkeren skal dessuten velge den rimeligste måten, og mva. regnes som inkludert. Aller best: avtal prisen på forhånd, så slipper du hele diskusjonen.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

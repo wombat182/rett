@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis håndverkeren ikke er registrert i foretaksregisteret? — Rettsregel</title>
+<meta name="description" content="Er håndverkeren ikke registrert som et ordentlig firma, bør varsellampene blinke kraftig.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-ikke-er-registrert-i-foretaksregisteret/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis håndverkeren ikke er registrert i foretaksregisteret?">
+<meta property="og:description" content="Er håndverkeren ikke registrert som et ordentlig firma, bør varsellampene blinke kraftig.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-ikke-er-registrert-i-foretaksregisteret/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis håndverkeren ikke er registrert i foretaksregisteret?">
+<meta name="twitter:description" content="Er håndverkeren ikke registrert som et ordentlig firma, bør varsellampene blinke kraftig.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis håndverkeren ikke er registrert i foretaksregisteret?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Er håndverkeren ikke registrert som et ordentlig firma, bør varsellampene blinke kraftig. Det kan bety at du står overfor svart arbeid, en useriøs aktør, eller noen du får store problemer med å klage til hvis noe går galt. Et manglende organisasjonsnummer er kanskje det enkleste og tydeligste faresignalet av alle.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Er håndverkeren ikke registrert som et ordentlig firma, bør varsellampene blinke kraftig. Det kan bety at du står overfor svart arbeid, en useriøs aktør, eller noen du får store problemer med å klage til hvis noe går galt. Et manglende organisasjonsnummer er kanskje det enkleste og tydeligste faresignalet av alle.</p>
+<h3>Hva er registrene – og hvorfor betyr de noe?</h3>
+<p>I Norge har vi flere registre hos <strong>Brønnøysundregistrene</strong> (brreg.no). To er spesielt viktige for deg som forbruker:</p>
+<ul>
+<li><strong>Enhetsregisteret</strong> gir alle virksomheter et <strong>organisasjonsnummer</strong> – et niffersnummer som identifiserer firmaet entydig.</li>
+<li><strong>Foretaksregisteret</strong> er der "ordentlige" næringsdrivende registreres, blant annet alle aksjeselskap. Registrering her gir firmaet rettslig troverdighet og er ofte lovpålagt.</li>
+</ul>
+<p>Når et firma er registrert, kan du slå det opp gratis på nett, se hvem som eier det, om det er aktivt, hvor lenge det har eksistert, og om det har anmerkninger. Det gjør at du faktisk vet hvem du handler med – noe som er gull verdt hvis det oppstår en konflikt.</p>
+<h3>Hva betyr det hvis firmaet mangler i registeret?</h3>
+<p>Det kan bety flere ting, og ingen av dem er gode:</p>
+<ul>
+<li><strong>Personen driver svart.</strong> De tar betalt uten å oppgi inntekten til skattemyndighetene. Det er ulovlig, og det rammer i siste instans også deg.</li>
+<li><strong>Firmaet er useriøst.</strong> Mangler det organisasjonsnummer, har du ingen sikker måte å vite hvem du skal klage til hvis arbeidet blir dårlig.</li>
+<li><strong>De skjuler en historikk.</strong> Noen opererer uten registrering nettopp for å unngå at du finner tidligere konkurser eller klager knyttet til personen bak.</li>
+</ul>
+<p><strong>Eksempel:</strong> Mette i Bergen fikk tilbud fra en "Pål" som kunne pusse opp gangen billig, men bare mot kontant betaling og uten kvittering. Hun spurte etter organisasjonsnummer, men fikk bare unnvikende svar om at "det ordner seg". Hun takket nei. En naboleilighet sa ja – og da malingen flasset av etter tre uker, fantes det ingen "Pål" å klage til. Telefonnummeret var stengt, og det fantes ikke noe firma å spore.</p>
+<h3>Risikoen ved å handle med en uregistrert håndverker</h3>
+<ul>
+<li><strong>Du mister forbrukervernet i praksis.</strong> Håndverkertjenesteloven gjelder formelt fortsatt, men loven hjelper deg lite hvis du ikke vet hvem motparten er eller ikke får tak i dem.</li>
+<li><strong>Du kan bli medansvarlig for svart arbeid.</strong> Betaler du mer enn <strong>10 000 kroner kontant</strong>, kan du etter skatteforvaltningsloven bli <strong>medansvarlig</strong> for skatten håndverkeren unndrar. Du risikerer altså å måtte betale skatten deres i tillegg til det du allerede har betalt.</li>
+<li><strong>Ingen forsikring.</strong> Skader håndverkeren noe i hjemmet ditt – sprenger et rør eller setter fyr på noe – finnes det ofte ingen ansvarsforsikring som dekker det.</li>
+<li><strong>Ingen garanti ved konkurs eller forsvinning.</strong> Uregistrerte aktører er ikke med i seriøsitets- og garantiordninger.</li>
+</ul>
+<h3>Slik sjekker du før du sier ja</h3>
+<p>Det tar bokstavelig talt to minutter på mobilen:</p>
+<ol>
+<li><strong>Be om organisasjonsnummeret.</strong> Et seriøst firma oppgir det uten å nøle.</li>
+<li><strong>Slå det opp på brreg.no.</strong> Søk på navnet eller nummeret. Se at firmaet er aktivt, hvem som står bak, og hvor lenge det har eksistert.</li>
+<li><strong>Sjekk MVA-registreringen.</strong> Er firmaet registrert i Merverdiavgiftsregisteret? Da skal det stå "MVA" etter organisasjonsnummeret på fakturaer. Det viser at firmaet har en viss omsetning og driver ordentlig.</li>
+<li><strong>Be om skriftlig tilbud med firmanavn og org.nr.</strong> Vil de ikke gi det, er det et tydelig nei-signal.</li>
+</ol>
+<h3>Hva gjør du hvis de nekter å oppgi det?</h3>
+<p>Si nei takk. Et seriøst firma har ingenting å skjule og deler informasjonen gjerne. Nøling, bortforklaringer eller press om å betale kontant er klare tegn på at du bør finne noen andre. Du skylder ingen å takke ja til en avtale du ikke føler deg trygg på.</p>
+<p>Har du allerede betalt en uregistrert aktør og angrer, ta vare på all dokumentasjon (meldinger, kvitteringer, bilder) og kontakt Forbrukerrådet for veiledning. Mistenker du svart arbeid, kan du også tipse Skatteetaten – det kan gjøres anonymt.</p>
+<h3>Et lite unntak å kjenne til</h3>
+<p>Vær oppmerksom på at noen helt små og nystartede enkeltpersonforetak ikke alltid er registrert i selve Foretaksregisteret, men de skal uansett ha et organisasjonsnummer i Enhetsregisteret. Det avgjørende for deg er at firmaet har <strong>et organisasjonsnummer du kan slå opp</strong>, og at det driver lovlig. Mangler det helt, er det grunn til å være på vakt.</p>
+<h3>Hva med en venn eller nabo som "fikser litt"?</h3>
+<p>Det er en gråsone her som mange lurer på. Hvis en kompis hjelper deg med å sette opp en hylle mot en kasse øl, er ikke det svart arbeid – det er en vennetjeneste. Men når noen tar betalt for å utføre håndverkstjenester regelmessig, driver de næringsvirksomhet og skal være registrert. Da gjelder de samme reglene som for et hvilket som helst firma.</p>
+<p>Faren oppstår når en "kjekk kar" påtar seg store oppdrag – som å pusse opp et bad – uten å være registrert, uten forsikring og uten kvittering. Da har du verken garanti, ansvarsforsikring eller en seriøs motpart hvis fukten siver inn to år senere. Vær spesielt forsiktig med dyre og kompliserte jobber: her er det ekstra viktig at den som utfører arbeidet er et ordentlig, registrert foretak med fagkompetanse.</p>
+<h3>Slik dokumenterer du om noe går galt</h3>
+<p>Har du likevel brukt en uregistrert aktør, eller mistenker du svart arbeid, sørg for å ha orden i papirene:</p>
+<ul>
+<li>Ta vare på all skriftlig kommunikasjon, også SMS og meldinger på sosiale medier.</li>
+<li>Ta bilder av arbeidet underveis og ved ferdigstillelse.</li>
+<li>Noter datoer, beløp og hva som ble avtalt.</li>
+<li>Behold eventuelle kvitteringer eller bankutskrifter som viser betaling.</li>
+</ul>
+<h3>Hvorfor lønner det seg å betale hvitt?</h3>
+<p>Mange fristes til svart arbeid fordi det ser billigere ut der og da. Men regn på helheten: ved hvitt arbeid får du kvittering, garanti, ansvarsforsikring og en motpart du kan klage til. Du kan i mange tilfeller også få fradrag eller dokumentert verdiøkning på boligen ved et senere salg. Svart arbeid gir deg ingen av delene – og hvis noe går galt, står du helt alene med regningen. Den lille besparelsen forsvinner fort hvis du må betale for å rette opp en feilutført jobb selv. Hvitt arbeid er rett og slett den tryggeste investeringen i eget hjem.</p>
+<h3>Kort oppsummert</h3>
+<p>Hvis håndverkeren ikke er registrert og mangler organisasjonsnummer, bør du være svært på vakt. Da har du ingen sikker motpart å klage til, ingen ansvarsforsikring i bunn, og du kan til og med bli medansvarlig for svart skatt hvis du betaler kontant. Sjekk alltid org.nr. og MVA-registrering på brreg.no før du sier ja – og dropp dem som ikke kan dokumentere hvem de er.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

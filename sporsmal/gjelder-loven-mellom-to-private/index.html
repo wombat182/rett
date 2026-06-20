@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gjelder loven mellom to private? — Rettsregel</title>
+<meta name="description" content="Nei.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/gjelder-loven-mellom-to-private/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Gjelder loven mellom to private?">
+<meta property="og:description" content="Nei.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/gjelder-loven-mellom-to-private/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gjelder loven mellom to private?">
+<meta name="twitter:description" content="Nei.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Gjelder loven mellom to private?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei. Håndverkertjenesteloven gjelder bare når tjenesten ytes i næring til en forbruker (hvtjl. § 1). Hjelper to privatpersoner hverandre – uten at noen av dem driver dette som yrke – faller avtalen utenfor loven. Da er det vanlig avtalerett som gjelder i stedet.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Nei. Håndverkertjenesteloven gjelder bare når tjenesten ytes i <em>næring</em> til en forbruker (hvtjl. § 1). Hjelper to privatpersoner hverandre – uten at noen av dem driver dette som yrke – faller avtalen utenfor loven. Da er det vanlig avtalerett som gjelder i stedet.</p>
+<h3>Kravet om «næring»</h3>
+<p>Et av lovens grunnvilkår er at den som utfører tjenesten, gjør det i næring (hvtjl. § 1). «Næring» betyr at personen driver dette som virksomhet eller yrke – typisk med organisasjonsnummer, faktura og en viss regelmessighet. En vennetjeneste eller en engangsjobb fra en privatperson er ikke næring.</p>
+<p>Når dette vilkåret ikke er oppfylt, mangler en av byggesteinene loven krever, og håndverkertjenesteloven gjelder ikke. Loven er nettopp laget for situasjonen der en profesjonell står på den ene siden og en privatperson på den andre – den ubalansen finnes ikke når to private avtaler seg imellom.</p>
+<h3>Eksempel: Naboen som hjelper til</h3>
+<p>Erik skal legge nytt gulv i stua. Naboen Bjørn, som er hobbysnekker men ikke driver firma, sier han kan hjelpe en helg mot 3 000 kroner og pizza. Her er begge privatpersoner. Bjørn driver ikke næring. Håndverkertjenesteloven gjelder ikke for denne avtalen.</p>
+<p>Det betyr ikke at Erik er helt uten rettigheter – det finnes en muntlig (eller skriftlig) avtale mellom dem, og alminnelige avtalerettslige regler gjelder. Men Erik har ikke den spesielle forbrukerbeskyttelsen loven gir, som retten til utbedring, prisavslag og de øvrige reglene i håndverkertjenesteloven.</p>
+<h3>Hvorfor det er en stor forskjell</h3>
+<p>Forskjellen mellom å leie inn et firma og å få hjelp av en privatperson kan være betydelig hvis noe går galt:</p>
+<ul>
+<li><strong>Med firma (loven gjelder):</strong> Du har klare rettigheter til utbedring, prisavslag, heving og erstatning, og loven kan ikke avtales bort til din ulempe.</li>
+<li><strong>Mellom private (loven gjelder ikke):</strong> Du må basere deg på den avtalen dere faktisk gjorde, og på alminnelige rettsregler. Det kan være vanskeligere å nå frem, særlig hvis lite ble avtalt skriftlig.</li>
+</ul>
+<blockquote>
+<p><strong>Gjelder dette meg?</strong>
+Spør deg: Driver den jeg betaler dette som <em>yrke/næring</em>? Hvis ja → loven gjelder. Hvis nei, det er en privatperson som hjelper meg → loven gjelder ikke, og du må stole på avtalen dere gjorde.</p>
+</blockquote>
+<h3>Når blir en privatperson likevel «næringsdrivende»?</h3>
+<p>Grensen er ikke alltid skarp. En person kan anses å drive næring selv uten å ha et stort firma, hvis aktiviteten har et visst omfang, er regelmessig og har som mål å tjene penger. Den som tar på seg malejobber for mange kunder hver helg mot betaling, kan i praksis drive næring, selv om vedkommende ikke kaller seg det. Da kan loven likevel gjelde.</p>
+<p>Tegn som peker mot næring:</p>
+<ul>
+<li>Personen har <strong>organisasjonsnummer</strong> og sender <strong>faktura med moms</strong>.</li>
+<li>Vedkommende tar på seg <strong>lignende oppdrag jevnlig</strong> for ulike kunder.</li>
+<li>Aktiviteten har et <strong>økonomisk formål</strong> og en viss profesjonalitet.</li>
+</ul>
+<p>Er du i tvil, kan det være lurt å avklare dette på forhånd.</p>
+<h3>Eksempel: «Svart» arbeid og litt mer</h3>
+<p>Selv om noen tilbyr å gjøre jobben rimelig og uten faktura, betyr ikke det automatisk at loven gjelder eller ikke. Det avgjørende er om vedkommende reelt sett driver næring. Men husk: avtaler om svart arbeid gir deg uansett en svakere stilling hvis noe går galt, og det er ulovlig. Et seriøst, registrert firma gir deg både lovens beskyttelse og ryddige forhold.</p>
+<h3>Eksempel: Markedsplass-håndverkeren</h3>
+<p>Tone finner en «altmuligmann» via en nettbasert markedsplass som tilbyr å montere kjøkkenet hennes. Spørsmålet er om denne personen driver næring. Tar vedkommende på seg slike oppdrag jevnlig, har organisasjonsnummer og sender faktura, taler mye for at det er næring – og da gjelder håndverkertjenesteloven. Er det derimot en privatperson som hjelper til en gang i ny og ne uten å drive dette som virksomhet, faller det utenfor. Be alltid om organisasjonsnummer og faktura, så vet du hva du har med å gjøre.</p>
+<h3>Praktiske råd når du handler med en privatperson</h3>
+<ul>
+<li><strong>Skriv ned avtalen</strong> – hva skal gjøres, til hvilken pris, og når.</li>
+<li>Avklar hva som skjer <strong>hvis noe blir feil</strong> eller forsinket.</li>
+<li>Vær klar over at du <strong>ikke</strong> har lovens forbrukerbeskyttelse.</li>
+<li>Ved større jobber: vurder heller å bruke et <strong>registrert firma</strong>, så du får loven i ryggen.</li>
+<li>Hold deg unna <strong>svart arbeid</strong> – det er ulovlig og gir deg dårligere vern.</li>
+</ul>
+<h3>Hva du faktisk har når loven ikke gjelder</h3>
+<p>At håndverkertjenesteloven ikke gjelder, betyr ikke at du er helt rettsløs. Mellom to private gjelder fortsatt:</p>
+<ul>
+<li><strong>Avtalen dere inngikk</strong> – muntlig eller skriftlig. Jo mer dere har avtalt på forhånd, jo bedre står du.</li>
+<li><strong>Alminnelige avtalerettslige regler</strong> – som at man skal levere det man har lovet, og at vesentlig svikt kan gi grunnlag for å kreve retting eller redusert betaling.</li>
+</ul>
+<p>Forskjellen er at du ikke har den klare, ufravikelige forbrukerbeskyttelsen loven gir. Du må i større grad bevise hva som faktisk var avtalt, og du har ikke den samme automatiske retten til retting, prisavslag og erstatning. Derfor er en tydelig, skriftlig avtale ekstra viktig når du handler med en privatperson.</p>
+<h3>Eksempel: Når det går galt mellom venner</h3>
+<p>Marius ber kompisen Even, som ikke driver firma, om å legge laminat i gangen mot 4 000 kroner. Gulvet blir skjevt og knirker. Siden håndverkertjenesteloven ikke gjelder, kan ikke Marius uten videre vise til lovens regler om mangler. Han må basere seg på det de avtalte. Hadde de skrevet ned hva som skulle leveres og til hvilken standard, ville Marius stått sterkere. Dette illustrerer hvorfor folk ofte velger et registrert firma for større jobber – nettopp for å ha loven i ryggen.</p>
+<blockquote>
+<p><strong>Gjelder dette meg?</strong>
+Hjelper en venn eller nabo deg uten å drive dette som næring? Da gjelder ikke loven, og du bør sikre deg ekstra godt med en skriftlig avtale om hva som skal gjøres.</p>
+</blockquote>
+<h3>Kort oppsummert</h3>
+<p>Håndverkertjenesteloven gjelder ikke mellom to privatpersoner, fordi loven krever at tjenesten ytes i næring til en forbruker (hvtjl. § 1). Hjelper naboen eller en venn deg uten å drive dette som yrke, må du basere deg på avtalen dere gjorde og alminnelig avtalerett. Vil du ha lovens fulle beskyttelse, bør du leie inn et registrert firma. En privatperson kan likevel anses som næringsdrivende hvis aktiviteten er stor og regelmessig nok.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/kjop-fra-privatperson/">Gjelder forbrukerkjøpsloven ved kjøp fra privatperson?</a><a class="sp-relchip" href="../../sporsmal/gjelder-kjopsloven-nar-jeg-kjoper-noe-av-en-bedrift/">Gjelder kjøpsloven når jeg kjøper noe av en bedrift?</a><a class="sp-relchip" href="../../sporsmal/gjelder-kjopsloven-ved-kjop-mellom-privatpersoner/">Gjelder kjøpsloven ved kjøp mellom privatpersoner?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

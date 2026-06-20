@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan velger jeg en seriøs entreprenør? — Rettsregel</title>
+<meta name="description" content="Bruk litt tid på research før du velger. Sjekk organisasjonsnummer, økonomi, referanser og om foretaket har sentral godkjenning eller ansvarsrett. En…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-velger-jeg-en-serios-entreprenor/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan velger jeg en seriøs entreprenør?">
+<meta property="og:description" content="Bruk litt tid på research før du velger. Sjekk organisasjonsnummer, økonomi, referanser og om foretaket har sentral godkjenning eller ansvarsrett. En…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-velger-jeg-en-serios-entreprenor/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan velger jeg en seriøs entreprenør?">
+<meta name="twitter:description" content="Bruk litt tid på research før du velger. Sjekk organisasjonsnummer, økonomi, referanser og om foretaket har sentral godkjenning eller ansvarsrett. En…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvordan velger jeg en seriøs entreprenør?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Bruk litt tid på research før du velger. Sjekk organisasjonsnummer, økonomi, referanser og om foretaket har sentral godkjenning eller ansvarsrett. En seriøs entreprenør stiller § 12-garanti uten å mukke og vil bruke en skikkelig standardkontrakt. Det er disse små sjekkene som skiller en trygg byggeprosess fra et mareritt.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 12</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/12/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 12</div>
+  <div class="related-card-title">Bankgarantien som beskytter deg mot konkurs</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hvorfor valget av entreprenør er det viktigste du gjør</h3>
+<p>De fleste byggemareritt starter med feil entreprenør. En dyktig og ærlig entreprenør retter opp feil, holder fremdriften og kommuniserer ryddig. En useriøs aktør kan forsinke, levere dårlig arbeid, kreve betaling for ting som ikke er gjort — eller i verste fall gå konkurs midt i prosjektet og etterlate deg med et halvferdig hus. Derfor er det vel anvendt tid å undersøke grundig før du signerer. Et par timer med research kan spare deg for år med trøbbel.</p>
+<h3>Sjekk det formelle først</h3>
+<p>Start med de objektive faktaene:</p>
+<ul>
+<li>Organisasjonsnummer: Slå opp foretaket og bekreft at det faktisk eksisterer og er registrert. Et seriøst firma oppgir org.nr. uten problemer.</li>
+<li>Økonomi: Sjekk om foretaket har sunn økonomi og ikke en haug med betalingsanmerkninger. Et firma med svak økonomi er en risiko — særlig fordi konkurs underveis er svært vanskelig og kostbart for deg.</li>
+<li>Sentral godkjenning: I registeret hos Direktoratet for byggkvalitet (dibk.no) kan du søke opp foretak med sentral godkjenning. Et foretak med sentral godkjenning har dokumentert at det betaler skatter og avgifter, har orden på ansatte og oppfyller visse krav. Godkjenningen varer i tre år og kan fornyes. Registeret viser også hvilke områder foretaket er godkjent for.</li>
+<li>Ansvarsrett: For søknadspliktige tiltak må foretak ha ansvarsrett for de rollene de skal fylle. Sjekk at de har det for akkurat ditt prosjekt.</li>
+</ul>
+<p>Eksempel: Anita skal bygge enebolig og vurderer to tilbud. Hun slår opp begge på dibk.no. Det ene firmaet har sentral godkjenning og lang fartstid; det andre har verken godkjenning eller noe spor i registeret. Det gjør valget enklere.</p>
+<h3>Be om — og faktisk ring — referanser</h3>
+<p>Spør entreprenøren om navn på tidligere kunder, og ring dem. Still konkrete spørsmål:</p>
+<ul>
+<li>Ble prosjektet ferdig til avtalt tid?</li>
+<li>Holdt de seg til avtalt pris, eller kom det mange ekstraregninger?</li>
+<li>Hvordan håndterte de feil og reklamasjoner?</li>
+<li>Ville du brukt dem igjen?</li>
+</ul>
+<p>Be gjerne om å få se et tidligere prosjekt med egne øyne hvis det er mulig. Et firma som er stolt av arbeidet sitt, sier sjelden nei. Vær litt på vakt hvis entreprenøren bare oppgir referanser som «går igjen» eller virker innøvde — be om flere navn.</p>
+<h3>Røde flagg du bør ta på alvor</h3>
+<p>Vær på vakt hvis entreprenøren:</p>
+<ul>
+<li>Vegrer seg mot å bruke en skikkelig skriftlig standardkontrakt.</li>
+<li>Ikke vil stille § 12-garantien som lova krever.</li>
+<li>Krever mye betaling på forskudd, før arbeid er utført.</li>
+<li>Gir et pristilbud som er påfallende mye lavere enn de andre.</li>
+<li>Bare vil kommunisere muntlig og unngår å skrive ting ned.</li>
+<li>Presser deg til å signere raskt «før prisen går opp».</li>
+</ul>
+<p>Et lavt tilbud kan friste, men spør deg hvorfor det er så billig. Ofte betyr det dårligere materialer, mindre erfaring eller en kalkyle som ender i ekstraregninger underveis. Det billigste tilbudet blir ikke sjelden det dyreste til slutt.</p>
+<h3>§ 12-garantien er et godt seriøsitetstegn</h3>
+<p>Etter bustadoppføringslova § 12 plikter entreprenøren å stille en garanti for oppfyllelsen av kontrakten. Hvor stor garantien skal være i byggetiden, avhenger av om avtalen omfatter tomt: bygger du på din egen tomt (en ren entreprise, der entreprenøren bare oppfører huset), skal den utgjøre minst 10 prosent av vederlaget; kjøper du tomt og bolig samlet av en utbygger, er den minst 3 prosent. I fem år etter overtakelse er garantien minst 5 prosent i begge tilfeller. Huskeregelen er 10/5 når du bygger på egen tomt, og 3/5 når tomta er med i avtalen. En seriøs entreprenør stiller denne garantien uten innsigelser. Faktisk har du rett til å holde tilbake hele betalingen til det er dokumentert at garantien er stilt. Nøler entreprenøren her, bør varsellampene blinke for fullt.</p>
+<h3>Pass på «for godt til å være sant»</h3>
+<p>En klassisk felle er entreprenøren som lover lavest pris, raskest tid og høyest kvalitet — alt på en gang. I virkeligheten må man som regel velge: vil du ha det billig, raskt eller godt, kan du sjelden få alle tre på topp samtidig. En ærlig entreprenør er åpen om hva som er realistisk, og setter en pris og en tidsplan som henger sammen. Den som lover alt, holder ofte lite.</p>
+<p>Eksempel: Sindre fikk to tilbud. Det ene firmaet var åpent om at en god enebolig tar tid og koster det den koster. Det andre lovet halve prisen og halve byggetiden. Sindre valgte det første — og slapp ekstraregningene og forsinkelsene som ofte følger med urealistiske løfter.</p>
+<h3>Skattekort, faktura og hvitt arbeid</h3>
+<p>Et tydelig seriøsitetstegn er at alt går ordentlig for seg økonomisk. En seriøs entreprenør sender skikkelig faktura med organisasjonsnummer og merverdiavgift, og tilbyr aldri «svart» betaling for å gjøre det billigere. Aksepterer du svart arbeid, mister du både garantirettigheter og muligheten til å klage hvis noe går galt — og du bryter loven. Insisterer entreprenøren på kontant betaling uten faktura, er det et alvorlig faresignal. Hold deg unna.</p>
+<h3>Skriv ned inntrykket ditt</h3>
+<p>Når du har snakket med flere entreprenører, kan det være vanskelig å huske hvem som sa hva. Lag deg en enkel oversikt der du noterer pris, tidsplan, inntrykk, referanser og om de tilbyr standardkontrakt og garanti. En slik liten tabell gjør det mye lettere å sammenligne nøkternt, i stedet for å la deg styre av hvem som var hyggeligst på telefonen.</p>
+<h3>Steg for steg: velg trygt</h3>
+<ol>
+<li>Slå opp org.nr. og sjekk at foretaket eksisterer og har orden på økonomien.</li>
+<li>Søk opp foretaket på dibk.no og bekreft sentral godkjenning og ansvarsrett.</li>
+<li>Be om minst to-tre referanser og ring dem.</li>
+<li>Hent inn flere tilbud og vær skeptisk til ekstremt lave priser.</li>
+<li>Krev skriftlig standardkontrakt og § 12-garanti før du signerer.</li>
+<li>Stol på magefølelsen — føler du deg presset eller lurt, gå videre til en annen.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>En seriøs entreprenør finner du ved å sjekke det formelle (org.nr., økonomi, sentral godkjenning, ansvarsrett), ringe referanser og være årvåken for røde flagg som motvilje mot kontrakt og garanti. Krev alltid skriftlig standardkontrakt og § 12-garanti. Den lille innsatsen du legger ned før signering, er den beste forsikringen mot et byggemareritt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

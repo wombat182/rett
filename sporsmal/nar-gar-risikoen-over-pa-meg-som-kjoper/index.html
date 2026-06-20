@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når går risikoen over på meg som kjøper? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Risikoen for boligen går over på deg ved overtakelsen.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-gar-risikoen-over-pa-meg-som-kjoper/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når går risikoen over på meg som kjøper?">
+<meta property="og:description" content="Kort sagt: Risikoen for boligen går over på deg ved overtakelsen.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-gar-risikoen-over-pa-meg-som-kjoper/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når går risikoen over på meg som kjøper?">
+<meta name="twitter:description" content="Kort sagt: Risikoen for boligen går over på deg ved overtakelsen.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Når går risikoen over på meg som kjøper?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Risikoen for boligen går over på deg ved overtakelsen. Fra det øyeblikket du har overtatt boligen, er det du som bærer faren for at noe skjer med den – for eksempel ved brann, vannskade eller hærverk – selv om det ikke er din skyld. Derfor er det helt avgjørende at forsikringen er på plass fra og med overtakelsesdagen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Kort sagt: Risikoen for boligen går over på deg ved overtakelsen. Fra det øyeblikket du har overtatt boligen, er det du som bærer faren for at noe skjer med den – for eksempel ved brann, vannskade eller hærverk – selv om det ikke er din skyld. Derfor er det helt avgjørende at forsikringen er på plass fra og med overtakelsesdagen.</p>
+<h3>Hva betyr egentlig "risiko"?</h3>
+<p>"Risiko" høres skummelt ut, men her betyr det bare én ting: hvem som taper hvis noe uforutsett ødelegger boligen uten at det er noens feil. Før overtakelsen er det entreprenøren som har risikoen. Brenner et halvferdig hus ned mens entreprenøren bygger, er det entreprenørens problem – de må bygge på nytt, og du skal ikke betale ekstra for det.</p>
+<p>Etter overtakelsen snur dette helt om. Nå er det du som eier og bærer risikoen. Skjer det en vannlekkasje fra naturens side eller en brann uten at noen kan klandres, er det din sak å håndtere – og det er nettopp derfor du må ha forsikringen på plass i tide.</p>
+<h3>Hvorfor akkurat ved overtakelsen?</h3>
+<p>Det gir god mening: Når du overtar boligen, får du nøklene, kontrollen og rådigheten over den. Det er du som bor der, låser døra, fyrer opp ovnen og bestemmer over huset. Da er det naturlig at det også er du som bærer risikoen for det – på samme måte som det er du som har all gleden og nytten av boligen. Risiko og rådighet følger hverandre.</p>
+<h3>Det aller viktigste praktiske rådet</h3>
+<p><strong>Sørg for at forsikringen er på plass FRA overtakelsesdagen.</strong> Dette er kanskje det viktigste enkeltrådet i hele dette temaet. Mange tenker ikke på det i innflyttingsgleden, men i det øyeblikket risikoen går over, må du ha egen husforsikring og innboforsikring (eller boligselskapets bygningsforsikring hvis det er en leilighet i et sameie eller borettslag). Et hull her, om så bare et par dager, kan bli ekstremt dyrt.</p>
+<h3>Et eksempel som viser hvorfor</h3>
+<p>Thomas overtok eneboligen sin en torsdag. Han fikk nøklene, signerte protokollen og dro hjem for å feire med familien. Det han hadde glemt, var å tegne forsikring – han tenkte han skulle ordne det "på mandag". Natt til lørdag oppsto en vannlekkasje fra en utvendig kran på grunn av en uvanlig kuldeperiode som fikk et rør til å sprekke. Fordi risikoen allerede hadde gått over til Thomas ved overtakelsen, og han ikke hadde forsikring, måtte han dekke hele utbedringen selv. Hadde han tegnet forsikring med virkning fra overtakelsesdagen, ville forsikringsselskapet ha tatt regningen. Lærdommen var dyrekjøpt.</p>
+<h3>Hva med feil som var der fra før?</h3>
+<p>Her er en viktig nyanse som mange blander sammen: At risikoen går over, betyr ikke at du plutselig overtar ansvaret for feil entreprenøren har gjort. Var membranen på badet montert feil før du overtok, er det fortsatt en mangel som entreprenøren svarer for, selv om den først viser seg og gir skade etterpå. Risikoovergangen handler om nye, tilfeldige skader som ingen kan klandres for – ikke om byggefeil som allerede lå der da du overtok. Skiller du mellom disse to, unngår du å betale for noe som egentlig er entreprenørens ansvar.</p>
+<h3>Steg for steg: sikre deg rundt overtakelsen</h3>
+<ol>
+<li><strong>Bestill forsikring i forkant.</strong> Avtal uttrykkelig at den gjelder fra og med overtakelsesdagen.</li>
+<li><strong>Bekreft datoen skriftlig.</strong> Forsikringsselskapet bør ha nøyaktig samme dato som overtakelsen.</li>
+<li><strong>Sjekk hva som dekkes.</strong> Innbo, bygning, og eventuelt uflyttet innbo under transport på flyttedagen.</li>
+<li><strong>For leiligheter: avklar med boligselskapet.</strong> Ofte har bygget en felles bygningsforsikring, men du trenger uansett egen innboforsikring for dine egne ting.</li>
+<li><strong>Ta vare på protokollen.</strong> Den viser nøyaktig dato for når risikoen gikk over, og er ditt bevis hvis det blir spørsmål senere.</li>
+</ol>
+<h3>Hva om overtakelsen utsettes?</h3>
+<p>Blir overtakelsen utsatt – for eksempel fordi boligen ikke er ferdig til avtalt tid – går risikoen heller ikke over ennå. Den følger den faktiske overtakelsen, ikke den opprinnelige plandatoen. Pass derfor på at forsikringsdatoen din matcher den reelle overtakelsesdatoen. Tegner du forsikring fra en gammel plandato, kan du ende opp med å betale for forsikring du ikke trengte – eller verre, justere den feil vei og stå uforsikret den dagen det gjelder.</p>
+<h3>Et siste poeng om trygghet</h3>
+<p>Risikoovergangen er ikke noe å frykte, men noe å forberede seg på. Med riktig forsikring på plass fra dag én er du like trygg som enhver annen boligeier. Det handler bare om å ikke la det gli ut i innflyttingskaoset.</p>
+<h3>Hva med tiden mellom kontrakt og overtakelse?</h3>
+<p>Et spørsmål mange lurer på er hvem som har risikoen i den lange perioden mens huset bygges, fra du signerte kontrakten til du faktisk overtar. Svaret er klart: i hele byggeperioden er det entreprenøren som har risikoen. Skjer det noe med det halvferdige bygget – brann på byggeplassen, en storm som river ned noe, et innbrudd med tyveri av materialer – er det entreprenørens problem, ikke ditt. Du har betalt for en ferdig bolig, og det er entreprenørens ansvar å levere den, uansett hva som måtte skje underveis. Først når du overtar, skifter dette over til deg. Derfor er overtakelsesdagen et så tydelig vippepunkt – det er den klare streken i sanden mellom "entreprenørens ansvar" og "ditt ansvar".</p>
+<h3>Hva hvis du flytter inn før formell overtakelse?</h3>
+<p>Noen ganger får man lov til å flytte inn eller ta deler av boligen i bruk før den formelle overtakelsen er gjennomført. Vær oppmerksom på at det å ta boligen i bruk i praksis kan regnes som en overtakelse, slik at risikoen går over selv om det ikke er holdt et formelt overtakelsesmøte. Derfor: hvis du av en eller annen grunn flytter inn tidlig, sørg for at forsikringen er på plass fra den dagen du faktisk tar boligen i bruk – ikke fra en senere papirdato. Det sikreste er å ikke ta boligen i bruk før alt det formelle er på plass og forsikringen gjelder.</p>
+<h3>Kort oppsummert</h3>
+<p>Risikoen for boligen går over på deg ved overtakelsen. Fra da av bærer du faren for tilfeldige skader som brann og vannlekkasje, mens entreprenøren fortsatt svarer for byggefeil som var der fra før. Det aller viktigste du gjør, er å sørge for at forsikringen gjelder fra og med overtakelsesdagen – og at datoen følger den faktiske overtakelsen. Et hull her kan bli svært dyrt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

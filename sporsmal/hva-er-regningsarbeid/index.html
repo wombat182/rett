@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er regningsarbeid? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Regningsarbeid betyr at du betaler entreprenøren etter hvor mye tid og materialer som faktisk brukes – ikke en avtalt fastsum.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-regningsarbeid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er regningsarbeid?">
+<meta property="og:description" content="Kort sagt: Regningsarbeid betyr at du betaler entreprenøren etter hvor mye tid og materialer som faktisk brukes – ikke en avtalt fastsum.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-regningsarbeid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er regningsarbeid?">
+<meta name="twitter:description" content="Kort sagt: Regningsarbeid betyr at du betaler entreprenøren etter hvor mye tid og materialer som faktisk brukes – ikke en avtalt fastsum.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er regningsarbeid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Regningsarbeid betyr at du betaler entreprenøren etter hvor mye tid og materialer som faktisk brukes – ikke en avtalt fastsum. Du betaler den «virkelige» kostnaden, og til gjengjeld har du rett til en spesifisert regning som viser timer og materialkostnader (buofl. § 41).</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 41 og § 42</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/41/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 41</div>
+  <div class="related-card-title">Hva er prisen hvis dere ikke avtalte noe?</div>
+</a><a href="../../lover/bustadoppforingslova/42/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 42</div>
+  <div class="related-card-title">Hva koster det å endre planene?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: Regningsarbeid betyr at du betaler entreprenøren etter hvor mye tid og materialer som faktisk brukes – ikke en avtalt fastsum. Du betaler den «virkelige» kostnaden, og til gjengjeld har du rett til en spesifisert regning som viser timer og materialkostnader (buofl. § 41).</p>
+<h3>Betaling etter det som faktisk går med</h3>
+<p>Der fastpris er ett avtalt beløp uansett hva, er regningsarbeid det motsatte: Entreprenøren fører timer og materialer fortløpende, og du betaler for det som faktisk medgår. Dette er en av prisformene loven regulerer i bestemmelsen om vederlaget (buofl. § 41).</p>
+<p>Tenk på det som forskjellen mellom en buffé til fast pris og en restaurant der du betaler for hver enkelt rett du bestiller. Med regningsarbeid betaler du «à la carte» – mer fleksibelt, men du vet ikke nøyaktig hva sluttsummen blir før du er ferdig.</p>
+<h3>Din viktigste rett: spesifisert regning</h3>
+<p>Fordi du betaler etter forbruk, har du krav på å se hva du faktisk betaler for. Utføres arbeid etter regning, plikter entreprenøren å spesifisere regningen, slik at du kan kontrollere den (buofl. § 41). Regningen skal blant annet vise:</p>
+<ul>
+<li><strong>Påløpte arbeidstimer</strong> – hvor mange timer som er brukt, og gjerne på hva.</li>
+<li><strong>Materialkostnader</strong> – hva som er kjøpt inn, og til hvilken pris.</li>
+</ul>
+<p>Du skal altså ikke bare få en lapp der det står «Bygging: 1 250 000 kr». Du har rett til å se grunnlaget, slik at du kan kontrollere at det stemmer. Be om delregninger underveis, ikke bare én stor til slutt, så oppdager du raskt om noe løper løpsk.</p>
+<h3>Prisoverslag – en mellomløsning som beskytter deg</h3>
+<p>Her er noe mange ikke vet, og som er verdt gull: Selv om dere har avtalt regningsarbeid, kan entreprenøren gi deg et <em>prisoverslag</em>. Da gjelder en viktig beskyttelse: Det endelige vederlaget kan ikke overstige overslaget vesentlig, og <em>aldri med mer enn 15 prosent</em> (buofl. § 41). Får du altså et prisoverslag på 2 000 000 kroner, kan sluttregningen ikke bli mer enn 2 300 000 kroner, uansett hvor mye tid som faktisk gikk med. Prisoverslaget gir deg en trygghetsbrems uten at du mister fleksibiliteten ved regningsarbeid.</p>
+<h3>Et eksempel</h3>
+<p>Ola pusser opp og bygger på huset sitt, og avtaler regningsarbeid fordi omfanget er usikkert – ingen vet hva man finner når man åpner gamle vegger. Entreprenøren gir et prisoverslag på 900 000 kroner. Arbeidet viser seg mer tidkrevende enn ventet, og «full pris» etter timer og materialer ville endt på 1 100 000 kroner. Men fordi det var gitt et prisoverslag, kan Ola ikke kreves for mer enn 15 prosent over – altså maksimalt 1 035 000 kroner (buofl. § 41). Prisoverslaget ga ham et tak, og han slapp den verste regningen.</p>
+<h3>Når passer regningsarbeid?</h3>
+<p>Regningsarbeid er ofte fornuftig når:</p>
+<ul>
+<li><strong>Omfanget er usikkert</strong> – typisk ved rehabilitering, tilbygg eller arbeid i eldre bygg der man ikke vet hva som skjuler seg bak panel og under gulv.</li>
+<li><strong>Du vil ha fleksibilitet</strong> til å endre og justere underveis uten store reforhandlinger hver gang.</li>
+<li><strong>Du stoler på entreprenøren</strong> og vil betale «riktig» pris uten en innbakt risikobuffer som du må betale for uansett.</li>
+</ul>
+<h3>Slik passer du på pengene dine</h3>
+<ul>
+<li>[ ] Be om et <em>prisoverslag</em>, så du får 15-prosentsbeskyttelsen (buofl. § 41).</li>
+<li>[ ] Krev spesifiserte regninger med timer og materialkostnader.</li>
+<li>[ ] Be om jevnlige delregninger, ikke én stor til slutt – da oppdager du fort om det løper løpsk.</li>
+<li>[ ] Avtal timepris og påslag på materialer skriftlig på forhånd.</li>
+<li>[ ] Følg med på fremdriften, og still spørsmål hvis timeforbruket virker høyt i forhold til det som er gjort.</li>
+</ul>
+<h3>Ulemper å være klar over</h3>
+<p>Den åpenbare ulempen er mindre forutsigbarhet: Uten et prisoverslag vet du ikke nøyaktig hva sluttsummen blir før jobben er ferdig. Det krever også mer av deg – du bør faktisk lese og kontrollere regningene, ikke bare betale dem uten å se. Og du må stole på at entreprenøren jobber effektivt, siden du betaler for hver time. For en forbruker som vil ha det enkelt og forutsigbart, kan dette oppleves som mer arbeid enn fastpris.</p>
+<h3>Et tips om tillit og dokumentasjon</h3>
+<p>Regningsarbeid fungerer best i et godt tillitsforhold, men «tillit er bra, kontroll er bedre». Ta vare på alle regninger, timelister og avtaler om endringer. Hvis du på et tidspunkt synes timeforbruket virker urimelig høyt, har du rett til å be om en nærmere forklaring – og entreprenøren plikter å spesifisere (buofl. § 41). God dokumentasjon gjør det enklere å ta opp slike spørsmål på en saklig måte.</p>
+<h3>Hva en god regning bør inneholde</h3>
+<p>For at du faktisk skal kunne kontrollere det du betaler, bør en spesifisert regning ved regningsarbeid typisk vise:</p>
+<ul>
+<li><strong>Antall timer</strong>, gjerne fordelt på fag eller oppgave, og hvilken timesats som er brukt.</li>
+<li><strong>Materialer</strong> med mengde og pris, og eventuelt et avtalt påslag.</li>
+<li><strong>Periode</strong> regningen gjelder for, slik at du kan følge utviklingen fra gang til gang.</li>
+<li><strong>Eventuelle endringer</strong> som er bestilt og utført i perioden (buofl. § 42).</li>
+</ul>
+<p>Får du en regning som bare sier «utført arbeid: 280 000 kr» uten noe mer, kan du be om en nærmere spesifikasjon. Det er din rett etter loven (buofl. § 41), ikke noe du trenger å føle deg brysom for å spørre om.</p>
+<h3>Et råd om å avtale rammene tidlig</h3>
+<p>Mye konflikt rundt regningsarbeid kan unngås ved å avtale spillereglene før arbeidet starter: timepris per fag, påslag på materialer, hvor ofte du skal få delregninger, og om det skal gis et prisoverslag. Når Hassan satte opp et lite tilbygg på regning, avtalte han alt dette skriftlig på forhånd. Da regningene kom, var det ingen overraskelser – bare bekreftelse på det de allerede var enige om.</p>
+<h3>Kort oppsummert</h3>
+<p>Regningsarbeid betyr at du betaler etter faktisk medgått tid og materialer i stedet for en fast sum (buofl. § 41). Til gjengjeld har du rett til en spesifisert regning som viser arbeidstimer og materialkostnader. Be gjerne om et prisoverslag – da kan sluttregningen aldri overstige overslaget med mer enn 15 prosent (buofl. § 41). Regningsarbeid passer best når omfanget er usikkert, for eksempel ved rehabilitering, men det krever at du følger med på regningene underveis og kontrollerer dem.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

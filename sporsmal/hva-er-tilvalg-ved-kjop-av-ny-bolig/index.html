@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er tilvalg ved kjøp av ny bolig? — Rettsregel</title>
+<meta name="description" content="Tilvalg er valgmulighetene utbyggeren tilbyr deg i et byggeprosjekt, slik at du kan tilpasse boligen til din egen smak. Det kan være alt fra hvilken type…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-tilvalg-ved-kjop-av-ny-bolig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er tilvalg ved kjøp av ny bolig?">
+<meta property="og:description" content="Tilvalg er valgmulighetene utbyggeren tilbyr deg i et byggeprosjekt, slik at du kan tilpasse boligen til din egen smak. Det kan være alt fra hvilken type…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-tilvalg-ved-kjop-av-ny-bolig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er tilvalg ved kjøp av ny bolig?">
+<meta name="twitter:description" content="Tilvalg er valgmulighetene utbyggeren tilbyr deg i et byggeprosjekt, slik at du kan tilpasse boligen til din egen smak. Det kan være alt fra hvilken type…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er tilvalg ved kjøp av ny bolig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Tilvalg er valgmulighetene utbyggeren tilbyr deg i et byggeprosjekt, slik at du kan tilpasse boligen til din egen smak. Det kan være alt fra hvilken type parkett og fliser du vil ha, til oppgradert kjøkken, ekstra stikkontakter eller en finere baderomsinnredning. Tilvalg koster vanligvis ekstra, og du må bestille innen bestemte frister.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/9/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 9</div>
+  <div class="related-card-title">Din rett til å kreve endringer underveis</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Tilvalg er en meny, ikke et fritt ønske</h3>
+<p>Tenk på tilvalg som en meny på en restaurant. Utbyggeren har bestemt på forhånd hva som er mulig å velge, og hva hvert valg koster. Du plukker fra menyen. Dette er forskjellig fra en fri endring etter bustadoppføringslova § 9, der du ber om noe utbyggeren ikke har lagt opp til på forhånd.</p>
+<p>Et typisk tilvalgsprosjekt er et leilighetsbygg der alle kjøperne får et "tilvalgshefte" eller tilgang til en nettportal. Der ser du standardleveransen og hva du kan oppgradere til. Mange synes dette er en av de morsomste delene av å bygge nytt: du får sette ditt eget preg på boligen før du flytter inn.</p>
+<h3>Eksempel: Tilvalgsskjemaet til Marte</h3>
+<p>Marte har kjøpt en ny leilighet. Hun får et tilvalgshefte med blant annet:</p>
+<ul>
+<li>Standard: hvit kjøkkenfront. Tilvalg: eikefront, merpris 28 000 kr</li>
+<li>Standard: laminat på gulv. Tilvalg: 1-stavs eikeparkett, merpris 19 500 kr</li>
+<li>Standard: 2 stikkontakter på soverom. Tilvalg: 4 stikkontakter, merpris 2 400 kr</li>
+<li>Standard: dusjvegg i glass. Tilvalg: innfellbar dusjnisje, merpris 16 000 kr</li>
+</ul>
+<p>Marte velger eikefront og ekstra stikkontakter, men beholder standard gulv og dusj. Hennes tilvalg blir 30 400 kroner, som legges til kjøpesummen. Hun noterer alt i et eget regneark, så hun ser totalen vokse etter hvert som hun bestemmer seg.</p>
+<h3>Forskjellen på standardleveranse og tilvalg</h3>
+<p>"Standardleveranse" er det som er inkludert i prisen du allerede har avtalt. Det skal stå tydelig i kontrakten og i den tekniske beskrivelsen (leveransebeskrivelsen). Alt du velger UTOVER standard, er tilvalg du betaler ekstra for.</p>
+<p>Dette er viktig: hvis noe står i standardbeskrivelsen, har du krav på det uten ekstra betaling. Hvis utbyggeren senere prøver å ta betalt for noe som faktisk var standard, er det ikke et lovlig tilvalg, men snarere et forsøk på å ta betalt for noe du allerede har krav på.</p>
+<h3>Hvorfor noen tilvalg er smarte og andre ikke</h3>
+<p>Noen tilvalg er kloke å gjøre nå, fordi de er vanskelige eller dyre å bytte senere: gulvvarme, ekstra elektriske punkter i veggen, plassering av innervegger, oppgradert kjøkken. Andre ting kan du like gjerne kjøpe selv etter overtakelse, ofte billigere: lamper, speil, garderobeskap og noen ganger hvitevarer. Tenk gjennom hva som faktisk lønner seg å bestille som tilvalg, og hva du kan ordne selv.</p>
+<h3>Frister du må passe på</h3>
+<p>Tilvalg har som regel en bestillingsfrist. Grunnen er enkel: utbyggeren må bestille materialer og planlegge arbeidet i riktig rekkefølge. Velger du oppgradert kjøkken etter at standardkjøkkenet allerede er montert, blir det dyrt, vanskelig eller umulig. Derfor er fristene reelle og bør tas på alvor.</p>
+<p>Mange prosjekter har en egen "tilvalgsdag" eller et møte med en tilvalgskoordinator. Forbered deg til dette møtet, så du ikke føler deg presset til å ta raske valg på dyre ting.</p>
+<h3>Vanlige typer tilvalg du kan møte</h3>
+<p>Tilvalg deles ofte inn etter hvilken del av boligen de gjelder. Her er noen typiske kategorier:</p>
+<ul>
+<li>Overflater: parkett, fliser, maling, panel, listverk.</li>
+<li>Kjøkken: fronter, benkeplate, vask, blandebatteri, integrerte hvitevarer.</li>
+<li>Bad: innredning, fliser, dusjløsning, gulvvarme, oppvarmet speil.</li>
+<li>Elektro: ekstra stikkontakter, downlights, dimmere, punkter for ladeboks til elbil.</li>
+<li>Innredning: garderobeskap, skyvedører, bod-innredning.</li>
+</ul>
+<p>Når du ser hvor mange muligheter det finnes, forstår du hvorfor det er lurt å sette et budsjett og prioritere. Det er fort gjort å la seg friste til mange små oppgraderinger som til sammen blir en stor sum.</p>
+<h3>Eksempel: Når et "lite" tilvalg er kjempelurt</h3>
+<p>Petter bygger ny bolig og har elbil. I tilvalgslisten ligger "fremlagt kurs for ladeboks i carport" til 6 500 kroner. Det virker som en liten sak, men hvis han venter til etter overtakelse, må en elektriker grave og trekke ny kabel, noe som fort koster det mangedobbelte. Her er tilvalget mens boligen bygges helt klart smartest.</p>
+<h3>Hva hvis du angrer på et tilvalg?</h3>
+<p>Tilvalg er en bestilling, og når fristen er passert og arbeidet bestilt, kan det være vanskelig å gå tilbake uten å betale for materialer som allerede er kjøpt. Tenk derfor gjennom valgene grundig før fristen. Er du i tvil mellom standard og oppgradering, kan det noen ganger være tryggest å beholde standard og heller oppgradere selv etter innflytting, særlig for ting som er enkle å bytte.</p>
+<h3>Tilvalg er ikke det samme som en mangel</h3>
+<p>Til slutt en viktig presisering: et tilvalg er noe du frivillig velger å betale ekstra for. Det er noe annet enn en mangel, som er at standardleveransen ikke holder det den lovet. Hvis standardparketten du fikk er ripete eller feil lagt, er det en mangel entreprenøren retter gratis, ikke et tilvalg. Bland aldri sammen "jeg vil ha noe finere" (tilvalg, du betaler) og "det jeg fikk er feil" (mangel, entreprenøren ordner). Dette skillet kommer vi tilbake til, men det er greit å ha det i bakhodet allerede når du blar i tilvalgsheftet og drømmer om den nye boligen.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li>Les leveransebeskrivelsen nøye, så du vet hva som allerede er inkludert.</li>
+<li>Skriv ned fristene for tilvalg i kalenderen med en god margin.</li>
+<li>Be om priser på alle tilvalg du vurderer, slik at du kan budsjettere.</li>
+<li>Bekreft bestillingene skriftlig, og ta vare på kvitteringene.</li>
+<li>Ikke føl deg presset til dyre tilvalg du egentlig kan kjøpe billigere selv etter overtakelse.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Tilvalg er valgmulighetene utbyggeren tilbyr i et prosjekt, slik at du kan tilpasse den nye boligen. De koster ekstra og må bestilles innen frister. Pass på forskjellen mellom standardleveranse (allerede inkludert) og tilvalg (ekstra betaling). Les leveransebeskrivelsen, hold styr på fristene, prioriter det som er vanskelig å bytte senere, og bekreft alt skriftlig. Husk også at et tilvalg er noe du frivillig betaler ekstra for, mens en mangel ved standardleveransen er noe entreprenøren skal rette gratis.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

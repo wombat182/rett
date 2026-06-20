@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg avbestille et boligbygg? — Rettsregel</title>
+<meta name="description" content="Ja, du kan avbestille.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-avbestille-et-boligbygg/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg avbestille et boligbygg?">
+<meta property="og:description" content="Ja, du kan avbestille.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-avbestille-et-boligbygg/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg avbestille et boligbygg?">
+<meta name="twitter:description" content="Ja, du kan avbestille.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg avbestille et boligbygg?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, du kan avbestille. Bustadoppføringslova gir deg rett til å avbestille hele eller deler av byggearbeidet før du overtar boligen. Men – og dette er viktig – avbestilling er ikke gratis. Entreprenøren har krav på betaling for arbeid som alt er gjort, og erstatning for tap han lider. Det kan bli dyrt, så det bør være en gjennomtenkt beslutning.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 52, 53, 54</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/52/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 52</div>
+  <div class="related-card-title">Du har rett til å avlyse hele byggeprosjektet</div>
+</a><a href="../../lover/bustadoppforingslova/53/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 53</div>
+  <div class="related-card-title">Avbestilling når du kjøper tomt og hus sammen</div>
+</a><a href="../../lover/bustadoppforingslova/54/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 54</div>
+  <div class="related-card-title">Faste gebyrer ved avbestilling</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, du kan avbestille. Bustadoppføringslova gir deg rett til å avbestille hele eller deler av byggearbeidet før du overtar boligen. Men – og dette er viktig – avbestilling er ikke gratis. Entreprenøren har krav på betaling for arbeid som alt er gjort, og erstatning for tap han lider. Det kan bli dyrt, så det bør være en gjennomtenkt beslutning.</p>
+<h3>Hva sier loven?</h3>
+<p>Etter bustadoppføringslova § 52 kan forbrukeren «avbestille ytinga eller delar av denne før overtaking». Med andre ord: så lenge boligen ikke er ferdig og overtatt, har du rett til å trekke deg fra hele eller deler av prosjektet. Du kan også avbestille bare en del – for eksempel droppe en planlagt garasje, men beholde selve huset.</p>
+<p>Du trenger ingen god grunn. Du kan avbestille fordi du har skiftet mening, fått dårligere økonomi, blitt skilt, eller bare ombestemt deg. Retten er der uansett – den er ufravikelig til din fordel, så entreprenøren kan ikke ta den fra deg i kontrakten.</p>
+<h3>Men det er en regning som følger med</h3>
+<p>Selv om du <em>kan</em> avbestille, betyr ikke det at du slipper unna gratis. Entreprenøren har krav på:</p>
+<ul>
+<li><strong>Vederlag for arbeid som alt er utført</strong> (§ 52). Har de gravd ut tomten, støpt såle og reist veggene, skal de betales for det.</li>
+<li><strong>Erstatning for økonomisk tap</strong> som følge av avbestillingen (§ 52/§ 53). Dette kan inkludere tapt fortjeneste – fortjenesten entreprenøren ville hatt om jobben ble fullført.</li>
+</ul>
+<p>Eventuelt kan dere ha avtalt et fast <strong>avbestillingsgebyr</strong> (§ 54) i stedet, som setter en forhåndsbestemt sum.</p>
+<h3>Et eksempel: Solveig avbestiller midtveis</h3>
+<p>Solveig hadde inngått avtale om en enebolig til 4 millioner kroner. Da huset var halvferdig, ble hun tilbudt drømmejobben i en annen by og bestemte seg for å avbestille.</p>
+<p>Entreprenøren krevde:
+- Betaling for utført arbeid (grunnmur, reisverk, tak): 1 900 000 kroner.
+- Erstatning for tapt fortjeneste på den delen som ikke ble fullført: 180 000 kroner.</p>
+<p>Solveig hadde rett til å avbestille, men måtte betale til sammen rundt 2,08 millioner kroner – uten å få et ferdig hus. Det illustrerer hvorfor avbestilling bør være en gjennomtenkt beslutning, ikke en impuls.</p>
+<h3>Avbestilling kontra heving – ikke det samme</h3>
+<p>Det er viktig å skille mellom to ting som lett forveksles:</p>
+<ul>
+<li><strong>Avbestilling</strong> bruker du når <em>du</em> velger å trekke deg, uten at entreprenøren har gjort noe galt. Da betaler du.</li>
+<li><strong>Heving</strong> er noe annet: det bruker du hvis entreprenøren har misligholdt avtalen grovt (for eksempel store forsinkelser eller alvorlige mangler). Ved berettiget heving slipper du erstatningsansvaret.</li>
+</ul>
+<p>Velg riktig spor. Har entreprenøren faktisk sviktet, skal du ikke «avbestille» og betale for det – da kan heving være riktig, og du sparer mye penger.</p>
+<h3>Hva med tomta og forskudd?</h3>
+<p>Omfatter avtalen også kjøp av tomt, gjelder § 53 i tillegg. Entreprenøren kan da sette som vilkår for avbestillingen at betaling knyttet til retten til grunnen blir gjort opp eller tilbakeført. Har du betalt forskudd, skal entreprenørens krav motregnes mot dette, og du skal ha tilbake det som eventuelt er til overs.</p>
+<h3>Når i prosessen lønner avbestilling seg minst?</h3>
+<p>Tenk på byggingen som en kurve. Helt i starten – før graving – er kostnaden ved å avbestille lav, fordi lite er gjort. Mot slutten er den nesten like høy som å bygge ferdig. Det «dyreste» tidspunktet å avbestille på er paradoksalt nok rett før ferdigstillelse, fordi du da betaler for nesten alt, men sitter igjen uten et hjem du kan flytte inn i eller selge på vanlig måte. Skal du først avbestille, gjør det så tidlig som mulig.</p>
+<h3>Eksempel: samme hus, to tidspunkter</h3>
+<p>Familien Eide har en byggekontrakt på 4 millioner kroner.
+- <strong>Avbestiller de før byggestart:</strong> entreprenøren har brukt 50 000 på prosjektering og taper litt fortjeneste – regning rundt 120 000 kr.
+- <strong>Avbestiller de når huset er 90 % ferdig:</strong> de betaler for nesten hele jobben, kanskje 3,6 millioner, og sitter igjen med et nesten ferdig hus de uansett må gjøre noe med.</p>
+<p>Samme hus, samme familie – men en enorm forskjell i hva avbestillingen koster, kun avhengig av timing.</p>
+<h3>Når kan du IKKE avbestille lenger?</h3>
+<p>Avbestillingsretten gjelder frem til overtakelse. Etter at du har overtatt boligen, er det for sent å «avbestille» – da er avtalen oppfylt. Da er det reklamasjon (ved feil) eller andre regler som gjelder, ikke avbestilling.</p>
+<h3>Kan du avbestille bare en del?</h3>
+<p>Ja. Loven sier uttrykkelig at du kan avbestille «ytinga eller delar av denne». Det betyr at du kan velge bort enkeltdeler av prosjektet og beholde resten. Det er praktisk hvis økonomien strammer seg til underveis, men du fortsatt vil ha selve boligen.</p>
+<p>Eksempel: Familien Ruud hadde bestilt enebolig med dobbeltgarasje og ferdig opparbeidet hage til 4,7 millioner. Da renten steg, avbestilte de garasjen og hagearbeidet, men beholdt huset. De betalte entreprenøren for det lille som var påbegynt på garasjedelen, og for et beskjedent tap, men sparte flere hundre tusen på å nedskalere prosjektet i stedet for å skrote alt. Delvis avbestilling kan altså være en mellomløsning som redder boligdrømmen.</p>
+<h3>Husk: retten kan ikke avtales bort</h3>
+<p>En entreprenør kan ikke skrive inn i kontrakten at «avbestilling ikke er tillatt». Bustadoppføringslova er ufravikelig til fordel for forbrukeren på dette punktet. Det entreprenøren <em>kan</em> gjøre, er å avtale et rimelig avbestillingsgebyr (§ 54) – men han kan ikke ta fra deg selve retten til å trekke deg. Møter du en kontraktsformulering som later til å nekte deg avbestilling, er den ikke gyldig mot deg.</p>
+<h3>Steg-for-steg ved avbestilling</h3>
+<ol>
+<li><strong>Tenk grundig gjennom</strong> om avbestilling virkelig er det du vil – det kan bli kostbart.</li>
+<li><strong>Les kontrakten</strong> for å se om det er avtalt et avbestillingsgebyr (§ 54).</li>
+<li><strong>Vurder om entreprenøren har misligholdt</strong> – da kan heving være billigere.</li>
+<li><strong>Vurder delvis avbestilling</strong> hvis du bare vil kutte deler av prosjektet.</li>
+<li><strong>Gi skriftlig beskjed</strong> til entreprenøren om at du avbestiller.</li>
+<li><strong>Be om en spesifisert oppstilling</strong> av hva de krever i vederlag og erstatning.</li>
+<li><strong>Kontroller kravet</strong> – du skal bare betale for reelt utført arbeid og dokumentert tap.</li>
+<li><strong>Søk hjelp</strong> av en advokat eller Forbrukerrådet hvis kravet virker urimelig høyt.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Ja, du kan avbestille et boligbygg når som helst før overtakelse (§ 52). Men du må regne med å betale entreprenøren for arbeid som alt er utført, pluss erstatning for tapet hans (§ 53) – eventuelt et avtalt avbestillingsgebyr (§ 54). Avbestilling er en lovfestet rett, men sjelden en billig løsning. Har entreprenøren derimot sviktet grovt, bør du sjekke om heving er et bedre alternativ.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

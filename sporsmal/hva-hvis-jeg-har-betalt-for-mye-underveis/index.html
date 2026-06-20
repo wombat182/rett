@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis jeg har betalt for mye underveis? — Rettsregel</title>
+<meta name="description" content="Har du betalt mer enn det er gjort arbeid for, har du i praksis gitt entreprenøren et forskudd. Da kan du kreve det overskytende tilbakeført, eller stanse…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-jeg-har-betalt-for-mye-underveis/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis jeg har betalt for mye underveis?">
+<meta property="og:description" content="Har du betalt mer enn det er gjort arbeid for, har du i praksis gitt entreprenøren et forskudd. Da kan du kreve det overskytende tilbakeført, eller stanse…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-jeg-har-betalt-for-mye-underveis/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis jeg har betalt for mye underveis?">
+<meta name="twitter:description" content="Har du betalt mer enn det er gjort arbeid for, har du i praksis gitt entreprenøren et forskudd. Da kan du kreve det overskytende tilbakeført, eller stanse…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva hvis jeg har betalt for mye underveis?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Har du betalt mer enn det er gjort arbeid for, har du i praksis gitt entreprenøren et forskudd. Da kan du kreve det overskytende tilbakeført, eller stanse videre betaling til fremdriften har tatt igjen det du har betalt. Du skal ikke ligge i forskudd uten sikkerhet.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 47</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/47/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 47</div>
+  <div class="related-card-title">Strenge regler for forskudd og avdrag</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hvordan «for mye» oppstår</h3>
+<p>I et byggeprosjekt skal betalingen følge fremdriften: du betaler for verdier som faktisk er skapt. Men noen ganger glir det ut. Kanskje fakturaene har vært litt for store, kanskje du har betalt en avdragsplan som ikke helt samsvarer med hvor langt huset er kommet, eller kanskje et avtalt avdrag forfalt før arbeidet det skulle dekke, var gjort. Resultatet er at du har betalt mer enn arbeidet som er utført — du ligger i forskudd uten å ha ment det.</p>
+<p>Loven beskytter deg her. Etter bustadoppføringslova § 47 (om forbrukerens betaling) skal du i utgangspunktet betale etter fremdrift, og forskudd krever egen garanti.</p>
+<h3>Et regneeksempel</h3>
+<p>Ola følger med på prosjektet sitt og setter opp et lite regnskap:</p>
+<ul>
+<li>Totalt betalt så langt: <strong>3 100 000 kroner</strong></li>
+<li>Verdien av arbeidet som faktisk er utført: <strong>2 700 000 kroner</strong></li>
+<li>Differanse (for mye betalt / forskudd): <strong>400 000 kroner</strong></li>
+</ul>
+<p>Ola har altså 400 000 kroner stående som forskudd. Hvis dette ikke er dekket av en forskuddsgaranti, er han mer utsatt enn han bør være. Han har to gode valg:</p>
+<ol>
+<li><strong>Kreve de 400 000 kronene tilbakeført</strong>, eller</li>
+<li><strong>Stanse videre betaling</strong> til fremdriften har tatt igjen forskuddet — altså ikke betale mer før det er gjort arbeid for ytterligere 400 000 kroner.</li>
+</ol>
+<p>Begge deler bringer ham tilbake i balanse, der betaling og arbeid følges ad.</p>
+<h3>Slik regner du det ut selv</h3>
+<ol>
+<li><strong>Summer alt du har betalt.</strong> Legg sammen alle fakturaene du har gjort opp.</li>
+<li><strong>Anslå verdien av arbeidet som er gjort.</strong> Hvor langt er huset kommet? Bruk gjerne avtalt fremdriftsplan, eller spør en uavhengig fagperson, for eksempel en byggesakkyndig.</li>
+<li><strong>Trekk det ene fra det andre.</strong> Har du betalt mer enn verdien av arbeidet, har du betalt for mye.</li>
+<li><strong>Sjekk om forskuddet er sikret.</strong> Finnes det en forskuddsgaranti (§ 47) som dekker differansen?</li>
+</ol>
+<h3>Hva du gjør med funnet</h3>
+<ul>
+<li><strong>Er differansen sikret med garanti?</strong> Da er pengene beskyttet, men du kan likevel velge å justere betalingstakten fremover slik at du ikke ligger unødvendig langt foran.</li>
+<li><strong>Er differansen usikret?</strong> Da bør du handle: krev tilbakeført, eller stans betaling til fremdriften har innhentet forskuddet.</li>
+</ul>
+<p>Skriv alltid til entreprenøren på en ryddig måte, for eksempel: «Etter min oversikt har jeg betalt 400 000 kroner mer enn utført arbeid. Jeg ber om at dette tilbakeføres, eventuelt at videre betaling stanses til fremdriften har tatt det igjen, jf. buofl. § 47.»</p>
+<h3>Et nytt eksempel med en avdragsplan</h3>
+<p>Si at du har en avdragsplan der avdrag 4 på 600 000 kroner forfaller «når råbygget står ferdig». Du betaler avdraget, men i ettertid viser det seg at råbygget ikke var helt ferdig — det manglet for eksempel deler av taktekkingen, verdt anslagsvis 150 000 kroner. Da har du betalt 150 000 kroner for tidlig. Dette er et forskudd du kan reagere på: enten ved å kreve de 150 000 kronene midlertidig tilbakeført, eller ved å holde igjen tilsvarende på neste avdrag til taket faktisk er på plass.</p>
+<h3>Et lite tips om kontrollen</h3>
+<p>Det lønner seg å føre et enkelt regnskap fra dag én: dato, fakturabeløp, og en kort notering om hva som var ferdig på det tidspunktet. Ta gjerne bilder av byggeplassen ved hver innbetaling. Da oppdager du raskt hvis betalingen begynner å løpe foran arbeidet, og du slipper å ligge unødvendig i forskudd. En slik logg er også gull verdt hvis det senere skulle oppstå uenighet om hva som var betalt og når.</p>
+<h3>Hvordan vurdere «verdien av arbeidet»?</h3>
+<p>Det vanskeligste i denne regneøvelsen er ofte å anslå hvor mye arbeidet som faktisk er gjort, er verdt. Et godt utgangspunkt er fremdriftsplanen eller betalingsplanen i kontrakten, som ofte knytter avdrag til konkrete milepæler — for eksempel «grunnmur ferdig», «råbygg reist», «tett bygg». Hvis du er usikker, kan en uavhengig byggesakkyndig gjøre en rask befaring og gi et anslag. Det koster litt, men kan være vel verdt det hvis du mistenker at du ligger flere hundre tusen kroner foran fremdriften. Et nøytralt anslag gjør også at du står sterkere hvis entreprenøren er uenig i din vurdering.</p>
+<h3>Vær vennlig, men tydelig</h3>
+<p>Å oppdage at du har betalt for mye, betyr ikke at entreprenøren har gjort noe galt med vilje — ofte handler det bare om at fakturaene og fremdriften ikke har vært helt i takt. Ta det derfor opp på en rolig og løsningsorientert måte: «Jeg har gått gjennom betalingene mine og ser at jeg ligger litt foran fremdriften. Kan vi justere det, så betalingen følger arbeidet bedre fremover?» De fleste seriøse entreprenører vil ordne dette uten dramatikk. Poenget er ikke å lage konflikt, men å sørge for at pengene dine følger verdiene som faktisk skapes.</p>
+<h3>Hvorfor «å ligge foran» er en risiko</h3>
+<p>Det kan virke harmløst å ha betalt litt for mye til en entreprenør du stoler på. Men husk hva det egentlig betyr: du har gitt fra deg penger uten å ha fått tilsvarende verdi i huset ennå. Skulle entreprenøren få økonomiske problemer i denne perioden, er nettopp det overskytende beløpet det mest utsatte. Jo lenger foran fremdriften du ligger, desto mer har du å tape hvis noe skjærer seg. Derfor er det god vane å rette opp ubalansen så snart du oppdager den, enten ved tilbakeføring eller ved å bremse betalingen til arbeidet har tatt deg igjen.</p>
+<h3>En enkel tommelfingerregel</h3>
+<p>Tenk på betaling og fremdrift som to personer som skal gå i takt. Så lenge betalingen ikke går foran arbeidet, er du trygg. Skulle betalingen likevel komme på forskudd, sørg for at det overskytende enten er sikret med en forskuddsgaranti eller blir rettet opp. Da holder du deg alltid på den trygge siden — verdiene du har betalt for, finnes igjen i huset ditt, eller pengene er beskyttet av en garanti.</p>
+<h3>Kort oppsummert</h3>
+<p>Har du betalt mer enn det er utført arbeid for, ligger du i forskudd. Da kan du kreve det overskytende tilbakeført eller stanse videre betaling til fremdriften har tatt det igjen (§ 47). Regn ut differansen mellom betalt sum og utført arbeid, sjekk om den er sikret med garanti, og gi entreprenøren skriftlig beskjed. Slik unngår du å risikere penger unødig.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

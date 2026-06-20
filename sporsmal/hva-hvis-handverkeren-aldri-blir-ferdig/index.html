@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis håndverkeren aldri blir ferdig? — Rettsregel</title>
+<meta name="description" content="Blir håndverkeren aldri ferdig, har du en forsinkelse på hånden – det vil si et brudd på avtalen.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-aldri-blir-ferdig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis håndverkeren aldri blir ferdig?">
+<meta property="og:description" content="Blir håndverkeren aldri ferdig, har du en forsinkelse på hånden – det vil si et brudd på avtalen.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-aldri-blir-ferdig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis håndverkeren aldri blir ferdig?">
+<meta name="twitter:description" content="Blir håndverkeren aldri ferdig, har du en forsinkelse på hånden – det vil si et brudd på avtalen.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis håndverkeren aldri blir ferdig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Blir håndverkeren aldri ferdig, har du en forsinkelse på hånden – det vil si et brudd på avtalen. Da kan du sende et skriftlig varsel med en ny, rimelig sluttfrist. Holder håndverkeren heller ikke den fristen, og forsinkelsen er alvorlig nok, kan du heve avtalen og kreve erstatning (håndverkertjenesteloven §§ 11 og 15).</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Blir håndverkeren aldri ferdig, har du en forsinkelse på hånden – det vil si et brudd på avtalen. Da kan du sende et skriftlig varsel med en ny, rimelig sluttfrist. Holder håndverkeren heller ikke den fristen, og forsinkelsen er alvorlig nok, kan du heve avtalen og kreve erstatning (håndverkertjenesteloven §§ 11 og 15).</p>
+<h3>Når er en jobb egentlig "forsinket"?</h3>
+<p>La oss ta et eksempel. Kari avtaler med en tømrer at terrassen skal stå ferdig til 1. juni. Datoen kommer og går, og terrassen er halvferdig. Det er en klassisk forsinkelse: arbeidet er ikke fullført til avtalt tid.</p>
+<p>Men ikke alle saker har en eksakt dato i kontrakten. Sa dere bare "i løpet av våren" eller ingenting om tid i det hele tatt? Da gjelder en regel om at jobben skal gjøres innen <em>rimelig tid</em>. Hva som er rimelig, avhenger av hvor stor jobben er. Å bytte en blandebatteri tar timer, ikke uker. Et baderomsoppussing kan ta noen uker. Når det har gått klart lenger enn det som er normalt for en slik jobb, er håndverkeren forsinket – selv uten en avtalt dato.</p>
+<p>Et ord du vil møte: <strong>forsinkelse av vesentlig betydning</strong>. Det betyr at forsinkelsen er så alvorlig at den ødelegger mye for deg. Det er denne typen forsinkelse som gir deg de sterkeste rettighetene, som å heve avtalen.</p>
+<h3>Steg for steg når jobben drar ut</h3>
+<ol>
+<li><strong>Ta kontakt og spør hva som skjer.</strong> Noen ganger er det en god grunn – en leveranse er forsinket, eller håndverkeren ble syk. Et vennlig spørsmål kan løse mye.</li>
+<li><strong>Skriv ned avtalen på nytt.</strong> Send en SMS eller e-post: "Hei, vi avtalte at kjøkkenet skulle være ferdig 1. mai. Når kan jeg regne med at du er ferdig?" Nå har du svaret skriftlig.</li>
+<li><strong>Sett en ny, rimelig sluttfrist skriftlig.</strong> Hvis svaret er svevende eller fristen sprekker igjen, gir du en konkret ny frist (se artikkel 103). Eksempel: "Jeg setter en endelig frist til fredag 15. mai."</li>
+<li><strong>Vurder å holde tilbake betaling.</strong> Du kan holde igjen så mye av betalingen at det dekker kravene du har på grunn av forsinkelsen (§ 13). Har du for eksempel ikke betalt sluttfakturaen ennå, kan du vente med den til jobben er ferdig.</li>
+<li><strong>Hev hvis det blir nødvendig.</strong> Holder håndverkeren heller ikke den nye fristen, og forsinkelsen er vesentlig, kan du heve avtalen (§ 15) – det vil si avslutte den.</li>
+</ol>
+<h3>Hva betyr det å heve?</h3>
+<p>Å heve betyr at avtalen oppheves. Den delen av jobben som ikke er gjort, slipper du å betale for. For arbeid som allerede er utført og som har verdi for deg, må du som regel fortsatt betale. Du kan da hente inn en ny håndverker til å fullføre.</p>
+<p>Eksempel: Ola hadde avtalt full baderomsoppussing. Rørleggeren la rør og fliser på gulvet, men forsvant før veggfliser og dusjvegg var på plass. Ola hevet avtalen for restjobben. Han betalte for det som faktisk var gjort og hadde verdi, men slapp å betale for arbeidet som aldri ble fullført – og fikk en ny rørlegger til å gjøre seg ferdig.</p>
+<h3>Du kan også kreve erstatning</h3>
+<p>Forsinkelsen koster deg ofte penger. Da kan du kreve <strong>erstatning</strong> for det økonomiske tapet (§ 28). Vanlige eksempler:</p>
+<ul>
+<li>Du måtte bo på hotell fordi badet ikke ble ferdig i tide.</li>
+<li>Den nye håndverkeren ble dyrere enn den opprinnelige.</li>
+<li>Du måtte ta fri fra jobb for å ordne opp.</li>
+</ul>
+<p>Ta vare på alle kvitteringer. Du må kunne dokumentere tapet for å få det dekket. Håndverkeren slipper kun unna hvis forsinkelsen skyldes noe helt utenfor hans kontroll som han ikke kunne ha forutsett – for eksempel en uventet naturhendelse. Vanlig "for mye å gjøre" teller ikke.</p>
+<h3>"Bare litt til" – når småforsinkelser blir til store</h3>
+<p>En vanlig felle er den snikende forsinkelsen. Håndverkeren er ikke borte, men kommer stadig sjeldnere. "Jeg er innom på torsdag." Torsdag blir til neste uke. Neste uke blir til måneden etter. Du venter høflig fordi du ikke vil være masete – og plutselig har det gått et halvt år.</p>
+<p>Her er rådet: ikke vent for lenge i god tro. Du har lov til å være tydelig. Sett en frist tidlig (se artikkel 103), så slipper du å havne i den evige venteloopen. Husk at tålmodighet ikke svekker rettighetene dine, men passivitet kan gjøre saken vanskeligere å dokumentere senere.</p>
+<p>Eksempel: Hassan fikk en murer til å pusse opp pipa. Etter første arbeidsdag kom mureren bare innom en time her og der. Hassan ventet i to måneder før han skjønte at dette ikke kom til å løse seg av seg selv. Da han endelig satte en skriftlig frist, gikk det fort – men han kunne spart seg mange uker med frustrasjon ved å være tydelig fra start.</p>
+<h3>Hva hvis håndverkeren skylder på deg?</h3>
+<p>Noen ganger sier håndverkeren at forsinkelsen er din skyld – at du gjorde stadige endringer, ikke ga tilgang til boligen, eller ikke bestemte deg for materialvalg i tide. Da er det viktig å være ærlig med deg selv: har du faktisk bidratt til forsinkelsen?</p>
+<p>Hvis forsinkelsen helt eller delvis skyldes deg, kan håndverkeren ha rett til mer tid, og du kan ikke kreve like mye. Men har du gjort det som med rimelighet kan forventes – svart på spørsmål, gitt tilgang, tatt valg innen rimelig tid – er forsinkelsen håndverkerens ansvar. Også her er skriftlig dokumentasjon avgjørende: kan du vise at du svarte raskt på alle henvendelser, faller påstanden om at det er "din skyld".</p>
+<h3>Dokumenter alt underveis</h3>
+<p>Dette er det viktigste rådet: skriv ned alt. Ta bilder av arbeidet etter hvert som det skrider frem (eller står stille). Behold SMS-er og e-poster. Noter datoer for når noe ble avtalt og når det sprakk. Skulle saken havne hos Forbrukerrådet eller en klagenemnd senere, er det dokumentasjonen din som avgjør om du får medhold.</p>
+<p>Lag gjerne en enkel tidslinje i et dokument: dato, hva som skjedde, hva som ble sagt. Den oversikten er gull verdt hvis saken trekker ut, og den hjelper deg å holde hodet kaldt midt i frustrasjonen.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Blir håndverkeren aldri ferdig, er det en forsinkelse – et brudd på avtalen.</li>
+<li>Avtal ny tid skriftlig, og sett en konkret ny sluttfrist hvis det drar ut.</li>
+<li>Du kan holde tilbake betaling som sikkerhet for kravene dine (§ 13).</li>
+<li>Ved vesentlig forsinkelse kan du heve avtalen og kreve erstatning for tapet ditt (§§ 15 og 28).</li>
+<li>Dokumenter med bilder, meldinger og kvitteringer hele veien.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

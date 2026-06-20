@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg angrerett når jeg bestiller håndverker? — Rettsregel</title>
+<meta name="description" content="Av og til. Det avhenger helt av hvordan du bestilte. Bestilte du på nett, e-post eller telefon, eller fikk en selger på døra, har du normalt 14 dagers…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-angrerett-nar-jeg-bestiller-handverker/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg angrerett når jeg bestiller håndverker?">
+<meta property="og:description" content="Av og til. Det avhenger helt av hvordan du bestilte. Bestilte du på nett, e-post eller telefon, eller fikk en selger på døra, har du normalt 14 dagers…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-angrerett-nar-jeg-bestiller-handverker/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg angrerett når jeg bestiller håndverker?">
+<meta name="twitter:description" content="Av og til. Det avhenger helt av hvordan du bestilte. Bestilte du på nett, e-post eller telefon, eller fikk en selger på døra, har du normalt 14 dagers…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Har jeg angrerett når jeg bestiller håndverker?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Av og til. Det avhenger helt av hvordan du bestilte. Bestilte du på nett, e-post eller telefon, eller fikk en selger på døra, har du normalt 14 dagers angrerett etter angrerettloven. Gikk du derimot innom firmaets kontor eller butikk og avtalte der, har du ikke angrerett.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Det er måten du bestiller på som avgjør</h3>
+<p>Mange tror at angrerett er en automatisk rettighet ved alle kjøp. Slik er det ikke. For håndverkertjenester er det formen på bestillingen som bestemmer. Angrerettloven gir angrerett ved to typer salg:</p>
+<ul>
+<li><strong>Fjernsalg:</strong> Du og håndverkeren møtes ikke fysisk. Du bestiller via nettside, e-post, kontaktskjema eller telefon.</li>
+<li><strong>Salg utenfor fast forretningslokale:</strong> Avtalen inngås et annet sted enn på firmaets faste utsalgssted – typisk hjemme hos deg, på en messe eller en stand.</li>
+</ul>
+<p>I begge tilfeller har du normalt 14 dagers angrerett. Den eneste vanlige situasjonen uten angrerett er når du selv oppsøker firmaets forretningslokale og avtaler der.</p>
+<h3>Eksempler som viser forskjellen</h3>
+<p>La oss se på fire vanlige måter å bestille på:</p>
+<ol>
+<li><strong>Du fyller ut et skjema på rørleggerfirmaets nettside.</strong> → Fjernsalg → angrerett.</li>
+<li><strong>Du ringer en elektriker du fant på nett og avtaler over telefon.</strong> → Fjernsalg → angrerett.</li>
+<li><strong>En selger banker på og selger deg en takvask på trappa.</strong> → Salg utenfor fast forretningslokale → angrerett.</li>
+<li><strong>Du går inn på malerfirmaets butikk og signerer kontrakten over disken.</strong> → Avtale i forretningslokale → ingen angrerett.</li>
+</ol>
+<p>Et eksempel: Lise trenger nytt sikringsskap. Hun googler, finner en elektriker og bestiller over telefon. Fordi avtalen er inngått på avstand, har hun 14 dagers angrerett. Vennen hennes Tom kjørte derimot til elektrikerfirmaets kontor og signerte der – han har ingen angrerett.</p>
+<h3>En vanlig vri: håndverkeren kommer hjem på befaring</h3>
+<p>Et tilfelle som forvirrer mange: Håndverkeren kommer hjem til deg for å se på jobben, og dere inngår avtalen ved kjøkkenbordet. Dette regnes som salg utenfor fast forretningslokale, og du har normalt angrerett – selv om det var du som ba ham komme. Det er fordi avtalen ble inngått hjemme hos deg, ikke i firmaets lokale.</p>
+<p>Et eksempel: Familien Ruud ber en tømrer komme hjem for å vurdere en utvidelse av stua. Tømreren regner på det ved kjøkkenbordet, og de signerer der og da. Selv om Ruud-familien selv inviterte ham, har de angrerett fordi avtalen ble inngått i hjemmet.</p>
+<h3>Håndverkeren skal informere deg</h3>
+<p>Når du har angrerett, plikter håndverkeren å fortelle deg om den <strong>før</strong> avtalen inngås, og å gi deg et standardisert angreskjema. Dette er ikke valgfritt – det er et lovkrav.</p>
+<p>Konsekvensen hvis han glemmer det er stor: Får du ikke beskjed om angreretten, forlenges 14-dagersfristen med opptil 12 måneder. Det er altså i håndverkerens egen interesse å informere deg ordentlig, og det er en ekstra trygghet for deg.</p>
+<h3>Pass på oppstart i angrefristen</h3>
+<p>Som ved alle avtaler med angrerett gjelder også her at hvis du ber håndverkeren begynne med en gang – innen angrefristen og etter ditt uttrykkelige ønske – så må du betale for det som allerede er utført dersom du senere angrer. Du angrer altså ikke kostnadsfritt hvis jobben er i gang fordi du selv ba om det.</p>
+<p>Et tips: Haster det ikke, kan du vente med oppstart til angrefristen er ute. Da beholder du muligheten til å trekke deg uten å betale noe som helst.</p>
+<p>Et eksempel: Petter bestiller en maler på nett og ber dem starte allerede dagen etter, selv om han har angrerett. Maleren rekker å male én vegg før Petter angrer. Da må Petter betale for den ene veggen, men slipper resten. Hadde han ventet, kunne han angret gratis.</p>
+<h3>Hva med hasteoppdrag og akutte situasjoner?</h3>
+<p>Mange håndverkeroppdrag haster – en lekkasje, et strømbrudd, et tak som blåser av. Da er det fristende å be om umiddelbar oppstart, og det er helt forståelig. Poenget er bare at du da bør være klar over at du gir delvis avkall på den kostnadsfrie angreretten. Det betyr ikke at du skal la være å fikse en akutt lekkasje for å «spare angreretten» – det ville være dårlig økonomi. Men det er greit å vite at du i slike tilfeller må betale for det arbeidet som faktisk blir gjort, selv om du senere skulle ombestemme deg om resten.</p>
+<p>Et eksempel: Naima ringer en rørlegger fordi det fosser vann under kjøkkenvasken. Hun ber ham komme straks, og han stopper lekkasjen samme kveld. Selv om hun teknisk sett har angrerett (avtalen ble inngått på telefon), må hun betale for utbedringen av lekkasjen, fordi hun ba om akutt oppstart. Det er en fornuftig pris å betale for å redde kjøkkenet.</p>
+<h3>Angrerett gjelder også selve avtalen, ikke bare arbeidet</h3>
+<p>Et poeng som ofte overses: angreretten gjelder hele avtalen du har inngått. Bestiller du for eksempel en oppussingspakke med både arbeid og materialer over telefon, omfatter angreretten i utgangspunktet hele bestillingen. Skulle du angre, trenger du ikke begrunne hvilken del du ombestemte deg om – du trekker deg fra avtalen som helhet. Det gir deg en reell mulighet til å tenke deg om etter at den første entusiasmen (eller selgerens overtalelse) har lagt seg.</p>
+<p>Et eksempel: Etter et hjemmebesøk bestilte Olav en større pakke med nytt gulv, maling og listverk. Da han neste dag innså at det ble dyrere enn han hadde råd til, kunne han angre på hele avtalen innen 14-dagersfristen, uten å måtte forklare seg.</p>
+<h3>Er det forskjell på bestilte og uanmodede besøk?</h3>
+<p>Et nyttig skille: «uanmodet» dørsalg – altså der selgeren dukker opp uten at du har bedt om det – er den klareste situasjonen der du har angrerett, og der du bør være ekstra på vakt mot press. Har du derimot selv bedt håndverkeren komme hjem på befaring og dere inngår avtale der, har du normalt også angrerett, men situasjonen er sjelden like pågående. Uansett er hovedregelen den samme: avtale inngått hjemme hos deg gir deg betenkningstid.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li><strong>Tenk gjennom hvordan du bestilte</strong> for å vite om du har angrerett.</li>
+<li><strong>Be om angreskjema</strong> ved fjernsalg og dørsalg – det skal du få.</li>
+<li><strong>Husk at avtale inngått hjemme</strong> (også etter befaring) normalt gir angrerett.</li>
+<li><strong>Ikke signer under press</strong> på trappa; du har tid til å tenke deg om.</li>
+<li><strong>Vurder oppstartstidspunkt</strong> hvis du vil beholde full, kostnadsfri angrerett.</li>
+<li><strong>Angre skriftlig</strong> innen fristen, uten å oppgi grunn.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Om du har angrerett når du bestiller håndverker, kommer an på måten du bestilte på. Bestilte du på nett, telefon, fikk en selger på døra, eller inngikk avtalen hjemme etter befaring, har du normalt 14 dagers angrerett, og håndverkeren skal gi deg angreskjema. Avtalte du i firmaets forretningslokale, har du ikke angrerett. Ber du om rask oppstart, kan du måtte betale for arbeid som er utført hvis du angrer.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/far-jeg-tilbake-fraktkostnaden-nar-jeg-angrer/">Får jeg tilbake fraktkostnaden når jeg angrer?</a><a class="sp-relchip" href="../../sporsmal/gjelder-angrerett-nar-jeg-kjoper-fra-finn-eller-en-privatperson/">Gjelder angrerett når jeg kjøper fra Finn eller en privatperson?</a><a class="sp-relchip" href="../../sporsmal/gjelder-angrerett-ved-offentlig-auksjon/">Gjelder angrerett ved offentlig auksjon?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

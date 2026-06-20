@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg bestille endringer underveis i byggingen? — Rettsregel</title>
+<meta name="description" content="Ja, det kan du!">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-bestille-endringer-underveis-i-byggingen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg bestille endringer underveis i byggingen?">
+<meta property="og:description" content="Ja, det kan du!">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-bestille-endringer-underveis-i-byggingen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg bestille endringer underveis i byggingen?">
+<meta name="twitter:description" content="Ja, det kan du!">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg bestille endringer underveis i byggingen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, det kan du! Som forbruker har du en lovfestet rett til å kreve endringer og tilleggsarbeid underveis, så lenge det henger sammen med det dere opprinnelig avtalte og ikke blir altfor omfattende. Dette er en av de virkelig forbrukervennlige sidene ved bustadoppføringslova (§ 9).</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 9, 42, 43, 41</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/9/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 9</div>
+  <div class="related-card-title">Din rett til å kreve endringer underveis</div>
+</a><a href="../../lover/bustadoppforingslova/42/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 42</div>
+  <div class="related-card-title">Hva koster det å endre planene?</div>
+</a><a href="../../lover/bustadoppforingslova/43/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 43</div>
+  <div class="related-card-title">Ekstrautgifter fordi du rotet det til</div>
+</a><a href="../../lover/bustadoppforingslova/41/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 41</div>
+  <div class="related-card-title">Hva er prisen hvis dere ikke avtalte noe?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, det kan du! Som forbruker har du en lovfestet rett til å kreve endringer og tilleggsarbeid underveis, så lenge det henger sammen med det dere opprinnelig avtalte og ikke blir altfor omfattende. Dette er en av de virkelig forbrukervennlige sidene ved bustadoppføringslova (§ 9).</p>
+<h3>Din rett til å endre</h3>
+<p>Loven sier at du kan kreve endringer i arbeidet, og kreve at entreprenøren utfører tilleggsarbeid, når det <strong>står i sammenheng</strong> med det dere har avtalt og <strong>ikke i omfang eller karakter er vesentlig annerledes</strong> enn det opprinnelige arbeidet (§ 9). Med andre ord: du kan finjustere og bygge videre på prosjektet ditt, men ikke gjøre det om til et helt annet prosjekt.</p>
+<p>Eksempel som er helt greit: Du bygger enebolig og vil underveis legge til et ekstra takvindu, oppgradere baderomsflisene og flytte en dør. Alt dette henger sammen med huset som bygges – det er klart innenfor retten din.</p>
+<p>Eksempel som kan være for mye: Du vil plutselig at entreprenøren også skal bygge en separat næringshall på tomta. Det er noe vesentlig annet enn boligprosjektet – og kan falle utenfor det du kan kreve.</p>
+<h3>15-prosentgrensen du bør kjenne til</h3>
+<p>Her er en regel det er greit å ha klart for seg. Det kan <strong>avtales på forhånd</strong> at du ikke kan kreve endringer eller tilleggsarbeid som vil endre vederlaget – altså prisen – med <strong>15 prosent eller mer</strong> (§ 9). Står en slik klausul i kontrakten din, har entreprenøren altså rett til å si nei til endringer som til sammen ville økt prisen med 15 prosent eller mer.</p>
+<p>Eksempel: Lene har avtalt 4 000 000 for huset. Kontrakten inneholder 15-prosentklausulen. Da kan hun i utgangspunktet kreve endringer opp til en grense på rundt 600 000 kroner, som er 15 prosent av 4 000 000. Ønsker hun endringer utover dette, må entreprenøren være villig – han er ikke forpliktet til å si ja.</p>
+<p>Merk: Selv om entreprenøren <em>kan</em> sette denne grensen når den er avtalt, betyr det ikke at han <em>må</em> nekte. Mange entreprenører sier gjerne ja til mer hvis det passer dem og betalingen er sikret. Men du har ikke et lovfestet <em>krav</em> på det utover grensen.</p>
+<h3>Endringen skal prises – og helst skriftlig</h3>
+<p>Når du bestiller en endring, har entreprenøren rett til å justere prisen tilsvarende (justering etter § 42, tillegg etter § 43). Han kan også kreve at avtalen om endringen settes opp <strong>skriftlig</strong> (§ 9). Bruk dette aktivt til din egen fordel: krev en endringsordre med pris og tidskonsekvens <em>før</em> arbeidet utføres, ikke etterpå.</p>
+<h3>Praktisk eksempel på god håndtering</h3>
+<p>Familien Ås bygger og ønsker tre endringer i uke 12:</p>
+<ol>
+<li>Oppgradert kjøkkenvifte: pluss 9 000 kroner</li>
+<li>Ekstra punktbelysning i stuen: pluss 14 000 kroner</li>
+<li>Større terrassedør: pluss 22 000 kroner</li>
+</ol>
+<p>De ber om én samlet endringsordre. Entreprenøren bekrefter skriftlig totalt pluss 45 000 kroner og «ingen forskyvning av ferdigdato». Alle vet hva de har sagt ja til, og det blir ingen ubehagelige overraskelser i sluttoppgjøret. Dette er måten å gjøre det på.</p>
+<h3>Et eksempel på det motsatte</h3>
+<p>Til kontrast: Tom ba muntlig om «litt finere kjøkken og noen ekstra kontakter» uten å avtale pris. Da regningen kom, var tillegget på 130 000 – langt mer enn han hadde sett for seg. Fordi han ikke hadde bedt om pris på forhånd, ble det vanskelig å protestere. Lærdommen er enkel: avtal alltid prisen før arbeidet, ikke etter.</p>
+<h3>Tenk på helheten i budsjettet</h3>
+<p>Hver endring kan virke liten, men de summerer seg. Hold en enkel liste – gjerne i et regneark – over alle endringsordrene og totalsummen. Da har du full kontroll på hvor budsjettet ditt ligger til enhver tid, og du slipper å bli overrasket ved sluttoppgjøret.</p>
+<h3>Steg for steg når du vil endre underveis</h3>
+<ol>
+<li>Sjekk om endringen henger sammen med prosjektet (§ 9).</li>
+<li>Vær oppmerksom på om kontrakten har 15-prosentklausulen.</li>
+<li>Be om skriftlig pris og tidskonsekvens før arbeidet starter.</li>
+<li>Få en endringsordre du signerer.</li>
+<li>Hold løpende oversikt over hvor mye endringene summerer seg til.</li>
+</ol>
+<h3>Når er det best å bestille endringene?</h3>
+<p>Tidspunktet betyr mye for både pris og gjennomførbarhet. De fleste endringer er enklest og billigst å bestille <em>tidlig</em>, før det aktuelle arbeidet er påbegynt. Vil du flytte en vegg, er det enkelt mens huset bare er tegninger, men dyrt etter at veggen er reist og kanskje har rør og elektro i seg. Vil du ha varmekabler på badet, må det inn før flisene legges. Snakk derfor med entreprenøren tidlig om alt du tror du vil ha, og spør når den siste fristen er for hver type valg. Mange entreprenører setter egne «valgfrister» nettopp for dette.</p>
+<p>Eksempel: Familien Vik ville ha gulvvarme i hele første etasje, men husket det først etter at gulvet var støpt. Da var det vesentlig dyrere og mer komplisert enn om de hadde sagt fra i tide. Hadde de bestilt det før støpingen, ville det vært en grei og rimelig endring.</p>
+<h3>Husk samspillet med betalingen</h3>
+<p>Når endringer prises, kan det også påvirke betalingsplanen. Tilleggene faktureres gjerne i tråd med fremdriften, akkurat som resten av prosjektet. Be om at endringene synliggjøres tydelig på fakturaene (de skal uansett vises hver for seg, § 41), slik at du ser hva som er den opprinnelige avtalen og hva som er tillegg du selv har valgt. Da har du full oversikt helt fram til sluttoppgjøret.</p>
+<h3>Et lite varsko om muntlige «ja»</h3>
+<p>Den vanligste fellen er det raske, muntlige «ja, bare gjør det» på byggeplassen. Entreprenøren spør om du vil ha en ekstra ting mens han først er i gang, du svarer ja i farten, og så dukker kostnaden opp på regningen senere uten at dere snakket pris. Det er fullt forståelig at slikt skjer i en travel byggeprosess, men det skaper lett uenighet. Venn deg til å si: «Ja, det høres bra ut – kan du sende meg en kort bekreftelse på hva det koster, så er vi enige?» Den lille setningen gjør et muntlig innfall om til en ryddig, skriftlig endringsordre, og beskytter både deg og entreprenøren.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, du har rett til å bestille endringer og tilleggsarbeid underveis, så lenge det henger sammen med prosjektet og ikke er vesentlig annerledes (§ 9). Det kan være avtalt at endringer som øker prisen med 15 prosent eller mer, faller utenfor retten din. Entreprenøren kan justere prisen (§§ 42–43) og kreve skriftlig avtale – så krev alltid en endringsordre med pris før arbeidet utføres, og hold oversikt over totalen.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

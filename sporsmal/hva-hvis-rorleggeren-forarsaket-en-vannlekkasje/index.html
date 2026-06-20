@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis rørleggeren forårsaket en vannlekkasje? — Rettsregel</title>
+<meta name="description" content="Hvis rørleggeren har gjort en feil som fører til en vannlekkasje, regnes det normalt som en mangel ved tjenesten.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-rorleggeren-forarsaket-en-vannlekkasje/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis rørleggeren forårsaket en vannlekkasje?">
+<meta property="og:description" content="Hvis rørleggeren har gjort en feil som fører til en vannlekkasje, regnes det normalt som en mangel ved tjenesten.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-rorleggeren-forarsaket-en-vannlekkasje/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis rørleggeren forårsaket en vannlekkasje?">
+<meta name="twitter:description" content="Hvis rørleggeren har gjort en feil som fører til en vannlekkasje, regnes det normalt som en mangel ved tjenesten.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis rørleggeren forårsaket en vannlekkasje?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis rørleggeren har gjort en feil som fører til en vannlekkasje, regnes det normalt som en mangel ved tjenesten. Da har du krav på at rørleggeren retter feilen gratis, og du kan i tillegg kreve erstatning for de skadene lekkasjen har påført boligen din. Det viktigste du må huske, er å si fra (reklamere) skriftlig så snart du oppdager problemet, og å ta vare på faktura og bilder.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Hvis rørleggeren har gjort en feil som fører til en vannlekkasje, regnes det normalt som en mangel ved tjenesten. Da har du krav på at rørleggeren retter feilen gratis, og du kan i tillegg kreve erstatning for de skadene lekkasjen har påført boligen din. Det viktigste du må huske, er å si fra (reklamere) skriftlig så snart du oppdager problemet, og å ta vare på faktura og bilder.</p>
+<h3>Hvorfor en lekkasje er rørleggerens ansvar</h3>
+<p>Når du leier inn en rørlegger, sier loven (håndverkertjenesteloven, lov 16. juni 1989 nr. 63) at arbeidet skal være «fagmessig» utført. Fagmessig betyr rett og slett at jobben skal gjøres slik en dyktig og samvittighetsfull fagperson ville gjort den. Hvis rørleggeren kobler et rør dårlig, glemmer en pakning, bruker feil deler eller monterer en kobling slurvete, og det senere oppstår en lekkasje, har arbeidet ikke vært fagmessig. Da foreligger det en mangel (håndverkertjenesteloven § 17), og ansvaret ligger som hovedregel hos rørleggeren.</p>
+<p>Tenk deg at Kari får montert ny oppvaskmaskin og nye rør på kjøkkenet. Tre uker senere oppdager hun en fuktflekk i taket i etasjen under. En tilkalt fagperson finner ut at rørleggeren ikke strammet en kobling godt nok. Dette er en typisk mangel, og Kari har sterke rettigheter. Et annet eksempel er Geir, som fikk lagt nytt rør-i-rør-system på badet. Etter et par måneder samler det seg vann i skapet under vasken fordi et klemring-fitting ikke var korrekt montert. Også dette er rørleggerens ansvar.</p>
+<h3>Skille mellom retting av feilen og erstatning for skaden</h3>
+<p>Det er nyttig å skille mellom to ting, fordi du har rettigheter for begge deler:</p>
+<ul>
+<li><strong>Selve feilen i arbeidet:</strong> Den dårlige koblingen eller pakningen. Denne har rørleggeren plikt og rett til å rette gratis (håndverkertjenesteloven § 24). Rørleggeren skal normalt få sjansen til å fikse feilen selv før du henter inn noen andre. Det er rimelig, og det er ofte raskest for deg også.</li>
+<li><strong>Følgeskaden:</strong> Vannet kan ha ødelagt parkett, gips, maling, kjøkkeninnredning eller møbler. Dette er en følgeskade, og du kan kreve erstatning for slike tap (håndverkertjenesteloven § 28). Erstatningen skal dekke det økonomiske tapet feilen har påført deg.</li>
+</ul>
+<p>I Karis tilfelle betyr det at rørleggeren både skal stramme koblingen gratis og dekke kostnaden ved å reparere det fuktskadde taket. Det er viktig å forstå at du ikke må velge mellom de to, du kan kreve begge deler.</p>
+<h3>Slik går du fram steg for steg</h3>
+<ol>
+<li><strong>Stopp skaden først.</strong> Steng hovedstoppekranen og tørk opp vannet for å begrense skaden. Sparer du skaden, sparer du penger for alle parter, og du har dessuten en plikt til å begrense tapet ditt.</li>
+<li><strong>Ta bilder og noter dato.</strong> Fotografer lekkasjen, fuktflekkene og de ødelagte tingene. Notér nøyaktig når du oppdaget problemet. Dette blir det viktigste beviset ditt.</li>
+<li><strong>Reklamer skriftlig og raskt.</strong> Send en e-post eller SMS til rørleggeren der du beskriver feilen konkret. Du må reklamere «innen rimelig tid» etter at du oppdaget mangelen, normalt innen rundt to måneder. Vent ikke, for venter du for lenge, kan du miste retten til å klage.</li>
+<li><strong>Be om gratis retting.</strong> Skriv tydelig at du krever at feilen rettes uten kostnad, og at følgeskaden dekkes. Sett gjerne en rimelig frist.</li>
+<li><strong>Meld fra til forsikringen din.</strong> Vannskade dekkes ofte av husforsikringen. Forsikringsselskapet kan kreve pengene tilbake fra rørleggeren etterpå (det kalles regress), men du får hjelp raskt mens saken pågår.</li>
+<li><strong>Sjekk om rørleggeren har ansvarsforsikring.</strong> En seriøs rørlegger har en forsikring som dekker nettopp slike skader. Spør om det, og be eventuelt om forsikringsbevis.</li>
+</ol>
+<h3>Reklamasjonsfristen er lang</h3>
+<p>Fordi arbeid på rør i en bolig regnes som arbeid på fast eiendom, har du en absolutt reklamasjonsfrist på fem år (håndverkertjenesteloven § 22). Fast eiendom betyr boligen din, til forskjell fra løse ting. Den lange fristen betyr at du i utgangspunktet kan klage på skjulte feil i hele fem år etter at jobben var ferdig. Lekkasjer dukker noen ganger opp lenge etter at arbeidet ble gjort, for eksempel en kobling som lekker bittelitt over lang tid før skaden blir synlig. Da er den lange fristen god å ha. Men husk: Når du først oppdager problemet, må du si fra raskt, innen rundt to måneder.</p>
+<h3>Hva hvis rørleggeren nekter eller ikke svarer?</h3>
+<p>Noen ganger sier rørleggeren at lekkasjen ikke er hans skyld, for eksempel at den skyldes et gammelt rør han ikke rørte. Da bør du:</p>
+<ul>
+<li>Hente inn en uavhengig fagperson som vurderer årsaken skriftlig. En slik rapport er gull verdt i en tvist, fordi den sier noe nøytralt om hva som faktisk gikk galt.</li>
+<li>Sende et nytt, tydelig brev med en konkret frist for å rette.</li>
+<li>Holde tilbake en passende del av betalingen hvis du ennå ikke har betalt alt (håndverkertjenesteloven § 25). Du skal ikke betale fullt for en jobb med feil, men hold bare igjen et beløp som står i forhold til feilen.</li>
+<li>Kontakte Forbrukerrådet for gratis veiledning, og eventuelt bringe saken inn for en klagenemnd eller forliksrådet hvis dere ikke blir enige.</li>
+</ul>
+<p>Den store fordelen din er at du har en faktura og dokumentasjon. Hadde du betalt rørleggeren svart, uten faktura, ville du i praksis stått uten disse rettighetene. Da kunne rørleggeren rett og slett nektet for at han gjorde jobben. Derfor lønner det seg alltid å bruke hvitt arbeid og be om faktura.</p>
+<h3>Hva med egenandelen på forsikringen?</h3>
+<p>Mange lurer på hvem som skal dekke egenandelen når forsikringen trår til ved en vannskade. Egenandelen er den delen av regningen du må betale selv før forsikringen dekker resten, ofte noen tusen kroner. Når lekkasjen skyldes rørleggerens feil, kan du normalt kreve at rørleggeren dekker også egenandelen din, fordi den er en del av det økonomiske tapet feilen påførte deg (håndverkertjenesteloven § 28). Husk å ta dette med i kravet ditt til rørleggeren.</p>
+<p>Et eksempel: Da Karis tak ble fuktskadd, dekket husforsikringen reparasjonen, men hun måtte selv betale en egenandel på 8 000 kroner. Siden skaden skyldtes rørleggerens dårlige kobling, kunne Kari kreve disse 8 000 kronene erstattet av rørleggeren. Slik blir hun ikke sittende igjen med et tap som egentlig var håndverkerens ansvar. Ta vare på dokumentasjonen fra forsikringsselskapet, slik at du kan vise nøyaktig hvor stor egenandelen var.</p>
+<h3>Slik unngår du problemet neste gang</h3>
+<ul>
+<li>Velg en rørlegger som er medlem i en bransjeorganisasjon, det er ofte et tegn på seriøsitet.</li>
+<li>Sjekk at firmaet er registrert i Brønnøysundregistrene og har ansvarsforsikring.</li>
+<li>Be om en skriftlig avtale med pris og beskrivelse av jobben.</li>
+<li>Be om kvittering eller bilde av de viktige koblingene før de bygges inn i vegg eller skap.</li>
+<li>Betal via bank og ta vare på fakturaen, slik at du alltid kan dokumentere hvem som gjorde jobben.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>En lekkasje som skyldes rørleggerens feil er en mangel, og rørleggeren skal rette feilen gratis.</li>
+<li>Følgeskader på boligen, som fuktskadd tak eller gulv, kan du kreve erstattet i tillegg.</li>
+<li>Steng vannet, ta bilder, og reklamer skriftlig innen rundt to måneder etter at du oppdaget problemet.</li>
+<li>Den absolutte fristen for å klage er fem år på arbeid på fast eiendom.</li>
+<li>Meld fra til forsikringen og sjekk at rørleggeren har ansvarsforsikring.</li>
+<li>Bruk alltid faktura og hvitt arbeid, slik at rettighetene dine faktisk gjelder i praksis.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

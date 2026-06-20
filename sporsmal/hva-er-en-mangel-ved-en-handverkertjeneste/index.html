@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en mangel ved en håndverkertjeneste? — Rettsregel</title>
+<meta name="description" content="Kort sagt: En mangel betyr at jobben ikke ble slik den skulle.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-mangel-ved-en-handverkertjeneste/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en mangel ved en håndverkertjeneste?">
+<meta property="og:description" content="Kort sagt: En mangel betyr at jobben ikke ble slik den skulle.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-mangel-ved-en-handverkertjeneste/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en mangel ved en håndverkertjeneste?">
+<meta name="twitter:description" content="Kort sagt: En mangel betyr at jobben ikke ble slik den skulle.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er en mangel ved en håndverkertjeneste?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: En mangel betyr at jobben ikke ble slik den skulle. Enten fordi den ikke er fagmessig utført, fordi den avviker fra det dere avtalte, eller fordi resultatet ikke holder den standarden du har rett til å forvente. Du finner hovedregelen i håndverkertjenesteloven § 17.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Kort sagt: En <em>mangel</em> betyr at jobben ikke ble slik den skulle. Enten fordi den ikke er fagmessig utført, fordi den avviker fra det dere avtalte, eller fordi resultatet ikke holder den standarden du har rett til å forvente. Du finner hovedregelen i håndverkertjenesteloven § 17.</p>
+<p>Denne artikkelen forklarer selve grunnbegrepet. (De neste artiklene går mer i dybden på når en mangel foreligger og hva du gjør med den.)</p>
+<h3>Mangel — forklart med vanlige ord</h3>
+<p>Tenk på "mangel" som lovens ord for "her er noe galt med jobben". Loven sier at mangel foreligger dersom tjenesten ikke fører til det resultatet du har rett til å kreve etter avtalen og etter lovens krav (særlig §§ 5, 6 og 9). Med andre ord: hvis du ikke fikk det du hadde krav på.</p>
+<p>En tjeneste skal blant annet:</p>
+<ul>
+<li>utføres <strong>fagmessig</strong> — altså slik en dyktig fagperson ville gjort det,</li>
+<li>oppfylle vanlige krav til <strong>anvendelighet, utseende, varighet og sikkerhet</strong>, og</li>
+<li>være i samsvar med <strong>det dere har avtalt</strong>.</li>
+</ul>
+<p>Svikter noe av dette, er det normalt en mangel.</p>
+<h3>Eksempler på mangler</h3>
+<ul>
+<li><strong>Petter</strong> får malt huset. Allerede etter én sesong flasser malingen. Et fagmessig malerarbeid skal holde lenger — dette er en mangel.</li>
+<li><strong>Yusuf</strong> avtaler at badet skal flislegges med en bestemt flis. Flisleggeren bruker en annen flis. Avvik fra avtalen — mangel.</li>
+<li><strong>Grete</strong> får lagt nytt gulv, men det blir skjevt og knirker overalt. Ikke fagmessig utført — mangel.</li>
+<li><strong>Sondre</strong> får installert et elektrisk anlegg som ikke oppfyller sikkerhetskravene. Brudd på offentlige sikkerhetskrav regnes som en mangel.</li>
+</ul>
+<h3>Mangel handler ikke bare om dårlig håndverk</h3>
+<p>Det er en vanlig misforståelse at en mangel bare betyr "slurvete jobb". Men en mangel kan også oppstå fordi:</p>
+<ul>
+<li>håndverkeren <strong>ikke ga deg nødvendig veiledning</strong> (brudd på omsorgs- og veiledningsplikten i § 5),</li>
+<li>håndverkeren <strong>ikke frarådet</strong> noe han burde ha frarådet (§ 7), eller</li>
+<li>resultatet <strong>ikke følger lovpålagte sikkerhetskrav</strong>.</li>
+</ul>
+<p>Med andre ord: Hvis håndverkeren burde sagt fra om noe, men lot være, og det går ut over deg — da kan det også være en mangel, selv om selve håndverket teknisk sett er greit utført.</p>
+<p>Et eksempel: <strong>Vidar</strong> ber rørleggeren montere et opplegg på en bestemt måte. Rørleggeren vet at løsningen er i strid med gjeldende krav, men sier ingenting og monterer som bedt om. Selv om selve monteringen er pent gjort, kan resultatet være en mangel — fordi rørleggeren ikke ga den veiledningen han burde, og resultatet ikke følger kravene.</p>
+<h3>Når er det <em>ikke</em> en mangel?</h3>
+<p>Loven har en viktig grense: det foreligger ikke mangel hvis avviket skyldes <em>forhold på din side</em> (§ 17 første ledd andre punktum). Eksempler på "forhold på din side":</p>
+<ul>
+<li>Du leverte selv dårlige materialer som håndverkeren brukte etter ditt ønske (og advarte mot, eller ikke hadde grunn til å advare mot).</li>
+<li>Du ga uriktige eller mangelfulle opplysninger som påvirket resultatet.</li>
+<li>Egenskaper ved tingen eller eiendommen din som håndverkeren ikke kunne noe for.</li>
+</ul>
+<p>Eksempel: <strong>Camilla</strong> insisterer på en billig maling hun har kjøpt selv, til tross for at maleren advarer om at den ikke egner seg. Når malingen flasser, er det ikke nødvendigvis malerens mangel — det skyldes forhold på Camillas side. (Men merk: hadde maleren <em>ikke</em> advart, kunne det blitt hans ansvar etter veiledningsplikten.)</p>
+<h3>Hva med "provisorisk" arbeid?</h3>
+<p>Noen ganger avtaler dere uttrykkelig at jobben bare gjøres provisorisk — en midlertidig løsning. Selv da kan det foreligge mangel hvis resultatet blir <em>vesentlig dårligere</em> enn du etter prisen og forholdene måtte vente (§ 17 andre ledd). Eksempel: et verksted reparerer bilen din provisorisk så du kommer deg hjem. Selv om det er midlertidig, må du kunne forvente at bremsene fungerer. Svikter de like etterpå, er det en mangel — også på en provisorisk jobb.</p>
+<p>Loven sier dette uttrykkelig fordi det ellers kunne oppstå tvil om hvilket ansvar håndverkeren har når noe er gjort "så godt som mulig" eller med liknende forbehold. Et forbehold fritar altså ikke håndverkeren for alt ansvar — han kan ikke gjemme seg bak ordet "provisorisk" hvis resultatet blir mye dårligere enn det er rimelig å forvente.</p>
+<h3>Mangel er ikke det samme som "jeg er misfornøyd"</h3>
+<p>Det er verdt å være ærlig med seg selv her. Ikke alt du ikke liker, er en mangel i lovens forstand. Hvis du ombestemmer deg om fargevalget etter at jobben er ferdig, er det ikke en mangel — det var jo det du bestilte. En mangel handler om at resultatet objektivt sett avviker fra det avtalte eller fra fagmessig standard, ikke om at smaken din har endret seg. Dette skillet er nyttig å ha klart for seg, både for å vurdere egen sak realistisk og for å fremstå troverdig hvis du må klage.</p>
+<h3>Garanti og mangel — to forskjellige ting</h3>
+<p>Mange blander sammen "garanti" og mangelsrettighetene i loven. Det er greit å vite forskjellen. En <em>garanti</em> er noe håndverkeren frivillig gir deg på toppen — et ekstra løfte. Mangelsrettighetene etter loven har du <em>uansett</em>, helt uavhengig av om det er gitt noen garanti. Du trenger altså ikke en garanti for å klage på en mangel. Selv om en eventuell garantitid er ute, kan du fortsatt ha krav etter loven hvis det foreligger en mangel og du har reklamert i tide. Loven er gulvet — garantien kan bare gi deg <em>mer</em>, aldri mindre.</p>
+<h3>Hva betyr det at du har en mangel?</h3>
+<p>Når det foreligger en mangel, åpner det for at du kan gjøre krav gjeldende — typisk:</p>
+<ul>
+<li><strong>retting</strong> (at håndverkeren fikser feilen gratis),</li>
+<li><strong>prisavslag</strong> (du betaler mindre),</li>
+<li><strong>heving</strong> (i alvorlige tilfeller), eller</li>
+<li><strong>erstatning</strong> for tap mangelen har påført deg.</li>
+</ul>
+<p>De konkrete kravene er tema for andre artikler — her er hovedpoenget å forstå <em>hva en mangel er</em>.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>En mangel (§ 17) betyr at jobben ikke ble slik du hadde krav på.</li>
+<li>Tjenesten skal være fagmessig, oppfylle vanlige krav til anvendelighet, utseende, varighet og sikkerhet, og være i tråd med avtalen.</li>
+<li>Også manglende veiledning (§ 5), manglende fraråding (§ 7) og brudd på sikkerhetskrav kan være mangler.</li>
+<li>Det er ikke mangel hvis avviket skyldes forhold på din side, for eksempel egne dårlige materialer du fikk advarsel om.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

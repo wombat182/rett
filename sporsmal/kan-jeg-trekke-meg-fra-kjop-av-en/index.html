@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg trekke meg fra kjøp av en bolig under oppføring? — Rettsregel</title>
+<meta name="description" content="Ja, det kan du – men ikke ved å «angre» gratis.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-trekke-meg-fra-kjop-av-en/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg trekke meg fra kjøp av en bolig under oppføring?">
+<meta property="og:description" content="Ja, det kan du – men ikke ved å «angre» gratis.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-trekke-meg-fra-kjop-av-en/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg trekke meg fra kjøp av en bolig under oppføring?">
+<meta name="twitter:description" content="Ja, det kan du – men ikke ved å «angre» gratis.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg trekke meg fra kjøp av en bolig under oppføring?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, det kan du – men ikke ved å «angre» gratis. Du trekker deg ved å avbestille etter de samme reglene som ellers gjelder i bustadoppføringslova (§§ 52–54). Det betyr at du kan komme fra avtalen, men at du normalt må betale entreprenøren for det som er gjort og for tapet hans. Det finnes ingen angrerett på boligkjøp.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 52, 53, 54</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/52/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 52</div>
+  <div class="related-card-title">Du har rett til å avlyse hele byggeprosjektet</div>
+</a><a href="../../lover/bustadoppforingslova/53/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 53</div>
+  <div class="related-card-title">Avbestilling når du kjøper tomt og hus sammen</div>
+</a><a href="../../lover/bustadoppforingslova/54/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 54</div>
+  <div class="related-card-title">Faste gebyrer ved avbestilling</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, det kan du – men ikke ved å «angre» gratis. Du trekker deg ved å <strong>avbestille</strong> etter de samme reglene som ellers gjelder i bustadoppføringslova (§§ 52–54). Det betyr at du kan komme fra avtalen, men at du normalt må betale entreprenøren for det som er gjort og for tapet hans. Det finnes ingen angrerett på boligkjøp.</p>
+<h3>Bolig under oppføring – hva er det?</h3>
+<p>En «bolig under oppføring» er en leilighet eller et hus du kjøper <em>før</em> det er ferdig bygget – ofte rett fra tegninger og en visningsmodell. Du signerer en kjøpekontrakt, betaler kanskje et forskudd, og boligen reises mens du venter. Slike kjøp omfattes av bustadoppføringslova når du kjøper som forbruker av en profesjonell utbygger.</p>
+<h3>Den vanligste misforståelsen: «angrerett»</h3>
+<p>Mange tror de har 14 dagers angrerett, slik man har når man handler på nett. <strong>Det stemmer ikke for bolig.</strong> Angrerettloven gjelder ikke for kjøp av fast eiendom. Det du har, er avbestillingsretten – og den koster penger. Dette er kanskje den enkeltmisforståelsen som koster forbrukere mest, fordi de tror de kan snu i døra uten kostnad.</p>
+<h3>Slik trekker du deg: avbestilling</h3>
+<p>Siden du ikke kan angre, må du bruke avbestillingsreglene. Etter § 52 (og § 53 når kjøpet omfatter rett til grunn/tomt) kan du trekke deg før overtakelse, men entreprenøren har krav på:
+- <strong>Vederlag for utført arbeid.</strong>
+- <strong>Erstatning for økonomisk tap</strong>, inkludert tapt fortjeneste.
+- Eventuelt et avtalt <strong>avbestillingsgebyr</strong> (§ 54).</p>
+<h3>Eksempel: Familien Nguyen trekker seg fra en leilighet</h3>
+<p>Familien Nguyen kjøpte en leilighet under oppføring for 3,8 millioner kroner. Bygget var kommet et godt stykke på vei da de fikk vite at de måtte flytte til en annen landsdel.</p>
+<p>De hadde ikke angrerett, men kunne avbestille. Utbyggeren krevde et avbestillingsgebyr på 5 % av kjøpesummen = 190 000 kroner, som kontrakten åpnet for. Familien Nguyen kom seg ut av avtalen, men det kostet dem nær 190 000 kroner. Det var prisen for friheten til å trekke seg.</p>
+<h3>Et alternativ: kan du selge kontrakten videre?</h3>
+<p>Noen kjøpekontrakter for boliger under oppføring åpner for at du kan <strong>overdra (selge) kontrakten</strong> til en ny kjøper i stedet for å avbestille. Hvis markedet er godt og noen andre vil overta plassen din, kan det være langt billigere enn å avbestille – kanskje slipper du helt unna avbestillingskostnaden. Men dette avhenger av hva kontrakten din sier, og utbyggeren kan ha satt vilkår. Sjekk kontrakten før du konkluderer.</p>
+<h3>Hva med innbetalt forskudd?</h3>
+<p>Har du betalt et forskudd (delbetaling underveis), skal entreprenøren motregne kravet sitt mot det du har betalt, og betale tilbake det som eventuelt er til overs. Eksempel: Har du betalt 300 000 i forskudd og avbestillingskravet er 190 000, skal du få tilbake 110 000.</p>
+<h3>Pass på at du faktisk er omfattet av bustadoppføringslova</h3>
+<p>Reglene over gjelder når du kjøper en <strong>ny</strong> bolig under oppføring som <strong>forbruker</strong> fra en <strong>profesjonell</strong> utbygger. Kjøper du en allerede ferdigstilt bolig, er det avhendingslova som gjelder i stedet – og da finnes det ikke en avbestillingsrett på samme måte, fordi boligen er ferdig. Det er altså viktig å vite hvilken lov som styrer ditt kjøp før du planlegger å trekke deg. Er du usikker, spør megleren eller en rådgiver om kjøpet faller inn under bustadoppføringslova.</p>
+<h3>Eksempel: Tina trodde hun kunne trekke seg gratis</h3>
+<p>Tina la inn bud på en helt ny, men ferdig leilighet og trodde hun hadde 14 dagers angrerett. Det hadde hun ikke – kjøpet var bindende. Hun blandet sammen netthandelens angrerett med boligkjøp. Hadde leiligheten derimot vært under oppføring, ville hun hatt avbestillingsrett (mot betaling), men heller ingen gratis angrerett. Uansett variant: det finnes ingen kostnadsfri vei ut av et boligkjøp.</p>
+<h3>Forskjellen på å trekke seg og å heve</h3>
+<ul>
+<li><strong>Trekke seg / avbestille:</strong> Du velger selv å gå ut av avtalen uten at utbyggeren har gjort noe galt. Du betaler.</li>
+<li><strong>Heve:</strong> Du går ut fordi utbyggeren har misligholdt grovt (store forsinkelser, alvorlige mangler). Da slipper du erstatningsansvaret.</li>
+</ul>
+<p>Har utbyggeren faktisk sviktet, skal du ikke «avbestille» – undersøk om du har hevingsrett. Det kan utgjøre flere hundre tusen kroner i forskjell.</p>
+<h3>Hva med innfridde forventninger som brister – er det grunn til å heve?</h3>
+<p>Noen ganger trekker folk seg fordi prosjektet utvikler seg helt annerledes enn lovet: leiligheten blir mindre, utsikten forsvinner bak et nytt bygg, fellesarealene kuttes, eller innflyttingen utsettes gang på gang. Da er det viktig å vurdere om dette er <strong>avtalebrudd</strong> fra utbyggerens side, og ikke bare din egen ombestemmelse. Er det avtalebrudd, kan du ha rett til prisavslag, erstatning eller i alvorlige tilfeller heving – og da slipper du avbestillingskostnaden. Vesentlig forsinkelse er et typisk eksempel: blir boligen levert mye senere enn avtalt, kan du etter omstendighetene heve i stedet for å avbestille.</p>
+<h3>Eksempel: Petter og den stadige utsettelsen</h3>
+<p>Petter kjøpte en leilighet under oppføring med lovet overtakelse i september. Da utbyggeren skjøv datoen til mars året etter – et halvt år forsinket – uten god grunn, var ikke dette Petter sin «ombestemmelse». Det var en mulig vesentlig forsinkelse fra utbyggerens side. I stedet for å avbestille og betale gebyr, undersøkte Petter sin rett til å heve. Det er en helt annen og langt billigere vei ut, og den bør du alltid sjekke før du aksepterer et avbestillingskrav.</p>
+<h3>Steg-for-steg hvis du vil trekke deg</h3>
+<ol>
+<li><strong>Sjekk om du faktisk vil ut</strong> – avbestilling koster.</li>
+<li><strong>Vurder om utbyggeren har misligholdt</strong> – da kan heving være billigere enn avbestilling.</li>
+<li><strong>Undersøk om kontrakten åpner for videresalg</strong> av kontrakten.</li>
+<li><strong>Les kjøpekontrakten</strong> for avbestillingsgebyr.</li>
+<li><strong>Gi skriftlig beskjed</strong> om at du avbestiller.</li>
+<li><strong>Be om spesifisert sluttoppgjør</strong> med motregning mot innbetalt forskudd.</li>
+<li><strong>Søk hjelp</strong> ved tvil – Forbrukerrådet eller en eiendomsadvokat.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Ja, du kan trekke deg fra kjøp av en bolig under oppføring – men ved å avbestille etter §§ 52–54, ikke ved en gratis angrerett, som ikke finnes for bolig. Du må normalt betale for utført arbeid og utbyggerens tap, eventuelt et rimelig avbestillingsgebyr. Sjekk om kontrakten åpner for videresalg, og om utbyggeren har misligholdt slik at heving er mulig – det kan spare deg for mye penger.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

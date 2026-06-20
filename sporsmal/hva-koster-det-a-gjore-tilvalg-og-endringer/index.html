@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva koster det å gjøre tilvalg og endringer? — Rettsregel</title>
+<meta name="description" content="Det varierer enormt. Et lite tilvalg som ekstra stikkontakter kan koste noen hundrelapper, mens et oppgradert kjøkken eller ekstra bad lett kan koste…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-koster-det-a-gjore-tilvalg-og-endringer/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva koster det å gjøre tilvalg og endringer?">
+<meta property="og:description" content="Det varierer enormt. Et lite tilvalg som ekstra stikkontakter kan koste noen hundrelapper, mens et oppgradert kjøkken eller ekstra bad lett kan koste…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-koster-det-a-gjore-tilvalg-og-endringer/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva koster det å gjøre tilvalg og endringer?">
+<meta name="twitter:description" content="Det varierer enormt. Et lite tilvalg som ekstra stikkontakter kan koste noen hundrelapper, mens et oppgradert kjøkken eller ekstra bad lett kan koste…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva koster det å gjøre tilvalg og endringer?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det varierer enormt. Et lite tilvalg som ekstra stikkontakter kan koste noen hundrelapper, mens et oppgradert kjøkken eller ekstra bad lett kan koste flere hundre tusen. Prisen avhenger av merkostnad for materialer, ekstra arbeidstimer og et eventuelt påslag fra entreprenøren. Det viktigste er å få en bindende, skriftlig pris FØR arbeidet utføres, så du unngår ubehagelige overraskelser.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva prisen består av</h3>
+<p>Når entreprenøren regner ut hva et tilvalg eller en endring koster, består beløpet typisk av tre deler:</p>
+<ol>
+<li>Merpris på materialer: forskjellen mellom standard og det du velger.</li>
+<li>Ekstra arbeid: flere timer eller mer komplisert montering.</li>
+<li>Påslag: et tillegg for administrasjon, prosjektering og fortjeneste. Dette skal være avtalt i kontrakten.</li>
+</ol>
+<p>Det er kombinasjonen av disse tre som avgjør hva et tilvalg koster. Et dyrt materiale som er lett å montere, kan bli billigere enn et rimelig materiale som krever mye arbeid.</p>
+<h3>Regneeksempel: Sondre oppgraderer badet</h3>
+<p>Sondre bygger ny bolig og vil bytte standard baderomsinnredning til en større, mer eksklusiv variant.</p>
+<ul>
+<li>Merpris innredning og servant: 24 000 kr</li>
+<li>Oppgraderte fliser (merpris mot standard): 9 800 kr</li>
+<li>Ekstra arbeid for større flislagt areal: 7 200 kr</li>
+<li>Påslag 12 % (avtalt i kontrakt): 4 920 kr</li>
+<li>Sum endring: 45 920 kr</li>
+</ul>
+<p>Sondre får dette på en endringsordre han signerer før arbeidet starter. Nå vet han nøyaktig hva badet koster ekstra, og han kan vurdere om det er verdt det for ham.</p>
+<h3>Et eksempel til: Når summen overrasker</h3>
+<p>Familien Berg ville oppgradere kjøkkenet kraftig. De tenkte "noen titusen". Da prisen kom, var den:</p>
+<ul>
+<li>Oppgraderte fronter og benkeplate i stein: 71 000 kr</li>
+<li>Integrerte hvitevarer (merpris): 23 000 kr</li>
+<li>Ekstra overskap og belysning: 14 000 kr</li>
+<li>Påslag 10 %: 10 800 kr</li>
+<li>Sum: 118 800 kr</li>
+</ul>
+<p>Det ble nesten 120 000 kroner. Lærdommen: be om pris FØR du forelsker deg i den fineste løsningen, og sammenlign med å for eksempel kjøpe steinbenk separat senere.</p>
+<h3>Hvorfor små endringer noen ganger blir dyre</h3>
+<p>Det som virker som en bagatell, kan koste mye hvis det kommer på feil tidspunkt. Eksempel: Lena ber om å flytte en innervegg 40 centimeter etter at rør og elektrikere allerede har vært på plass. Selve veggen er billig, men nå må rørlegger og elektriker komme tilbake, og kanskje må noe rives. En endring som hadde kostet 8 000 kroner i planleggingsfasen, kan koste 35 000 kroner når den kommer for sent.</p>
+<p>Lærdommen: timing er minst like viktig som hva du velger.</p>
+<h3>Spar penger med smarte valg</h3>
+<ul>
+<li>Velg det som er vanskelig å bytte senere (gulvvarme, innervegger, ekstra bad, elektriske punkter i vegg).</li>
+<li>Vent med det du enkelt kan kjøpe og montere selv etterpå (lamper, speil, garderobeskap, hvitevarer er ofte billigere i butikk).</li>
+<li>Be om pris på flere alternativer, så du ser hva som gir mest igjen for pengene.</li>
+<li>Sett et personlig tilvalgsbudsjett før du begynner, og hold deg til det.</li>
+</ul>
+<h3>Husk lånerammen din</h3>
+<p>En ting mange glemmer: tilvalg og endringer kommer på toppen av kjøpesummen, og banken har gitt deg lån basert på en bestemt totalsum. Hvis du legger på 200 000 kroner i tilvalg, må du som regel finansiere det. Snakk med banken tidlig om hvor mye du har å gå på, så du ikke ender opp med drømmekjøkkenet og et finansieringsproblem. Det kan også være forskjell på hvordan tilvalg betales: noen ganger samtidig med sluttoppgjøret, andre ganger underveis.</p>
+<h3>Eksempel: Tre familier, tre nivåer</h3>
+<p>For å vise hvor mye spennet er, her er tre familier i samme prosjekt med samme grunnpris på 4 000 000 kroner:</p>
+<ul>
+<li>Familien Haugen velger nesten ingen tilvalg, bare 4 ekstra stikkontakter: 4 800 kr.</li>
+<li>Familien Dahl gjør moderate valg: bedre gulv, litt bedre bad, noen elektriske punkter: 86 000 kr.</li>
+<li>Familien Lie går for full oppgradering: kjøkken, bad, parkett overalt, ekstra elektro: 265 000 kr.</li>
+</ul>
+<p>Alle tre får en flott bolig. Forskjellen er hva de prioriterer og hva lommeboka tåler. Det finnes ikke noe "riktig" nivå, men det er lurt å bestemme seg på forhånd hvor du vil ligge. Da slipper du å la deg rive med av enkeltvalg som hver for seg virker små, men som til sammen kan bli en stor sum.</p>
+<h3>Pass på merverdiavgift og påslag</h3>
+<p>Prisene du får på tilvalg, skal normalt være inkludert merverdiavgift (moms) når du er forbruker, men sjekk at det fremgår klart. Et tilbud som ser billig ut, kan vise seg å være "eks. mva." og dermed 25 prosent dyrere. Spør derfor alltid: "Er denne prisen inkludert moms, og er påslaget med?" Da sammenligner du epler med epler.</p>
+<h3>Hold tilvalg og endringer adskilt i regnskapet</h3>
+<p>Det kan være lurt å skille tydelig mellom rene tilvalg fra prosjektets meny og frie endringer du ber om utenfor menyen. Begge koster ekstra, men de håndteres litt ulikt og kan ha ulike frister. Ved å føre dem hver for seg i oversikten din, ser du klart hva som er hva, og du unngår forvirring når sluttoppgjøret skal kontrolleres opp mot alle bestillingene dine. Et ryddig regneark her er verdt gull når den endelige fakturaen skal sjekkes post for post.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li>Krev skriftlig, bindende pris før du bestiller (endringsordre).</li>
+<li>Spør alltid: "Er påslaget medregnet i denne summen?"</li>
+<li>Lag et eget regneark over alle tilvalg, så du ser totalen vokse.</li>
+<li>Be om å få vite om endringen påvirker ferdigdatoen.</li>
+<li>Vurder hva som lønner seg som tilvalg, og hva du kan ordne billigere selv senere.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Tilvalg og endringer kan koste fra noen hundrelapper til flere hundre tusen, avhengig av materialer, arbeid og påslag. Timing er avgjørende: sene endringer blir dyre. Få alltid en bindende skriftlig pris før arbeidet starter, prioriter det som er vanskelig å bytte senere, hold oversikt over totalsummen, og sett deg et budsjett du klarer å holde. Snakk gjerne med banken tidlig om hvor mye du har å gå på, og sjekk at prisene du får er inkludert moms og påslag, slik at sammenligningene blir riktige.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

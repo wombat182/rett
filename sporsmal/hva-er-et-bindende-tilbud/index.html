@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er et bindende tilbud? — Rettsregel</title>
+<meta name="description" content="Et bindende tilbud er en fast pris håndverkeren forplikter seg til. Når du har takket ja, kan han ikke kreve mer for det avtalte arbeidet – selv om jobben…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-et-bindende-tilbud/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er et bindende tilbud?">
+<meta property="og:description" content="Et bindende tilbud er en fast pris håndverkeren forplikter seg til. Når du har takket ja, kan han ikke kreve mer for det avtalte arbeidet – selv om jobben…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-et-bindende-tilbud/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er et bindende tilbud?">
+<meta name="twitter:description" content="Et bindende tilbud er en fast pris håndverkeren forplikter seg til. Når du har takket ja, kan han ikke kreve mer for det avtalte arbeidet – selv om jobben…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er et bindende tilbud?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Et bindende tilbud er en fast pris håndverkeren forplikter seg til. Når du har takket ja, kan han ikke kreve mer for det avtalte arbeidet – selv om jobben tok lengre tid eller ble dyrere enn han trodde. Risikoen for feilberegning ligger hos håndverkeren, ikke hos deg.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva «bindende» betyr i praksis</h3>
+<p>Ordet «bindende» betyr at håndverkeren er bundet til prisen sin. Han har regnet på jobben, gitt deg en sum, og du har sagt ja. Da er prisen låst. Skulle det vise seg at han bommet i kalkylen og jobben egentlig var mer omfattende enn han trodde, er det hans problem – ikke ditt.</p>
+<p>Dette gir deg som forbruker stor forutsigbarhet. Du vet på forhånd nøyaktig hva det koster, og du kan budsjettere trygt uten å frykte en regning som plutselig blir dobbelt så stor.</p>
+<p>Et eksempel: Sofie ber tre tømrere om pris på å bygge en terrasse. Den ene gir et bindende tilbud på 85 000 kroner. Sofie aksepterer. Underveis oppdager tømreren at jobben tar dobbelt så lang tid som han trodde, fordi grunnen var vanskeligere enn antatt. Likevel kan han bare kreve de 85 000 kronene. Tapet er hans, fordi tilbudet var bindende.</p>
+<h3>Slik gjør du tilbudet vanntett</h3>
+<p>For at du skal være trygg på at du faktisk har et bindende tilbud, og ikke noe svakere, bør du sikre noen ting:</p>
+<ol>
+<li><strong>Få det skriftlig.</strong> Be om tilbudet på e-post eller papir. Da slipper du diskusjon senere om hva som faktisk ble lovet.</li>
+<li><strong>Sjekk at prisformen er tydelig.</strong> Det bør stå «fastpris» eller «bindende tilbud», ikke «ca.» eller «prisoverslag».</li>
+<li><strong>Få med hva som er inkludert.</strong> Tilbudet bør liste opp arbeidet og materialene det dekker, slik at det er klart hva fastprisen gjelder for.</li>
+<li><strong>Avklar gyldighetstid.</strong> Tilbud har gjerne en frist – «gjelder i 30 dager». Aksepter innen fristen, ellers kan tilbudet falle bort.</li>
+<li><strong>Sjekk om moms er inkludert.</strong> Et tilbud på «220 000» blir noe helt annet hvis moms kommer i tillegg.</li>
+</ol>
+<p>Et eksempel: Da Khalid skulle bytte tak, fikk han et tilbud på e-post: «Fastpris kr 220 000 inkl. materialer og mva. Gjelder ut måneden.» Khalid svarte ja på e-post innen fristen. Dermed var avtalen bindende, dokumentert og uten skjulte momsoverraskelser.</p>
+<h3>Når kan prisen likevel øke?</h3>
+<p>Et bindende tilbud betyr ikke at prisen aldri kan endres. Men det skal mye til, og du må alltid være med på det:</p>
+<ul>
+<li><strong>Tilleggsarbeid du bestiller.</strong> Ber du om noe utover det opprinnelige, kommer det i tillegg til fastprisen.</li>
+<li><strong>Uforutsette forhold.</strong> Dukker det opp noe ingen kunne forutse, skal håndverkeren stoppe, varsle deg og avtale før han fortsetter.</li>
+</ul>
+<p>Det avgjørende er at håndverkeren ikke ensidig kan øke prisen. Enhver økning krever din godkjenning. Får du en høyere regning uten at du har sagt ja til ekstraarbeid, kan du nekte å betale den delen som ikke var avtalt.</p>
+<p>Et eksempel: Eva hadde fastpris på 95 000 for å pusse opp badet. Da hun selv ba om å få lagt varmekabler i tillegg, ble dette avtalt som en ekstrakostnad på 12 000. Det var helt lovlig, fordi det var Eva som ba om det og godkjente prisen på forhånd. Hadde firmaet derimot lagt på 12 000 uten å spørre, kunne hun avvist det.</p>
+<h3>Hva hvis håndverkeren angrer på fastprisen?</h3>
+<p>Det hender at en håndverker som har gitt en bindende fastpris, oppdager at han har regnet for lavt og forsøker å øke prisen «fordi det ble dyrere enn forventet». Da er det viktig å stå på sitt: et bindende tilbud er nettopp bindende, og en feilkalkyle er håndverkerens egen risiko. Han kan ikke skyve den over på deg i ettertid. Det er forskjellen på fastpris og prisoverslag som virkelig viser seg her – ved fastpris bærer han risikoen, ved prisoverslag deler dere den (innenfor 15-prosentgrensen).</p>
+<p>Et eksempel: En maler ga Trine en bindende fastpris på 70 000 for å male huset. Halvveis i jobben sa han at det «tok mye mer tid enn antatt» og ville ha 90 000. Trine viste rolig til at de hadde avtalt fast pris skriftlig. Maleren måtte gjøre jobben ferdig for de opprinnelige 70 000.</p>
+<h3>Be om flere tilbud og sammenlign på likt grunnlag</h3>
+<p>Det er klokt å hente inn bindende tilbud fra flere håndverkere før du bestemmer deg. Da ser du hva markedsprisen er, og du unngår å betale unødvendig mye. Pass bare på at du sammenligner tilbudene på samme grunnlag – at de dekker nøyaktig samme arbeid og samme materialkvalitet. Et tilbud som ser billig ut, kan vise seg å være dyrere fordi det utelater ting et annet tilbud inkluderer. Be derfor alle om å spesifisere hva fastprisen omfatter.</p>
+<p>Et eksempel: Da Rania skulle bytte tak, fikk hun tre tilbud: 200 000, 230 000 og 260 000 kroner. Det billigste viste seg å ikke inkludere stillas og bortkjøring av gammelt materiale, mens det dyreste gjorde det. Da hun regnet alt sammen, var prisforskjellen mye mindre enn den så ut. Slik fikk hun et reelt sammenligningsgrunnlag.</p>
+<h3>Forskjellen fra prisoverslag – kort</h3>
+<p>Det er lett å forveksle et bindende tilbud med et prisoverslag, men forskjellen er viktig:</p>
+<ul>
+<li><strong>Bindende tilbud:</strong> Fast pris. Kan ikke økes uten din godkjenning av tilleggsarbeid eller varsel om uforutsette forhold.</li>
+<li><strong>Prisoverslag:</strong> Anslag. Kan øke noe, men maks cirka 15 prosent (hvtjl. § 32).</li>
+</ul>
+<p>Er du i tvil om hva du fikk, husk at det er håndverkeren som må bevise hva slags prisopplysning det var (hvtjl. § 32). Det er en fordel for deg, fordi tvilen ikke faller på din side.</p>
+<h3>Når bør du velge bindende tilbud?</h3>
+<p>Bindende tilbud passer best når du vil ha trygg og forutsigbar økonomi, og når jobben er såpass klart definert at håndverkeren kan regne på den på forhånd. Ved svært usikre prosjekter – for eksempel der ingen vet hva som skjuler seg bak veggene – kan håndverkeren vegre seg for å gi fastpris, eller legge inn en buffer. Da kan et prisoverslag eller regning etter medgått tid være mer realistisk. Vurder hva som passer best for akkurat din jobb.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li><strong>Be om bindende tilbud</strong> når du vil ha forutsigbar pris.</li>
+<li><strong>Få det skriftlig</strong> med tydelig angivelse av at det er fastpris.</li>
+<li><strong>Sjekk hva som er inkludert, om moms er med, og gyldighetstiden.</strong></li>
+<li><strong>Aksepter innen fristen.</strong></li>
+<li><strong>Godkjenn tilleggsarbeid skriftlig</strong> – ellers kan ikke prisen økes.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Et bindende tilbud er en fast pris håndverkeren er forpliktet til, og som ikke kan økes uten at du godkjenner tilleggsarbeid eller varsles om uforutsette forhold. Det gir deg trygg og forutsigbar økonomi. Få alltid tilbudet skriftlig med tydelig angivelse av fastpris og om moms er inkludert, aksepter innen gyldighetsfristen, og husk at det er håndverkeren som må bevise prisformen hvis dere blir uenige.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

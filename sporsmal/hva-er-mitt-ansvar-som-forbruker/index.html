@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er mitt ansvar som forbruker? — Rettsregel</title>
+<meta name="description" content="Som forbruker har du tre hovedplikter – å gi håndverkeren tilgang og det han trenger for å jobbe, å ta beslutninger i tide, og å betale som avtalt. I…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-mitt-ansvar-som-forbruker/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er mitt ansvar som forbruker?">
+<meta property="og:description" content="Som forbruker har du tre hovedplikter – å gi håndverkeren tilgang og det han trenger for å jobbe, å ta beslutninger i tide, og å betale som avtalt. I…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-mitt-ansvar-som-forbruker/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er mitt ansvar som forbruker?">
+<meta name="twitter:description" content="Som forbruker har du tre hovedplikter – å gi håndverkeren tilgang og det han trenger for å jobbe, å ta beslutninger i tide, og å betale som avtalt. I…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er mitt ansvar som forbruker?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Som forbruker har du tre hovedplikter – å gi håndverkeren tilgang og det han trenger for å jobbe, å ta beslutninger i tide, og å betale som avtalt. I tillegg lønner det seg å være tydelig, samarbeidsvillig og ryddig. Et godt håndverkerprosjekt er nemlig et samarbeid, ikke en tjeneste du bare bestiller og venter på.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Det er ikke bare håndverkeren som har plikter</h3>
+<p>Mange tenker bare på hva håndverkeren skal levere. Men avtalen går begge veier. Hvis du ikke gjør din del, kan prosjektet bli forsinket og dyrere – og i noen tilfeller kan forsinkelser som skyldes deg, gå ut over dine egne rettigheter. Du kan da ikke klage på en forsinkelse du selv har forårsaket. Derfor er det smart å vite hva som forventes av deg.</p>
+<h3>Ansvar 1: Gi tilgang og legg til rette</h3>
+<p>Håndverkeren kan ikke jobbe hvis han ikke kommer til. Det er ditt ansvar å sørge for praktisk tilrettelegging:</p>
+<ul>
+<li>Sørg for at håndverkeren kommer inn (nøkkel, kode eller at noen er hjemme).</li>
+<li>Rydd området der det skal jobbes.</li>
+<li>Sørg for tilgang til strøm og vann hvis det trengs.</li>
+<li>Avklar hvor materialer og verktøy kan oppbevares.</li>
+<li>Fjern verdifulle eller skjøre ting fra arbeidsområdet.</li>
+<li>Informer eventuelle naboer hvis arbeidet blir støyende.</li>
+</ul>
+<p>Eksempel: Elektrikeren avtaler å komme klokken 08. Anne har ikke ryddet kjellerboden der sikringsskapet står, og er heller ikke hjemme. Elektrikeren kommer ikke til, og må dra igjen. Den bomturen kan Anne ende opp med å betale for – og prosjektet blir forsinket. En liten forberedelse kvelden før hadde spart henne for både regningen og forsinkelsen.</p>
+<h3>Ansvar 2: Ta beslutninger i tide</h3>
+<p>Underveis dukker det opp valg: hvilken flis, hvilken farge, hvor stikkontakten skal sitte. Hvis du somler med å bestemme deg, stopper arbeidet opp.</p>
+<p>Tips for å unngå forsinkelser:</p>
+<ol>
+<li>Ta de store materialvalgene før oppstart der det er mulig.</li>
+<li>Vær tilgjengelig på telefon i byggeperioden.</li>
+<li>Svar raskt når håndverkeren trenger en avgjørelse.</li>
+<li>Hvis du er usikker, si fra med en gang i stedet for å la det ligge.</li>
+</ol>
+<p>Eksempel: Snekkeren venter på at Per skal velge type kjøkkenfront før han kan bestille. Per bruker tre uker på å bestemme seg. I mellomtiden står prosjektet stille, og snekkeren tar en annen jobb – så Pers kjøkken blir ferdig en måned senere enn planlagt. Forsinkelsen skyldes Per selv, og han kan da ikke kreve noe av snekkeren for den.</p>
+<h3>Ansvar 3: Betale som avtalt</h3>
+<p>Du skal betale det dere har blitt enige om, til avtalt tid. Det betyr ikke at du må betale for feil eller mangler – der har du rett til å holde tilbake en rimelig del (håndverkertjenesteloven § 23). Men for det arbeidet som faktisk er riktig utført, skal du gjøre opp for deg.</p>
+<p>God betalingsskikk:</p>
+<ul>
+<li>Betal fakturaer innen forfall.</li>
+<li>Hold tilbake bare det som er rimelig ved en mangel, ikke hele beløpet.</li>
+<li>Si fra skriftlig hvis du mener noe er feil, i stedet for bare å la være å betale.</li>
+</ul>
+<p>Bare å la være å betale, uten å si fra hvorfor, er dårlig praksis – og kan gjøre at du selv ender opp som den som har misligholdt avtalen.</p>
+<h3>Ansvar 4 (uskrevet, men viktig): Vær en god samarbeidspartner</h3>
+<p>Loven sier ikke at du må være hyggelig, men i praksis går prosjekter mye bedre når kommunikasjonen er god:</p>
+<ul>
+<li>Vær tydelig om hva du ønsker, helst skriftlig.</li>
+<li>Si fra om problemer med en gang, ikke vent til slutten.</li>
+<li>Bekreft endringer og avtaler skriftlig (se egen artikkel om endringer).</li>
+<li>Behandle håndverkeren med respekt – det smitter ofte over på kvaliteten og viljen til å strekke seg.</li>
+</ul>
+<h3>Hva med byggesøknad og tillatelser?</h3>
+<p>Som eier (tiltakshaver) har du også ansvar for at nødvendig søknad blir sendt før søknadspliktige arbeider starter, selv om et fagfirma ofte gjør selve søknadsjobben. Les mer om dette i artikkelen om hvem som søker byggetillatelse.</p>
+<h3>Hva skjer hvis du ikke oppfyller pliktene dine?</h3>
+<p>Hvis en forsinkelse skyldes deg – for eksempel at du ikke ga tilgang eller ikke tok en beslutning – kan du normalt ikke klage på at arbeidet ble forsinket av den grunn. I noen tilfeller kan håndverkeren også kreve dekning for ekstra kostnader, for eksempel en bomtur eller ekstra rigging. Derfor er det i din egen interesse å gjøre din del på en ryddig måte.</p>
+<h3>Et godt prosjekt starter med deg</h3>
+<p>Tenk på deg selv som prosjektets oppdragsgiver. Jo bedre du forbereder deg, jo enklere blir det for håndverkeren å levere det du ønsker. Klare ønsker, raske svar og god tilgang gir nesten alltid et bedre sluttresultat.</p>
+<h3>Ditt ansvar for å undersøke før du velger håndverker</h3>
+<p>En del av forbrukeransvaret ligger allerede før jobben starter: å velge en seriøs håndverker. Du bør sjekke at firmaet er registrert i Brønnøysundregistrene (har et gyldig organisasjonsnummer), be om referanser fra tidligere kunder, og innhente skriftlig tilbud. Dette er ikke en plikt i lovens forstand, men en svært klok investering. Velger du useriøst, kan du ikke regne med at lovens regler redder deg fra alle problemer.</p>
+<p>Eksempel: Truls får et muntlig "supertilbud" fra en som banker på døren og tilbyr å fikse taket samme dag. Han hopper over å sjekke firmaet. Det viser seg å være en useriøs aktør uten fast adresse, og arbeidet blir elendig. En enkel sjekk i Brønnøysundregistrene på forhånd hadde avslørt at her var det grunn til skepsis.</p>
+<h3>Ditt ansvar for å si fra om spesielle forhold</h3>
+<p>Hvis det er noe håndverkeren bør vite om boligen din – for eksempel at det er gulvvarme i gulvet, skjulte rør et bestemt sted, eller at huset er gammelt med spesielle løsninger – er det smart å fortelle dette på forhånd. Det hjelper håndverkeren å gjøre en god jobb og unngå skader.</p>
+<h3>Sjekkliste over dine plikter</h3>
+<ul>
+<li>Har du sørget for tilgang til arbeidsstedet?</li>
+<li>Er området ryddet og klart?</li>
+<li>Har du tatt de nødvendige beslutningene i tide?</li>
+<li>Er du tilgjengelig for spørsmål underveis?</li>
+<li>Betaler du som avtalt (med rett til å holde tilbake ved mangel)?</li>
+<li>Er nødvendig byggesøknad i orden?</li>
+<li>Kommuniserer du tydelig og skriftlig?</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Dine viktigste plikter som forbruker er å gi tilgang, ta beslutninger i tide og betale som avtalt. Gjør du din del – og kommuniserer tydelig og skriftlig – legger du grunnlaget for at prosjektet går smidig, blir ferdig i tide og holder god kvalitet. Et godt resultat er et lagarbeid mellom deg og håndverkeren.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

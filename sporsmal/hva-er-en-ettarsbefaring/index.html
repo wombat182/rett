@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en ettårsbefaring? — Rettsregel</title>
+<meta name="description" content="Kort sagt: En ettårsbefaring er en ny, grundig gjennomgang av boligen din omtrent ett år etter at du overtok den.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-ettarsbefaring/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en ettårsbefaring?">
+<meta property="og:description" content="Kort sagt: En ettårsbefaring er en ny, grundig gjennomgang av boligen din omtrent ett år etter at du overtok den.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-ettarsbefaring/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en ettårsbefaring?">
+<meta name="twitter:description" content="Kort sagt: En ettårsbefaring er en ny, grundig gjennomgang av boligen din omtrent ett år etter at du overtok den.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er en ettårsbefaring?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: En ettårsbefaring er en ny, grundig gjennomgang av boligen din omtrent ett år etter at du overtok den. Entreprenøren skal innkalle deg, og dere går gjennom huset på nytt for å fange opp mangler som har vist seg etter at du flyttet inn (bustadoppføringslova § 16 – regelen om en befaring omtrent ett år etter overtakelsen).</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 16</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/16/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 16</div>
+  <div class="related-card-title">Ettårsbefaringen er din andre sjanse</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: En ettårsbefaring er en ny, grundig gjennomgang av boligen din omtrent ett år etter at du overtok den. Entreprenøren skal innkalle deg, og dere går gjennom huset på nytt for å fange opp mangler som har vist seg etter at du flyttet inn (bustadoppføringslova § 16 – regelen om en befaring omtrent ett år etter overtakelsen).</p>
+<h3>Hvorfor finnes det en slik befaring?</h3>
+<p>Mange feil og svakheter dukker rett og slett ikke opp på overtakelsesdagen. Et nytt hus "setter seg" gjennom det første året. Treverk tørker og krymper, det kommer en vinter med tele og frost, en sommer med varme, og du oppdager etter hvert hvordan ting fungerer i praktisk, daglig bruk. Sprekker i hjørner, dører som har begynt å henge, gulv som knirker, eller en fuktplett som først nå viser seg – alt dette er typiske "ettårsfeil" som det ville vært umulig å oppdage den dagen du fikk nøklene.</p>
+<p>Loven sier derfor at det skal være en egen runde etter cirka ett år, slik at disse forsinkede manglene blir oppdaget og rettet mens boligen fortsatt er fersk og garantiene er på plass. Det er en innebygd trygghet for deg som forbruker.</p>
+<h3>Hvem tar initiativet?</h3>
+<p>Det er <strong>entreprenørens ansvar</strong> å kalle deg inn til ettårsbefaringen. Du skal altså i utgangspunktet ikke trenge å mase for å få den i stand. Men erfaringen viser at noen entreprenører glemmer det, utsetter det, eller har gått videre til andre prosjekter – derfor er det lurt at du selv setter en påminnelse i kalenderen rundt 10–11 måneder etter overtakelsen. Hører du ingenting, send en vennlig e-post og be om at befaringen blir avtalt. På den måten sikrer du at den faktisk skjer mens den fortsatt har størst verdi for deg.</p>
+<h3>Et eksempel fra virkeligheten</h3>
+<p>Ahmed og Lise overtok eneboligen sin i juni. Gjennom høsten merket de at en innerdør hadde begynt å skrape mot karmen, at det hadde kommet en tynn sprekk over kjøkkendøra, og at parketten knirket i gangen. De skrev ned alt etter hvert som de oppdaget det, på en enkel liste festet med magnet på kjøleskapet. Da entreprenøren kalte inn til ettårsbefaring i mai året etter, hadde de hele lista klar og slapp å lete i hukommelsen. På befaringen ble alle punktene notert i en protokoll, og entreprenøren utbedret dem i løpet av sommeren. Listen på kjøleskapet viste seg å være verdt sin vekt i gull.</p>
+<h3>Hva er forskjellen på overtakelse og ettårsbefaring?</h3>
+<ul>
+<li><strong>Overtakelsen</strong> er ved innflytting og handler om det dere kan se der og da, før du har tatt boligen i bruk.</li>
+<li><strong>Ettårsbefaringen</strong> er ett år senere og handler om det som har vist seg etter at du faktisk har bodd der gjennom alle årstider.</li>
+</ul>
+<p>Begge er protokollerte gjennomganger der feil skrives ned og skal rettes. Til sammen gir de deg to organiserte sjanser til å få boligen din slik den skal være – én før du flytter inn, og én når du har levd med den en stund.</p>
+<h3>Hvordan forberede deg</h3>
+<ol>
+<li><strong>Før liste hele året.</strong> Skriv ned alt rart du merker, store og små ting, med dato for når du la merke til det.</li>
+<li><strong>Ta bilder underveis.</strong> Spesielt av ting som endrer seg, som en sprekk som vokser eller en fuktplett som brer seg.</li>
+<li><strong>Gå en ekstra runde dagen før.</strong> Sjekk vinduer, dører, fuger, overflater og det tekniske på nytt med friske øyne.</li>
+<li><strong>Møt opp.</strong> Ikke nøy deg med å sende lista på forhånd – vær til stede så du kan peke, forklare og forsikre deg om at alt blir forstått riktig.</li>
+<li><strong>Få alt inn i protokollen.</strong> Akkurat som ved overtakelsen er det det skriftlige som teller.</li>
+</ol>
+<h3>Hva slags ting hører hjemme på en ettårsbefaring?</h3>
+<p>Typiske eksempler er setningssprekker, dører og vinduer som har endret seg, knirk i gulv, fuger som har sluppet, maling som har sprukket, og tekniske ting som ventilasjon eller varme som ikke fungerer som forutsatt. Mange av disse er nettopp slike som vanskelig kan oppdages før huset har stått gjennom et helt år.</p>
+<h3>Er ettårsbefaringen din siste sjanse?</h3>
+<p>Nei, heldigvis ikke. Du kan reklamere på (melde fra om) mangler også utenom befaringene, så lenge du gjør det innen rimelig tid etter at du oppdaget dem og innen de lange reklamasjonsfristene. Men ettårsbefaringen er en grei, samlet anledning til å ta alt på én gang – så det er dumt å la den gå fra seg. Den gir også en naturlig anledning til å rydde opp i flere småting i én operasjon.</p>
+<h3>Hvorfor akkurat ett år, og ikke to eller tre?</h3>
+<p>Ettårspunktet er valgt med omhu. Et år er nettopp den tiden det tar for boligen å gå gjennom alle de fire årstidene minst én gang – en hel fyringssesong med tørr inneluft, en vår med snøsmelting og fukt, en sommer med varme og en høst med regn. Det er disse vekslingene som "presser frem" de fleste setnings- og krympeskadene. Hadde befaringen vært etter bare et par måneder, ville mange av disse feilene ennå ikke vist seg. Etter ett år har boligen rukket å vise sitt sanne ansikt, samtidig som det fortsatt er god tid igjen på reklamasjonsfristene. Det er altså et gjennomtenkt balansepunkt, ikke et tilfeldig valgt tidspunkt.</p>
+<h3>Hva om noe haster lenge før ettårsdagen?</h3>
+<p>Selv om ettårsbefaringen er en fin samleanledning, skal du aldri vente på den hvis noe haster. Oppdager du fukt, en lekkasje, et elektrisk problem eller noe annet som kan bli verre eller farligere, reklamerer du med en gang og ber om at det utbedres umiddelbart. Ettårsbefaringen er for de tingene som tåler å vente til den naturlige gjennomgangen – ikke for akutte problemer. Tenk på den som en planlagt service, ikke som førstehjelp.</p>
+<h3>Kort oppsummert</h3>
+<p>Ettårsbefaringen er en grundig gjennomgang av boligen omtrent ett år etter overtakelsen, der mangler som har vist seg ved bruk blir notert og rettet (§ 16). Entreprenøren skal innkalle deg, men sett selv en påminnelse for sikkerhets skyld. Før liste gjennom hele året, møt opp, og pass på at alt havner i protokollen. Det er ikke din siste sjanse til å reklamere, men det er en av de viktigste.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

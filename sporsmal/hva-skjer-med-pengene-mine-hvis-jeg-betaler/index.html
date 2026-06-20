@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer med pengene mine hvis jeg betaler forskudd? — Rettsregel</title>
+<meta name="description" content="Det avhenger helt av om forskuddet er sikret eller ikke. Med forskuddsgaranti er pengene trygge — du kan kreve dem tilbake fra banken hvis noe går galt.…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-med-pengene-mine-hvis-jeg-betaler/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer med pengene mine hvis jeg betaler forskudd?">
+<meta property="og:description" content="Det avhenger helt av om forskuddet er sikret eller ikke. Med forskuddsgaranti er pengene trygge — du kan kreve dem tilbake fra banken hvis noe går galt.…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-med-pengene-mine-hvis-jeg-betaler/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer med pengene mine hvis jeg betaler forskudd?">
+<meta name="twitter:description" content="Det avhenger helt av om forskuddet er sikret eller ikke. Med forskuddsgaranti er pengene trygge — du kan kreve dem tilbake fra banken hvis noe går galt.…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Hva skjer med pengene mine hvis jeg betaler forskudd?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det avhenger helt av om forskuddet er sikret eller ikke. Med forskuddsgaranti er pengene trygge — du kan kreve dem tilbake fra banken hvis noe går galt. Uten garanti kan du i verste fall tape dem hvis entreprenøren går konkurs.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 47</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/47/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 47</div>
+  <div class="related-card-title">Strenge regler for forskudd og avdrag</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>To helt ulike utfall</h3>
+<p>La oss følge to familier som begge betaler 350 000 kroner i forskudd, men som håndterer det forskjellig.</p>
+<p><strong>Familie A — med forskuddsgaranti:</strong>
+De krever selvskyldnergaranti for de 350 000 kronene før de betaler (bustadoppføringslova § 47). Entreprenørens bank stiller garantien. Tre uker senere går entreprenøren overraskende konkurs uten å ha gjort arbeidet. Familie A henvender seg til banken, viser garantibeviset, og får de 350 000 kronene utbetalt. Pengene er reddet.</p>
+<p><strong>Familie B — uten garanti:</strong>
+De betaler de 350 000 kronene rett til entreprenøren uten å kreve noen sikkerhet. Samme konkurs rammer dem. Nå er pengene allerede borte fra kontoen deres, og arbeidet finnes ikke. Kravet deres havner i konkursboet, der forbrukere sjelden får dekket alt — om de får noe i det hele tatt. Familie B risikerer å tape hele eller deler av de 350 000 kronene.</p>
+<p>Samme beløp, samme uflaks — men helt ulik slutt. Forskjellen er det lille garantibeviset.</p>
+<h3>Hvorfor forskudd er ekstra sårbart</h3>
+<p>Når du betaler etter fremdrift, ligger verdiene i huset ditt. Går entreprenøren konkurs, har du i det minste det som allerede er bygget — grunnmur, reisverk, tak. Forskudd er annerledes: pengene har forlatt deg, men ingen tilsvarende verdi har kommet inn ennå. Du har altså betalt for luft, i påvente av at arbeidet skal komme. Derfor har loven en egen beskyttelse nettopp her — forskuddsgarantien (§ 47).</p>
+<h3>Hva pengene dine «gjør» i hvert tilfelle</h3>
+<ul>
+<li><strong>Sikret forskudd:</strong> Pengene er beskyttet av en garanti du kan trekke på. Skjer det noe, går du på banken med garantibeviset.</li>
+<li><strong>Usikret forskudd:</strong> Pengene er prisgitt at entreprenøren faktisk gjør jobben og holder seg solvent. Skjer det noe, står du i kø i konkursboet med svært usikker utsikt til å få noe igjen.</li>
+</ul>
+<h3>Steg for steg for å beskytte forskuddet</h3>
+<ol>
+<li><strong>Avklar om betalingen er forskudd.</strong> Krever entreprenøren mer enn det er gjort arbeid for? Da er differansen forskudd.</li>
+<li><strong>Krev garanti før utbetaling.</strong> Ikke etter — før. Når pengene først er sendt, er det for sent å forhandle om sikkerhet.</li>
+<li><strong>Les garantibeviset.</strong> Sjekk at beløpet stemmer og at garantisten er en bank eller et forsikringsselskap.</li>
+<li><strong>Vurder å heller betale etter fremdrift.</strong> Får du ikke garanti, er dette det trygge alternativet, og det er din rett.</li>
+</ol>
+<h3>Et ekstra regneeksempel</h3>
+<p>Tenk at du underveis i prosjektet har betalt totalt 2 500 000 kroner, men entreprenøren bare har utført arbeid for 2 200 000 kroner. Da har du i praksis 300 000 kroner stående som forskudd. Spør deg selv: er disse 300 000 kronene sikret med garanti? Hvis ikke, er du mer eksponert enn du kanskje trodde, og du bør ta grep — for eksempel ved å stanse videre betaling til fremdriften har tatt igjen det du har betalt, eller ved å kreve det overskytende tilbakeført.</p>
+<h3>Et vanlig spørsmål: «Men entreprenøren virker jo så seriøs?»</h3>
+<p>Det er lett å tenke at akkurat din entreprenør aldri kommer til å gå konkurs. Og forhåpentligvis stemmer det. Men poenget med garantien er nettopp at den koster deg ingenting når alt går bra — den merkes ikke i det hele tatt. Den koster bare entreprenøren litt å skaffe. Til gjengjeld redder den deg fullstendig den ene gangen noe faktisk går galt. Det er en billig forsikring mot et stort tap, og du bør aldri gi avkall på den fordi alt «ser bra ut» i øyeblikket.</p>
+<h3>Konkurs er ikke det eneste som kan skje</h3>
+<p>Vi snakker mye om konkurs, fordi det er det mest dramatiske. Men forskuddet ditt kan også komme i fare i mildere situasjoner: kanskje entreprenøren får alvorlige likviditetsproblemer og ikke klarer å levere, eller han blir uenig med deg og stanser arbeidet. Også da er det godt å vite at forskuddet er sikret. Med en forskuddsgaranti i bunnen står du tryggere i enhver forhandling, fordi du ikke er redd for å miste penger du allerede har betalt. Det gir deg ro og en bedre forhandlingsposisjon hvis det skulle bli uenighet underveis.</p>
+<h3>Et eksempel på hvor mye som kan stå på spill</h3>
+<p>Tenk deg en familie som betaler 250 000 kroner i forskudd for materialer, 250 000 kroner i forskudd for et tidlig avdrag, og ytterligere 100 000 kroner fordi en faktura kom litt foran fremdriften. Til sammen er det 600 000 kroner som ligger foran arbeidet. Uten garanti er hele dette beløpet i fare ved en konkurs. Med forskuddsgaranti kan hele summen kreves tilbake fra garantisten. 600 000 kroner er svimlende mye penger for de fleste familier — og nettopp derfor er det verdt å være nøye med sikkerheten.</p>
+<h3>Hva du gjør hvis pengene allerede er betalt usikret</h3>
+<p>Kanskje leser du dette etter at du allerede har betalt et usikret forskudd. Ikke fortvil — det er fortsatt grep å ta. Be entreprenøren skriftlig om å stille en forskuddsgaranti i ettertid, slik han egentlig skulle ha gjort. Vurder også å holde tilbake fremtidige betalinger til forholdet er i orden, eller å betale strengt etter fremdrift fra nå av slik at du ikke ligger enda lenger foran arbeidet. Hvis entreprenøren nekter og du blir urolig for økonomien hans, bør du søke råd hos en jurist eller Forbrukerrådet raskt. Jo tidligere du handler, desto større er sjansen for å begrense risikoen.</p>
+<h3>En oppfordring til å være litt «kjedelig»</h3>
+<p>Det kan føles smålig å kreve garantibevis og kvitteringer av en hyggelig entreprenør du har god kjemi med. Men i pengespørsmål lønner det seg å være litt kjedelig og grundig. De seriøse entreprenørene respekterer en forbruker som har orden på sakene — det gjør samarbeidet ryddigere for begge. Og skulle du være uheldig og treffe på et firma som sliter, er det nettopp grundigheten din som redder pengene. Å be om sikkerhet er ikke mistillit; det er sunn fornuft i en av de største økonomiske beslutningene du tar i livet.</p>
+<h3>Kort oppsummert</h3>
+<p>Med forskuddsgaranti er pengene dine trygge: går entreprenøren konkurs, kan du kreve forskuddet tilbake fra banken (§ 47). Uten garanti risikerer du å tape pengene i et konkursbo. Krev derfor alltid sikkerhet før du betaler forskudd, eller betal heller etter hvert som arbeidet faktisk blir gjort.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

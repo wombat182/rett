@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan sikrer jeg meg mot at utbyggeren går konkurs? — Rettsregel</title>
+<meta name="description" content="Du kan ikke hindre at en utbygger går konkurs, men du kan sikre pengene dine nesten fullstendig. De tre viktigste grepene er: krev en § 12-garanti…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-sikrer-jeg-meg-mot-at-utbyggeren-gar/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan sikrer jeg meg mot at utbyggeren går konkurs?">
+<meta property="og:description" content="Du kan ikke hindre at en utbygger går konkurs, men du kan sikre pengene dine nesten fullstendig. De tre viktigste grepene er: krev en § 12-garanti…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-sikrer-jeg-meg-mot-at-utbyggeren-gar/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan sikrer jeg meg mot at utbyggeren går konkurs?">
+<meta name="twitter:description" content="Du kan ikke hindre at en utbygger går konkurs, men du kan sikre pengene dine nesten fullstendig. De tre viktigste grepene er: krev en § 12-garanti…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvordan sikrer jeg meg mot at utbyggeren går konkurs?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du kan ikke hindre at en utbygger går konkurs, men du kan sikre **pengene dine** nesten fullstendig. De tre viktigste grepene er: krev en **§ 12-garanti** (utbyggerens garanti for at avtalen oppfylles), krev en **§ 47-forskuddsgaranti** hvis du betaler på forskudd, og la **betalingen følge byggingens fremdrift**. Gjør du dette, er du beskyttet selv om det verste skulle skje.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 12 og § 47</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/12/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 12</div>
+  <div class="related-card-title">Bankgarantien som beskytter deg mot konkurs</div>
+</a><a href="../../lover/bustadoppforingslova/47/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 47</div>
+  <div class="related-card-title">Strenge regler for forskudd og avdrag</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Tenk som en sikkerhetsekspert, ikke en optimist</h3>
+<p>De fleste som bygger ny bolig, gleder seg så mye at de glemmer å tenke «hva om det går galt?». Men en konkurs kommer sjelden med forvarsel. Et solid byggefirma kan rammes av en tapt storkontrakt, et stort prosjekt som sprekker, eller bare en kraftig renteøkning. Derfor handler god sikring ikke om mistillit, men om sunn forsikringstankegang.</p>
+<p>La oss følge Ahmed, som skal bygge tomannsbolig til 6,8 millioner. Han bestemte seg tidlig for å gjøre alt «etter boka». Slik gikk han frem.</p>
+<h3>Steg 1: Sjekk firmaet før du signerer</h3>
+<p>Ahmed brukte en kveld på research:</p>
+<ul>
+<li>Han slo opp firmaet i <strong>Brønnøysundregistrene</strong> og leste de siste årsregnskapene. Gikk firmaet med store underskudd flere år på rad?</li>
+<li>Han søkte etter <strong>betalingsanmerkninger</strong> og pågående rettssaker.</li>
+<li>Han spurte etter <strong>referanser</strong> fra tidligere kunder og ringte to av dem.</li>
+<li>Han sjekket hvor lenge firmaet hadde eksistert. Et helt nystartet selskap uten historikk er ikke automatisk dårlig, men gir mindre å gå etter.</li>
+</ul>
+<h3>Steg 2: Krev § 12-garantien</h3>
+<p>Dette er den viktigste sikkerheten. Bustadoppføringslova § 12 pålegger utbyggeren å stille en <strong>garanti for at avtalen oppfylles</strong>. Garantien stilles av en bank eller et forsikringsselskap og virker slik at hvis utbyggeren ikke leverer, kan du kreve dekning fra garantisten.</p>
+<p>Det Ahmed merket seg:</p>
+<ul>
+<li>Garantien skal som hovedregel være på plass <strong>straks etter at kontrakten er inngått</strong>, og uansett <strong>før byggearbeidet starter</strong>.</li>
+<li>I selve byggeperioden skal garantien dekke en sum tilsvarende minst <strong>tre prosent</strong> av prisen (mer hvis avtalen også omfatter tomtekjøp på visse vilkår).</li>
+<li>Etter overtakelse økes dekningen, og garantien gjelder <strong>i fem år</strong> etter overtakelsen. Da er du dekket for feil som dukker opp i ettertid.</li>
+<li><strong>Du har rett til å holde tilbake hele betalingen</strong> helt til det er dokumentert at garantien er stilt. Det er din sterkeste forhandlingskort.</li>
+</ul>
+<p>Ahmed betalte derfor ingenting før han hadde fått garantidokumentet i hånden og lest det nøye.</p>
+<h3>Steg 3: Krev § 47-forskuddsgaranti hvis du betaler tidlig</h3>
+<p>Skulle Ahmed bli bedt om å betale raskere enn byggingen tilsa, visste han at en <strong>forskuddsgaranti</strong> etter § 47 må dekke akkurat det forskuddet. Uten den ville han nektet å betale.</p>
+<h3>Steg 4: Knytt betalingen til konkrete milepæler</h3>
+<p>Ahmed avtalte en betalingsplan der hver innbetaling var koblet til en synlig milepæl:</p>
+<table>
+<thead>
+<tr>
+<th>Milepæl</th>
+<th>Andel av prisen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ferdig grunnmur/fundament</td>
+<td>en del</td>
+</tr>
+<tr>
+<td>Tett bygg (vegger og tak på plass)</td>
+<td>en del</td>
+</tr>
+<tr>
+<td>Ferdigstillelse og overtakelse</td>
+<td>en del</td>
+</tr>
+<tr>
+<td>Holdt tilbake til etter overtakelse</td>
+<td>minst 10 %</td>
+</tr>
+</tbody>
+</table>
+<p>Slik ble han aldri liggende «foran» med betalingen. Skulle utbyggeren gå konkurs, ville Ahmed kun ha betalt for det som faktisk var bygget.</p>
+<h3>Steg 5: Ta vare på papirene</h3>
+<p>Ahmed samlet alt i én perm: kontrakt, garantidokumenter, betalingsplan, kvitteringer og all e-postkorrespondanse. Dette er gull verdt hvis det oppstår en tvist eller en konkurs, fordi du da raskt kan dokumentere hva som er avtalt og betalt.</p>
+<h3>Steg 6: Vær oppmerksom på faresignaler underveis</h3>
+<p>Selv etter at kontrakten er signert, lønner det seg å holde øynene åpne. Noen tegn bør få varsellampene til å blinke:</p>
+<ul>
+<li>Utbyggeren <strong>ber om penger raskere</strong> enn fremdriften skulle tilsi, og uten å kunne dokumentere garanti.</li>
+<li>Det blir <strong>stille på byggeplassen</strong> i lange perioder uten god forklaring.</li>
+<li>Underleverandører eller håndverkere klager på at de <strong>ikke får betalt</strong>.</li>
+<li>Utbyggeren er vanskelig å få tak i, eller svarene blir vage.</li>
+</ul>
+<p>Oppdager du dette, ikke betal mer enn du må, sjekk garantistatusen din på nytt, og søk råd. Det er bedre å stille spørsmål tidlig enn å oppdage problemet når pengene er borte.</p>
+<h3>Hva sikringen IKKE dekker</h3>
+<p>Vær realistisk: garantiene sikrer pengene og oppfyllelsen av avtalen, men de gir deg ikke nødvendigvis huset til avtalt tid. Ved en konkurs må du som regel finne en ny entreprenør, og det tar tid. Forsinkelse og praktisk styr må du regne med – men det økonomiske tapet er det garantiene skal fange opp.</p>
+<p>Garantiene har også et tak, altså en øvre grense for hva som dekkes. § 12-garantien dekker i byggeperioden en sum tilsvarende minst tre prosent av prisen, og en høyere andel etter overtakelse. Derfor er det ekstra viktig at du aldri ligger langt foran med betalingen – da kan et udekket beløp havne utenfor garantien.</p>
+<h3>En kort sjekkliste før du signerer</h3>
+<ul>
+<li>[ ] Har jeg sjekket firmaet i Brønnøysundregistrene og lest regnskapene?</li>
+<li>[ ] Har jeg ringt minst én tidligere kunde?</li>
+<li>[ ] Er § 12-garantien dokumentert før jeg betaler noe?</li>
+<li>[ ] Krever jeg § 47-forskuddsgaranti hvis jeg skal betale tidlig?</li>
+<li>[ ] Følger betalingsplanen konkrete milepæler?</li>
+<li>[ ] Står minst 10 % igjen til etter overtakelse?</li>
+<li>[ ] Har jeg samlet alle papirer i én perm?</li>
+</ul>
+<p>Kan du krysse av alt, har du gjort jobben en sikkerhetsekspert ville gjort.</p>
+<h3>Hva med å velge en seriøs aktør fra start?</h3>
+<p>Den aller beste sikringen er forebyggende: velg en utbygger med solid rykte og ordnede forhold. Et godt tegn er at firmaet er <strong>medlem av en bransjeorganisasjon</strong> som Boligprodusentenes Forening eller en tilsvarende sammenslutning. Da har du dessuten en enkel klagevei (Boligtvistnemnda) hvis det skulle oppstå en tvist. Be også om å se en standardkontrakt – seriøse aktører bruker bransjens kontraktsmaler som balanserer hensynet til begge parter, ikke hjemmesnekrede avtaler som ensidig favoriserer utbyggeren.</p>
+<p>Ahmed gjorde nettopp dette. Han valgte et firma som var medlem av en bransjeorganisasjon og brukte en standardkontrakt. Det ga ham ikke bare bedre garantier på papiret, men også en trygg følelse gjennom hele byggeprosessen. Da det dukket opp en mindre uenighet om et kjøkkenskap, ble den løst med en telefonsamtale – nettopp fordi begge parter forholdt seg til en ryddig avtale.</p>
+<h3>Kort oppsummert</h3>
+<p>Du kan ikke styre om utbyggeren går konkurs, men du kan styre din egen risiko. Sjekk firmaet før du signerer, krev <strong>§ 12-garantien</strong> og hold tilbake betaling til den er dokumentert, krev <strong>§ 47-forskuddsgaranti</strong> ved tidlig betaling, og la <strong>betalingen følge fremdriften</strong> med minst 10 % igjen til etter overtakelse. Med disse grepene er pengene dine trygge selv i et mareritt-scenario.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

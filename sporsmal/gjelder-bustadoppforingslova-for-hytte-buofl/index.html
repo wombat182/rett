@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gjelder bustadoppføringslova for hytte? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/gjelder-bustadoppforingslova-for-hytte-buofl/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Gjelder bustadoppføringslova for hytte?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/gjelder-bustadoppforingslova-for-hytte-buofl/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gjelder bustadoppføringslova for hytte?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Gjelder bustadoppføringslova for hytte?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Bustadoppføringslova gjelder for fritidsbolig på samme måte som for helårsbolig. Skal du bygge ny hytte med en entreprenør, eller kjøpe en hytte under oppføring av en utbygger, er du like godt beskyttet som om det var et hus du skulle bo i året rundt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Bustadoppføringslova gjelder for fritidsbolig på samme måte som for helårsbolig. Skal du bygge ny hytte med en entreprenør, eller kjøpe en hytte under oppføring av en utbygger, er du like godt beskyttet som om det var et hus du skulle bo i året rundt.</p>
+<h3>Hytta er ikke glemt i loven</h3>
+<p>En vanlig misforståelse er at en lov om «oppføring av ny bustad» bare gjelder boliger man bor i fast. Men loven sier uttrykkelig at oppføring av ny eierbolig <strong>også omfatter fritidsbolig</strong>. Med andre ord: hytta di teller. Enten det er en enkel skihytte på fjellet, en sjønær sommerhytte eller en moderne fritidsbolig med alle fasiliteter, gjelder de samme reglene.</p>
+<p>Eksempel: Eskil og Marit vil bygge en hytte ved et vann i innlandet. De inngår avtale med hyttebyggeren Tømra Hytter AS, som leverer og setter opp en ny fritidsbolig. Selv om dette er en hytte og ikke en bolig de skal bo i fast, gjelder bustadoppføringslova. De har rett til garanti, dagmulkt ved forsinkelse og krav om retting av feil – nøyaktig som ved et helårshus.</p>
+<h3>Begge byggesituasjonene gjelder også for hytte</h3>
+<p>De samme to grunnsituasjonene fra artikkel 2 gjelder for fritidsbolig:</p>
+<ul>
+<li><strong>Du bygger ny hytte på egen tomt</strong> og leier inn en entreprenør til arbeidet.</li>
+<li><strong>Du kjøper en hytte under oppføring</strong> av en utbygger, der du får rett til grunn sammen med en hytte som ikke er fullført.</li>
+</ul>
+<p>Eksempel på det siste: Lene kjøper en hytte i et nytt hyttefelt som utbygger Fjellgrend AS utvikler. Hun signerer mens hytta fortsatt er under bygging og får rett til tomten sammen med den. Bustadoppføringslova gjelder.</p>
+<h3>Hva med ferdighytter og elementhytter?</h3>
+<p>Mange hytter leveres som «ferdighytter» eller «elementhytter», der store deler produseres på fabrikk og settes opp på tomten. Så lenge en næringsdrivende står for oppføringen av den nye hytta på tomten din, er du innenfor bustadoppføringslova. Det avgjørende er ikke hvordan hytta er produsert, men at det dreier seg om oppføring av en ny fritidsbolig der en profesjonell gjør jobben.</p>
+<p>En liten nyanse er verdt å nevne: hvis du bare kjøper en byggesett-pakke med materialer som du selv skal sette opp, uten at firmaet står for selve oppføringen, kan situasjonen være en annen. Da kjøper du i realiteten varer, og ikke en byggetjeneste, og andre regler kan komme inn. Men i det vanligste tilfellet – der firmaet både leverer og monterer hytta på tomten din – gjelder bustadoppføringslova, fordi entreprenøren da står for oppføringen av den nye fritidsboligen.</p>
+<h3>Hva med kjøp av ferdig hytte?</h3>
+<p>Her er det viktig å være presis. Loven gjelder bare så lenge hytta <strong>ikke er fullført</strong> ved avtaleinngåelsen. Kjøper du en ferdig hytte – enten en brukt hytte eller en helt ferdigstilt ny hytte – gjelder avhendingsloven i stedet, ikke bustadoppføringslova. Den avgjørende testen er den samme som for boliger: var fritidsboligen ferdig da du signerte?</p>
+<p>Eksempel: Onkel Harald selger sin 15 år gamle hytte til nevøen Kristoffer. Hytta står ferdig og har vært i bruk i mange år. Her gjelder avhendingsloven, fordi det ikke gjenstår byggearbeid og selgeren ikke er en næringsdrivende entreprenør. Hadde derimot et hytteutbyggerfirma solgt Kristoffer en ny hytte som ennå ikke var bygd ferdig, ville bustadoppføringslova gjeldt. Det er altså to ting som skiller: at det gjenstår byggearbeid, og at selgeren er en profesjonell.</p>
+<h3>Gjelder dette meg?</h3>
+<ul>
+<li>[ ] Det er en fritidsbolig (hytte) som skal bygges eller kjøpes under oppføring.</li>
+<li>[ ] Jeg er en privatperson som handler til eget bruk.</li>
+<li>[ ] Motparten er en næringsdrivende entreprenør eller utbygger.</li>
+<li>[ ] Hytta er ikke ferdig bygd når avtalen inngås.</li>
+</ul>
+<p>Fire kryss betyr at du er innenfor bustadoppføringslova.</p>
+<h3>Spiller det noen rolle hvilken standard hytta har?</h3>
+<p>Nei. Loven skiller ikke mellom en enkel hytte uten innlagt vann og en luksuriøs fritidsbolig med høyt teknisk nivå. Så lenge det dreier seg om oppføring av en ny fritidsbolig der en næringsdrivende gjør jobben, har du de samme rettighetene. En tømmerhytte, en moderne arkitekttegnet fritidsbolig og en rimelig modulhytte er alle omfattet på lik linje. Det er forholdet mellom forbruker og entreprenør, og det at noe nytt bygges, som avgjør – ikke prislapp eller standard.</p>
+<p>Det spiller heller ingen rolle hvor i landet hytta ligger, eller om den brukes sommer eller vinter. Enten fritidsboligen ligger ved kysten, på fjellet eller i skogen, er reglene de samme. Det viktige er ikke beliggenheten eller bruken, men at det er en ny fritidsbolig som føres opp av en profesjonell for deg som forbruker.</p>
+<h3>Et eksempel på hvorfor vernet betyr noe på hytta</h3>
+<p>Tenk deg at Eskil og Marit fra eksempelet over oppdager etter et år at hyttetaket lekker fordi det er lagt feil. Fordi bustadoppføringslova gjelder, kan de reklamere på dette som en mangel og kreve at Tømra Hytter retter feilen. De har også garantien å støtte seg på dersom firmaet skulle vegre seg. Hadde de bygd hytta helt selv, ville de ikke hatt noen profesjonell motpart å rette kravet mot. Dette viser hvor mye det er verdt å ha en næringsdrivende entreprenør og loven i ryggen.</p>
+<h3>Praktiske råd ved hyttebygging</h3>
+<p>Hyttebygging har noen egne fallgruver, ofte fordi tomtene ligger avsides og forholdene er krevende:</p>
+<ol>
+<li><strong>Avklar adkomst og infrastruktur.</strong> Vei, vann, strøm og avløp kan være dyrt og komplisert på en hyttetomt. Få med i kontrakten hvem som har ansvaret for hva.</li>
+<li><strong>Sjekk værforbehold.</strong> Bygging på fjellet kan forsinkes av vær og føre. Forstå hva kontrakten sier om forsinkelse og dagmulkt.</li>
+<li><strong>Krev garanti, akkurat som for hus.</strong> Garantiretten gjelder fullt ut også for hytter.</li>
+<li><strong>Få tilvalg skriftlig.</strong> Vil du ha peis, hems eller utvidet terrasse, så avtal det skriftlig med pris.</li>
+<li><strong>Vær nøye med overtakelsen.</strong> Gå gjennom hytta sammen med entreprenøren og noter alt som ikke er som avtalt.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Ja, bustadoppføringslova gjelder for hytter. Loven likestiller fritidsbolig med helårsbolig, så du har de samme rettighetene – garanti, dagmulkt og krav om retting – enten du bygger ny hytte på egen tomt eller kjøper en hytte under oppføring av en utbygger. Det gjelder også ferdighytter og elementhytter, så lenge en profesjonell står for oppføringen. Men merk: kjøper du en ferdig hytte, gjelder avhendingsloven i stedet. Den avgjørende testen er om hytta var fullført da du signerte.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

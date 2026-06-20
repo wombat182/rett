@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis håndverkeren ikke har forsikring? — Rettsregel</title>
+<meta name="description" content="Hvis håndverkeren ikke har ansvarsforsikring, står du dårligere stilt hvis noe går galt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-ikke-har-forsikring/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis håndverkeren ikke har forsikring?">
+<meta property="og:description" content="Hvis håndverkeren ikke har ansvarsforsikring, står du dårligere stilt hvis noe går galt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-ikke-har-forsikring/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis håndverkeren ikke har forsikring?">
+<meta name="twitter:description" content="Hvis håndverkeren ikke har ansvarsforsikring, står du dårligere stilt hvis noe går galt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis håndverkeren ikke har forsikring?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis håndverkeren ikke har ansvarsforsikring, står du dårligere stilt hvis noe går galt. En seriøs håndverker skal ha en slik forsikring, som dekker skader han påfører boligen din. Mangler den, må du som regel kreve erstatning direkte fra håndverkeren, og hvis han ikke kan betale, risikerer du å stå igjen med tapet selv. Derfor lønner det seg å sjekke forsikringen før jobben starter.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Hvis håndverkeren ikke har ansvarsforsikring, står du dårligere stilt hvis noe går galt. En seriøs håndverker skal ha en slik forsikring, som dekker skader han påfører boligen din. Mangler den, må du som regel kreve erstatning direkte fra håndverkeren, og hvis han ikke kan betale, risikerer du å stå igjen med tapet selv. Derfor lønner det seg å sjekke forsikringen før jobben starter.</p>
+<h3>Hva er ansvarsforsikring, egentlig?</h3>
+<p>En ansvarsforsikring er en forsikring håndverkeren tegner for virksomheten sin. Den dekker skader håndverkeren forårsaker mens han jobber hos deg, for eksempel hvis han borer i et rør og forårsaker en vannlekkasje, eller hvis et uhell skader gulvet, vinduene eller møblene dine. Forsikringen sikrer at det finnes penger til å dekke skaden, selv om den blir stor. Det er altså en trygghet for begge parter.</p>
+<p>Tenk deg at en snekker uforvarende skader et bærende element under arbeid hos deg, slik at det oppstår en skade til 200 000 kroner. Har snekkeren ansvarsforsikring, dekker forsikringen dette, og du får skaden rettet. Har han det ikke, må snekkeren betale av egen lomme, og kan han ikke det, blir det svært vanskelig for deg å få pengene dine.</p>
+<h3>Hvorfor manglende forsikring er et faresignal</h3>
+<p>Loven krever ikke i seg selv at enhver håndverker har ansvarsforsikring for å ta på seg en jobb. Men en seriøs aktør har det nesten alltid, fordi det beskytter både kunden og firmaet hvis uhellet er ute. Mangler forsikringen, er det ofte et tegn på at du har med en mindre seriøs aktør å gjøre, kanskje en som også opererer svart eller ikke er registrert. Manglende forsikring og svart arbeid følges dessverre ofte ad, og begge deler bør gjøre deg ekstra forsiktig.</p>
+<h3>Hva betyr dette for rettighetene dine?</h3>
+<p>Rettighetene dine etter håndverkertjenesteloven (lov 16. juni 1989 nr. 63) gjelder uansett om håndverkeren har forsikring eller ikke. Du kan fortsatt kreve retting, prisavslag og erstatning ved en mangel (§§ 24, 25 og 28). Problemet er rent praktisk: Hvis håndverkeren ikke har forsikring og heller ikke har penger, kan det være umulig å få utbetalt erstatningen i virkeligheten, selv om du har full rett på papiret.</p>
+<p>Med andre ord: Forsikringen er ofte det som gjør at du faktisk får pengene dine når skaden er stor. Uten den er kravet ditt verdt lite hvis håndverkeren ikke kan betale. Du kan vinne en sak og likevel stå uten penger, fordi det ikke er noe å hente hos en håndverker uten midler.</p>
+<h3>Slik sjekker du forsikring før du inngår avtale</h3>
+<ol>
+<li><strong>Spør rett ut.</strong> «Har dere ansvarsforsikring?» er et helt legitimt og vanlig spørsmål. En seriøs håndverker svarer ja uten å nøle.</li>
+<li><strong>Be om dokumentasjon.</strong> Du kan be om å få se et forsikringsbevis. Det tar bare et øyeblikk for en seriøs aktør å vise det.</li>
+<li><strong>Sjekk firmaet ellers.</strong> Er det registrert i Brønnøysundregistrene, har det ordentlig nettside og referanser fra tidligere kunder? Ved elektrisk arbeid: Står det i DSBs register?</li>
+<li><strong>Vær skeptisk til kontant og svart.</strong> En aktør som vil ha kontant uten faktura mangler ofte også forsikring, og bør unngås.</li>
+</ol>
+<h3>Hva gjør du hvis skaden allerede har skjedd?</h3>
+<p>Har en håndverker uten forsikring påført deg en skade, kan du gjøre følgende:</p>
+<ol>
+<li><strong>Dokumenter skaden grundig.</strong> Bilder, video og en beskrivelse av hva som skjedde og når.</li>
+<li><strong>Reklamer skriftlig.</strong> Krev at håndverkeren dekker skaden, med henvisning til at den skyldes hans arbeid.</li>
+<li><strong>Sjekk din egen forsikring.</strong> Husforsikringen din dekker ofte slike skader, som vannskade eller brann. Forsikringsselskapet ditt kan deretter forsøke å kreve pengene tilbake fra håndverkeren (regress).</li>
+<li><strong>Få hjelp til kravet.</strong> Forbrukerrådet gir gratis veiledning, og du kan eventuelt gå til forliksrådet for å få en avgjørelse.</li>
+<li><strong>Vær forberedt på at det kan bli vanskelig.</strong> Uten forsikring og uten betalingsevne hos håndverkeren kan kravet bli krevende å inndrive, selv om du har rett.</li>
+</ol>
+<h3>Det viktigste rådet: Sjekk på forhånd</h3>
+<p>Den beste beskyttelsen er å sjekke forsikringen før jobben starter, ikke etter at skaden har skjedd. Velg en håndverker som har ansvarsforsikring, gir faktura og er registrert. Da har du både rettighetene i loven og en reell mulighet til å få dekket et tap hvis uhellet er ute. Den lille innsatsen det tar å spørre og sjekke på forhånd, kan spare deg for store summer og mye bekymring senere.</p>
+<h3>Forskjellen på håndverkerens forsikring og din egen</h3>
+<p>Det er nyttig å forstå at det finnes flere forsikringer som kan komme inn ved en skade:</p>
+<ul>
+<li><strong>Håndverkerens ansvarsforsikring:</strong> Dekker skader håndverkeren forårsaker mens han jobber. Dette er den som primært skal dekke et uhell han forvolder.</li>
+<li><strong>Din egen husforsikring (villa- eller innboforsikring):</strong> Kan dekke skaden raskt, slik at du får hjelp med en gang. Forsikringsselskapet kan deretter kreve pengene tilbake fra håndverkeren.</li>
+</ul>
+<p>I praksis er det ofte lurt å melde fra til din egen forsikring først, fordi de hjelper deg raskt og tar kampen mot håndverkeren etterpå. Tenk deg at en maler velter en boks med maling som ødelegger ditt nye parkettgulv. Har maleren ansvarsforsikring, dekker den skaden. Har han det ikke, kan din egen innboforsikring kanskje hjelpe, men du risikerer å måtte betale egenandel og kanskje få et lite trekk i fremtidige bonusordninger. Derfor er det alltid best at håndverkeren selv er forsikret.</p>
+<h3>Et spørsmål du alltid bør stille</h3>
+<p>Når du henter inn tilbud, kan du gjøre forsikring til en del av sjekklisten din på lik linje med pris og referanser. Et enkelt spørsmål som «Kan du sende meg bekreftelse på at firmaet har ansvarsforsikring?» sier mye om hvor seriøs aktøren er. Får du et tydelig og raskt svar, er det et godt tegn. Blir det vagt, unnvikende eller avvisende, bør du være på vakt og heller velge noen andre. Det koster deg ingenting å spørre, men det kan spare deg for mye.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Ansvarsforsikring dekker skader håndverkeren påfører boligen din.</li>
+<li>En seriøs håndverker har slik forsikring, og manglende forsikring er et faresignal.</li>
+<li>Rettighetene dine etter loven gjelder uansett, men uten forsikring kan det bli vanskelig å få utbetalt erstatning hvis håndverkeren ikke kan betale.</li>
+<li>Spør om forsikring og be om dokumentasjon før du inngår avtale.</li>
+<li>Har skaden skjedd, dokumenter den, reklamer skriftlig og sjekk din egen husforsikring.</li>
+<li>Velg alltid en håndverker med forsikring, faktura og registrering.</li>
+</ul>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

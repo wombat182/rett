@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg kreve prisavslag på et nybygg? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-kreve-prisavslag-pa-et-nybygg/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg kreve prisavslag på et nybygg?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-kreve-prisavslag-pa-et-nybygg/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg kreve prisavslag på et nybygg?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg kreve prisavslag på et nybygg?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Hvis det er en mangel ved nyboligen som ikke blir rettet, kan du kreve prisavslag. Prisavslag betyr at du betaler mindre, eller får penger tilbake, fordi boligen ikke er slik den skulle vært. Beløpet tilsvarer normalt hva det koster å få mangelen rettet.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 33, 32, 35</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/33/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 33</div>
+  <div class="related-card-title">Kreve penger i stedet for reparasjon (prisavslag)</div>
+</a><a href="../../lover/bustadoppforingslova/32/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 32</div>
+  <div class="related-card-title">Reparasjon (retting) av byggefeil</div>
+</a><a href="../../lover/bustadoppforingslova/35/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 35</div>
+  <div class="related-card-title">Penger for økonomisk tap (Erstatning) ved byggefeil</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Hvis det er en mangel ved nyboligen som <strong>ikke blir rettet</strong>, kan du kreve prisavslag. Prisavslag betyr at du betaler mindre, eller får penger tilbake, fordi boligen ikke er slik den skulle vært. Beløpet tilsvarer normalt hva det koster å få mangelen rettet.</p>
+<h3>Hva er prisavslag?</h3>
+<p>Prisavslag er et avslag i prisen som kompenserer for at du har fått en bolig med en feil. Mens retting handler om å fikse selve feilen, handler prisavslag om penger: du beholder boligen som den er (eller fikser den selv senere), men betaler mindre fordi den ikke holdt det som var avtalt. Loven gir deg denne retten når en mangel ikke blir rettet i samsvar med rettingsreglene (bustadoppføringslova § 33 – om prisavslag).</p>
+<h3>Når kan du kreve prisavslag?</h3>
+<p>Det typiske tidspunktet er når:</p>
+<ul>
+<li>Entreprenøren <strong>ikke vil rette</strong> mangelen.</li>
+<li>Entreprenøren <strong>ikke klarer å rette</strong> mangelen, for eksempel etter flere mislykkede forsøk.</li>
+<li>Rettingen lar seg <strong>ikke gjennomføre</strong>, eller du har gyldig grunn til ikke å godta den.</li>
+</ul>
+<p>Et viktig forbehold: avviser du en retting som entreprenøren faktisk hadde rett til å gjennomføre etter § 32, kan du miste retten til prisavslag. Derfor er rekkefølgen viktig – gi entreprenøren sjansen til å rette først.</p>
+<h3>Hvordan regnes prisavslaget ut?</h3>
+<p>Hovedregelen er enkel og forbrukervennlig: prisavslaget skal normalt tilsvare <strong>kostnaden ved å få mangelen rettet</strong>. Altså hva det vil koste deg å hyre noen til å fikse feilen.</p>
+<p>Et eksempel: Familien Dahl har en mangel ved badet som koster 60 000 kroner å utbedre ifølge tilbud fra en fagperson. Entreprenøren nekter å rette. Da kan familien kreve 60 000 kroner i prisavslag, slik at de selv kan få jobben gjort.</p>
+<h3>Unntaket: når rettekostnaden er urimelig høy</h3>
+<p>Det finnes ett viktig unntak. Hvis kostnaden ved å rette er urimelig høy sammenlignet med hva mangelen faktisk betyr for deg, skal prisavslaget i stedet settes til den <strong>verdireduksjonen</strong> mangelen medfører – altså hvor mye mindre boligen er verdt på grunn av feilen.</p>
+<p>Et eksempel: En flis på badet har en knapt synlig fargenyanse som avviker litt fra resten. Å bytte alle flisene ville kostet 80 000 kroner, men selve verdiforringelsen er minimal. Da settes prisavslaget til den lille verdireduksjonen, ikke til de 80 000 kronene. Dette unntaket skal hindre at små skjønnhetsfeil utløser uforholdsmessig store krav.</p>
+<h3>Et regneeksempel på arealsvikt</h3>
+<p>Prisavslag er også aktuelt ved arealsvikt. Sara kjøpte en ny leilighet oppgitt til 65 kvadratmeter P-ROM, men fikk målt 60 kvadratmeter – et avvik på nesten 8 prosent. Her er det ikke noe å "rette"; man kan jo ikke trylle fram mer areal. Derfor kompenseres arealsvikten med prisavslag, beregnet ut fra de manglende kvadratmeterne og prisen. Sara kunne dermed kreve et prisavslag som gjenspeilte verdien av de fem kvadratmeterne hun manglet.</p>
+<h3>Steg for steg når du krever prisavslag</h3>
+<ol>
+<li><strong>Påvis mangelen</strong> og dokumenter den med bilder og eventuelt fagrapport.</li>
+<li><strong>Gi entreprenøren sjansen til å rette</strong> og dokumenter at det ikke skjer.</li>
+<li><strong>Innhent et kostnadsoverslag</strong> fra en uavhengig fagperson på hva rettingen koster.</li>
+<li><strong>Reklamer skriftlig</strong> og krev et konkret prisavslag, med kostnadsoverslaget vedlagt.</li>
+<li><strong>Sett en frist</strong> for tilbakemelding og betaling.</li>
+<li><strong>Hold tilbake penger ved behov.</strong> Har du ennå ikke betalt hele kjøpesummen, kan du i mange tilfeller holde tilbake et beløp som svarer til kravet ditt, til saken er løst.</li>
+</ol>
+<h3>Kan du holde tilbake penger som sikkerhet?</h3>
+<p>Hvis du fortsatt skylder entreprenøren penger – for eksempel et sluttoppgjør som ikke er betalt – kan tilbakeholdsretten være et nyttig verktøy. Du kan da holde tilbake et beløp som svarer til kravet ditt, til mangelen er rettet eller dere er enige om et prisavslag. Det gir deg en reell forhandlingsposisjon, fordi entreprenøren er motivert til å rydde opp for å få det siste oppgjøret. Pass likevel på at du ikke holder tilbake et urimelig stort beløp i forhold til mangelen – tilbakeholdet bør stå i rimelig forhold til hva kravet ditt faktisk er verdt. Er du i tvil om hvor mye du kan holde tilbake, er et kostnadsoverslag fra en fagperson igjen til god hjelp.</p>
+<h3>Hva hvis dere er uenige om beløpet?</h3>
+<p>Det er vanlig at entreprenøren mener prisavslaget bør være lavere. Da er et uavhengig kostnadsoverslag eller en takst gull verdt, fordi det viser hva rettingen faktisk koster. Blir dere ikke enige, kan du bringe saken inn for en tvisteløsningsordning, for eksempel Forbrukerklageutvalget, eller eventuelt domstolene. Mange saker løses i minnelighet når forbrukeren har god dokumentasjon.</p>
+<h3>Prisavslag i tillegg til erstatning</h3>
+<p>Husk at prisavslag og erstatning er to forskjellige ting. Prisavslag dekker selve verdireduksjonen eller rettekostnaden. Har mangelen i tillegg påført deg et økonomisk tap – for eksempel ekstra strømutgifter eller utgifter til alternativt bosted under utbedring – kan du kreve erstatning for dette i tillegg (§§ 35–36).</p>
+<h3>Hvordan henger prisavslag og retting sammen?</h3>
+<p>Det er nyttig å se rekkefølgen for seg. Når en mangel oppstår, er retting normalt det første: entreprenøren får sjansen til å fikse feilen. Prisavslag kommer inn når retting ikke skjer – enten fordi entreprenøren ikke vil, ikke klarer det, eller fordi feilen rett og slett ikke kan rettes, som ved arealsvikt. Prisavslag er altså ofte "plan B" når retting ikke fører fram, men det er en fullverdig rettighet du har krav på.</p>
+<h3>Hva med skjønnhetsfeil og verdi?</h3>
+<p>Mange lurer på om de kan kreve prisavslag for ting som plager dem, men som ikke koster mye å leve med. Her er unntaket om urimelig høy rettekostnad sentralt. Hvis feilen er liten og betydningen for deg er beskjeden, men det ville kostet store summer å rette, settes prisavslaget til verdireduksjonen – som da kan bli ganske lav. Det betyr ikke at du ikke har et krav, men at størrelsen tilpasses hvor mye feilen faktisk betyr. Loven prøver å finne en rettferdig balanse mellom partene.</p>
+<h3>Praktisk om dokumentasjon</h3>
+<p>Det aller viktigste når du krever prisavslag, er god dokumentasjon på kostnaden. Et skriftlig tilbud eller kostnadsoverslag fra en uavhengig fagperson på hva rettingen vil koste, er det sterkeste kortet du kan ha. Har du to tilbud, står du enda sterkere. Uten dokumentasjon blir kravet lett en diskusjon om løse anslag, og da er det vanskeligere å få gjennomslag for et konkret beløp.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, du kan kreve prisavslag på et nybygg når en mangel ikke blir rettet (§ 33). Beløpet tilsvarer normalt kostnaden ved å rette feilen, men settes til verdireduksjonen hvis rettekostnaden er urimelig høy. Gi alltid entreprenøren sjansen til å rette først, innhent et uavhengig kostnadsoverslag, og reklamer skriftlig. Da har du et solid grunnlag for kravet ditt.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

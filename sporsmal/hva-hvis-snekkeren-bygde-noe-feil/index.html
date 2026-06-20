@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis snekkeren bygde noe feil? — Rettsregel</title>
+<meta name="description" content="Hvis snekkeren har bygd noe feil, for eksempel skjeve vegger, dører som ikke lukker, en terrasse som heller feil vei eller knirkete gulv, er det normalt…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-snekkeren-bygde-noe-feil/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis snekkeren bygde noe feil?">
+<meta property="og:description" content="Hvis snekkeren har bygd noe feil, for eksempel skjeve vegger, dører som ikke lukker, en terrasse som heller feil vei eller knirkete gulv, er det normalt…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-snekkeren-bygde-noe-feil/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis snekkeren bygde noe feil?">
+<meta name="twitter:description" content="Hvis snekkeren har bygd noe feil, for eksempel skjeve vegger, dører som ikke lukker, en terrasse som heller feil vei eller knirkete gulv, er det normalt…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis snekkeren bygde noe feil?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis snekkeren har bygd noe feil, for eksempel skjeve vegger, dører som ikke lukker, en terrasse som heller feil vei eller knirkete gulv, er det normalt en mangel. Da kan du kreve at snekkeren retter feilen gratis, eller du kan kreve prisavslag eller erstatning. Dokumenter feilen godt, og reklamer skriftlig og raskt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Hvis snekkeren har bygd noe feil, for eksempel skjeve vegger, dører som ikke lukker, en terrasse som heller feil vei eller knirkete gulv, er det normalt en mangel. Da kan du kreve at snekkeren retter feilen gratis, eller du kan kreve prisavslag eller erstatning. Dokumenter feilen godt, og reklamer skriftlig og raskt.</p>
+<h3>Hva regnes som feil snekkerarbeid?</h3>
+<p>Snekkerarbeid skal være fagmessig (håndverkertjenesteloven § 5). En dyktig snekker leverer rette vinkler, jevne flater og solide konstruksjoner. Typiske feil som regnes som mangler:</p>
+<ul>
+<li>Skjeve eller ulodde vegger.</li>
+<li>Dører og vinduer som ikke lukker eller åpner riktig.</li>
+<li>Gulv som knirker, svikter eller heller.</li>
+<li>Terrasse eller plattning som heller feil vei, slik at vannet blir liggende.</li>
+<li>Lister og overganger som ikke møtes pent.</li>
+<li>Konstruksjoner som er for svake, ustødige eller feil dimensjonert.</li>
+</ul>
+<p>Tenk deg at Silje får bygget en ny terrasse til 90 000 kroner. Etter første ordentlige regnvær oppdager hun at vannet samler seg i en stor dam midt på, fordi terrassen heller feil vei. Dette er en byggteknisk feil og en klar mangel. Et annet eksempel er Bjørn, som får satt opp en ny innervegg, men oppdager at den er så skjev at det blir en synlig glipe i taket. Også dette er en mangel snekkeren må rette.</p>
+<h3>Forskjell på pynt og funksjon</h3>
+<p>Noen mangler er kosmetiske, som en list som ikke møtes helt pent i et hjørne. Andre er funksjonelle og mer alvorlige, som en terrasse som ikke leder bort vann, eller en bærende konstruksjon som er for svak. Begge deler kan du klage på, men de funksjonelle feilene er ofte de mest alvorlige og kostbare, og dermed viktigst å få rettet raskt. En terrasse som samler vann, kan for eksempel føre til råte over tid hvis den ikke rettes.</p>
+<h3>Dine rettigheter</h3>
+<p>Når det foreligger en mangel (håndverkertjenesteloven § 17), kan du:</p>
+<ul>
+<li><strong>Kreve retting (§ 24):</strong> Snekkeren skal rette feilen gratis. Han har normalt rett til å gjøre dette selv før du henter inn andre.</li>
+<li><strong>Kreve prisavslag (§ 25):</strong> Blir feilen ikke rettet, kan du kreve avslag i prisen, tilsvarende det det koster å utbedre.</li>
+<li><strong>Kreve erstatning (§ 28):</strong> Har feilen ført til et økonomisk tap, for eksempel en råteskade fordi vannet ble liggende, kan du kreve dette dekket.</li>
+<li><strong>Holde tilbake betaling (§ 25):</strong> Du kan holde igjen en rimelig del av betalingen til feilen er rettet.</li>
+<li><strong>Heve (§ 26):</strong> Ved svært alvorlige mangler kan avtalen heves.</li>
+</ul>
+<h3>Slik går du fram</h3>
+<ol>
+<li><strong>Dokumenter feilen.</strong> Ta bilder, og bruk gjerne et vater (et verktøy som viser om noe er rett og i vater) eller en kule for å vise at noe heller eller er skjevt. Film gjerne vanndammen på terrassen etter regn.</li>
+<li><strong>Reklamer skriftlig.</strong> Send melding til snekkeren der du beskriver feilen konkret. Gjør dette innen rimelig tid, normalt rundt to måneder etter at du oppdaget den.</li>
+<li><strong>Be om gratis retting med frist.</strong> Sett en rimelig frist for at snekkeren skal komme tilbake og fikse feilen.</li>
+<li><strong>Hent inn en uavhengig vurdering ved uenighet.</strong> En takstmann eller en annen snekker kan vurdere om arbeidet er fagmessig. En slik rapport står sterkt i en eventuell tvist.</li>
+<li><strong>Ta vare på avtale og faktura.</strong> Disse viser hva som var bestilt og avtalt, og til hvilken pris.</li>
+</ol>
+<h3>Hva hvis dere er uenige om hva som er «godt nok»?</h3>
+<p>Snekkere og kunder kan være uenige om hvor pent eller rett noe må være. Da er en fagkyndig tredjepart nyttig. En takstmann vurderer arbeidet opp mot vanlige fagstandarder, ikke bare opp mot din eller snekkerens smak. Er avviket større enn det en kunde må regne med å akseptere, er det en mangel. Små avvik som knapt er synlige, må man derimot ofte godta. Den nøytrale fagvurderingen hjelper begge parter å forholde seg til det samme målet.</p>
+<h3>Fem års frist på bygningsarbeid</h3>
+<p>Snekkerarbeid på boligen er arbeid på fast eiendom, og den absolutte reklamasjonsfristen er fem år (håndverkertjenesteloven § 22). Noen feil, som råte fordi vann ble liggende, kommer først til syne etter en tid, og da er den lange fristen verdifull. Men du må si fra innen rimelig tid etter at du oppdaget problemet, normalt rundt to måneder.</p>
+<p>Også her er rådet klart: Bruk faktura og hvitt arbeid. Betaler du snekkeren svart, mister du i praksis muligheten til å klage og til å kreve retting, fordi du verken har dokumentasjon eller en seriøs part å gå til.</p>
+<h3>Spesielt om utvendige konstruksjoner</h3>
+<p>Snekkerarbeid ute, som terrasser, levegger, trapper og rekkverk, har noen ekstra utfordringer. Her må snekkeren ta hensyn til vær, vann og sikkerhet. Et rekkverk som er for lavt eller for løst kan være direkte farlig, særlig hvis det er barn i huset. En trapp med feil høyde på trinnene gjør at folk snubler. Og en terrasse som ikke har riktig fall og lufting under, råtner raskere.</p>
+<p>Dette er forhold en fagperson skal kjenne til og bygge etter. Tenk deg at Bjørns nye rekkverk på verandaen gir etter når noen lener seg mot det. Det er ikke bare en kosmetisk mangel, det er en sikkerhetsmangel som snekkeren må rette umiddelbart. Slike feil bør du aldri akseptere, og du bør reklamere med en gang du oppdager dem.</p>
+<h3>Be om en plan før arbeidet starter</h3>
+<p>For å unngå misforståelser om hva som skal bygges, lønner det seg å avtale detaljene på forhånd:</p>
+<ul>
+<li>Hvilke mål skal konstruksjonen ha?</li>
+<li>Hvilke materialer skal brukes, for eksempel impregnert trevirke ute?</li>
+<li>Hvordan skal overflaten behandles?</li>
+<li>Når skal arbeidet være ferdig?</li>
+</ul>
+<p>Jo mer som er avtalt skriftlig på forhånd, jo lettere er det å avgjøre om sluttresultatet er en mangel eller ikke. En enkel skisse med mål, godkjent av begge parter, kan spare dere for mye uenighet i etterkant. Da vet både du og snekkeren nøyaktig hva som er bestilt.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Skjeve vegger, dører som ikke lukker, knirkete gulv og terrasse med feil fall er typiske mangler.</li>
+<li>Du kan kreve gratis retting, og ellers prisavslag eller erstatning.</li>
+<li>Du kan holde tilbake en del av betalingen til feilen er rettet.</li>
+<li>Dokumenter med bilder og vater, og reklamer skriftlig innen rundt to måneder.</li>
+<li>En takstmann kan avgjøre uenighet om hva som er fagmessig.</li>
+<li>Klagefristen er fem år, men bruk alltid faktura for å beholde rettighetene.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-det-en-mangel-hvis-arbeidet-ikke-holder/">Er det en mangel hvis arbeidet ikke holder mål?</a><a class="sp-relchip" href="../../sporsmal/reklamasjonsrett-etter-garanti/">Har jeg reklamasjonsrett selv om garantien er utløpt?</a><a class="sp-relchip" href="../../sporsmal/hva-betyr-a-reklamere-innen-rimelig-tid/">Hva betyr å reklamere innen rimelig tid?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

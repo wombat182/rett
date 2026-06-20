@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er arealsvikt i et nybygg? — Rettsregel</title>
+<meta name="description" content="Arealsvikt betyr at boligen har mindre areal enn det som er opplyst eller avtalt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-arealsvikt-i-et-nybygg/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er arealsvikt i et nybygg?">
+<meta property="og:description" content="Arealsvikt betyr at boligen har mindre areal enn det som er opplyst eller avtalt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-arealsvikt-i-et-nybygg/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er arealsvikt i et nybygg?">
+<meta name="twitter:description" content="Arealsvikt betyr at boligen har mindre areal enn det som er opplyst eller avtalt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er arealsvikt i et nybygg?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Arealsvikt betyr at boligen har mindre areal enn det som er opplyst eller avtalt. I et nybygg kan arealsvikt være en mangel som gir deg rett til prisavslag. Her forklarer vi begrepet på en enkel måte, så du vet hva det handler om og hvordan du oppdager det.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 27 og § 33</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/27/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 27</div>
+  <div class="related-card-title">Løy utbygger i salgsprospektet?</div>
+</a><a href="../../lover/bustadoppforingslova/33/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 33</div>
+  <div class="related-card-title">Kreve penger i stedet for reparasjon (prisavslag)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Arealsvikt betyr at boligen har <strong>mindre areal enn det som er opplyst eller avtalt</strong>. I et nybygg kan arealsvikt være en mangel som gir deg rett til prisavslag. Her forklarer vi begrepet på en enkel måte, så du vet hva det handler om og hvordan du oppdager det.</p>
+<h3>Begrepet forklart</h3>
+<p>"Areal" er antall kvadratmeter, og "svikt" betyr at noe mangler eller er for lite. Arealsvikt er altså rett og slett at du har fått færre kvadratmeter enn lovet. Det engelske ordet er "shortfall" – noe som kommer til kort. I et nybygg oppstår arealsvikt typisk fordi det ferdige resultatet ikke stemmer med tegningene, eller fordi markedsføringen oppga et areal som var for høyt.</p>
+<p>Loven knytter dette til reglene om opplysninger og areal ved eiendommen (bustadoppføringslova § 27). Forenklet sagt: gir entreprenøren deg uriktige opplysninger om størrelsen, eller bygger han mindre enn avtalt, kan det være en mangel når avviket er av betydning.</p>
+<h3>Arealsvikt er ikke det samme som arealavvik</h3>
+<p>Disse to ordene blandes ofte:</p>
+<ul>
+<li><strong>Arealavvik</strong> er et nøytralt ord: det betyr bare at det er en forskjell mellom oppgitt og faktisk areal. Avviket kan være lite eller stort, og det er ikke nødvendigvis en mangel.</li>
+<li><strong>Arealsvikt</strong> brukes når avviket er så stort at det utgjør en mangel du kan kreve noe for.</li>
+</ul>
+<p>Et lite arealavvik på én prosent er bare et avvik. Et avvik på ti prosent vil normalt være en arealsvikt – en mangel.</p>
+<h3>Hvordan oppstår arealsvikt i nybygg?</h3>
+<p>Det er flere typiske årsaker:</p>
+<ol>
+<li><strong>Feil i prosjekteringen.</strong> Tegningene oppga et areal som ikke holdt da huset ble bygget.</li>
+<li><strong>Tykkere vegger enn planlagt.</strong> Hvis veggene ble tykkere på grunn av ekstra isolasjon, kan det innvendige arealet (P-ROM) krympe.</li>
+<li><strong>Markedsføring med "luftige" tall.</strong> Megleren oppga et areal som virket pent i annonsen, men som ikke ble målt nøyaktig.</li>
+<li><strong>Skråtak og lav takhøyde.</strong> På loft eller i toppetasjer teller bare areal med tilstrekkelig takhøyde med i P-ROM. Hvis mer av rommet har skråtak enn antatt, blir det målbare arealet mindre.</li>
+</ol>
+<h3>Arealsvikt kan ikke "rettes"</h3>
+<p>En viktig forskjell fra mange andre mangler er at arealsvikt sjelden kan utbedres. Entreprenøren kan ikke trylle fram flere kvadratmeter i en ferdig bolig. Derfor er det normale ved arealsvikt at du kompenseres med prisavslag (§ 33) – altså penger – i stedet for retting. Dette skiller arealsvikt fra for eksempel en feil benkeplate eller et badegulv med feil fall, der entreprenøren faktisk kan fikse selve feilen. Når noe ikke kan rettes, går man rett på den økonomiske kompensasjonen.</p>
+<h3>Et illustrerende eksempel</h3>
+<p>Ingrid kjøpte en ny toppleilighet markedsført med 70 kvadratmeter P-ROM. Leiligheten har skråtak mot den ene siden. Etter overtakelse målte en takstmann at bare deler av rommet under skråtaket hadde nok takhøyde til å telle med, og at faktisk P-ROM var 63 kvadratmeter. Avviket på 7 kvadratmeter, altså 10 prosent, ble regnet som arealsvikt. Ingrid fikk prisavslag.</p>
+<h3>Slik måles areal</h3>
+<p>Areal måles etter en egen standard (NS 3940) som forteller hva som teller med og ikke. Du kan ikke bare strekke et målebånd langs gulvet selv og trekke en konklusjon. Derfor er det viktig å bruke en kvalifisert takstmann eller bygningssakkyndig som måler korrekt. Husk også å sammenligne likt: oppgitt BRA mot målt BRA, oppgitt P-ROM mot målt P-ROM.</p>
+<p>En grunn til at egne målinger ofte bommer, er at standarden har detaljerte regler for hva som regnes med. Areal under skråtak teller bare der takhøyden er stor nok, trappehull trekkes fra på den etasjen de "tilhører", og tykke innervegger påvirker hvor mye gulvflate som faktisk er brukbar. En fagperson kjenner disse reglene og kan måle på en måte som holder hvis saken skulle bli en tvist. En egen, omtrentlig måling kan gi en pekepinn, men er sjelden nok som bevis alene.</p>
+<h3>Hva gjør du ved mistanke om arealsvikt?</h3>
+<ol>
+<li><strong>Les avtalen og prospektet</strong> og noter oppgitt areal og arealtype.</li>
+<li><strong>Bestill profesjonell oppmåling.</strong></li>
+<li><strong>Regn ut avviket</strong> i både kvadratmeter og prosent.</li>
+<li><strong>Vurder om avviket er "av betydning"</strong> – små avvik er normalt akseptert.</li>
+<li><strong>Reklamer skriftlig</strong> og krev prisavslag hvis avviket er betydelig (§§ 27 og 33).</li>
+</ol>
+<h3>Hvorfor lønner det seg å sjekke?</h3>
+<p>Fordi kvadratmeterprisen på nyboliger er høy. Selv et avvik på noen få kvadratmeter kan tilsvare flere hundre tusen kroner. Det koster relativt lite å få en oppmåling, og funnet kan bli verdifullt.</p>
+<h3>Når er arealsvikt "av betydning"?</h3>
+<p>Loven krever at avviket må være av en viss betydning for at det skal regnes som en mangel (§ 27). Hva som er "av betydning", avgjøres etter en helhetsvurdering, der særlig størrelsen på avviket teller. Men det handler ikke bare om prosenter. Også andre forhold spiller inn:</p>
+<ul>
+<li><strong>Hvor stor boligen er.</strong> I en liten leilighet betyr 5 kvadratmeter mer enn i en stor enebolig.</li>
+<li><strong>Hvordan arealet ble markedsført.</strong> Ble arealet brukt aktivt for å selge boligen, veier det tyngre.</li>
+<li><strong>Hvor mye du betalte per kvadratmeter.</strong> Høy kvadratmeterpris gjør avviket mer følbart i kroner.</li>
+</ul>
+<p>Et eksempel: I en liten ettromsleilighet markedsført med 30 kvadratmeter vil et avvik på 3 kvadratmeter (10 prosent) være svært merkbart, fordi hver kvadratmeter er kostbar og viktig i en så liten bolig.</p>
+<h3>Hvordan unngå overraskelser</h3>
+<p>Selv om ansvaret ligger hos entreprenøren, er det smart å være litt på vakt selv:</p>
+<ol>
+<li><strong>Be om arealberegningen.</strong> Spør hvilket areal som er oppgitt, og om det er BRA eller P-ROM.</li>
+<li><strong>Vær ekstra oppmerksom ved skråtak og loft</strong>, der målbart areal lett blir mindre enn det ser ut som på tegning.</li>
+<li><strong>Mål opp etter overtakelsen.</strong> En oppmåling kort tid etter innflytting gjør at du oppdager en eventuell arealsvikt tidlig, mens reklamasjonsmulighetene er åpne.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Arealsvikt i et nybygg betyr at boligen har mindre areal enn avtalt eller opplyst, og kan være en mangel etter § 27 når avviket er av betydning. Det er forskjell på et lite, ufarlig arealavvik og en reell arealsvikt. Få en kvalifisert oppmåling, sammenlign riktig arealtype, og reklamer skriftlig hvis avviket er stort nok til å gi prisavslag (§ 33).</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

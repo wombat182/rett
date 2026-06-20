@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er timepris, og hvordan kontrollerer jeg den? — Rettsregel</title>
+<meta name="description" content="Med timepris betaler du for den tiden håndverkeren faktisk bruker. Men han har ikke lov til å somle – han må jobbe effektivt og faglig forsvarlig. Og du…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-timepris-og-hvordan-kontrollerer-jeg-den/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er timepris, og hvordan kontrollerer jeg den?">
+<meta property="og:description" content="Med timepris betaler du for den tiden håndverkeren faktisk bruker. Men han har ikke lov til å somle – han må jobbe effektivt og faglig forsvarlig. Og du…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-timepris-og-hvordan-kontrollerer-jeg-den/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er timepris, og hvordan kontrollerer jeg den?">
+<meta name="twitter:description" content="Med timepris betaler du for den tiden håndverkeren faktisk bruker. Men han har ikke lov til å somle – han må jobbe effektivt og faglig forsvarlig. Og du…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er timepris, og hvordan kontrollerer jeg den?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Med timepris betaler du for den tiden håndverkeren faktisk bruker. Men han har ikke lov til å somle – han må jobbe effektivt og faglig forsvarlig. Og du har full rett til å be om en **spesifisert regning** som viser antall timer, timepris, materialer og hva som ble gjort, slik at du kan kontrollere at prisen stemmer (håndverkertjenesteloven § 36).</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr timepris i praksis?</h3>
+<p>Timepris betyr at sluttsummen avhenger av hvor mange timer jobben tar. Avtaler du 850 kroner timen og jobben tar 10 timer, blir arbeidskostnaden 8 500 kroner – pluss materialer og eventuell merverdiavgift.</p>
+<p>Fordelen med timepris er fleksibilitet: den passer godt når ingen helt vet hvor stor jobben blir, for eksempel ved feilsøking eller reparasjon. En rørlegger som skal finne en skjult lekkasje kan umulig si på forhånd om det tar én time eller fem. Ulempen er at du ikke vet sluttsummen på forhånd. Derfor er det ekstra viktig å holde litt øye med tidsbruken og avtale rammer.</p>
+<h3>Håndverkeren kan ikke ta seg god tid</h3>
+<p>En vanlig bekymring er: «Hva om han bare drar ut tiden for å tjene mer?» Det har han ikke lov til. Håndverkeren skal utføre jobben fagmessig og forsvarlig, og han skal ivareta dine interesser. Det innebærer at han må arbeide effektivt – han kan ikke fakturere for unødvendig somling, lange private telefoner, ekstra pauser eller arbeid som måtte gjøres om igjen fordi han somlet eller gjorde det dårlig første gang.</p>
+<p>Eksempel: Rørlegger Per bruker 8 timer på å bytte et blandebatteri som en normalt dyktig rørlegger gjør på 2. Da kan han ikke kreve betalt for alle 8 timene. Du skal betale for den tiden en faglig dyktig håndverker med rimelighet ville brukt. De 6 ekstra timene er hans problem, ikke ditt.</p>
+<h3>Slik kontrollerer du timeprisen – steg for steg</h3>
+<ol>
+<li><strong>Be om en spesifisert regning.</strong> Du har rett til å kreve at regningen viser hvordan prisen er regnet ut (§ 36). Den skal vise antall timer, timepris, materialer og hva slags arbeid som er gjort.</li>
+<li><strong>Sammenlign med avtalt timepris.</strong> Stemmer timeprisen på regningen med det dere avtalte muntlig eller skriftlig?</li>
+<li><strong>Vurder timeantallet.</strong> Virker antall timer rimelig for jobben? Spør deg selv: Ville en dyktig fagperson brukt omtrent like lang tid?</li>
+<li><strong>Sjekk om noe gjelder feilretting.</strong> Måtte han gjøre noe om igjen på grunn av egen feil? Det skal du normalt ikke betale ekstra for.</li>
+<li><strong>Be om forklaring på det som er uklart.</strong> Du har rett til å forstå regningen, post for post.</li>
+</ol>
+<h3>Et konkret regneeksempel</h3>
+<p>Maler Ingrid avtaler timepris med Tom: 700 kroner per time. Hun maler stua over to dager. Regningen viser:</p>
+<ul>
+<li>Arbeid: 14 timer x 700 kr = 9 800 kr</li>
+<li>Maling og utstyr: 2 100 kr</li>
+<li>Sum eks. mva.: 11 900 kr</li>
+<li>Mva. (25 %): 2 975 kr</li>
+<li><strong>Total: 14 875 kr</strong></li>
+</ul>
+<p>Tom synes 14 timer høres mye ut for én stue. Han ber om en spesifisert regning og ser at Ingrid har ført opp 3 timer til «sparkling og to ekstra strøk på en vegg med mye sprekker». Det gir mening, og Tom betaler med god samvittighet. Hadde regningen derimot bare sagt «14 timer maling» uten noen forklaring, hadde han hatt god grunn til å be om mer detaljer før han betalte.</p>
+<h3>Et nytt eksempel der noe skurrer</h3>
+<p>Snekker Frode fakturerer Kari for å montere en garderobe: 11 timer à 800 kroner. Kari husker at Frode kom klokka 09 og gikk klokka 14 begge dagene – altså rundt 10 timer totalt, og da var det inkludert en lang lunsjpause begge dager. Hun ber om en spesifisert regning og noterer sine egne observasjoner. Når hun konfronterer Frode med tidene, justeres regningen ned. Lærdommen: noterer du selv når håndverkeren kommer og går, står du mye sterkere.</p>
+<h3>Lurt å gjøre underveis</h3>
+<ul>
+<li><strong>Avtal et tak.</strong> Du kan be om en øvre grense: «Si fra hvis du nærmer deg 15 timer.» Mange håndverkere går med på det, og da får du noe av tryggheten fra en fast pris.</li>
+<li><strong>Be om jevnlige oppdateringer</strong> på lengre jobber, så slipper du sjokk på slutten.</li>
+<li><strong>Noter selv</strong> når håndverkeren kommer og går, hvis du er hjemme.</li>
+<li><strong>Ikke betal blindt.</strong> Får du en høy regning du ikke forstår, be om spesifikasjon før du betaler hele summen.</li>
+</ul>
+<h3>Hva om dere ikke avtalte timepris?</h3>
+<p>Har dere ikke avtalt noen pris, betaler du gjengs pris for tilsvarende arbeid, så lenge den ikke er urimelig (§ 32). Men det er alltid bedre å avtale timeprisen konkret på forhånd, så vet både du og håndverkeren hva som gjelder.</p>
+<h3>Timepris og to håndverkere samtidig</h3>
+<p>Et poeng mange overser: noen ganger kommer det to håndverkere på jobben, og begge fakturerer timer. Det kan være helt riktig – tunge løft eller arbeid i høyden krever ofte to personer. Men det kan også blåse opp regningen unødvendig.</p>
+<p>Eksempel: Lærling Sondre og svenn Tarjei jobber sammen på et tak hos Mette i 8 timer hver. Med timepris 700 kroner for begge blir det 16 timer x 700 = 11 200 kroner i arbeid for en dag. Mette bør spørre om begge faktisk trengtes hele tiden, eller om deler av jobben kunne vært gjort av én. Du har rett til å betale for det en faglig forsvarlig gjennomføring krevde – ikke for overbemanning. Spør gjerne på forhånd: «Hvor mange jobber på dette, og hvor mange timer hver?»</p>
+<h3>Et lite knep for å føle deg tryggere</h3>
+<p>Synes du timepris er skummelt fordi du ikke ser sluttsummen, kan du be om en mellomting: timepris med et avtalt tak. Da sier håndverkeren for eksempel: «Timepris 800 kr, men jobben skal ikke overstige 16 000 kr uten at jeg avtaler det med deg.» Da betaler du for faktisk tid, men slipper å våkne til en ubegrenset regning. Mange håndverkere går med på dette fordi det også gir dem en ryddig ramme å jobbe innenfor.</p>
+<h3>Kort oppsummert</h3>
+<p>Timepris betyr at du betaler for medgått tid, men håndverkeren plikter å jobbe effektivt og faglig forsvarlig – han får ikke betalt for unødvendig somling eller egne feil. Du har alltid rett til å kreve en spesifisert regning som viser timer, timepris og materialer, slik at du kan kontrollere at prisen er riktig (§ 36). Avtal gjerne en øvre grense på forhånd og noter tidsbruken selv, så får du en trygghet som ligner på fastpris.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

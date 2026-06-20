@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem regnes som forbruker etter bustadoppføringslova? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Du er forbruker hvis du er en privatperson som skal bygge eller kjøpe en ny bolig til deg selv og familien din – og ikke gjør det som en del av…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-regnes-som-forbruker-etter-bustadoppforingslova/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem regnes som forbruker etter bustadoppføringslova?">
+<meta property="og:description" content="Kort sagt: Du er forbruker hvis du er en privatperson som skal bygge eller kjøpe en ny bolig til deg selv og familien din – og ikke gjør det som en del av…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-regnes-som-forbruker-etter-bustadoppforingslova/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem regnes som forbruker etter bustadoppføringslova?">
+<meta name="twitter:description" content="Kort sagt: Du er forbruker hvis du er en privatperson som skal bygge eller kjøpe en ny bolig til deg selv og familien din – og ikke gjør det som en del av…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvem regnes som forbruker etter bustadoppføringslova?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Du er forbruker hvis du er en privatperson som skal bygge eller kjøpe en ny bolig til deg selv og familien din – og ikke gjør det som en del av en jobb eller et firma. Akkurat den statusen gir deg en rekke sterke rettigheter som bustadoppføringslova (loven fra 13. juni 1997 nr. 43) verner om, og som entreprenøren ikke kan ta fra deg.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 2, 3, 12, 18, 41</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/2/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 2</div>
+  <div class="related-card-title">Hvem regnes som forbruker?</div>
+</a><a href="../../lover/bustadoppforingslova/3/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 3</div>
+  <div class="related-card-title">Loven er på din side og kan ikke endres til din ulempe</div>
+</a><a href="../../lover/bustadoppforingslova/12/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 12</div>
+  <div class="related-card-title">Bankgarantien som beskytter deg mot konkurs</div>
+</a><a href="../../lover/bustadoppforingslova/18/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 18</div>
+  <div class="related-card-title">Slik regner du ut dagmulkten</div>
+</a><a href="../../lover/bustadoppforingslova/41/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 41</div>
+  <div class="related-card-title">Hva er prisen hvis dere ikke avtalte noe?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: Du er forbruker hvis du er en privatperson som skal bygge eller kjøpe en ny bolig til deg selv og familien din – og ikke gjør det som en del av en jobb eller et firma. Akkurat den statusen gir deg en rekke sterke rettigheter som bustadoppføringslova (loven fra 13. juni 1997 nr. 43) verner om, og som entreprenøren ikke kan ta fra deg.</p>
+<h3>Den enkle definisjonen</h3>
+<p>I loven står det at en forbruker er «ein fysisk person som ikkje hovudsakleg handlar som ledd i næringsverksemd» (buofl. § 2). La oss oversette det fra jus til hverdagsspråk:</p>
+<ul>
+<li><strong>Fysisk person</strong> betyr et menneske av kjøtt og blod – altså deg, ikke et aksjeselskap, et borettslag eller en stiftelse.</li>
+<li><strong>Ikke hovedsakelig som ledd i næring</strong> betyr at du ikke bygger boligen for å tjene penger i en bedrift, men først og fremst for å bo der selv (eller bruke den som fritidsbolig).</li>
+</ul>
+<p>Tenk på Kari og Ola, et ungt par som har kjøpt en tomt på Jæren og skal sette opp sitt første hus. De er soleklart forbrukere. Det samme er pensjonisten Reidun, som river det gamle huset sitt og bygger nytt på samme tomt. Og det gjelder også studenten Mahmoud, som arver en hyttetomt og setter opp en liten fritidsbolig der.</p>
+<h3>Hvorfor spiller det egentlig noen rolle?</h3>
+<p>Det er ikke bare en formalitet på et skjema. Når du regnes som forbruker, gjelder en lov som er laget nettopp for å beskytte deg – fordi du som regel er den «svake» parten i møte med et profesjonelt byggefirma som gjør dette hver eneste dag. Det viktigste prinsippet er at loven ikke kan fravikes til skade for deg (buofl. § 3). Det betyr at entreprenøren ikke kan smugle inn en kontraktsklausul som gir deg dårligere rettigheter enn loven gir. Skriver de en setning som strider mot loven til din ulempe, gjelder rett og slett ikke den setningen.</p>
+<p>Konkrete fordeler du får som forbruker:</p>
+<ol>
+<li>Rett til å kreve at avtalen settes opp skriftlig (buofl. § 3).</li>
+<li>Rett til at det stilles garanti for entreprenørens oppfyllelse av avtalen (buofl. § 12).</li>
+<li>Sterke regler om mangler, dagmulkt ved forsinkelse (buofl. § 18) og reklamasjon.</li>
+<li>Vern mot urimelige prisøkninger og kontroll på vederlaget (buofl. § 41).</li>
+<li>Rett til å avbestille, mot å betale entreprenørens tap (egne regler i loven).</li>
+</ol>
+<p>Hadde Kari og Ola derimot vært et eiendomsutviklingsselskap som bygde ti rekkehus for videresalg, ville de ikke vært forbrukere – da gjelder andre regler, gjerne helt andre kontraktslover for profesjonelle parter.</p>
+<h3>Grensetilfeller som ofte forvirrer</h3>
+<p>Noen situasjoner er ikke like opplagte. Her er noen typiske som folk lurer på:</p>
+<ul>
+<li><strong>Du bygger og leier ut en hybel i kjelleren.</strong> Hvis hovedformålet fortsatt er at du selv skal bo i boligen, regnes du normalt som forbruker. En liten utleiedel endrer ikke dette – det er hovedformålet som teller.</li>
+<li><strong>Du eier et lite enkeltpersonforetak, men bygger en bolig privat.</strong> Det avgjørende er om <em>byggingen</em> skjer som ledd i næringen din. Bygger snekkeren Per et hus til sin egen familie, er han forbruker – selv om han driver firma til daglig. Bygger han derimot et hus for å selge med fortjeneste gjennom firmaet, er han ikke forbruker for det prosjektet.</li>
+<li><strong>Du kjøper en hytte.</strong> Bustadoppføringslova gjelder også for fritidsbolig, så også her er du forbruker (buofl. § 1).</li>
+<li><strong>Du går sammen med naboen om en tomannsbolig</strong> for at begge skal bo der. Begge er normalt forbrukere for sin del.</li>
+<li><strong>Et borettslag eller sameie under stiftelse</strong> kan også være vernet i bestemte tilfeller, men her bør du søke konkret juridisk hjelp, fordi reglene er mer sammensatte.</li>
+</ul>
+<h3>Skriftlig kontrakt – en rett, ikke en plikt</h3>
+<p>Mange tror loven krever skriftlig kontrakt. Det gjør den faktisk ikke. Men – og dette er svært viktig i praksis – <em>hver av partene kan kreve at avtalen settes opp skriftlig</em> (buofl. § 3). Du bør alltid bruke denne retten. En muntlig avtale om et husbygg til flere millioner kroner er en oppskrift på krangel, fordi ingen klarer å huske nøyaktig hva som ble sagt et halvt år senere. Skriftlig kontrakt er ikke et tegn på mistillit; det er ryddig håndverk fra begge sider.</p>
+<p>Et elektronisk dokument regnes som skriftlig, så lenge du har samtykket til elektronisk kommunikasjon. Du kan altså godt signere digitalt – det viktige er at innholdet er nedfelt.</p>
+<h3>Sjekkliste for å sikre forbrukerstatusen din</h3>
+<ul>
+<li>[ ] Bygger jeg eller kjøper jeg boligen som privatperson? (Ja = forbruker)</li>
+<li>[ ] Er hovedformålet å bo der selv eller bruke som fritidsbolig?</li>
+<li>[ ] Bygger jeg dette utenfor en eventuell næringsvirksomhet jeg driver?</li>
+<li>[ ] Har jeg krevd skriftlig kontrakt?</li>
+<li>[ ] Har jeg sjekket at entreprenøren bruker en standardkontrakt tilpasset bustadoppføringslova?</li>
+</ul>
+<h3>To praktiske eksempler</h3>
+<p>Familien Hansen skal bygge enebolig. De ber entreprenøren om en skriftlig kontrakt, og oppdager at firmaet vil bruke sin egen «husmal» med en klausul om at de fraskriver seg ansvar for forsinkelser. Fordi Hansen er forbrukere, er den klausulen ugyldig – loven kan ikke fravikes til skade for dem (buofl. § 3). De insisterer på en standard byggekontrakt i stedet, og slipper risikoen.</p>
+<p>Lisa, derimot, er deleier i et byggefirma. Hun vil sette opp et hus som firmaet skal selge videre. For dette prosjektet er hun <em>ikke</em> forbruker, fordi byggingen skjer som ledd i næring. Da gjelder ikke forbrukervernet i bustadoppføringslova, og hun må forhandle frem rettighetene sine selv. Forskjellen på Hansen og Lisa er ikke hvem de er som personer, men <em>hvorfor</em> de bygger.</p>
+<h3>Et råd om tvil</h3>
+<p>Er du usikker på om du regnes som forbruker, ikke gjett. Forbrukerrådet (forbrukerradet.no) gir gratis veiledning, og det kan være verdt en telefon før du signerer noe. Det handler om hvilke rettigheter du faktisk har hvis noe skulle gå galt underveis i byggingen.</p>
+<h3>Kort oppsummert</h3>
+<p>Du er forbruker etter bustadoppføringslova hvis du er en privatperson som bygger eller kjøper ny bolig (eller fritidsbolig) til eget bruk, og ikke gjør det hovedsakelig som ledd i næring (buofl. § 2). Statusen gir deg sterke rettigheter som ikke kan avtales bort til din ulempe (buofl. § 3), blant annet garanti, dagmulkt og vern mot urimelige priser. Selv om skriftlig kontrakt ikke er et lovkrav, kan du alltid kreve det – og det bør du gjøre. Er du i tvil om du regnes som forbruker, spør Forbrukerrådet før du signerer.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

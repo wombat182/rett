@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er håndverkerens veiledningsplikt? — Rettsregel</title>
+<meta name="description" content="Håndverkeren skal ikke bare utføre selve jobben — han skal også ta vare på dine interesser og gi deg den veiledningen du trenger for å ta gode valg. Dette…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-handverkerens-veiledningsplikt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er håndverkerens veiledningsplikt?">
+<meta property="og:description" content="Håndverkeren skal ikke bare utføre selve jobben — han skal også ta vare på dine interesser og gi deg den veiledningen du trenger for å ta gode valg. Dette…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-handverkerens-veiledningsplikt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er håndverkerens veiledningsplikt?">
+<meta name="twitter:description" content="Håndverkeren skal ikke bare utføre selve jobben — han skal også ta vare på dine interesser og gi deg den veiledningen du trenger for å ta gode valg. Dette…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er håndverkerens veiledningsplikt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Håndverkeren skal ikke bare utføre selve jobben — han skal også ta vare på dine interesser og gi deg den veiledningen du trenger for å ta gode valg. Dette kalles *omsorgs- og veiledningsplikt*, og den står i håndverkertjenesteloven § 5.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr "omsorg" og "veiledning" her?</h3>
+<p>Loven sier at tjenesteyteren (håndverkeren) skal utføre tjenesten fagmessig og <em>ellers ivareta forbrukerens interesser med tilbørlig omsorg</em>. Med vanlige ord: håndverkeren skal opptre som en fagperson som faktisk bryr seg om at du får et godt resultat, ikke bare ta pengene og gå.</p>
+<p>Veiledningsplikten betyr at håndverkeren skal gi deg råd og opplysninger du trenger underveis. Du er forbruker og ikke fagperson, så det er håndverkeren som sitter med kunnskapen. Da har han et ansvar for å dele den.</p>
+<h3>Konkrete eksempler på god veiledning</h3>
+<ul>
+<li><strong>Ahmed</strong> kjøper selv flislim på tilbud og leverer det til flisleggeren. Flisleggeren ser at limet ikke egner seg for våtrom. Da skal han si fra: "Dette limet bør vi ikke bruke på badegulvet ditt." Å bare bruke det i taushet ville være et brudd på veiledningsplikten.</li>
+<li><strong>Beate</strong> vet ikke at det finnes ulike kvaliteter på vinduer. Snekkeren bør forklare forskjellen mellom de billige og de dyre, slik at hun kan velge bevisst — ikke bare montere det dyreste uten et ord.</li>
+<li><strong>Per</strong> ber rørleggeren om en bestemt løsning som rørleggeren vet vil gi dårlig vanntrykk. Rørleggeren skal informere om dette, og foreslå et bedre alternativ.</li>
+</ul>
+<p>Veiledningsplikten henger tett sammen med frårådingsplikten i § 7. Mens § 7 handler om å fraråde hele jobben når den ikke lønner seg, handler § 5 om den løpende rådgivningen og omtanken gjennom hele oppdraget. De to henger sammen som to sider av samme sak: håndverkeren skal både hjelpe deg å unngå unødvendig arbeid <em>og</em> sørge for at det arbeidet som faktisk gjøres, blir gjort på en måte som er god for deg.</p>
+<h3>Omsorg betyr også å passe på hjemmet ditt</h3>
+<p>"Tilbørlig omsorg" handler ikke bare om gode råd. Det handler også om at håndverkeren skal vise hensyn til hjemmet ditt mens han jobber. Det betyr for eksempel å dekke til møbler før han sliper, å rydde opp etter seg, og å ikke etterlate farlige situasjoner. <strong>Kristian</strong> opplevde at en rørlegger forlot en åpen vannledning over natten uten å si fra — det er et brudd på den omsorgen man kan forvente. God omsorg er summen av mange små ting: at håndverkeren tenker på deg og hjemmet ditt, ikke bare på sin egen oppgave.</p>
+<h3>Hva veiledningen bør omfatte</h3>
+<p>God veiledning fra en håndverker handler typisk om:</p>
+<ul>
+<li><strong>Materialvalg</strong> — hvilke materialer som passer, og om noe du har valgt selv er uegnet.</li>
+<li><strong>Løsninger</strong> — om det finnes en bedre, rimeligere eller mer holdbar måte å gjøre jobben på.</li>
+<li><strong>Risiko og konsekvenser</strong> — for eksempel at et valg kan gi kortere levetid eller mer vedlikehold.</li>
+<li><strong>Vedlikehold etterpå</strong> — hvordan du skal ta vare på arbeidet så det varer.</li>
+</ul>
+<h3>Hva hvis håndverkeren ikke veileder?</h3>
+<p>Her er det viktige: hvis håndverkeren bryter omsorgs- og veiledningsplikten i § 5, kan resultatet bli at det foreligger en <em>mangel</em> ved tjenesten (§ 17). En mangel betyr at du har gjort krav i behold — for eksempel retting, prisavslag eller erstatning.</p>
+<p>Et eksempel: <strong>Sofie</strong> ber maleren om en bestemt type maling til et fuktig kjellerrom. Maleren vet at malingen vil flasse av i fukt, men sier ingenting og maler i vei. Når malingen flasser etter to måneder, kan dette regnes som en mangel — nettopp fordi maleren ikke ga den veiledningen han burde.</p>
+<p>Et annet eksempel: <strong>Daniel</strong> kjøper selv et billig blandebatteri og ber rørleggeren montere det. Rørleggeren ser at batteriet er av dårlig kvalitet og sannsynligvis vil begynne å dryppe raskt. Sier han ingenting, og batteriet svikter, kan det bli rørleggerens ansvar — fordi han hadde en plikt til å advare Daniel om kvaliteten. Hadde han derimot sagt tydelig fra ("dette batteriet vil jeg fraråde, det holder neppe lenge"), og Daniel insisterte likevel, ville ansvaret ligget hos Daniel. Forskjellen er om håndverkeren faktisk ga den veiledningen han burde.</p>
+<h3>Slik får du mest mulig ut av veiledningsplikten</h3>
+<ul>
+<li><strong>Still spørsmål.</strong> Spør "hva ville du gjort?" eller "finnes det en bedre løsning?". En god håndverker setter pris på det.</li>
+<li><strong>Be om begrunnelse.</strong> Hvis håndverkeren anbefaler noe dyrt, be om en forklaring på hvorfor.</li>
+<li><strong>Vær åpen om din kunnskap.</strong> Si tydelig at du ikke er fagperson, så vet håndverkeren at han må forklare grundig.</li>
+<li><strong>Skriv ned rådene du får.</strong> Da har dere en felles forståelse, og det er lettere å rydde opp hvis noe går galt.</li>
+</ul>
+<h3>Hva med dine egne valg?</h3>
+<p>Veiledningsplikten betyr ikke at du mister ansvaret for egne beslutninger. Hvis håndverkeren gir deg et tydelig og forsvarlig råd, og du velger å overse det, kan du ikke senere skylde på ham. Eksempel: <strong>Nina</strong> får klar beskjed om at parketten ikke egner seg på et baderom, men insisterer likevel. Da har maleren oppfylt sin plikt — han veiledet — og konsekvensen blir Ninas eget ansvar. Veiledningsplikten sikrer altså at du <em>får informasjonen</em>; den fratar deg ikke retten til å bestemme selv.</p>
+<h3>En balansert forventning</h3>
+<p>Veiledningsplikten betyr ikke at håndverkeren må holde et helt kurs for deg, eller forutse alle tenkelige ønsker du måtte ha. Det handler om rimelig, fagmessig omtanke ut fra situasjonen. Men det handler heller ikke om at du som forbruker skal "kunne reglene selv" — tvert imot er det nettopp fordi du <em>ikke</em> er fagperson at loven legger ansvaret på håndverkeren. En grei huskeregel: hvis håndverkeren ser noe han vet vil gå galt, og du ikke kan forventes å forstå det selv, skal han si fra.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Håndverkeren skal ivareta dine interesser med <em>tilbørlig omsorg</em> og gi nødvendig <em>veiledning</em> (§ 5).</li>
+<li>Det betyr råd om materialer, løsninger, risiko og vedlikehold — fordi du ikke er fagperson, men det er håndverkeren.</li>
+<li>Brudd på veiledningsplikten kan føre til at det foreligger en mangel (§ 17), som gir deg krav.</li>
+<li>Still spørsmål, be om begrunnelser og skriv ned rådene du får.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

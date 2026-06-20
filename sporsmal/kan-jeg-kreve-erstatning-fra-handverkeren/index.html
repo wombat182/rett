@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg kreve erstatning fra håndverkeren? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-kreve-erstatning-fra-handverkeren/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg kreve erstatning fra håndverkeren?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-kreve-erstatning-fra-handverkeren/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg kreve erstatning fra håndverkeren?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg kreve erstatning fra håndverkeren?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. I tillegg til retting, prisavslag eller heving kan du kreve erstatning for det økonomiske tapet mangelen har påført deg (håndverkertjenesteloven § 28). Erstatning dekker det ekstra tapet feilen har ført til – ikke selve mangelen, men følgene av den, som en vannskade, ødelagte eiendeler eller tapt arbeidsinntekt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. I tillegg til retting, prisavslag eller heving kan du kreve <strong>erstatning</strong> for det økonomiske tapet mangelen har påført deg (håndverkertjenesteloven § 28). Erstatning dekker det ekstra tapet feilen har ført til – ikke selve mangelen, men følgene av den, som en vannskade, ødelagte eiendeler eller tapt arbeidsinntekt.</p>
+<h3>Hva er forskjellen på erstatning og de andre kravene?</h3>
+<p>Det er lett å blande sammen. Tenk slik:</p>
+<ul>
+<li><strong>Retting/prisavslag/dekningsutbedring</strong> handler om <strong>selve mangelen</strong> – at tjenesten blir riktig, eller at du betaler mindre for den.</li>
+<li><strong>Erstatning</strong> handler om <strong>det andre tapet feilen har skapt</strong> – skader og kostnader utover selve den mangelfulle tjenesten.</li>
+</ul>
+<p><strong>Eksempel:</strong> <strong>Eline</strong> fikk montert en oppvaskmaskin som var feilkoblet, slik at den lekket og ødela kjøkkengulvet. Selve feilkoblingen ble rettet gratis (retting). Men det ødelagte gulvet til 18 000 kroner var et følgetap – det kunne hun kreve i erstatning.</p>
+<h3>Hva kan du få erstattet?</h3>
+<p>Erstatningen skal dekke det <strong>økonomiske tapet</strong> mangelen har påført deg. Typiske eksempler:</p>
+<ul>
+<li><strong>Skader på eiendelene dine</strong> – som gulvet til Eline, eller møbler ødelagt av en lekkasje.</li>
+<li><strong>Utgifter du har hatt på grunn av feilen</strong> – for eksempel å bo et annet sted mens et bad rives og bygges om.</li>
+<li><strong>Tapt arbeidsinntekt</strong> hvis du måtte ta fri for å håndtere skaden.</li>
+<li><strong>Andre direkte kostnader</strong> som følger av mangelen.</li>
+</ul>
+<p><strong>Eksempel:</strong> <strong>Familien Dahl</strong> fikk en feilmontert vannkran som forårsaket en lekkasje i veggen. De måtte bo på hotell i fire netter mens skaden ble utbedret, til 5 600 kroner, og kastet et ødelagt teppe til 3 000 kroner. Til sammen 8 600 kroner i følgetap kunne de kreve som erstatning – i tillegg til at selve lekkasjen ble rettet.</p>
+<h3>Når må håndverkeren betale erstatning?</h3>
+<p>Hovedregelen er at håndverkeren er ansvarlig for tap som følge av mangelen, med mindre han kan vise at feilen skyldtes noe <strong>utenfor hans kontroll</strong> som han ikke med rimelighet kunne ventes å unngå eller overvinne. Dette kalles ofte <strong>kontrollansvar</strong>. I praksis er terskelen for å slippe unna høy – håndverkeren svarer for det som ligger innenfor hans egen virksomhet og fagutøvelse.</p>
+<p><strong>Eksempel:</strong> En rørlegger kan ikke skyve ansvaret over på "uflaks" når en kobling han selv strammet for dårlig gir lekkasje. Det ligger klart innenfor hans kontroll.</p>
+<p>Et tenkt eksempel på noe som faktisk kan ligge utenfor kontroll: en helt ekstraordinær og uforutsigbar hendelse som ingen fagperson med rimelighet kunne ventet eller forhindret. Men slike unntak er sjeldne, og en vanlig håndverksfeil faller nesten alltid innenfor håndverkerens ansvar.</p>
+<h3>Slik krever du erstatning – steg for steg</h3>
+<ol>
+<li><strong>Begrens tapet ditt.</strong> Du har plikt til å hindre at skaden blir større – steng for eksempel vannet straks du oppdager en lekkasje.</li>
+<li><strong>Dokumenter skaden</strong> grundig med bilder og video, før du rydder opp.</li>
+<li><strong>Ta vare på alle kvitteringer</strong> – hotell, nye eiendeler, fagfolk, tapt inntekt.</li>
+<li><strong>Sett opp en oversikt</strong> over tapet med beløp og bilag.</li>
+<li><strong>Send et skriftlig erstatningskrav</strong> med begrunnelse og dokumentasjon.</li>
+<li><strong>Meld også fra til forsikringen din</strong> – noen tap dekkes der, og selskapene gjør ofte opp seg imellom.</li>
+</ol>
+<h3>Viktig: Din plikt til å begrense tapet</h3>
+<p>Du kan ikke la skaden vokse fritt og så sende hele regningen. Loven forventer at du gjør det du med rimelighet kan for å begrense tapet. Lar du en lekkasje renne i dagevis uten å gripe inn, kan erstatningen settes ned tilsvarende.</p>
+<p><strong>Eksempel:</strong> <strong>Kenneth</strong> oppdaget en liten lekkasje under vasken, men lot den stå i to uker fordi han var opptatt. Da hele kjøkkenbenken til slutt var ødelagt, ble erstatningen redusert: en god del av skaden kunne han ha unngått ved å gripe inn tidlig.</p>
+<h3>Hva med tap som er vanskelig å tallfeste?</h3>
+<p>Erstatning gjelder økonomisk tap som kan dokumenteres. Ren irritasjon, tapt fritid eller "bryderi" gir normalt ikke erstatning i seg selv. Derfor er det viktig å holde seg til konkrete, dokumenterbare kostnader: kvitteringer, fakturaer og bekreftet tapt inntekt. Jo mer konkret tapet ditt er, desto enklere er det å få det dekket.</p>
+<h3>Forsikring og erstatning – hvordan henger det sammen?</h3>
+<p>Ved skader, særlig vannskader, er det ofte lurt å melde fra til <strong>innboforsikringen eller husforsikringen</strong> raskt. Mange skader dekkes av forsikringen, og du slipper å vente på at saken med håndverkeren skal løses. Deretter kan forsikringsselskapet kreve pengene tilbake fra håndverkeren som er ansvarlig – dette kalles regress, og det er noe selskapet ordner, ikke du.</p>
+<p>Tenk slik om rekkefølgen:</p>
+<ul>
+<li><strong>Akutt skade?</strong> Meld til forsikringen først, så skaden blir håndtert raskt.</li>
+<li><strong>Egenandel eller udekket tap?</strong> Det kan du kreve som erstatning av håndverkeren.</li>
+<li><strong>Mindre tap uten forsikring?</strong> Da krever du hele beløpet direkte av håndverkeren.</li>
+</ul>
+<p><strong>Eksempel:</strong> Da <strong>Trine</strong> fikk en vannskade etter en feilmontert vaskemaskinkobling, dekket forsikringen selve skaden, men hun måtte betale en egenandel på 8 000 kroner. Den egenandelen krevde hun som erstatning fra rørleggeren som hadde gjort feilen.</p>
+<h3>Kombiner kravene dine</h3>
+<p>Erstatning kommer <strong>i tillegg</strong> til de andre kravene. Du kan altså få feilen rettet (eller prisavslag) <strong>og</strong> erstatning for følgetapet samtidig. Eline fikk både gratis retting av feilkoblingen og erstatning for det ødelagte gulvet – fullt mulig etter loven.</p>
+<h3>Slik dokumenterer du tapet best mulig</h3>
+<p>Et erstatningskrav står og faller på dokumentasjonen. Tenk som en detektiv som samler bevis:</p>
+<ul>
+<li><strong>Bilder og video</strong> av skaden, helst før du rydder opp eller utbedrer.</li>
+<li><strong>Kvitteringer og fakturaer</strong> for alt du har måttet betale.</li>
+<li><strong>Bekreftelse på tapt inntekt</strong>, for eksempel fra arbeidsgiver, hvis du måtte ta fri.</li>
+<li><strong>En tidslinje</strong> over hva som skjedde når, fra feilen oppsto til tapet var et faktum.</li>
+</ul>
+<p><strong>Eksempel:</strong> <strong>Marit</strong> fikk lekkasje fra et feilmontert rør mens hun var på jobb. Hun filmet skaden da hun kom hjem, tok vare på kvitteringene for avfukter og fagfolk, og skrev ned tidslinjen. Da hun sendte erstatningskravet, var det så godt dokumentert at rørleggeren betalte uten å protestere.</p>
+<h3>Hold de tre kravstypene fra hverandre</h3>
+<p>Det er lett å rote sammen begrepene, så her er en enkel huskeregel:</p>
+<ul>
+<li><strong>Retting/prisavslag</strong> = pris og kvalitet på selve tjenesten.</li>
+<li><strong>Dekningsutbedring</strong> = en annen retter feilen, regningen sendes videre.</li>
+<li><strong>Erstatning</strong> = følgeskader og ekstra utgifter feilen har skapt.</li>
+</ul>
+<p>Når du holder disse fra hverandre i kravet ditt, blir det enklere både for håndverkeren å forstå og for et klageorgan å gi deg medhold. Skriv gjerne kravet i punkter: "1) Retting av feilen, 2) Erstatning for vannskaden på kr X, jf. § 28."</p>
+<h3>Kort oppsummert</h3>
+<p>Du kan kreve erstatning for det økonomiske tapet en mangel påfører deg – som skader på eiendeler, hotellutgifter eller tapt inntekt – i tillegg til retting, prisavslag eller heving. Håndverkeren slipper bare unna hvis feilen skyldtes noe klart utenfor hans kontroll, noe som sjelden skjer. Begrens tapet, dokumenter alt, ta vare på kvitteringene og send et skriftlig krav. Husk å melde fra til forsikringen også.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

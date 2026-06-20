@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis bilverkstedet gjorde mer enn avtalt? — Rettsregel</title>
+<meta name="description" content="Hovedregelen er at du ikke skal betale for arbeid du ikke har bestilt. Oppdager verkstedet at noe mer bør gjøres, skal de som regel kontakte deg og få…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-bilverkstedet-gjorde-mer-enn-avtalt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis bilverkstedet gjorde mer enn avtalt?">
+<meta property="og:description" content="Hovedregelen er at du ikke skal betale for arbeid du ikke har bestilt. Oppdager verkstedet at noe mer bør gjøres, skal de som regel kontakte deg og få…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-bilverkstedet-gjorde-mer-enn-avtalt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis bilverkstedet gjorde mer enn avtalt?">
+<meta name="twitter:description" content="Hovedregelen er at du ikke skal betale for arbeid du ikke har bestilt. Oppdager verkstedet at noe mer bør gjøres, skal de som regel kontakte deg og få…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis bilverkstedet gjorde mer enn avtalt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hovedregelen er at du ikke skal betale for arbeid du ikke har bestilt. Oppdager verkstedet at noe mer bør gjøres, skal de som regel kontakte deg og få godkjenning først. Gjorde de unødvendig eller ubestilt arbeid uten å spørre, kan du normalt nekte å betale for det.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Utgangspunktet: du bestemmer hva som skal gjøres</h3>
+<p>Det er du som er oppdragsgiver. Verkstedet skal gjøre det du har bestilt – ikke mer. Finner de noe annet de mener bør utbedres, er hovedregelen at de må ta kontakt og spørre deg før de setter i gang. Da kan du si ja eller nei, og du har kontroll over hva regningen blir.</p>
+<p>Eksempel: Hanne leverer bilen for å skifte til vinterdekk. Mens bilen står på løftet, ser mekanikeren at bremseskivene er slitte. Det riktige er at de ringer Hanne: "Vi ser at bremseskivene bør byttes, det koster cirka 4 000 kroner – vil du at vi gjør det?" Da bestemmer hun selv om det skal gjøres nå eller vente.</p>
+<h3>Når de ikke spurte først</h3>
+<p>Gjorde verkstedet ekstraarbeid uten å avklare det, er utgangspunktet klart: Unødvendig eller ubestilt arbeid må du normalt ikke betale for.</p>
+<p>Eksempel: Hanne henter bilen og oppdager at de har byttet bremseskivene uten å ringe, og lagt 4 000 kroner på regningen. Siden hun aldri ble spurt, kan hun som hovedregel nekte å betale for denne delen.</p>
+<h3>Et viktig unntak: når det haster og de ikke fikk tak i deg</h3>
+<p>Loven tar høyde for situasjoner der det haster og verkstedet ikke får kontakt med deg. Hvis det dukker opp arbeid som henger naturlig sammen med oppdraget, og det ville vært uforsvarlig å la være, kan verkstedet i visse tilfeller utføre det selv om de ikke nådde deg – særlig hvis prisen er beskjeden, eller arbeidet er nødvendig for å unngå skade eller fare.</p>
+<p>Men dette er et unntak, ikke hovedregelen. Et stort, dyrt ekstraarbeid kan de ikke bare kjøre på med fordi du ikke svarte telefonen. Da skulle de ventet, eller latt være.</p>
+<h3>Hva med 15-prosentregelen?</h3>
+<p>Hvis verkstedet ga deg et prisoverslag, kan den endelige regningen som nevnt ikke overstige overslaget med mer enn 15 prosent. Ekstraarbeid de gjorde uten din godkjenning, kan ikke "smugles inn" ved å sprenge denne grensen. En sluttregning som blir for høy uten at du har godkjent merarbeidet, kan du protestere på.</p>
+<p>Eksempel: Overslaget var 8 000 kroner. Regningen kom på 13 000 fordi de gjorde et ekstraarbeid du aldri ble spurt om. Både fordi arbeidet var ubestilt og fordi regningen sprenger 15-prosentgrensen – taket ville vært 9 200 kroner – står du sterkt i å avvise det overskytende.</p>
+<h3>Slik går du frem</h3>
+<ol>
+<li><strong>Be om en spesifisert regning</strong>, så du ser nøyaktig hva som er ekstraarbeid.</li>
+<li><strong>Sammenlign med det du faktisk bestilte</strong> og med prisoverslaget.</li>
+<li><strong>Reklamer skriftlig</strong> på det du ikke har bestilt: "Jeg bestilte kun dekkskift. Bytte av bremseskiver ble aldri avtalt med meg, og jeg avviser denne delen av regningen."</li>
+<li><strong>Be om dokumentasjon</strong> for at de prøvde å kontakte deg, hvis de hevder det.</li>
+<li><strong>Betal den ubestridte delen</strong>, og ta tvisten om resten.</li>
+</ol>
+<h3>Forebygg problemet når du leverer bilen</h3>
+<ul>
+<li>Si tydelig: "Ikke gjør noe utover det jeg har bestilt uten å ringe meg først."</li>
+<li>Avtal en øvre prisgrense, for eksempel "Stopp og ring hvis det går over 10 000 kroner."</li>
+<li>Be om at det noteres på arbeidsordren at du skal kontaktes ved ekstraarbeid.</li>
+<li>Oppgi et telefonnummer de faktisk kan nå deg på, og vær tilgjengelig den dagen.</li>
+</ul>
+<p>Da er det vanskelig for verkstedet å hevde i ettertid at ekstraarbeidet var greit å gjøre uten å spørre.</p>
+<h3>Når ekstraarbeidet faktisk var fornuftig</h3>
+<p>Det hender at verkstedet har gjort noe ekstra som virkelig var nødvendig, og som du selv ville sagt ja til. Selv da har du rett til å bli spurt på forhånd. Men i praksis er det lurt å vurdere helheten: Hvis ekstraarbeidet var lite, rimelig og åpenbart fornuftig, kan det være mer fred i å betale for det enn å lage en stor sak. Var det derimot dyrt, unødvendig eller noe du ville takket nei til, bør du stå på rettighetene dine.</p>
+<h3>Et eksempel på en ryddig avslutning</h3>
+<p>Kristian leverer bilen til EU-kontroll og en oljeservice. Verkstedet ringer og sier at en lyspære er gått, og spør om de skal bytte den for 150 kroner. Kristian sier ja. Senere ser han at de også har fylt på spylervæske uten å spørre, en post på 90 kroner. Det er lite og fornuftig, og han lar det passere. Men hadde de byttet et dyrt eksosanlegg uten å spørre, ville saken stått helt annerledes. Skjønnet ligger i størrelsen og nødvendigheten.</p>
+<h3>Hva hvis de allerede har montert delen?</h3>
+<p>Et vanskelig tilfelle er når verkstedet har gjort det ubestilte arbeidet, og delen ikke uten videre kan settes tilbake. De kan ikke kreve full betaling bare fordi arbeidet er ugjenkallelig utført. Var det ubestilt og unødvendig, er utgangspunktet fortsatt at du ikke skal betale. Samtidig kan det oppstå en diskusjon om hvorvidt arbeidet faktisk var nødvendig og til din fordel. Her er det igjen dokumentasjon som teller: Be om en forklaring på hvorfor det ble gjort uten å spørre, og ta tvisten til Forbrukerrådet hvis dere ikke blir enige.</p>
+<h3>Tilbakeholdsrett ved uenighet om ekstraarbeid</h3>
+<p>Husk at verkstedet kan holde tilbake bilen til regningen er betalt. Er dere uenige om ekstraarbeidet, er det ofte lurt å betale den delen av regningen dere er enige om, gjerne under protest for resten, og ta tvisten i etterkant. Da får du bilen med deg og slipper at den blir stående og kanskje samler opp parkeringskostnader, samtidig som du ikke gir avkall på retten til å bestride det ubestilte arbeidet.</p>
+<h3>Kort oppsummert</h3>
+<p>Verkstedet skal ikke gjøre mer enn du har bestilt. Dukker det opp noe ekstra, skal de normalt ringe og spørre først. Gjorde de unødvendig eller ubestilt arbeid uten å avklare det, må du som hovedregel ikke betale for det – og det kan ikke brukes til å sprenge 15-prosentgrensen i et prisoverslag. Et snevert unntak finnes når det haster og de ikke får tak i deg. Be om spesifisert regning, reklamer skriftlig på det ubestilte, betal den delen dere er enige om, og forebygg ved å si tydelig fra på forhånd at de skal kontakte deg.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bilen-har-skjult-feil/">Bilen jeg kjøpte har skjult feil — hva kan jeg kreve?</a><a class="sp-relchip" href="../../sporsmal/gjelder-handverkertjenesteloven-for-bilverksted/">Gjelder håndverkertjenesteloven for bilverksted?</a><a class="sp-relchip" href="../../sporsmal/gjelder-kjopsloven-nar-jeg-kjoper-brukt-bil-privat/">Gjelder kjøpsloven når jeg kjøper brukt bil privat?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

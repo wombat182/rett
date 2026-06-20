@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en mangel ved en nybygd bolig? — Rettsregel</title>
+<meta name="description" content="Kort sagt: En mangel foreligger når den nybygde boligen ikke er slik den skulle være – enten fordi den ikke stemmer med avtalen, ikke er fagmessig utført,…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-mangel-ved-en-nybygd-bolig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en mangel ved en nybygd bolig?">
+<meta property="og:description" content="Kort sagt: En mangel foreligger når den nybygde boligen ikke er slik den skulle være – enten fordi den ikke stemmer med avtalen, ikke er fagmessig utført,…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-mangel-ved-en-nybygd-bolig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en mangel ved en nybygd bolig?">
+<meta name="twitter:description" content="Kort sagt: En mangel foreligger når den nybygde boligen ikke er slik den skulle være – enten fordi den ikke stemmer med avtalen, ikke er fagmessig utført,…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er en mangel ved en nybygd bolig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: En mangel foreligger når den nybygde boligen ikke er slik den skulle være – enten fordi den ikke stemmer med avtalen, ikke er fagmessig utført, eller ikke oppfyller de offentlige kravene (bustadoppføringslova § 25 – regelen om hva som regnes som en mangel ved entreprenørens ytelse).</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 25</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/25/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 25</div>
+  <div class="related-card-title">Hva er egentlig en byggefeil (mangel)?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: En mangel foreligger når den nybygde boligen ikke er slik den skulle være – enten fordi den ikke stemmer med avtalen, ikke er fagmessig utført, eller ikke oppfyller de offentlige kravene (bustadoppføringslova § 25 – regelen om hva som regnes som en mangel ved entreprenørens ytelse).</p>
+<h3>De tre måtene noe kan være en mangel på</h3>
+<p>Loven peker på tre hovedtyper. Det holder at bare én av dem er oppfylt for at det regnes som en mangel:</p>
+<p><strong>1. Boligen stemmer ikke med avtalen.</strong> Du har avtalt noe konkret, og resultatet er noe annet. Avtalt eikeparkett, men fikk laminat? Avtalt induksjonskoketopp, men fikk en enkel keramisk? Tre soverom på tegningen, men bare to ble bygd? Da er det en mangel, ganske enkelt fordi du ikke fikk det du betalte for. Avtalen er utgangspunktet, og avvik fra den teller.</p>
+<p><strong>2. Arbeidet er ikke fagmessig utført.</strong> "Fagmessig" betyr at jobben skal være gjort slik en dyktig, faglært håndverker ville gjort den. Skjeve fliser, fuger som slipper, dører som ikke lukker ordentlig, maling som flasser eller skjøter som ikke møtes – slikt dårlig håndverk er en mangel, selv om det ikke står noe konkret om akkurat dette i kontrakten. Du har nemlig alltid krav på solid, faglig forsvarlig håndverk, uavhengig av hva som er nedskrevet.</p>
+<p><strong>3. Boligen oppfyller ikke offentlige krav (TEK).</strong> Det finnes offentlige byggtekniske krav, samlet i en forskrift kalt TEK (byggteknisk forskrift). Disse handler om sikkerhet, brann, fukt, ventilasjon, isolasjon, tilgjengelighet og mye mer. Oppfyller ikke boligen disse minstekravene, er det en mangel – også her helt uavhengig av hva som står i kontrakten. De offentlige kravene er en bunnplanke som alltid gjelder.</p>
+<h3>Et eksempel som viser alle tre</h3>
+<p>Lars og Ingrid overtok sin nye leilighet og fant tre ting som illustrerer hver sin type mangel:
+- Det var montert <strong>billigere kjøkkenfronter</strong> enn det de hadde avtalt og betalt for – et brudd på avtalen.
+- <strong>Flisene på badet</strong> var lagt skjevt, med ujevne og slepne fuger – ikke fagmessig utført.
+- <strong>Ventilasjonen</strong> på badet trakk for lite luft til å oppfylle de offentlige kravene – i strid med TEK.</p>
+<p>Alle tre ble regnet som mangler, og entreprenøren måtte rette dem. Det spilte ingen rolle at bare den første sto uttrykkelig i kontrakten; de to andre var mangler uansett.</p>
+<h3>Hva er IKKE en mangel?</h3>
+<p>Det er like nyttig å vite hva som <em>ikke</em> teller som en mangel:</p>
+<ul>
+<li><strong>Vanlig slitasje</strong> fra at du bruker boligen over tid.</li>
+<li><strong>Ting du selv har ødelagt</strong> etter overtakelsen, ved uhell eller uforsiktighet.</li>
+<li><strong>Forhold du fikk klar beskjed om på forhånd</strong> og godtok – for eksempel hvis det tydelig var opplyst at terrassen kom senere, eller at et bestemt materiale ble brukt.</li>
+<li><strong>Smaksspørsmål.</strong> At du i ettertid ikke liker fargen du selv valgte, eller angrer på et materialvalg, er ikke en mangel.</li>
+</ul>
+<p>Disse skillene er viktige, fordi de hjelper deg å vurdere realistisk hva du faktisk kan kreve rettet og hva som er ditt eget ansvar.</p>
+<h3>Hvordan vurdere om du har en mangel?</h3>
+<ol>
+<li><strong>Sammenlign med avtalen.</strong> Hent fram kontrakt, tegninger, prospekt og beskrivelser. Stemmer det som ble levert med det som ble lovet?</li>
+<li><strong>Vurder håndverket.</strong> Ser det skikkelig og solid ut? Ville en fagperson godtatt dette som godt arbeid?</li>
+<li><strong>Tenk på de offentlige kravene.</strong> Virker noe utrygt eller dårlig – fukt, brann, ventilasjon, isolasjon?</li>
+<li><strong>Dokumenter.</strong> Ta bilder, noter dato og beskriv konkret hva som er galt.</li>
+<li><strong>Reklamer skriftlig.</strong> Meld fra til entreprenøren så snart du har oppdaget noe du mener er en mangel.</li>
+</ol>
+<h3>Hva med skjulte mangler?</h3>
+<p>Mange mangler er skjulte og viser seg først etter en tid – en membran som lekker, et avvik bak en vegg, en isolasjon som er for tynn. Det er helt vanlig, og du mister ikke retten din selv om feilen først dukker opp lenge etter overtakelsen. Det viktige er at du reklamerer innen rimelig tid etter at du oppdaget den, og innen de lange reklamasjonsfristene som loven gir. En skjult mangel er fortsatt en mangel, selv om den lå usynlig i flere år.</p>
+<h3>Hvorfor er definisjonen så viktig?</h3>
+<p>Hele rettighetsapparatet ditt – retting, prisavslag, erstatning og mer – henger på om det faktisk foreligger en mangel etter § 25. Derfor er det verdt å forstå de tre typene godt. Klarer du å plassere problemet ditt i én av de tre kategoriene, har du et solid grunnlag for å kreve at noe gjøres.</p>
+<h3>Hva med opplysninger du fikk før kjøpet?</h3>
+<p>En egen, viktig variant er manglende eller uriktige opplysninger. Hvis entreprenøren eller selgeren ga deg gale opplysninger om boligen – for eksempel at den hadde balansert ventilasjon når den i virkeligheten ikke hadde det – eller holdt tilbake viktig informasjon som du hadde grunn til å regne med å få, kan også dette gjøre at det foreligger en mangel. Tanken er at du skal kunne stole på det du blir fortalt i salgsmaterialet, prospektet og samtalene før kjøpet. Ble du villedet på et punkt som betydde noe for kjøpet, er ikke boligen i samsvar med det du hadde grunn til å forvente. Ta derfor vare på prospekt, e-poster og annonsetekst – de kan vise hva som faktisk ble lovet deg.</p>
+<h3>En praktisk måte å tenke på det</h3>
+<p>Et nyttig grep er å spørre seg selv tre enkle spørsmål når du lurer på om noe er en mangel: Fikk jeg det jeg avtalte? Er det gjort skikkelig, slik en fagperson ville gjort det? Oppfyller det de offentlige minstekravene? Svarer du nei på minst ett av spørsmålene, er det sannsynligvis en mangel. Svarer du ja på alle tre, er det trolig ikke en mangel – selv om du kanskje skulle ønske noe var annerledes. Denne enkle sjekken hjelper deg å skille reelle mangler fra ren misnøye eller smak.</p>
+<h3>Kort oppsummert</h3>
+<p>En mangel ved en nybygd bolig foreligger når den ikke stemmer med avtalen, ikke er fagmessig utført, eller ikke oppfyller offentlige krav som TEK (§ 25). Det holder at ett av disse punktene er oppfylt. Vanlig slitasje, egne skader og ting du på forhånd godtok, er derimot ikke mangler. Sammenlign med avtalen, vurder håndverket og de offentlige kravene – og reklamer skriftlig så snart du oppdager noe, også om det er en skjult mangel som dukker opp senere.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

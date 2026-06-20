@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis arbeidet ikke følger offentlige regler og forskrifter? — Rettsregel</title>
+<meta name="description" content="Da har du nesten alltid en alvorlig mangel. Selv om arbeidet ser flott ut og fungerer akkurat nå, er det en mangel hvis det bryter med offentlige…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-arbeidet-ikke-folger-offentlige-regler-og/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis arbeidet ikke følger offentlige regler og forskrifter?">
+<meta property="og:description" content="Da har du nesten alltid en alvorlig mangel. Selv om arbeidet ser flott ut og fungerer akkurat nå, er det en mangel hvis det bryter med offentlige…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-arbeidet-ikke-folger-offentlige-regler-og/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis arbeidet ikke følger offentlige regler og forskrifter?">
+<meta name="twitter:description" content="Da har du nesten alltid en alvorlig mangel. Selv om arbeidet ser flott ut og fungerer akkurat nå, er det en mangel hvis det bryter med offentlige…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis arbeidet ikke følger offentlige regler og forskrifter?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Da har du nesten alltid en alvorlig mangel. Selv om arbeidet ser flott ut og fungerer akkurat nå, er det en mangel hvis det bryter med offentlige sikkerhets- og byggekrav. Loven krever uttrykkelig at håndverkertjenester skal oppfylle kravene i lov og forskrift – og gjør de ikke det, har du rett til å få det rettet.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hvorfor er forskriftsbrudd så alvorlig?</h3>
+<p>Offentlige regler finnes for å beskytte liv, helse og verdier. Byggteknisk forskrift (TEK17), el-forskrifter og krav til våtrom handler om at bygg skal være trygge – at de ikke brenner, lekker eller faller sammen. Derfor sier håndverkertjenesteloven at tjenesten skal være i samsvar med sikkerhetskrav fastsatt i lov eller offentlig vedtak (kravet til at offentlige sikkerhetskrav følges, jf. håndverkertjenesteloven § 6). Brytes disse, foreligger det en mangel etter § 17 – uavhengig av om du selv synes resultatet ser bra ut.</p>
+<p>Det spesielle her er at det ikke spiller noen rolle om du er fornøyd. Et bad uten lovlig membran er en mangel selv om det ikke har lekket ennå. Faren ligger der, og det er nok.</p>
+<h3>Typiske forskriftsbrudd</h3>
+<ul>
+<li><strong>Bad uten godkjent membran eller med feil fall mot sluk</strong> – bryter med byggteknisk forskrift sine krav til våtrom (TEK17, reglene om våtrom og fuktsikring).</li>
+<li><strong>Elektrisk arbeid uten jordfeilbryter, feil sikringer eller utført av ukvalifiserte</strong> – bryter med el-forskriftene.</li>
+<li><strong>Manglende brannskille</strong> mellom boenheter, eller ildsted montert for nær brennbart materiale.</li>
+<li><strong>Bærevegg fjernet uten beregning og tillatelse</strong> – kan svekke hele konstruksjonen.</li>
+<li><strong>Manglende ventilasjon</strong> i et nytt baderom eller en kjellerleilighet.</li>
+<li><strong>Søknadspliktig arbeid utført uten byggetillatelse</strong> – for eksempel en tilbygging eller bruksendring som skulle vært søkt om hos kommunen.</li>
+</ul>
+<h3>Eksempel som viser poenget</h3>
+<p>Murermesteren Hassan pusset opp et baderom som ble riktig pent. Men han la membranen feil og glemte å føre den opp langs veggene. Badet ser perfekt ut, og du er kjempefornøyd. Likevel er det en alvorlig mangel, fordi det ikke oppfyller forskriftskravene til våtrom. Om to år kan det begynne å lekke ned i etasjen under – men selv før det skjer, har du krav på å få det rettet, fordi forskriften ikke er fulgt.</p>
+<h3>Hvorfor du bør bry deg, selv om alt virker fint</h3>
+<ul>
+<li><strong>Forsikringen kan svikte.</strong> Hvis det oppstår en skade – brann eller vannlekkasje – og det viser seg at arbeidet ikke var forskriftsmessig, kan forsikringsselskapet redusere eller nekte utbetaling.</li>
+<li><strong>Du får problemer ved salg.</strong> Ulovlig eller udokumentert arbeid må ofte opplyses om når du selger boligen, og kan trekke ned prisen eller skape ansvar overfor kjøper.</li>
+<li><strong>Det kan være direkte farlig.</strong> Feil på el-anlegg eller brannskiller kan koste liv.</li>
+</ul>
+<h3>Slik går du fram</h3>
+<ol>
+<li><strong>Få mistanken bekreftet.</strong> Er du usikker på om noe bryter med forskrift, hent en uavhengig fagperson – takstmann, en annen håndverker, eller ved el-arbeid det lokale eltilsynet.</li>
+<li><strong>Be om dokumentasjon fra håndverkeren.</strong> Ved våtrom og el-arbeid skal det foreligge dokumentasjon på at arbeidet er gjort etter regelverket. Manglende dokumentasjon er i seg selv et faresignal.</li>
+<li><strong>Reklamer skriftlig.</strong> Beskriv hva som bryter med forskrift, vis til fagvurderingen, og krev retting. Forskriftsbrudd gir deg en sterk sak.</li>
+<li><strong>Krev retting uten kostnad.</strong> Håndverkeren skal bringe arbeidet i samsvar med kravene. Skjer ikke det, kan du kreve prisavslag svarende til utbedringskostnaden, eller erstatning.</li>
+<li><strong>Sjekk med kommunen</strong> hvis det dreier seg om søknadspliktig arbeid. Manglende byggetillatelse er en sak mellom deg/håndverkeren og kommunen, og kan kreve at det søkes i ettertid.</li>
+</ol>
+<h3>Hvem har ansvaret for å kjenne reglene?</h3>
+<p>Det er håndverkeren, som fagpersonen, som skal kjenne og følge regelverket. Du som forbruker kan ikke forventes å kunne byggteknisk forskrift utenat. Derfor kan ikke håndverkeren skyve ansvaret over på deg ved å si at «du ba jo om det» – tvert imot har han en frarådingsplikt og skal nekte å gjøre noe som bryter med forskriftene.</p>
+<h3>Forskjellen på «pent» og «riktig»</h3>
+<p>Det er lett å la seg blende av et flott sluttresultat. Men forskriftene handler om ting du ofte ikke ser: brannmotstand i en vegg, riktig fall i et gulv, jording i et el-anlegg, tetting mot fukt. En jobb kan være vakker og likevel livsfarlig eller skadelig på sikt. Derfor bør du aldri vurdere kvaliteten bare med øynene. Spør alltid etter dokumentasjonen som viser at de usynlige kravene er oppfylt – det er den som forteller deg om jobben også er riktig, ikke bare pen.</p>
+<h3>Hvem søker, og hvem har ansvaret overfor kommunen?</h3>
+<p>Ved søknadspliktig arbeid er det viktig å vite at en god del bygge- og ombyggingsarbeider krever at et foretak påtar seg ansvaret overfor kommunen. For mindre tiltak kan du som privatperson noen ganger søke selv, men for større arbeider må et kvalifisert foretak stå ansvarlig. Avklar dette med kommunen din før arbeidet starter. Hvis håndverkeren sier «det trenger vi ikke søke om» uten å kunne begrunne det, bør du dobbeltsjekke selv. Det er du som eier, og det er du som sitter igjen med en eventuell ulovlighet.</p>
+<h3>Hva koster det å la være å sjekke?</h3>
+<p>Mange forbrukere oppdager forskriftsbrudd først ved salg, når takstmannen eller kjøperens bank stiller spørsmål. Da kan regningen for å rette opp i ettertid – søke godkjenning, rive og bygge om, dokumentere – bli mange ganger større enn om det var gjort riktig fra start. Å bruke litt tid på å sjekke forskriftskrav og dokumentasjon underveis er derfor en billig forsikring.</p>
+<h3>Reklamasjonsfrist</h3>
+<p>For arbeid på fast eiendom har du inntil fem års reklamasjonsfrist (jf. håndverkertjenesteloven § 19). Mange forskriftsbrudd er nettopp skjulte mangler som dukker opp senere – og da løper den relative fristen («innen rimelig tid») fra du oppdaget eller burde oppdaget feilen. Reklamer raskt når du blir klar over forholdet.</p>
+<h3>Kort oppsummert</h3>
+<p>Bryter arbeidet med offentlige regler – byggteknisk forskrift, el-forskrifter eller våtromskrav – er det en mangel, selv om resultatet ser pent ut og fungerer i dag. Loven krever at tjenesten oppfyller sikkerhetskravene i lov og forskrift, og ansvaret for å kjenne reglene ligger hos håndverkeren. Slike feil kan ramme forsikring, salgsverdi og sikkerhet, så få mistanken bekreftet av en uavhengig fagperson, krev dokumentasjon, og reklamer skriftlig med krav om retting. Du har en sterk sak – og inntil fem års frist på arbeid på fast eiendom.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

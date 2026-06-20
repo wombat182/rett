@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg dokumentere tap for å kreve dagmulkt? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Nei.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-dokumentere-tap-for-a-kreve-dagmulkt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg dokumentere tap for å kreve dagmulkt?">
+<meta property="og:description" content="Kort sagt: Nei.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-dokumentere-tap-for-a-kreve-dagmulkt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg dokumentere tap for å kreve dagmulkt?">
+<meta name="twitter:description" content="Kort sagt: Nei.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Må jeg dokumentere tap for å kreve dagmulkt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Nei. Det fineste med dagmulkt er nettopp at du ikke trenger å bevise at du har tapt en eneste krone. Loven gir deg mulkten uten hensyn til økonomisk tap, slik det uttrykkelig står i bustadoppføringslova § 18. Du får den bare fordi forsinkelsen har skjedd.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 18 og § 19</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/18/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 18</div>
+  <div class="related-card-title">Slik regner du ut dagmulkten</div>
+</a><a href="../../lover/bustadoppforingslova/19/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 19</div>
+  <div class="related-card-title">Når dagmulkten ikke er nok: Erstatning</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: Nei. Det fineste med dagmulkt er nettopp at du ikke trenger å bevise at du har tapt en eneste krone. Loven gir deg mulkten uten hensyn til økonomisk tap, slik det uttrykkelig står i bustadoppføringslova § 18. Du får den bare fordi forsinkelsen har skjedd.</p>
+<h3>Dette skiller dagmulkt fra vanlig erstatning</h3>
+<p>Ved vanlig erstatning må du dokumentere tapet ditt: leiekvitteringer, lagerleie, ekstra renteutgifter og så videre. Det kan være tungt, tidkrevende og fullt av diskusjoner om hva som egentlig er forsinkelsens skyld. Dagmulkten fungerer helt annerledes. Loven har på forhånd bestemt en fast sats per dag, og du får den så lenge boligen er forsinket - uansett om du faktisk har hatt ekstra kostnader eller ikke. Det er denne enkelheten som gjør dagmulkten så verdifull for vanlige forbrukere.</p>
+<h3>Hva betyr "uten hensyn til økonomisk tap"?</h3>
+<p>Det betyr ordrett at det ikke spiller noen rolle om du har tapt penger. Selv om forsinkelsen ikke skulle koste deg noe som helst - kanskje du bodde gratis hos familie i mellomtiden - har du like fullt krav på dagmulkten. Du trenger ikke regne på tap, samle kvitteringer eller forklare deg om økonomi. Forsinkelsen i seg selv er nok til at kravet utløses.</p>
+<h3>Eksempel - Solveig som ikke hadde noe tap</h3>
+<p>Solveig bygget hytte og bodde i sin vanlige bolig hele tiden mens hun ventet. Hytta ble 25 dager forsinket. Hun hadde strengt tatt ikke en eneste ekstra utgift som følge av forsinkelsen. Likevel hadde hun krav på full dagmulkt for alle 25 dagene. Med en dagsats på 2 700 kroner: 25 × 2 700 = <strong>67 500 kroner</strong> - helt uten å dokumentere noe som helst.</p>
+<h3>Eksempel - Bjørn som hadde stort tap</h3>
+<p>Bjørn måtte derimot leie leilighet i tre måneder, betale dobbel boutgift og lagre møblene på lager. Forsinkelsen var på 90 dager. Han fikk dagmulkt for alle 90 dagene uten å vise frem en eneste kvittering. Men i Bjørns tilfelle var de virkelige tapene betydelig større enn dagmulkten dekket. Da kan erstatning utover dagmulkt (§ 19) bli aktuelt - og der gjelder helt andre regler: han må dokumentere det reelle tapet og påvise at entreprenøren har opptrådt grovt uaktsomt eller i strid med god tro. Det er en høyere terskel enn for dagmulkt.</p>
+<h3>Eksempel - Nora som var i tvil</h3>
+<p>Nora trodde lenge at hun måtte bevise at hun hadde tapt penger, og kviet seg derfor for å sende kravet. Da hun forsto at dagmulkten kommer uten dokumentasjonskrav, sendte hun et enkelt brev med regnestykket. Entreprenøren betalte uten innvendinger. Mange går glipp av penger de har krav på, rett og slett fordi de tror terskelen er høyere enn den er.</p>
+<h3>Når lønner det seg likevel å samle dokumentasjon?</h3>
+<p>Selve dagmulkten krever ingen dokumentasjon av tap. Men det er lurt å ta vare på papirene likevel, av to grunner:</p>
+<ol>
+<li><strong>Du bør dokumentere selve forsinkelsen.</strong> Avtalt overtakelsesdato (fra kontrakten) og faktisk overtakelsesdato er det du trenger for å vise hvor mange dager kravet gjelder. Dette er ikke tap, men datoer.</li>
+<li><strong>Du holder døren åpen for erstatning.</strong> Skulle tapene dine bli store nok til at § 19 blir aktuelt, har du allerede kvitteringene klare.</li>
+</ol>
+<h3>Slik krever du dagmulkt - enkelt og greit</h3>
+<ol>
+<li><strong>Finn dagsatsen</strong> (promille × totalpris) - se artikkel 63.</li>
+<li><strong>Tell de forsinkede dagene</strong>, maks 100.</li>
+<li><strong>Skriv et kort, ryddig krav</strong> til entreprenøren med regnestykket og henvisning til § 18.</li>
+<li><strong>Be om betaling</strong> innen en rimelig frist, for eksempel 14 dager.</li>
+<li><strong>Vurder å holde tilbake</strong> et beløp av sluttoppgjøret som tilsvarer dagmulkten - men sjekk garanti- og oppgjørsreglene først, eller spør en rådgiver, så du gjør det riktig.</li>
+</ol>
+<h3>Hva om entreprenøren krever dokumentasjon likevel?</h3>
+<p>Skulle entreprenøren be deg om å bevise tap, kan du høflig vise til at dagmulkt etter § 18 gis uten hensyn til økonomisk tap. Du er ikke forpliktet til å legge frem kvitteringer for å få dagmulkten. Det eneste relevante er at det foreligger en forsinkelse som ikke skyldes deg, og hvor mange dager den varte.</p>
+<h3>Et eksempel på samspillet mellom dagmulkt og erstatning</h3>
+<p>La oss si at Maja hadde en forsinkelse på 60 dager med en dagsats på 3 000 kroner. Dagmulkten ble 60 × 3 000 = 180 000 kroner, helt uten dokumentasjon. Men Maja hadde i tillegg betalt 250 000 kroner i ekstra leie og lagerkostnader. Dekker dagmulkten alt? Nei, ikke helt - hun manglet 70 000 kroner.</p>
+<p>Her er poenget: dagmulkten på 180 000 kroner får hun uansett, uten å bevise noe. Vil hun ha de siste 70 000 kronene i tillegg, må hun over på erstatningssporet (§ 19), dokumentere de faktiske kostnadene, og påvise at entreprenøren opptrådte grovt uaktsomt. For mange er dagmulkten alene mer enn nok, og da slipper man hele dokumentasjonsjobben.</p>
+<h3>Hvorfor er denne regelen så viktig for forbrukere?</h3>
+<p>Tenk på hvor vanskelig det ellers ville vært. Skulle du måtte bevise nøyaktig hvor mye en forsinkelse "kostet" deg i form av stress, ekstra reising, tapt tid og praktisk rot, ville nesten ingen orket å forfølge kravet. Ved å gi en fast sats per dag uten beviskrav, har lovgiver gjort rettigheten reell og brukbar for helt vanlige mennesker. Det er nettopp derfor du ikke skal nøle med å kreve dagmulkten din.</p>
+<h3>Hva du derimot må kunne vise</h3>
+<p>Selv om du slipper å dokumentere tap, må du kunne vise to ting hvis det blir uenighet: at det forelå en forsinkelse, og hvor lenge den varte. Det betyr i praksis at du bør ha:</p>
+<ul>
+<li><strong>Kontrakten</strong> med den avtalte overtakelsesdatoen.</li>
+<li><strong>Bekreftelse på faktisk overtakelse</strong>, for eksempel en overtakelsesprotokoll med dato.</li>
+<li><strong>Eventuelle varsler</strong> om fristforlengelse fra entreprenøren, så du kan vurdere om startdatoen er forskjøvet.</li>
+</ul>
+<p>Dette er ikke dokumentasjon av tap - det er dokumentasjon av selve forsinkelsen. Har du disse på plass, er kravet ditt godt underbygget.</p>
+<h3>Et siste oppmuntrende eksempel</h3>
+<p>Ingvild kviet seg for å kreve dagmulkt fordi hun syntes det føltes "smålig" å sende et pengekrav til entreprenøren. Men dagmulkt er ingen klage og ingen anklage - det er en avtalt og lovbestemt rettighet, helt på linje med at entreprenøren har krav på å få betalt. Da hun sendte et høflig, saklig brev med regnestykket, fikk hun raskt utbetalt 84 000 kroner for de 28 forsinkede dagene. Det er ingen grunn til dårlig samvittighet - du bruker bare en rettighet loven har gitt deg.</p>
+<h3>Kort oppsummert</h3>
+<p>Nei, du trenger ikke dokumentere noe økonomisk tap for å kreve dagmulkt - loven gir den uten hensyn til tap (§ 18). Det er nettopp dette som gjør dagmulkten så enkel og forbrukervennlig. Det eneste du bør ha klart, er de to datoene som viser hvor mange dager forsinkelsen varte. Har du i tillegg hatt store tap, kan du vurdere erstatning utover dagmulkt etter § 19 - men da gjelder strengere krav og dokumentasjonsplikt. La ikke en feilaktig tro på bevisbyrde hindre deg i å kreve det du har rett på.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

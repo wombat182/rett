@@ -213,6 +213,16 @@ except ImportError:
     _SP_AKSJE_V1 = []
 
 try:
+    from sporsmal_handverkertjenesteloven_v1 import SPORSMAL as _SP_HVTJL_V1
+except ImportError:
+    _SP_HVTJL_V1 = []
+
+try:
+    from sporsmal_bustadoppforingslova_v1 import SPORSMAL as _SP_BUOFL_V1
+except ImportError:
+    _SP_BUOFL_V1 = []
+
+try:
     from sporsmal_arveloven import SPORSMAL as _SP_ARVE
 except ImportError:
     _SP_ARVE = []
@@ -389,6 +399,8 @@ SPORSMAL = (_tag_lov(_SP_BASE, None)
             + _tag_lov(_SP_AML_V2, "arbeidsmiljoloven")
             + _tag_lov(_SP_SKATT_V1, "skatteloven")
             + _tag_lov(_SP_AKSJE_V1, "aksjeloven")
+            + _tag_lov(_SP_HVTJL_V1, "handverkertjenesteloven")
+            + _tag_lov(_SP_BUOFL_V1, "bustadoppforingslova")
             + _tag_lov(_SP_ARVE, "arveloven")
             + _tag_lov(_SP_BARNE, "barnelova")
             + _tag_lov(_SP_STRAFF, None)

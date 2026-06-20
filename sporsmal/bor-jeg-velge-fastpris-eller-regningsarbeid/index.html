@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bør jeg velge fastpris eller regningsarbeid? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Velg fastpris når prosjektet kan beskrives godt på forhånd og du vil ha forutsigbarhet – det passer de fleste som bygger nytt.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/bor-jeg-velge-fastpris-eller-regningsarbeid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Bør jeg velge fastpris eller regningsarbeid?">
+<meta property="og:description" content="Kort sagt: Velg fastpris når prosjektet kan beskrives godt på forhånd og du vil ha forutsigbarhet – det passer de fleste som bygger nytt.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/bor-jeg-velge-fastpris-eller-regningsarbeid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bør jeg velge fastpris eller regningsarbeid?">
+<meta name="twitter:description" content="Kort sagt: Velg fastpris når prosjektet kan beskrives godt på forhånd og du vil ha forutsigbarhet – det passer de fleste som bygger nytt.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Bør jeg velge fastpris eller regningsarbeid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Velg fastpris når prosjektet kan beskrives godt på forhånd og du vil ha forutsigbarhet – det passer de fleste som bygger nytt. Velg regningsarbeid når omfanget er usikkert, for eksempel ved rehabilitering eller tilbygg – men be da om et prisoverslag, så du får et tak på kostnaden (buofl. § 41).</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 41, 42, 3, 12, 18</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/41/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 41</div>
+  <div class="related-card-title">Hva er prisen hvis dere ikke avtalte noe?</div>
+</a><a href="../../lover/bustadoppforingslova/42/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 42</div>
+  <div class="related-card-title">Hva koster det å endre planene?</div>
+</a><a href="../../lover/bustadoppforingslova/3/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 3</div>
+  <div class="related-card-title">Loven er på din side og kan ikke endres til din ulempe</div>
+</a><a href="../../lover/bustadoppforingslova/12/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 12</div>
+  <div class="related-card-title">Bankgarantien som beskytter deg mot konkurs</div>
+</a><a href="../../lover/bustadoppforingslova/18/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 18</div>
+  <div class="related-card-title">Slik regner du ut dagmulkten</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: Velg <strong>fastpris</strong> når prosjektet kan beskrives godt på forhånd og du vil ha forutsigbarhet – det passer de fleste som bygger nytt. Velg <strong>regningsarbeid</strong> når omfanget er usikkert, for eksempel ved rehabilitering eller tilbygg – men be da om et prisoverslag, så du får et tak på kostnaden (buofl. § 41).</p>
+<h3>Det finnes ikke ett riktig svar</h3>
+<p>Mange ønsker seg en enkel fasit, men valget avhenger av <em>ditt</em> prosjekt, <em>din</em> økonomiske trygghet og <em>din</em> lyst til å følge med underveis. La oss gjøre det enkelt med noen spørsmål som leder deg frem til svaret.</p>
+<h3>Tre spørsmål som leder deg til svaret</h3>
+<p><strong>1. Hvor godt kan prosjektet beskrives på forhånd?</strong>
+- Godt (nybygg fra ferdige tegninger) → peker mot <strong>fastpris</strong>.
+- Dårlig (man vet ikke hva man finner i gammel grunn eller gamle vegger) → peker mot <strong>regningsarbeid</strong>.</p>
+<p><strong>2. Hvor viktig er forutsigbarhet for økonomien din?</strong>
+- Veldig viktig (stramt budsjett, lite buffer) → <strong>fastpris</strong> gir trygghet.
+- Du tåler litt svingninger → <strong>regningsarbeid</strong> kan vurderes.</p>
+<p><strong>3. Hvor mye vil du følge med underveis?</strong>
+- Lite – jeg vil ha det enkelt → <strong>fastpris</strong>.
+- Jeg vil gjerne kontrollere regninger og være tett på → <strong>regningsarbeid</strong> med spesifiserte regninger.</p>
+<h3>Eksempel 1: Det typiske nybygget</h3>
+<p>Familien Strand skal bygge en helt ny enebolig fra et ferdig huskonsept med detaljerte tegninger. Alt kan beskrives nøyaktig på forhånd. For dem er <strong>fastpris</strong> det opplagte valget: de får én pris, en trygg låneramme, og slipper å bekymre seg for timeforbruk. De passer på at leveransebeskrivelsen er detaljert, slik at fastprisen faktisk dekker det de tror den dekker. Resultatet er et byggeprosjekt med få overraskelser.</p>
+<h3>Eksempel 2: Den usikre rehabiliteringen</h3>
+<p>Per kjøper et hus fra 1950 og skal bygge på og pusse opp. Ingen vet hva som skjuler seg bak panelet – kanskje råte, kanskje gammelt elektrisk anlegg som må byttes, kanskje skjevheter i konstruksjonen. Her ville en fastpris enten blitt urimelig dyr (med stor buffer) eller full av forbehold som likevel gir tillegg. Per velger <strong>regningsarbeid</strong>, men ber om et prisoverslag. Dermed betaler han for det som faktisk gjøres, men har et tak: sluttregningen kan ikke overstige overslaget med mer enn 15 prosent (buofl. § 41).</p>
+<h3>En mellomløsning mange overser</h3>
+<p>Du trenger ikke velge alt-eller-ingenting for hele prosjektet. En vanlig og smart løsning er å kombinere:</p>
+<ul>
+<li><strong>Fastpris på det forutsigbare</strong> (selve huskroppen, som er godt beskrevet).</li>
+<li><strong>Regningsarbeid på det usikre</strong> (for eksempel grunnarbeid før man vet hva som er i bakken).</li>
+</ul>
+<p>Snakk med entreprenøren om en slik delt løsning hvis prosjektet ditt har både trygge og usikre deler. Da betaler du ikke for en stor risikobuffer på den delen som egentlig er godt definert.</p>
+<h3>Beslutnings-sjekkliste</h3>
+<ul>
+<li>[ ] Kan hele prosjektet beskrives godt? → Heller fastpris.</li>
+<li>[ ] Er det usikre deler (grunn, gammel bygningsmasse)? → Vurder regning på de delene.</li>
+<li>[ ] Ved regning: har jeg bedt om prisoverslag (buofl. § 41)?</li>
+<li>[ ] Ved fastpris: er leveransebeskrivelsen detaljert nok?</li>
+<li>[ ] Har jeg avklart hvordan endringer prises (buofl. § 42)?</li>
+<li>[ ] Bruker vi en standard byggekontrakt (Byggblankett)?</li>
+<li>[ ] Henger betalingsplanen sammen med fremdriften?</li>
+</ul>
+<h3>Uansett valg: disse rådene gjelder</h3>
+<ol>
+<li><strong>Krev skriftlig kontrakt.</strong> Du har rett til det (buofl. § 3), og du bør alltid bruke den retten.</li>
+<li><strong>Bruk en standardkontrakt.</strong> Byggblankettene er tilpasset loven og beskytter deg.</li>
+<li><strong>Sjekk garanti.</strong> Entreprenøren skal stille garanti for oppfyllelsen av avtalen (buofl. § 12).</li>
+<li><strong>Avtal endringer skriftlig</strong> med pris og tidskonsekvens før de utføres (buofl. § 42).</li>
+<li><strong>Be om hjelp.</strong> Forbrukerrådet (forbrukerradet.no) kan gi gratis veiledning før du signerer.</li>
+</ol>
+<h3>En liten tankevekker om pris</h3>
+<p>Det billigste tilbudet er ikke alltid det rimeligste til slutt. Et lavt fastpristilbud kan skjule en tynn leveransebeskrivelse som gir mange tillegg senere. Et regningstilbud uten prisoverslag kan løpe avgårde. Se derfor alltid på <em>helheten</em>: hva er inkludert, hvordan prises endringer, og hvor godt er prosjektet beskrevet? Det gir et mer realistisk bilde enn å stirre på sluttsummen alene.</p>
+<h3>Et siste, ærlig råd</h3>
+<p>Hvis du er usikker, og prosjektet ditt er et vanlig nybygg, er <strong>fastpris</strong> som regel det tryggeste valget for en forbruker uten byggerfaring. Du får forutsigbarhet, og du slipper å overvåke regninger uke for uke. Velger du regningsarbeid, gjør deg selv den tjenesten å be om et prisoverslag og kreve spesifiserte regninger – da har du både fleksibiliteten og en trygghetsbrems på plass.</p>
+<h3>En enkel huskeregel</h3>
+<p>Hvis du skal ta med deg én setning fra denne artikkelen, så la det være denne: <em>Jo bedre prosjektet kan beskrives på forhånd, desto mer taler for fastpris; jo mer usikkert det er, desto mer taler for regningsarbeid med prisoverslag.</em> Et splitter nytt katalog-hus på flat tomt er nesten alltid en fastpris-jobb. En rehabilitering av et gammelt hus med ukjente skjulte forhold er nesten alltid en regningsjobb – men med et prisoverslag som setter et tak (buofl. § 41).</p>
+<h3>Husk at du kan be om hjelp</h3>
+<p>Du står ikke alene i denne vurderingen. Forbrukerrådet (forbrukerradet.no) gir gratis veiledning, og for større prosjekter kan det være vel anvendte penger å la en bygningskyndig eller advokat lese gjennom tilbudet før du signerer. En time med rådgivning er billig sammenlignet med en byggekonflikt til flere hundre tusen kroner. Mange gjør den feilen at de bruker måneder på å velge fliser, men signerer en millionkontrakt etter ti minutters lesing. Snu på det.</p>
+<h3>En siste sjekk før du bestemmer deg</h3>
+<p>Før du krysser av for fastpris eller regning, still deg selv disse tre kontrollspørsmålene én gang til: Er prosjektet mitt godt nok beskrevet til at en fastpris faktisk dekker det jeg ser for meg? Tåler økonomien min en viss usikkerhet hvis jeg velger regning? Og har jeg, uansett valg, sikret meg det grunnleggende vernet – skriftlig kontrakt (buofl. § 3), garanti (buofl. § 12), dagmulkt ved forsinkelse (buofl. § 18) og en betalingsplan som følger fremdriften? Får du gode svar på disse, har du et solid grunnlag for å ta et trygt valg – uansett hvilken prisform du lander på.</p>
+<h3>Kort oppsummert</h3>
+<p>Det finnes ikke ett riktig svar – valget avhenger av hvor godt prosjektet kan beskrives og hvor mye forutsigbarhet du trenger. Fastpris passer best for godt definerte nybygg og gir deg trygghet; regningsarbeid passer best for usikre prosjekter som rehabilitering, men be da om et prisoverslag for å få et kostnadstak på 15 prosent (buofl. § 41). Du kan også kombinere de to. Uansett valg: krev skriftlig kontrakt (buofl. § 3), bruk en Byggblankett, sjekk garantien (buofl. § 12), avtal endringer skriftlig (buofl. § 42), og spør Forbrukerrådet hvis du er i tvil.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem søker om byggetillatelse – jeg eller håndverkeren? — Rettsregel</title>
+<meta name="description" content="Ansvaret for at nødvendig søknad blir sendt ligger hos deg som eier kalt tiltakshaver. Men ved søknadspliktige prosjekter er det normalt et fagfirma –…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-soker-om-byggetillatelse-jeg-eller-handverkeren/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem søker om byggetillatelse – jeg eller håndverkeren?">
+<meta property="og:description" content="Ansvaret for at nødvendig søknad blir sendt ligger hos deg som eier kalt tiltakshaver. Men ved søknadspliktige prosjekter er det normalt et fagfirma –…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-soker-om-byggetillatelse-jeg-eller-handverkeren/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem søker om byggetillatelse – jeg eller håndverkeren?">
+<meta name="twitter:description" content="Ansvaret for at nødvendig søknad blir sendt ligger hos deg som eier kalt tiltakshaver. Men ved søknadspliktige prosjekter er det normalt et fagfirma –…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hvem søker om byggetillatelse – jeg eller håndverkeren?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ansvaret for at nødvendig søknad blir sendt ligger hos deg som eier (kalt tiltakshaver). Men ved søknadspliktige prosjekter er det normalt et fagfirma – ofte håndverkeren din – som faktisk lager og sender søknaden og tar på seg ansvaret overfor kommunen. Det viktigste er at dere avklarer tydelig og skriftlig hvem som gjør hva.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>To roller du bør kjenne til</h3>
+<p>I byggesaker er det to sentrale roller:</p>
+<ul>
+<li>Tiltakshaver: Det er deg – den som eier prosjektet og ønsker å bygge. Du har det overordnede ansvaret for at det blir søkt når det skal søkes.</li>
+<li>Ansvarlig søker: Et fagfirma som opptrer på dine vegne overfor kommunen. Ansvarlig søker lager søknaden, samler dokumentasjon, koordinerer de andre fagfolkene og melder fra til kommunen ved endringer. Reglene om dette står i byggesaksforskriften (blant annet om ansvarlig søkers ansvar i § 12-2 og tiltakshavers ansvar i § 12-1).</li>
+</ul>
+<p>For mange prosjekter er det altså håndverkeren – eller et firma håndverkeren samarbeider med – som er ansvarlig søker. Men ansvaret for at det i det hele tatt blir søkt, starter hos deg som eier.</p>
+<h3>Hvorfor dette er viktig å avklare</h3>
+<p>Den klassiske fellen er at ingen tar ansvaret, fordi begge tror den andre gjør det.</p>
+<p>Eksempel: Marit skal bygge garasje. Hun antar at snekkeren ordner søknaden, mens snekkeren tror Marit allerede har søkt selv. Resultatet: garasjen blir bygget uten tillatelse. Da risikerer Marit pålegg fra kommunen, dagbøter og i verste fall krav om å rive. Hadde de avklart hvem som søker helt i starten, ville dette vært unngått. Som tiltakshaver er det Marit som sitter med ansvaret overfor kommunen, selv om snekkeren bygget.</p>
+<h3>Søknadspliktig eller ikke?</h3>
+<p>Først må dere finne ut om prosjektet i det hele tatt krever søknad. Som hovedregel er det søknadsplikt for nybygg, tilbygg, ombygging, bruksendring og vesentlige inngrep i grunnen. Mindre, enkle tiltak kan være unntatt. DiBK (Direktoratet for byggkvalitet) har veivisere som hjelper deg å sjekke dette steg for steg.</p>
+<p>Tre typiske kategorier:</p>
+<ol>
+<li>Ikke søknadspliktig: Du kan sette i gang uten søknad (men sjekk at du virkelig er innenfor unntakene).</li>
+<li>Søknadspliktig som du kan stå for selv: Enkelte mindre tiltak kan du som privatperson søke om på egen hånd via kommunens nettløsning.</li>
+<li>Søknadspliktig som krever fagfolk: Større tiltak krever ansvarlig søker med ansvarsrett – her må et godkjent firma stå for søknaden.</li>
+</ol>
+<h3>Slik avklarer du ansvaret – steg for steg</h3>
+<ol>
+<li>Finn ut om prosjektet er søknadspliktig (spør kommunen eller bruk DiBK).</li>
+<li>Hvis det er søknadspliktig: avklar om det krever ansvarlig søker, eller om du kan søke selv.</li>
+<li>Spør håndverkeren tydelig: "Tar dere ansvaret som ansvarlig søker, eller må jeg ordne det selv?"</li>
+<li>Få svaret skriftlig, og ta gjerne kostnaden for søknadsarbeidet inn i avtalen.</li>
+<li>Avtal også hvem som søker om ferdigattest når jobben er ferdig.</li>
+</ol>
+<h3>Hva koster søknaden, og hvem betaler?</h3>
+<p>Selve søknadsarbeidet tar tid og koster penger, og kommunen tar et gebyr for å behandle søknaden. Dette må dere ta stilling til på forhånd. Spør om søknadsarbeidet er inkludert i tilbudet eller kommer i tillegg, slik at du ikke får en overraskelse på regningen.</p>
+<p>Eksempel: Jonas ber om tilbud på et tilbygg. Tilbudet ser rimelig ut, men han glemmer å spørre om søknaden. Senere kommer en ekstra faktura på flere tusen kroner for søknadsarbeid pluss kommunens gebyr. Hadde Jonas avklart dette i starten, hadde han kunnet sammenligne tilbud på like vilkår, og unngått overraskelsen.</p>
+<h3>Hva er ditt ansvar uansett?</h3>
+<p>Selv om håndverkeren er ansvarlig søker, har du som tiltakshaver fortsatt ansvar for å:</p>
+<ul>
+<li>Gi nødvendige opplysninger om eiendommen.</li>
+<li>Signere det som krever din signatur.</li>
+<li>Sørge for at det faktisk blir søkt før arbeidet starter.</li>
+<li>Følge opp at ferdigattesten kommer på plass til slutt.</li>
+<li>Sjekke at det ansvarlige firmaet faktisk har sendt søknaden, før dere setter i gang.</li>
+</ul>
+<h3>Hva med naboer og reguleringsplaner?</h3>
+<p>I en byggesøknad må naboer ofte varsles, og prosjektet må passe med reguleringsplanen for området. Dette er typisk noe ansvarlig søker håndterer, men som tiltakshaver bør du være klar over at slike forhold kan påvirke hva du faktisk får lov til å bygge. Får du et naboklagebrev, er det greit å vite at det er en normal del av prosessen.</p>
+<h3>Hva betyr "ansvarsrett"?</h3>
+<p>Ansvarsrett betyr at et firma påtar seg ansvaret for at en bestemt del av byggearbeidet er gjort etter reglene. For større, søknadspliktige tiltak må firmaene som utfører jobben ha slik ansvarsrett. Som forbruker er dette en trygghet for deg: det betyr at fagfolk med formell kompetanse står ansvarlig overfor kommunen. Når du spør om håndverkeren tar rollen som ansvarlig søker, spør du samtidig indirekte om de har ansvarsretten på plass.</p>
+<h3>Et praktisk råd: avklar dette i tilbudsfasen</h3>
+<p>Den beste tiden å avklare hvem som søker, er allerede når du innhenter tilbud. Da kan du sammenligne tilbud på like vilkår og se hvem som tar ansvaret for søknad og ferdigattest. Be hvert firma svare tydelig på: "Er søknad, ansvarsrett og ferdigattest inkludert i prisen?" Da unngår du å oppdage skjulte kostnader etter at avtalen er signert.</p>
+<p>Eksempel: Når Camilla henter inn tre tilbud på et tilbygg, ber hun alle om å oppgi om søknad og ferdigattest er med. Det viser seg at det rimeligste tilbudet ikke inkluderte dette, mens de to andre gjorde det. Da var ikke det "billigste" tilbudet billigst likevel.</p>
+<h3>Sjekkliste</h3>
+<ul>
+<li>Er prosjektet søknadspliktig?</li>
+<li>Krever det ansvarlig søker, eller kan du søke selv?</li>
+<li>Er det skriftlig avklart hvem som søker?</li>
+<li>Er kostnaden for søknadsarbeid og kommunens gebyr avklart?</li>
+<li>Er det avtalt hvem som søker om ferdigattest til slutt?</li>
+<li>Har du sett bekreftelse på at søknaden faktisk er sendt før oppstart?</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Ansvaret for at det blir søkt ligger hos deg som eier (tiltakshaver), men ved søknadspliktige prosjekter er det normalt et fagfirma – ofte håndverkeren – som er ansvarlig søker og gjør selve jobben med søknaden og ansvarsretten. Det aller viktigste er at dere avklarer skriftlig og tidlig hvem som søker, slik at ingen tiltak settes i gang uten nødvendig tillatelse. Da slipper du både bøter og bekymringer.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer på ettårsbefaringen? — Rettsregel</title>
+<meta name="description" content="Kort sagt: På ettårsbefaringen møtes du og entreprenøren, går gjennom boligen rom for rom, noterer mangler som har vist seg det første året i en…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-pa-ettarsbefaringen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer på ettårsbefaringen?">
+<meta property="og:description" content="Kort sagt: På ettårsbefaringen møtes du og entreprenøren, går gjennom boligen rom for rom, noterer mangler som har vist seg det første året i en…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-pa-ettarsbefaringen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer på ettårsbefaringen?">
+<meta name="twitter:description" content="Kort sagt: På ettårsbefaringen møtes du og entreprenøren, går gjennom boligen rom for rom, noterer mangler som har vist seg det første året i en…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva skjer på ettårsbefaringen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: På ettårsbefaringen møtes du og entreprenøren, går gjennom boligen rom for rom, noterer mangler som har vist seg det første året i en protokoll, og blir enige om hva som skal rettes og når (bustadoppføringslova § 16 – befaringen omtrent ett år etter overtakelsen). Det er en organisert "oppsamlingsrunde" for alt som har dukket opp gjennom året.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 16</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/16/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 16</div>
+  <div class="related-card-title">Ettårsbefaringen er din andre sjanse</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: På ettårsbefaringen møtes du og entreprenøren, går gjennom boligen rom for rom, noterer mangler som har vist seg det første året i en protokoll, og blir enige om hva som skal rettes og når (bustadoppføringslova § 16 – befaringen omtrent ett år etter overtakelsen). Det er en organisert "oppsamlingsrunde" for alt som har dukket opp gjennom året.</p>
+<h3>Slik foregår det i praksis</h3>
+<p>Befaringen ligner mye på overtakelsen, bare at nå har du bodd i boligen et helt år og kjenner den godt. Entreprenørens representant kommer, gjerne sammen med en kontaktperson eller en håndverker, og dere går sammen gjennom huset. Du peker på det du har lagt merke til, og alt blir skrevet ned fortløpende.</p>
+<p>Det føres en protokoll – et dokument som lister opp hver enkelt mangel, hva som skal gjøres med den, og når den skal være rettet. Begge parter signerer til slutt. Denne protokollen er gull verdt senere, fordi den er beviset på hva som faktisk ble avtalt og lovet.</p>
+<h3>Hva slags ting tas opp?</h3>
+<p>Typiske punkter på en ettårsbefaring er:</p>
+<ul>
+<li>Sprekker i tak, vegger og hjørner som har kommet etter at huset "satte seg" gjennom året.</li>
+<li>Dører og vinduer som har begynt å henge, skrape eller bli trege å åpne.</li>
+<li>Gulv som knirker eller har fått sprekker mellom bordene.</li>
+<li>Fuger på bad og kjøkken som har sprukket eller sluppet taket.</li>
+<li>Maling som har sprukket, flasset eller blitt misfarget.</li>
+<li>Tekniske ting: ventilasjon som bråker eller trekker dårlig, varme som ikke virker som den skal, eller en varmtvannsbereder som lager lyd.</li>
+</ul>
+<h3>Et konkret eksempel</h3>
+<p>Kari og Jonas hadde ført en liste gjennom hele året, punkt for punkt etter hvert som ting dukket opp. Da entreprenøren kom på ettårsbefaringen, hadde de tolv punkter klare. De gikk gjennom dem ett for ett. Noen, som et knirkete trappetrinn og en sprekk over en dør, ble notert som klare mangler som entreprenøren skulle rette uten diskusjon. Ett punkt – en bitteliten hårsprekk i en flis – var de uenige om, og det ble notert med en merknad om at partene var uenige. Etter befaringen fikk de en signert protokoll på e-post, og arbeidet ble utført i løpet av halvannen måned. Kari sjekket selv at hvert punkt faktisk var ordnet før hun anså saken som avsluttet.</p>
+<h3>Slik får du mest ut av befaringen</h3>
+<ol>
+<li><strong>Ha lista klar.</strong> Skriv ut alt du har notert gjennom året, så du ikke glemmer noe i farten.</li>
+<li><strong>Gå selv en runde dagen før.</strong> Sjekk hvert rom på nytt med friske øyne og god tid.</li>
+<li><strong>Vær konkret.</strong> "Sprekk på ca. 15 cm over soveromsdøra" er bedre enn "noe rart på veggen".</li>
+<li><strong>Be om at ALT noteres.</strong> Også ting entreprenøren er uenig i – da med en merknad om uenighet.</li>
+<li><strong>Avtal frister.</strong> Få skriftlig når hver enkelt feil skal være rettet.</li>
+<li><strong>Behold protokollen.</strong> Lagre den trygt sammen med kontrakten og de andre boligdokumentene.</li>
+</ol>
+<h3>Hva skjer etter befaringen?</h3>
+<p>Entreprenøren retter manglene innen de avtalte fristene. Når arbeidet er gjort, er det lurt at du sjekker at det faktisk er utbedret skikkelig – ikke bare kvitterer ut uten å se etter. Et hastverkarbeid kan skape nye feil. Blir noe ikke rettet innen fristen, viser du til protokollen og sender en vennlig, men tydelig påminnelse. Protokollen gjør det enkelt, fordi det står svart på hvitt hva som var avtalt.</p>
+<h3>Hva om dere ikke blir enige om en mangel?</h3>
+<p>Da skal uenigheten likevel noteres i protokollen. Du taper ingenting ved at den står oppført – tvert imot dokumenterer du at punktet ble tatt opp. Vil du gå videre, kan du hente en uavhengig fagvurdering fra en byggsakkyndig eller bringe saken inn for Boligtvistnemnda. Det viktigste er at punktet er dokumentert som tatt opp på befaringen, slik at det ikke senere kan hevdes at du aldri nevnte det.</p>
+<h3>Et godt råd til slutt</h3>
+<p>Behandle ettårsbefaringen som en skikkelig anledning, ikke en formalitet. Sett av tid, vær til stede selv om du har full jobb, og ikke føl deg dum for å ta opp små ting. Mange små punkter blir til en lang og verdifull liste når de samles på én dag.</p>
+<h3>En enkel romsjekkliste du kan bruke</h3>
+<p>For å være sikker på at du ikke glemmer noe på selve befaringen, kan det hjelpe å ha en mental sjekkliste rom for rom. <strong>Kjøkken:</strong> kraner, avløp under vasken, hvitevarer, fronter og skuffer som lukker pent, fuger ved benk. <strong>Bad:</strong> fall mot sluk, fuger og silikon, membran-tegn (fukt i nabovegg), ventilasjon, varme i gulv. <strong>Stue og soverom:</strong> gulv (knirk og sprekker), vinduer (åpne/lukke, kondens mellom glass), maling, lister, stikkontakter. <strong>Gang og trapp:</strong> dører som skraper, knirk i trinn, gelender som sitter godt. <strong>Tekniske rom:</strong> varmtvannsbereder, sikringsskap, ventilasjonsaggregat. <strong>Utvendig:</strong> kledning, takrenner, terrasse og rekkverk, drenering rundt grunnmur. En slik runde tar gjerne en time eller to, men det er godt brukt tid.</p>
+<h3>Hva hvis fristene for retting ikke holdes?</h3>
+<p>Det skjer at avtalte frister sklir ut. Da er protokollen ditt beste kort. Send en vennlig påminnelse som viser til det signerte dokumentet: "I ettårsprotokollen av [dato] sto det at punkt 4 skulle rettes innen [frist]. Dette er ikke gjort ennå – kan vi avtale en ny dato?" Holder entreprenøren fortsatt ikke avtalen, kan du vurdere å holde tilbake et beløp som tilsvarer utbedringen, eller bringe saken videre til Boligtvistnemnda. Igjen er det det skriftlige som gir deg styrke.</p>
+<h3>Bør du ta med en fagperson på ettårsbefaringen?</h3>
+<p>Akkurat som ved overtakelsen kan det være verdt å ha med en uavhengig byggsakkyndig på ettårsbefaringen, særlig hvis du har en mistanke om noe alvorlig – fukt, setninger eller tekniske problemer du ikke helt klarer å vurdere selv. En fagperson kan både bekrefte at det du har lagt merke til faktisk er en mangel, og oppdage ting du ikke visste at du skulle se etter. Det styrker også posisjonen din hvis entreprenøren skulle avvise et punkt: en uavhengig vurdering veier tungt. For mange holder det likevel å være godt forberedt selv, med liste og bilder. Vurder behovet ut fra hvor mange og hvor store punkter du har samlet gjennom året.</p>
+<h3>Hva skjer hvis du ikke kan stille selv?</h3>
+<p>Får du ikke møtt på den datoen entreprenøren foreslår, ikke bare la befaringen gå. Be om en ny dato, eller send en person du stoler på – en venn med byggeerfaring eller en byggsakkyndig – med fullmakt og lista di. Det viktigste er at noen som kjenner boligen og punktene faktisk er til stede, slik at protokollen blir riktig og fullstendig. En befaring der ingen på din side møter, blir fort tynn og lite verdt.</p>
+<h3>Kort oppsummert</h3>
+<p>På ettårsbefaringen går du og entreprenøren gjennom boligen rom for rom, noterer alle mangler som har vist seg det første året i en signert protokoll, og avtaler hva som skal rettes og når (§ 16). Ha lista klar, vær konkret, be om at alt noteres – også uenigheter – og ta vare på protokollen. Sjekk etterpå at feilene faktisk ble ordnet skikkelig.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

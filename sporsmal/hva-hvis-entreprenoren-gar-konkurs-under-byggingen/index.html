@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis entreprenøren går konkurs under byggingen? — Rettsregel</title>
+<meta name="description" content="Da blir situasjonen vanskelig, men ikke håpløs.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-entreprenoren-gar-konkurs-under-byggingen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis entreprenøren går konkurs under byggingen?">
+<meta property="og:description" content="Da blir situasjonen vanskelig, men ikke håpløs.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-entreprenoren-gar-konkurs-under-byggingen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis entreprenøren går konkurs under byggingen?">
+<meta name="twitter:description" content="Da blir situasjonen vanskelig, men ikke håpløs.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva hvis entreprenøren går konkurs under byggingen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Da blir situasjonen vanskelig, men ikke håpløs. Det viktigste sikkerhetsnettet ditt er garantien (§ 12) og en eventuell forskuddsgaranti (§ 47). Du melder også krav i konkursboet, men der står du dessverre bakerst i køen. Her er hva du gjør, steg for steg.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 12 og § 47</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/12/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 12</div>
+  <div class="related-card-title">Bankgarantien som beskytter deg mot konkurs</div>
+</a><a href="../../lover/bustadoppforingslova/47/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 47</div>
+  <div class="related-card-title">Strenge regler for forskudd og avdrag</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Da blir situasjonen vanskelig, men ikke håpløs. Det viktigste sikkerhetsnettet ditt er <strong>garantien</strong> (§ 12) og en eventuell <strong>forskuddsgaranti</strong> (§ 47). Du melder også krav i konkursboet, men der står du dessverre bakerst i køen. Her er hva du gjør, steg for steg.</p>
+<h3>Hva er en konkurs – kort forklart</h3>
+<p>Konkurs betyr at entreprenøren ikke lenger kan betale regningene sine, og at en domstol overtar styringen av økonomien hans gjennom et <strong>konkursbo</strong>. En bobestyrer (vanligvis en advokat) samler verdiene og fordeler dem på dem entreprenøren skylder penger – kreditorene. Problemet for deg er at det sjelden er nok penger til alle.</p>
+<h3>Du står bakerst i køen i boet</h3>
+<p>Du kan melde kravet ditt i konkursboet, men som forbruker har du som regel et <strong>uprioritert</strong> krav. Det betyr at du står bak banker, ansatte og det offentlige, som har bedre prioritet. I praksis får uprioriterte kreditorer ofte lite eller ingenting utbetalt fra boet. Derfor er det ikke boet du først og fremst skal lene deg på – det er garantiene.</p>
+<h3>Garantien (§ 12) – ditt viktigste sikkerhetsnett</h3>
+<p>Den lovpålagte garantien fra entreprenøren er nettopp laget for situasjoner som dette. I byggetiden dekker den minst <strong>3 prosent</strong> av vederlaget. Disse pengene kan du kreve utbetalt for å dekke tapet ditt – for eksempel <strong>merkostnaden</strong> ved å hyre en ny entreprenør til å fullføre boligen.</p>
+<p>Eksempel: Familien Olsen bygger hus til 4 millioner. Garantien i byggetiden er minst 3 % = 120 000 kroner. Når entreprenøren går konkurs halvveis, kan de kreve utbetaling fra denne garantien for å dekke ekstrakostnadene ved å bli ferdig.</p>
+<h3>Forskuddsgarantien (§ 47) – beskytter penger du har betalt</h3>
+<p>Har du betalt <strong>forskudd</strong> (delbetaling før arbeidet var utført), skal entreprenøren ha stilt en egen <strong>forskuddsgaranti</strong> etter § 47. Den sikrer pengene du har betalt inn på forskudd. Går entreprenøren konkurs, kan du kreve disse pengene igjen fra forskuddsgarantien – slik at du ikke taper det du har forskuttert.</p>
+<p>Eksempel: Du har betalt 500 000 kroner i forskudd. Entreprenøren går konkurs uten å ha utført tilsvarende arbeid. Forskuddsgarantien (§ 47) sikrer at du får tilbake forskuddet ditt, i stedet for å tape det i boet sammen med de andre uprioriterte kreditorene.</p>
+<h3>Hvorfor er det så viktig å stoppe betaling?</h3>
+<p>Når du får vite om konkursen, skal du <strong>ikke</strong> betale mer til den konkursrammede entreprenøren. Penger du betaler nå, forsvinner inn i boet og kommer deg neppe til gode. Hold på pengene, så du har dem til å betale en ny entreprenør for å fullføre.</p>
+<h3>Eksempel: Familien Dahl mister entreprenøren</h3>
+<p>Familien Dahl fikk vite at entreprenøren var slått konkurs en fredag ettermiddag, midt i byggingen. De gjorde tre ting umiddelbart: stoppet en forfalt delbetaling, sikret byggeplassen mot vær og hærverk, og fant frem garantidokumentene. Den helgen tapte de ingen penger – mens naboen, som rakk å betale en faktura før han skjønte hva som skjedde, måtte kjempe for å få pengene tilbake fra boet.</p>
+<h3>Steg-for-steg når entreprenøren går konkurs</h3>
+<ol>
+<li><strong>Stopp videre betaling</strong> straks – betal ikke mer til den konkursrammede entreprenøren.</li>
+<li><strong>Finn frem garantidokumentene</strong> (§ 12-garantien og en eventuell § 47-forskuddsgaranti).</li>
+<li><strong>Kontakt garantistilleren</strong> (banken/forsikringsselskapet) og meld kravet ditt.</li>
+<li><strong>Meld kravet i konkursboet</strong> – kontakt bobestyreren, selv om utsiktene der er små.</li>
+<li><strong>Sikre byggeplassen og dokumenter</strong> hvor langt arbeidet er kommet (ta bilder).</li>
+<li><strong>Skaff en ny entreprenør</strong> til å vurdere og fullføre boligen (se egen artikkel).</li>
+<li><strong>Få juridisk hjelp</strong> – konkurs er komplisert, og en advokat kan sikre rettighetene dine.</li>
+</ol>
+<h3>Hva med eiendomsretten til det halvferdige huset?</h3>
+<p>Eier du tomten og huset står på din grunn, blir ikke selve bygget en del av konkursboet på samme måte. Men spørsmål om eiendomsrett, panteheftelser og uoppgjorte underleverandører kan bli kompliserte. Underleverandører som ikke har fått betalt av entreprenøren, kan forsøke å rette krav mot deg. Her er det klokt å få juridisk bistand tidlig, slik at du ikke risikerer å betale dobbelt.</p>
+<h3>Hvordan oppdager du at entreprenøren er på vei mot konkurs?</h3>
+<p>Ofte kommer konkursen ikke som lyn fra klar himmel. Varselsignaler kan være: arbeidet stopper opp uten forklaring, håndverkere uteblir, underleverandører ringer <em>deg</em> og spør om betaling, eller entreprenøren plutselig presser hardt på for å få utbetalt forskudd «raskt». Merker du slike tegn, vær ekstra forsiktig med videre betaling, sjekk at garantiene er på plass, og ta kontakt med en rådgiver. Jo tidligere du reagerer, jo bedre kan du beskytte deg.</p>
+<h3>Eksempel: Når varsellampene blinker</h3>
+<p>Familien Lie merket at byggeplassen hadde stått stille i tre uker, og at rørleggeren ringte og lurte på når han skulle få betalt. De holdt tilbake neste delbetaling og kontaktet banken som hadde stilt garantien. To uker senere ble entreprenøren slått konkurs. Fordi de hadde stoppet betalingen i tide og hadde garantidokumentene klare, sto de langt sterkere enn om de hadde betalt videre som om ingenting var galt.</p>
+<h3>Hvor finner du garantidokumentene?</h3>
+<p>Garantien (§ 12) og en eventuell forskuddsgaranti (§ 47) skal du ha fått da avtalen ble inngått – ofte som et eget garantidokument fra en bank eller et forsikringsselskap. Finner du dem ikke, let i kontraktsmappen, i e-poster fra utbyggeren eller hos megleren som formidlet kjøpet. Får du dem ikke tak i, kontakt utbyggerens bank eller forsikringsselskap direkte. Det er avgjørende at du får tak i disse papirene raskt, for det er her du henter pengene fra. Mangler garantien helt – noe den ikke skal – står du svakere, og da bør du straks søke juridisk hjelp.</p>
+<h3>Et viktig poeng om timing</h3>
+<p>Når en entreprenør går konkurs, skjer ting fort. Bobestyreren tar kontroll, byggeplassen kan bli stengt, og verdier kan forsvinne. De første dagene er kritiske. Bruk dem på å sikre dokumentasjon, stoppe betaling, og melde fra til garantistilleren – ikke på å vente og se. Jo raskere du handler, jo mer av tapet kan du unngå.</p>
+<h3>Kort oppsummert</h3>
+<p>Går entreprenøren konkurs under byggingen, er garantien (§ 12) og en eventuell forskuddsgaranti (§ 47) det viktigste sikkerhetsnettet ditt – de dekker merkostnaden ved å fullføre og sikrer forskudd du har betalt. Du melder også krav i konkursboet, men som uprioritert kreditor får du ofte lite der. Stopp betaling med en gang, sikre byggeplassen, finn garantidokumentene, meld krav til garantisten, og skaff juridisk hjelp.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

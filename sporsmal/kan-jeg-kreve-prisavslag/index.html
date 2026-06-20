@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg kreve prisavslag? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-kreve-prisavslag/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg kreve prisavslag?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-kreve-prisavslag/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg kreve prisavslag?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg kreve prisavslag?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Hvis feilen ikke blir rettet, kan du kreve prisavslag – det vil si at du betaler mindre for tjenesten enn det som var avtalt (håndverkertjenesteloven § 25). Prisavslaget skal normalt tilsvare det det ville kostet å få feilen rettet. Det er pengene dine tilbake for noe du ikke fikk slik du skulle.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Hvis feilen ikke blir rettet, kan du kreve <strong>prisavslag</strong> – det vil si at du betaler mindre for tjenesten enn det som var avtalt (håndverkertjenesteloven § 25). Prisavslaget skal normalt tilsvare det det ville kostet å få feilen rettet. Det er pengene dine tilbake for noe du ikke fikk slik du skulle.</p>
+<h3>Hva er prisavslag, egentlig?</h3>
+<p>Prisavslag betyr at den avtalte prisen settes ned fordi tjenesten har en mangel. Du beholder altså arbeidet slik det er, men betaler mindre fordi det ikke holder den kvaliteten du betalte for. Det er et godt alternativ når du ikke ønsker at den opprinnelige håndverkeren skal komme tilbake, eller når feilen er der for å bli.</p>
+<p><strong>Eksempel:</strong> <strong>Henrik</strong> fikk malt huset for 50 000 kroner. Ett av strøkene manglet på nordveggen, slik at fargen var ujevn. Maleren ville ikke komme tilbake. Det ville koste 8 000 kroner å få en annen til å male veggen om igjen. Henrik krevde – og fikk – 8 000 kroner i prisavslag, slik at han endte med å betale 42 000 kroner.</p>
+<h3>Når har du rett til prisavslag?</h3>
+<p>Hovedregelen er enkel: Du kan kreve prisavslag <strong>når mangelen ikke blir rettet</strong>. Det betyr i praksis:</p>
+<ul>
+<li>Håndverkeren <strong>nekter</strong> å rette.</li>
+<li>Håndverkeren <strong>klarer ikke</strong> å rette feilen ordentlig.</li>
+<li>Retting <strong>ikke skjer innen rimelig tid</strong>.</li>
+<li>Du og håndverkeren blir <strong>enige</strong> om at prisavslag er løsningen.</li>
+</ul>
+<p>Du må altså normalt ha gitt håndverkeren sjansen til å rette først, akkurat som ved de andre kravene. Prisavslag er noe du går til når retting av en eller annen grunn ikke blir noe av.</p>
+<h3>Prisavslag eller retting – hva bør du velge?</h3>
+<p>Det avhenger av situasjonen:</p>
+<ul>
+<li><strong>Velg retting</strong> hvis du vil ha feilen faktisk fikset og stoler på håndverkeren.</li>
+<li><strong>Velg prisavslag</strong> hvis du heller vil ha penger tilbake, ikke ønsker håndverkeren tilbake i huset, eller feilen er vanskelig å rette helt.</li>
+</ul>
+<p><strong>Eksempel:</strong> <strong>Nora</strong> fikk satt inn et vindu som var litt for lite, slik at det var tettet med ekstra isolasjon og list rundt. Det var teknisk tett og fungerte fint, men ikke helt som avtalt. Å bytte vinduet ville vært et stort inngrep. Nora valgte prisavslag på 6 000 kroner i stedet for å rive opp hele veggen igjen.</p>
+<h3>Et eksempel der prisavslag er det åpenbare valget</h3>
+<p><strong>Familien Strand</strong> fikk lagt naturstein på terrassen, men noen heller hadde feil farge enn det de bestilte. Steinen var godt lagt og holdt mål teknisk – det eneste problemet var fargenyansen. Å rive opp og legge ny stein ville vært dyrt og rotete, og familien kunne godt leve med fargen. De krevde et prisavslag som speilet at de ikke helt fikk det de bestilte, og beholdt terrassen. Her var prisavslag langt mer praktisk enn både retting og heving.</p>
+<h3>Slik krever du prisavslag – steg for steg</h3>
+<ol>
+<li><strong>Dokumenter mangelen</strong> med bilder og gjerne en uttalelse fra en fagperson.</li>
+<li><strong>Innhent et tilbud</strong> på hva det koster å rette feilen – det blir grunnlaget for kravet.</li>
+<li><strong>Send et skriftlig krav</strong> der du oppgir beløpet og begrunnelsen.</li>
+<li><strong>Vis til at retting ikke har skjedd</strong> innen fristen du satte.</li>
+<li><strong>Trekk beløpet fra fakturaen</strong> hvis du ikke har betalt, eller krev pengene tilbake hvis du har betalt.</li>
+</ol>
+<h3>Hva hvis håndverkeren er uenig i beløpet?</h3>
+<p>Da bør du ha dokumentasjon i ryggen – helst et skriftlig tilbud fra en annen fagperson på hva det koster å rette. Står dere fortsatt langt fra hverandre, kan Forbrukerrådet mekle. Ta vare på alle tilbud, bilder og meldinger. Et godt dokumentert krav er mye vanskeligere å avvise enn et løst anslag.</p>
+<h3>Et tips om delvis betaling</h3>
+<p>Hvis du ikke har betalt fakturaen ennå, er prisavslag spesielt enkelt: Du betaler rett og slett den avtalte prisen minus prisavslaget. Skriv tydelig i betalingen eller en følgemelding hvorfor du trekker fra beløpet, så det ikke fremstår som om du bare unnlater å betale.</p>
+<h3>Prisavslag når du allerede har betalt alt</h3>
+<p>Har du betalt hele beløpet, er prisavslag et krav om å få penger <strong>tilbake</strong>. Da må du sende et tydelig krav til håndverkeren med kontonummer og beløp. Det føles ofte tyngre enn å bare trekke fra en faktura, men retten er den samme. Tips:</p>
+<ul>
+<li><strong>Vær konkret på beløpet</strong> og hva det dekker.</li>
+<li><strong>Sett en betalingsfrist</strong>, for eksempel 14 dager.</li>
+<li><strong>Varsle neste steg</strong> hvis betaling uteblir: "Får jeg ikke beløpet innen fristen, bringer jeg saken inn for Forbrukerrådet."</li>
+</ul>
+<h3>Et eksempel som viser hele forløpet</h3>
+<p><strong>Anders</strong> betalte 40 000 kroner for å få lagt nytt tak på garasjen. Etterpå viste det seg at takrennene hadde feil fall, så vannet rant feil vei og ned langs veggen. Taktekkeren nektet å komme tilbake. Anders hentet et tilbud fra et annet firma på 7 500 kroner for å rette fallet, og krevde nøyaktig det beløpet tilbake som prisavslag. Han dokumenterte med bilder av vannet som rant feil vei, vedla tilbudet, og satte en frist på 14 dager. Da taktekkeren fortsatt nølte, koblet han inn Forbrukerrådet og fikk medhold.</p>
+<h3>Når lønner prisavslag seg fremfor de andre kravene?</h3>
+<p>Velg prisavslag når:</p>
+<ul>
+<li>Du <strong>ikke ønsker</strong> den opprinnelige håndverkeren tilbake.</li>
+<li>Feilen er <strong>upraktisk eller umulig</strong> å rette helt.</li>
+<li>Du vil ha en <strong>rask og ryddig</strong> avslutning på saken.</li>
+</ul>
+<p>Velg heller retting eller dekningsutbedring hvis du faktisk vil ha feilen fysisk fikset. Vurder heving bare hvis feilen er så stor at hele tjenesten er bortkastet.</p>
+<h3>Hva hvis håndverkeren tilbyr et lavere prisavslag?</h3>
+<p>Det er vanlig at håndverkeren først tilbyr et mindre beløp enn det du krever. Da er det forhandling, og dokumentasjonen din avgjør hvor du lander:</p>
+<ul>
+<li><strong>Stå på det dokumenterte beløpet.</strong> Har du et skriftlig tilbud på rettekostnaden, er det et sterkt utgangspunkt.</li>
+<li><strong>Be om begrunnelse.</strong> Mener håndverkeren at feilen er mindre alvorlig, be ham forklare hvorfor – gjerne skriftlig.</li>
+<li><strong>Vurder et rimelig kompromiss</strong>, men ikke gi slipp på et velbegrunnet krav bare for å unngå bråk.</li>
+</ul>
+<p><strong>Eksempel:</strong> <strong>Iben</strong> krevde 14 000 kroner i prisavslag for en feillagt list og en skjev karm, dokumentert med tilbud. Snekkeren tilbød 5 000. Iben holdt fast ved tilbudet sitt, viste til fagvurderingen, og endte etter litt frem og tilbake på 12 000 kroner – langt nærmere sitt eget krav enn snekkerens første bud.</p>
+<h3>Prisavslag kan ikke overstige det du betalte</h3>
+<p>En grei huskeregel: Prisavslaget kan i praksis ikke bli større enn det du har betalt for tjenesten. Poenget er å sette ned prisen for en mangelfull jobb – ikke å gi deg penger utover det. Har feilen i tillegg påført deg tap utover selve tjenesten, som en skade, hører det hjemme under erstatning (§ 28), ikke prisavslag. Det er derfor disse to kravene ofte kombineres.</p>
+<h3>Kort oppsummert</h3>
+<p>Du kan kreve prisavslag når feilen ikke blir rettet – og det tilsvarer normalt det det koster å få feilen utbedret. Det er et godt valg når du vil ha penger tilbake fremfor at håndverkeren kommer igjen, eller når feilen er upraktisk å rette. Dokumenter feilen, hent et tilbud på rettekostnaden, og send et skriftlig krav med beløp og begrunnelse. Har du ikke betalt, kan du bare trekke prisavslaget fra fakturaen.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hvordan-beregnes-prisavslaget/">Hvordan beregnes prisavslaget?</a><a class="sp-relchip" href="../../sporsmal/kan-jeg-fa-pengene-tilbake-defekt-vare/">Kan jeg få pengene tilbake når varen er defekt?</a><a class="sp-relchip" href="../../sporsmal/kan-jeg-heve-kjopet-hvis-selger-har-loyet/">Kan jeg heve kjøpet hvis selger har løyet?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

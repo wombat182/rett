@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en skjult mangel i en håndverkertjeneste? — Rettsregel</title>
+<meta name="description" content="En skjult mangel er en feil som ikke var synlig da arbeidet ble overtatt, men som viser seg senere. Tenk membranen som svikter, kabelen som er feil…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-skjult-mangel-i-en-handverkertjeneste/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en skjult mangel i en håndverkertjeneste?">
+<meta property="og:description" content="En skjult mangel er en feil som ikke var synlig da arbeidet ble overtatt, men som viser seg senere. Tenk membranen som svikter, kabelen som er feil…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-skjult-mangel-i-en-handverkertjeneste/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en skjult mangel i en håndverkertjeneste?">
+<meta name="twitter:description" content="En skjult mangel er en feil som ikke var synlig da arbeidet ble overtatt, men som viser seg senere. Tenk membranen som svikter, kabelen som er feil…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er en skjult mangel i en håndverkertjeneste?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En skjult mangel er en feil som ikke var synlig da arbeidet ble overtatt, men som viser seg senere. Tenk membranen som svikter, kabelen som er feil dimensjonert bak veggen, eller råten som skjuler seg under nye fliser. Det fine for deg som forbruker er at reklamasjonsfristen for skjulte mangler regnes fra da du oppdaget – eller burde ha oppdaget – feilen, ikke fra da arbeidet ble levert.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Synlig kontra skjult – hva er forskjellen?</h3>
+<p>Da håndverkeren var ferdig og du tok arbeidet i bruk, kunne du se en del med det blotte øye: skjeve lister, malingssøl, en dør som ikke lukker. Dette er <strong>synlige mangler</strong>, og dem forventes du å oppdage og reklamere på relativt raskt.</p>
+<p>En <strong>skjult mangel</strong> er derimot noe du umulig kunne sett ved overtakelsen, fordi den lå gjemt – bak vegger, under gulv, inne i konstruksjonen, eller fordi den rett og slett ikke ga seg til kjenne før etter en tid. Du hadde ingen grunn til å mistenke noe galt da du tok imot arbeidet.</p>
+<h3>Klassiske skjulte mangler</h3>
+<ul>
+<li><strong>Feil på membranen i baderommet,</strong> som først viser seg når det oppstår fukt eller lekkasje måneder eller år senere.</li>
+<li><strong>Elektriske feil bak veggen</strong> – en skjøt uten koblingsboks, feil kabel – som ikke gir tegn fra seg før det blir varmgang.</li>
+<li><strong>Manglende eller feil fall</strong> under et nytt gulv, som først merkes når vann begynner å samle seg.</li>
+<li><strong>Råte eller fukt som ble bygget inn</strong> og malt over, og som brer seg i det skjulte.</li>
+<li><strong>For dårlig festet konstruksjon</strong> som først svikter under belastning over tid.</li>
+<li><strong>Manglende isolasjon eller damptetting</strong> som gir kondens og muggsopp etter en vinter eller to.</li>
+</ul>
+<h3>Et eksempel</h3>
+<p>Snekkeren Eline la nytt parkettgulv over et eksisterende trebjelkelag. Hun visste at det var en liten fuktskade i bjelkelaget, men dekket den til med ny parkett uten å si ifra. På overtakelsesdagen så gulvet helt nydelig ut – du kunne umulig ha oppdaget noe galt. Halvannet år senere begynner gulvet å bli ujevnt og det lukter mugg. Da avdekkes den skjulte mangelen: råten som ble bygget inn. Du oppdaget den så snart den ga seg til kjenne, og reklamerte med en gang – og da står du sterkt.</p>
+<h3>Hvorfor reklamasjonsfristene er så viktige her</h3>
+<p>Dette er kjernen, og det er gode nyheter for forbrukeren. Reklamasjonsreglene i håndverkertjenesteloven skiller mellom to frister (reglene om reklamasjon i håndverkertjenesteloven § 19):</p>
+<ol>
+<li>
+<p><strong>Den relative fristen – «innen rimelig tid».</strong> Du må reklamere innen rimelig tid etter at du <strong>oppdaget eller burde ha oppdaget</strong> mangelen. For en skjult mangel betyr dette at klokka ikke begynner å gå før feilen faktisk viser seg. «Rimelig tid» tolkes ofte som omtrent to måneder, men handle raskt for sikkerhets skyld.</p>
+</li>
+<li>
+<p><strong>Den absolutte fristen.</strong> Det er en ytre grense for hvor lenge etter at arbeidet ble avsluttet du kan reklamere. For arbeid på fast eiendom – som bolig og hytte – er denne fristen <strong>fem år</strong>. For annet arbeid er den vanligvis to år.</p>
+</li>
+</ol>
+<p>Poenget er at en skjult mangel som dukker opp etter for eksempel tre år, fortsatt kan reklameres på, så lenge du er innenfor den absolutte femårsfristen og melder fra raskt etter at du oppdaget den.</p>
+<h3>Hva betyr «burde ha oppdaget»?</h3>
+<p>Du kan ikke lukke øynene for tydelige tegn og så hevde at mangelen var skjult. Hvis det begynte å lukte mugg eller dukket opp fuktflekker, og du ventet et år med å undersøke, kan det hevdes at du «burde oppdaget» mangelen tidligere. Derfor: så snart du merker noe mistenkelig, undersøk det, og reklamer skriftlig. Da er du på den sikre siden.</p>
+<h3>Slik håndterer du en skjult mangel</h3>
+<ol>
+<li><strong>Reager på faresignaler.</strong> Fuktlukt, misfarging, ujevnheter, varme kontakter, sprekker. Ikke avvent – undersøk.</li>
+<li><strong>Dokumenter når og hvordan du oppdaget det.</strong> Skriv ned datoen og hva du så. Dette blir viktig for å vise at du reklamerte i tide.</li>
+<li><strong>Hent en uavhengig fagvurdering.</strong> En takstmann eller fagperson kan bekrefte at det dreier seg om en byggefeil og ikke vanlig slitasje, og at den var der fra starten.</li>
+<li><strong>Reklamer skriftlig og raskt.</strong> Beskriv mangelen, når du oppdaget den, og vis til fagvurderingen. Krev retting.</li>
+<li><strong>Ta vare på all dokumentasjon</strong> – den opprinnelige avtalen, bilder fra arbeidet ble gjort, og det nye funnet.</li>
+</ol>
+<h3>Hva kan du kreve?</h3>
+<p>De vanlige rettighetene gjelder: retting i første omgang, deretter prisavslag eller erstatning hvis håndverkeren ikke retter, og heving ved vesentlige mangler. Skjulte mangler gir ofte sterke saker, fordi feilen som regel beviselig var til stede fra arbeidet ble gjort.</p>
+<h3>Forskjellen på reklamasjon og foreldelse</h3>
+<p>Her er en felle mange går i. Selv om du reklamerer i tide etter reklamasjonsreglene, finnes det en egen frist som heter foreldelse. Enkelt forklart må du ikke bare si ifra – du må også følge opp kravet ditt og eventuelt ta rettslige skritt innen en viss tid, ellers kan kravet bli foreldet og dermed verdiløst. Foreldelsesfristen er som hovedregel tre år, og kan starte å løpe på et annet tidspunkt enn reklamasjonsfristen. Det betyr at du ikke bør la en sak ligge og «modne» i årevis selv om du har reklamert. Følg den opp aktivt, og søk råd hos Forbrukerrådet hvis håndverkeren trenerer. Da unngår du at et godt krav forsvinner på en teknikalitet.</p>
+<h3>Hvorfor en god avtale også hjelper mot skjulte mangler</h3>
+<p>Selv om en skjult mangel per definisjon ikke var synlig, hjelper det enormt å ha dokumentasjon på hva som faktisk ble gjort. Bilder tatt underveis – av membranen før flisene kom på, av el-opplegget før veggen ble lukket, av bjelkelaget før gulvet ble lagt – kan bli avgjørende bevis hvis noe svikter senere. Be derfor håndverkeren om bilder fra arbeidsfasen, eller ta dem selv. Be også om all dokumentasjon ved levering. Da har du noe konkret å vise til den dagen en skjult mangel gir seg til kjenne, og du slipper å stå med ord mot ord.</p>
+<h3>Når håndverkeren har vært uærlig</h3>
+<p>Hvis håndverkeren bevisst skjulte en feil – som Eline, som visste om fuktskaden – står du ekstra sterkt. Da kan håndverkeren ikke høres med at du reklamerte for sent, fordi han selv har opptrådt i strid med god tro. Uærlighet svekker håndverkerens posisjon betydelig.</p>
+<h3>Kort oppsummert</h3>
+<p>En skjult mangel er en feil som ikke var synlig ved overtakelsen, men som viser seg senere – typisk membranfeil, skjulte el-feil eller innebygd råte. Det avgjørende er at reklamasjonsfristen regnes fra da du oppdaget eller burde oppdaget mangelen, ikke fra da arbeidet ble levert, og at du på fast eiendom har en ytre frist på fem år. Reager raskt på faresignaler, dokumenter når du oppdaget feilen, hent en uavhengig fagvurdering, og reklamer skriftlig. Skjulte mangler gir ofte sterke saker – og har håndverkeren skjult feilen bevisst, står du enda sterkere.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

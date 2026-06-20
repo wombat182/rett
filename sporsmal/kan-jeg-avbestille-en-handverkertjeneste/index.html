@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg avbestille en håndverkertjeneste? — Rettsregel</title>
+<meta name="description" content="Ja. Du har full rett til å avbestille en håndverkertjeneste når som helst før den er ferdig – også etter at arbeidet er i gang. Men du slipper ikke unna…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-avbestille-en-handverkertjeneste/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg avbestille en håndverkertjeneste?">
+<meta property="og:description" content="Ja. Du har full rett til å avbestille en håndverkertjeneste når som helst før den er ferdig – også etter at arbeidet er i gang. Men du slipper ikke unna…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-avbestille-en-handverkertjeneste/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg avbestille en håndverkertjeneste?">
+<meta name="twitter:description" content="Ja. Du har full rett til å avbestille en håndverkertjeneste når som helst før den er ferdig – også etter at arbeidet er i gang. Men du slipper ikke unna…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg avbestille en håndverkertjeneste?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Du har full rett til å avbestille en håndverkertjeneste når som helst før den er ferdig – også etter at arbeidet er i gang. Men du slipper ikke unna gratis: håndverkeren har krav på betaling for det som allerede er gjort, og kan i tillegg kreve erstatning for tapet avbestillingen påfører ham.**</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Mange tror de er bundet så snart de har sagt ja til et tilbud. Det stemmer ikke. Loven gir deg som forbruker en ganske raus rett til å snu i døra. Spørsmålet er derfor ikke <em>om</em> du kan avbestille, men <em>hva det kommer til å koste deg</em>. Og det svaret avhenger mye av hvor tidlig du sier fra.</p>
+<h3>Hva sier loven?</h3>
+<p>Retten din står i håndverkertjenesteloven § 39 (paragrafen som handler om «avbestillingsadgangen», altså adgangen til å trekke seg fra avtalen). Den sier rett ut at du kan «tilbakekalle oppdraget helt eller delvis». Er arbeidet allerede begynt, kan du kreve at håndverkeren «så snart som mulig innstiller arbeidet» – altså stanser så fort det praktisk lar seg gjøre.</p>
+<p>Legg merke til to ting her:</p>
+<ul>
+<li>Du kan avbestille <strong>hele</strong> jobben, eller bare <strong>en del</strong> av den.</li>
+<li>Retten gjelder helt fram til tjenesten er sluttført. Er den ferdig, finnes det ikke noe igjen å avbestille – da skylder du for hele jobben.</li>
+</ul>
+<p>Det fine med denne regelen er at den ikke krever noen «god grunn». Du trenger ikke forklare hvorfor du ombestemmer deg. Kanskje fikk du dårligere råd, kanskje skal du flytte, kanskje fant du en annen løsning. Det er din rett uansett.</p>
+<h3>Et eksempel på delvis avbestilling</h3>
+<p>Tenk deg at Kari har inngått avtale med en maler om å male både huset og garasjen. Etter at huset er ferdig, ombestemmer hun seg om garasjen – kanskje skal den uansett rives neste år. Da kan Kari avbestille <em>bare</em> garasjedelen og beholde resten av avtalen. Maleren kan ikke nekte henne dette eller insistere på at hun må ta «hele pakka». Han kan heller ikke kreve betalt for garasjemalingen han aldri rakk å utføre, bare for det som faktisk ble gjort på huset.</p>
+<h3>Når er det for sent?</h3>
+<p>Det er én viktig hake: du kan ikke avbestille noe som allerede er gjort. Hvis snekkeren har bygget hele terrassen og ringer for å si at han er ferdig, hjelper det ikke å si «jeg avbestiller». Da er jobben utført, og du skal betale.</p>
+<p>I tillegg har håndverkeren en begrenset rett til å fullføre litt arbeid selv om du avbestiller (§ 39 andre ledd). Det gjelder bare dersom du <em>ikke</em> betaler eller stiller sikkerhet for det han har krav på – og da kun så langt det er nødvendig for å sikre kravet hans, gjennom det loven kaller tilbakeholds- og salgsretten. I praksis er dette sjelden et problem for forbrukere som gjør opp for seg på en ryddig måte.</p>
+<h3>Gjelder dette også løpende avtaler?</h3>
+<p>Ja. Har du en løpende tjeneste – for eksempel en fast avtale om snørydding, hagestell eller vedlikehold – gjelder de samme reglene. Du kan avbestille også her. Er det avtalt en oppsigelsestid, setter den en grense for hvor mye håndverkeren kan kreve i erstatning: han får ikke dekket tap utover oppsigelsestiden. Det betyr at en avtalt oppsigelsestid faktisk beskytter deg, fordi den setter et tak på regningen.</p>
+<h3>Slik avbestiller du på en ryddig måte</h3>
+<ol>
+<li><strong>Gi beskjed så tidlig som mulig.</strong> Jo før du sier fra, jo mindre arbeid rekker håndverkeren å utføre – og jo lavere blir regningen din. Ringer du før arbeidet starter, sparer du mest.</li>
+<li><strong>Gjør det skriftlig.</strong> En e-post eller SMS er gull verdt hvis det skulle bli uenighet senere. Skriv tydelig at du avbestiller, og når.</li>
+<li><strong>Vær konkret.</strong> Avbestiller du hele jobben, eller bare en del? Si det klart.</li>
+<li><strong>Be om en oppstilling.</strong> Spør hva du skylder for arbeid som allerede er gjort, og hva han eventuelt krever i erstatning. Da kan du sjekke at kravet er rimelig.</li>
+<li><strong>Ta vare på all dokumentasjon.</strong> Avtaler, tilbud, meldinger og fakturaer – alt kan bli viktig.</li>
+</ol>
+<h3>Hvorfor er retten så vid?</h3>
+<p>Tanken bak loven er at du som forbruker skal kunne styre din egen økonomi og ikke tvinges til å betale for arbeid du ikke lenger ønsker. Samtidig skal ikke håndverkeren tape penger på noe han ikke har skyld i. Derfor er løsningen et balansert kompromiss: du <em>kan</em> alltid avbestille, men du må gjøre opp for det som er gjort og for det tapet avbestillingen skaper. Hvor mye det blir i kroner og øre, ser vi nærmere på i neste artikkel.</p>
+<h3>En vanlig misforståelse</h3>
+<p>Noen tror at dersom de har signert en kontrakt, er retten til å avbestille borte. Det er feil. Selv en signert avtale gir deg avbestillingsrett etter § 39. Det en avtale derimot <em>kan</em> gjøre, er å fastsette et rimelig avbestillingsgebyr på forhånd – men det fjerner ikke selve retten til å trekke deg.</p>
+<h3>Avbestilling er noe annet enn å klage på mangler</h3>
+<p>Det er lett å blande sammen to forskjellige situasjoner. <strong>Avbestilling</strong> handler om at du frivillig velger å trekke deg fra en jobb som ikke er ferdig – uavhengig av om håndverkeren har gjort noe galt. Da gjelder reglene i §§ 39 og 40, og du må gjøre opp for det som er gjort.</p>
+<p>Å <strong>heve avtalen på grunn av en mangel</strong> er noe helt annet. Det handler om at håndverkeren har levert dårlig arbeid eller misligholdt avtalen, og at du derfor har rett til å komme deg ut av den – ofte uten å betale for det mangelfulle arbeidet. Forveksler du de to, kan du ende opp med å «avbestille» en jobb du egentlig hadde grunnlag for å klage på, og dermed betale mer enn nødvendig. Er du misfornøyd med kvaliteten, bør du derfor undersøke om du i stedet har en mangelssak før du avbestiller.</p>
+<h3>Tre raske scenarioer</h3>
+<ul>
+<li><strong>Du har ikke begynt:</strong> Du ringer dagen etter at du sa ja, før noe er gjort. Du betaler lite eller ingenting – kanskje bare for materialer som er bestilt spesielt til deg.</li>
+<li><strong>Arbeidet er halvferdig:</strong> Du ber håndverkeren stanse. Du betaler for det som er gjort, og eventuelt erstatning om han ikke får fylt tiden.</li>
+<li><strong>Jobben er ferdig:</strong> For sent å avbestille. Du betaler for hele jobben.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Du har alltid rett til å avbestille en håndverkertjeneste før den er ferdig, helt eller delvis (§ 39). Si fra skriftlig og tidlig – det begrenser regningen mest mulig. Husk at avbestilling ikke er gratis: du betaler for utført arbeid og kan måtte dekke håndverkerens tap. Men selve retten til å trekke deg kan ingen ta fra deg, heller ikke en signert kontrakt.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

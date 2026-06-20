@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en ferdigattest, og må boligen ha det? — Rettsregel</title>
+<meta name="description" content="Kort sagt: En ferdigattest er et dokument fra kommunen som bekrefter at byggearbeidet er fullført i samsvar med tillatelsen og regelverket.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-ferdigattest-og-ma-boligen-ha/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en ferdigattest, og må boligen ha det?">
+<meta property="og:description" content="Kort sagt: En ferdigattest er et dokument fra kommunen som bekrefter at byggearbeidet er fullført i samsvar med tillatelsen og regelverket.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-ferdigattest-og-ma-boligen-ha/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en ferdigattest, og må boligen ha det?">
+<meta name="twitter:description" content="Kort sagt: En ferdigattest er et dokument fra kommunen som bekrefter at byggearbeidet er fullført i samsvar med tillatelsen og regelverket.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er en ferdigattest, og må boligen ha det?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: En ferdigattest er et dokument fra kommunen som bekrefter at byggearbeidet er fullført i samsvar med tillatelsen og regelverket. Som hovedregel skal en nybygd bolig ha ferdigattest (plan- og bygningsloven § 21-10 – regelen om at søknadspliktige byggetiltak skal avsluttes med ferdigattest).</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 21</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/21/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 21</div>
+  <div class="related-card-title">Hvem får hva når du har hevet kontrakten?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: En ferdigattest er et dokument fra kommunen som bekrefter at byggearbeidet er fullført i samsvar med tillatelsen og regelverket. Som hovedregel skal en nybygd bolig ha ferdigattest (plan- og bygningsloven § 21-10 – regelen om at søknadspliktige byggetiltak skal avsluttes med ferdigattest).</p>
+<h3>Hva er en ferdigattest, helt enkelt?</h3>
+<p>Når noen skal bygge et nytt hus, må de først søke kommunen om tillatelse til å bygge. Når bygget så er ferdig, skal kommunen til slutt sette et formelt punktum for hele saken: en ferdigattest. Det er kommunens skriftlige bekreftelse på at huset er bygd slik tillatelsen sa, og at de offentlige kravene er oppfylt.</p>
+<p>Tenk på det som en slags "godkjentstempel" for hele byggeprosjektet. Det er ikke kommunen som har kontrollert hver eneste skrue og spiker – ansvaret for at det faktisk er bygd riktig ligger hos de ansvarlige firmaene i prosjektet – men ferdigattesten avslutter byggesaken formelt og bekrefter at alt er rapportert som fullført.</p>
+<h3>Må boligen ha ferdigattest?</h3>
+<p>Ja, som hovedregel skal en nybygd bolig ha ferdigattest. Et søknadspliktig byggetiltak skal avsluttes med ferdigattest når vilkårene er oppfylt (pbl § 21-10). Direktoratet for byggkvalitet (DiBK), som er den statlige fagmyndigheten for byggesaker, er tydelig på dette: kommunen skal utstede ferdigattest for søknadspliktige tiltak når kravene er møtt, og det skal normalt skje innen kort tid etter at det er søkt om den.</p>
+<p>Det finnes noen få unntak for visse spesielle typer tiltak, men for en helt vanlig ny bolig er svaret klart og enkelt: den skal ha ferdigattest.</p>
+<h3>Hvorfor er ferdigattesten viktig for deg?</h3>
+<ul>
+<li><strong>Den bekrefter at huset er lovlig å bo i.</strong> Et bygg uten ferdigattest (eller midlertidig brukstillatelse) skal i utgangspunktet ikke tas i bruk.</li>
+<li><strong>Den er viktig ved et senere videresalg.</strong> Skal du selge boligen om noen år, vil både kjøpere og banker spørre etter ferdigattesten. Mangler den, kan det skape forsinkelser og usikkerhet i salget.</li>
+<li><strong>Den gir deg trygghet.</strong> Den viser at byggesaken er ryddig og formelt avsluttet hos kommunen, uten løse tråder.</li>
+</ul>
+<h3>Et eksempel</h3>
+<p>Familien Olsen skulle overta sin nye enebolig. I forkant ba de entreprenøren om å sende over ferdigattesten fra kommunen. De fikk den, leste raskt gjennom og sjekket at adressen og gårds- og bruksnummeret stemte, og la den i en perm sammen med kontrakten og tegningene. Tre år senere, da de skulle selge for å flytte til en større bolig, ba megleren nettopp om dette dokumentet – og fordi Olsen hadde det i orden fra dag én, gikk salget knirkefritt. En nabo som manglet ferdigattest på sitt tilbygg, fikk derimot en treg og brysom salgsprosess.</p>
+<h3>Steg for steg: sikre at ferdigattesten er på plass</h3>
+<ol>
+<li><strong>Be om den før eller ved overtakelsen.</strong> Spør entreprenøren direkte: "Foreligger ferdigattesten, og kan jeg få en kopi?"</li>
+<li><strong>Sjekk at den faktisk gjelder din bolig.</strong> Kontroller at adresse, gårds- og bruksnummer stemmer.</li>
+<li><strong>Skill ferdigattest fra midlertidig brukstillatelse.</strong> Det er en viktig forskjell (se neste artikkel).</li>
+<li><strong>Lagre den trygt.</strong> Sammen med de andre viktige boligdokumentene, gjerne både digitalt og på papir.</li>
+<li><strong>Mangler den? Be om en plan.</strong> Få skriftlig hvorfor den ikke foreligger, og når den vil komme.</li>
+</ol>
+<h3>Hva hvis ferdigattesten ikke foreligger ved overtakelse?</h3>
+<p>Det er faktisk ikke uvanlig at man overtar boligen med en <em>midlertidig brukstillatelse</em> i stedet, fordi noe smått fortsatt gjenstår – typisk utvendige arbeider som ikke kan gjøres på vinteren. Da er det viktig at du får avklart skriftlig nøyaktig hva som mangler og en konkret frist for når ferdigattesten skal være på plass. Du bør også vurdere å holde tilbake et beløp som sikkerhet for at det gjenstående faktisk blir gjort. Mer om akkurat dette i neste artikkel.</p>
+<h3>Hvem søker om ferdigattesten?</h3>
+<p>Det er den ansvarlige i byggeprosjektet – ikke du som kjøper – som søker kommunen om ferdigattest. Din oppgave er å passe på at det faktisk blir gjort, og å be om kopi når den foreligger. Du skal altså ikke selv stå for det byråkratiske, men du bør følge med så det ikke blir glemt.</p>
+<h3>Hva betyr ferdigattesten egentlig for kvaliteten?</h3>
+<p>Det er verdt å forstå hva en ferdigattest <em>ikke</em> er. Den er ikke en garanti for at boligen er fri for feil og mangler. Kommunen reiser normalt ikke ut og inspiserer hver bolig før attesten gis – systemet bygger på at de ansvarlige firmaene selv erklærer at de har bygd i samsvar med regelverket. Ferdigattesten betyr altså at byggesaken formelt er i orden og at alt er rapportert som fullført, men den fritar ikke entreprenøren for ansvar hvis det senere viser seg at noe likevel har en mangel. Du beholder alle dine rettigheter etter bustadoppføringslova selv om ferdigattesten foreligger. Med andre ord: ferdigattest og fravær av mangler er to forskjellige ting, og du skal ikke tolke attesten som et kvalitetsstempel på selve håndverket.</p>
+<h3>Et praktisk poeng om bank og lån</h3>
+<p>Skal du ha lån til boligen, vil banken ofte interessere seg for at byggesaken er ryddig avsluttet. Mangler ferdigattesten – eller står boligen lenge på en midlertidig brukstillatelse – kan det i noen tilfeller påvirke bankens vurdering, og det blir gjerne et tema ved et senere salg. Derfor er det fornuftig å rydde opp i dette så tidlig som mulig, og ikke la en manglende attest bli et problem som ligger og ulmer i bakgrunnen i årevis.</p>
+<h3>Hvor finner du ferdigattesten igjen senere?</h3>
+<p>Skulle du miste din egen kopi, er ikke alt tapt. Byggesaken med ferdigattest ligger arkivert hos kommunen, og du kan be kommunens byggesaksavdeling om innsyn i dokumentene som gjelder din eiendom. Mange kommuner har også digitale innsynsløsninger der du kan søke opp byggesaken på adresse eller gårds- og bruksnummer. Det er likevel mye enklere å ha sin egen kopi lett tilgjengelig, så førstevalget er alltid å lagre den trygt fra starten – gjerne både som papir i en perm og som en fil i en mappe på datamaskinen eller i skyen. Da slipper du å lete den dagen en megler eller bank plutselig spør etter den.</p>
+<h3>Et lite varsko om eldre boliger</h3>
+<p>Selv om denne artikkelen handler om nybygg, er det greit å vite at mange eldre boliger i Norge mangler ferdigattest, rett og slett fordi reglene var annerledes før. For helt nye boliger gjelder derimot dagens regelverk fullt ut, og da skal attesten være på plass. Når du kjøper nytt, har du altså en klar forventning om at dette er i orden – og du bør ikke godta uten videre at en helt fersk bolig blir stående uten ferdigattest over lang tid.</p>
+<h3>Kort oppsummert</h3>
+<p>En ferdigattest er kommunens bekreftelse på at boligen er bygd i samsvar med tillatelsen og regelverket, og som hovedregel skal en nybygd bolig ha en (pbl § 21-10). Den er viktig både for å kunne bo lovlig og for et senere salg. Be om den ved overtakelsen, sjekk at den gjelder din bolig, og lagre den trygt. Mangler den, krev en skriftlig forklaring og en frist for når den kommer.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

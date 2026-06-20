@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem har bevisbyrden for at noe er et tillegg? — Rettsregel</title>
+<meta name="description" content="Det er entreprenøren som må bevise at noe er et tillegg du skal betale for. Påstår han at dere har avtalt ekstraarbeid, er det han som må kunne…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-har-bevisbyrden-for-at-noe-er-et/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem har bevisbyrden for at noe er et tillegg?">
+<meta property="og:description" content="Det er entreprenøren som må bevise at noe er et tillegg du skal betale for. Påstår han at dere har avtalt ekstraarbeid, er det han som må kunne…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-har-bevisbyrden-for-at-noe-er-et/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem har bevisbyrden for at noe er et tillegg?">
+<meta name="twitter:description" content="Det er entreprenøren som må bevise at noe er et tillegg du skal betale for. Påstår han at dere har avtalt ekstraarbeid, er det han som må kunne…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hvem har bevisbyrden for at noe er et tillegg?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det er **entreprenøren** som må bevise at noe er et tillegg du skal betale for. Påstår han at dere har avtalt ekstraarbeid, er det han som må kunne dokumentere avtalen. Klarer han ikke det, kan han som hovedregel ikke kreve ekstra betaling. Dette gir deg som forbruker et godt vern mot overraskende tilleggsregninger.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/9/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 9</div>
+  <div class="related-card-title">Din rett til å kreve endringer underveis</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hovedregelen: Den som krever penger, må bevise grunnlaget</h3>
+<p>I norsk rett gjelder en grunnleggende tanke: Den som krever betaling, må vise at han har krav på den. Når entreprenøren sender deg en regning for et tillegg, er det altså <strong>han</strong> som må sannsynliggjøre at dere faktisk avtalte dette ekstraarbeidet – og til hvilken pris.</p>
+<p>La oss ta et eksempel. Entreprenøren Bygg &amp; Co sender Lisa en sluttregning der det står «Tillegg, ekstra grunnarbeid: 65 000 kr». Lisa husker ingen avtale om dette. Hvem har rett? Utgangspunktet er at Bygg &amp; Co må kunne vise til en avtale – for eksempel en e-post, en signert endringsbestilling eller et møtereferat. Finnes ingenting skriftlig, og Lisa nekter, står entreprenøren svakt.</p>
+<h3>Hvorfor loven legger byrden på entreprenøren</h3>
+<p>Bustadoppføringslova er en <strong>forbrukerlov</strong>. Den bygger på at den profesjonelle parten – entreprenøren – er den som kan og bør sørge for ryddige avtaler om endringer og tillegg. Loven har egne regler om hvordan endringer og tilleggsarbeid skal håndteres (særlig §§ 9 og 42). Et gjennomgangstema er at endringer bør skje skriftlig og avtales på forhånd.</p>
+<p>Entreprenøren er den som styrer byggeplassen, fører timer og har systemer for å dokumentere. Derfor er det rimelig at han også bærer risikoen for at avtaler om ekstraarbeid er klare nok. Er han uklar eller slurver med dokumentasjonen, er det hans problem – ikke ditt.</p>
+<h3>Et illustrerende regneeksempel</h3>
+<p>Familien Owusu bygger hus til avtalt fastpris på 4 200 000 kroner. Ved sluttoppgjøret kommer entreprenøren med tre tilleggsposter:</p>
+<ul>
+<li>Ekstra stikkontakter: 12 000 kr (familien bekreftet på e-post – <strong>gyldig avtale</strong>).</li>
+<li>Oppgradert kjøkkenvifte: 8 000 kr (muntlig nevnt, men aldri bekreftet – <strong>omtvistet</strong>).</li>
+<li>«Diverse ekstraarbeid»: 40 000 kr (ingen spesifikasjon i det hele tatt – <strong>udokumentert</strong>).</li>
+</ul>
+<p>For den første posten har entreprenøren bevis, og familien må betale. For den andre posten er det ord mot ord; uten dokumentasjon på pris og bestilling står entreprenøren svakt. Den tredje posten, «diverse ekstraarbeid» uten noen forklaring, er nær umulig for entreprenøren å vinne frem med. Familien kan trygt be om full spesifikasjon og avvise det de ikke kjenner igjen.</p>
+<h3>Når entreprenøren burde ha varslet om pris</h3>
+<p>Et viktig poeng: Selv når et tillegg faktisk er avtalt, kan prisen være omtvistet. Hvis entreprenøren ikke har gitt deg et prisoverslag, har loven regler som beskytter deg mot urimelig høye regninger. Et tillegg som skulle koste «litt mer» kan ikke ende opp som en kjempesmell uten at du ble varslet.</p>
+<p>Eksempel: Mohammed ber om å flytte en innervegg. Entreprenøren sier «det fikser vi». Ingen pris nevnes. På regningen står det plutselig 55 000 kroner. Her kan Mohammed kreve en forklaring på hvordan beløpet er bygd opp, og hvis prisen er urimelig høy sammenlignet med det arbeidet faktisk krevde, har han et godt forhandlingskort.</p>
+<h3>Slik sikrer du deg selv</h3>
+<ol>
+<li><strong>Få alt skriftlig.</strong> Si gjerne: «Send meg gjerne en e-post med hva dette koster, så bekrefter jeg.» Da blir avtalen dokumentert – og bevisbyrden blir enkel å håndtere for begge.</li>
+<li><strong>Bekreft aldri muntlig det du ikke vil betale for.</strong> Et nikk på byggeplassen kan bli tolket som en bestilling.</li>
+<li><strong>Be om spesifisert faktura.</strong> Du har rett til å vite hva du betaler for.</li>
+<li><strong>Bestrid det du ikke kjenner igjen, skriftlig og raskt.</strong> Skriv at du bestrider posten og ber om dokumentasjon.</li>
+<li><strong>Ikke la deg presse til å betale for å «få nøklene».</strong> Uenighet om tillegg gir deg ofte rett til å holde tilbake et tilsvarende beløp.</li>
+</ol>
+<h3>Hva om dere møtes i Forbrukertilsynet eller retten?</h3>
+<p>Skulle saken havne hos en klageinstans eller domstol, er utgangspunktet det samme: Entreprenøren må føre bevis for at tillegget er avtalt. Jo bedre du har dokumentert hva som faktisk ble bestilt – og hva som ikke ble det – jo sterkere står du.</p>
+<h3>Et lite tankekart for bevisbyrden</h3>
+<p>Tenk på det som en enkel kjede. Entreprenøren krever penger for et tillegg. Da må han kunne svare ja på tre spørsmål: Ble ekstraarbeidet bestilt? Ble det avtalt en pris (eller finnes det grunnlag for å fastsette en rimelig pris)? Er arbeidet faktisk utført? Kan han ikke vise dette, faller kravet bort eller blir kraftig redusert. Du som forbruker trenger på din side ikke å «bevise det motsatte» – det holder lenge at du bestrider posten saklig og ber om dokumentasjon.</p>
+<h3>Når entreprenøren har endret noe på eget initiativ</h3>
+<p>Det hender entreprenøren tar valg underveis uten å spørre – for eksempel velger en dyrere løsning fordi han mener den er bedre. Hvis dette ikke var avtalt med deg, kan han ikke bare sende deg regningen for merkostnaden. Loven legger opp til at endringer skal skje i samråd. Tar entreprenøren seg til rette og krever betaling for noe du aldri ba om, er det igjen han som må vise at dere faktisk hadde en avtale. Mangler den, kan du avvise kravet.</p>
+<p>Eksempel: Entreprenøren til Camilla bytter ut det avtalte gulvet med et dyrere alternativ «fordi det var penere», og legger 30 000 kroner på regningen. Camilla ba aldri om dette. Hun kan trygt si at hun betaler for det avtalte gulvet, ikke for en oppgradering hun ikke har bestilt.</p>
+<h3>Praktiske formuleringer du kan bruke</h3>
+<p>Når en omtvistet tilleggspost dukker opp, kan du skrive noe slikt til entreprenøren: «Jeg bestrider posten på X kroner. Jeg kan ikke se at dette ble avtalt mellom oss. Vennligst send meg dokumentasjon på bestillingen og en spesifisering av beløpet, så skal jeg vurdere kravet.» En slik nøktern, skriftlig henvendelse plasserer bevisbyrden tydelig der den hører hjemme – hos entreprenøren – og skaper samtidig dokumentasjon på at du reagerte i tide.</p>
+<h3>Kort oppsummert</h3>
+<p>Det er entreprenøren, ikke deg, som må bevise at et tillegg er avtalt og til hvilken pris. Loven legger denne byrden på den profesjonelle parten. Tar entreprenøren valg på eget initiativ uten avtale, kan du avvise ekstrakravet. Din beste forsikring er å få alt skriftlig, be om spesifiserte fakturaer og raskt bestride poster du ikke kjenner igjen. Da slipper du å betale for «tillegg» som aldri var avtalt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

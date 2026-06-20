@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har entreprenøren rett til å rette feilen selv? — Rettsregel</title>
+<meta name="description" content="Ja, som hovedregel har entreprenøren rett til å rette feilen selv før du eventuelt setter bort jobben til andre.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-entreprenoren-rett-til-a-rette-feilen-selv/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har entreprenøren rett til å rette feilen selv?">
+<meta property="og:description" content="Ja, som hovedregel har entreprenøren rett til å rette feilen selv før du eventuelt setter bort jobben til andre.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-entreprenoren-rett-til-a-rette-feilen-selv/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har entreprenøren rett til å rette feilen selv?">
+<meta name="twitter:description" content="Ja, som hovedregel har entreprenøren rett til å rette feilen selv før du eventuelt setter bort jobben til andre.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Har entreprenøren rett til å rette feilen selv?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, som hovedregel har entreprenøren rett til å rette feilen selv før du eventuelt setter bort jobben til andre. Det er en viktig regel å kjenne: gir du ikke entreprenøren sjansen, kan du risikere å tape kravet ditt. Men det finnes unntak der du kan nekte.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 32</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/32/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 32</div>
+  <div class="related-card-title">Reparasjon (retting) av byggefeil</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, som hovedregel har entreprenøren <strong>rett til å rette feilen selv</strong> før du eventuelt setter bort jobben til andre. Det er en viktig regel å kjenne: gir du ikke entreprenøren sjansen, kan du risikere å tape kravet ditt. Men det finnes unntak der du kan nekte.</p>
+<h3>Hvorfor har entreprenøren denne retten?</h3>
+<p>Tanken bak loven er at det ofte er rimeligst og enklest at den som bygde boligen, også retter feilen. Entreprenøren kjenner bygget, har materialene og kan utbedre billigere enn en fremmed håndverker. Derfor gir loven entreprenøren en rett – ikke bare en plikt – til å rette selv (bustadoppføringslova § 32 – om retting). Dette kalles ofte entreprenørens "utbedringsrett".</p>
+<p>For deg som forbruker betyr det at du normalt må reklamere og gi entreprenøren mulighet til å rette før du henter inn andre. Hopper du over dette steget, kan du oppleve at du ikke får dekket regningen din.</p>
+<h3>Et eksempel på hva som kan gå galt</h3>
+<p>Jonas oppdaget at flere vinduer i det nye huset var utette. Han var irritert og ringte rett til en lokal snekker som byttet tetningslistene for 22 000 kroner. Da han sendte regningen til entreprenøren, nektet entreprenøren å betale, fordi han ikke hadde fått sjansen til å rette selv – og kanskje kunne gjort det rimeligere eller på en annen måte. Jonas satt igjen med regningen. Hadde han reklamert først og gitt entreprenøren en frist, ville saken stått helt annerledes.</p>
+<h3>To vilkår for entreprenørens rett</h3>
+<p>Entreprenørens rett til å rette er ikke ubetinget. Den gjelder bare når begge disse er oppfylt:</p>
+<ol>
+<li><strong>Rettingen må ikke påføre deg vesentlig ulempe.</strong></li>
+<li><strong>Du må ikke ha annen særlig grunn til å motsette deg rettingen.</strong></li>
+</ol>
+<p>Er ett av disse brutt, kan du ha rett til å si nei til at entreprenøren retter selv.</p>
+<h3>Når kan du nekte entreprenøren å rette?</h3>
+<p>Her er typiske situasjoner der du kan ha rett til å motsette deg retting:</p>
+<ul>
+<li><strong>Gjentatte mislykkede forsøk.</strong> Entreprenøren har allerede prøvd å rette samme feil to ganger uten å lykkes. Da kan du ha grunn til ikke å gi et tredje forsøk.</li>
+<li><strong>Manglende tillit.</strong> Det har vært så dårlig håndverk eller så mange feil at du med rette ikke har tillit til at entreprenøren klarer å rette ordentlig.</li>
+<li><strong>Akutt situasjon.</strong> Det haster så mye (for eksempel en pågående lekkasje) at entreprenøren ikke kan rykke ut raskt nok, og du må handle straks for å begrense skaden.</li>
+<li><strong>Vesentlig ulempe.</strong> Rettingen ville krevd at du måtte flytte ut i lang tid, eller medført støv, støy og uorden i et omfang som går langt utover det rimelige – uten at entreprenøren tar tilstrekkelig hensyn.</li>
+</ul>
+<p>Et eksempel: Familien Olsen hadde opplevd at entreprenøren rotet til badet to ganger uten å få fallet riktig. Da feilen fortsatt var der, hadde de god grunn til å nekte et tredje forsøk og i stedet kreve at en annen fagperson gjorde jobben for entreprenørens regning.</p>
+<h3>Hva med helt akutte situasjoner?</h3>
+<p>I noen tilfeller er det rett og slett ikke tid til å vente på entreprenøren. Springer det en vannledning og vannet fosser, kan du ikke sitte og vente på at entreprenøren skal stille opp dagen etter. Da har du grunn til å handle straks – stenge vannet, tilkalle nærmeste rørlegger for å begrense skaden – og likevel kreve kostnaden dekket. Det viktige er at du varsler entreprenøren så snart som praktisk mulig og dokumenterer situasjonen grundig med bilder. Den akutte handlingen handler om å begrense skade, ikke om å frata entreprenøren retten til den endelige utbedringen.</p>
+<h3>Steg for steg – slik gjør du det riktig</h3>
+<ol>
+<li><strong>Reklamer skriftlig</strong> og beskriv mangelen.</li>
+<li><strong>Gi entreprenøren mulighet til å rette</strong> med en rimelig frist.</li>
+<li><strong>Dokumenter forsøkene.</strong> Hvis entreprenøren prøver, men mislykkes, noter dato og resultat.</li>
+<li><strong>Vurder om du kan nekte</strong> videre forsøk dersom ett av unntakene over er oppfylt.</li>
+<li><strong>Varsle skriftlig</strong> før du eventuelt setter bort jobben til andre, og forklar hvorfor.</li>
+</ol>
+<h3>Hva med prisavslag?</h3>
+<p>Det er en viktig kobling her: hvis du avviser en retting som entreprenøren faktisk hadde rett til å gjennomføre, kan du miste retten til prisavslag for den mangelen. Derfor lønner det seg å være ryddig: gi entreprenøren sjansen, dokumenter alt, og nekt bare når du har god grunn etter unntakene.</p>
+<h3>Plikt og rett henger sammen</h3>
+<p>Det er nyttig å forstå at entreprenøren både har en plikt og en rett til å rette. Plikten betyr at han skal utbedre når du krever det. Retten betyr at han kan kreve å få gjøre det selv før du henter inn andre. Disse to sidene henger sammen og er ment å gi en ryddig prosess: du varsler om feilen, entreprenøren får mulighet til å fikse den, og først hvis det ikke fører fram, går dere videre til andre løsninger.</p>
+<h3>Hvor mange forsøk må du gi?</h3>
+<p>Det finnes ingen fast grense, men du må ikke finne deg i uendelig mange forsøk. Etter ett eller to mislykkede forsøk på samme feil har du ofte god grunn til å si stopp. Tenk på det slik: jo mer alvorlig feilen er, og jo mer entreprenøren har vist at han ikke får det til, desto sterkere er din rett til å nekte videre forsøk og kreve at noen andre gjør jobben for hans regning.</p>
+<p>Et eksempel: En entreprenør forsøkte tre ganger å tette et vindu som lakk, uten å lykkes. Beboeren hadde da klart god grunn til å nekte et fjerde forsøk og i stedet kreve prisavslag tilsvarende det en annen håndverker ville ta for å gjøre jobben skikkelig.</p>
+<h3>Vær tydelig og skriftlig</h3>
+<p>Den vanligste fellen er å handle for raskt på egen hånd. Den nest vanligste er å være utydelig. Hvis du mener du har grunn til å nekte entreprenøren å rette, må du si fra om det skriftlig og forklare hvorfor – for eksempel at det er tredje forsøk, eller at situasjonen haster. Da har du dokumentert din vurdering, og det blir vanskeligere for entreprenøren å hevde at du bare avviste rettingen uten grunn.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, entreprenøren har som hovedregel rett til å rette feilen selv først (§ 32), og du bør gi ham den sjansen før du hyrer andre – ellers kan du tape kravet. Du kan likevel nekte hvis rettingen gir vesentlig ulempe eller du har særlig grunn, for eksempel gjentatte mislykkede forsøk, manglende tillit eller en akutt situasjon. Reklamer skriftlig, dokumenter alt, og vær ryddig i prosessen.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

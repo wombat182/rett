@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis tilvalgene ikke ble som avtalt? — Rettsregel</title>
+<meta name="description" content="Hvis tilvalgene du bestilte ikke ble levert slik dere avtalte, er det normalt en mangel.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-tilvalgene-ikke-ble-som-avtalt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis tilvalgene ikke ble som avtalt?">
+<meta property="og:description" content="Hvis tilvalgene du bestilte ikke ble levert slik dere avtalte, er det normalt en mangel.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-tilvalgene-ikke-ble-som-avtalt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis tilvalgene ikke ble som avtalt?">
+<meta name="twitter:description" content="Hvis tilvalgene du bestilte ikke ble levert slik dere avtalte, er det normalt en mangel.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva hvis tilvalgene ikke ble som avtalt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis tilvalgene du bestilte ikke ble levert slik dere avtalte, er det normalt en mangel. Tilvalg er en del av avtalen din, og entreprenøren må levere akkurat det du har bestilt og betalt for. Blir det feil, kan du kreve retting eller prisavslag.</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova §§ 25, 32, 33</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/25/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 25</div>
+  <div class="related-card-title">Hva er egentlig en byggefeil (mangel)?</div>
+</a><a href="../../lover/bustadoppforingslova/32/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 32</div>
+  <div class="related-card-title">Reparasjon (retting) av byggefeil</div>
+</a><a href="../../lover/bustadoppforingslova/33/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 33</div>
+  <div class="related-card-title">Kreve penger i stedet for reparasjon (prisavslag)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Hvis tilvalgene du bestilte ikke ble levert slik dere avtalte, er det normalt en <strong>mangel</strong>. Tilvalg er en del av avtalen din, og entreprenøren må levere akkurat det du har bestilt og betalt for. Blir det feil, kan du kreve retting eller prisavslag.</p>
+<h3>Hva er tilvalg?</h3>
+<p>Tilvalg er de ekstra valgene du gjør utover standardleveransen når du bygger nytt. Du velger gjerne kjøkkeninnredning, fliser, parkett, kraner, dørhåndtak, fargen på kjøkkenfrontene, ekstra stikkontakter og så videre. Tilvalg dokumenteres som regel i en egen tilvalgsliste eller tilvalgsavtale, ofte med produktnavn, farge og pris. Denne listen er en del av den samlede avtalen – på lik linje med kontrakten og tegningene.</p>
+<p>Det betyr at hvis tilvalget ikke stemmer med det du bestilte, er resultatet ikke i samsvar med avtalen, og det er en mangel (bustadoppføringslova § 25 – som sier at avvik fra avtalen er en mangel).</p>
+<h3>Vanlige eksempler på tilvalg som går galt</h3>
+<ul>
+<li><strong>Feil produkt.</strong> Du bestilte kjøkkenfronter i farge "Antrasitt matt", men fikk hvite høyglans.</li>
+<li><strong>Feil mengde.</strong> Du betalte for 6 ekstra stikkontakter på stuen, men det ble montert 3.</li>
+<li><strong>Feil modell.</strong> Du valgte en bestemt blandebatteri-modell, men fikk en billigere variant.</li>
+<li><strong>Tilvalg som mangler helt.</strong> Du bestilte og betalte for ekstra downlights, men de ble aldri montert.</li>
+<li><strong>Feil plassering.</strong> Du ba om dobbel stikkontakt der TV-en skulle stå, men den havnet på motsatt vegg.</li>
+</ul>
+<h3>Et konkret eksempel med tall</h3>
+<p>Marius og Sofie betalte 38 000 kroner i tilvalg for en oppgradert kjøkkenpakke med integrerte hvitevarer og en bestemt benkeplate i kompositt. Ved overtakelse oppdager de at benkeplaten er en rimeligere laminatvariant, ikke komposittet de bestilte. Tilvalgsavtalen viser tydelig hva som var avtalt. Dette er en mangel, og de kan kreve at entreprenøren bytter benkeplaten – eller prisavslag som tilsvarer kostnaden for å bytte til riktig plate.</p>
+<h3>Steg for steg når tilvalget er feil</h3>
+<ol>
+<li><strong>Finn tilvalgsavtalen.</strong> Den skriftlige listen med produktnavn og pris er ditt viktigste bevis.</li>
+<li><strong>Sammenlign med det leverte.</strong> Fotografer det som faktisk er montert, gjerne med produktmerking synlig.</li>
+<li><strong>Reklamer skriftlig.</strong> Vis til tilvalgsavtalen og beskriv avviket konkret: bestilt X, fått Y.</li>
+<li><strong>Krev retting.</strong> Be entreprenøren levere det riktige produktet for egen regning (§ 32).</li>
+<li><strong>Krev prisavslag hvis det ikke rettes</strong> (§ 33), tilsvarende kostnaden ved å få det riktige produktet på plass.</li>
+</ol>
+<h3>Tilvalg som ble feil plassert eller målt</h3>
+<p>En spesiell variant er at tilvalget i og for seg er riktig produkt, men er montert feil. Du bestilte kanskje stikkontakter på et bestemt sted, eller et speil i en bestemt høyde, og det havnet et annet sted. Også dette kan være en mangel hvis plasseringen var en del av det avtalte. Var plasseringen tydelig avtalt på en tegning eller i en e-post, står du sterkt. Var den derimot aldri konkretisert, kan det bli en diskusjon om hva som var "vanlig" eller fornuftig. Derfor lønner det seg å være konkret om plassering allerede ved bestilling, gjerne med en enkel skisse.</p>
+<h3>Hva hvis du har betalt ekstra for tilvalget?</h3>
+<p>Da har du et særlig sterkt kort. Du har en kvittering eller faktura som viser at du har betalt for noe spesifikt. Får du ikke det du betalte for, har du krav på å få det – eller pengene tilbake i form av prisavslag. Eksempel: Har du betalt 5 000 kroner for en oppgradert dusjløsning og fått standardløsningen, kan du som minimum kreve mellomlegget, og som regel kostnaden ved å oppgradere i ettertid hvis den er høyere.</p>
+<h3>Hva hvis entreprenøren sier produktet "var utgått"?</h3>
+<p>Det hender entreprenøren sier at det avtalte produktet ikke lenger var tilgjengelig, og at han satte inn noe "tilsvarende". Her gjelder en viktig regel: entreprenøren skulle ha tatt kontakt og avtalt et alternativ med deg på forhånd. Bytter han på egen hånd til noe rimeligere uten din godkjenning, er det fortsatt en mangel. Du har ikke godtatt endringen bare fordi den ble gjort.</p>
+<h3>Pass på ved overtakelsen</h3>
+<p>Mange tilvalgsfeil oppdages nettopp på overtakelsesbefaringen. Ta med tilvalgslisten din til overtakelsen og kryss av punkt for punkt. Skriv alle avvik inn i overtakelsesprotokollen. Det gir deg et godt utgangspunkt, og det blir vanskeligere for entreprenøren å hevde at alt var i orden.</p>
+<h3>Hva hvis tilvalget ikke virker som det skal?</h3>
+<p>Tilvalg handler ikke bare om utseende og merke, men også om at det faktisk fungerer. Bestilte du for eksempel varmekabler under flisene på badet, holder det ikke at fliser ble lagt – varmekablene må faktisk være montert og fungere. </p>
+<p>Et eksempel: Thea betalte 14 000 kroner for varmekabler i baderomsgulvet som tilvalg. Etter innflytting var gulvet alltid kaldt. Det viste seg at kablene aldri var koblet til. Det er en mangel: hun har betalt for en funksjon hun ikke fikk. Entreprenøren måtte enten få kablene til å fungere eller gi prisavslag tilsvarende kostnaden ved å rette feilen.</p>
+<h3>Krev en oppdatert tilvalgsliste underveis</h3>
+<p>Et godt råd for å unngå tilvalgskonflikter er å be om en samlet, oppdatert oversikt over alle bestilte tilvalg før produksjonen starter. Mange tilvalg bestilles i flere runder, gjerne over e-post og i møter, og da er det lett at noe forsvinner i mengden. En samlet, signert tilvalgsliste gjør det krystallklart hva som er avtalt – og blir et sterkt bevis hvis noe skulle mangle ved overtakelsen.</p>
+<h3>Hva hvis du angrer på et tilvalg?</h3>
+<p>Det er verdt å vite at hvis du selv ombestemmer deg og ikke får akkurat det du nå ønsker deg, er det ikke en mangel – mangel handler om avvik fra det som faktisk ble avtalt. Et tilvalg du selv valgte og fikk levert riktig, kan du altså ikke kreve byttet bare fordi du i ettertid heller skulle ønsket noe annet. Derfor er det viktig å tenke godt gjennom tilvalgene før du bestiller.</p>
+<h3>Kort oppsummert</h3>
+<p>Tilvalg er en del av avtalen, og leveres de ikke som bestilt, er det normalt en mangel etter § 25. Bruk tilvalgsavtalen som bevis, fotografer avviket, og reklamer skriftlig. Du kan kreve at entreprenøren leverer riktig produkt gratis (§ 32) eller gir prisavslag (§ 33). Sjekk tilvalgene nøye allerede ved overtakelsen.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

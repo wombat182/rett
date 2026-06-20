@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har håndverkeren rett til å rette feilen selv? — Rettsregel</title>
+<meta name="description" content="Ja, det har han faktisk.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-handverkeren-rett-til-a-rette-feilen-selv/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har håndverkeren rett til å rette feilen selv?">
+<meta property="og:description" content="Ja, det har han faktisk.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-handverkeren-rett-til-a-rette-feilen-selv/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har håndverkeren rett til å rette feilen selv?">
+<meta name="twitter:description" content="Ja, det har han faktisk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Har håndverkeren rett til å rette feilen selv?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, det har han faktisk. Selv om feilen er håndverkerens skyld, har han rett til å få sjansen til å rette den selv før du gjør noe annet (håndverkertjenesteloven § 24). Dette er viktig å forstå: Du kan ikke bare hyre inn en annen og sende regningen videre – håndverkeren skal først få mulighet til å ordne opp.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja, det har han faktisk. Selv om feilen er håndverkerens skyld, har han rett til å få sjansen til å rette den selv før du gjør noe annet (håndverkertjenesteloven § 24). Dette er viktig å forstå: Du kan ikke bare hyre inn en annen og sende regningen videre – håndverkeren skal først få mulighet til å ordne opp.</p>
+<h3>Hvorfor har håndverkeren denne retten?</h3>
+<p>Det kan virke urettferdig at den som rotet det til får "en sjanse til". Men loven er bygget på en rimelig tanke: Det er ofte raskest, billigst og mest praktisk at den som kjenner jobben fikser den selv. Håndverkeren slipper å betale dyrt for en annens innsats, og du får feilen rettet uten ekstra runder. Ofte er det også den opprinnelige håndverkeren som best forstår hvor det gikk galt, fordi han kjenner materialene og fremgangsmåten som ble brukt.</p>
+<p><strong>Eksempel:</strong> <strong>Petter</strong> var sint da terrassen begynte å knirke etter bare en måned. Han ville helst ringt en konkurrent. Men fordi snekkeren hadde rett til å rette selv, ga Petter ham beskjed først. Snekkeren kom, fant et par løse skruer og en bjelke som hadde forskjøvet seg, og ordnet det på en halv dag – uten kostnad. Hadde Petter hoppet over dette, kunne han endt opp med å betale en konkurrent selv.</p>
+<h3>Hva betyr dette for deg?</h3>
+<p>Det betyr at rekkefølgen er viktig. <strong>Først</strong> gir du håndverkeren beskjed og en rimelig frist. <strong>Deretter</strong>, hvis han ikke retter, kan du gå videre til andre krav som prisavslag eller dekningsutbedring.</p>
+<p>Slik bør du tenke:</p>
+<ul>
+<li><strong>Ikke hopp over håndverkeren.</strong> Setter du bort jobben med en gang, risikerer du å tape deler av kravet.</li>
+<li><strong>Gi en konkret, skriftlig frist.</strong> Da er det dokumentert at håndverkeren fikk sjansen.</li>
+<li><strong>Vær tydelig på hva du krever.</strong> Skriv at du forventer retting innen fristen.</li>
+</ul>
+<p>Tenk på det som en slags "rettferdighetsbalanse": Du har sterke rettigheter ved en mangel, men til gjengjeld må håndverkeren få en mulighet til å rydde opp først.</p>
+<h3>Finnes det grenser for denne retten?</h3>
+<p>Ja. Håndverkerens rett til å rette gjelder bare hvis det kan skje <strong>innen rimelig tid og uten vesentlig ulempe for deg</strong>. Du må ikke finne deg i evig somling eller gjentatte mislykkede forsøk.</p>
+<p><strong>Eksempel:</strong> <strong>Sara</strong> fikk en lekk varmtvannsbereder montert. Rørleggeren prøvde å rette to ganger, men det lekket fortsatt. Da tredje forsøk ble foreslått tre uker senere, var Sara ikke lenger pliktig til å vente. Etter flere mislykkede forsøk eller urimelig lang tid faller håndverkerens rett til å rette bort, og du kan gå videre.</p>
+<p>Vesentlig ulempe kan også være et selvstendig argument. Hvis rettingen ville bety at du for eksempel ikke kan bruke kjøkkenet i flere uker i en travel periode, kan ulempen i seg selv gjøre at du ikke trenger å godta gjentatte forsøk.</p>
+<h3>Hva hvis du har et godt grunnlag for å nekte?</h3>
+<p>Det kan finnes situasjoner der det er åpenbart at håndverkeren ikke vil klare å rette – for eksempel hvis tilliten er fullstendig brutt, eller han allerede har mislyktes flere ganger. Da kan du ha grunnlag for å gå rett videre. Men dette er unntak, og du bør være på trygg grunn. Er du i tvil, kontakt Forbrukerrådet for veiledning før du handler.</p>
+<h3>Steg-for-steg når håndverkeren vil rette</h3>
+<ol>
+<li><strong>Bekreft skriftlig</strong> at du godtar at han kommer og retter.</li>
+<li><strong>Avtal et konkret tidspunkt.</strong></li>
+<li><strong>Vær til stede</strong> eller gi tilgang, slik at jobben kan gjøres.</li>
+<li><strong>Dokumenter resultatet</strong> med bilder etterpå.</li>
+<li><strong>Godta retting bare hvis den faktisk løser problemet.</strong> Er feilen fortsatt der, reklamer på nytt.</li>
+</ol>
+<h3>En liten advarsel om å være for rask</h3>
+<p>Mange blir så frustrerte at de hyrer inn ny håndverker med en gang og sender regningen til den første. Problemet er at den første håndverkeren da kan si: "Jeg fikk aldri sjansen til å rette – dette ville jeg gjort gratis." Og da kan han ha rett. Resultatet kan bli at du må bære regningen selv. Derfor: Hvor irriterende det enn er, gi alltid håndverkeren den skriftlige sjansen først.</p>
+<h3>Hvor mange forsøk må du tåle?</h3>
+<p>Et vanlig spørsmål er hvor mange ganger håndverkeren får prøve seg. Loven setter ikke et eksakt tall, men praksis gir veiledning: Du må normalt godta ett, kanskje to forsøk på samme feil. Klarer ikke håndverkeren å løse problemet etter det, har du som regel grunnlag for å si stopp.</p>
+<p>Tenk på det slik:</p>
+<ul>
+<li><strong>Første forsøk:</strong> Du må nesten alltid godta dette.</li>
+<li><strong>Andre forsøk:</strong> Ofte rimelig, særlig hvis feilen var komplisert.</li>
+<li><strong>Tredje forsøk og utover:</strong> Her kan du normalt sette foten ned og gå videre til prisavslag eller dekningsutbedring.</li>
+</ul>
+<p><strong>Eksempel:</strong> <strong>Lars</strong> fikk en peisinnsats montert som røyk inn i stua. Montøren prøvde to ganger uten å løse trekkproblemet. Da et tredje forsøk ble foreslått, hadde Lars godt grunnlag for å hente inn en spesialist og kreve kostnaden dekket.</p>
+<h3>Gjør avtaler skriftlige, også under retting</h3>
+<p>Selv når håndverkeren har sagt ja til å rette, lønner det seg å holde alt skriftlig. Bekreft tidspunktet på SMS, og send en kort melding etterpå om resultatet ble bra eller ikke. Da har du en klar tidslinje hvis det skulle bli uenighet senere om hva som ble gjort og når.</p>
+<h3>Hva hvis håndverkeren vil ha betalt for å komme tilbake?</h3>
+<p>Noen håndverkere prøver seg med å ta betalt for "utrykning" eller transport når de kommer for å rette en feil de selv har laget. Dette skal du som hovedregel ikke godta. Retting av en mangel skal skje for håndverkerens regning – det inkluderer både arbeidstid, materialer og transport knyttet til selve feilrettingen. Blir du presentert for en slik regning, kan du vise til at retting etter loven er gratis for deg.</p>
+<p>Unntaket er, som nevnt, hvis det dukker opp arbeid som ikke har med feilen å gjøre, og som du uansett ville måttet betale for. Men det er en helt annen ting enn å fakturere deg for å rette opp sin egen tabbe.</p>
+<h3>Når retting ikke er mulig</h3>
+<p>Iblant kan en mangel rett og slett ikke rettes – materialet er borte fra markedet, eller skaden er av en art som ikke lar seg reparere. Da faller retting bort som alternativ, og du går rett over til prisavslag, eventuelt heving hvis mangelen er vesentlig. Du skal aldri sitte fast bare fordi retting er umulig; loven gir deg da de andre virkemidlene i stedet.</p>
+<h3>Kort oppsummert</h3>
+<p>Håndverkeren har rett til å rette feilen selv, og du må gi ham sjansen før du gjør noe annet. Det lønner seg som regel – det går raskt og koster deg ingenting. Men retten gjelder bare innen rimelig tid og uten vesentlig ulempe for deg. Etter gjentatte mislykkede forsøk eller urimelig somling faller den bort, og du kan gå videre til andre krav.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

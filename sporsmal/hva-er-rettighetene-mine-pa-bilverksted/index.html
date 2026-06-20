@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er rettighetene mine på bilverksted? — Rettsregel</title>
+<meta name="description" content="Når du leverer bilen til reparasjon, gjelder håndverkertjenesteloven. Det gir deg rett til fagmessig arbeid, et prisoverslag som ikke får sprekke med mer…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-rettighetene-mine-pa-bilverksted/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er rettighetene mine på bilverksted?">
+<meta property="og:description" content="Når du leverer bilen til reparasjon, gjelder håndverkertjenesteloven. Det gir deg rett til fagmessig arbeid, et prisoverslag som ikke får sprekke med mer…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-rettighetene-mine-pa-bilverksted/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er rettighetene mine på bilverksted?">
+<meta name="twitter:description" content="Når du leverer bilen til reparasjon, gjelder håndverkertjenesteloven. Det gir deg rett til fagmessig arbeid, et prisoverslag som ikke får sprekke med mer…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er rettighetene mine på bilverksted?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Når du leverer bilen til reparasjon, gjelder håndverkertjenesteloven. Det gir deg rett til fagmessig arbeid, et prisoverslag som ikke får sprekke med mer enn 15 prosent, en spesifisert regning og reklamasjonsrett hvis noe er feil. Verkstedet er altså langt fra fritt frem til å gjøre og kreve hva de vil.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Loven gjelder også på verkstedet</h3>
+<p>Mange tror håndverkertjenesteloven bare handler om snekkere og malere. Men reparasjon av bilen din er også en håndverkertjeneste. Det betyr at du har de samme grunnleggende rettighetene som ved annet håndverkerarbeid – noe det er verdt å minne verkstedet om hvis de prøver seg.</p>
+<h3>1. Rett til fagmessig arbeid</h3>
+<p>Verkstedet skal utføre jobben fagmessig og ivareta interessene dine. En reparasjon som ikke holder mål, kan du klage på.</p>
+<p>Eksempel: Petter får skiftet bremseklosser, men bremsene piper og virker dårlige etterpå. Han har krav på at jobben er fagmessig gjort – og kan kreve at verkstedet retter feilen uten ekstra kostnad.</p>
+<h3>2. Rett til informasjon og prisoverslag</h3>
+<p>Du har krav på å bli opplyst om hva jobben innebærer og hva den koster.</p>
+<ul>
+<li><strong>Be alltid om et prisoverslag</strong> før arbeidet starter.</li>
+<li>Et prisoverslag – altså et anslag over hva jobben vil koste – er en sterk beskyttelse for deg.</li>
+<li>Be gjerne om det skriftlig, for eksempel på SMS eller e-post.</li>
+</ul>
+<h3>3. 15-prosentregelen – den viktigste å huske</h3>
+<p>Hvis verkstedet har gitt deg et prisoverslag, kan den endelige regningen ikke bli vesentlig høyere – og uansett ikke mer enn 15 prosent over overslaget.</p>
+<p>Regneeksempel: Verkstedet anslår 10 000 kroner for reparasjonen. Da kan sluttsummen maksimalt bli 11 500 kroner, altså 10 000 pluss 15 prosent. Får du en regning på 14 000 uten at du har godkjent ekstraarbeid, kan du protestere.</p>
+<blockquote>
+<p>Husk forskjellen: Et <em>prisoverslag</em> er et anslag med 15-prosenttaket. En <em>fast pris</em> er bindende og kan ikke overskrides i det hele tatt. Et løst <em>prisestimat på telefon</em> uten et konkret tall gir deg dårligere vern – be derfor alltid om noe konkret.</p>
+</blockquote>
+<h3>4. Rett til spesifisert regning</h3>
+<p>Du har krav på en regning som er spesifisert, altså som viser hva du betaler for – deler, timer og arbeid. En regning der det bare står "reparasjon: 14 000 kroner" uten forklaring, kan du be om å få spesifisert. Da kan du sjekke at du faktisk betaler for det som ble gjort, og oppdage eventuelle dobbeltføringer eller poster du ikke kjenner igjen.</p>
+<h3>5. Reklamasjonsrett</h3>
+<p>Er reparasjonen mangelfull, kan du reklamere. Du kan da kreve at verkstedet:</p>
+<ul>
+<li><strong>Retter feilen</strong> uten ekstra kostnad, eller</li>
+<li><strong>Gir prisavslag</strong>, eller</li>
+<li>I noen tilfeller <strong>betaler erstatning</strong> for tap feilen har påført deg.</li>
+</ul>
+<p>For arbeid på en bil – som er en løsøregjenstand – er den ytre reklamasjonsfristen som hovedregel to år, men du må klage innen rimelig tid etter at du oppdaget feilen.</p>
+<h3>6. Beskyttelse mot unødvendig og ubestilt arbeid</h3>
+<p>Verkstedet skal ikke gjøre mer enn det du har bestilt. Oppdager de underveis at noe annet bør gjøres, skal de som hovedregel kontakte deg og spørre. Har de gjort unødvendig eller ubestilt arbeid uten å avklare det, slipper du normalt å betale for det.</p>
+<p>Eksempel: Du ba dem bare skifte en pære. De byttet i tillegg luftfilter og vasket motoren, og fakturerte for alt. Det ubestilte arbeidet kan du normalt nekte å betale for.</p>
+<h3>En enkel forberedelse før du leverer bilen</h3>
+<ol>
+<li>Be om et skriftlig prisoverslag.</li>
+<li>Avtal at verkstedet ringer deg før de gjør noe utover det bestilte.</li>
+<li>Be om at delene som byttes, tas vare på, så du kan se dem.</li>
+<li>Ta vare på avtale, prisoverslag og regning.</li>
+<li>Sjekk regningen mot prisoverslaget når du henter bilen.</li>
+</ol>
+<p>Disse fem grepene tar to minutter, men sparer deg for de fleste vanlige konfliktene.</p>
+<h3>En ting du bør være forberedt på: tilbakeholdsrett</h3>
+<p>Verkstedet kan ha rett til å holde tilbake bilen til regningen er betalt. Det betyr at du ikke uten videre får bilen med deg hvis du nekter å betale. Mener du regningen er feil, bør du derfor vurdere å betale under protest – altså skriftlig gjøre oppmerksom på at du betaler, men er uenig – eller avklare uenigheten først, fremfor å risikere at bilen blir stående på verkstedet. Da kan du ta tvisten i etterkant, for eksempel via Forbrukerrådet, uten å miste bilen i mellomtiden.</p>
+<h3>Hvis dere blir uenige</h3>
+<ol>
+<li>Reklamer skriftlig til verkstedet og forklar hva som er feil.</li>
+<li>Be om at de retter feilen eller justerer regningen.</li>
+<li>Hjelper det ikke, kontakt Forbrukerrådet, som gir gratis veiledning.</li>
+<li>En uavhengig fagperson, for eksempel via NAF, kan vurdere om reparasjonen var fagmessig.</li>
+</ol>
+<h3>Garanti er noe annet enn reklamasjonsrett</h3>
+<p>Mange verksteder tilbyr en egen garanti på arbeidet, for eksempel "to års garanti på reparasjonen". Det er fint, men husk at reklamasjonsretten din etter loven gjelder uansett – også hvis garantien skulle ha kortere varighet eller dårligere vilkår. En garanti kan gi deg mer enn loven, men aldri mindre. Blir du møtt med "garantien er gått ut", er det altså verdt å sjekke om du fortsatt har reklamasjonsrett etter håndverkertjenesteloven.</p>
+<h3>Spesielt om verditap og lånebil</h3>
+<p>Hvis en mangelfull reparasjon fører til at du får et økonomisk tap – for eksempel at du må leie bil mens feilen rettes på nytt – kan du i noen tilfeller kreve dette dekket som erstatning. Ta vare på kvitteringer for slike utgifter. Et godt råd er likevel å avklare med verkstedet på forhånd: spør om de stiller lånebil til rådighet mens de utbedrer, slik mange seriøse verksteder gjør. Da slipper du både utlegget og en ekstra diskusjon.</p>
+<h3>Kort oppsummert</h3>
+<p>På bilverkstedet gjelder håndverkertjenesteloven. Du har rett til fagmessig arbeid, et prisoverslag som ikke kan sprekke med mer enn 15 prosent, en spesifisert regning og reklamasjonsrett. Verkstedet skal ikke gjøre unødvendig eller ubestilt arbeid uten å spørre. Be om prisoverslag skriftlig, avtal at de ringer ved ekstraarbeid, og sjekk regningen mot overslaget. Vær klar over at verkstedet kan holde tilbake bilen til regningen er gjort opp – betal heller under protest og ta tvisten etterpå.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bilen-har-skjult-feil/">Bilen jeg kjøpte har skjult feil — hva kan jeg kreve?</a><a class="sp-relchip" href="../../sporsmal/gjelder-handverkertjenesteloven-for-bilverksted/">Gjelder håndverkertjenesteloven for bilverksted?</a><a class="sp-relchip" href="../../sporsmal/gjelder-kjopsloven-nar-jeg-kjoper-brukt-bil-privat/">Gjelder kjøpsloven når jeg kjøper brukt bil privat?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

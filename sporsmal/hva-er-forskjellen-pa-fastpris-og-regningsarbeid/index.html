@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på fastpris og regningsarbeid? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Med fastpris avtaler dere ett bestemt beløp på forhånd, og entreprenøren bærer risikoen for at jobben tar lengre tid eller mer materialer enn…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-fastpris-og-regningsarbeid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på fastpris og regningsarbeid?">
+<meta property="og:description" content="Kort sagt: Med fastpris avtaler dere ett bestemt beløp på forhånd, og entreprenøren bærer risikoen for at jobben tar lengre tid eller mer materialer enn…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-fastpris-og-regningsarbeid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på fastpris og regningsarbeid?">
+<meta name="twitter:description" content="Kort sagt: Med fastpris avtaler dere ett bestemt beløp på forhånd, og entreprenøren bærer risikoen for at jobben tar lengre tid eller mer materialer enn…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bolig og leie</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bolig og leie</div>
+      <h1 class="article-title">Hva er forskjellen på fastpris og regningsarbeid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Med fastpris avtaler dere ett bestemt beløp på forhånd, og entreprenøren bærer risikoen for at jobben tar lengre tid eller mer materialer enn ventet. Med regningsarbeid betaler du for det som faktisk medgår av tid og materialer, og du bærer mer av risikoen – men du har rett til en spesifisert regning, og kan be om et prisoverslag som setter et tak (buofl. § 41).</p>
+  <p class="sp-kilde">Bygger på bustadoppforingslova § 41 og § 42</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/bustadoppforingslova/41/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 41</div>
+  <div class="related-card-title">Hva er prisen hvis dere ikke avtalte noe?</div>
+</a><a href="../../lover/bustadoppforingslova/42/" class="related-card">
+  <div class="related-card-meta">bustadoppforingslova § 42</div>
+  <div class="related-card-title">Hva koster det å endre planene?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: Med fastpris avtaler dere ett bestemt beløp på forhånd, og entreprenøren bærer risikoen for at jobben tar lengre tid eller mer materialer enn ventet. Med regningsarbeid betaler du for det som faktisk medgår av tid og materialer, og du bærer mer av risikoen – men du har rett til en spesifisert regning, og kan be om et prisoverslag som setter et tak (buofl. § 41).</p>
+<h3>To prisformer – samme lov</h3>
+<p>Begge prisformene er regulert i bustadoppføringslovas bestemmelse om vederlaget (buofl. § 41). Valget mellom dem handler i bunn og grunn om to ting: hvem som skal bære risikoen for at byggingen blir dyrere enn ventet, og hvor mye forutsigbarhet du som forbruker ønsker.</p>
+<h3>Den enkle oversikten</h3>
+<table>
+<thead>
+<tr>
+<th>Tema</th>
+<th>Fastpris</th>
+<th>Regningsarbeid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hva betaler du?</td>
+<td>Ett avtalt beløp</td>
+<td>Faktisk tid + materialer</td>
+</tr>
+<tr>
+<td>Hvem bærer risikoen?</td>
+<td>Entreprenøren</td>
+<td>I hovedsak du</td>
+</tr>
+<tr>
+<td>Forutsigbarhet</td>
+<td>Høy</td>
+<td>Lavere (med mindre prisoverslag gis)</td>
+</tr>
+<tr>
+<td>Fleksibilitet ved endringer</td>
+<td>Lavere</td>
+<td>Høyere</td>
+</tr>
+<tr>
+<td>Behov for å kontrollere regning</td>
+<td>Mindre</td>
+<td>Stort – du har rett på spesifisert regning</td>
+</tr>
+<tr>
+<td>Passer best ved</td>
+<td>Klart definert nybygg</td>
+<td>Usikkert omfang, rehabilitering</td>
+</tr>
+</tbody>
+</table>
+<h3>Hvem bærer risikoen?</h3>
+<p>Dette er selve kjernen i forskjellen:</p>
+<ul>
+<li><strong>Fastpris:</strong> Tar jobben dobbelt så lang tid som entreprenøren trodde, er det <em>deres</em> problem – du betaler det avtalte beløpet uansett. Til gjengjeld legger de gjerne inn en buffer i prisen for å dekke denne risikoen, så du betaler litt for tryggheten.</li>
+<li><strong>Regningsarbeid:</strong> Tar jobben lengre tid, betaler <em>du</em> for de ekstra timene. Du slipper bufferen, men bærer usikkerheten – med mindre dere har avtalt et prisoverslag, som gir deg et tak på 15 prosent over overslaget (buofl. § 41).</li>
+</ul>
+<h3>Et eksempel som setter det på spissen</h3>
+<p>To naboer bygger samtidig, men velger ulikt:</p>
+<ul>
+<li><strong>Familien Dahl</strong> velger <strong>fastpris</strong> på 4 000 000 kroner for et nøkkelferdig, godt beskrevet hus. Det dukker opp fjell i grunnen som tar ekstra tid å sprenge. Fordi det var fastpris (og kontrakten la grunnrisikoen på entreprenøren), betaler Dahl fortsatt 4 000 000 kroner. Entreprenøren tar tapet.</li>
+<li><strong>Familien Eng</strong> velger <strong>regningsarbeid</strong> for sitt tilbygg, fordi de pusser opp et gammelt hus med usikkert omfang. Da de åpner veggene, finner de råte. Med regningsarbeid betaler Eng for den ekstra jobben med å fjerne råten – men de fikk et prisoverslag, så regningen kan ikke sprenge taket på 15 prosent over (buofl. § 41).</li>
+</ul>
+<p>Begge valgene var fornuftige – fordi situasjonene var ulike. Det er nettopp poenget: prisformen bør passe prosjektet.</p>
+<h3>Når peker pilen mot fastpris?</h3>
+<ul>
+<li>Prosjektet er et nybygg som kan beskrives godt på forhånd.</li>
+<li>Du vil ha trygghet og en klar låneramme.</li>
+<li>Du er villig til å betale en liten buffer for forutsigbarheten.</li>
+<li>Du vil ha minst mulig administrasjon underveis.</li>
+</ul>
+<h3>Når peker pilen mot regningsarbeid?</h3>
+<ul>
+<li>Omfanget er usikkert (rehabilitering, tilbygg, arbeid i eldre bygg).</li>
+<li>Du vil ha fleksibilitet til å endre underveis.</li>
+<li>Du er villig til å følge med på regningene og kontrollere dem.</li>
+<li>Du har et godt tillitsforhold til entreprenøren.</li>
+</ul>
+<h3>En vanlig misforståelse</h3>
+<p>Mange tror fastpris alltid er «tryggest» og regningsarbeid alltid «farligst». Det stemmer ikke uten videre. På et prosjekt med svært usikkert omfang vil en entreprenør ofte legge inn en <em>stor</em> buffer for å tørre å gi fastpris i det hele tatt – og da kan du ende opp med å betale for en risiko som aldri materialiserte seg. I slike tilfeller kan regningsarbeid med et fornuftig prisoverslag faktisk bli rimeligere. Det handler altså ikke om at den ene formen alltid er best, men om hvilken som passer ditt prosjekt.</p>
+<h3>Sjekkliste når du sammenligner tilbud</h3>
+<ul>
+<li>[ ] Hva er prisformen i hvert tilbud – fastpris eller regning?</li>
+<li>[ ] Ved fastpris: hvor detaljert er beskrivelsen, og hvem tar grunnrisikoen?</li>
+<li>[ ] Ved regning: er det gitt et prisoverslag (15-prosentstaket, buofl. § 41)?</li>
+<li>[ ] Hvordan prises endringer i begge tilfeller (buofl. § 42)?</li>
+<li>[ ] Sammenligner jeg eple mot eple – altså samme leveranseomfang i begge tilbud?</li>
+<li>[ ] Er garanti og betalingsplan like i tilbudene jeg sammenligner?</li>
+</ul>
+<h3>Et ord om å kombinere</h3>
+<p>Du trenger ikke alltid velge enten-eller for hele prosjektet. Det er fullt mulig å avtale fastpris på den forutsigbare delen (selve huskroppen) og regningsarbeid på den usikre delen (for eksempel grunnarbeidet, før man vet hva som er i bakken). En slik kombinasjon gir deg det beste fra begge: trygghet der det er mulig, fleksibilitet der det trengs.</p>
+<h3>Hvordan endringer slår ut i de to formene</h3>
+<p>Et punkt mange overser når de sammenligner, er hvordan <em>endringer</em> håndteres – og det er ofte der overraskelsene kommer:</p>
+<ul>
+<li><strong>Ved fastpris</strong> er hovedprisen låst, men hver endring du bestiller, prises som et eget tillegg (buofl. § 42). Fordelen er at du tydelig ser hva hver endring koster ekstra; ulempen er at tillegg ofte prises romslig når du først er bundet til ett firma.</li>
+<li><strong>Ved regningsarbeid</strong> flyter endringer mer naturlig inn i den løpende regningen, fordi du uansett betaler for medgått tid og materialer. Fleksibiliteten er større, men det er nettopp derfor du må følge ekstra godt med på hva som faktisk påløper.</li>
+</ul>
+<p>Forstår du denne forskjellen, blir det lettere å vurdere hvilket tilbud som passer din situasjon – særlig hvis du allerede vet at du kommer til å gjøre en del valg underveis.</p>
+<h3>Et lite regnestykke til ettertanke</h3>
+<p>Si at to tilbud lyder på «samme pris»: en fastpris på 3 500 000 kroner, og et regningstilbud med prisoverslag på 3 200 000 kroner. Ved første øyekast ser regningstilbudet billigst ut. Men med 15-prosentstaket kan regningen i verste fall ende på 3 680 000 kroner (buofl. § 41), altså høyere enn fastprisen. Poenget er ikke at den ene alltid vinner, men at du må regne på <em>taket</em>, ikke bare overslaget, når du sammenligner.</p>
+<h3>Kort oppsummert</h3>
+<p>Fastpris gir deg ett avtalt beløp og legger risikoen på entreprenøren, mens regningsarbeid betyr betaling etter faktisk tid og materialer, med risikoen mer på deg (buofl. § 41). Fastpris passer best ved godt beskrevne nybygg; regningsarbeid passer best ved usikkert omfang som rehabilitering. Be om prisoverslag ved regningsarbeid for å få 15-prosentsbeskyttelsen, og sammenlign alltid tilbud med samme leveranseomfang. Du kan også kombinere de to formene i samme prosjekt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/boligselgerforsikring-avviser-krav-kontakte-advokat/">Boligselgerforsikringen avviser kravet – når bør du kontakte advokat?</a><a class="sp-relchip" href="../../sporsmal/bor-betalingen-folge-fremdriften-i-byggingen/">Bør betalingen følge fremdriften i byggingen?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-byggesak/">Bør jeg bruke advokat i en byggesak?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

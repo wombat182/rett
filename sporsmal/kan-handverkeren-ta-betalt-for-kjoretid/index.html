@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan håndverkeren ta betalt for kjøretid? — Rettsregel</title>
+<meta name="description" content="Ja, men bare hvis det er avtalt mellom dere, eller hvis det er vanlig praksis i bransjen. Håndverkeren kan ikke bare legge på kjøretid og oppmøte uten at…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-handverkeren-ta-betalt-for-kjoretid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan håndverkeren ta betalt for kjøretid?">
+<meta property="og:description" content="Ja, men bare hvis det er avtalt mellom dere, eller hvis det er vanlig praksis i bransjen. Håndverkeren kan ikke bare legge på kjøretid og oppmøte uten at…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-handverkeren-ta-betalt-for-kjoretid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan håndverkeren ta betalt for kjøretid?">
+<meta name="twitter:description" content="Ja, men bare hvis det er avtalt mellom dere, eller hvis det er vanlig praksis i bransjen. Håndverkeren kan ikke bare legge på kjøretid og oppmøte uten at…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan håndverkeren ta betalt for kjøretid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, men bare hvis det er avtalt mellom dere, eller hvis det er vanlig praksis i bransjen. Håndverkeren kan ikke bare legge på kjøretid og oppmøte uten at det fremgår av avtalen eller er en kjent og vanlig kostnad for slike tjenester. Dukker det opp et kjøretidsgebyr du aldri har hørt om, har du grunn til å stille spørsmål.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva er kjøretid og oppmøtegebyr?</h3>
+<p>Kjøretid er tiden håndverkeren bruker på å reise til og fra deg. Mange tar også et <strong>oppmøtegebyr</strong> (også kalt utrykningsgebyr, fremmøteavgift eller startgebyr) – et fast beløp for å rykke ut, uavhengig av hvor lang selve jobben er.</p>
+<p>Disse kostnadene er ikke ulovlige i seg selv. Håndverkeren har reelle utgifter til bil, drivstoff, bompenger og tid på veien. Spørsmålet er ikke OM slike kostnader finnes, men om DU skal betale dem, og om det var tydelig nok på forhånd.</p>
+<h3>Når må du betale for kjøretid?</h3>
+<p>Du må betale for kjøretid eller oppmøte når minst ett av disse er oppfylt:</p>
+<ul>
+<li><strong>Det er avtalt.</strong> Står det i tilbudet, kontrakten, prislisten eller en SMS at kjøretid faktureres, gjelder det.</li>
+<li><strong>Det er vanlig i bransjen.</strong> Hvis det er en kjent og gjengs praksis å ta betalt for kjøring for denne typen tjeneste, kan håndverkeren ta gjengs pris for det selv om det ikke er uttrykkelig nevnt (jf. håndverkertjenesteloven § 32 om gjengs/rimelig pris når annet ikke er avtalt).</li>
+</ul>
+<p>Det du ikke trenger å godta uten videre, er en kjøretidskostnad som verken er avtalt, opplyst eller vanlig – og som dukker opp som en ren overraskelse på fakturaen.</p>
+<h3>Regneeksempel: avtalt kjøretid</h3>
+<p>Snekker Bjørn bor i nabobygda. Når han gir tilbud til Hanne, skriver han: «Timepris 800 kr. Kjøring faktureres som 1 time tur/retur.» Hanne sier ja. Jobben tar 6 timer, pluss 1 time kjøring:</p>
+<ul>
+<li>Arbeid: 6 timer x 800 kr = 4 800 kr</li>
+<li>Kjøring: 1 time x 800 kr = 800 kr</li>
+<li><strong>Sum eks. mva.: 5 600 kr</strong></li>
+</ul>
+<p>Her er kjøringen avtalt på forhånd, tydelig og skriftlig. Hanne må betale, og hun visste om det da hun takket ja.</p>
+<h3>Regneeksempel: oppmøtegebyr som ikke var opplyst</h3>
+<p>Elektriker Geir kommer for å bytte en stikkontakt hos Sara. Jobben tar 30 minutter. På fakturaen står det plutselig:</p>
+<ul>
+<li>Arbeid: 0,5 time x 900 kr = 450 kr</li>
+<li>Oppmøtegebyr: 1 500 kr</li>
+<li><strong>Sum eks. mva.: 1 950 kr</strong></li>
+</ul>
+<p>Sara hadde aldri hørt om noe oppmøtegebyr. Det stod ikke i avtalen, og 1 500 kroner for en så liten jobb virker ikke som vanlig praksis for å bytte en stikkontakt i nabolaget. Her har Sara god grunn til å be om dokumentasjon: Hvor er dette gebyret avtalt? Er det vanlig for slike oppdrag? Får hun ikke godt svar, kan hun bestride den delen av regningen.</p>
+<h3>Kjøretid kan også gjelde flere besøk</h3>
+<p>Vær oppmerksom på at noen jobber krever at håndverkeren kommer flere ganger – for eksempel for å vente på at noe tørker eller herder. Hvis kjøretid er avtalt per besøk, kan det legge seg opp. Avtal gjerne hvordan kjøring håndteres ved flere oppmøter, så slipper du å betale full kjøretid tre-fire ganger for samme jobb.</p>
+<h3>Slik unngår du krangel om kjøretid</h3>
+<ol>
+<li><strong>Spør på forhånd:</strong> «Tar dere betalt for kjøring eller oppmøte? Hvor mye, og hvordan beregnes det?»</li>
+<li><strong>Få svaret skriftlig.</strong> En SMS holder.</li>
+<li><strong>Avklar antall besøk</strong> hvis jobben krever flere oppmøter.</li>
+<li><strong>Sjekk fakturaen</strong> mot det dere avtalte når den kommer.</li>
+<li><strong>Reager raskt</strong> hvis det dukker opp kostnader dere ikke har snakket om. Be om forklaring og minn om at slike kostnader må være avtalt eller vanlige.</li>
+</ol>
+<h3>Et lite tips om reisevei</h3>
+<p>Bor du langt unna, kan kjøretid bli en betydelig del av regningen. Da kan det lønne seg å velge en lokal håndverker, eller å samle flere små jobber til ett besøk, slik at du ikke betaler for kjøring flere ganger enn nødvendig. Spør gjerne om håndverkeren har en sone eller en fast kjøregodtgjørelse for ditt område – mange har klare satser.</p>
+<h3>Hva sier prisopplysningsreglene?</h3>
+<p>I tillegg til håndverkertjenesteloven finnes det regler om at næringsdrivende skal opplyse om priser på en tydelig måte før du bestiller. Det betyr at en seriøs håndverker normalt skal gjøre det klart for deg hva som kommer i tillegg til selve timeprisen, inkludert eventuell kjøring og oppmøtegebyr. Står slike satser i prislisten på nettsiden, i tilbudet eller i en SMS, regnes de som opplyst – og da er det vanskeligere for deg å protestere i etterkant. Derfor lønner det seg å lese prislisten før du sier ja, ikke etter at regningen er kommet.</p>
+<h3>Regneeksempel: kjøretid på en liten jobb kontra en stor</h3>
+<p>Tenk deg at kjøring koster 600 kroner tur/retur, og at den er avtalt.</p>
+<ul>
+<li><strong>Liten jobb:</strong> Bytte en pakning, 1 times arbeid à 800 kr = 800 kr. Med 600 kr kjøring blir kjøringen nesten like dyr som selve jobben. Her merker du kjøretiden godt.</li>
+<li><strong>Stor jobb:</strong> Pusse opp et bad over to uker, 70 000 kr i arbeid. De 600 kronene i kjøring forsvinner nesten i totalen.</li>
+</ul>
+<p>Lærdommen er at kjøretid svir mest på de små jobbene. Skal du bestille noe lite, er det ekstra viktig å avklare kjøre- og oppmøtekostnader på forhånd – og gjerne samle flere småjobber så du bare betaler kjøring én gang.</p>
+<h3>Spør om kjøretid faktureres som arbeidstimer eller en egen sats</h3>
+<p>Det er verdt å vite at kjøretid kan beregnes på ulike måter, og at det påvirker prisen. Noen håndverkere fakturerer kjøring som vanlige arbeidstimer til full timepris. Andre har en lavere kjøresats, eller et fast kilometertillegg. Et fast oppmøtegebyr er en tredje variant. Disse kan slå svært ulikt ut:</p>
+<ul>
+<li>Kjøring som arbeidstid: 1 time x 850 kr = 850 kr</li>
+<li>Fast kjøresats: kanskje 350 kr tur/retur i nærområdet</li>
+<li>Kilometergodtgjørelse: for eksempel et beløp per kjørte kilometer</li>
+</ul>
+<p>Spør derfor ikke bare «tar dere betalt for kjøring?», men også «hvordan beregnes den?». Da unngår du å bli overrasket over at en halvtimes kjøretur ble fakturert som en hel arbeidstime til full sats. Få svaret skriftlig, så har du noe å vise til hvis fakturaen ikke stemmer med det dere ble enige om.</p>
+<h3>Kort oppsummert</h3>
+<p>Håndverkeren kan ta betalt for kjøretid og oppmøte, men bare når det er avtalt eller er vanlig praksis i bransjen (§ 32). Dukker det opp et kjøretidsgebyr du aldri har hørt om, og som verken er avtalt eller gjengs, kan du be om dokumentasjon og bestride det. Det enkleste er å spørre på forhånd – og få svaret skriftlig. Bor du langt unna, lønner det seg å velge lokalt eller samle jobbene.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en fast pris? — Rettsregel</title>
+<meta name="description" content="En fast pris er en sum dere har avtalt på forhånd for hele jobben. Den er bindende. Da kan ikke håndverkeren kreve mer fordi jobben tok lengre tid eller…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-fast-pris/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en fast pris?">
+<meta property="og:description" content="En fast pris er en sum dere har avtalt på forhånd for hele jobben. Den er bindende. Da kan ikke håndverkeren kreve mer fordi jobben tok lengre tid eller…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-fast-pris/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en fast pris?">
+<meta name="twitter:description" content="En fast pris er en sum dere har avtalt på forhånd for hele jobben. Den er bindende. Da kan ikke håndverkeren kreve mer fordi jobben tok lengre tid eller…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er en fast pris?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En fast pris er en sum dere har avtalt på forhånd for hele jobben. Den er bindende. Da kan ikke håndverkeren kreve mer fordi jobben tok lengre tid eller ble vanskeligere enn han trodde. Du betaler det dere ble enige om – verken mer eller mindre. Det er nettopp denne forutsigbarheten som gjør fast pris så populær blant forbrukere.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Slik fungerer en fast pris</h3>
+<p>Når du avtaler fast pris (også kalt fastpris eller fast sum), tar håndverkeren på seg risikoen for at jobben blir dyrere enn han regnet med. Det er nettopp det du betaler for: du vet hva sluttsummen blir før spaden settes i jorda. Han har sett på jobben, regnet på den, og gitt deg en pris han er villig til å stå ved.</p>
+<p>Et eksempel: Tømrer Kåre gir Lise en fast pris på 60 000 kroner for å bygge en terrasse på 20 kvadratmeter. Underveis viser det seg at jobben tok 30 timer mer enn Kåre hadde tenkt, fordi grunnen var hardere enn ventet. Han kan likevel ikke kreve et øre ekstra for de timene. Lise betaler 60 000 kroner – det var avtalen, og Kåre bar risikoen for sin egen feilberegning.</p>
+<p>Den samme regelen gjelder andre veien. Hvis jobben gikk raskere enn ventet, får du ikke avslag. Avtalte Kåre og Lise 60 000 kroner og terrassen ble ferdig på halve tiden fordi Kåre fant en smartere løsning, skal Lise fortsatt betale 60 000 kroner. Slik er det rimelig: håndverkeren tar risikoen, men beholder også gevinsten hvis han er effektiv.</p>
+<h3>Hva en fast pris IKKE dekker</h3>
+<p>Her er den vanligste misforståelsen, og kilden til flest konflikter: En fast pris dekker bare det dere faktisk har avtalt – ikke alt mulig som kan dukke opp.</p>
+<p>Sier du «fast pris for å pusse opp badet», bør det stå svart på hvitt hva «pusse opp badet» betyr. Hvis det viser seg at rørene under gulvet er råtne og må byttes, er det som regel <strong>tilleggsarbeid</strong> som faller utenfor fastprisen. Da skal håndverkeren kontakte deg og avtale dette separat (det handler vi mer om i artikkel 38, 39 og 40). Fastprisen «gjelder» altså bare innenfor de rammene dere har tegnet opp.</p>
+<p>For å unngå krangel bør avtalen være tydelig på:</p>
+<ul>
+<li><strong>Hva som er inkludert</strong>: hvilke rom, hvilke flater, hvilke materialer.</li>
+<li><strong>Hva som IKKE er inkludert</strong>: for eksempel skjulte feil, ekstra grunnarbeid, riving.</li>
+<li><strong>Materialer</strong>: er de inkludert i fastprisen, eller kommer de i tillegg?</li>
+<li><strong>Søppel og rydding</strong>: hvem tar bortkjøring av avfall?</li>
+<li><strong>Eventuelle forbehold</strong>: tar håndverkeren forbehold om for eksempel grunnforhold eller skjult råte?</li>
+</ul>
+<h3>Fast pris kontra prisoverslag – ikke bland dem sammen</h3>
+<p>Mange tror de har avtalt fast pris, men har egentlig fått et <strong>prisoverslag</strong>. Forskjellen er stor, og den koster penger.</p>
+<ul>
+<li><strong>Fast pris</strong> = bindende sum. Kan ikke overstiges.</li>
+<li><strong>Prisoverslag</strong> = et omtrentlig anslag. Her sier loven at sluttprisen ikke kan bli vesentlig høyere enn anslaget, og uansett ikke mer enn <strong>15 prosent</strong> dyrere (håndverkertjenesteloven § 33).</li>
+</ul>
+<p>Eksempel på prisoverslag: Elektriker Mona gir et prisoverslag på 20 000 kroner. Da kan regningen maksimalt bli 20 000 + 15 prosent = 23 000 kroner, med mindre dere uttrykkelig har avtalt noe annet eller det har kommet til godkjent tilleggsarbeid. Hadde dette derimot vært en fast pris på 20 000 kroner, kunne regningen aldri blitt høyere enn nettopp 20 000 kroner.</p>
+<p>Tips: Skal du ha fast pris, skriv ordet «fast pris» eller «fastpris» i avtalen. Står det «ca.», «anslag», «estimat» eller «overslag», er det IKKE en fast pris. Et lite ord på et tilbud kan altså bety mange tusen kroners forskjell.</p>
+<h3>Hva om dere ikke avtalte noen pris i det hele tatt?</h3>
+<p>Det skjer oftere enn man tror – jobben hastet, og pris ble aldri nevnt. Da gjelder en egen regel: Du skal betale <strong>gjengs pris</strong>, altså det vanlige for tilsvarende arbeid på avtaletidspunktet, så lenge den prisen ikke er urimelig (håndverkertjenesteloven § 32). Finnes det ingen klar gjengs pris, betaler du det som er rimelig ut fra arbeidets art, omfang og utførelse.</p>
+<p>Derfor lønner det seg alltid å avtale pris på forhånd. Da slipper du diskusjonen om hva som er «vanlig» – en diskusjon der du fort kommer dårligere ut enn om alt var avklart fra start.</p>
+<h3>Slik sikrer du deg en god fastprisavtale</h3>
+<ol>
+<li><strong>Be om fast pris skriftlig.</strong> En e-post eller SMS er nok som bevis.</li>
+<li><strong>Få med hva som er inkludert og ikke.</strong> Jo mer detaljert, jo bedre.</li>
+<li><strong>Avklar materialer.</strong> Spør konkret: «Er materialene med i prisen?»</li>
+<li><strong>Avtal hva som skjer ved overraskelser.</strong> Be om at håndverkeren tar kontakt før eventuelt ekstraarbeid utføres.</li>
+<li><strong>Sjekk om mva. er inkludert.</strong> Spør om summen er med eller uten merverdiavgift, så slipper du sjokk.</li>
+<li><strong>Ta vare på avtalen</strong> til jobben er ferdig og betalt.</li>
+</ol>
+<h3>Et lite blikk på når fast pris passer best</h3>
+<p>Fast pris passer aller best når jobben er godt definert og lett å se omfanget av: legge et bestemt antall kvadratmeter parkett, bytte en dør, montere et ferdig kjøkken. Da kan håndverkeren regne trygt, og du får en pris du kan stole på. Ved mer usikre jobber – feilsøking, reparasjon av noe ukjent – vil mange håndverkere heller tilby timepris, fordi de ikke kan vite omfanget på forhånd. Begge deler er greit, så lenge du vet hva du har avtalt.</p>
+<h3>Et regneeksempel som viser verdien av fast pris</h3>
+<p>La oss sette tall på tryggheten. Rørlegger Anita gir Jonas valget mellom to modeller for å bytte all røropplegg på badet:</p>
+<ul>
+<li><strong>Fast pris:</strong> 55 000 kroner, alt inkludert.</li>
+<li><strong>Timepris:</strong> 950 kroner timen, anslagsvis 45–60 timer, pluss materialer.</li>
+</ul>
+<p>Velger Jonas timepris og jobben tar 58 timer, blir arbeidet alene 58 x 950 = 55 100 kroner – før materialer. Da kan timeprismodellen fort ende på 70 000 kroner eller mer. Med fast pris på 55 000 kroner vet Jonas nøyaktig hva han skal betale, uansett hvor mange timer Anita faktisk bruker. For en stor og litt usikker jobb gir fast pris altså en trygghet som kan være verdt mye, fordi det er håndverkeren – ikke du – som bærer risikoen for at det tar lengre tid.</p>
+<h3>Hva om du vil endre noe underveis?</h3>
+<p>Husk at en fast pris gjelder den avtalte jobben. Bestemmer du deg underveis for at du likevel vil ha varmekabler i gulvet, eller en ekstra stikkontakt, så er det en endring du selv ber om. Det er ikke det samme som tilleggsarbeid håndverkeren oppdager – det er noe nytt du legger til. Da må dere avtale en pris for tillegget, og fastprisen justeres tilsvarende. Be alltid om en pris på endringen før du sier ja, slik at du har kontroll på totalen.</p>
+<h3>Kort oppsummert</h3>
+<p>En fast pris er en bindende sum for hele jobben. Den kan ikke overstiges selv om arbeidet tar lengre tid, og du får ikke avslag om det går raskt. Husk at fastprisen bare dekker det dere faktisk har avtalt – overraskelser kan komme som tilleggsarbeid. Skriv ned hva som er inkludert, avklar materialer og mva., og forveksle aldri en fast pris med et prisoverslag, som lovlig kan bli inntil 15 prosent dyrere (§ 33). Avtaler dere ingen pris, betaler du gjengs eller rimelig pris (§ 32).</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

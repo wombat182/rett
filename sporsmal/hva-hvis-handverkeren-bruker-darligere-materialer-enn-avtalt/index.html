@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis håndverkeren bruker dårligere materialer enn avtalt? — Rettsregel</title>
+<meta name="description" content="Da har du som regel en mangel å klage på. Bruker håndverkeren billigere eller dårligere materialer enn dere avtalte, eller dårligere enn «vanlig god…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-bruker-darligere-materialer-enn-avtalt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis håndverkeren bruker dårligere materialer enn avtalt?">
+<meta property="og:description" content="Da har du som regel en mangel å klage på. Bruker håndverkeren billigere eller dårligere materialer enn dere avtalte, eller dårligere enn «vanlig god…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-handverkeren-bruker-darligere-materialer-enn-avtalt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis håndverkeren bruker dårligere materialer enn avtalt?">
+<meta name="twitter:description" content="Da har du som regel en mangel å klage på. Bruker håndverkeren billigere eller dårligere materialer enn dere avtalte, eller dårligere enn «vanlig god…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva hvis håndverkeren bruker dårligere materialer enn avtalt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Da har du som regel en mangel å klage på. Bruker håndverkeren billigere eller dårligere materialer enn dere avtalte, eller dårligere enn «vanlig god kvalitet» når ingenting spesielt er avtalt, kan du kreve retting, prisavslag eller erstatning, og holde tilbake et rimelig beløp imens.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Avtalen er utgangspunktet</h3>
+<p>Har dere avtalt en bestemt kvalitet eller et bestemt merke, skal det brukes. Bytter håndverkeren ut det avtalte med noe rimeligere uten å spørre, er det et avtalebrudd. Og selv uten en spesifikk avtale gjelder lovens krav om vanlig god kvalitet (§ 7). I begge tilfeller kan du stå overfor en mangel.</p>
+<p>Eksempel: Du avtalte med snekker Geir at det skulle brukes et bestemt, robust gulv av eik. Når du senere oppdager at det er lagt et billigere laminatgulv, har du fått noe annet og dårligere enn avtalt. Det er en klar mangel.</p>
+<h3>Hvorfor er dette en «mangel»?</h3>
+<p>En mangel betyr at tjenesten ikke er som den skulle være etter avtalen eller loven. Når materialene er dårligere enn avtalt eller dårligere enn vanlig god kvalitet, svikter en forutsetning for hele leveransen. Da utløses forbrukerens rettigheter ved mangel. Det spiller ingen rolle om resultatet umiddelbart «ser greit ut», det avgjørende er at du ikke fikk det du hadde krav på.</p>
+<h3>Dine rettigheter når materialene er for dårlige</h3>
+<ul>
+<li><strong>Retting:</strong> Du kan kreve at feilen utbedres, for eksempel at riktige materialer brukes. Håndverkeren har normalt både rett og plikt til å rette.</li>
+<li><strong>Prisavslag:</strong> Hvis retting ikke skjer eller ikke er mulig, kan du kreve at prisen settes ned, gjerne tilsvarende forskjellen i verdi.</li>
+<li><strong>Erstatning:</strong> Påfører den dårlige kvaliteten deg et økonomisk tap, kan du ha krav på erstatning.</li>
+<li><strong>Holde tilbake betaling:</strong> Du kan holde tilbake nok av betalingen til å sikre kravet ditt mens saken pågår (§ 23), men ikke mer enn nødvendig.</li>
+<li><strong>Heving:</strong> Ved vesentlig svikt kan heving være aktuelt, men det er en sterk reaksjon som krever at mangelen er betydelig.</li>
+</ul>
+<h3>Steg for steg når du oppdager dårligere materialer</h3>
+<ol>
+<li><strong>Dokumenter funnet.</strong> Ta bilder, og noter hva som er brukt kontra hva som var avtalt.</li>
+<li><strong>Finn frem avtalen.</strong> Tilbud, e-post, SMS eller kontrakt som viser hva som skulle brukes.</li>
+<li><strong>Reklamer skriftlig så raskt som mulig.</strong> Beskriv avviket konkret og vis til avtalen eller kravet om vanlig god kvalitet.</li>
+<li><strong>Krev en konkret løsning.</strong> For eksempel: «Jeg krever at riktig gulv legges» eller «Jeg krever prisavslag som tilsvarer forskjellen.»</li>
+<li><strong>Sett en rimelig frist</strong> for tilbakemelding og utbedring.</li>
+<li><strong>Hold tilbake et rimelig beløp</strong> knyttet til mangelen mens dere finner en løsning.</li>
+<li><strong>Betal det ubestridte</strong> for å unngå trøbbel med den delen du faktisk skylder.</li>
+</ol>
+<h3>Eksempler på utfall</h3>
+<p>Eksempel 1: Maler Ingrid brukte en billig innendørsmaling utvendig i stedet for den avtalte utendørsmalingen. Malingen flasser etter én sesong. Du kan kreve at hun maler på nytt med riktig maling for egen regning.</p>
+<p>Eksempel 2: Rørlegger Khalid monterte et billigere blandebatteri enn det avtalte. Forskjellen i pris er 1 500 kroner. Vil han ikke bytte, kan du kreve prisavslag i den størrelsesorden.</p>
+<p>Eksempel 3: Snekker Geir la laminat der det var avtalt eikegulv. Her er forskjellen så stor at retting, altså at riktig gulv faktisk legges, ofte er det naturlige kravet, ikke bare et lite prisavslag.</p>
+<blockquote>
+<p><strong>Vanlig feil:</strong> Å la materialene bygges inn uten å sjekke leveransen mot avtalen først. Når det dårlige gulvet eller den feile malingen først er på plass, blir retting dyrere og diskusjonen tyngre. Bruk et øyeblikk på å kontrollere merke og type før ting festes, legges eller males over.</p>
+</blockquote>
+<h3>Hva hvis håndverkeren nekter?</h3>
+<p>Står håndverkeren på sitt:</p>
+<ul>
+<li><strong>Innhent en uavhengig fagvurdering</strong> som bekrefter avviket, særlig i større saker.</li>
+<li><strong>Kontakt Forbrukerrådet</strong> for veiledning og megling.</li>
+<li><strong>Bring saken inn for en klagenemnd</strong> hvis det finnes en for bransjen.</li>
+<li><strong>Vurder forliksrådet</strong> for å få en avgjørelse i mindre tvister.</li>
+</ul>
+<p>Et viktig poeng: en skriftlig avtale som viser hva som faktisk var bestilt, er ofte det som avgjør saken. Har du en SMS eller et tilbud der det står «eikegulv, merke X», er det vanskelig for håndverkeren å hevde at laminat var godt nok.</p>
+<h3>Hvordan måle prisavslaget?</h3>
+<p>Hvis retting ikke er aktuelt og dere ender på prisavslag, er det naturlige utgangspunktet forskjellen i verdi mellom det du fikk og det du skulle hatt. Ble det brukt et blandebatteri som koster 1 500 kroner mindre enn det avtalte, er det rimelig å ta utgangspunkt i den forskjellen. Ved større avvik, som laminat i stedet for eik, kan forskjellen være langt høyere, både i materialkostnad og i verdien på resultatet. I tvilstilfeller kan det lønne seg å hente inn et pristilbud på hva det ville kostet å gjøre det riktig, slik at du har et konkret tall å forhandle ut fra i stedet for synsing.</p>
+<h3>Pass på «tilsvarende kvalitet»-trikset</h3>
+<p>En vanlig påstand fra håndverkere som har byttet materiale, er at det de brukte er «like bra» eller «tilsvarende kvalitet». Noen ganger stemmer det, men ofte er det en bortforklaring. Når dere har avtalt et bestemt produkt, er det ikke håndverkerens jobb å avgjøre på egen hånd at noe annet er like bra. Har du krav på akkurat det dere avtalte, og et bytte krever din godkjenning på forhånd. Sto du overfor et faktisk valg da byttet skjedde? Nei. Da har du fortsatt en mangel å klage på, selv om det nye produktet teknisk sett ikke er elendig. Avtale er avtale.</p>
+<h3>Hva hvis materialene allerede er bygget inn?</h3>
+<p>Det vanskeligste tilfellet er når de dårlige materialene allerede er gjemt bak fliser, vegger eller gulv. Da blir retting dyr, og bevisbyrden tyngre. Nettopp derfor er forhåndskontroll så viktig. Men selv om materialet er bygget inn, har du fortsatt rettighetene dine i behold, og en uavhengig fagvurdering kan ofte fastslå hva som faktisk er brukt. Oppdager du for eksempel at det er brukt feil type membran først når det begynner å lekke, kan en fagperson dokumentere det, og du kan kreve at det rettes eller få erstatning for skaden.</p>
+<h3>Forebygg fremtidige problemer</h3>
+<ul>
+<li><strong>Skriv ned hvilke materialer som skal brukes,</strong> med merke og type.</li>
+<li><strong>Be om at endringer godkjennes av deg</strong> skriftlig før de gjennomføres.</li>
+<li><strong>Be om kvitteringer</strong> på innkjøpte materialer.</li>
+<li><strong>Sjekk leveransen</strong> mot avtalen før materialene bygges inn.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Bruker håndverkeren dårligere materialer enn avtalt, eller dårligere enn vanlig god kvalitet når ingenting spesielt er avtalt, har du normalt en mangel å klage på, uansett om resultatet ser greit ut ved første øyekast. Da kan du kreve retting, prisavslag eller erstatning, og holde tilbake et rimelig beløp imens (§§ 7 og 23). Dokumenter avviket, finn frem avtalen, reklamer skriftlig med et konkret krav, og betal det ubestridte. Nekter håndverkeren, innhent gjerne en fagvurdering og søk hjelp hos Forbrukerrådet eller en klagenemnd. Best av alt: avtal materialene skriftlig på forhånd og sjekk leveransen før den bygges inn, så unngår du diskusjonen helt.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-betale-handverkeren-for-jobben-er-ferdig/">Bør jeg betale håndverkeren før jobben er ferdig?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-advokat-i-en-handverkertvist/">Bør jeg bruke advokat i en håndverkertvist?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-handverkertvist/">Dekker forsikringen min advokat i en håndverkertvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

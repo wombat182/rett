@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er et prisoverslag? — Rettsregel</title>
+<meta name="description" content="Et prisoverslag er et omtrentlig anslag på hva en jobb vil koste – ikke en bindende pris. Men det er ikke fritt fram for håndverkeren å sprenge anslaget:…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-et-prisoverslag/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er et prisoverslag?">
+<meta property="og:description" content="Et prisoverslag er et omtrentlig anslag på hva en jobb vil koste – ikke en bindende pris. Men det er ikke fritt fram for håndverkeren å sprenge anslaget:…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-et-prisoverslag/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er et prisoverslag?">
+<meta name="twitter:description" content="Et prisoverslag er et omtrentlig anslag på hva en jobb vil koste – ikke en bindende pris. Men det er ikke fritt fram for håndverkeren å sprenge anslaget:…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Forbruk og kjøp</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Forbruk og kjøp</div>
+      <h1 class="article-title">Hva er et prisoverslag?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Et prisoverslag er et omtrentlig anslag på hva en jobb vil koste – ikke en bindende pris. Men det er ikke fritt fram for håndverkeren å sprenge anslaget: den endelige prisen kan ikke overstige overslaget vesentlig, og uansett ikke med mer enn 15 prosent (håndverkertjenesteloven § 32 andre ledd).**</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Et prisoverslag er noe av det vanligste du møter når du henter inn en håndverker. Det høres uforpliktende ut – og det er det også, et stykke på vei. Men loven legger et viktig tak over hvor mye anslaget kan bommes, og det er nettopp dette taket som gjør prisoverslaget verdifullt for deg som forbruker.</p>
+<h3>Et anslag, ikke en fast pris</h3>
+<p>Et prisoverslag er håndverkerens beste gjetning på hva jobben vil koste, basert på det han vet når han gir overslaget. Ordet «overslag» sier det egentlig selv: det er et skjønnsmessig anslag, ikke en garanti. Den faktiske prisen kan derfor bli noe høyere eller lavere enn tallet han nevnte.</p>
+<p>Det skiller seg dermed fra en <strong>fastpris</strong>, som er bindende på kronen, og fra en helt <strong>uforpliktende prisantydning</strong>, som er enda løsere. Prisoverslaget ligger et sted imellom: det er en pekepinn, men med et lovbestemt tak som du kan stole på.</p>
+<h3>Taket: vesentlig pluss 15 prosent</h3>
+<p>Her kommer det viktigste. Selv om overslaget bare er et anslag, sier § 32 andre ledd at den endelige prisen «ikke skal overstige det oppgitte beløp vesentlig, og iallfall ikke med mer enn 15 prosent».</p>
+<p>To grenser, altså:</p>
+<ul>
+<li>Prisen kan ikke bli <strong>vesentlig</strong> høyere enn overslaget.</li>
+<li>Og uansett ikke mer enn <strong>15 prosent</strong> over.</li>
+</ul>
+<p>15 prosent er den absolutte yttergrensen. Ofte vil «vesentlig»-grensen slå inn enda tidligere, men 15 prosent er det maksimale du noen gang må regne med å betale ekstra på et overslag.</p>
+<h3>Et regneeksempel</h3>
+<p>Anne får et prisoverslag fra en snekker på <strong>40 000 kroner</strong> for å bygge en terrasse.</p>
+<ul>
+<li>15 prosent av 40 000 kroner er 6 000 kroner.</li>
+<li>Den endelige regningen kan dermed maksimalt bli <strong>46 000 kroner</strong>.</li>
+</ul>
+<p>Kommer snekkeren og krever 52 000 kroner, har han bommet med 30 prosent – langt over taket. Da kan Anne nekte å betale mer enn 46 000 kroner (med mindre noe av det ekstra skyldes tilleggsarbeid hun selv har bestilt).</p>
+<h3>Hvorfor finnes denne regelen?</h3>
+<p>Høyesterett har slått fast at poenget med et prisoverslag er å gi deg «en pekepinn på hva du må regne med å betale» (HR-2016-761-A). Uten et tak ville et overslag vært verdiløst – håndverkeren kunne anslått lavt for å vinne jobben, og så sendt en mye høyere regning. 15 prosent-taket gjør at du faktisk kan stole på anslaget når du planlegger økonomien din.</p>
+<h3>Et nyttig poeng om tolkning</h3>
+<p>Den samme høyesterettssaken slo også fast at prisopplysninger fra en håndverker til en forbruker som <em>klar hovedregel</em> skal regnes som et prisoverslag. Det betyr at hvis håndverkeren har nevnt et tall, men ikke vært tydelig på om det er fastpris eller bare en løs antydning, lander man ofte på at det var et prisoverslag – med 15 prosent-taket som følger med. Det er gode nyheter for deg.</p>
+<h3>Når kan prisen likevel bli høyere?</h3>
+<p>Taket gjelder ikke ubetinget. To unntak finnes:</p>
+<ol>
+<li><strong>Annen prisgrense er uttrykkelig avtalt.</strong> Dere kan bli enige om et annet slingringsmonn enn 15 prosent – men det må være tydelig og uttrykkelig avtalt, ikke noe håndverkeren slenger inn i ettertid.</li>
+<li><strong>Tilleggsarbeid du har bestilt (§ 33).</strong> Ber du om ekstra arbeid underveis, eller dukker det opp nødvendig tilleggsarbeid du blir varslet om, kan det komme i tillegg til taket.</li>
+</ol>
+<h3>Et lite tips om bevis</h3>
+<p>Blir det uenighet om hvorvidt en pris var et bindende beløp, et tak, et prisoverslag eller bare en løs antydning, er det håndverkeren som må bevise hva som faktisk ble sagt (§ 32 tredje ledd). Be derfor alltid om overslaget skriftlig – det gjør det enkelt å vise hva som ble lovet, og fjerner mye av rommet for diskusjon.</p>
+<h3>Slik bruker du et prisoverslag smart</h3>
+<ol>
+<li>Be om overslaget skriftlig, med mva. inkludert.</li>
+<li>Regn ut taket med en gang: overslag + 15 prosent.</li>
+<li>Avtal tydelig hva som er inkludert, så du vet hva «tilleggsarbeid» er.</li>
+<li>Be om beskjed med en gang prisen ser ut til å nærme seg eller sprenge overslaget.</li>
+</ol>
+<h3>Hva er forskjellen på et overslag og en prisantydning?</h3>
+<p>Et <strong>prisoverslag</strong> har det lovbestemte 15 prosent-taket. En <strong>uforpliktende prisantydning</strong> er enda løsere – en helt grov pekepinn som ikke binder håndverkeren på samme måte. I praksis er det ikke alltid lett å si hva som er hva, men her hjelper loven deg: ved tvil er det håndverkeren som må bevise hva slags prisangivelse det var (§ 32 tredje ledd), og uklare prisopplysninger til en forbruker regnes som hovedregel som et prisoverslag. Det betyr at du som regel kan lene deg på 15 prosent-taket selv om håndverkeren i ettertid hevder at «det bare var en antydning».</p>
+<h3>Et eksempel på hvorfor det skriftlige er gull</h3>
+<p>Thomas fikk muntlig beskjed om at en malerjobb «nok ville lande på rundt 30 000 kroner». Da regningen kom på 45 000, hevdet maleren at dette bare var løs prat, ikke et overslag. Fordi Thomas ikke hadde noe skriftlig, ble det ord mot ord. Hadde han bedt om en kort e-post som bekreftet overslaget på 30 000 kroner, ville taket vært klart: 34 500 kroner. Lærdommen er enkel – be alltid om en skriftlig bekreftelse, om så bare en SMS.</p>
+<h3>Et nyttig tankekors</h3>
+<p>Tenk på prisoverslaget som en værmelding med en garanti: meldingen kan bomme litt, men aldri med mer enn en fastsatt margin. Akkurat som du planlegger dagen etter værmeldingen, kan du planlegge økonomien etter overslaget – så lenge du husker at det øvre taket er overslaget pluss 15 prosent. Det er denne forutsigbarheten som gjør overslaget til et nyttig verktøy, og ikke bare løs prat.</p>
+<h3>Kort oppsummert</h3>
+<p>Et prisoverslag er et omtrentlig anslag på kostnaden, ikke en bindende pris. Men den endelige regningen kan ikke overstige overslaget vesentlig, og maksimalt med 15 prosent (§ 32 andre ledd). For et overslag på 40 000 kroner betyr det et tak på 46 000 kroner. Be alltid om overslaget skriftlig, regn ut taket selv, og husk at uklare prisopplysninger som hovedregel tolkes som nettopp et prisoverslag.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-be-om-prisoverslag-eller-fastpris/">Bør jeg be om prisoverslag eller fastpris?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ha-en-sluttbefaring/">Bør jeg ha en sluttbefaring?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-innhente-en-takst-eller-sakkyndig-vurdering/">Bør jeg innhente en takst eller sakkyndig vurdering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
