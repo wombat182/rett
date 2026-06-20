@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan løser vi en aksjonærkonflikt? — Rettsregel</title>
+<meta name="description" content="Kort sagt: begynn alltid med den mildeste løsningen og trapp opp bare hvis det ikke nytter.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-loser-vi-en-aksjonaerkonflikt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan løser vi en aksjonærkonflikt?">
+<meta property="og:description" content="Kort sagt: begynn alltid med den mildeste løsningen og trapp opp bare hvis det ikke nytter.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-loser-vi-en-aksjonaerkonflikt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan løser vi en aksjonærkonflikt?">
+<meta name="twitter:description" content="Kort sagt: begynn alltid med den mildeste løsningen og trapp opp bare hvis det ikke nytter.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hvordan løser vi en aksjonærkonflikt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: begynn alltid med den mildeste løsningen og trapp opp bare hvis det ikke nytter. En aksjonærkonflikt kan løses gjennom dialog, gjennom reglene i en aksjonæravtale, gjennom mekling, gjennom at en eier kjøpes ut eller selv går ut (innløsning og utløsning etter aksjeloven §§ 4-24 og 4-25), og i aller verste fall ved at selskapet oppløses (§ 16-19). Jo lenger ned i denne trappen dere går, j</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Kort sagt: begynn alltid med den mildeste løsningen og trapp opp bare hvis det ikke nytter. En aksjonærkonflikt kan løses gjennom dialog, gjennom reglene i en aksjonæravtale, gjennom mekling, gjennom at en eier kjøpes ut eller selv går ut (innløsning og utløsning etter aksjeloven §§ 4-24 og 4-25), og i aller verste fall ved at selskapet oppløses (§ 16-19). Jo lenger ned i denne trappen dere går, jo dyrere og mer smertefullt blir det – så målet er å stoppe så høyt oppe som mulig.</p>
+<h3>Først: hva slags konflikt er det egentlig?</h3>
+<p>Det hjelper å være ærlig om kjernen. Handler det om penger og utbytte? Om hvem som skal bestemme? Om at den ene jobber gratis mens den andre tar ut lønn? Eller om at to mennesker rett og slett ikke tåler hverandre lenger? Diagnosen avgjør medisinen. Ta et eksempel: i "Snekkergutta AS" eier brødrene Tom og Even halvparten hver. Tom jobber 60 timer i uka i firmaet, mens Even sluttet å bidra for to år siden, men vil fortsatt ha halve utbyttet. Det er en konflikt om bidrag og fordeling – ikke om strategi.</p>
+<h3>Trinn 1: Snakk sammen (og skriv ned)</h3>
+<p>De aller fleste konflikter kan løses rundt et bord. Sett opp et formelt møte, gjerne med en nøytral tredjeperson til stede, og skriv referat. Mange konflikter eskalerer bare fordi ingen har sagt høyt hva de faktisk ønsker. Kanskje Even faktisk ville solgt seg ut hvis noen spurte pent.</p>
+<h3>Trinn 2: Sjekk aksjonæravtalen</h3>
+<p>Har dere en aksjonæravtale? Da kan svaret allerede stå der. Avtalen kan inneholde regler om forkjøpsrett, om hvordan en eier kan kjøpes ut, om en shotgun-klausul, eller om at uenigheter skal avgjøres ved voldgift. Les den nøye. Har dere ingen avtale, lærer dere nå hvorfor den burde vært på plass.</p>
+<h3>Trinn 3: Mekling</h3>
+<p>Hvis samtalene stopper opp, kan en profesjonell mekler hjelpe. En mekler bestemmer ikke utfallet, men hjelper dere å finne en løsning dere begge kan leve med. Dette er langt billigere og raskere enn en rettssak, og det bevarer ofte forholdet. Mange advokatfirmaer og bransjeorganisasjoner tilbyr mekling.</p>
+<h3>Trinn 4: Utkjøp – innløsning og utløsning</h3>
+<p>Lar konflikten seg ikke løse, er ofte den reneste utgangen at den ene eieren forsvinner ut mot betaling. Aksjeloven har to viktige redskaper her:</p>
+<ul>
+<li><strong>Utløsning (§ 4-24):</strong> En aksjonær kan kreve seg utløst – altså kjøpt ut – av selskapet ved dom i alvorlige tilfeller. Det gjelder for eksempel hvis et styremedlem eller andre eiere har handlet i strid med visse regler, hvis en eier er blitt utestengt fra ledelsen eller forfordelt på en urimelig måte, eller hvis det er et "varig og alvorlig motsetningsforhold" mellom eieren og resten av selskapet. Da kan en domstol bestemme at selskapet skal kjøpe ut den aktuelle eieren.</li>
+<li><strong>Innløsning (§ 4-25):</strong> Speilbildet. Her kan selskapet kreve å innløse – altså tvinge ut – en aksjonær, blant annet hvis eieren har misbrukt sin posisjon eller det foreligger tungtveiende grunner. Også dette avgjøres av domstol hvis partene ikke blir enige.</li>
+</ul>
+<p>I eksempelet med Tom og Even kan altså Even, hvis han føler seg presset ut, kreve seg utløst etter § 4-24 – eller selskapet kan i visse tilfeller kreve ham innløst etter § 4-25. Begge veier gir en utgang der den ene parten betales for aksjene og forholdet avsluttes.</p>
+<h3>Trinn 5: Oppløsning (siste utvei)</h3>
+<p>Klarer dere ingenting av det over, finnes en nødbrems. Etter § 16-19 kan en aksjonær gå til domstolen og kreve at selskapet oppløses dersom en eier, et styremedlem eller andre har misbrukt sin innflytelse i selskapet på en grov måte. Dette er en sterk reaksjon, og domstolen krever at det er begått et reelt misbruk og at oppløsning er en rimelig løsning. Dette er det dyreste og mest ødeleggende sporet, og bør være siste utvei.</p>
+<h3>To eksempler på ulike konflikter og løsninger</h3>
+<p><strong>Konflikt om utbytte:</strong> I "Café Hjørnet AS" eier Sofie 70 prosent og Markus 30 prosent. Sofie nekter å ta ut utbytte og pløyer alt tilbake i selskapet, mens Markus trenger avkastning på pengene sine. Markus føler seg forfordelt. Her er løsningen sjelden oppløsning – det er en sak for dialog og eventuelt en avtale om en utbyttepolitikk. I grovere tilfeller, der majoriteten systematisk sulter ut minoriteten, kan Markus vurdere utløsning etter § 4-24.</p>
+<p><strong>Konflikt om tillit:</strong> I "Elektro Sør AS" oppdager den ene eieren at den andre har brukt firmakortet til private innkjøp og ført opp falske utgifter. Dette er ikke lenger en uenighet – det er mulig mislighold og kanskje straffbart. Her er sporet et helt annet: dokumentér alt, koble inn revisor og advokat, og vurder både utløsning/innløsning og i grove tilfeller oppløsning etter § 16-19.</p>
+<h3>Praktiske råd underveis</h3>
+<ol>
+<li><strong>Hold styret og generalforsamlingen ryddig.</strong> Følg de formelle reglene for innkalling og protokoll selv om dere krangler. Slurv her gir motparten ammunisjon.</li>
+<li><strong>Ikke ta penger ut "i smug".</strong> Å forsyne seg av selskapskassa eller la egne regninger gå over firmaet er nettopp den typen misbruk som kan utløse §§ 4-24, 4-25 eller 16-19.</li>
+<li><strong>Få verdivurdering tidlig.</strong> Mye av kranglingen handler til slutt om hva aksjene er verdt. En uavhengig verdivurdering tar luften ut av mange diskusjoner.</li>
+<li><strong>Søk juridisk hjelp før det låser seg helt.</strong> En advokat tidlig i prosessen er billigere enn en rettssak sent.</li>
+<li><strong>Skill sak og person.</strong> Det er lett å la gammel uvennskap farge forretningsavgjørelser. Prøv å holde fokus på hva som tjener selskapet og eierne økonomisk.</li>
+</ol>
+<h3>Hvor lang tid tar det?</h3>
+<p>Det avhenger helt av hvilket trinn dere havner på. En løsning rundt bordet kan komme på plass i løpet av noen uker. Mekling tar gjerne noen måneder. En sak om utløsning eller innløsning som havner i retten, kan ta ett til to år og koste betydelige beløp i advokathonorar. Oppløsning ved dom er det lengste og dyreste sporet. Dette er nettopp grunnen til at det lønner seg å løse konflikten så tidlig som mulig: tid og penger spart er reell verdi for begge parter.</p>
+<h3>Kort oppsummert</h3>
+<p>Løs aksjonærkonflikter etter en trapp fra mildt til hardt: snakk sammen, bruk aksjonæravtalen, prøv mekling, og hvis det ikke nytter, la den ene kjøpes ut (§ 4-24) eller tvinges ut (§ 4-25). Aller siste utvei er oppløsning av selskapet ved misbruk (§ 16-19). Jo tidligere dere griper inn og jo høyere oppe i trappen dere stopper, jo billigere og mindre smertefullt blir det.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

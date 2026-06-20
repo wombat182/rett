@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er alminnelig inntekt? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Alminnelig inntekt er et samlebegrep for nesten alle inntektene dine minus fradragene dine – altså "nettoinntekten" som skatten regnes ut fra.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-alminnelig-inntekt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er alminnelig inntekt?">
+<meta property="og:description" content="Kort sagt: Alminnelig inntekt er et samlebegrep for nesten alle inntektene dine minus fradragene dine – altså "nettoinntekten" som skatten regnes ut fra.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-alminnelig-inntekt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er alminnelig inntekt?">
+<meta name="twitter:description" content="Kort sagt: Alminnelig inntekt er et samlebegrep for nesten alle inntektene dine minus fradragene dine – altså "nettoinntekten" som skatten regnes ut fra.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er alminnelig inntekt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Alminnelig inntekt er et samlebegrep for nesten alle inntektene dine minus fradragene dine – altså "nettoinntekten" som skatten regnes ut fra. For inntektsåret 2025 skattlegges alminnelig inntekt med en sats på 22 prosent. Dette er en av de mest grunnleggende byggesteinene i hele skattesystemet.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Kort sagt: Alminnelig inntekt er et samlebegrep for nesten alle inntektene dine minus fradragene dine – altså "nettoinntekten" som skatten regnes ut fra. For inntektsåret 2025 skattlegges alminnelig inntekt med en sats på <strong>22 prosent</strong>. Dette er en av de mest grunnleggende byggesteinene i hele skattesystemet.</p>
+<h3>Hva betyr "alminnelig inntekt"?</h3>
+<p>Begrepet høres teknisk ut, men ideen er enkel. Alminnelig inntekt er summen av alle skattepliktige inntekter du har hatt – lønn, pensjon, renteinntekter, utleieinntekter, gevinster og så videre – etter at du har trukket fra de fradragene du har krav på, som minstefradrag, rentefradrag og andre fradrag.</p>
+<p>Tenk på det som et regnestykke:</p>
+<p><strong>Alle inntekter − alle fradrag = alminnelig inntekt</strong></p>
+<p>Det er denne nettosummen som danner grunnlaget for en stor del av skatten din.</p>
+<p><strong>Eksempel – Kari, 40 år:</strong> Kari hadde 600 000 kroner i lønn. Hun hadde minstefradrag og rentefradrag på til sammen 130 000 kroner. Hennes alminnelige inntekt ble da 470 000 kroner. Det er dette tallet skatten på alminnelig inntekt regnes av.</p>
+<h3>Hva er skattesatsen?</h3>
+<p>For inntektsåret 2025 er skattesatsen på alminnelig inntekt <strong>22 prosent</strong>. Det betyr at av hver hundrelapp i alminnelig inntekt går 22 kroner til skatt på dette grunnlaget.</p>
+<p>Denne satsen på 22 prosent er satt sammen av flere deler – blant annet skatt til staten (fellesskatt) og skatt til kommune og fylke – men for deg som privatperson er det summen, 22 prosent, som er det praktiske å forholde seg til.</p>
+<blockquote>
+<p><strong>Trygt å vite:</strong> Skatten på alminnelig inntekt er bare én del av den totale skatten din. På toppen kommer blant annet trinnskatt på lønn og trygdeavgift. Derfor kan den samlede skatteprosenten din være høyere enn 22 prosent.</p>
+</blockquote>
+<h3>Alminnelig inntekt er ikke det samme som "personinntekt"</h3>
+<p>Her er en vanlig forveksling. Det er nyttig å skille mellom to begreper:</p>
+<ul>
+<li><strong>Alminnelig inntekt:</strong> Alle inntekter minus fradrag (nettogrunnlaget for 22-prosentskatten).</li>
+<li><strong>Personinntekt:</strong> Brutto lønn, pensjon og næringsinntekt, uten fradrag. Denne brukes til å regne ut trinnskatt og trygdeavgift.</li>
+</ul>
+<p><strong>Eksempel – Ahmed, 50 år:</strong> Ahmeds bruttolønn (personinntekt) var 700 000 kroner. Etter fradrag ble den alminnelige inntekten lavere. Trinnskatten ble beregnet av bruttolønnen, mens 22-prosentskatten ble beregnet av den alminnelige inntekten. To forskjellige grunnlag, to forskjellige formål.</p>
+<h3>Hva inngår i alminnelig inntekt?</h3>
+<p>Inntektssiden inkluderer typisk:</p>
+<ul>
+<li>Lønn og honorarer.</li>
+<li>Pensjon og uføretrygd.</li>
+<li>Renteinntekter på bankinnskudd.</li>
+<li>Utleieinntekter (i den grad de er skattepliktige).</li>
+<li>Gevinster ved salg av for eksempel aksjer eller bolig (når de er skattepliktige).</li>
+</ul>
+<p>Fradragssiden inkluderer typisk:</p>
+<ul>
+<li>Minstefradrag (et standardfradrag de fleste lønnstakere og pensjonister får automatisk).</li>
+<li>Renteutgifter på lån.</li>
+<li>Reisefradrag, foreldrefradrag og andre fradrag du har krav på.</li>
+</ul>
+<h3>Slik kan du tenke rundt din egen alminnelige inntekt</h3>
+<ol>
+<li>Summér alle skattepliktige inntekter for året.</li>
+<li>Trekk fra alle fradrag du har krav på.</li>
+<li>Resultatet er din alminnelige inntekt.</li>
+<li>Skatten på dette grunnlaget er normalt 22 prosent (for inntektsåret 2025).</li>
+</ol>
+<p><strong>Eksempel – Solveig, pensjonist:</strong> Solveig fikk 350 000 kroner i pensjon og hadde 9 000 kroner i renteinntekter. Etter minstefradrag og et lite rentefradrag ble den alminnelige inntekten lavere enn bruttobeløpet. På dette nettogrunnlaget ble 22-prosentsatsen brukt.</p>
+<h3>Hva er minstefradraget – kort forklart?</h3>
+<p>Minstefradraget er et standardfradrag de fleste lønnstakere og pensjonister får automatisk i den alminnelige inntekten. Tanken er at du har visse utgifter knyttet til å ha en jobb eller pensjon, og i stedet for at du må dokumentere alt, får du et fast fradrag. Det trekkes fra inntekten din før den alminnelige inntekten regnes ut, og det er fylt inn automatisk i skattemeldingen. Selve beløpet og satsene for minstefradraget fastsettes hvert år, så sjekk gjeldende nivå på skatteetaten.no.</p>
+<p><strong>Eksempel – Erlend, 34 år:</strong> Erlend hadde 550 000 kroner i lønn. Minstefradraget ble trukket fra automatisk, sammen med rentefradraget på boliglånet. Summen av fradragene reduserte den alminnelige inntekten hans, og dermed ble skatten på dette grunnlaget lavere enn om han hadde blitt skattlagt av hele bruttolønnen.</p>
+<h3>Hvorfor er dette nyttig å forstå?</h3>
+<p>Når du forstår alminnelig inntekt, forstår du også hvorfor fradrag er verdt så mye. Hvert fradrag reduserer den alminnelige inntekten din, og dermed reduseres skatten med 22 prosent av fradragsbeløpet (for inntektsåret 2025). Et fradrag på 10 000 kroner gir altså normalt 2 200 kroner lavere skatt. Det er en god grunn til å sjekke at du har fått med alle fradragene dine.</p>
+<blockquote>
+<p><strong>Viktig:</strong> Skattesatser endres jevnlig i statsbudsjettet. Satsen på 22 prosent har vært stabil de siste årene, men du bør alltid bekrefte gjeldende sats for ditt inntektsår på skatteetaten.no.</p>
+</blockquote>
+<h3>Gjelder 22 prosent for alle typer inntekt?</h3>
+<p>Stort sett ja, men det finnes spesialregler for enkelte inntekter. For eksempel justeres gevinst og utbytte på aksjer opp med en egen faktor før de skattlegges, slik at den effektive skatten på aksjeinntekt blir høyere enn 22 prosent. Dette er en teknisk regel, men poenget for deg som privatperson er: de fleste vanlige inntekter inngår i alminnelig inntekt og skattlegges med 22 prosent, mens enkelte kapitalinntekter har sine egne regler.</p>
+<p><strong>Eksempel – Petter, 45 år:</strong> Petter fikk utbytte på aksjer. Beløpet ble oppjustert med en fastsatt faktor før skatten ble beregnet, slik at den reelle skatten på utbyttet ble høyere enn 22 prosent. For lønnen og renteinntektene hans gjaldt derimot den vanlige 22-prosentsatsen.</p>
+<h3>Hvorfor heter det "alminnelig"?</h3>
+<p>Ordet "alminnelig" betyr rett og slett "vanlig" eller "generell". Det er den brede, generelle inntekten din – i motsetning til mer spesifikke grunnlag som personinntekt. Navnet understreker at dette er hovedgrunnlaget som de fleste inntekter og fradrag samles i.</p>
+<blockquote>
+<p><strong>Trygt å vite:</strong> Du trenger ikke regne ut alminnelig inntekt for hånd. Skattemeldingen og skatteoppgjøret gjør regnestykket for deg. Men når du forstår begrepet, blir det mye lettere å lese og kontrollere tallene dine.</p>
+</blockquote>
+<h3>Kort oppsummert</h3>
+<p>Alminnelig inntekt er nettoinntekten din – alle skattepliktige inntekter minus alle fradrag – og er grunnlaget for en sentral del av skatten. For inntektsåret 2025 er satsen 22 prosent. Begrepet må ikke forveksles med personinntekt, som brukes til trinnskatt og trygdeavgift. Å forstå alminnelig inntekt hjelper deg å se hvorfor fradrag er verdifulle: hvert fradrag senker grunnlaget og dermed skatten. Satser kan endres i statsbudsjettet, så sjekk alltid det som gjelder ditt inntektsår på skatteetaten.no.</p>
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

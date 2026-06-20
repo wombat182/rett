@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Er diett og reisegodtgjørelse skattefritt? — Rettsregel</title>
+<meta name="description" content="Delvis.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Er diett og reisegodtgjørelse skattefritt?">
+<meta property="og:description" content="Delvis.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Er diett og reisegodtgjørelse skattefritt?">
+<meta name="twitter:description" content="Delvis.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Er diett og reisegodtgjørelse skattefritt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Delvis. Diett (kostgodtgjørelse) og reisegodtgjørelse kan utbetales skattefritt opp til faste satser fastsatt av myndighetene – men bare så lenge utbetalingen holder seg innenfor disse satsene og vilkårene er oppfylt. Får du mer enn satsen, blir det overskytende skattepliktig som lønn. Det er altså ikke automatisk skattefritt, men det kan være det.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Delvis. Diett (kostgodtgjørelse) og reisegodtgjørelse kan utbetales <strong>skattefritt</strong> opp til faste satser fastsatt av myndighetene – men bare så lenge utbetalingen holder seg innenfor disse satsene og vilkårene er oppfylt. Får du mer enn satsen, blir det overskytende skattepliktig som lønn. Det er altså ikke automatisk skattefritt, men det kan være det.</p>
+<h3>Forskjellen på diett og reisegodtgjørelse</h3>
+<ul>
+<li><strong>Diett (kostgodtgjørelse):</strong> Skal dekke utgifter til mat når du er på reise for jobben. Beregnes ofte per døgn.</li>
+<li><strong>Reisegodtgjørelse / kjøregodtgjørelse:</strong> Dekker reiseutgifter, for eksempel kilometergodtgjørelse når du bruker egen bil i jobben.</li>
+</ul>
+<p>Begge kan utbetales trekkfritt og skattefritt opp til Skattedirektoratets satser. Disse satsene står i den såkalte "satsforskriften" og oppdateres jevnlig.</p>
+<h3>Skattefrie diettsatser for 2026</h3>
+<p>De mest brukte satsene for 2026 er for eksempel:</p>
+<ul>
+<li><strong>693 kroner per døgn</strong> ved overnatting på hotell.</li>
+<li><strong>400 kroner per døgn</strong> ved overnatting på pensjonat, brakke eller hybel uten kokemulighet.</li>
+<li><strong>107 kroner per døgn</strong> ved overnatting på hybel med kokemulighet eller privat overnatting.</li>
+</ul>
+<p>For dagsreiser uten overnatting kan det utbetales skattefri dagdiett etter egne satser, forutsatt at reisen er lang nok (over 15 km fra fast arbeidssted) og varer mer enn seks timer.</p>
+<h3>Måltidstrekk: trekk fra for måltider du allerede har fått</h3>
+<p>Får du noen måltider dekket – for eksempel frokost inkludert på hotellet – skal diettsatsen reduseres. Fra 1. januar 2026 er trekket:</p>
+<ul>
+<li><strong>Frokost:</strong> 20 prosent av satsen.</li>
+<li><strong>Lunsj:</strong> 30 prosent av satsen.</li>
+<li><strong>Middag:</strong> 50 prosent av satsen.</li>
+</ul>
+<p>Logikken er at du ikke skal få skattefri dekning for et måltid du allerede har fått gratis.</p>
+<h3>Regneeksempel: Tone på hotelltur med frokost inkludert</h3>
+<p>Tone er på jobbreise ett døgn, bor på hotell og har frokost inkludert i romprisen.</p>
+<ul>
+<li>Utgangssats: 693 kroner.</li>
+<li>Frokosttrekk: 20 prosent av 693 = 138,60 kroner.</li>
+<li>Skattefri diett: 693 − 138,60 = <strong>554,40 kroner</strong> for døgnet.</li>
+</ul>
+<p>Hadde arbeidsgiver utbetalt hele 693 kroner uten å trekke for frokosten, ville differansen (rundt 138 kroner) kunne bli skattepliktig.</p>
+<h3>Regneeksempel: alle måltider dekket</h3>
+<p>Henrik er på et kurs der hotellet serverer frokost, lunsj og middag.</p>
+<ul>
+<li>Utgangssats: 693 kroner.</li>
+<li>Frokost (20 %): 138,60 kroner.</li>
+<li>Lunsj (30 %): 207,90 kroner.</li>
+<li>Middag (50 %): 346,50 kroner.</li>
+<li>Sum trekk: 693 kroner – altså hele satsen.</li>
+</ul>
+<p>For Henrik blir det dermed ingen skattefri diett igjen for det døgnet, fordi alle måltidene var dekket. Får han likevel utbetalt diett, blir den skattepliktig.</p>
+<h3>Når blir det skattepliktig?</h3>
+<p>Det blir skatt på det som overstiger de skattefrie satsene, eller hvis vilkårene ikke er oppfylt. Eksempler:</p>
+<ul>
+<li>Arbeidsgiver betaler 900 kroner i diett der den skattefrie satsen er 693 kroner. Da er differansen på 207 kroner skattepliktig.</li>
+<li>Reisen er for kort (under tidskravet eller avstandskravet), slik at godtgjørelsen ikke kan utbetales skattefritt.</li>
+<li>Du får diett for en reise som egentlig er din vanlige arbeidsvei.</li>
+</ul>
+<h3>Kjøregodtgjørelse – egen sats</h3>
+<p>Bruker du egen bil i jobben, kan du få kilometergodtgjørelse. Det finnes en skattefri sats per kilometer; utbetaler arbeidsgiver mer enn dette, blir det overskytende skattepliktig. Statens reiseregulativ har ofte en høyere "avtalt" sats enn den skattefrie – da er differansen mellom det du får og den skattefrie satsen skattepliktig. Sjekk årets kilometersats på skatteetaten.no.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Ta vare på reisedokumentasjonen.</strong> Reiseregning med dato, klokkeslett, formål og sted er nødvendig for skattefri behandling.</li>
+<li><strong>Sjekk om måltider er dekket.</strong> Husk at inkludert frokost, lunsj eller middag skal trekkes fra dietten.</li>
+<li><strong>Se på lønnsslippen.</strong> Trekkfri godtgjørelse skal være tydelig merket. Beløp over satsene skal være beskattet.</li>
+<li><strong>Ikke anta at "alt er skattefritt".</strong> Det er bare delen innenfor satsene og vilkårene som er skattefri.</li>
+<li><strong>Skill mellom statens satser og skattefrie satser.</strong> De er ikke alltid like – differansen kan være skattepliktig selv om du følger reiseregulativet.</li>
+</ol>
+<h3>Regneeksempel: dagsreise uten overnatting</h3>
+<p>Camilla reiser på et oppdrag som varer i syv timer, til et sted 40 km fra arbeidsstedet. Reisen oppfyller kravene (over seks timer og mer enn 15 km), så hun kan få skattefri dagdiett etter satsen for dagsreiser. Fikk hun servert lunsj underveis, skal lunsjtrekket (30 prosent av satsen) gå til fratrekk. Hadde reisen derimot bare vart i fire timer, ville hun ikke hatt rett til skattefri dagdiett i det hele tatt – da måtte en eventuell utbetaling vært beskattet som lønn. Tidskravet og avstandskravet er altså helt avgjørende for om dagdietten blir skattefri.</p>
+<h3>Pendler eller yrkesreise?</h3>
+<p>Det er forskjell på en yrkesreise (reise i jobben) og det å pendle (reise mellom hjem og fast arbeidssted). Diettsatsene og reglene over gjelder yrkesreiser. Er du pendler som bor borte fra hjemmet på grunn av jobb, finnes det egne regler for kost og losji, og disse er ikke alltid de samme som for korte yrkesreiser. Blander du sammen disse, kan du enten gå glipp av fradrag eller få skatt du ikke regnet med. Sjekk hvilken kategori din situasjon faller inn under på skatteetaten.no.</p>
+<h3>Vanlige feil som gir skatt</h3>
+<p>Mange opplever uventet skatt på diett fordi en av disse fellene slo til:</p>
+<ul>
+<li><strong>Glemt måltidstrekk:</strong> Frokost var inkludert på hotellet, men det ble ikke trukket fra. Differansen blir skattepliktig.</li>
+<li><strong>For kort reise:</strong> Dagdiett ble utbetalt for en reise på under seks timer eller kortere enn avstandskravet.</li>
+<li><strong>Manglende dokumentasjon:</strong> Uten en ordentlig reiseregning med tider og formål kan hele godtgjørelsen bli skattepliktig.</li>
+<li><strong>Utbetaling over sats:</strong> Arbeidsgiver fulgte en høyere intern sats enn den skattefrie, og differansen ble ikke beskattet løpende.</li>
+</ul>
+<h3>Slik fyller du ut en korrekt reiseregning</h3>
+<ol>
+<li>Noter avreise- og hjemkomsttidspunkt (dato og klokkeslett).</li>
+<li>Skriv formålet med reisen og hvor du var.</li>
+<li>Kryss av for hvilke måltider som var dekket (frokost, lunsj, middag).</li>
+<li>Oppgi overnattingsform (hotell, pensjonat, privat).</li>
+<li>Legg ved kvitteringer der det kreves.</li>
+</ol>
+<p>En ryddig reiseregning er din beste forsikring mot at godtgjørelsen blir skattlagt unødvendig. Det gjør også jobben enklere for lønningskontoret.</p>
+<p>Satsene endres hvert år, og reglene for diett ble blant annet endret fra 2026. Tallene her gjelder 2026 – verifiser alltid for ditt år på <strong>skatteetaten.no</strong>.</p>
+<h3>Kort oppsummert</h3>
+<p>Diett og reisegodtgjørelse kan utbetales skattefritt opp til faste satser, men er ikke automatisk skattefritt. For 2026 er for eksempel hotelldiett 693 kroner per døgn, med måltidstrekk for inkluderte måltider (frokost 20 prosent, lunsj 30 prosent, middag 50 prosent). Beløp over satsene, eller godtgjørelse som ikke oppfyller vilkårene, blir skattepliktig. Ta vare på reisedokumentasjon, skill mellom statens og de skattefrie satsene, og sjekk alltid årets satser på skatteetaten.no.</p>
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-en-aksjonaeravtale-juridisk-bindende/">Er en aksjonæravtale juridisk bindende?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

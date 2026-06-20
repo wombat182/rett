@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg skatte av inntekt fra enkeltpersonforetak? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-inntekt-fra-enkeltpersonforetak/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg skatte av inntekt fra enkeltpersonforetak?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-inntekt-fra-enkeltpersonforetak/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg skatte av inntekt fra enkeltpersonforetak?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Må jeg skatte av inntekt fra enkeltpersonforetak?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Hvis du driver et enkeltpersonforetak (ENK) og foretaket går med overskudd, skal du skatte av det. Men – og dette er viktig – det er du som privatperson som betaler skatten, ikke foretaket. Et ENK er nemlig ikke et eget «skattesubjekt». Det betyr at overskuddet ditt legges sammen med den andre inntekten din og beskattes hos deg.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Hvis du driver et enkeltpersonforetak (ENK) og foretaket går med overskudd, skal du skatte av det. Men – og dette er viktig – det er <em>du som privatperson</em> som betaler skatten, ikke foretaket. Et ENK er nemlig ikke et eget «skattesubjekt». Det betyr at overskuddet ditt legges sammen med den andre inntekten din og beskattes hos deg.</p>
+<h3>Hvorfor ENK ikke betaler skatt «selv»</h3>
+<p>Mange tror at et enkeltpersonforetak fungerer som et aksjeselskap, der selskapet betaler sin egen skatt. Slik er det ikke. Et ENK er rett og slett <em>deg</em> som driver virksomhet. Juridisk og skattemessig er du og foretaket samme person.</p>
+<p>Tenk på Mariam, som driver et lite enkeltpersonforetak der hun selger hjemmesydde barneklær. Når hun tjener penger på dette, er det Mariam selv som tjener pengene – ikke en egen «bedrift» med egen lommebok. Derfor skal overskuddet inn i hennes egen skattemelding.</p>
+<h3>Hva er «overskudd»?</h3>
+<p>Overskudd betyr inntektene dine minus de kostnadene du har hatt for å skape inntektene. Det er kun overskuddet du skatter av – ikke hele omsetningen.</p>
+<p>Et enkelt regneeksempel for Mariam i 2026:</p>
+<ul>
+<li>Solgte barneklær for: 180 000 kr</li>
+<li>Stoff, garn og materialer: 40 000 kr</li>
+<li>Symaskin og utstyr (avskrevet del): 8 000 kr</li>
+<li>Markedsføring og nettside: 6 000 kr</li>
+<li><strong>Overskudd: 126 000 kr</strong></li>
+</ul>
+<p>Det er disse 126 000 kronene som beskattes – ikke de 180 000.</p>
+<h3>To skatter på samme overskudd</h3>
+<p>Når du har et ENK med overskudd, beskattes overskuddet på to måter samtidig:</p>
+<ol>
+<li><strong>Alminnelig inntekt:</strong> Overskuddet inngår i «alminnelig inntekt», som skattlegges med 22 prosent i 2026. Dette er den samme satsen som gjelder lønn, renteinntekter og lignende.</li>
+<li><strong>Personinntekt med trygdeavgift og trinnskatt:</strong> I tillegg beregnes en «personinntekt» av næringen din. Av denne betaler du trygdeavgift (10,8 prosent for næringsinntekt i 2026) og eventuelt trinnskatt hvis inntekten er høy nok.</li>
+</ol>
+<p>At trygdeavgiften er høyere for næringsdrivende (10,8 prosent) enn for vanlige lønnsmottakere (7,6 prosent i 2026) henger sammen med at du som selvstendig ikke har en arbeidsgiver som betaler arbeidsgiveravgift for deg.</p>
+<h3>Et helhetlig regneeksempel</h3>
+<p>La oss si at Mariam <em>kun</em> har inntekt fra foretaket sitt, altså 126 000 kr i overskudd, og ingen annen jobb. Forenklet (vi ser bort fra personfradrag og minstefradrag for å vise prinsippet):</p>
+<ul>
+<li>22 % skatt på alminnelig inntekt: ca. 27 720 kr</li>
+<li>Trygdeavgift 10,8 % av personinntekten: ca. 13 608 kr</li>
+<li>Trinnskatt: 126 000 kr er under første trinngrense (226 100 kr i 2026), så her blir trinnskatten 0 kr</li>
+</ul>
+<p>I praksis trekkes personfradraget (114 540 kr i 2026) fra før skatten på alminnelig inntekt beregnes, slik at den faktiske skatten blir lavere enn i det forenklede eksempelet. Poenget er å vise at det er flere lag av skatt på næringsinntekt.</p>
+<h3>Hva med forskuddsskatt?</h3>
+<p>Som lønnsmottaker trekkes skatten automatisk fra lønnen din. Som selvstendig må du selv sørge for å betale inn skatten – det skjer gjennom <strong>forskuddsskatt</strong>. Skatteetaten setter opp et anslag basert på det du forventer å tjene, og du betaler vanligvis i fire terminer i løpet av året.</p>
+<p>Steg for steg:</p>
+<ol>
+<li>Logg inn på skatteetaten.no og søk om forskuddsskatt når du starter foretaket.</li>
+<li>Anslå forventet overskudd så realistisk du klarer.</li>
+<li>Betal de fire terminene (mars, juni, september og desember).</li>
+<li>Endre anslaget underveis hvis inntekten blir høyere eller lavere enn ventet.</li>
+</ol>
+<p>Et godt råd: Sett av penger til skatt hver gang du får betalt. Mange selvstendige overfører rundt 30–40 prosent av overskuddet til en egen «skattekonto» for å unngå ubehagelige overraskelser.</p>
+<h3>Hva hvis foretaket går med underskudd?</h3>
+<p>Går foretaket med underskudd, kan underskuddet ofte trekkes fra mot annen inntekt du har, for eksempel lønn fra en deltidsjobb. Det kan redusere den samlede skatten din. Dette er en av fordelene med ENK fremfor aksjeselskap i en oppstartsfase.</p>
+<p>Tenk på Mariam igjen, men i oppstartsåret. Det første året brukte hun mye på symaskin, stoff og en nettbutikk, mens salget enda var lavt:</p>
+<ul>
+<li>Salgsinntekter: 50 000 kr</li>
+<li>Kostnader: 90 000 kr</li>
+<li><strong>Underskudd: 40 000 kr</strong></li>
+</ul>
+<p>Hvis Mariam samtidig hadde 350 000 kr i lønn fra en deltidsjobb, kan underskuddet på 40 000 kr trekkes fra mot lønnen. Da skatter hun bare av 310 000 kr i alminnelig inntekt, og får dermed igjen noe av skatten hun ellers ville betalt. Det er en reell trøst i en periode der bedriften ennå ikke tjener penger.</p>
+<h3>En vanlig misforståelse: «Jeg tok jo ikke ut penger»</h3>
+<p>Mange tror de slipper skatt fordi de lot overskuddet stå i bedriften og ikke «tok det ut» som privatperson. Men siden ENK ikke er et eget skattesubjekt, spiller det ingen rolle om du flytter pengene fra foretakskontoen til din private konto eller ei. Det er <em>overskuddet</em> som beskattes, uavhengig av hva du gjør med pengene etterpå. Dette er en viktig forskjell fra aksjeselskap, der du først skatter når du tar ut utbytte eller lønn.</p>
+<h3>Et praktisk eksempel på «skattekontoen»</h3>
+<p>Et godt vane-tips er å opprette en egen sparekonto til skatt. Si at Mariam får betalt 15 000 kr for en større ordre. Hun overfører med en gang rundt 5 000 kr (ca. en tredjedel) til skattekontoen sin og lar resten være tilgjengelig til drift og privat. Når forskuddsskatten forfaller, har hun pengene klare og slipper å bli tatt på senga. Denne enkle vanen er kanskje det viktigste grepet en ny selvstendig kan ta for å unngå likviditetsproblemer.</p>
+<h3>Husk skattemeldingen</h3>
+<p>Som selvstendig leverer du næringsopplysninger sammen med skattemeldingen. De fleste enkeltpersonforetak fyller dette ut digitalt, og Skatteetaten har en forenklet løsning for små foretak. Selv om du har lav omsetning, må du levere – også når overskuddet er beskjedent.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Ja, inntekt fra enkeltpersonforetak er skattepliktig, men det er du som privatperson som betaler.</li>
+<li>ENK er ikke eget skattesubjekt – overskuddet beskattes hos eieren.</li>
+<li>Du skatter kun av <strong>overskuddet</strong> (inntekter minus kostnader), ikke hele omsetningen.</li>
+<li>Overskuddet beskattes både som alminnelig inntekt (22 % i 2026) og gjennom personinntekt med trygdeavgift (10,8 % i 2026) og eventuelt trinnskatt.</li>
+<li>Du betaler vanligvis forskuddsskatt i fire terminer – sett av penger underveis.</li>
+<li>Underskudd kan ofte trekkes fra mot annen inntekt.</li>
+</ul>
+<p>Satsene og grensene endres hvert år. Sjekk alltid oppdaterte tall på skatteetaten.no før du regner på din egen situasjon.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

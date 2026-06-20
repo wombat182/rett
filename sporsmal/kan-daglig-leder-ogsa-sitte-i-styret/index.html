@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan daglig leder også sitte i styret? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-daglig-leder-ogsa-sitte-i-styret/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan daglig leder også sitte i styret?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-daglig-leder-ogsa-sitte-i-styret/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan daglig leder også sitte i styret?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan daglig leder også sitte i styret?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. I et vanlig aksjeselskap kan daglig leder også være styremedlem, og til og med styreleder. Dette er helt vanlig i små AS, og det er fullt lovlig.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. I et vanlig aksjeselskap kan daglig leder også være styremedlem, og til og med styreleder. Dette er helt vanlig i små AS, og det er fullt lovlig.</p>
+<h3>Det korte svaret med en gang</h3>
+<p>Mange gründere lurer på dette fordi de selv driver alt: de eier selskapet, sitter i styret og tar seg av den daglige driften. Den gode nyheten er at i et AS er det ingen sperre mot at samme person har flere roller på en gang. Du kan være aksjonær, styremedlem, styreleder og daglig leder, alt samtidig.</p>
+<h3>Hvorfor er dette vanlig i små selskaper?</h3>
+<p>I et enmanns-AS eller et lite familieselskap finnes det ofte bare én eller to personer som driver alt. Det ville vært upraktisk å kreve at daglig leder var en helt annen person enn de som sitter i styret. Derfor er loven fleksibel for AS.</p>
+<p>Eksempel: Thomas starter "Thomas Snekkerservice AS". Han eier alle aksjene, han er eneste styremedlem (og dermed automatisk styreleder), og han har utnevnt seg selv til daglig leder. Alt dette i én og samme person. Helt vanlig og helt lovlig.</p>
+<h3>Forskjellen fra allmennaksjeselskap (ASA)</h3>
+<p>Her er en viktig nyanse: reglene er strengere for allmennaksjeselskaper (ASA), som er de store børsnoterte selskapene. I et ASA kan daglig leder <strong>ikke</strong> samtidig være styreleder. Men dette gjelder ikke vanlige AS. Som gründer i et lite AS trenger du ikke bekymre deg for denne regelen, den gjelder ikke deg.</p>
+<p>Så hvis noen sier til deg at "daglig leder ikke kan sitte i styret", har de sannsynligvis blandet sammen reglene for ASA med reglene for AS.</p>
+<h3>Når flere eier sammen</h3>
+<p>La oss se på et selskap med flere eiere. "Vestkyst Marin AS" eies av fire venner: Anders, Bjørn, Cathrine og David. De har et styre der alle fire sitter. Anders er valgt som styreleder. Samtidig har styret ansatt Bjørn som daglig leder.</p>
+<p>Dette går helt fint. Bjørn er både daglig leder og styremedlem. Han kan delta i styrets diskusjoner og stemme der, og samtidig ta seg av den daglige driften.</p>
+<h3>Et viktig unntak: habilitet</h3>
+<p>Selv om daglig leder gjerne kan sitte i styret, finnes det situasjoner der vedkommende ikke kan delta i en bestemt sak. Dette kalles habilitet. Et styremedlem (også hvis det er daglig leder) skal ikke delta i behandlingen av en sak som har "særlig betydning" for vedkommende selv, slik at det kan oppstå en interessekonflikt.</p>
+<p>Eksempel: Styret i Vestkyst Marin AS skal fastsette lønnen til daglig leder Bjørn, og diskutere om han gjør en god nok jobb. I en slik sak bør Bjørn ikke delta som styremedlem, fordi han har en personlig interesse i utfallet. De andre tre i styret behandler saken uten ham. Dette sikrer at beslutningen blir ryddig og uavhengig.</p>
+<h3>Hva med daglig leders rapportering til styret?</h3>
+<p>Et morsomt poeng: Når daglig leder også sitter i styret, skal han i praksis rapportere til seg selv og de andre styremedlemmene. Det høres rart ut, men det fungerer fint. Daglig leder skal informere styret om driften minst hver tredje måned (§ 6-15), og selv om han selv er en del av styret, er rapporteringen viktig for at de <strong>andre</strong> styremedlemmene skal holdes oppdatert.</p>
+<p>I et rent enmanns-AS, der samme person er alt, blir denne rapporteringen mest en formalitet, men det er likevel lurt å skrive ned en kort statusoppdatering i styreprotokollen jevnlig, slik at man har dokumentasjon på at selskapet drives forsvarlig.</p>
+<h3>Kan daglig leder velges INN i styret av generalforsamlingen?</h3>
+<p>Ja. Det er ingenting i veien for at generalforsamlingen velger en person som også er daglig leder, inn som styremedlem. Mange små selskaper gjør nettopp dette: den som driver butikken i hverdagen, sitter også i styret slik at vedkommende er med på de overordnede beslutningene. Dette gir god kontinuitet, fordi den som kjenner driften best, også er med når kursen settes.</p>
+<p>Eksempel: På generalforsamlingen i "Vestkyst Marin AS" velger de fire eierne hverandre inn i styret, og deretter ansetter styret en av dem (Bjørn) som daglig leder. Bjørn har dermed begge rollene helt lovlig.</p>
+<h3>En fordel: rask beslutningsvei</h3>
+<p>I små selskaper er det en praktisk fordel at daglig leder også sitter i styret. Det gjør at avstanden mellom de som driver og de som bestemmer blir kort. Daglig leder slipper å "oversette" alt til et fjernt styre, han er selv med i rommet der beslutningene tas. Dette gjør selskapet smidigere og raskere.</p>
+<h3>Hva med daglig leder og styreleder i samme person?</h3>
+<p>Vi har nevnt at samme person kan være både daglig leder og styreleder i et AS. La oss være helt tydelige: dette er svært vanlig blant landets mange enmanns-AS. Eieren er styreleder (fordi hun er eneste styremedlem) og samtidig daglig leder. Det er ingen lovbestemmelse i aksjeloven som hindrer dette for et AS. Husk bare at i et ASA er det ikke lov, men det gjelder altså ikke deg som driver et lite AS.</p>
+<h3>En ulempe: mindre kontroll</h3>
+<p>Baksiden er at kontrollen blir svakere. En av styrets viktigste oppgaver er å føre tilsyn med daglig leder (§ 6-13). Når daglig leder selv sitter i styret, og kanskje til og med er styreleder, blir det litt som å kontrollere seg selv. I et enmanns-AS er dette uunngåelig, men i et selskap med flere eiere er det lurt at de andre styremedlemmene er aktive og stiller spørsmål, slik at tilsynet blir reelt.</p>
+<h3>Praktisk sjekkliste</h3>
+<p>Hvis du vil ha flere roller selv, sørg for at:</p>
+<ul>
+<li>Du er registrert riktig i Foretaksregisteret (både som styremedlem/styreleder og daglig leder).</li>
+<li>Du fører styreprotokoll når styret tar beslutninger, selv om du er alene.</li>
+<li>Du holder deg unna saker der du er inhabil, hvis selskapet har flere styremedlemmer.</li>
+<li>De andre styremedlemmene (hvis dere er flere) faktisk får informasjon og kan føre tilsyn.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>I et AS kan daglig leder gjerne også være styremedlem og styreleder, dette er helt vanlig i små selskaper og fullt lovlig. Det er bare i allmennaksjeselskaper (ASA) at daglig leder ikke kan være styreleder samtidig, men den regelen gjelder ikke vanlige AS. Husk likevel reglene om habilitet: når daglig leder også sitter i styret og styret skal behandle en sak som angår ham personlig, bør han holde seg utenfor den behandlingen.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

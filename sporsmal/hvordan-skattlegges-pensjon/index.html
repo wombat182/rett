@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan skattlegges pensjon? — Rettsregel</title>
+<meta name="description" content="Pensjon skattlegges som personinntekt, omtrent som lønn – men litt mildere.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-skattlegges-pensjon/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan skattlegges pensjon?">
+<meta property="og:description" content="Pensjon skattlegges som personinntekt, omtrent som lønn – men litt mildere.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-skattlegges-pensjon/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan skattlegges pensjon?">
+<meta name="twitter:description" content="Pensjon skattlegges som personinntekt, omtrent som lønn – men litt mildere.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hvordan skattlegges pensjon?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Pensjon skattlegges som personinntekt, omtrent som lønn – men litt mildere. Du betaler lavere trygdeavgift på pensjon enn på lønn, og mange pensjonister får et eget skattefradrag som gjør at de med lave pensjoner betaler lite eller ingen skatt. Resultatet er at pensjon i mange tilfeller skattlegges lempeligere enn lønnsinntekt med samme kronebeløp.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Pensjon skattlegges som <em>personinntekt</em>, omtrent som lønn – men litt mildere. Du betaler lavere trygdeavgift på pensjon enn på lønn, og mange pensjonister får et eget skattefradrag som gjør at de med lave pensjoner betaler lite eller ingen skatt. Resultatet er at pensjon i mange tilfeller skattlegges lempeligere enn lønnsinntekt med samme kronebeløp.</p>
+<h3>Hva slags skatt betaler en pensjonist?</h3>
+<p>På pensjon betaler du i hovedsak tre ting:</p>
+<ul>
+<li><strong>Skatt på alminnelig inntekt:</strong> 22 prosent (2026). Dette regnes etter at fradrag er trukket fra.</li>
+<li><strong>Trygdeavgift:</strong> 5,1 prosent på pensjon i 2026. Til sammenligning er trygdeavgiften på lønn 7,6 prosent (2026). Pensjon har altså lavere trygdeavgift.</li>
+<li><strong>Trinnskatt:</strong> En trappetrinnsskatt som øker med inntekten. Den gjelder også pensjon, men slår først inn ved høyere inntekter.</li>
+</ul>
+<p>Den lavere trygdeavgiften er en av grunnene til at "samme kronebeløp" gir litt mindre skatt som pensjon enn som lønn.</p>
+<h3>Det viktige skattefradraget for pensjonsinntekt</h3>
+<p>Det aller viktigste for mange pensjonister er det særskilte <strong>skattefradraget for pensjonsinntekt</strong>. Dette er et fradrag som trekkes direkte fra skatten – ikke fra inntekten – og det er laget for at minstepensjonister og folk med lave pensjoner skal betale lite eller ingen skatt.</p>
+<p>For 2026 er maksimalt fradrag inntil <strong>37 100 kroner</strong>. Fradraget trappes ned når pensjonen din blir høyere: i 2026 reduseres det med 16,7 prosent av pensjonsinntekt over 284 950 kroner. Har du høy pensjon, kan fradraget bli helt borte.</p>
+<h3>Regneeksempel: Solveig med lav pensjon</h3>
+<p>Solveig har en pensjon rett rundt minstenivå. Skatten hun i utgangspunktet skulle betalt på alminnelig inntekt og trygdeavgift, blir så liten at det maksimale pensjonsskattefradraget på 37 100 kroner "spiser opp" hele skatten. Resultatet: Solveig betaler i praksis <strong>0 kroner</strong> i skatt. Slik er ordningen ment å virke – de laveste pensjonene skal skjermes for skatt.</p>
+<h3>Regneeksempel: Bjørn med høyere pensjon</h3>
+<p>Bjørn har en samlet pensjon på 400 000 kroner.</p>
+<ul>
+<li>Pensjonen ligger over grensen på 284 950 kroner.</li>
+<li>Det overskytende er 400 000 − 284 950 = 115 050 kroner.</li>
+<li>Fradraget trappes ned med 16,7 prosent av dette: 0,167 × 115 050 ≈ 19 213 kroner.</li>
+<li>Hans pensjonsskattefradrag blir da rundt 37 100 − 19 213 ≈ <strong>17 887 kroner</strong>.</li>
+</ul>
+<p>Bjørn får altså fortsatt et betydelig fradrag, men ikke det fulle. Jo høyere pensjon, jo mindre fradrag – helt til det blir null.</p>
+<h3>Regneeksempel: Astrid med høy pensjon</h3>
+<p>Astrid har en pensjon på 600 000 kroner. Overskytende over 284 950 er 315 050 kroner. Nedtrappingen blir 16,7 prosent av dette, altså cirka 52 614 kroner – mer enn hele det maksimale fradraget på 37 100 kroner. For Astrid blir derfor pensjonsskattefradraget <strong>0 kroner</strong>. Hun beskattes uten denne lettelsen, men nyter fortsatt godt av den lavere trygdeavgiften på 5,1 prosent sammenlignet med lønn.</p>
+<h3>Lønn og pensjon samtidig</h3>
+<p>Mange tar ut pensjon mens de fortsatt jobber litt. Da skattlegges lønnen som lønn (med 7,6 prosent trygdeavgift) og pensjonen som pensjon (med 5,1 prosent trygdeavgift). Samlet inntekt avgjør hvor mye trinnskatt du havner i, og høy totalinntekt kan trappe ned pensjonsskattefradraget. Det kan derfor lønne seg å planlegge når du starter pensjonsuttaket – noen velger å vente med uttak til de slutter helt å jobbe.</p>
+<h3>AFP og andre tidligpensjoner</h3>
+<p>Avtalefestet pensjon (AFP) og andre tidligpensjonsordninger skattlegges også som pensjonsinntekt, med samme prinsipper: 22 prosent på alminnelig inntekt, lavere trygdeavgift enn lønn, og mulig pensjonsskattefradrag. Tar du ut AFP samtidig som du jobber, legges lønn og AFP sammen når totalskatten beregnes. Det er derfor lurt å ha oversikt over alle inntektskildene dine før du bestemmer deg for når og hvor mye du vil ta ut.</p>
+<h3>Praktiske råd til pensjonisten</h3>
+<ul>
+<li><strong>Sjekk skattekortet:</strong> Når du blir pensjonist, bør du oppdatere skattekortet ditt hos Skatteetaten, slik at trekket blir riktig. Feil skattekort kan gi enten restskatt eller for høyt trekk.</li>
+<li><strong>Husk at flere pensjoner legges sammen:</strong> Alderspensjon fra folketrygden, tjenestepensjon og eventuell privat pensjon summeres. Det er totalen som avgjør skatten.</li>
+<li><strong>Bruk skattekalkulatoren:</strong> Skatteetaten har en kalkulator der du kan legge inn pensjonen din og se omtrent hva du må betale.</li>
+<li><strong>Vurder tidspunktet for uttak:</strong> Tar du ut alderspensjon tidlig samtidig som du jobber, kan totalen bli høy og pensjonsskattefradraget falle bort.</li>
+</ul>
+<h3>Minstefradrag for pensjonister</h3>
+<p>Pensjonister får, som lønnsmottakere, et minstefradrag som trekkes automatisk fra inntekten før skatten beregnes. Minstefradraget for pensjon er litt lavere enn for lønn, men det betyr likevel at en del av pensjonen din er skjermet. Du trenger ikke gjøre noe selv – minstefradraget legges inn automatisk i skattemeldingen. Sammen med det særskilte pensjonsskattefradraget bidrar dette til at den faktiske skatteprosenten på pensjon ofte blir lavere enn man skulle tro ut fra satsene alene. De konkrete beløpene for minstefradraget endres årlig og finnes på skatteetaten.no.</p>
+<h3>Hva med skatt på pensjon fra utlandet?</h3>
+<p>Har du bodd og jobbet i utlandet, kan du få pensjon derfra. Slik utenlandsk pensjon kan også være skattepliktig i Norge, men det avhenger av skatteavtaler mellom landene. Reglene her er kompliserte, og det kan være lurt å kontakte Skatteetaten direkte hvis du har pensjon fra flere land. Poenget å huske er at også utenlandsk pensjon kan måtte oppgis – ikke anta at den er skattefri i Norge.</p>
+<h3>Et eksempel på hvordan trygdeavgiften slår ut</h3>
+<p>For å vise hvor mye den lavere trygdeavgiften betyr: anta at både en lønnsmottaker og en pensjonist har 350 000 kroner i inntekt.</p>
+<ul>
+<li>Lønnsmottaker: trygdeavgift 7,6 prosent = 26 600 kroner.</li>
+<li>Pensjonist: trygdeavgift 5,1 prosent = 17 850 kroner.</li>
+</ul>
+<p>Forskjellen er 8 750 kroner i året, bare på trygdeavgiften. Legger du til pensjonsskattefradraget for de med lavere pensjon, blir den samlede skatten for en pensjonist gjerne tydelig lavere enn for en lønnsmottaker med samme inntekt.</p>
+<p>Husk at både satser, grenser og fradragsbeløp endres årlig i statsbudsjettet. Tallene over gjelder 2026 – sjekk alltid det aktuelle året på <strong>skatteetaten.no</strong>.</p>
+<h3>Kort oppsummert</h3>
+<p>Pensjon skattlegges som personinntekt med 22 prosent på alminnelig inntekt, men med lavere trygdeavgift enn lønn (5,1 prosent mot 7,6 prosent i 2026). Et eget skattefradrag for pensjonsinntekt, inntil 37 100 kroner i 2026, gjør at de laveste pensjonene betaler lite eller ingen skatt, men trappes ned med 16,7 prosent av pensjon over 284 950 kroner og forsvinner ved høye pensjoner. Oppdater skattekortet og sjekk alltid årets satser på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

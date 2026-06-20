@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trekkes gjeld fra i formuesskatten? — Rettsregel</title>
+<meta name="description" content="Ja. Du betaler formuesskatt av nettoformuen din, og det betyr at all gjelden din i utgangspunktet trekkes fra det du eier. Boliglån, billån, studielån og…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/trekkes-gjeld-fra-i-formuesskatten/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Trekkes gjeld fra i formuesskatten?">
+<meta property="og:description" content="Ja. Du betaler formuesskatt av nettoformuen din, og det betyr at all gjelden din i utgangspunktet trekkes fra det du eier. Boliglån, billån, studielån og…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/trekkes-gjeld-fra-i-formuesskatten/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Trekkes gjeld fra i formuesskatten?">
+<meta name="twitter:description" content="Ja. Du betaler formuesskatt av nettoformuen din, og det betyr at all gjelden din i utgangspunktet trekkes fra det du eier. Boliglån, billån, studielån og…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Trekkes gjeld fra i formuesskatten?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Du betaler formuesskatt av nettoformuen din, og det betyr at all gjelden din i utgangspunktet trekkes fra det du eier. Boliglån, billån, studielån og forbruksgjeld reduserer formuen. Det finnes ett viktig unntak: hvis du eier eiendeler med verdsettelsesrabatt (som aksjer), blir en forholdsmessig del av gjelden ikke fradragsberettiget.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Grunnregelen er enkel</h3>
+<p>Formuesskatten beregnes av nettoformue, ikke bruttoformue. Nettoformue = eiendeler minus gjeld. All ordinær gjeld du har ved årsskiftet, trekkes fra:</p>
+<ul>
+<li>Boliglån</li>
+<li>Billån</li>
+<li>Studielån (i Lånekassen)</li>
+<li>Kredittkortgjeld og forbrukslån</li>
+<li>Privat gjeld (penger du skylder familie eller venner, hvis det er reelt)</li>
+</ul>
+<p>Eksempel: Lars eier eiendeler med formuesverdi på 3 500 000 kr. Han har boliglån på 1 800 000 kr og studielån på 200 000 kr.</p>
+<ul>
+<li>Nettoformue = 3 500 000 − 2 000 000 = 1 500 000 kr</li>
+<li>Dette er under bunnfradraget på 1,9 mill → Lars betaler ingen formuesskatt.</li>
+</ul>
+<p>Uten gjeldsfradraget ville han ligget over bunnfradraget. Gjelden er altså svært viktig.</p>
+<h3>Hvorfor gjeld kan "redde" deg</h3>
+<p>Mange med høy boligverdi men stort lån betaler ingenting i formuesskatt, nettopp fordi gjelden trekkes fra. Det er først når du har nedbetalt mye av lånet, at formuesskatten begynner å melde seg.</p>
+<p>Eksempel: Mona kjøpte bolig for ti år siden. I dag:</p>
+<ul>
+<li>Boligens formuesverdi (primærbolig): 1 600 000 kr</li>
+<li>Bank og fond: 700 000 kr</li>
+<li>Restlån: bare 150 000 kr (hun har nedbetalt mye)</li>
+</ul>
+<p>Nettoformue = 2 300 000 − 150 000 = 2 150 000 kr. Skattepliktig del: 250 000 kr → 2 500 kr i formuesskatt. Da hun hadde stort lån, betalte hun ingenting. Nå som lånet er nesten betalt ned, dukker skatten opp.</p>
+<h3>Unntaket: gjeld knyttet til rabatterte eiendeler</h3>
+<p>Her er den viktige nyansen. Når du eier eiendeler som verdsettes med rabatt (typisk aksjer og aksjefond, som telles til 80 prosent), kan du ikke samtidig trekke fra 100 prosent av gjelden. Det ville gitt en dobbel fordel. Derfor reduseres gjeldsfradraget forholdsmessig.</p>
+<p>Tenk på det slik: hvis en del av formuen din "teller" med rabatt, må en tilsvarende del av gjelden også "telle" med rabatt. Skatteetaten regner dette ut automatisk i skattemeldingen.</p>
+<h3>Forenklet eksempel på gjeldsreduksjonen</h3>
+<p>Nina har:</p>
+<ul>
+<li>Aksjer verdt 2 000 000 kr (rabattert til 80 % = 1 600 000 kr i formuesverdi)</li>
+<li>Bolig og bank verdsatt til 2 000 000 kr (full verdi)</li>
+<li>Total gjeld: 1 000 000 kr</li>
+</ul>
+<p>Siden aksjene utgjør en del av formuen og er rabattert, blir en forholdsmessig del av gjelden hennes nedjustert tilsvarende. Det betyr at hun ikke får fradrag for hele millionen, men litt mindre. Den nøyaktige andelen avhenger av forholdet mellom rabatterte og ikke-rabatterte eiendeler, og beregnes maskinelt.</p>
+<h3>Hvilken gjeld kan du IKKE trekke fra?</h3>
+<p>Det er noen begrensninger:</p>
+<ul>
+<li><strong>Kausjonsansvar</strong> du ennå ikke har måttet innfri, er ikke gjeld du kan trekke fra.</li>
+<li><strong>Garantier</strong> uten at det er et reelt krav mot deg, teller ikke.</li>
+<li><strong>Fiktiv gjeld</strong> – penger du later som du skylder – er selvsagt ikke fradragsberettiget og er ulovlig å føre opp.</li>
+</ul>
+<p>Vanlig, reell gjeld der du faktisk skylder pengene, kan derimot trekkes fra, uansett om det er til bank eller privatperson.</p>
+<h3>Eksempel: privat lån som ofte glemmes</h3>
+<p>Olav har lånt 250 000 kr av foreldrene sine for å kjøpe bolig. Det er et reelt lån med avtale. Banken rapporterer ikke dette, så Olav må føre det opp selv.
+- Uten å føre lånet: nettoformue 2 100 000 kr → 200 000 over bunnfradraget → 2 000 kr i skatt
+- Med lånet ført: nettoformue 1 850 000 kr → under bunnfradraget → 0 kr i skatt
+Bare ved å huske å føre opp et lovlig, reelt lån sparte Olav 2 000 kr. Lærdommen: før all reell gjeld.</p>
+<h3>Hva med gjeld i utlandet eller fritidsbolig ute?</h3>
+<p>Har du eiendom eller gjeld i utlandet, kan reglene være mer sammensatte, og gjeldsfradraget kan måtte fordeles mellom Norge og utlandet. Eier du for eksempel en feriebolig i utlandet som er unntatt fra norsk skatt etter en skatteavtale, kan en del av gjelden din måtte tilordnes den utenlandske eiendommen i stedet for å gi fullt fradrag i Norge. Da bør du føre dette nøye i skattemeldingen og eventuelt søke hjelp.</p>
+<h3>Et helhetlig eksempel fra bunn til topp</h3>
+<p>La oss regne Pers situasjon helt ferdig.</p>
+<p>Per eier:
+- Primærbolig, formuesverdi: 1 400 000 kr
+- Aksjefond, markedsverdi 1 000 000 kr → telt 80 % = 800 000 kr
+- Bankinnskudd: 300 000 kr
+- Sum eiendeler: 2 500 000 kr</p>
+<p>Per har gjeld:
+- Boliglån: 900 000 kr
+- Studielån: 150 000 kr
+- Sum gjeld: 1 050 000 kr</p>
+<p>Fordi aksjefondet er rabattert, blir en liten forholdsmessig andel av gjelden nedjustert. La oss for enkelhets skyld si at gjeldsfradraget reduseres med noen få prosent av aksjeandelen. Den nøyaktige beregningen gjør Skatteetaten, men nettoformuen havner litt over det rene regnestykket 2 500 000 − 1 050 000 = 1 450 000 kr. Uansett ligger Per godt under bunnfradraget på 1,9 mill og betaler ingen formuesskatt. Poenget med eksempelet er å vise hvordan eiendeler, rabatt og gjeld spiller sammen i sluttsummen.</p>
+<h3>Hva skjer hvis gjelden er større enn formuen?</h3>
+<p>Da har du negativ nettoformue, og du betaler selvsagt ingen formuesskatt. Mange unge i etableringsfasen, med stort boliglån og lite oppspart, er i denne situasjonen. Du kan ikke "få igjen" penger for negativ formue – formuesskatten blir bare null.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li>Kontroller at all gjelden din er med i skattemeldingen. Lån fra bank rapporteres automatisk, men privat gjeld må du ofte føre selv.</li>
+<li>Husk at det er gjelden per 31. desember som teller. Nedbetaler du rett før nyttår, reduserer du formuen.</li>
+<li>Ikke bli forskrekket hvis gjeldsfradraget er litt lavere enn lånet ditt – det skyldes som regel aksjerabatten.</li>
+</ul>
+<h3>Kilder, forklart enkelt</h3>
+<p>At gjeld trekkes fra, følger av skatteloven § 4-1, og reduksjonen av gjeldsfradrag ved rabatterte eiendeler følger av § 4-19. Skatteetaten forklarer dette på skatteetaten.no.</p>
+<p>Reglene om gjeldsfradrag og rabatter justeres jevnlig. Tallene gjelder 2026. Sjekk alltid de gjeldende reglene på skatteetaten.no.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, gjeld trekkes fra i formuesskatten, for du skattlegges av nettoformue. Boliglån, billån, studielån og forbruksgjeld reduserer alle formuen din, og kan være det som holder deg under bunnfradraget. Det viktige unntaket er at gjeld knyttet til rabatterte eiendeler som aksjer ikke gir fullt fradrag. Sørg for at all gjeld er med i skattemeldingen, og hold deg oppdatert på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

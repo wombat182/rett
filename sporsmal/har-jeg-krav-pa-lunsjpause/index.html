@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg krav på lunsjpause? — Rettsregel</title>
+<meta name="description" content="Ja — hvis arbeidsdagen din er lang nok.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-krav-pa-lunsjpause/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg krav på lunsjpause?">
+<meta property="og:description" content="Ja — hvis arbeidsdagen din er lang nok.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-krav-pa-lunsjpause/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg krav på lunsjpause?">
+<meta name="twitter:description" content="Ja — hvis arbeidsdagen din er lang nok.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Har jeg krav på lunsjpause?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja — hvis arbeidsdagen din er lang nok. Du har krav på minst én pause når den daglige arbeidstiden overstiger fem og en halv time. Pausen er ofte lunsjen din, men loven snakker om «pause», ikke spesifikt om lunsj. Reglene står i arbeidsmiljøloven § 10-9 (om pauser).</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-9/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-9</div>
+  <div class="related-card-title">Reglene for pauser og matpakke</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja — hvis arbeidsdagen din er lang nok. Du har krav på minst én pause når den daglige arbeidstiden overstiger fem og en halv time. Pausen er ofte lunsjen din, men loven snakker om «pause», ikke spesifikt om lunsj. Reglene står i arbeidsmiljøloven § 10-9 (om pauser).</p>
+<h3>Når har du krav på pause?</h3>
+<p>Hovedregelen er enkel:</p>
+<ul>
+<li><strong>Mer enn 5,5 timers arbeidsdag:</strong> Du har krav på minst én pause.</li>
+<li><strong>Minst 8 timers arbeidsdag:</strong> Pausene skal til sammen være minst 30 minutter.</li>
+</ul>
+<p>Eksempel: Petra jobber 08–16, altså 8 timer. Hun har krav på minst 30 minutter pause i løpet av dagen. Det er gjerne lunsjpausen.</p>
+<p>Eksempel: Yusuf jobber en kort dag på 5 timer. Da overstiger ikke arbeidsdagen 5,5 timer, og han har ikke et lovfestet krav på pause (men mange arbeidsplasser gir det likevel).</p>
+<h3>Er lunsjpausen «lunsj»?</h3>
+<p>Loven sier ikke at pausen må brukes til å spise, og den sier ikke at den må hete lunsj. Den sier bare at du skal ha en pause — et avbrekk fra arbeidet. I praksis legges den ofte midt på dagen og brukes til mat, derav «lunsjpause». Men du bestemmer selv hva du gjør i en ubetalt pause der du er fri fra arbeidet: spise, gå en tur, ringe hjem.</p>
+<h3>Betalt eller ubetalt?</h3>
+<p>Dette er et eget spørsmål som mange lurer på (se også artikkel 49):</p>
+<ul>
+<li><strong>Hovedregel:</strong> Pausen er ubetalt, og du er fri til å forlate arbeidsstedet.</li>
+<li><strong>Unntak:</strong> Hvis du ikke fritt kan forlate arbeidsstedet i pausen, eller det ikke finnes tilfredsstillende pauserom, skal pausen regnes som arbeidstid (og dermed være betalt).</li>
+</ul>
+<p>Eksempel: Maria jobber i en liten butikk og er alene på vakt. Hun kan ikke forlate butikken i pausen fordi hun må passe kassa og kundene. Da må hun «stå til disposisjon», og pausen regnes som arbeidstid — altså betalt.</p>
+<h3>Hva hvis du jobber lenge ut over arbeidstiden?</h3>
+<p>Hvis du blir bedt om å jobbe mer enn to timer etter at den vanlige arbeidstiden din er over, har du krav på en ekstra pause på minst en halvtime. Denne pausen skal regnes som arbeidstid — altså betalt — fordi den kommer som følge av det utvidede arbeidet.</p>
+<p>Eksempel: David skulle vært ferdig 16, men må jobbe overtid til 19. Siden han jobber mer enn to timer ekstra, har han krav på minst 30 minutter pause, og den pausen er betalt.</p>
+<h3>Hva med deg som jobber deltid eller korte vakter?</h3>
+<p>Pauseretten følger lengden på den enkelte arbeidsdagen, ikke stillingsprosenten din:</p>
+<ul>
+<li>Jobber du en kort vakt på under 5,5 timer, har du ikke et lovfestet pausekrav.</li>
+<li>Jobber du en lang vakt på 8 timer eller mer, har du krav på minst 30 minutters pause — selv om du er deltidsansatt.</li>
+</ul>
+<p>Eksempel: Sara er ansatt i 50 prosent stilling, men jobber lange vakter på 9 timer tre dager i uka. På disse dagene har hun akkurat samme rett til minst 30 minutters pause som en fulltidsansatt, selv om hun «bare» er halvt ansatt. Det er dagen, ikke stillingsbrøken, som teller.</p>
+<h3>Hva sier loven om unge under 18?</h3>
+<p>For deg som er under 18 år gjelder strengere regler. Ungdom som jobber mer enn fire og en halv time, har krav på minst 30 minutters pause. Dette er strengere enn for voksne, der grensen for pauseplikt går ved 5,5 timer. Reglene er ekstra strenge for å verne unge arbeidstakere, som ofte har deltidsjobber ved siden av skolen.</p>
+<p>Eksempel: Mathias er 16 år og jobber 5 timer på en lørdag i en butikk. Som ung arbeidstaker har han krav på minst 30 minutters pause, selv om en voksen kollega på en like lang dag bare ville hatt rett til «minst én pause» uten et fast minuttkrav.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Tell timene på den enkelte dagen.</strong> Over 5,5 timer = rett til pause. 8 timer eller mer = minst 30 minutter til sammen.</li>
+<li><strong>Sjekk om du er fri i pausen.</strong> Kan du forlate arbeidsstedet? Hvis ikke, skal pausen være betalt.</li>
+<li><strong>Be om et ordentlig pauserom.</strong> Mangler det egnet sted, kan pausen måtte regnes som arbeidstid.</li>
+<li><strong>Husk overtidspausen.</strong> Mer enn to timer ekstra arbeid gir rett til en betalt halvtimespause.</li>
+<li><strong>Sjekk tariffavtalen.</strong> Mange avtaler gir bedre pauserettigheter enn loven, for eksempel betalt lunsj.</li>
+</ol>
+<h3>Når på dagen skal pausen ligge?</h3>
+<p>Loven sier ikke et nøyaktig klokkeslett, men en pause skal gi et reelt avbrekk midt i arbeidsøkten — ikke legges helt i starten eller helt på slutten av dagen, der den ikke har noen funksjon som hvile. Tanken er at du skal få ladet batteriene mens du fortsatt har en del av arbeidsdagen igjen.</p>
+<p>Eksempel: Det ville ikke vært en ekte pause om arbeidsgiver la «lunsjen» til den siste halvtimen av vakten, slik at du egentlig bare fikk gå hjem litt tidligere. Pausen skal komme i et naturlig opphold i arbeidet.</p>
+<h3>Hva hvis du «glemmer» å ta pause?</h3>
+<p>Mange — særlig de som har det travelt eller er svært selvgående — hopper over pausen og jobber gjennom. Det kan virke effektivt, men pausen er der av en grunn: for at du skal hvile og holde ut. Du bør faktisk ta pausen din. Jobber du jevnlig gjennom pausene på arbeidsgivers oppfordring eller fordi arbeidsmengden krever det, er det et signal om at bemanningen er for knapp, og noe du bør ta opp.</p>
+<h3>Et vanlig misforståelse</h3>
+<p>Noen tror at en 7,5-timers dag «automatisk» betyr ubetalt halvtimes lunsj. Men det avhenger av om du faktisk er fri i pausen. Er du bundet til arbeidsstedet, skal pausen være betalt. Det lønner seg å være bevisst på dette, særlig hvis du jobber alene eller i et yrke der du sjelden får gå fra.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du har krav på minst én pause når arbeidsdagen er mer enn 5,5 timer (§ 10-9).</li>
+<li>Er dagen minst 8 timer, skal pausene til sammen være minst 30 minutter.</li>
+<li>Pausen er normalt ubetalt og du er fri — men hvis du ikke kan forlate arbeidsstedet eller mangler pauserom, skal den være betalt.</li>
+<li>Jobber du mer enn to timer ut over arbeidstiden, har du krav på en betalt halvtimespause.</li>
+<li>Sjekk tariffavtalen — den gir ofte bedre pauserettigheter.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

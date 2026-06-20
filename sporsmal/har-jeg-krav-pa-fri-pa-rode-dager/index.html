@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg krav på fri på røde dager? — Rettsregel</title>
+<meta name="description" content="Det enkle svaret: I utgangspunktet ja – helligdager og "røde dager" er beskyttet hvile på samme måte som søndager, og du skal som hovedregel ha fri…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-krav-pa-fri-pa-rode-dager/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg krav på fri på røde dager?">
+<meta property="og:description" content="Det enkle svaret: I utgangspunktet ja – helligdager og "røde dager" er beskyttet hvile på samme måte som søndager, og du skal som hovedregel ha fri…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-krav-pa-fri-pa-rode-dager/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg krav på fri på røde dager?">
+<meta name="twitter:description" content="Det enkle svaret: I utgangspunktet ja – helligdager og "røde dager" er beskyttet hvile på samme måte som søndager, og du skal som hovedregel ha fri…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Har jeg krav på fri på røde dager?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det enkle svaret: I utgangspunktet ja – helligdager og "røde dager" er beskyttet hvile på samme måte som søndager, og du skal som hovedregel ha fri (arbeidsmiljøloven § 10-10). Men i mange yrker er det lov å jobbe på røde dager hvis arbeidets art krever det, akkurat som med søndagsarbeid.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-10/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-10</div>
+  <div class="related-card-title">Reglene for søndagsarbeid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det enkle svaret: I utgangspunktet ja – helligdager og "røde dager" er beskyttet hvile på samme måte som søndager, og du skal som hovedregel ha fri (arbeidsmiljøloven § 10-10). Men i mange yrker er det lov å jobbe på røde dager hvis arbeidets art krever det, akkurat som med søndagsarbeid.</p>
+<h3>Hva er en "rød dag"?</h3>
+<p>Med røde dager mener vi de offentlige helligdagene og høytidsdagene som er markert med rødt i kalenderen. Eksempler er 1. juledag, langfredag, 1. påskedag, Kristi himmelfartsdag og 1. nyttårsdag. I tillegg kommer 1. mai og 17. mai, som er offentlige høytidsdager med eget vern. Arbeidsmiljøloven behandler søn- og helligdager under ett når det gjelder hviletid.</p>
+<h3>Hovedregelen: fri på røde dager</h3>
+<p>Loven sier at det skal være arbeidsfri fra klokka 18.00 dagen før en helligdag til klokka 22.00 dagen før neste virkedag (§ 10-10). Dette gjelder akkurat som for søndager. Så for de aller fleste som jobber vanlig dagtid mandag til fredag, betyr en rød dag rett og slett en fridag.</p>
+<p><strong>Eksempel:</strong> <strong>Geir</strong> jobber på et arkitektkontor med vanlig kontortid. Når 17. mai faller på en torsdag, har han fri den dagen. Kontoret holder stengt, og han trenger ikke møte.</p>
+<h3>Når kan du likevel måtte jobbe?</h3>
+<p>I yrker hvor arbeidets art gjør det nødvendig, er det lov å jobbe også på røde dager – på samme måte som søndagsarbeid er tillatt der det trengs:</p>
+<ul>
+<li><strong>Vibeke</strong> er sykepleier. Pasienter trenger pleie også 1. juledag.</li>
+<li><strong>Stian</strong> kjører ambulanse. Beredskap tar ikke høytidsfri.</li>
+<li><strong>Amira</strong> jobber på et serveringssted som har åpent i påsken fordi turister kommer.</li>
+<li><strong>Lars</strong> jobber i en kiosk på en travel togstasjon med søndagsåpent.</li>
+</ul>
+<p>Felles for disse er at samfunnet trenger tjenesten også på røde dager. Da er det lov, men du har fortsatt rett til fri i snitt annenhver søndag/helligdag over tid.</p>
+<h3>Får jeg ekstra betalt på røde dager?</h3>
+<p>Dette er et vanlig misforståelsespunkt. Arbeidsmiljøloven gir deg rett til hvile, men sier ikke at du automatisk får ekstra lønn for å jobbe på en rød dag. Ekstra betaling – ofte kalt helligdagstillegg eller "rød dag-tillegg" – følger som hovedregel av tariffavtale eller din arbeidsavtale.</p>
+<p><strong>Eksempel:</strong> <strong>Mona</strong> jobber i hjemmetjenesten. Hun har en tariffavtale som gir henne et tillegg for å jobbe 1. nyttårsdag. <strong>Petra</strong>, som jobber i en liten butikk uten tariffavtale, må sjekke sin egen arbeidsavtale for å se hva hun har krav på. Begge har rett til fri annenhver helligdag i snitt, men tillegget avhenger av avtalen.</p>
+<h3>Hva med 1. og 17. mai spesielt?</h3>
+<p>Disse to dagene har en egen lov (lov om 1. og 17. mai som høgtidsdager). Reglene ligner på søndagsregler: du har som hovedregel rett til fri, og dersom du må jobbe, gjelder egne bestemmelser om lønn. Mange tariffavtaler gir full lønn disse dagene selv om du ikke jobber.</p>
+<h3>Slik finner du ut hva du har krav på</h3>
+<ol>
+<li><strong>Sjekk hvilken type jobb du har:</strong> Er det et yrke hvor arbeidets art krever drift på røde dager?</li>
+<li><strong>Les arbeidsavtalen din</strong> for å se hva som står om helligdager og tillegg.</li>
+<li><strong>Finn ut om du er omfattet av tariffavtale</strong> – spør tillitsvalgt.</li>
+<li><strong>Tell helligdagene</strong> du settes opp på – får du fri i snitt annenhver?</li>
+<li><strong>Avklar lønn på forhånd</strong> før du sier ja til en vakt på en rød dag.</li>
+</ol>
+<h3>Påske, jul og pinse – sammenhengende helligdager</h3>
+<p>Noen høytider har flere røde dager på rad, som julen og påsken. Da gjelder hvilereglene for hver enkelt helligdag, og søndagshvilen i § 10-10 strekker seg over disse dagene. <strong>Camilla</strong> jobber turnus i hjemmetjenesten. I julen er både 1. og 2. juledag røde. Hun kan ikke settes opp på samtlige høytidsdager hvert år; over tid skal byrden fordeles, slik at hun også får frie høytider. Mange tariffavtaler har egne, mer gunstige regler om nettopp jul og påske – sjekk din.</p>
+<h3>Onsdag før skjærtorsdag og "halve dager"</h3>
+<p>I praksis stenger mange arbeidsplasser tidligere på dagene før store høytider, som onsdag før skjærtorsdag eller julaften. Dette er ikke alltid lovbestemt, men følger ofte av tariffavtale eller fast praksis på arbeidsplassen. Julaften, nyttårsaften og onsdag før skjærtorsdag er ikke "røde dager" i seg selv, men mange avtaler gir likevel kortere dag eller fri. Sjekk hva som gjelder hos deg, så slipper du overraskelser.</p>
+<h3>Hva om jeg blir bedt om å jobbe en rød dag jeg trodde var fri?</h3>
+<p>Hvis du har en vanlig dagjobb og plutselig blir bedt om å jobbe en helligdag, kan du trygt spørre om begrunnelsen. Er det egentlig "arbeidets art" som krever det, eller bare at noe har hopet seg opp? I sistnevnte tilfelle har du et godt grunnlag for å si nei. <strong>Sondre</strong> på et kontor ble bedt om å "ta en økt" 2. påskedag for å bli ferdig med et prosjekt. Det er ikke arbeidets art som krever helligdagsarbeid her, og han kunne med god samvittighet si at det måtte løses på en virkedag.</p>
+<h3>Avspasering og fri rundt høytidene</h3>
+<p>I mange yrker, særlig de med turnus, jobber man av og til på en rød dag og får tilsvarende fri en annen dag, eller et tillegg som kan tas ut som avspasering. Hvordan dette løses, avhenger av tariffavtale og lokal praksis. <strong>Linnea</strong> jobber i hjemmetjenesten og tar nyttårsdag i år. Hun får både et tillegg og en avtalt fridag senere. Slike ordninger er vanlige og rettferdige, men de følger ikke automatisk av arbeidsmiljøloven – de avtales. Derfor er det lurt å avklare på forhånd hva du får igjen for å jobbe en høytidsdag, slik at det ikke blir uenighet i ettertid.</p>
+<h3>Røde dager og ferie – ikke det samme</h3>
+<p>Et siste punkt verdt å rydde i: en helligdag er ikke det samme som en feriedag. Hvis en rød dag faller i en uke du har ferie, "spiser" den normalt ikke av feriedagene dine, fordi det uansett er en lovbestemt fridag. <strong>Oskar</strong> tok ut ferie i påskeuka. Skjærtorsdag, langfredag og 2. påskedag er røde dager og skal i utgangspunktet ikke regnes som feriedager – bare de vanlige virkedagene i uka teller som ferie. Reglene om dette ligger i ferieloven, men det er greit å kjenne sammenhengen, så du ikke "bruker opp" feriedager unødvendig.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Røde dager er beskyttet hvile på linje med søndager – hovedregelen er fri (§ 10-10).</li>
+<li>I yrker der arbeidets art krever det, er det lov å jobbe på helligdager.</li>
+<li>Du har rett til fri i snitt annenhver søndag/helligdag over 26 uker.</li>
+<li>Ekstra betaling for røde dager følger av tariff- eller arbeidsavtale, ikke av loven selv.</li>
+<li>
+<ol>
+<li>og 17. mai har egne regler med eget vern.</li>
+</ol>
+</li>
+<li>Sjekk alltid avtalen din og avklar lønn før du tar en rød-dag-vakt.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

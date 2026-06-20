@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er overkurs? — Rettsregel</title>
+<meta name="description" content="Overkurs er det aksjonærene betaler ut over pålydende når de tegner aksjer – altså det de betaler i tillegg til aksjens nominelle verdi. Overkurs regnes…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-overkurs/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er overkurs?">
+<meta property="og:description" content="Overkurs er det aksjonærene betaler ut over pålydende når de tegner aksjer – altså det de betaler i tillegg til aksjens nominelle verdi. Overkurs regnes…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-overkurs/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er overkurs?">
+<meta name="twitter:description" content="Overkurs er det aksjonærene betaler ut over pålydende når de tegner aksjer – altså det de betaler i tillegg til aksjens nominelle verdi. Overkurs regnes…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er overkurs?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Overkurs er det aksjonærene betaler **ut over pålydende** når de tegner aksjer – altså det de betaler i tillegg til aksjens nominelle verdi. Overkurs regnes som annen/fri egenkapital, ikke som bundet aksjekapital. Det dukker oftest opp ved tingsinnskudd og ved emisjoner der nye investorer kommer inn.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Først: hva er «pålydende»?</h3>
+<p>Hver aksje har en pålydende verdi – det nominelle beløpet aksjen «teller for» i aksjekapitalen. Hvis aksjekapitalen er 30 000 kroner fordelt på 300 aksjer, er pålydende 100 kroner per aksje. Men markedsverdien – det noen faktisk er villig til å betale for aksjen – kan være helt annerledes. Når betalingen er høyere enn pålydende, oppstår <strong>overkurs</strong>.</p>
+<blockquote>
+<p><strong>Overkurs = betalt beløp per aksje − pålydende per aksje</strong></p>
+</blockquote>
+<h3>Eksempel 1: Overkurs ved tingsinnskudd</h3>
+<p>Husker du Marit fra artikkelen om tingsinnskudd? Hun skjøt inn fotoutstyr verdt 70 000 kroner, men satte aksjekapitalen til bare 30 000 kroner. Hvor blir det av de resterende 40 000 kronene?</p>
+<p>De føres som <strong>overkurs</strong>. Slik ser det ut:</p>
+<ul>
+<li>Verdi skutt inn: 70 000 kr</li>
+<li>Aksjekapital (bundet): 30 000 kr</li>
+<li>Overkurs (fri egenkapital): 40 000 kr</li>
+</ul>
+<p>Marit har altså «betalt» 70 000 kroner for aksjer med pålydende 30 000 kroner. Differansen på 40 000 er overkursen. Den ligger nå som fri egenkapital i selskapet.</p>
+<h3>Eksempel 2: Overkurs ved emisjon (ny investor)</h3>
+<p>«Tech Start AS» ble stiftet med 30 000 kroner i aksjekapital, fordelt på 300 aksjer (pålydende 100 kr). To år senere har selskapet blitt verdt mye mer. En investor vil inn og betaler 1 000 kroner per aksje for 100 nye aksjer:</p>
+<ul>
+<li>Investor betaler: 100 aksjer × 1 000 kr = 100 000 kr</li>
+<li>Av dette går til aksjekapital: 100 aksjer × 100 kr (pålydende) = 10 000 kr</li>
+<li>Resten er overkurs: 100 000 − 10 000 = 90 000 kr</li>
+</ul>
+<p>Aksjekapitalen øker med bare 10 000 kroner, mens 90 000 kroner føres som overkurs (fri egenkapital). Slik kan selskapet hente mye penger uten at den bundne aksjekapitalen blåses opp unødvendig.</p>
+<h3>Hvorfor betaler noen mer enn pålydende?</h3>
+<p>Fordi aksjen er verdt mer enn det nominelle beløpet. Et selskap som har bygget opp kunder, merkevare og overskudd, er verdt mer enn de opprinnelige 100 kronene per aksje. En ny investor som vil eie en bit, må betale dagens verdi – ikke startverdien. Den ekstra betalingen er overkursen, og den kommer alle eksisterende aksjonærer til gode ved at selskapet får tilført mer egenkapital uten at de gamle eierne vannes for kraftig ut.</p>
+<h3>Eksempel 3: Hvorfor de gamle eierne ikke vil ha lav pris</h3>
+<p>Tenk deg at «Tech Start AS» i stedet hadde solgt de 100 nye aksjene til pålydende – altså bare 100 kroner stykket, totalt 10 000 kroner. Da hadde den nye investoren fått en stor eierandel for nesten ingenting, mens selskapet faktisk var verdt langt mer. Det ville vært dårlig for de opprinnelige eierne. Ved å sette en høyere pris (med overkurs) får selskapet en rettferdig sum, og eierfordelingen blir riktig.</p>
+<h3>Overkurs er fri egenkapital</h3>
+<p>Dette er en viktig detalj: overkursen regnes som <strong>annen/fri egenkapital</strong>, ikke som bundet aksjekapital. Det betyr at den i utgangspunktet kan deles ut som utbytte senere (innenfor forsvarlighetskravet i § 3-4), i motsetning til selve aksjekapitalen som er bundet. Tidligere fantes et eget «overkursfond» med bindinger, men i dag behandles overkurs som fri egenkapital.</p>
+<h3>Hvorfor sette lav aksjekapital og høy overkurs?</h3>
+<p>Mange velger å holde aksjekapitalen lav (for eksempel på minstenivået 30 000 kr) og føre det meste av innskuddet som overkurs. Fordelen er fleksibilitet: aksjekapitalen er bundet og tungvint å endre, mens fri egenkapital er lettere å disponere senere. Ulempen er at lav aksjekapital kan se mindre solid ut utad – men i praksis ser banker og samarbeidspartnere på samlet egenkapital, ikke bare aksjekapitalen.</p>
+<h3>Et fagord til: «emisjonskurs»</h3>
+<p>Emisjonskurs er prisen aksjekjøperen betaler per aksje ved en emisjon. I eksempelet med Tech Start var emisjonskursen 1 000 kroner, mens pålydende var 100 kroner. Differansen – de 900 kronene per aksje – er overkursen. Når du hører folk si at en emisjon skjer «til kurs 1 000», er det altså prisen per aksje de snakker om. Jo høyere emisjonskurs i forhold til pålydende, jo mer av innskuddet havner som overkurs (fri egenkapital) i stedet for som bundet aksjekapital.</p>
+<h3>Vanlig misforståelse: «Overkurs er penger jeg taper»</h3>
+<p>Noen ferske gründere tror at overkurs er en slags ekstra avgift eller noe man «mister». Det er feil. Overkursen blir værende i <em>ditt</em> selskap som egenkapital. Når en investor betaler overkurs, styrker det selskapet du selv eier en bit av. For deg som grunnlegger er overkurs et gode: det betyr at noen verdsetter selskapet høyere enn startverdien, og at selskapet får tilført mer penger uten at du må gi fra deg en stor eierandel.</p>
+<h3>Regneeksempel: hvor mye eierandel «koster» investoren?</h3>
+<p>Før emisjonen i Tech Start fantes 300 aksjer. Investoren kjøper 100 nye. Etter emisjonen finnes 400 aksjer totalt, og investoren eier 100 av dem – altså 25 %. For dette betalte hun 100 000 kroner. Hadde selskapet i stedet solgt de 100 aksjene til pålydende (10 000 kroner), ville investoren fått samme 25 % for en tiendedel av prisen – en svært dårlig deal for de opprinnelige eierne. Overkursen er altså mekanismen som sørger for at prisen på en eierandel gjenspeiler hva selskapet faktisk er verdt.</p>
+<h3>Sjekkliste: Overkurs i praksis</h3>
+<ol>
+<li>Finn pålydende per aksje (aksjekapital ÷ antall aksjer).</li>
+<li>Sammenlign med hva som faktisk betales eller skytes inn per aksje.</li>
+<li>Differansen er overkurs.</li>
+<li>Før den som annen/fri egenkapital i regnskapet, ikke som aksjekapital.</li>
+<li>Husk at overkurs kan deles ut senere – men bare så lenge egenkapitalen forblir forsvarlig.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Overkurs er det som betales utover aksjens pålydende verdi. Skyter du inn en bil verdt 70 000 kroner men setter 30 000 som aksjekapital, er de 40 000 overkurs. Kommer en investor inn og betaler langt over pålydende, er det meste overkurs. Overkursen regnes som fri egenkapital og kan i prinsippet deles ut senere – i motsetning til den bundne aksjekapitalen. Det er gründerens vennlige måte å hente kapital på uten å låse alt fast.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

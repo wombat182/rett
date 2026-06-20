@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trenger vi en aksjonæravtale? — Rettsregel</title>
+<meta name="description" content="Hvis dere er flere enn én eier, er svaret nesten alltid ja. En aksjonæravtale er billig forsikring mot dyre konflikter. Er du eneeier i dag, trenger du…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/trenger-vi-en-aksjonaeravtale/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Trenger vi en aksjonæravtale?">
+<meta property="og:description" content="Hvis dere er flere enn én eier, er svaret nesten alltid ja. En aksjonæravtale er billig forsikring mot dyre konflikter. Er du eneeier i dag, trenger du…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/trenger-vi-en-aksjonaeravtale/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Trenger vi en aksjonæravtale?">
+<meta name="twitter:description" content="Hvis dere er flere enn én eier, er svaret nesten alltid ja. En aksjonæravtale er billig forsikring mot dyre konflikter. Er du eneeier i dag, trenger du…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Trenger vi en aksjonæravtale?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis dere er flere enn én eier, er svaret nesten alltid ja. En aksjonæravtale er billig forsikring mot dyre konflikter. Er du eneeier i dag, trenger du den ikke – men du bør lage en i det øyeblikket du slipper inn en medeier.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>«Vi er jo bestevenner, vi trenger ingen avtale.» Dette er kanskje de dyreste ordene som finnes i norsk næringsliv. De fleste eierkonflikter starter nettopp mellom folk som en gang stolte blindt på hverandre.</p>
+<h3>Den enkle testen</h3>
+<p>Still deg selv disse spørsmålene:</p>
+<ul>
+<li>Er vi mer enn én eier?</li>
+<li>Kan vi bli uenige om penger, strategi eller arbeidsinnsats en gang i framtiden?</li>
+<li>Kan en av oss en dag ønske å selge seg ut, bli syk, gå konkurs privat, skille seg eller dø?</li>
+</ul>
+<p>Svarer du ja på det første og «kanskje» på de andre, trenger dere en aksjonæravtale. Og svaret er ja for omtrent alle.</p>
+<h3>Et skrekkeksempel uten avtale</h3>
+<p>Ola og Kjell starter «Verksted Sør AS», 50/50, uten aksjonæravtale. Etter to år vil Ola satse hardt og pløye alt tilbake i selskapet. Kjell vil ta ut mest mulig utbytte fordi han trenger penger privat. De er fullstendig fastlåst – 50/50 betyr at ingen kan overstyre den andre. Selskapet lammes. Uten en avtale som regulerer utbytte og en mekanisme for å bryte fastlåsing (såkalt «deadlock»), ender de hos advokater og i verste fall med å oppløse et ellers sunt selskap.</p>
+<p>Hadde de hatt en aksjonæravtale med en utbyttepolitikk og en regel for hva som skjer ved dødlås, kunne hele konflikten vært unngått.</p>
+<p>Det triste er at Ola og Kjell ikke krangler fordi de er dårlige mennesker. De krangler fordi de aldri ble enige om spillereglene mens de fortsatt var enige om alt annet. En aksjonæravtale tvinger dere til å snakke om de vanskelige tingene mens stemningen er god – og det er nesten alltid lettere da enn etterpå.</p>
+<h3>Hva en avtale beskytter dere mot</h3>
+<ul>
+<li><strong>Fastlåste avstemninger</strong> når dere er like store og uenige.</li>
+<li><strong>Uønskede medeiere</strong> – for eksempel en ekspartner, en arving eller en konkurrent som kjøper opp en eiers aksjer.</li>
+<li><strong>Gratispassasjerer</strong> – en eier som slutter å jobbe, men beholder full eierandel og utbytte.</li>
+<li><strong>Krangel om pris</strong> den dagen noen skal kjøpes ut.</li>
+<li><strong>Usikkerhet ved sykdom, død og skilsmisse</strong> hos en av eierne.</li>
+</ul>
+<p>Hvert av disse punktene representerer en mulig konflikt som kan koste dere dyrt. La oss ta gratispassasjeren som eksempel: i mange gründerbedrifter starter alle med samme entusiasme, men etter noen år har én av dem mistet gnisten og knapt jobber. Likevel sitter han med sin tredjedel av selskapet og krever sin tredjedel av utbyttet. De to som faktisk drar lasset, blir naturlig nok forbannet. Uten en avtale som knytter eierskap til arbeidsinnsats, finnes det ingen enkel måte å rette opp i dette på. Med en god avtale plikter en eier som trekker seg ut av driften, å selge aksjene tilbake til en avtalt pris.</p>
+<h3>Det er forskjell på smått og stort selskap</h3>
+<p>Jo mer som står på spill, desto viktigere blir avtalen. To venner som starter en liten nettbutikk på fritiden, kan kanskje klare seg en stund uten. Men så snart selskapet vokser, ansetter folk, tar inn investorer eller begynner å tjene reelle penger, blir innsatsen så høy at en avtale er nesten uunnværlig. Et godt råd: lag avtalen mens selskapet fortsatt er lite og uten store verdier – da er forhandlingene enkle, og ingen føler at de har «for mye» å tape.</p>
+<h3>Når trenger du den <em>ikke</em>?</h3>
+<p>Er du <strong>eneeier</strong>, har du ingen å avtale med – da styrer du alt selv gjennom vedtekter og dine egne beslutninger. Men i samme sekund du tar inn en investor, en kompanjong eller en nøkkelansatt som får aksjer, bør avtalen være på plass <em>før</em> aksjene skifter hender. Det er mye lettere å sette betingelser før noen kommer inn enn etterpå.</p>
+<p>Tenk på det som en bryllupskontrakt: det er langt enklere å bli enige om hva som skjer ved et brudd <em>før</em> dere gifter dere, enn å forhandle om det midt i en skilsmisse. Når noen først har fått aksjene sine, har de mindre grunn til å gå med på begrensninger – da har de jo allerede det de ønsket. Sett vilkårene mens du fortsatt har noe den andre vil ha.</p>
+<h3>Familiebedrifter trenger den ekstra godt</h3>
+<p>I familieeide AS tror mange at «vi er jo familie, vi ordner opp». Men nettopp i familier blir konflikter ekstra betente, og spørsmål om arv, generasjonsskifte og svigerbarn som kommer inn ved arv eller skilsmisse, kan rive familier i stykker. En aksjonæravtale som regulerer hvem som kan eie aksjer, er gull verdt her.</p>
+<h3>Praktiske steg</h3>
+<ol>
+<li><strong>Bestem dere nå</strong> – ikke «en gang senere». Senere kommer ofte etter at konflikten har startet.</li>
+<li><strong>List opp worst-case-scenarioer:</strong> uenighet, salg, sykdom, død, skilsmisse, konkurs.</li>
+<li><strong>Bli enige om kjørereglene</strong> for hver av dem.</li>
+<li><strong>Fastsett en verdsettelsesmetode</strong> for aksjer.</li>
+<li><strong>Få avtalen satt opp eller kvalitetssikret av en advokat,</strong> og sørg for at alle signerer.</li>
+</ol>
+<h3>Men hva om vi virkelig stoler på hverandre?</h3>
+<p>Nettopp da bør dere lage avtalen – mens tilliten er på topp og ingen mistenker den andre for noe. En aksjonæravtale handler ikke om mistillit. Den handler om å være forberedt på at livet skjer: sykdom, dødsfall, skilsmisse, uenighet om penger eller bare at noen ombestemmer seg om hva de vil med livet sitt. Ingen av disse tingene har noe med tillit å gjøre. De skjer uansett hvor gode venner dere er. Avtalen er rett og slett en måte å ta vare på vennskapet på, ved å avklare det vanskelige før det blir vanskelig.</p>
+<h3>En billig forsikring</h3>
+<p>En aksjonæravtale koster typisk noen titusener å sette opp. En eierkonflikt uten avtale kan koste hundretusener i advokatutgifter – og i verste fall hele selskapet. Sett opp mot det er avtalen en av de smarteste investeringene dere gjør.</p>
+<h3>Kort oppsummert</h3>
+<p>Er dere mer enn én eier, trenger dere en aksjonæravtale – nesten uten unntak. Den beskytter mot fastlåsing, uønskede medeiere, gratispassasjerer og krangel om pris ved utkjøp. Eneeiere trenger den ikke, men bør lage en før de slipper inn en medeier. Skriv den mens dere er venner – det er den billigste forsikringen dere kan kjøpe.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

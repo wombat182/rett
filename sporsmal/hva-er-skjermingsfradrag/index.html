@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er skjermingsfradrag? — Rettsregel</title>
+<meta name="description" content="Skjermingsfradraget er et fradrag som lar en liten, «risikofri» del av avkastningen på aksjene dine slippe utbytteskatt. Tanken er at du ikke skal…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-skjermingsfradrag/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er skjermingsfradrag?">
+<meta property="og:description" content="Skjermingsfradraget er et fradrag som lar en liten, «risikofri» del av avkastningen på aksjene dine slippe utbytteskatt. Tanken er at du ikke skal…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-skjermingsfradrag/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er skjermingsfradrag?">
+<meta name="twitter:description" content="Skjermingsfradraget er et fradrag som lar en liten, «risikofri» del av avkastningen på aksjene dine slippe utbytteskatt. Tanken er at du ikke skal…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er skjermingsfradrag?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Skjermingsfradraget er et fradrag som lar en liten, «risikofri» del av avkastningen på aksjene dine slippe utbytteskatt. Tanken er at du ikke skal beskattes ekstra hardt for den avkastningen du like gjerne kunne fått helt trygt i banken. Fradraget regnes ut med en skjermingsrente, som for inntektsåret 2025 er 3,6 prosent. Renten endres årlig – sjekk skatteetaten.no.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Den enkle ideen bak skjerming</h3>
+<p>Tenk deg at du har 100 000 kroner. Du kan sette dem i banken og få en trygg, risikofri rente. Eller du kan kjøpe aksjer, som kan stige mye, men også falle. Staten mener at den delen av aksjeavkastningen som tilsvarer den trygge bankrenten, ikke bør beskattes ekstra hardt – for det er jo bare den «normale» belønningen for å ha penger ute å jobbe. Det er først den ekstra avkastningen du får for å ta risiko, som skal beskattes som aksjeinntekt.</p>
+<p>Derfor får du et skjermingsfradrag. «Skjerme» betyr her å beskytte – fradraget beskytter en liten del av utbyttet ditt mot skatt. Hensikten er rettferdighet: Du skal ikke straffes skattemessig for å velge aksjer fremfor bankkonto når det gjelder den helt trygge delen av avkastningen.</p>
+<h3>Slik regnes skjermingsfradraget ut</h3>
+<p>Formelen er enkel:</p>
+<p><strong>Skjermingsgrunnlag × skjermingsrente = årets skjermingsfradrag</strong></p>
+<ul>
+<li><strong>Skjermingsgrunnlaget</strong> er det du har betalt for aksjen (kjøpesummen / kostprisen), pluss eventuelt ubrukt skjerming fra tidligere år.</li>
+<li><strong>Skjermingsrenten</strong> for inntektsåret 2025 er 3,6 prosent (verifisert mot skatteetaten.no). Den settes hvert år i januar året etter, basert på renten på korte statskasseveksler. Renten på statskasseveksler med tre måneders løpetid legges til grunn, med et lite påslag, og nedjusteres deretter med skattesatsen.</li>
+</ul>
+<p>La oss ta Ingrid som eksempel. Hun kjøpte aksjer for 100 000 kroner. Skjermingsfradraget hennes for inntektsåret 2025 blir:</p>
+<p>100 000 × 3,6 % = 3 600 kroner</p>
+<p>Det betyr at hvis Ingrid får utbytte, er de første 3 600 kronene skattefrie.</p>
+<h3>Et fullt regneeksempel med utbytte</h3>
+<p>Si at Ingrid får 5 000 kroner i utbytte i 2025, og har et skjermingsfradrag på 3 600 kroner. Vi bruker oppjusteringsfaktoren (1,72):</p>
+<ul>
+<li>Skattepliktig del: 5 000 − 3 600 = 1 400 kroner</li>
+<li>Oppjustert: 1 400 × 1,72 = 2 408 kroner</li>
+<li>Skatt: 2 408 × 0,22 = 529,76 kroner</li>
+</ul>
+<p>Uten skjerming måtte hun ha skattet av hele 5 000-kronersutbyttet. Skjermingen sparte henne for skatt på 3 600 kroner. I praksis betyr det at skjermingen alene reduserte skatten hennes med 3 600 × 0,3784 = 1 362 kroner sammenlignet med ingen skjerming.</p>
+<h3>Viktig: Ubrukt skjerming forsvinner ikke</h3>
+<p>Et av de mest oversette poengene ved skjerming er dette: Hvis du ikke får nok utbytte til å bruke opp skjermingsfradraget, går resten IKKE tapt. Det legges til skjermingsgrunnlaget for neste år og vokser videre.</p>
+<p>Eksempel: Lars har et skjermingsfradrag på 4 000 kroner, men får bare 1 000 kroner i utbytte.</p>
+<ul>
+<li>Han bruker 1 000 kroner av skjermingen mot utbyttet (som da blir skattefritt).</li>
+<li>De resterende 3 000 kronene blir «ubrukt skjerming» som overføres til neste år.</li>
+</ul>
+<p>Den ubrukte skjermingen kan også brukes mot <strong>gevinst</strong> den dagen han selger aksjen. Den er altså verdifull, og den hoper seg opp år etter år hvis du ikke tar ut utbytte. Dette er en av grunnene til at langsiktig aksjesparing uten utbytte kan være gunstig: skjermingen bygger seg opp som en buffer mot fremtidig skatt.</p>
+<h3>Et lengre eksempel over flere år</h3>
+<p>Tenk deg at Mette kjøper aksjer for 200 000 kroner og holder dem i tre år uten å få utbytte. Forenklet, med en skjermingsrente rundt 3,6 prosent, bygger hun opp skjerming på cirka 7 200 kroner i året, altså i overkant av 21 000 kroner samlet (litt mer, fordi ubrukt skjerming også gir grunnlag). Når hun selger med 60 000 kroner i gevinst, trekkes denne oppsparte skjermingen fra først, slik at bare resten beskattes som aksjegevinst. Det er en reell skattebesparelse for den tålmodige spareren.</p>
+<h3>To viktige regler å huske</h3>
+<ol>
+<li><strong>Skjerming følger den som eier aksjen 31. desember.</strong> Hvis du kjøper en aksje i november og fortsatt eier den ved nyttår, får du årets skjerming. Selger du før nyttår, får du den ikke det året.</li>
+<li><strong>Skjerming gjelder per aksje.</strong> Hver enkelt aksje har sitt eget skjermingsgrunnlag og sin egen ubrukte skjerming.</li>
+</ol>
+<h3>Hva med aksjesparekonto og aksjefond?</h3>
+<p>Også på en aksjesparekonto (ASK) og i aksjefond beregnes det skjermingsfradrag. På ASK regnes skjermingen ut fra det du har skutt inn på kontoen (innskuddet), ikke fra markedsverdien. Forvalteren eller banken rapporterer dette automatisk, så du finner det ferdig i skattemeldingen.</p>
+<h3>Trenger du å regne selv?</h3>
+<p>Som regel ikke. Banken, fondsforvalteren eller ASK-tilbyderen rapporterer skjermingsfradraget til Skatteetaten, og det dukker opp i skattemeldingen din. Men det er lurt å kontrollere at det stemmer, særlig hvis du har flyttet aksjer mellom meglere eller eier aksjer i mindre, unoterte selskaper der rapporteringen kan svikte.</p>
+<h3>Vanlige misforståelser om skjerming</h3>
+<p>Det er noen myter det er verdt å rydde opp i:</p>
+<ul>
+<li><strong>«Skjerming gjør aksjer skattefrie.»</strong> Nei. Skjermingen beskytter bare en liten, risikofri del av avkastningen. Resten beskattes med oppjustering og 22 prosent.</li>
+<li><strong>«Jeg mister skjermingen hvis jeg ikke bruker den.»</strong> Nei. Ubrukt skjerming overføres til neste år og kan brukes senere, både mot utbytte og gevinst.</li>
+<li><strong>«Skjermingen regnes av dagens verdi på aksjen.»</strong> Nei. Den regnes av det du betalte (kostprisen), ikke av markedsverdien. En aksje som har steget mye i verdi, gir ikke mer skjerming av den grunn.</li>
+</ul>
+<h3>Hvorfor skjerming betyr mer for noen enn for andre</h3>
+<p>Skjermingsfradraget betyr mest for deg som eier mye aksjer over lang tid uten å ta ut store utbytter. Da bygger den ubrukte skjermingen seg opp år etter år og blir en solid buffer mot skatt den dagen du selger. For deg som tar ut store utbytter hvert år, brukes skjermingen opp løpende og rekker ikke å vokse. Begge deler er helt greit – poenget er bare å være klar over at tålmodig sparing belønnes litt ekstra gjennom skjermingen.</p>
+<p>Et siste praktisk poeng: skjermingen er knyttet til deg som eier. Gir du bort aksjer i gave eller arver dem, følger det egne regler for hva som skjer med skjermingsgrunnlaget. Sjekk dette spesielt hvis du står midt i en arve- eller gavesituasjon.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Skjermingsfradraget beskytter en «risikofri» del av aksjeavkastningen mot utbytteskatt.</li>
+<li>Det regnes ut som skjermingsgrunnlag (kostpris pluss ubrukt skjerming) ganger skjermingsrenten.</li>
+<li>Skjermingsrenten er 3,6 prosent for inntektsåret 2025 (verifisert mot skatteetaten.no) og endres hvert år.</li>
+<li>Ubrukt skjerming går ikke tapt – den overføres og vokser, og kan brukes mot både utbytte og gevinst.</li>
+<li>Skjerming tildeles den som eier aksjen 31. desember.</li>
+<li>Det meste rapporteres automatisk, men kontroller tallene. Sjekk gjeldende rente på skatteetaten.no.</li>
+</ul>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

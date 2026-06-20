@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er et skattekort? — Rettsregel</title>
+<meta name="description" content="Et skattekort er en elektronisk beskjed fra Skatteetaten til arbeidsgiveren din om hvor mye skatt som skal trekkes fra lønnen din. Du trenger ikke levere…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-et-skattekort/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er et skattekort?">
+<meta property="og:description" content="Et skattekort er en elektronisk beskjed fra Skatteetaten til arbeidsgiveren din om hvor mye skatt som skal trekkes fra lønnen din. Du trenger ikke levere…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-et-skattekort/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er et skattekort?">
+<meta name="twitter:description" content="Et skattekort er en elektronisk beskjed fra Skatteetaten til arbeidsgiveren din om hvor mye skatt som skal trekkes fra lønnen din. Du trenger ikke levere…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er et skattekort?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Et skattekort er en elektronisk beskjed fra Skatteetaten til arbeidsgiveren din om hvor mye skatt som skal trekkes fra lønnen din. Du trenger ikke levere noe på papir – arbeidsgiveren henter det automatisk. Det finnes to typer: tabellkort og prosentkort. (Reglene gjelder generelt; tallgrenser som nevnes er for 2025.)</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva er egentlig et skattekort?</h3>
+<p>Et skattekort er en slags «oppskrift» på hvor mye skatt arbeidsgiveren din skal holde tilbake fra lønnen hver måned. Tidligere fikk man et fysisk kort i posten. I dag er alt elektronisk: når du begynner i en jobb, henter arbeidsgiveren skattekortet ditt direkte fra Skatteetaten. Du gjør i prinsippet ingenting.</p>
+<p>Hensikten er at du skal betale omtrent riktig skatt gjennom året, slik at du verken får en stor restskatt eller mye penger til gode når skatteoppgjøret kommer. Det er altså et system for å spre skatten jevnt utover, i stedet for å betale alt på én gang.</p>
+<h3>To typer: tabellkort og prosentkort</h3>
+<p>Dette er en av de viktigste tingene å forstå:</p>
+<p><strong>Tabellkort:</strong>
+- Tar hensyn til fradrag og variasjon mellom måneder.
+- Trekker mindre i måneder med lav inntekt og mer i måneder med høy inntekt.
+- Har innebygd «frikortdel» de første tusenlappene hver måned.
+- Passer best på hovedjobben din.</p>
+<p><strong>Prosentkort:</strong>
+- Trekker en fast prosent av all lønn, uansett beløp.
+- Enkelt og forutsigbart.
+- Passer best på <em>biinntekter</em> – for eksempel en ekstrajobb ved siden av hovedjobben.</p>
+<h3>Regneeksempel: hvorfor tabellkort på hovedjobben?</h3>
+<p>Nora har en hovedjobb med tabelltrekk og et trekkprosenttall på for eksempel 25 prosent fra prosentkortet sitt.</p>
+<ul>
+<li>I en måned hun tjener 35 000 kroner, trekker tabellkortet kanskje 7 500 kroner.</li>
+<li>I en måned med bare 20 000 kroner (mindre overtid), trekker tabellkortet kanskje bare 2 800 kroner – mindre prosent, fordi tabellen tar hensyn til at lav månedslønn betyr lavere årsskatt.</li>
+</ul>
+<p>Et prosentkort hadde trukket samme prosent uansett. På hovedjobben er tabellkort ofte mest treffsikkert, fordi det «glatter ut» skatten over året.</p>
+<h3>Hvorfor er desembertrekket lavere?</h3>
+<p>Med tabellkort er det vanlig at det trekkes mindre skatt i desember (og halv skatt på halv juni-lønn for noen). Det er ikke en julegave fra staten – det er bare innebygd i tabellen, slik at trekket over hele året blir riktig. Du betaler like mye totalt; det er bare fordelt slik at du har litt ekstra rundt jul og ferie.</p>
+<h3>Hvis du har to jobber</h3>
+<p>Har du to arbeidsgivere, bør du som hovedregel:</p>
+<ul>
+<li>Bruke <strong>tabellkortet</strong> på den jobben du tjener mest på (hovedjobben).</li>
+<li>Gi den andre arbeidsgiveren beskjed om å bruke <strong>prosenttrekk</strong>. Skattekortet ditt inneholder et trekkprosenttall nettopp for slike biinntekter.</li>
+</ul>
+<p>Hvis begge arbeidsgivere bruker tabellkortet, får du trukket «frikortdelen» to ganger, og da blir det trukket for lite skatt – noe som gir restskatt senere. Dette er en vanlig felle, særlig for folk med to deltidsjobber.</p>
+<h3>Hva står det i skattekortet?</h3>
+<p>Skattekortet inneholder blant annet:</p>
+<ul>
+<li>Et <strong>trekktabellnummer</strong> (for tabellkortet)</li>
+<li>En <strong>trekkprosent</strong> (for biinntekter)</li>
+<li>En oversikt over forventet inntekt og forventede fradrag</li>
+</ul>
+<p>Tallene bygger på det Skatteetaten antar at du kommer til å tjene, ofte basert på fjorårets inntekt. Stemmer ikke anslaget, kan du endre det selv (se egen artikkel om å endre skattekortet).</p>
+<h3>Hvordan ser du skattekortet ditt?</h3>
+<ol>
+<li>Logg inn på skatteetaten.no med BankID.</li>
+<li>Gå til «Skattekort, skattemelding, skatteoppgjør».</li>
+<li>Velg «Se og endre skattekortet/forskuddsskatt».</li>
+<li>Der ser du hvilken inntekt og hvilke fradrag som ligger til grunn.</li>
+</ol>
+<p>Du kan også se hvilke arbeidsgivere som har hentet skattekortet ditt – nyttig hvis du lurer på om en jobb har «meldt seg», eller om en gammel arbeidsgiver fortsatt henter kortet ditt.</p>
+<h3>Hva skjer hvis du ikke har skattekort?</h3>
+<p>Hvis arbeidsgiveren ikke finner et skattekort på deg, <em>må</em> de etter loven trekke <strong>50 prosent</strong> av lønnen i skatt. Det er en sikkerhetsmekanisme for å unngå at folk betaler for lite. Du får pengene tilbake i skatteoppgjøret hvis det ble trukket for mye, men det er bedre å sørge for at skattekortet er på plass før første lønning.</p>
+<h3>Når får du det nye skattekortet?</h3>
+<p>Skatteetaten lager nytt skattekort til alle hvert år, vanligvis i midten av desember for det kommende året. Da kan du logge inn og sjekke at anslagene stemmer før det nye året starter. Mange får en e-post eller en melding i Altinn om at skattekortet er klart. Det er en god vane å se gjennom det da, mens du fortsatt har tid til å rette opp før januarlønnen.</p>
+<h3>Hva er forskjellen på skattekort og skattemelding?</h3>
+<p>Disse to blandes ofte sammen, men de er ulike:</p>
+<ul>
+<li><strong>Skattekortet</strong> er på forhånd – det styrer hvor mye som trekkes <em>gjennom</em> året.</li>
+<li><strong>Skattemeldingen</strong> (tidligere kalt selvangivelsen) kommer <em>etter</em> året – den oppsummerer hva du faktisk tjente og hvilke fradrag du hadde.</li>
+</ul>
+<p>Etter skattemeldingen kommer <strong>skatteoppgjøret</strong>, som viser om du har betalt for mye (penger til gode) eller for lite (restskatt). Skattekortet er altså forsøket på å treffe riktig på forhånd, mens skattemeldingen og oppgjøret er fasiten i etterkant.</p>
+<h3>Eksempel: Når skattekortet bommer</h3>
+<p>Ida begynte i en ny, bedre betalt jobb i mars, men skattekortet hennes bygde på fjorårets lavere lønn. Trekket ble derfor for lavt gjennom året. Da skatteoppgjøret kom, fikk hun restskatt på rundt 18 000 kroner. Hadde hun oppdatert skattekortet da hun byttet jobb, ville trekket vært riktig hele veien, og hun hadde sluppet regningen. Dette viser hvorfor det lønner seg å se på skattekortet når livet endrer seg.</p>
+<h3>Hvorfor er systemet laget slik?</h3>
+<p>Hele poenget med skattekort er å gjøre skatteinnbetalingen automatisk og smertefri. I stedet for at du må sette av penger selv og betale en stor regning, trekkes litt hver måned. Det elektroniske systemet betyr også at en ny arbeidsgiver kan komme i gang med riktig trekk uten papirarbeid fra deg.</p>
+<h3>Kildehenvisning i klartekst</h3>
+<p>Reglene om skattekort, tabellkort og prosentkort står på Skatteetatens sider om skattekort (skatteetaten.no/skattekort). 50-prosentstrekket ved manglende skattekort følger av skattebetalingsregelverket. Innholdet i skattekortet bygger på din forventede årsinntekt, som du kan justere selv.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Et skattekort forteller arbeidsgiveren hvor mye skatt som skal trekkes.</li>
+<li>Alt er elektronisk – arbeidsgiveren henter det automatisk.</li>
+<li>Tabellkort tar hensyn til fradrag og månedsvariasjon; bruk det på hovedjobben.</li>
+<li>Prosentkort trekker fast prosent; bruk det på ekstrajobber.</li>
+<li>Ikke bruk tabellkort på to jobber samtidig – det gir restskatt.</li>
+<li>Mangler du skattekort, trekkes 50 prosent.</li>
+<li>Sjekk skattekortet ditt på skatteetaten.no.</li>
+</ul>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva kreves for å endre vedtektene? — Rettsregel</title>
+<meta name="description" content="For å endre vedtektene i et AS trenger dere et generalforsamlingsvedtak med minst to tredeler av både stemmene og aksjekapitalen som er representert på…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-kreves-for-a-endre-vedtektene/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva kreves for å endre vedtektene?">
+<meta property="og:description" content="For å endre vedtektene i et AS trenger dere et generalforsamlingsvedtak med minst to tredeler av både stemmene og aksjekapitalen som er representert på…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-kreves-for-a-endre-vedtektene/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva kreves for å endre vedtektene?">
+<meta name="twitter:description" content="For å endre vedtektene i et AS trenger dere et generalforsamlingsvedtak med minst to tredeler av både stemmene og aksjekapitalen som er representert på…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva kreves for å endre vedtektene?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>For å endre vedtektene i et AS trenger dere et generalforsamlingsvedtak med minst to tredeler av både stemmene og aksjekapitalen som er representert på møtet (aksjeloven § 5-18). I tillegg må endringen meldes til Foretaksregisteret for å bli registrert. Vedtektene er selskapets grunnregler, så loven krever bred enighet før de skrives om.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>For å endre vedtektene i et AS trenger dere et generalforsamlingsvedtak med <strong>minst to tredeler av både stemmene og aksjekapitalen</strong> som er representert på møtet (aksjeloven § 5-18). I tillegg må endringen meldes til Foretaksregisteret for å bli registrert. Vedtektene er selskapets grunnregler, så loven krever bred enighet før de skrives om.</p>
+<h3>Hva er egentlig vedtektene?</h3>
+<p>Vedtektene er det grunnleggende regelsettet for selskapet ditt. De ble laget da selskapet ble stiftet, og de inneholder blant annet:</p>
+<ul>
+<li>Selskapets navn (foretaksnavnet)</li>
+<li>Hva selskapet driver med (virksomheten / formålet)</li>
+<li>Størrelsen på aksjekapitalen</li>
+<li>Eventuelle særregler, som forkjøpsrett, styrets sammensetning eller krav om styresamtykke ved aksjesalg</li>
+</ul>
+<p>Vil dere endre noe av dette, må dere endre vedtektene – og da gjelder det skjerpede flertallskravet.</p>
+<h3>Hovedregelen: to tredeler av to ting</h3>
+<p>Kjernen i § 5-18 er at det trengs minst to tredeler av:</p>
+<ol>
+<li><strong>stemmene</strong> som er representert på generalforsamlingen, <strong>og</strong></li>
+<li><strong>aksjekapitalen</strong> som er representert på generalforsamlingen.</li>
+</ol>
+<p>I et typisk lite selskap der hver aksje gir én stemme, blir disse to det samme. Men har selskapet ulike aksjeklasser, må begge kravene være oppfylt hver for seg.</p>
+<p>La oss bruke "Treverk AS", som eies av tre søsken:</p>
+<ul>
+<li>Henrik: 50 aksjer</li>
+<li>Solveig: 30 aksjer</li>
+<li>Amir (inngiftet medeier): 20 aksjer</li>
+</ul>
+<p>Til sammen 100 aksjer, én stemme hver. Alle møter. For å endre vedtektene trengs minst 67 stemmer. Hvis Henrik og Solveig er enige (50 + 30 = 80), er endringen vedtatt. Hvis bare Henrik og Amir er enige (50 + 20 = 70), holder det også. Men hvis bare Henrik vil (50), er det for lite – selv om han alene har flertall blant aksjene.</p>
+<h3>Når kreves det enda mer?</h3>
+<p>Noen vedtektsendringer er så inngripende at loven krever <strong>mer enn to tredeler</strong>. Det gjelder typisk når endringen svekker rettighetene til aksjonærene på en alvorlig måte – for eksempel:</p>
+<ul>
+<li>Endringer som rammer en hel aksjeklasse negativt (krever to tredelers tilslutning i den klassen).</li>
+<li>Endringer som innfører nye, tyngende plikter for aksjonærene, eller begrenser retten til å selge aksjene – her kan kravet være tilslutning fra alle berørte, helt opp mot enstemmighet.</li>
+</ul>
+<p>Er dere usikre på om en endring faller i denne kategorien, er det lurt å spørre en rådgiver eller revisor før dere kjører på.</p>
+<h3>Steg for steg: slik endrer dere vedtektene</h3>
+<ol>
+<li><strong>Skriv forslaget tydelig.</strong> Hva skal den nye teksten være? Formuler både den gamle og den nye ordlyden.</li>
+<li><strong>Sett saken på dagsordenen.</strong> Endringen må stå i innkallingen – generalforsamlingen kan ikke vedta noe som ikke er meldt.</li>
+<li><strong>Hold generalforsamlingen.</strong> Det kan være ordinær, ekstraordinær eller forenklet (hvis ingen motsetter seg).</li>
+<li><strong>Stem og tell.</strong> Sjekk at dere har minst to tredeler av både stemmer og kapital.</li>
+<li><strong>Før protokoll.</strong> Protokollen skal vise den nye vedtektsteksten og stemmetallet.</li>
+<li><strong>Meld til Foretaksregisteret.</strong> Endringen får full virkning utad når den er registrert. Dette gjøres enkelt via Altinn/Samordnet registermelding.</li>
+</ol>
+<h3>Mal: protokolltekst for vedtektsendring</h3>
+<blockquote>
+<p><strong>Sak 3 – Endring av vedtektenes § 1 (foretaksnavn)</strong>
+Styret foreslår at vedtektenes § 1 endres fra:
+<em>"Selskapets foretaksnavn er Treverk AS."</em>
+til:
+<em>"Selskapets foretaksnavn er Treverk &amp; Design AS."</em></p>
+<p>Avstemning: 80 av 100 representerte stemmer for (Henrik og Solveig). Dette utgjør 80 % av både stemmer og kapital, og kravet i aksjeloven § 5-18 om minst to tredeler er oppfylt.
+<strong>Vedtak:</strong> Forslaget er vedtatt.</p>
+</blockquote>
+<h3>Eksempler på vanlige vedtektsendringer</h3>
+<p>For å gjøre det konkret, her er noen endringer små selskaper ofte gjør – og hva man bør tenke på:</p>
+<ul>
+<li><strong>Endre navn.</strong> Kanskje selskapet har byttet bransje, eller dere vil ha et mer treffende navn. Sjekk at det nye navnet er ledig i Brønnøysundregistrene før dere vedtar det.</li>
+<li><strong>Endre forretningskontorets kommune.</strong> Flytter selskapet til en annen kommune, må vedtektene oppdateres. (Adresse innen samme kommune kan ofte endres uten vedtektsendring.)</li>
+<li><strong>Utvide eller endre formålet.</strong> Skal dere begynne med noe nytt, bør formålsbestemmelsen dekke det.</li>
+<li><strong>Innføre eller fjerne styresamtykke ved aksjesalg.</strong> Dette er en typisk eierstyringsregel. Merk at å <em>innføre</em> nye begrensninger på å selge aksjer kan kreve mer enn to tredeler, fordi det griper inn i aksjonærenes rettigheter.</li>
+</ul>
+<h3>Hva med å fjerne forkjøpsrett eller andre rettigheter?</h3>
+<p>Vær ekstra varsom hvis endringen <em>tar bort</em> en rettighet noen aksjonærer har, eller skjevdeler godene mellom eierne. Da er vi raskt over i området hvor loven krever mer enn to tredeler – noen ganger samtykke fra alle berørte. Et eksempel: hvis Treverk AS vil fjerne en eksisterende forkjøpsrett som gir Solveig en fordel, kan det ikke uten videre gjøres med et to-tredels-flertall som overkjører henne. Slå opp i de skjerpede reglene, eller spør en fagperson, før dere stemmer.</p>
+<h3>Et fullstendig eksempel fra start til registrering</h3>
+<p>Treverk AS vil endre navn til "Treverk &amp; Design AS". Slik gjør de det riktig:</p>
+<ol>
+<li>Styret setter saken på dagsordenen og sender innkalling med både gammel og ny ordlyd.</li>
+<li>På generalforsamlingen stemmer Henrik (50) og Solveig (30) for – 80 av 100 stemmer. Det er klart over to tredeler av både stemmer og kapital.</li>
+<li>Protokollen føres med den nye vedtektsteksten og stemmetallet 80 av 100.</li>
+<li>Henrik logger inn på Altinn og sender Samordnet registermelding med vedlagt protokoll og oppdaterte vedtekter.</li>
+<li>Etter noen dager er det nye navnet registrert i Foretaksregisteret, og selskapet kan bruke det utad.</li>
+</ol>
+<p>Hele prosessen tar gjerne under en uke, og det meste er enkel papirhåndtering.</p>
+<h3>Vanlige spørsmål</h3>
+<ul>
+<li><em>"Gjelder endringen straks?"</em> Vedtaket er gyldig internt fra generalforsamlingen, men en del endringer (som navn og kapital) får full virkning utad når Foretaksregisteret har registrert dem.</li>
+<li><em>"Kan vi endre vedtektene på en forenklet generalforsamling?"</em> Ja, formen kan være forenklet hvis ingen motsetter seg – men flertallskravet på to tredeler gjelder fortsatt.</li>
+<li><em>"Hva om vi glemmer å melde til registeret?"</em> Da kan vedtaket mangle virkning utad. Husk meldingen.</li>
+<li><em>"Koster det noe å registrere?"</em> Foretaksregisteret tar et gebyr for å registrere vedtektsendringer. Sjekk gjeldende sats før dere sender.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>For å endre vedtektene trengs et generalforsamlingsvedtak med minst to tredeler av både stemmene og aksjekapitalen som er representert (§ 5-18), og noen ekstra inngripende endringer krever enda mer. Sett saken på dagsordenen, formuler den nye teksten tydelig, tell stemmene nøye, før protokoll – og husk å melde endringen til Foretaksregisteret. Da står den nye vedtekten støtt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

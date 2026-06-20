@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er utbytte? — Rettsregel</title>
+<meta name="description" content="Utbytte er rett og slett din andel av overskuddet selskapet ditt deler ut til eierne.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-utbytte/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er utbytte?">
+<meta property="og:description" content="Utbytte er rett og slett din andel av overskuddet selskapet ditt deler ut til eierne.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-utbytte/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er utbytte?">
+<meta name="twitter:description" content="Utbytte er rett og slett din andel av overskuddet selskapet ditt deler ut til eierne.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er utbytte?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Utbytte er rett og slett din andel av overskuddet selskapet ditt deler ut til eierne. Driver du et lite AS som har tjent penger, er utbytte måten du som aksjonær kan flytte noe av selskapets verdier over i din egen lomme – uten å ta det ut som lønn. Men det er strenge regler for hvor mye og når, så her gjelder det å ha tungen rett i munnen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Utbytte er rett og slett din andel av overskuddet selskapet ditt deler ut til eierne. Driver du et lite AS som har tjent penger, er utbytte måten du som aksjonær kan flytte noe av selskapets verdier over i din egen lomme – uten å ta det ut som lønn. Men det er strenge regler for hvor mye og når, så her gjelder det å ha tungen rett i munnen.</p>
+<h3>Selskapet og du er to forskjellige «lommebøker»</h3>
+<p>Det aller viktigste å forstå er at et aksjeselskap er en egen juridisk person. Pengene på selskapets konto er IKKE dine private penger, selv om du eier 100 prosent av aksjene. Du kan ikke bare overføre fra firmakontoen til privatkontoen når du har lyst. Gjør du det, har du enten tatt ut lønn, lån eller utbytte – og hver av disse har sine egne regler.</p>
+<p>Utbytte er den «riktige» måten å hente ut overskudd på når selskapet faktisk har tjent penger som er igjen etter at alt er betalt. Tenk på Sara, som eier hele frisørsalongen «Saksesving AS». Etter et godt år står det 400 000 kroner i opptjent overskudd på selskapets bøker. Vil Sara ha noe av dette ut til seg selv som eier, kan hun ta det ut som utbytte – men bare hvis reglene er fulgt.</p>
+<h3>Utdeling av «fri egenkapital»</h3>
+<p>Loven sier at utbytte er en form for «utdeling», og at du bare kan dele ut det som kalles selskapets <em>frie egenkapital</em> (aksjeloven § 8-1, regelen om hvor mye som kan deles ut). Fri egenkapital er enkelt forklart: alt selskapet eier minus all gjeld, og deretter trekker du fra den delen av egenkapitalen som er «bundet».</p>
+<p>Bundet egenkapital er penger selskapet IKKE har lov til å dele ut – først og fremst aksjekapitalen (det du skjøt inn da du startet, minst 30 000 kroner). Den skal stå som en buffer for kreditorene (de selskapet skylder penger). Det som er igjen når den bundne delen er trukket fra, er fritt – og kan i prinsippet deles ut som utbytte.</p>
+<h3>Et enkelt regneeksempel</h3>
+<p>La oss si at «Saksesving AS» har dette i balansen ved årsslutt:</p>
+<ul>
+<li>Eiendeler (bankinnskudd, utstyr, kundefordringer): 700 000 kr</li>
+<li>Gjeld (leverandører, skatt, lån): 250 000 kr</li>
+<li>Egenkapital blir da: 700 000 − 250 000 = 450 000 kr</li>
+</ul>
+<p>Av denne egenkapitalen er 30 000 kr aksjekapital (bundet). Da er den frie egenkapitalen 450 000 − 30 000 = 420 000 kr. Sara kan altså som utgangspunkt dele ut inntil 420 000 kr som utbytte (med visse fradrag vi kommer tilbake til i egne artikler). Men – og dette er viktig – at det er rom for utbytte i regnestykket betyr ikke at det er klokt eller lovlig å ta ut alt.</p>
+<h3>Utbytte må alltid være forsvarlig</h3>
+<p>Loven krever at enhver utdeling skal være <em>forsvarlig</em> ut fra selskapets egenkapital og betalingsevne (likviditet) (§ 8-1 fjerde ledd, som viser til kravet om forsvarlig egenkapital i § 3-4). Det betyr at selv om Sara har 420 000 kr i fri egenkapital, må styret stille seg spørsmålet: Har vi nok penger igjen til å betale regningene fremover? Vet vi om store utgifter eller dårligere tider som kommer?</p>
+<p>Hvis Sara vet at hun snart må kjøpe nytt salongutstyr for 300 000 kr, kan det være uforsvarlig å tømme kontoen for utbytte selv om regnestykket sier at hun har lov. Forsvarlighetskravet er en slags «sunn fornuft-bremse» som gjelder uansett hva tallene viser.</p>
+<h3>Utbytte er ikke lønn</h3>
+<p>Mange gründere blander sammen utbytte og lønn. Forskjellen er stor:</p>
+<ul>
+<li><strong>Lønn</strong> er betaling for arbeidet du gjør i selskapet. Det gir deg pensjonsopptjening og sykepenger, men beskattes som vanlig inntekt (opp mot rundt 46–47 prosent på toppen) og utløser arbeidsgiveravgift for selskapet.</li>
+<li><strong>Utbytte</strong> er avkastning på det du eier som aksjonær. Det gir ingen pensjon eller sykepenger, men beskattes annerledes.</li>
+</ul>
+<p>I 2026 beskattes utbytte ved at beløpet (etter et eventuelt skjermingsfradrag) ganges med en oppjusteringsfaktor på 1,72 og deretter skattlegges med 22 prosent. Det gir en effektiv skatt på 37,84 prosent. Tar Sara ut 100 000 kr i utbytte uten skjermingsfradrag, blir skatten cirka 37 840 kr. Skattereglene endres ofte, så sjekk alltid oppdaterte satser på skatteetaten.no før du regner.</p>
+<h3>Hva er skjermingsfradraget – kort forklart?</h3>
+<p>Du kommer til å høre ordet «skjermingsfradrag» når du snakker om utbytte. Det er et beløp du får trekke fra utbyttet <em>før</em> skatten regnes ut, slik at en liten del av avkastningen blir skattefri. Tanken bak er at en viss «risikofri» avkastning på pengene du har skutt inn, ikke skal beskattes ekstra hardt. Skjermingen regnes ut ved å gange inngangsverdien på aksjene dine (det du betalte for dem) med en skjermingsrente som fastsettes hvert år.</p>
+<p>Et eksempel: Sara kjøpte aksjene for 100 000 kr (inngangsverdi). Hvis skjermingsrenten et år er 3 prosent, blir skjermingsfradraget 3 000 kr. Tar hun ut 50 000 kr i utbytte, beskattes bare 50 000 − 3 000 = 47 000 kr. Ubrukt skjerming kan dessuten spares til senere år. Den nøyaktige skjermingsrenten finner du alltid på skatteetaten.no.</p>
+<h3>Hvorfor finnes utbytte i det hele tatt?</h3>
+<p>Hele poenget med å eie aksjer er å få avkastning. Utbytte er den ene måten (den andre er at aksjene øker i verdi og du selger med gevinst). For en gründer i et lite AS er utbytte ofte den viktigste måten å «høste» av et selskap som går godt, uten å selge seg ut. Samtidig balanserer loven dette mot hensynet til alle selskapet skylder penger: Kreditorene skal kunne stole på at det er en buffer (den bundne kapitalen) som ikke kan tappes ut. Reglene om utbytte er derfor en avveining mellom eiernes ønske om å ta ut penger og kreditorenes behov for trygghet.</p>
+<h3>Et siste, fullstendig eksempel</h3>
+<p>La oss runde av med Sara igjen. Hun bestemmer seg for å ta ut 200 000 kr av de 420 000 kronene i fri egenkapital. Slik ser hele kjeden ut:</p>
+<ol>
+<li>Styret (Sara) regner ut fri egenkapital: 420 000 kr.</li>
+<li>Styret vurderer forsvarligheten: banksaldoen er 350 000 kr, ingen store utgifter på vei – greit.</li>
+<li>Styret foreslår 200 000 kr i utbytte.</li>
+<li>Generalforsamlingen (Sara) vedtar 200 000 kr og fører det i protokollen.</li>
+<li>Selskapet betaler ut 200 000 kr.</li>
+<li>Sara skatter rundt 75 680 kr (37,84 prosent, uten skjermingsfradrag) og sitter igjen med cirka 124 320 kr.</li>
+</ol>
+<p>Slik blir et abstrakt regnskapstall til penger Sara faktisk kan bruke privat – på lovlig vis.</p>
+<h3>Kort oppsummert</h3>
+<p>Utbytte er din andel av selskapets overskudd, utbetalt til deg som eier. Du kan bare dele ut den frie egenkapitalen – det vil si verdiene som er igjen etter at gjeld og bunden kapital er trukket fra (§ 8-1). I tillegg må utdelingen alltid være forsvarlig ut fra selskapets økonomi og betalingsevne (§ 8-1, jf. § 3-4). Utbytte er noe annet enn lønn, og beskattes etter egne regler. Husk: selskapets penger er ikke dine private penger før utbyttet er lovlig vedtatt og utbetalt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

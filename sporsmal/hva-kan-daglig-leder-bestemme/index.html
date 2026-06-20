@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva kan daglig leder bestemme? — Rettsregel</title>
+<meta name="description" content="Daglig leder kan bestemme det som hører inn under den daglige ledelsen av selskapet.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-kan-daglig-leder-bestemme/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva kan daglig leder bestemme?">
+<meta property="og:description" content="Daglig leder kan bestemme det som hører inn under den daglige ledelsen av selskapet.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-kan-daglig-leder-bestemme/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva kan daglig leder bestemme?">
+<meta name="twitter:description" content="Daglig leder kan bestemme det som hører inn under den daglige ledelsen av selskapet.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva kan daglig leder bestemme?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Daglig leder kan bestemme det som hører inn under den daglige ledelsen av selskapet. Men saker som er av "uvanlig art" eller "stor betydning" kan daglig leder ikke avgjøre alene, de hører hjemme hos styret (aksjeloven § 6-14).</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Daglig leder kan bestemme det som hører inn under den daglige ledelsen av selskapet. Men saker som er av "uvanlig art" eller "stor betydning" kan daglig leder ikke avgjøre alene, de hører hjemme hos styret (aksjeloven § 6-14).</p>
+<h3>Hva betyr "daglig ledelse"?</h3>
+<p>Den daglige ledelsen er alt det vanlige som skjer i driften fra dag til dag. Tenk på det som rutinene og de løpende avgjørelsene som holder selskapet i gang. Loven sier at daglig leder står for den daglige ledelsen, men at dette <strong>ikke</strong> omfatter saker som etter selskapets forhold er av uvanlig art eller stor betydning (§ 6-14).</p>
+<p>Det er to nøkkelbegreper her: "uvanlig art" og "stor betydning". Begge handler om at det finnes en grense for hva daglig leder kan gjøre på egen hånd.</p>
+<h3>Hva daglig leder TYPISK kan bestemme alene</h3>
+<p>La oss bli konkrete. Lise er daglig leder i "Nordlys Webdesign AS". Her er ting hun trygt kan avgjøre selv, uten å spørre styret:</p>
+<ul>
+<li>Inngå vanlige kundeavtaler om nettsider.</li>
+<li>Kjøpe inn kontorrekvisita, programvare og utstyr til normal pris.</li>
+<li>Ansette en ny webdesigner innenfor budsjettet (i mindre selskaper).</li>
+<li>Betale løpende regninger og lønn.</li>
+<li>Svare på henvendelser og inngå vanlige leverandøravtaler.</li>
+<li>Håndtere markedsføring innenfor det vanlige.</li>
+</ul>
+<p>Dette er hverdagsbeslutninger, akkurat det daglig leder skal ta seg av.</p>
+<h3>Hva daglig leder IKKE kan bestemme alene</h3>
+<p>Nå til grensen. Disse sakene er enten "uvanlige" eller "store", og må opp i styret:</p>
+<ul>
+<li><strong>Selge eller kjøpe fast eiendom.</strong> Hvis Nordlys Webdesign AS skal kjøpe et kontorbygg, er det en stor og uvanlig sak.</li>
+<li><strong>Ta opp store lån</strong> som binder selskapet økonomisk i mange år.</li>
+<li><strong>Inngå svært langvarige eller dyre kontrakter</strong> som er uvanlige for selskapet.</li>
+<li><strong>Starte en helt ny type virksomhet</strong> som ligger utenfor det selskapet vanligvis driver med.</li>
+<li><strong>Avskjedige sentrale ansatte</strong> der dette har stor betydning for selskapet.</li>
+</ul>
+<p>Hvis Lise er usikker, er hovedregelen enkel: er du i tvil, spør styret.</p>
+<h3>"Stor betydning" avhenger av selskapet</h3>
+<p>Et viktig poeng: grensen er ikke den samme for alle selskaper. Loven sier "etter selskapets forhold". Det betyr at en avgjørelse som er stor for et lite selskap, kan være helt vanlig for et stort.</p>
+<p>Et eksempel: et innkjøp på 200 000 kroner er en stor sak for "Nordlys Webdesign AS" med to ansatte og lav omsetning. Men for "Statsbygg Entreprenør AS" med 80 ansatte er 200 000 kroner et ganske vanlig innkjøp. Så daglig leder må alltid vurdere størrelsen opp mot akkurat sitt eget selskap.</p>
+<h3>Når styrets beslutning ikke kan vente</h3>
+<p>Det finnes et viktig unntak. Hvis en sak egentlig hører til styret, men det er umulig å vente på en styrebeslutning uten at selskapet får vesentlig ulempe, kan daglig leder likevel avgjøre saken (§ 6-14 tredje ledd). Da skal styret underrettes snarest mulig etterpå.</p>
+<p>Eksempel: Det oppstår en akutt vannlekkasje i lokalene en fredag kveld, og en dyr utbedring må bestilles med en gang for å hindre store skader. Daglig leder kan da handle raskt, selv om summen normalt ville krevd en styrebeslutning, og så informere styret etterpå.</p>
+<h3>Styret kan gi fullmakt</h3>
+<p>Styret kan også gi daglig leder fullmakt til å bestemme i en bestemt sak (§ 6-14). Hvis styret for eksempel vet at en stor kontrakt er på vei, kan de på forhånd si: "Daglig leder får fullmakt til å signere kontrakten med Kunde AS innenfor en ramme på 500 000 kroner." Da har daglig leder ryggdekning til å avgjøre saken alene.</p>
+<h3>Praktisk råd: lag en fullmaktsgrense</h3>
+<p>Et veldig nyttig grep er at styret skriver ned en tydelig instruks for daglig leder. For eksempel:</p>
+<blockquote>
+<p>"Daglig leder kan inngå avtaler og foreta innkjøp på inntil 150 000 kroner per sak uten styrets godkjenning. Saker over dette beløpet skal forelegges styret."</p>
+</blockquote>
+<p>Dette gjør hverdagen forutsigbar, og daglig leder slipper å lure på hvor grensen går.</p>
+<h3>Sjekkliste: er dette en daglig sak eller en styresak?</h3>
+<p>Når du som daglig leder er i tvil, kan du stille deg disse spørsmålene:</p>
+<ul>
+<li><strong>Er dette noe vi gjør ofte?</strong> Hvis det er en rutinemessig avgjørelse, er det trolig daglig drift.</li>
+<li><strong>Er beløpet stort sett i forhold til selskapets størrelse?</strong> Hvis ja, peker det mot styresak.</li>
+<li><strong>Binder avtalen selskapet i lang tid?</strong> Lange forpliktelser er ofte styresaker.</li>
+<li><strong>Er dette noe nytt eller uvanlig for oss?</strong> Da hører det hjemme i styret.</li>
+<li><strong>Ville de andre eierne blitt overrasket om de fikk vite det etterpå?</strong> Hvis ja, spør styret først.</li>
+</ul>
+<p>Svarer du "ja" på de tre siste, er det trygt å løfte saken opp.</p>
+<h3>Hva med å ansette og si opp folk?</h3>
+<p>Et vanlig spørsmål er om daglig leder kan ansette og si opp ansatte på egen hånd. Svaret er at vanlige ansettelser innenfor budsjettet normalt ligger under den daglige ledelsen, daglig leder kan altså ansette en ny medarbeider i en ordinær stilling. Men å ansette eller si opp en svært sentral person, eller å gjennomføre større nedbemanninger, kan være av "stor betydning" og dermed en styresak. Bruk skjønn og selskapets størrelse som målestokk her også.</p>
+<h3>Hva skjer hvis daglig leder går over streken?</h3>
+<p>Hvis daglig leder inngår en avtale han egentlig ikke hadde myndighet til, kan avtalen i mange tilfeller likevel være bindende for selskapet overfor en godtroende motpart, fordi en utenforstående ikke alltid kan vite hvor selskapets interne grenser går. Men internt kan daglig leder bli holdt ansvarlig overfor selskapet for å ha gått ut over sin myndighet. Dette er en god grunn til å holde seg innenfor den avtalte fullmaktsgrensen.</p>
+<h3>To raske eksempler på grensen i praksis</h3>
+<p>Eksempel 1: Daglig leder Lise inngår en avtale med et nytt regnskapsbyrå som skal koste 4 000 kroner i måneden. Dette er en vanlig driftsavtale, helt innenfor hennes myndighet. Hun trenger ikke spørre styret.</p>
+<p>Eksempel 2: Lise blir tilbudt å kjøpe en konkurrents kundeportefølje for 800 000 kroner. Dette er stort, uvanlig og strategisk viktig. Her må hun stoppe opp og løfte saken til styret, selv om hun synes det er en god idé. Beslutningen tas i et styremøte og føres i protokollen.</p>
+<p>Forskjellen mellom de to er nettopp det loven mener med "daglig" mot "uvanlig art eller stor betydning".</p>
+<h3>Kort oppsummert</h3>
+<p>Daglig leder kan bestemme i den daglige driften, vanlige innkjøp, kundeavtaler, løpende oppfølging, men ikke i saker av uvanlig art eller stor betydning, som hører hjemme i styret (§ 6-14). Hva som er "stort" avhenger av størrelsen på akkurat ditt selskap. I akutte tilfeller der man ikke kan vente på styret, kan daglig leder likevel handle og informere styret etterpå. Det smarteste er å lage en tydelig fullmaktsgrense, så vet alle hvor strekken går.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg starte et AS alene? — Rettsregel</title>
+<meta name="description" content="Ja, du kan helt fint starte et AS alene.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-starte-et-as-alene/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg starte et AS alene?">
+<meta property="og:description" content="Ja, du kan helt fint starte et AS alene.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-starte-et-as-alene/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg starte et AS alene?">
+<meta name="twitter:description" content="Ja, du kan helt fint starte et AS alene.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg starte et AS alene?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, du kan helt fint starte et AS alene. Loven krever bare én stifter, og du kan eie alle aksjene selv og sitte som eneste styremedlem (asl. § 2-1 og § 6-1). Et AS med én eier kalles ofte et «enmanns-AS», og det er en svært vanlig måte å drive på i Norge.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja, du kan helt fint starte et AS alene. Loven krever bare én stifter, og du kan eie alle aksjene selv og sitte som eneste styremedlem (asl. § 2-1 og § 6-1). Et AS med én eier kalles ofte et «enmanns-AS», og det er en svært vanlig måte å drive på i Norge.</p>
+<h3>Det korte svaret</h3>
+<p>Det finnes ingen regel om at et AS må ha flere eiere. Aksjeloven sier at selskapet kan stiftes av «en eller flere stiftere» (asl. § 2-1). Du kan altså være alene om hele greia: du stifter selskapet, du eier alle aksjene, og du er styret. Mange av Norges småbedrifter er nettopp slike enmanns-AS, fra konsulenter og håndverkere til nettbutikker og frilansere.</p>
+<blockquote>
+<p><strong>Eksempel:</strong> Henrik er frilans webutvikler. Han stifter «Henrik Utvikling AS» helt på egen hånd, skyter inn 30 000 kr, eier alle 30 aksjene selv og er eneste styremedlem og daglig leder. Alt er i orden, og han har fått begrenset ansvar – kundene hans inngår avtaler med selskapet, ikke med Henrik privat.</p>
+</blockquote>
+<h3>Hva må være på plass når du er alene?</h3>
+<p>Selv om du er alene, gjelder de vanlige kravene:</p>
+<ol>
+<li><strong>Minst ett styremedlem.</strong> Du kan være det selv. Et AS må ha et styre med minst én person (asl. § 6-1).</li>
+<li><strong>Aksjekapital på minst 30 000 kr</strong>, som du skyter inn og eier i form av aksjer.</li>
+<li><strong>Stiftelsesdokument med vedtekter</strong>, som du signerer alene.</li>
+<li><strong>Melding til Foretaksregisteret</strong> innen tre måneder.</li>
+</ol>
+<p>Du kan altså være stifter, eneeier, styreleder og daglig leder – alt på én gang. Det er ingenting i veien for at én person fyller alle rollene.</p>
+<h3>Daglig leder – må jeg ha det?</h3>
+<p>Et lite AS <em>trenger</em> ikke daglig leder; det er valgfritt (asl. § 6-2). Mange enmanns-AS dropper daglig leder og lar styret (deg) håndtere driften. Vil du være daglig leder, kan du selvsagt det – mange registrerer seg som daglig leder fordi det ser ryddig ut overfor kunder og bank.</p>
+<h3>Avtaler med deg selv – en ting å være obs på</h3>
+<p>Når du er både eier, styre og kanskje motpart, kan du komme i situasjoner der du inngår avtaler «med deg selv» – for eksempel hvis selskapet skal kjøpe noe av deg privat. Slike avtaler mellom selskapet og eneaksjonæren skal som hovedregel <strong>dokumenteres skriftlig</strong> (asl. § 3-8 om avtaler med nærstående, og kravet til skriftlighet for avtaler mellom selskapet og eneste aksjeeier). Det er ikke vanskelig – bare skriv ned avtalen – men det er greit å vite at du ikke kan gjøre slikt helt formløst.</p>
+<blockquote>
+<p><strong>Tips:</strong> Hold selskapets økonomi og din private økonomi strengt adskilt. Egen bankkonto til selskapet, egne kort, og skriv ned avtaler mellom deg og selskapet. Da unngår du rot og holder ansvarsbegrensningen intakt. Blander du sammen privat og selskap, kan du i verste fall miste noe av beskyttelsen ansvarsbegrensningen gir.</p>
+</blockquote>
+<h3>Fordeler med å starte alene</h3>
+<ul>
+<li>Full kontroll – du bestemmer alt selv</li>
+<li>Begrenset ansvar selv om du er én person</li>
+<li>Du kan ta ut lønn fra ditt eget AS og få vanlige trygderettigheter</li>
+<li>Enkelt å ta inn medeiere senere ved å selge eller utstede aksjer</li>
+</ul>
+<h3>Ulemper å være klar over</h3>
+<ul>
+<li>Du har ingen å dele arbeidet og ansvaret med</li>
+<li>Du må selv passe på alle frister og plikter (regnskap, skatt, generalforsamling)</li>
+<li>Som eneeier bør du være ekstra nøye med formalitetene, siden ingen «ser deg i kortene»</li>
+</ul>
+<h3>Slik gjør du det – alene</h3>
+<blockquote>
+<p><strong>Sjekkliste for enmanns-AS:</strong>
+- [ ] Velg et navn som slutter på «AS» og som er ledig (sjekk brreg.no)
+- [ ] Lag stiftelsesdokument med vedtekter (bruk mal)
+- [ ] Sett aksjekapitalen til minst 30 000 kr
+- [ ] Oppnevn deg selv som eneste styremedlem
+- [ ] Signer alene (gjerne digitalt med BankID)
+- [ ] Betal inn kapitalen og få bekreftelse fra bank
+- [ ] Meld til Foretaksregisteret innen 3 måneder</p>
+</blockquote>
+<h3>Lønn til deg selv i et enmanns-AS</h3>
+<p>En av de fine sidene ved enmanns-AS er at du kan ansette deg selv. Da kan du ta ut lønn på vanlig måte, og du får arbeidstakerrettigheter som sykepenger og feriepenger. Lønna er en kostnad for selskapet, mens overskuddet som blir igjen kan tas ut som utbytte eller spares i selskapet til senere. Mange enmanns-AS bruker en kombinasjon: litt lønn jevnt gjennom året og eventuelt utbytte hvis det går bra.</p>
+<blockquote>
+<p><strong>Eksempel:</strong> Henrik betaler seg selv 40 000 kr i månedslønn fra webutvikler-AS-et. Når året er omme og selskapet har overskudd igjen, vurderer han sammen med regnskapsføreren om han skal ta ut et utbytte i tillegg. Slik styrer han sin egen inntekt.</p>
+</blockquote>
+<h3>Hva med styremøter og generalforsamling når jeg er alene?</h3>
+<p>Selv om du er alene, skal selskapet formelt sett ha generalforsamling én gang i året (der årsregnskapet godkjennes) og føre en enkel protokoll. Når du er eneeier, er dette ganske udramatisk – du «møter deg selv» og skriver et kort referat. Men det er greit å vite at formalitetene gjelder, og en regnskapsfører hjelper deg gjerne med malene.</p>
+<h3>Vanlige spørsmål</h3>
+<p><strong>Trenger jeg et varamedlem til styret når jeg er alene?</strong> Hvis styret bare har ett medlem, krever loven som hovedregel at det også oppnevnes minst ett varamedlem. Det kan være en du stoler på – en partner, et familiemedlem eller en kollega – som trer inn hvis du faller fra. Sjekk dette når du fyller ut registreringen.</p>
+<p><strong>Kan jeg som eneeier bestemme alt selv?</strong> Ja, som eneeier kontrollerer du generalforsamlingen fullt ut. Men du må fortsatt følge spillereglene i aksjeloven, blant annet kravene til forsvarlig egenkapital og til hvordan du tar penger ut av selskapet.</p>
+<p><strong>Hva skjer hvis jeg vil ta inn en partner senere?</strong> Det er enkelt. Du kan selge noen av aksjene dine til partneren eller utstede nye aksjer. Da går du fra enmanns-AS til et selskap med flere eiere, og det kan være lurt å lage en aksjonæravtale samtidig.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja – du kan starte et AS helt alene. Du kan være stifter, eneeier og eneste styremedlem på én gang, så lenge du har minst 30 000 kr i aksjekapital og melder selskapet til Foretaksregisteret i tide. Du kan til og med ansette deg selv og ta ut lønn. Pass bare på å holde selskapets og din private økonomi adskilt, skrive ned eventuelle avtaler mellom deg og selskapet, og oppnevne et varamedlem til styret. Da får du full kontroll og begrenset ansvar i ett.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

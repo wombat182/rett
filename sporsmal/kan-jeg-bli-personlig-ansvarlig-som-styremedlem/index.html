@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg bli personlig ansvarlig som styremedlem? — Rettsregel</title>
+<meta name="description" content="ja, det kan du – men bare hvis du har opptrådt klanderverdig. Det å sitte i et styre gir deg ikke automatisk personlig ansvar, og det å være i et AS gir…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-bli-personlig-ansvarlig-som-styremedlem/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg bli personlig ansvarlig som styremedlem?">
+<meta property="og:description" content="ja, det kan du – men bare hvis du har opptrådt klanderverdig. Det å sitte i et styre gir deg ikke automatisk personlig ansvar, og det å være i et AS gir…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-bli-personlig-ansvarlig-som-styremedlem/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg bli personlig ansvarlig som styremedlem?">
+<meta name="twitter:description" content="ja, det kan du – men bare hvis du har opptrådt klanderverdig. Det å sitte i et styre gir deg ikke automatisk personlig ansvar, og det å være i et AS gir…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg bli personlig ansvarlig som styremedlem?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>ja, det kan du – men bare hvis du har opptrådt klanderverdig. Det å sitte i et styre gir deg ikke automatisk personlig ansvar, og det å være i et AS gir deg heller ikke automatisk full beskyttelse. Sannheten ligger i midten, og den avgjøres av hvordan du faktisk utfører vervet.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Først: skill mellom de to «hattene» dine</h3>
+<p>Mange grundere har flere roller i sitt eget selskap samtidig. Tenk deg Petter, som eier 100 % av aksjene i «Petter Bygg AS», er styreleder <em>og</em> daglig leder. Han har tre hatter på samtidig:</p>
+<ol>
+<li><strong>Som aksjonær</strong> er han beskyttet av § 1-2 – han hefter ikke for selskapets gjeld.</li>
+<li><strong>Som styremedlem</strong> kan han bli ansvarlig etter § 17-1 hvis han gjør noe uaktsomt.</li>
+<li><strong>Som daglig leder</strong> kan han også bli ansvarlig etter samme bestemmelse.</li>
+</ol>
+<p>Det er hatt nummer 2 og 3 som er risikoen. Når folk sier «jeg har AS, så jeg er trygg», tenker de på hatt nummer 1 – og glemmer de to andre.</p>
+<h3>Hva skal til for personlig ansvar?</h3>
+<p>For at du skal bli personlig erstatningsansvarlig, må fire ting vanligvis være på plass samtidig:</p>
+<ul>
+<li><strong>Du har gjort noe galt</strong> – en handling eller unnlatelse som er forsettlig eller uaktsom.</li>
+<li><strong>Noen har lidd et økonomisk tap</strong> – selskapet, en aksjonær eller en utenforstående, typisk en kreditor.</li>
+<li><strong>Det er sammenheng</strong> mellom feilen din og tapet – tapet kom <em>på grunn av</em> det du gjorde.</li>
+<li><strong>Du kan bebreides</strong> – du burde ha handlet annerledes.</li>
+</ul>
+<p>Mangler ett av disse leddene, blir det normalt ikke ansvar. Det er for eksempel ikke nok at en kreditor taper penger; det må skyldes noe klanderverdig fra din side.</p>
+<h3>Et eksempel der ansvar IKKE oppstår</h3>
+<p>Linn sitter i styret i «Nordkyst Reiseliv AS». Styret bestemmer seg for å satse på en ny turistdestinasjon. De har innhentet markedsanalyser, budsjetter og en realistisk plan, og egenkapitalen er solid. Likevel kommer en uventet streik i ferjesektoren som ødelegger sesongen, og satsingen taper penger. Selskapet overlever, men aksjonærene er misfornøyde.</p>
+<p>Her blir ikke Linn personlig ansvarlig. Hun og styret tok en forsvarlig beslutning ut fra det de visste, og en uforutsett hendelse ødela. Det er ren forretningsrisiko – ikke uaktsomhet. Domstolene gir styret rom til å ta sjanser så lenge de er forsvarlig vurdert.</p>
+<h3>Et eksempel der ansvar oppstår</h3>
+<p>Samme Linn, men en annen situasjon. Selskapet har tapt all egenkapital, regnskapsfører har sagt klart fra, og banken har sagt nei til mer lån. Likevel signerer styret en stor leiekontrakt på nye lokaler for å «vise vekstvilje», og bestiller inventar for 300 000 på kreditt. Tre måneder senere er det konkurs. Utleieren og inventarleverandøren sitter igjen med tapet.</p>
+<p>Her er Linn i trøbbel. Styret påtok seg nye forpliktelser overfor kreditorer i en situasjon der de visste, eller klart burde visst, at selskapet ikke kunne gjøre opp for seg. Det er uaktsomt – og kan utløse personlig ansvar etter § 17-1.</p>
+<h3>Du blir vurdert individuelt</h3>
+<p>En viktig trygghet: du blir vurdert ut fra din egen rolle og kunnskap. Var du imot den uforsvarlige beslutningen og protesterte, kan du gå fri selv om resten av styret blir ansvarlig. Derfor er det helt avgjørende at du får protesten din inn i styreprotokollen. Sier du «dette mener jeg er uforsvarlig» og det noteres, har du dokumentasjon på at du ikke var med på det.</p>
+<h3>«Ansvaret følger ikke tittelen, men handlingen»</h3>
+<p>Du kan ikke gjemme deg bak at du «bare var menig styremedlem» eller «aldri møtte». Tvert imot: å være fraværende og passiv kan i seg selv være uaktsomt, fordi du har en plikt til å holde deg orientert. Men du blir altså bedømt på det du gjorde eller lot være å gjøre – ikke på en abstrakt tittel.</p>
+<h3>Hva med småfeil og uflaks?</h3>
+<p>Pust rolig: hverdagslige tabber, en glemt frist som rettes opp, eller en satsing som ikke lønte seg, gir normalt ikke personlig ansvar. Loven er ikke laget for å straffe ærlige forsøk som mislykkes. Den er laget for å fange opp dem som opptrer uforsvarlig på andres bekostning.</p>
+<h3>Daglig leder har et ekstra ansvar</h3>
+<p>Hvis du i tillegg til styrevervet er daglig leder, har du en enda tettere kobling til den daglige driften – og dermed ofte mer kunnskap om hvordan det egentlig står til. Det betyr at en daglig leder gjerne vurderes strengere enn et menig styremedlem, fordi han eller hun «var nærmest» og burde ha sett problemene først. Tenk på Petter fra eksempelet over: med tre hatter samtidig kan han ikke skylde på at «styret ikke fikk vite». Han <em>var</em> informasjonen.</p>
+<h3>Solidaransvar: én for alle?</h3>
+<p>Et begrep som skremmer mange er «solidaransvar». Det betyr at hvis flere styremedlemmer er ansvarlige for samme tap, kan den som er skadelidt kreve hele beløpet av hvem som helst av dem. Taper en kreditor 500 000 på grunn av en uforsvarlig beslutning hele styret stod bak, kan kreditoren i prinsippet kreve alt fra ett enkelt styremedlem – typisk den med mest penger. Den som betaler kan så kreve sin del tilbake fra de andre (regress), men det er en mager trøst hvis de andre er blakke. Dette er nok en grunn til at det å protokollføre uenighet, og til å unngå uforsvarlige beslutninger i utgangspunktet, er så viktig: du vil ikke ende opp som den ene «rike» som må betale for alles feil.</p>
+<h3>Et praktisk varselskilt: når du føler ubehag</h3>
+<p>En god tommelfingerregel for grundere: hvis du tar en beslutning i styret og kjenner en knute i magen – «dette er kanskje ikke helt riktig» – er det et signal om å stoppe opp. Det er sjelden uaktsomhet skjer fordi noen var ond. Oftere skjer det fordi noen håpet det skulle gå bra, presset bort tvilen og kjørte videre. Lytt til den tvilen. Still spørsmålet høyt i styremøtet, be om å få det utredet, og protokollfør at du reiste spørsmålet. Det er nettopp slik aktivitet som skiller det ansvarlige styremedlemmet fra det uaktsomme.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, du kan bli personlig ansvarlig som styremedlem – men kun ved forsettlig eller uaktsom opptreden som påfører noen et tap (§ 17-1). Som eier er du beskyttet (§ 1-2), men styre- og lederhatten gir risiko. For ansvar kreves feil, tap, sammenheng og bebreidelse – alt sammen. Forsvarlige forretningsbeslutninger og vanlig uflaks gir ikke ansvar. Du bedømmes individuelt, så protokollfør uenighet hvis du mener noe er uforsvarlig.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

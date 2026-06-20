@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg krav på arbeidsattest? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-krav-pa-arbeidsattest/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg krav på arbeidsattest?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-krav-pa-arbeidsattest/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg krav på arbeidsattest?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Har jeg krav på arbeidsattest?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Når et fast arbeidsforhold tar slutt etter lovlig oppsigelse, har du krav på en skriftlig sluttattest fra arbeidsgiveren (§ 15-15). Dette er en lovfestet rettighet – du trenger ikke å «fortjene» den, og arbeidsgiver kan ikke nekte deg den fordi dere skiltes på dårlig fot.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Når et fast arbeidsforhold tar slutt etter lovlig oppsigelse, har du krav på en skriftlig sluttattest fra arbeidsgiveren (§ 15-15). Dette er en lovfestet rettighet – du trenger ikke å «fortjene» den, og arbeidsgiver kan ikke nekte deg den fordi dere skiltes på dårlig fot.</p>
+<h3>Hva er en arbeidsattest?</h3>
+<p>En arbeidsattest – ofte kalt <strong>sluttattest</strong> – er et skriftlig dokument fra arbeidsgiveren som bekrefter at du har jobbet der, hva du gjorde, og hvor lenge. Den er nyttig når du søker ny jobb, fordi den dokumenterer arbeidserfaringen din svart på hvitt. En CV forteller hva du sier du har gjort; en attest bekrefter det fra arbeidsgivers side.</p>
+<h3>Hvem har krav på attest?</h3>
+<p>Hovedregelen er enkel: En arbeidstaker som fratrer (slutter) etter <strong>lovlig oppsigelse</strong>, har rett til skriftlig attest. Dette gjelder uansett om:</p>
+<ul>
+<li><strong>du selv sa opp</strong>, eller</li>
+<li><strong>arbeidsgiveren sa deg opp.</strong></li>
+</ul>
+<p>Også hvis du blir <strong>avskjediget</strong> (sparket på dagen på grunn av et alvorlig forhold), har du krav på en attest. Arbeidsgiver kan riktignok i et slikt tilfelle nevne i attesten at du ble avskjediget, men du har likevel rett til å få dokumentet.</p>
+<h3>Eksempel: Attest selv om man sluttet i uvennskap</h3>
+<p>Petter sa opp jobben sin på lageret etter en konflikt med sjefen. Da han ber om sluttattest, får han nei: «Du sluttet jo i uvennskap.» Men det spiller ingen rolle for retten til attest. Petter sluttet etter en lovlig oppsigelse, og da har han krav på en skriftlig attest med opplysninger om arbeidet og hvor lenge han var ansatt. Sjefens følelser endrer ikke loven.</p>
+<h3>Hva med karakteren i attesten?</h3>
+<p>Mange tror en attest må inneholde en vurdering av hvor flink du var. Det er ikke et krav. <strong>Minstekravet</strong> er nøkterne fakta: navn, fødselsdato, hva arbeidet besto i, og varigheten (mer om innholdet i neste artikkel). En arbeidsgiver er ikke pålagt å skrive at du var «en strålende medarbeider» – men de fleste skriver noe positivt hvis dere skiltes greit.</p>
+<p>I bransjer der det er <strong>vanlig med en mer utfyllende attest</strong>, kan du be om det. Da kan attesten også beskrive hvordan du utførte arbeidet. Men selv en nøktern minsteattest er verdifull dokumentasjon.</p>
+<h3>Hva hvis du ble sagt opp eller avskjediget?</h3>
+<ul>
+<li><strong>Sagt opp (vanlig oppsigelse):</strong> Du har full rett til attest, og oppsigelsesgrunnen trenger ikke stå der. Attesten skal være saklig og ikke unødig skade muligheten din til ny jobb.</li>
+<li><strong>Avskjediget:</strong> Du har rett til attest, men arbeidsgiver kan nevne at arbeidsforholdet endte med avskjed. De kan likevel ikke fylle attesten med nedsettende og unødvendige detaljer.</li>
+</ul>
+<h3>Slik ber du om attesten din</h3>
+<ol>
+<li><strong>Be skriftlig.</strong> Send en kort, høflig e-post: «Jeg ber om sluttattest etter arbeidsmiljøloven § 15-15. Kan du sende den til meg innen [for eksempel to uker]?»</li>
+<li><strong>Gjør det gjerne med en gang du slutter.</strong> Det er lettere å få tak i folk og opplysninger mens alt er ferskt.</li>
+<li><strong>Sjekk at innholdet stemmer.</strong> Når du får attesten, kontroller at navn, datoer og oppgaver er riktige. Be om retting hvis noe er feil.</li>
+<li><strong>Ta vare på den.</strong> Lagre både digitalt og gjerne på papir. Du vet aldri når neste arbeidsgiver vil se den.</li>
+</ol>
+<h3>Hvis arbeidsgiver nekter eller trenerer</h3>
+<p>Det hender at en tidligere arbeidsgiver ikke svarer eller sier nei. Da kan du:</p>
+<ul>
+<li><strong>Purre skriftlig</strong> og vise til at attest er en lovfestet rett (§ 15-15).</li>
+<li><strong>Kontakte fagforeningen din</strong> hvis du er organisert – de kan ta kontakt på dine vegne.</li>
+<li><strong>Ringe Arbeidstilsynet</strong> for veiledning om hvordan du går videre.</li>
+</ul>
+<p>De fleste arbeidsgivere ordner attesten med en gang når de blir minnet om at det er en plikt.</p>
+<h3>Et tips: Be om attest også underveis</h3>
+<p>Selv om den lovfestede retten gjelder når du <strong>slutter</strong>, kan det være lurt å be om en <strong>bekreftelse</strong> på arbeidsforholdet også mens du fortsatt jobber der – for eksempel hvis du skal søke bolig eller lån, eller hvis bedriften er i en usikker fase. Mange arbeidsgivere skriver gjerne en slik bekreftelse, selv om plikten til full sluttattest først utløses når du fratrer.</p>
+<h3>Attest og referanse – to forskjellige ting</h3>
+<p>Det er lett å blande sammen «attest» og «referanse», men de er ikke det samme:</p>
+<ul>
+<li>En <strong>attest</strong> er et skriftlig dokument du har <strong>krav på</strong> når du slutter. Den bekrefter fakta om arbeidet ditt.</li>
+<li>En <strong>referanse</strong> er at en tidligere leder muntlig (ofte i en telefon) sier noe om deg til en ny arbeidsgiver. Det har du ikke et tilsvarende lovkrav på, og det er frivillig for begge parter.</li>
+</ul>
+<p>Attesten er altså den trygge, dokumenterbare rettigheten din – referansen er en bonus du kan be om, men ikke kreve på samme måte.</p>
+<h3>Eksempel: Attest som åpner dører</h3>
+<p>Sofia jobbet tre år i en barnehage før hun flyttet til en annen by. Da hun søkte ny jobb, la hun ved sluttattesten som bekreftet at hun hadde jobbet som assistent med ansvar for en bestemt avdeling i tre år. Den nye arbeidsgiveren slapp å lure på om erfaringen var reell – attesten viste det svart på hvitt. Sofia fikk jobben, blant annet fordi dokumentasjonen var ryddig og på plass.</p>
+<h3>Husk å be i tide</h3>
+<p>Jo lenger tid det går etter at du har sluttet, desto vanskeligere kan det bli å få tak i riktig person og korrekte opplysninger – kanskje har lederen din sluttet, eller bedriften er endret. Be derfor om attesten <strong>mens alt er ferskt</strong>, gjerne samtidig som du slutter. Da slipper du å jage etter den når du plutselig trenger den til en jobbsøknad.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du har <strong>krav på skriftlig sluttattest</strong> når du slutter etter lovlig oppsigelse (§ 15-15) – enten du sa opp selv eller ble sagt opp.</li>
+<li>Også ved <strong>avskjed</strong> har du rett til attest.</li>
+<li><strong>Minstekravet</strong> er faktaopplysninger; en karakter eller vurdering er ikke påkrevd, men kan avtales i bransjer der det er vanlig.</li>
+<li><strong>Be skriftlig</strong>, sjekk at innholdet stemmer, og ta vare på dokumentet.</li>
+<li>Nekter arbeidsgiver, kan du purre, vise til loven og få hjelp av fagforening eller Arbeidstilsynet.</li>
+</ul>
+<p>Attesten er din – den hører til arbeidet du har lagt ned. Ikke nøl med å be om den.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

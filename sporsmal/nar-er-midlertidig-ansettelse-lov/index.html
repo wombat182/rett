@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når er midlertidig ansettelse lov? — Rettsregel</title>
+<meta name="description" content="Midlertidig ansettelse er lov i bestemte tilfeller – først og fremst når arbeidet er av midlertidig karakter, eller når du er vikar for noen som er borte.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-er-midlertidig-ansettelse-lov/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når er midlertidig ansettelse lov?">
+<meta property="og:description" content="Midlertidig ansettelse er lov i bestemte tilfeller – først og fremst når arbeidet er av midlertidig karakter, eller når du er vikar for noen som er borte.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-er-midlertidig-ansettelse-lov/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når er midlertidig ansettelse lov?">
+<meta name="twitter:description" content="Midlertidig ansettelse er lov i bestemte tilfeller – først og fremst når arbeidet er av midlertidig karakter, eller når du er vikar for noen som er borte.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Når er midlertidig ansettelse lov?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Midlertidig ansettelse er lov i bestemte tilfeller – først og fremst når arbeidet er av midlertidig karakter, eller når du er vikar for noen som er borte. Hovedregelen i norsk arbeidsliv er nemlig fast ansettelse, og midlertidig ansettelse er unntaket.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 14-9 og § 14-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/14-9/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-9</div>
+  <div class="related-card-title">Retten til fast ansettelse (og strenge regler for vikarer)</div>
+</a><a href="../../lover/arbeidsmiljoloven/14-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-6</div>
+  <div class="related-card-title">Dette skal stå i arbeidsavtalen</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Midlertidig ansettelse er lov i bestemte tilfeller – først og fremst når arbeidet er av midlertidig karakter, eller når du er vikar for noen som er borte. Hovedregelen i norsk arbeidsliv er nemlig fast ansettelse, og midlertidig ansettelse er unntaket.</p>
+<h3>Først: hva betyr de to begrepene?</h3>
+<ul>
+<li><strong>Fast ansettelse</strong> betyr at du er ansatt på ubestemt tid, uten en sluttdato. Du har jobben til en av partene sier den opp på lovlig vis.</li>
+<li><strong>Midlertidig ansettelse</strong> betyr at du er ansatt for en avgrenset periode – det er en avtalt sluttdato eller en avtalt hendelse som avslutter forholdet (for eksempel «til Lise er tilbake fra permisjon»).</li>
+</ul>
+<p>Arbeidsmiljøloven slår fast at arbeidstaker som hovedregel skal ansettes fast (§ 14-9 første ledd). Midlertidig ansettelse er bare tillatt i de tilfellene loven uttrykkelig nevner.</p>
+<h3>De viktigste lovlige grunnlagene (§ 14-9 andre ledd)</h3>
+<p><strong>1. Arbeid av midlertidig karakter.</strong> Dette betyr at selve behovet for arbeidskraft er forbigående – ikke et fast, løpende behov. Eksempler:</p>
+<ul>
+<li><strong>Sesongarbeid:</strong> Plukking av jordbær om sommeren, ekstrahjelp i butikk før jul, servering på uteservering i turistsesongen.</li>
+<li><strong>Uforutsette arbeidstopper:</strong> Et firma får plutselig en stor, tidsbegrenset ordre og trenger flere hender i tre måneder.</li>
+<li><strong>Midlertidig behov for spesialkompetanse:</strong> En snekkerbedrift trenger en elektriker for et bestemt oppdrag.</li>
+<li><strong>Prosjektarbeid:</strong> Et klart avgrenset prosjekt som ikke er en del av de faste, løpende oppgavene.</li>
+</ul>
+<p><strong>2. Vikariat.</strong> Et vikariat betyr at du jobber i stedet for en bestemt person (eller bestemte personer) som er midlertidig borte – for eksempel på grunn av sykdom, foreldrepermisjon eller ferie. <strong>Nora</strong> vikarierer for <strong>Olav</strong> mens han er i pappaperm: det er et klassisk, lovlig vikariat.</p>
+<p><strong>3. Praksisarbeid.</strong> Arbeid som er en del av et fastsatt utdanningsløp, som lærlinger eller leger i spesialisering (LIS1). Vanlig opplæring av en nyansatt teller ikke som praksisarbeid.</p>
+<p><strong>4. Arbeidsmarkedstiltak</strong> i regi av eller i samarbeid med NAV, som skal hjelpe folk inn i eller tilbake til arbeidslivet.</p>
+<p><strong>5. Idrett og enkelte spesielle stillinger.</strong> Idrettsutøvere, trenere, dommere, ledere i organisert idrett, samt visse åremålsstillinger for toppledere.</p>
+<h3>Mer om «arbeid av midlertidig karakter»</h3>
+<p>Dette grunnlaget er kanskje det vanskeligste å forstå, så la oss bruke litt mer tid på det. Kjernen er at behovet for akkurat denne arbeidskraften må være forbigående, ikke fast. Arbeidstilsynet peker på flere typiske situasjoner:</p>
+<ul>
+<li><strong>Kortvarige eller uforutsette behov:</strong> En arbeidstopp dere ikke kunne forutse, eller en plutselig svikt i systemer som gjør at dere raskt trenger ekstra folk for at ikke produksjon, varer eller tjenester skal stoppe.</li>
+<li><strong>Sesongmessige svingninger:</strong> Frukt- og bærhøsting, ekstrahjelp i varehandelen før jul, servering på uteservering om sommeren, eller ekstra folk i turistnæringen i travle perioder.</li>
+<li><strong>Midlertidig behov for spesialkompetanse:</strong> Et behov for en bestemt fagkunnskap som ikke finnes i bedriften fra før, og som skiller seg fra det dere vanligvis gjør.</li>
+<li><strong>Prosjektarbeid:</strong> Et tidsavgrenset arbeid som ikke er en del av de faste, løpende oppgavene. Men pass på: Har dere mange lignende prosjekter etter hverandre, kan behovet i virkeligheten være varig – og da skal ansettelsen være fast.</li>
+</ul>
+<h3>Den store endringen i 2022</h3>
+<p>Frem til 1. juli 2022 fantes det en «generell adgang» til å ansette midlertidig i inntil ett år – uten at arbeidsgiver trengte å begrunne det med vikariat eller midlertidig arbeid. Denne regelen ble fjernet. I dag kan arbeidsgiver altså ikke lenger ansette deg midlertidig «bare fordi de vil» eller «for å se det an». Det må alltid finnes et lovlig grunnlag. Endringen var bevisst ment å styrke arbeidstakeres rett til fast jobb og skape et tryggere arbeidsliv.</p>
+<h3>Du skal alltid ha en skriftlig arbeidsavtale</h3>
+<p>Uansett hvilket grunnlag som brukes, skal du ha en skriftlig arbeidsavtale – det gjelder alle arbeidsforhold, uten unntak, og uavhengig av hvor kort jobben varer. Ved korte eller midlertidige forhold skal avtalen være klar senest den dagen du begynner. Avtalen skal også opplyse om at forholdet er midlertidig. Gjør den ikke det, skal du som hovedregel regnes som fast ansatt (arbeidsmiljøloven § 14-6 tredje ledd). Det lønner seg derfor alltid å be om avtalen skriftlig før eller på første arbeidsdag, og å lese nøye hva som står om grunnlag og varighet.</p>
+<h3>Når er det IKKE lov?</h3>
+<p>Midlertidig ansettelse er ulovlig hvis det egentlig ikke finnes et reelt, forbigående behov. Eksempler på ulovlig bruk:</p>
+<ul>
+<li>Arbeidsgiver bruker midlertidige ansettelser for å dekke et permanent behov for arbeidskraft.</li>
+<li>En prosjektbedrift der det ene prosjektet hele tiden avløser det neste, og oppgavene er de samme prosjekt etter prosjekt.</li>
+<li>Helt forutsigbare, vanlige svingninger i arbeidsmengde som egentlig hører til den ordinære driften.</li>
+</ul>
+<p><strong>Eksempel:</strong> <strong>Selma</strong> blir ansatt i seks «prosjektkontrakter» på rad over tre år, men gjør hele tiden den samme jobben som de fast ansatte. Da kan det i virkeligheten være et fast behov – og ansettelsen kan være ulovlig midlertidig.</p>
+<h3>Arbeidsgiver må drøfte midlertidige ansettelser</h3>
+<p>Et poeng mange ikke vet om: Arbeidsgiver skal minst én gang i året drøfte bruken av midlertidige ansettelser med de tillitsvalgte. Drøftingen skal handle om grunnlagene, omfanget og konsekvensene for arbeidsmiljøet. Tillitsvalgte kan være fagforeningstillitsvalgte, verneombud eller andre valgte representanter. Dette er en innebygd kontroll som skal hindre at midlertidighet brukes for mye. Er du midlertidig ansatt, kan du gjerne høre med tillitsvalgt om slike drøftinger faktisk gjennomføres på din arbeidsplass.</p>
+<h3>Slik vurderer du din egen situasjon</h3>
+<ol>
+<li><strong>Spør: hva er begrunnelsen?</strong> Vikariat? Sesong? Prosjekt? Be om at det står tydelig i arbeidsavtalen.</li>
+<li><strong>Er det et ekte midlertidig behov, eller egentlig et fast behov?</strong> Hvis du gjør akkurat det samme som de fast ansatte, år etter år, bør varsellampene blinke.</li>
+<li><strong>Sjekk at avtalen er skriftlig</strong> og opplyser om at forholdet er midlertidig (ellers kan du regnes som fast – § 14-6).</li>
+<li><strong>Følg med på tiden.</strong> Lange, sammenhengende midlertidige forhold kan gi rett til fast jobb (treårsregelen).</li>
+<li><strong>Søk råd.</strong> Tillitsvalgt, fagforening eller Arbeidstilsynet hjelper deg å vurdere om grunnlaget er lovlig.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Midlertidig ansettelse er lov når arbeidet er av midlertidig karakter (sesong, prosjekt, arbeidstopper), ved vikariat, ved praksisarbeid, arbeidsmarkedstiltak og enkelte idretts- og åremålsstillinger. Den generelle adgangen til å ansette midlertidig «uten grunn» ble fjernet 1. juli 2022. Mangler det et reelt midlertidig behov, kan ansettelsen være ulovlig – og du kan ha krav på fast jobb.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-signere-sluttavtalen-med-en-gang/">Bør jeg signere sluttavtalen med en gang?</a><a class="sp-relchip" href="../../sporsmal/er-en-muntlig-arbeidsavtale-gyldig/">Er en muntlig arbeidsavtale gyldig?</a><a class="sp-relchip" href="../../sporsmal/gjelder-provetid-ved-midlertidig-ansettelse/">Gjelder prøvetid ved midlertidig ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

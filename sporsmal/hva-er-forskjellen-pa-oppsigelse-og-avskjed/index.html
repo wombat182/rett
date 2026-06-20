@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på oppsigelse og avskjed? — Rettsregel</title>
+<meta name="description" content="Oppsigelse og avskjed er to helt forskjellige ting, selv om begge betyr at jobben tar slutt. Ved oppsigelse avsluttes arbeidsforholdet etter en…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-oppsigelse-og-avskjed/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på oppsigelse og avskjed?">
+<meta property="og:description" content="Oppsigelse og avskjed er to helt forskjellige ting, selv om begge betyr at jobben tar slutt. Ved oppsigelse avsluttes arbeidsforholdet etter en…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-oppsigelse-og-avskjed/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på oppsigelse og avskjed?">
+<meta name="twitter:description" content="Oppsigelse og avskjed er to helt forskjellige ting, selv om begge betyr at jobben tar slutt. Ved oppsigelse avsluttes arbeidsforholdet etter en…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er forskjellen på oppsigelse og avskjed?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Oppsigelse og avskjed er to helt forskjellige ting, selv om begge betyr at jobben tar slutt. Ved **oppsigelse** avsluttes arbeidsforholdet etter en oppsigelsestid, og du har lønn i hele perioden. Ved **avskjed** (arbeidsmiljøloven § 15-14) heves arbeidsforholdet på dagen — uten oppsigelsestid og uten lønn videre — og det kreves at du har gjort noe svært alvorlig. Avskjed er det kraftigste arbeidsgiver kan ty til.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven §§ 15-14, 15-7, 15-4, 15-1</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/15-14/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 15-14</div>
+  <div class="related-card-title">Avskjed: Forskjellen på oppsigelse og å få sparken på dagen</div>
+</a><a href="../../lover/arbeidsmiljoloven/15-7/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 15-7</div>
+  <div class="related-card-title">Kjerneparagrafen: Vern mot usaklig oppsigelse</div>
+</a><a href="../../lover/arbeidsmiljoloven/15-4/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 15-4</div>
+  <div class="related-card-title">Strenge formkrav: Slik skal oppsigelsen se ut</div>
+</a><a href="../../lover/arbeidsmiljoloven/15-1/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 15-1</div>
+  <div class="related-card-title">Drøftingsmøtet: Sjefen må snakke med deg før du får sparken</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>De to begrepene side om side</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Oppsigelse</strong></th>
+<th><strong>Avskjed</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hva skjer</strong></td>
+<td>Jobben tar slutt etter en frist</td>
+<td>Jobben tar slutt på dagen</td>
+</tr>
+<tr>
+<td><strong>Oppsigelsestid</strong></td>
+<td>Ja, med full lønn</td>
+<td>Nei, ingen</td>
+</tr>
+<tr>
+<td><strong>Hva som kreves</strong></td>
+<td>Saklig grunn</td>
+<td>Grovt pliktbrudd eller vesentlig mislighold</td>
+</tr>
+<tr>
+<td><strong>Vanligste situasjoner</strong></td>
+<td>Nedbemanning, lavere ytelse, omorganisering</td>
+<td>Tyveri, vold, grov illojalitet</td>
+</tr>
+</tbody>
+</table>
+<h3>Oppsigelse — den «normale» måten å avslutte på</h3>
+<p>En oppsigelse må være <strong>saklig begrunnet</strong> (§ 15-7). Det kan handle om forhold ved bedriften (for eksempel nedbemanning) eller ved deg som arbeidstaker (for eksempel gjentatte alvorlige problemer på jobb). Etter en oppsigelse har du oppsigelsestid med full lønn, og du har normalt arbeidsplikt i perioden. Du har også rett til å stå i stillingen mens en eventuell tvist behandles.</p>
+<p>Oppsigelse er altså den ordnede, gradvise avslutningen. Du går ikke på dagen — du har tid foran deg, med lønn.</p>
+<h3>Avskjed — den dramatiske unntaksløsningen</h3>
+<p>Avskjed brukes bare når noe svært alvorlig har skjedd. Loven krever <strong>grovt pliktbrudd</strong> eller <strong>annet vesentlig mislighold</strong> av arbeidsavtalen (§ 15-14). Det skal mye til. Når avskjed er gyldig, opphører arbeidsforholdet umiddelbart — du går samme dag, og lønnen stopper.</p>
+<h3>Et eksempel som viser forskjellen tydelig</h3>
+<p>Tenk deg to ansatte i samme butikk:</p>
+<ul>
+<li><strong>Andreas</strong> presterer dårligere enn forventet og har fått flere advarsler over tid. Til slutt blir han <strong>sagt opp</strong>. Han har én måneds oppsigelsestid med full lønn, og rekker å finne ny jobb i mellomtiden.</li>
+<li><strong>Mona</strong> blir tatt på fersk gjerning i å stjele fra kassa. Hun blir <strong>avskjediget på dagen</strong>. Arbeidsforholdet opphører umiddelbart, og hun har ikke krav på lønn videre.</li>
+</ul>
+<p>Forskjellen er altså ikke bare formell — den avgjør om du har en oppsigelsestid med inntekt foran deg, eller om alt stopper med en gang. Det kan utgjøre flere månedslønner.</p>
+<h3>Hvorfor terskelen for avskjed er så høy</h3>
+<p>Fordi avskjed rammer så hardt — ingen inntekt, ingen forberedelsestid — krever loven en mye sterkere grunn enn for oppsigelse. En oppsigelse kan være saklig selv om du ikke har gjort noe «galt» (for eksempel ved nedbemanning). En avskjed krever derimot at du selv har begått et alvorlig brudd. Det er en viktig forskjell i hvor mye som kreves av grunnlaget.</p>
+<h3>Felles spilleregler tross ulikhetene</h3>
+<p>Selv om avskjed er strengere, gjelder mange av de samme formkravene og fristene som ved oppsigelse:</p>
+<ul>
+<li><strong>Formkrav (§ 15-4):</strong> Også en avskjed skal være skriftlig, leveres personlig eller sendes rekommandert, og inneholde informasjon om dine rettigheter.</li>
+<li><strong>Drøftingsmøte (§ 15-1):</strong> Arbeidsgiver bør drøfte saken med deg før beslutningen tas, så langt det er praktisk mulig.</li>
+<li><strong>Frister for å gå til sak (§ 17-4):</strong> Du har de samme fristene til å bestride en avskjed som en oppsigelse.</li>
+</ul>
+<h3>Hva hvis avskjeden er urettmessig?</h3>
+<p>Mener du at avskjeden var urettmessig — at du ikke gjorde noe grovt nok til å rettferdiggjøre den — kan du kreve den kjent ugyldig og kreve erstatning. Domstolene vurderer dette nøye og konkret. En urettmessig avskjed kan koste arbeidsgiver dyrt, fordi terskelen for avskjed er så høy. I noen tilfeller kan retten også avgjøre at det egentlig bare var grunnlag for oppsigelse, ikke avskjed — og da skulle du hatt oppsigelsestid med lønn.</p>
+<h3>Hva med retten til å stå i stillingen?</h3>
+<p>Her er en praktisk forskjell mange ikke kjenner til. Blir du <strong>oppsagt</strong> og bestrider oppsigelsen, har du som hovedregel rett til å fortsette i jobben — og få lønn — mens tvisten behandles. Blir du <strong>avskjediget</strong>, er utgangspunktet det motsatte: du må forlate stillingen, men kan be retten om å få stå i den mens saken pågår. Dette gjør at en urettmessig avskjed kan ramme deg hardere økonomisk i mellomtiden enn en urettmessig oppsigelse, og det er en grunn til å handle ekstra raskt ved avskjed.</p>
+<h3>Pengene: hva står på spill?</h3>
+<p>Forskjellen mellom oppsigelse og avskjed handler ofte om penger. Ved oppsigelse har du lønn gjennom hele oppsigelsestiden — kanskje flere måneder. Ved avskjed stopper lønnen umiddelbart. Hvis en avskjed senere kjennes urettmessig, kan du få etterbetalt lønn og erstatning, men i mellomtiden kan du ha vært uten inntekt. Derfor er det viktig å reagere raskt og eventuelt søke om å stå i stillingen.</p>
+<h3>Slik kjenner du forskjellen i din egen sak — steg for steg</h3>
+<ol>
+<li><strong>Les dokumentet du fikk.</strong> Står det «oppsigelse» eller «avskjed»? Ordet betyr noe.</li>
+<li><strong>Sjekk om du skal jobbe videre.</strong> Oppsigelse = oppsigelstid. Avskjed = slutt på dagen.</li>
+<li><strong>Vurder begrunnelsen.</strong> Avskjed krever noe svært alvorlig.</li>
+<li><strong>Sjekk formkravene.</strong> Var beslutningen skriftlig og riktig levert?</li>
+<li><strong>Søk hjelp raskt.</strong> Er du uenig, kontakt fagforening eller advokat med en gang — det går frister.</li>
+</ol>
+<h3>En tredje vei: oppsigelse med suspensjon</h3>
+<p>Noen ganger ser man en mellomform: arbeidsgiver vurderer avskjed, men velger å <strong>suspendere</strong> deg mens saken undersøkes. Suspensjon betyr at du midlertidig holdes borte fra arbeidet, men fortsatt får lønn — i motsetning til avskjed, hvor lønnen stopper. Suspensjon er ikke det samme som verken oppsigelse eller avskjed, og krever sin egen begrunnelse. Hvis du blir bedt om å holde deg borte mens noe undersøkes, men fortsatt får lønn, er du sannsynligvis suspendert — ikke avskjediget. Da er ingenting endelig avgjort ennå, og du bør samarbeide om å få saken opplyst samtidig som du ivaretar dine egne interesser.</p>
+<h3>Kort oppsummert</h3>
+<p>Oppsigelse gir deg en oppsigelstid med lønn og krever saklig grunn. Avskjed kaster deg ut på dagen uten lønn videre og krever grovt pliktbrudd eller vesentlig mislighold. De samme formkravene og fristene gjelder for begge. Er avskjeden urettmessig, kan den kjennes ugyldig og gi erstatning — så reager raskt hvis du er uenig, og sjekk alltid hva slags dokument du faktisk har fått.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-en-oppsigelse-uten-formkrav-ugyldig/">Er en oppsigelse uten formkrav ugyldig?</a><a class="sp-relchip" href="../../sporsmal/har-ansiennitet-betydning-for-oppsigelsestiden/">Har ansiennitet betydning for oppsigelsestiden?</a><a class="sp-relchip" href="../../sporsmal/har-jeg-krav-pa-lonn-i-oppsigelsestiden/">Har jeg krav på lønn i oppsigelsestiden?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

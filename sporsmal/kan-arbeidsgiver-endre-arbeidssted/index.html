@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan arbeidsgiver endre arbeidssted? — Rettsregel</title>
+<meta name="description" content="Det kommer an på hvor stor endringen er, og hva som står i avtalen din.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-arbeidsgiver-endre-arbeidssted/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan arbeidsgiver endre arbeidssted?">
+<meta property="og:description" content="Det kommer an på hvor stor endringen er, og hva som står i avtalen din.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-arbeidsgiver-endre-arbeidssted/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan arbeidsgiver endre arbeidssted?">
+<meta name="twitter:description" content="Det kommer an på hvor stor endringen er, og hva som står i avtalen din.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Kan arbeidsgiver endre arbeidssted?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det kommer an på hvor stor endringen er, og hva som står i avtalen din. Arbeidsgiver kan ofte bestemme mindre, praktiske endringer av arbeidssted innenfor styringsretten. Men en vesentlig flytting, for eksempel til en annen by, ligger normalt utenfor, og krever din aksept eller en endringsoppsigelse.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 14-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/14-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-6</div>
+  <div class="related-card-title">Dette skal stå i arbeidsavtalen</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det kommer an på hvor stor endringen er, og hva som står i avtalen din. Arbeidsgiver kan ofte bestemme mindre, praktiske endringer av arbeidssted innenfor styringsretten. Men en vesentlig flytting, for eksempel til en annen by, ligger normalt utenfor, og krever din aksept eller en endringsoppsigelse.</p>
+<h3>Start alltid med arbeidsavtalen</h3>
+<p>Det første du må gjøre, er å lese hva som faktisk står om arbeidssted i avtalen din. Arbeidsavtalen skal oppgi arbeidsstedet (aml. § 14-6). Hvordan dette er formulert, har mye å si.</p>
+<ul>
+<li>Står det et <strong>konkret arbeidssted</strong> ("Storgata 5, Bergen"), er det dette som er avtalt, og en flytting vekk fra dette kan være en endring av avtalen.</li>
+<li>Står det at du jobber på <strong>forskjellige steder,</strong> eller at du kan bli pålagt å jobbe ulike steder, har arbeidsgiver større frihet.</li>
+</ul>
+<p>Tenk på Marius, hvis avtale sier "arbeidssted: hovedkontoret i Trondheim". Da er Trondheim utgangspunktet. Vil arbeidsgiver flytte ham til Stavanger, er det en betydelig endring av et avtalt vilkår.</p>
+<h3>Mindre endringer arbeidsgiver ofte kan bestemme</h3>
+<p>Innenfor styringsretten kan arbeidsgiver gjøre praktiske justeringer av hvor arbeidet utføres, så lenge det er saklig begrunnet og ikke endrer grunnpreget i forholdet.</p>
+<p>Eksempler som ofte er innenfor:</p>
+<ul>
+<li>Flytting til nye lokaler i samme område eller by.</li>
+<li>Bytte mellom avdelinger eller bygg som ligger i nærheten av hverandre.</li>
+<li>Mindre justeringer av oppmøtested.</li>
+</ul>
+<p>Tenk på Hanne, som jobber på et kontor i Oslo sentrum. Bedriften flytter til nye lokaler noen kvartaler unna. Reiseveien hennes endrer seg lite. Dette er normalt innenfor styringsretten, og krever ikke samtykke.</p>
+<h3>Større endringer som krever mer</h3>
+<p>En vesentlig endring av arbeidssted ligger som regel utenfor styringsretten. Det gjelder typisk flytting som påvirker hverdagen din betydelig, for eksempel:</p>
+<ul>
+<li>Flytting til en annen by eller landsdel.</li>
+<li>Vesentlig lengre reisevei.</li>
+<li>Pålegg om å jobbe et sted som krever flytting eller pendling over store avstander.</li>
+</ul>
+<p>Tenk på Bjørn, som har avtalt arbeidssted i Drammen og får beskjed om at han skal flyttes til kontoret i Kristiansand. Det er en stor endring i livet hans, med flytting eller lang pendling. En slik endring kan arbeidsgiver normalt ikke gjennomføre ensidig. De må enten få Bjørns aksept eller gå veien om en endringsoppsigelse.</p>
+<h3>Hjemmekontor og fjernarbeid</h3>
+<p>Skal du jobbe helt eller delvis hjemmefra, skal arbeidsgiver og du inngå en egen skriftlig avtale om dette, i tillegg til den vanlige arbeidsavtalen. Bruk av hjemmekontor er regulert i en egen forskrift. Hvis situasjonen din ikke omfattes av denne forskriften, kan arbeidsgiver bestemme bruk av hjemmekontor i kraft av styringsretten, så lenge det er saklig begrunnet og innenfor regelverket.</p>
+<p>Tenk på Vetle, som har jobbet mye hjemmefra. Arbeidsgiver kan i kraft av styringsretten be ham komme tilbake til kontoret, så lenge avtalen ikke gir ham en fast rett til hjemmekontor.</p>
+<h3>Hva sier avtalen om "ulike arbeidssteder"?</h3>
+<p>Etter de nye reglene i § 14-6 skal avtalen være tydelig på arbeidssted. Hvis du ikke har ett fast arbeidssted, skal avtalen si at du jobber på forskjellige steder, eller at du selv kan bestemme arbeidsstedet ditt. Dette er nyttig for deg, fordi det gjør forventningene klare fra start. Les derfor nøye hvordan dette punktet er formulert i din avtale: en åpen formulering gir arbeidsgiver mer rom, en konkret adresse binder forholdet til ett sted.</p>
+<h3>Saklighet gjelder også her</h3>
+<p>Selv en endring som i prinsippet er innenfor styringsretten, må være saklig begrunnet. Arbeidsgiver kan ikke flytte deg langt bort som en skjult måte å bli kvitt deg på, eller for å straffe deg. Det skal ligge et reelt behov bak.</p>
+<h3>Hva gjør jeg hvis arbeidsgiver vil flytte arbeidsstedet mitt?</h3>
+<p><strong>Slik går du frem:</strong></p>
+<ol>
+<li><strong>Les avtalen din nøye.</strong> Hva står det om arbeidssted? Er det konkret eller åpent formulert?</li>
+<li><strong>Be om endringen skriftlig,</strong> med begrunnelse og dato.</li>
+<li><strong>Vurder hvor stor endringen er for deg.</strong> Litt lengre vei innen samme by er noe annet enn flytting til en annen landsdel.</li>
+<li><strong>Tenk på din egen situasjon.</strong> Reisevei, omsorg for barn og andre forpliktelser kan ha betydning i vurderingen.</li>
+<li><strong>Si tydelig fra hvis du ikke godtar,</strong> helst skriftlig.</li>
+<li><strong>Søk råd</strong> hos tillitsvalgt, fagforening eller advokat, særlig ved store flyttinger.</li>
+</ol>
+<h3>Hva om jeg sier nei til en vesentlig flytting?</h3>
+<p>Hvis flyttingen er vesentlig og du ikke godtar den, kan ikke arbeidsgiver bare tvinge den gjennom. De må eventuelt gjennomføre en endringsoppsigelse, der den gamle avtalen sies opp og en ny tilbys. Da har du fullt oppsigelsesvern, blant annet kravet om saklig grunn. Du kan bestride en slik oppsigelse hvis du mener den ikke er saklig.</p>
+<h3>Hva med jobber der reising er en del av stillingen?</h3>
+<p>Noen stillinger innebærer i sin natur at man jobber ulike steder. En montør, en selger med distrikt eller en konsulent kan ha avtalt at arbeidsstedet varierer. Da har arbeidsgiver naturlig nok større frihet til å sende deg dit arbeidet er, fordi det ligger i selve stillingen. Igjen er det avtalen som avgjør: hvis det står at du jobber på skiftende steder, er det en del av forutsetningene.</p>
+<p>Tenk på Stine, som er ansatt som servicetekniker med "hele Østlandet" som arbeidsområde. At hun en uke jobber i Hamar og neste uke i Fredrikstad, er ikke en endring av avtalen, det er nettopp slik jobben hennes er. For henne blir spørsmålet et annet enn for en kontoransatt med ett fast oppmøtested.</p>
+<h3>Tenk også på det praktiske rundt en flytting</h3>
+<p>Selv om jussen er viktig, handler en flytting også om livet ditt. Reisevei spiser av fritiden, påvirker familielogistikk og kan ha reell betydning for økonomien. Dette er hensyn som kan telle med når man vurderer hvor inngripende en endring er. Derfor er det helt legitimt å løfte frem din egen situasjon i en samtale med arbeidsgiver, for eksempel omsorg for barn, manglende mulighet til å pendle, eller at den nye reiseveien blir urimelig lang. Mange konflikter løses i en god dialog før de blir en juridisk sak.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Begynn alltid med å lese hva avtalen sier om arbeidssted (aml. § 14-6).</li>
+<li>Mindre, praktiske flyttinger kan arbeidsgiver ofte bestemme i kraft av styringsretten.</li>
+<li>Vesentlige endringer, som flytting til en annen by, ligger normalt utenfor og krever din aksept eller en endringsoppsigelse.</li>
+<li>Hjemmekontor krever egen skriftlig avtale.</li>
+<li>Endringen må uansett være saklig begrunnet, og du har fullt oppsigelsesvern ved en endringsoppsigelse.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

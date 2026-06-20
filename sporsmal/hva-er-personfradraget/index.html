@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er personfradraget? — Rettsregel</title>
+<meta name="description" content="Personfradraget er et fast beløp som trekkes fra alminnelig inntekt for absolutt alle skattytere. Det er et bunnfradrag som sørger for at de første…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-personfradraget/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er personfradraget?">
+<meta property="og:description" content="Personfradraget er et fast beløp som trekkes fra alminnelig inntekt for absolutt alle skattytere. Det er et bunnfradrag som sørger for at de første…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-personfradraget/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er personfradraget?">
+<meta name="twitter:description" content="Personfradraget er et fast beløp som trekkes fra alminnelig inntekt for absolutt alle skattytere. Det er et bunnfradrag som sørger for at de første…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er personfradraget?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Personfradraget er et fast beløp som trekkes fra **alminnelig inntekt** for absolutt alle skattytere. Det er et bunnfradrag som sørger for at de første kronene av inntekten din er skattefrie. For inntektsåret 2025 er personfradraget **108 550 kroner**.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva er "alminnelig inntekt"?</h3>
+<p>Før vi forklarer personfradraget, må vi rydde i et begrep. <strong>Alminnelig inntekt</strong> er summen av alle inntektene dine (lønn, pensjon, renteinntekter, utleie med mer) minus alle fradragene dine. På denne summen betaler du 22 prosent skatt (sats for 2025). Personfradraget er ett av fradragene som trekkes fra her – og det får alle.</p>
+<h3>Hvordan virker personfradraget?</h3>
+<p>Personfradraget er enkelt: det er et fast kronebeløp som trekkes fra den alminnelige inntekten din før 22-prosentskatten regnes ut. Du trenger ikke søke om det – det legges inn automatisk for alle.</p>
+<p><strong>Regneeksempel – Frida:</strong> Frida har en alminnelig inntekt (etter minstefradrag og andre fradrag) på 350 000 kroner. Personfradraget på 108 550 kroner trekkes fra:</p>
+<blockquote>
+<p>350 000 − 108 550 = 241 450 kr
+Skatt på alminnelig inntekt: 241 450 × 22 % = 53 119 kr</p>
+</blockquote>
+<p>Uten personfradraget ville hun betalt 22 % av hele 350 000, altså 77 000 kroner. Personfradraget sparte henne for:</p>
+<blockquote>
+<p>108 550 × 22 % = <strong>23 881 kr i skatt</strong></p>
+</blockquote>
+<p>Det er et betydelig beløp – og helt automatisk.</p>
+<h3>Hvorfor finnes personfradraget?</h3>
+<p>Tanken er at de første kronene du tjener skal beskattes mildt, slik at lavtlønnede og folk med små inntekter får en lettelse. Det fungerer som et innebygd bunnfradrag i skattesystemet og bidrar til at skatten blir mer rettferdig fordelt.</p>
+<blockquote>
+<p><strong>Greit å vite om personfradraget:</strong>
+- Det gis <strong>per person</strong>, ikke per husholdning.
+- Det er <strong>likt for alle</strong> voksne skattytere, uavhengig av inntekt.
+- Du får det <strong>automatisk</strong> – ingen søknad nødvendig.
+- Det gjelder i <strong>alminnelig inntekt</strong>, altså mot lønn, pensjon, kapital- og næringsinntekt.</p>
+</blockquote>
+<h3>Et bilde som gjør det enkelt</h3>
+<p>Tenk på inntekten din som en trapp opp mot skatten. Personfradraget er det første trinnet som er "gratis" – de første 108 550 kronene (2025) av den alminnelige inntekten din ilegges i praksis ikke 22-prosentskatten, fordi fradraget nuller dem ut. Først over dette trinnet begynner skatten å gjelde for fullt. Slik sørger personfradraget for at alle får en grunnleggende skattefri sokkel i bunnen av inntekten.</p>
+<h3>Personfradrag og minstefradrag – ikke bland dem</h3>
+<p>Disse to forveksles ofte, men de er forskjellige:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Minstefradrag</th>
+<th>Personfradrag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hva</td>
+<td>Standardfradrag for jobbutgifter</td>
+<td>Bunnfradrag for alle</td>
+</tr>
+<tr>
+<td>Gjelder</td>
+<td>Lønn og pensjon</td>
+<td>All alminnelig inntekt</td>
+</tr>
+<tr>
+<td>Beregning</td>
+<td>Prosent av inntekt (46 % i 2025), med tak</td>
+<td>Fast beløp (108 550 kr i 2025)</td>
+</tr>
+<tr>
+<td>Hvem</td>
+<td>Lønnsmottakere/pensjonister</td>
+<td>Alle skattytere</td>
+</tr>
+</tbody>
+</table>
+<p>Du får <strong>begge</strong> – de utelukker ikke hverandre. En lønnsmottaker får både minstefradrag og personfradrag.</p>
+<p><strong>Eksempel – Daniel, fulltidsansatt:</strong> Daniel får minstefradraget på 92 000 kroner (taket for 2025) <em>og</em> personfradraget på 108 550 kroner. Begge trekkes fra på vei mot den endelige skatten. Til sammen senker de den skattbare inntekten hans med over 200 000 kroner.</p>
+<h3>Hva betyr "klasse 1"?</h3>
+<p>Du vil noen ganger se uttrykket "personfradrag i klasse 1". Tidligere fantes det også en klasse 2 med høyere personfradrag for enslige forsørgere og ektefeller med én inntekt, men den ordningen er avviklet. I dag finnes i praksis bare klasse 1, slik at alle voksne skattytere får samme personfradrag. Ser du "klasse 1" i skattemeldingen, er det altså bare det vanlige personfradraget alle får – ingenting du trenger å gjøre noe med.</p>
+<h3>Hva med ektefeller og samboere?</h3>
+<p>Hver person har sitt eget personfradrag. To ektefeller får altså to personfradrag til sammen. Det overføres ikke automatisk mellom dem, men ektefeller har enkelte muligheter til å fordele visse fradrag mellom seg for å utnytte skatten best mulig.</p>
+<h3>Hva om jeg bare bodde i Norge deler av året?</h3>
+<p>Da kan personfradraget bli forholdsmessig redusert etter hvor mange måneder du var skattepliktig i Norge. Bodde du her hele året, får du fullt personfradrag. Flyttet du til Norge i juli, kan du for eksempel få omtrent halvparten av fradraget, fordi du bare var skattepliktig her halve året.</p>
+<h3>Hva skjer hvis inntekten er lavere enn personfradraget?</h3>
+<p>Har du svært lav inntekt – lavere enn personfradraget – betaler du i praksis ingen skatt på alminnelig inntekt, fordi fradraget "spiser opp" hele inntekten. Du kan ikke få personfradraget utbetalt som penger; det er ikke en støtteordning, men et fradrag. Det kan altså bare redusere skatt du faktisk skulle ha betalt, ikke skape et minusbeløp i din favør.</p>
+<p><strong>Eksempel – Sondre, student med liten deltidsinntekt på 90 000 kr:</strong> Personfradraget på 108 550 kroner er større enn hele den alminnelige inntekten hans. Resultatet er at han ikke betaler skatt på alminnelig inntekt i det hele tatt. Det "ubrukte" fradraget gir ham ikke penger, men han slipper unna skatten.</p>
+<h3>Personfradrag og barn</h3>
+<p>Barn som har egen inntekt – for eksempel fra en deltidsjobb – har også sitt eget personfradrag. Det betyr at en ungdom som tjener litt ved siden av skolen, får trekke fra personfradraget mot sin egen inntekt, akkurat som voksne. For de fleste ungdommer er inntekten lavere enn personfradraget, og da blir det lite eller ingen skatt å betale på alminnelig inntekt.</p>
+<h3>Hvorfor justeres personfradraget hvert år?</h3>
+<p>Personfradraget settes på nytt i statsbudsjettet hver høst og justeres typisk opp i takt med pris- og lønnsvekst. Det er derfor det er så viktig å sjekke årets beløp – fjorårets tall er nesten alltid utdatert. For 2025 er det altså 108 550 kroner, men for neste inntektsår vil det sannsynligvis være et annet beløp.</p>
+<h3>Kort oppsummert</h3>
+<p>Personfradraget er et fast bunnfradrag som alle får automatisk i alminnelig inntekt – 108 550 kroner for 2025 – og det sparer en typisk skattyter for nesten 24 000 kroner i skatt. Det er ikke det samme som minstefradraget; du får begge to samtidig. Hver person har sitt eget personfradrag. Beløpet justeres hvert år, så kontroller den gjeldende satsen på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

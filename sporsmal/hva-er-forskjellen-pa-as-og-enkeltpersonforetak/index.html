@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på AS og enkeltpersonforetak? — Rettsregel</title>
+<meta name="description" content="Den store forskjellen er ansvaret: i et AS risikerer du bare aksjeinnskuddet ditt begrenset ansvar, mens du i et enkeltpersonforetak hefter personlig med…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-as-og-enkeltpersonforetak/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på AS og enkeltpersonforetak?">
+<meta property="og:description" content="Den store forskjellen er ansvaret: i et AS risikerer du bare aksjeinnskuddet ditt begrenset ansvar, mens du i et enkeltpersonforetak hefter personlig med…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-as-og-enkeltpersonforetak/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på AS og enkeltpersonforetak?">
+<meta name="twitter:description" content="Den store forskjellen er ansvaret: i et AS risikerer du bare aksjeinnskuddet ditt begrenset ansvar, mens du i et enkeltpersonforetak hefter personlig med…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er forskjellen på AS og enkeltpersonforetak?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Den store forskjellen er ansvaret: i et AS risikerer du bare aksjeinnskuddet ditt (begrenset ansvar), mens du i et enkeltpersonforetak hefter personlig med alt du eier. AS krever 30 000 kr i aksjekapital og koster mer å registrere, men gir bedre beskyttelse og et tydeligere skille mellom deg og bedriften.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Den store forskjellen er ansvaret: i et AS risikerer du bare aksjeinnskuddet ditt (begrenset ansvar), mens du i et enkeltpersonforetak hefter personlig med alt du eier. AS krever 30 000 kr i aksjekapital og koster mer å registrere, men gir bedre beskyttelse og et tydeligere skille mellom deg og bedriften.</p>
+<h3>Det viktigste først: hvem hefter for gjelden?</h3>
+<p>I et <strong>enkeltpersonforetak (ENK)</strong> er du og bedriften juridisk sett samme person. Går det galt og bedriften skylder penger, kan kreditorene gå etter dine private eiendeler – huset, bilen, sparepengene.</p>
+<p>I et <strong>aksjeselskap (AS)</strong> er selskapet en egen juridisk person. Du risikerer kun det du har skutt inn i aksjekapital. Det kalles begrenset ansvar (asl. § 1-2). Går selskapet konkurs, taper du i utgangspunktet bare aksjeinnskuddet, ikke privatøkonomien din.</p>
+<blockquote>
+<p><strong>Eksempel:</strong> Tone driver bakeri. Med ENK signerer hun en leieavtale i sitt eget navn, og hvis bakeriet ikke kan betale husleien, må hun dekke den privat. Hadde hun hatt et AS, ville det vært selskapet som hadde ansvaret, og Tone ville (som hovedregel) ikke tape mer enn de 30 000 kronene hun skjøt inn. Merk: banker og utleiere ber ofte småbedriftseiere om personlig garanti uansett – da gjelder ikke ansvarsbegrensningen for akkurat den gjelden.</p>
+</blockquote>
+<h3>Sammenligning side om side</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Enkeltpersonforetak (ENK)</th>
+<th>Aksjeselskap (AS)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ansvar</td>
+<td>Personlig, ubegrenset</td>
+<td>Begrenset til aksjeinnskuddet</td>
+</tr>
+<tr>
+<td>Startkapital</td>
+<td>Ingen krav</td>
+<td>Minst 30 000 kr (tilhører selskapet)</td>
+</tr>
+<tr>
+<td>Registreringsgebyr (2026)</td>
+<td>2 181 kr digitalt</td>
+<td>6 825 kr digitalt</td>
+</tr>
+<tr>
+<td>Egen juridisk person</td>
+<td>Nei</td>
+<td>Ja</td>
+</tr>
+<tr>
+<td>Kan ha ansatte</td>
+<td>Ja, men du er ikke ansatt selv</td>
+<td>Ja, du kan være ansatt i ditt eget AS</td>
+</tr>
+<tr>
+<td>Lønn til deg selv</td>
+<td>Nei, du tar ut «overskudd»</td>
+<td>Ja, du kan ta ut lønn og/eller utbytte</td>
+</tr>
+<tr>
+<td>Regnskapsplikt</td>
+<td>Bokføringsplikt, ofte enklere</td>
+<td>Full regnskapsplikt</td>
+</tr>
+<tr>
+<td>Trygderettigheter</td>
+<td>Svakere (lavere sykepenger m.m.)</td>
+<td>Bedre, som ansatt</td>
+</tr>
+</tbody>
+</table>
+<p>(Gebyrer er 2026-satser fra brreg.no og justeres årlig.)</p>
+<h3>Skatt og lønn</h3>
+<p>I et ENK skattlegges overskuddet som din personlige inntekt – du tar ikke «lønn», du tar ut penger som er dine. I et AS er du og selskapet adskilt: selskapet betaler selskapsskatt av overskuddet, og du kan ta ut <strong>lønn</strong> (som ansatt) eller <strong>utbytte</strong> (som eier). Dette gir mer fleksibilitet, men også mer administrasjon. For mange er muligheten til å styre egen lønn og spare overskudd i selskapet et viktig pluss ved AS.</p>
+<h3>Trygd og sykepenger</h3>
+<p>Et ofte oversett poeng: som innehaver av et ENK har du svakere rettigheter ved sykdom (lavere sykepenger, særlig de første dagene). Som ansatt i ditt eget AS får du i utgangspunktet de samme rettighetene som vanlige arbeidstakere. For mange er dette et tungtveiende argument for AS, særlig hvis du er avhengig av en stabil inntekt.</p>
+<h3>Omdømme og tillit</h3>
+<p>Mange opplever at et AS gir litt mer tyngde utad. Større kunder, leverandører og banker kan føle seg tryggere på et AS med organisasjonsnummer, regnskapsplikt og et tydelig skille mellom privatøkonomi og selskap. Det er ikke en regel, men en praktisk realitet i mange bransjer.</p>
+<h3>Når passer hva?</h3>
+<blockquote>
+<p><strong>Velg enkeltpersonforetak hvis:</strong>
+- Du vil teste en idé i det små med lav risiko
+- Du har lite utgifter og liten gjeld
+- Du vil ha minst mulig administrasjon og lavest oppstartskostnad</p>
+<p><strong>Velg aksjeselskap hvis:</strong>
+- Du tar på deg forpliktelser eller gjeld og vil beskytte privatøkonomien
+- Du skal ha med deg medeiere eller investorer
+- Du vil ta ut lønn og ha gode trygderettigheter
+- Du planlegger å vokse</p>
+</blockquote>
+<h3>Et praktisk eksempel: samme person, to utfall</h3>
+<p>Tenk deg Petter, som skal starte som elektriker.</p>
+<p><strong>Som ENK:</strong> Han tar et oppdrag til 200 000 kr. Noe går galt med installasjonen, kunden krever erstatning, og forsikringen dekker ikke alt. Petter må dekke resten privat – det kan ramme huset og sparepengene.</p>
+<p><strong>Som AS:</strong> Samme oppdrag, samme uhell. Erstatningskravet rettes mot selskapet. Hvis selskapet ikke kan betale alt, taper Petter i utgangspunktet bare det selskapet eier, ikke privatøkonomien sin (forutsatt at han ikke har gitt personlig garanti og ikke har opptrådt uaktsomt). For en håndverker med reell risiko er dette ofte avgjørende.</p>
+<h3>Hva med administrasjon og papirarbeid?</h3>
+<p>Det er ærlig å si at AS krever litt mer av deg. Du må holde et enkelt styrearbeid i gang (selv om du er alene), avholde generalforsamling én gang i året, levere årsregnskap og holde orden på lønn og skatt. For ENK er det enklere. Men for mange er den ekstra tryggheten og de bedre rettighetene verdt den ekstra innsatsen – og mye av papirarbeidet kan settes bort til en regnskapsfører.</p>
+<h3>Kan jeg bytte senere?</h3>
+<p>Ja. Mange begynner med ENK for å teste ideen, og «omdanner» til AS når omsetningen og risikoen vokser. Det går fint, men krever litt papirarbeid. Vet du allerede at du tar på deg forpliktelser, kan det være ryddigst å starte rett på AS.</p>
+<blockquote>
+<p><strong>Eksempel:</strong> Mariam startet som tekstforfatter med ENK for å teste om hun fikk nok oppdrag. Etter to gode år, med større kunder og kontrakter, omdannet hun til AS for å beskytte seg bedre og kunne ta ut lønn. For henne var ENK riktig i starten og AS riktig da hun vokste.</p>
+</blockquote>
+<h3>Vanlige spørsmål</h3>
+<p><strong>Kan jeg ha både AS og ENK samtidig?</strong> Ja, det er mulig å eie et AS og samtidig ha et enkeltpersonforetak for noe helt annet. Men for de fleste er det enklest å samle virksomheten i én form.</p>
+<p><strong>Får jeg dagpenger hvis AS-et går dårlig?</strong> Som ansatt i ditt eget AS kan du ha rett til dagpenger ved permittering eller opphør på vilkår, mens en ENK-innehaver har svakere dekning. Reglene er detaljerte – sjekk med NAV for din situasjon.</p>
+<p><strong>Er det vanskeligere å låne penger i banken med ENK eller AS?</strong> Det varierer. Et AS med ryddig regnskap kan virke mer solid, men banken vil uansett ofte be om personlig sikkerhet fra eieren i et lite selskap.</p>
+<h3>Kort oppsummert</h3>
+<p>Hovedforskjellen er ansvaret: ENK gir personlig, ubegrenset ansvar, mens AS begrenser ansvaret til aksjeinnskuddet. AS krever 30 000 kr i aksjekapital og koster mer å registrere (6 825 kr digitalt i 2026 mot 2 181 kr for ENK), men gir bedre beskyttelse, mulighet for lønn til deg selv og bedre trygderettigheter. Velg ENK for lavrisiko-testing, og AS når du tar på deg forpliktelser eller vil vokse.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er reglene for nattarbeid? — Rettsregel</title>
+<meta name="description" content="Det korte svaret: Arbeid mellom klokka 21.00 og 06.00 regnes som nattarbeid, og dette er i utgangspunktet ikke tillatt – med mindre arbeidets art gjør det…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-reglene-for-nattarbeid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er reglene for nattarbeid?">
+<meta property="og:description" content="Det korte svaret: Arbeid mellom klokka 21.00 og 06.00 regnes som nattarbeid, og dette er i utgangspunktet ikke tillatt – med mindre arbeidets art gjør det…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-reglene-for-nattarbeid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er reglene for nattarbeid?">
+<meta name="twitter:description" content="Det korte svaret: Arbeid mellom klokka 21.00 og 06.00 regnes som nattarbeid, og dette er i utgangspunktet ikke tillatt – med mindre arbeidets art gjør det…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er reglene for nattarbeid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det korte svaret: Arbeid mellom klokka 21.00 og 06.00 regnes som nattarbeid, og dette er i utgangspunktet ikke tillatt – med mindre arbeidets art gjør det nødvendig (arbeidsmiljøloven § 10-11). Med andre ord: nattarbeid er unntaket, ikke regelen, og det skal være en grunn til at det skjer om natten.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-11</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-11/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-11</div>
+  <div class="related-card-title">Reglene for nattarbeid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det korte svaret: Arbeid mellom klokka 21.00 og 06.00 regnes som nattarbeid, og dette er i utgangspunktet ikke tillatt – med mindre arbeidets art gjør det nødvendig (arbeidsmiljøloven § 10-11). Med andre ord: nattarbeid er unntaket, ikke regelen, og det skal være en grunn til at det skjer om natten.</p>
+<h3>Hva regnes som natt?</h3>
+<p>Loven sier at tidsrommet fra klokka 21.00 til 06.00 er natt. I virksomheter som er bundet av tariffavtale, kan arbeidsgiver og tillitsvalgte skriftlig avtale et annet tidsrom på minst 8 timer, som likevel må omfatte tiden mellom 00.00 og 06.00 (§ 10-11 andre ledd). Det betyr at selve "natten" kan flyttes litt, men kjernen midt på natten er alltid beskyttet.</p>
+<h3>Når er nattarbeid lov?</h3>
+<p>Hovedregelen er at nattarbeid ikke er tillatt med mindre "arbeidets art gjør det nødvendig". Det betyr at det må være selve oppgaven som krever at den skjer om natten – ikke bare at sjefen synes det er praktisk.</p>
+<p>Eksempler på arbeid hvor natten er nødvendig:</p>
+<ul>
+<li><strong>Karoline</strong> er sykepleier på en sengepost. Pasienter må passes på hele døgnet, så nattevakter er nødvendige.</li>
+<li><strong>Bjørn</strong> jobber i et bryggeri hvor produksjonsprosessen ikke kan stoppes uten store tap. Her kan kontinuerlig drift gjøre natt nødvendig.</li>
+<li><strong>Ingrid</strong> kjører brøytebil. Veiene må ryddes før morgenrushet, så jobben må gjøres om natten.</li>
+</ul>
+<p>Til sammenligning: en vanlig regnskapsavdeling kan normalt ikke pålegge ansatte å jobbe natt bare fordi det haster med en frist. Da er det ikke arbeidets art, men dårlig planlegging, som skaper behovet.</p>
+<h3>Kan jeg selv velge å jobbe på kvelden?</h3>
+<p>Ja, til en viss grad. Arbeidsgiver og arbeidstaker kan inngå skriftlig avtale om at du på eget initiativ kan utføre arbeid mellom klokka 21.00 og 23.00 (§ 10-11). Dette er praktisk for <strong>Mari</strong>, som er frilanskonsulent og av og til vil ta en arbeidsøkt på kvelden når barna har lagt seg. Det er hennes valg, og avtalen må være skriftlig.</p>
+<h3>Hvilke ekstra rettigheter har nattarbeidere?</h3>
+<p>Jobber du mye om natten, har du noen ekstra beskyttelser:</p>
+<ul>
+<li><strong>Begrenset arbeidstid:</strong> Nattarbeidere skal i snitt ikke jobbe mer enn 8 timer i døgnet over en periode, fordi nattarbeid sliter mer på kroppen.</li>
+<li><strong>Helsekontroll:</strong> Du har rett til gratis helsekontroll før du starter med nattarbeid og deretter med jevne mellomrom.</li>
+<li><strong>Tilrettelegging:</strong> Får du helseplager du kan knytte til nattarbeidet, har du rett til å bli vurdert overført til dagarbeid hvis det er mulig.</li>
+</ul>
+<p><strong>Omar</strong> begynte i en ny jobb med nattskift på et pakkeri. Han fikk tilbud om helsekontroll før oppstart – det er ikke en kontroll av sjefen, men en helsesjekk for hans egen skyld, og den skal være gratis for ham.</p>
+<h3>Slik sjekker du om nattarbeidet ditt er lovlig</h3>
+<ol>
+<li><strong>Spør om begrunnelsen:</strong> Hvorfor må akkurat denne oppgaven gjøres om natten?</li>
+<li><strong>Sjekk om det finnes drøftinger:</strong> Arbeidsgiver skal drøfte behovet for nattarbeid med tillitsvalgte.</li>
+<li><strong>Be om helsekontroll</strong> hvis du jevnlig jobber natt.</li>
+<li><strong>Følg med på arbeidstiden:</strong> Jobber du systematisk mer enn 8 timer natt i snitt?</li>
+<li><strong>Si fra om helseplager</strong> og be om vurdering av dagarbeid.</li>
+</ol>
+<h3>Gravide og nattarbeid</h3>
+<p>Er du gravid, har du et ekstra vern. En gravid arbeidstaker som jobber natt har rett til å bli fritatt fra nattarbeidet dersom det er nødvendig av hensyn til helsen, og det kan dokumenteres med legeerklæring. <strong>Tuva</strong> er gravid i sjuende måned og jobber nattevakter på et sykehjem. Hun blir sliten og urolig av nattevaktene. Da kan hun be om å bli satt over på dagarbeid i den perioden det trengs. Arbeidsgiver skal forsøke å finne en løsning som ivaretar både henne og barnet.</p>
+<h3>Forskjellen på "lov" og "lurt"</h3>
+<p>Selv om nattarbeid er tillatt i et yrke, betyr ikke det at byrden kan legges hvor som helst. Arbeidsgiver skal vurdere arbeidsmiljøet, ulykkesrisikoen og belastningen, og legge til rette for pauser og forsvarlige vaktlengder. Hvis du opplever at nattarbeidet er organisert på en uforsvarlig måte – for eksempel altfor lange vakter alene uten avlastning – er det noe verneombudet bør kjenne til. Nattarbeid skal kunne gjøres trygt, ikke bare så vidt innenfor loven.</p>
+<h3>Et ord om helgenattarbeid og turnus</h3>
+<p>Mange som jobber natt gjør det i turnus, der nattevakter kombineres med dag- og kveldsvakter. Da gjelder fortsatt de vanlige reglene om daglig hvile (minst 11 timer) og ukentlig hvile (minst 35 timer). En vanlig fallgruve er at en nattevakt avsluttes om morgenen, og at neste vakt legges for tett etterpå. Følg med på at hvilereglene holdes selv når vaktene veksler mellom natt og dag.</p>
+<h3>Hva regnes egentlig som "nattarbeider"?</h3>
+<p>Det er forskjell på å ta en enkelt nattevakt og på å være en fast nattarbeider. De ekstra rettighetene – som begrenset gjennomsnittlig arbeidstid og jevnlig helsekontroll – retter seg særlig mot dem som regelmessig jobber en betydelig del av arbeidstiden om natten. <strong>Sigrid</strong> jobber bare nattevakt rundt én gang i måneden, mens <strong>Petter</strong> har natt som sin faste ordning. Petter er klart en nattarbeider med fullt sett av rettigheter; Sigrid er det i mindre grad, men er fortsatt beskyttet av at nattarbeid bare er lov når arbeidets art krever det. Er du i tvil om hvor du står, spør leder eller verneombud om hvordan virksomheten regner.</p>
+<h3>Hvorfor loven er så streng på natt</h3>
+<p>Det kan virke strengt at natt i utgangspunktet er forbudt. Grunnen er enkel: forskning viser at nattarbeid over tid kan gå ut over søvn, hjerte- og karhelse og øke risikoen for feil og ulykker. Derfor har lovgiveren bestemt at vi ikke skal jobbe natt "fordi det er praktisk", men bare når samfunnet faktisk trenger det – som i helsevesenet, beredskap og enkelte produksjonsprosesser. Når du kjenner begrunnelsen, blir det også lettere å vurdere om akkurat din nattjobb hører hjemme i den kategorien.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Natt er klokka 21.00–06.00; et annet 8-timers tidsrom kan avtales, men må dekke 00.00–06.00 (§ 10-11).</li>
+<li>Nattarbeid er i utgangspunktet forbudt – det er kun lov når arbeidets art gjør det nødvendig.</li>
+<li>Du kan skriftlig avtale å jobbe på eget initiativ mellom 21.00 og 23.00.</li>
+<li>Nattarbeidere har rett til gratis helsekontroll og begrenset arbeidstid.</li>
+<li>Får du helseplager, kan du ha rett til å bli vurdert for dagarbeid.</li>
+<li>"Det haster" er ikke nok – det må være selve oppgaven som krever natt.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

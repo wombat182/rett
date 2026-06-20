@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva betyr det å være aksjonær? — Rettsregel</title>
+<meta name="description" content="Å være aksjonær aksjeeier betyr at du eier en eller flere aksjer, og dermed en bit av selskapet. Med eierskapet følger rettigheter – som rett til utbytte,…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-betyr-det-a-vaere-aksjonaer/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva betyr det å være aksjonær?">
+<meta property="og:description" content="Å være aksjonær aksjeeier betyr at du eier en eller flere aksjer, og dermed en bit av selskapet. Med eierskapet følger rettigheter – som rett til utbytte,…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-betyr-det-a-vaere-aksjonaer/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva betyr det å være aksjonær?">
+<meta name="twitter:description" content="Å være aksjonær aksjeeier betyr at du eier en eller flere aksjer, og dermed en bit av selskapet. Med eierskapet følger rettigheter – som rett til utbytte,…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva betyr det å være aksjonær?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Å være aksjonær (aksjeeier) betyr at du eier en eller flere aksjer, og dermed en bit av selskapet. Med eierskapet følger rettigheter – som rett til utbytte, stemmerett og rett til informasjon – men også at du har risikoen for at aksjene kan tape verdi. Det fine er at du normalt ikke hefter personlig for selskapets gjeld.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Aksjonær = eier, ikke nødvendigvis sjef</h3>
+<p>En vanlig misforståelse er at aksjonær og daglig leder er samme sak. Det er det ikke. Som aksjonær <em>eier</em> du selskapet, men du <em>driver</em> det ikke nødvendigvis. Driften er det styret og daglig leder som står for. I et lite gründerselskap er ofte samme person både aksjonær, styreleder og daglig leder – men det er tre forskjellige roller med tre forskjellige sett ansvar.</p>
+<p>Tenk på Camilla, som eier 100 prosent av «Blomster &amp; Bånd AS». Som aksjonær eier hun selskapet. Som styreleder har hun ansvar for at selskapet drives forsvarlig. Som daglig leder står hun for den daglige driften. Selv om det er samme person, er det viktig å holde hattene fra hverandre – for ansvaret er ulikt i hver rolle.</p>
+<h3>Det begrensede ansvaret – aksjonærens store fordel</h3>
+<p>Den kanskje viktigste konsekvensen av å være aksjonær i et aksjeselskap er det <strong>begrensede ansvaret</strong>. Du risikerer som hovedregel bare det du har betalt for aksjene – ikke mer. Hvis selskapet går konkurs, taper du investeringen din, men kreditorene kan ikke kreve deg personlig for selskapets gjeld.</p>
+<p>Eksempel: Bjørn kjøpte aksjer i «Tech Start AS» for 50 000 kroner. Selskapet gikk dessverre konkurs med to millioner i gjeld. Bjørn taper sine 50 000 kroner, men ikke en krone mer – huset og privatøkonomien hans er trygge. Det er nettopp dette skillet mellom selskapets økonomi og din egen som gjør aksjeselskapet til en så populær selskapsform.</p>
+<p>Men merk: Det begrensede ansvaret gjelder deg som <em>aksjonær</em>. Har du også en styrerolle, kan du bli ansvarlig hvis du som styremedlem opptrer uaktsomt – for eksempel ved å drive videre uforsvarlig etter at egenkapitalen er tapt. Og hvis du har stilt personlig kausjon for et banklån, hefter du selvsagt for den kausjonen uavhengig av aksjonærrollen. Igjen: roller med ulikt ansvar.</p>
+<h3>Hva får du som aksjonær?</h3>
+<p>Eierskapet gir deg en pakke med rettigheter (mer om disse i neste artikkel), men de tre viktigste er:</p>
+<ul>
+<li><strong>Økonomiske rettigheter:</strong> Rett til en andel av overskuddet (utbytte) og en andel av verdiene hvis selskapet en gang oppløses.</li>
+<li><strong>Forvaltningsrettigheter:</strong> Rett til å møte og stemme på generalforsamlingen, der de store beslutningene tas.</li>
+<li><strong>Informasjonsrettigheter:</strong> Rett til innsyn i selskapets forhold, så du kan følge med på det du eier.</li>
+</ul>
+<h3>Hvor stor innflytelse har du?</h3>
+<p>Innflytelsen din følger normalt eierandelen. Eier du halvparten av aksjene, har du halvparten av stemmene. Det er nyttig å kjenne tre terskler:</p>
+<ul>
+<li><strong>Mer enn 50 prosent</strong> gir deg flertall i de fleste vanlige saker (alminnelig flertall).</li>
+<li><strong>Minst to tredjedeler</strong> trengs for de tyngste beslutningene, som å endre vedtektene, øke eller sette ned aksjekapitalen, eller oppløse selskapet.</li>
+<li><strong>Minst en tidel</strong> gir deg rett til å kreve ekstraordinær generalforsamling.</li>
+</ul>
+<p>Eksempel: I «Verksted &amp; Co AS» eier Per 60 prosent og Kari 40 prosent. Per kan på egen hånd avgjøre vanlige saker, men han kan <em>ikke</em> endre vedtektene eller gjennomføre en kapitalforhøyelse uten Kari, fordi det krever to tredjedeler. Slik beskytter loven mindretallsaksjonærer mot å bli overkjørt i de viktigste sakene.</p>
+<h3>Plikter – finnes de?</h3>
+<p>Som aksjonær har du få direkte plikter. Du har skutt inn det aksjene koster, og dermed er hovedforpliktelsen din oppfylt. Du kan altså ikke bli tvunget til å skyte inn mer penger mot din vilje. Du har likevel en lojalitetsforventning: Du kan ikke misbruke flertallet ditt til å skade de andre eierne eller selskapet. Loven har egne regler mot at en majoritetseier urimelig tilgodeser seg selv på de andres bekostning (myndighetsmisbruk).</p>
+<h3>Hvordan blir man aksjonær?</h3>
+<p>Det finnes flere veier inn i eierskapet. Du kan være med på å stifte selskapet og skyte inn aksjekapital fra start. Du kan kjøpe aksjer av en eksisterende eier. Du kan tegne nye aksjer i en kapitalforhøyelse (nyemisjon). Eller du kan arve eller motta aksjer som gave. Felles for alt er at ervervet skal føres inn i aksjeeierboken, slik at selskapet anerkjenner deg som eier med de rettighetene det gir.</p>
+<h3>Utbytte og lønn – to ulike veier til penger</h3>
+<p>En ting som ofte forvirrer den som både eier og jobber i selskapet sitt, er forskjellen på lønn og utbytte. Får du lønn, er det betaling for arbeidet du gjør, og den behandles som vanlig lønnsinntekt. Får du utbytte, er det avkastning på eierskapet ditt som aksjonær, og det utbetales bare hvis selskapet har overskudd og generalforsamlingen vedtar det. Camilla i «Blomster &amp; Bånd AS» kan altså ta ut penger på to måter: lønn for jobben hun gjør i butikken, og utbytte som eier dersom selskapet går med overskudd. Det er nyttig å holde disse fra hverandre, både regnskapsmessig og skattemessig – og det understreker igjen poenget om at eier- og arbeidsrollen er to forskjellige ting.</p>
+<h3>Et praktisk råd: lag en aksjonæravtale</h3>
+<p>Når dere er flere eiere, er en <strong>aksjonæravtale</strong> ofte det smarteste dere kan gjøre. Det er en privat avtale mellom eierne som regulerer ting loven ikke svarer på: Hva skjer hvis en vil selge? Hva hvis en slutter å jobbe i selskapet? Hvordan løser vi uenighet? Hvordan verdsetter vi aksjene hvis noen skal kjøpes ut? Camilla, som eier alt selv, trenger den ikke – men hvis hun tar inn en medeier, bør de skrive en avtale før konfliktene oppstår, ikke etterpå.</p>
+<h3>Kort oppsummert</h3>
+<p>Å være aksjonær betyr at du eier en del av selskapet gjennom aksjene dine. Du får rettigheter til utbytte, stemmer og informasjon, og du nyter det begrensede ansvaret – du risikerer normalt bare det du har betalt for aksjene, ikke privatøkonomien din. Eierskap er ikke det samme som å være sjef; styret og daglig leder driver selskapet. Innflytelsen følger eierandelen, med viktige terskler ved en tidel, 50 prosent og to tredjedeler. Er dere flere eiere, lønner det seg å lage en aksjonæravtale i god tid.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

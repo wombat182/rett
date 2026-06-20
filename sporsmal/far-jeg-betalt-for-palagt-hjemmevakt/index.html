@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Får jeg betalt for pålagt hjemmevakt? — Rettsregel</title>
+<meta name="description" content="Hjemmevakt — at du er hjemme eller et annet sted du selv velger, men må være klar til å rykke ut hvis det trengs — gir deg som hovedregel rett til at…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/far-jeg-betalt-for-palagt-hjemmevakt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Får jeg betalt for pålagt hjemmevakt?">
+<meta property="og:description" content="Hjemmevakt — at du er hjemme eller et annet sted du selv velger, men må være klar til å rykke ut hvis det trengs — gir deg som hovedregel rett til at…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/far-jeg-betalt-for-palagt-hjemmevakt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Får jeg betalt for pålagt hjemmevakt?">
+<meta name="twitter:description" content="Hjemmevakt — at du er hjemme eller et annet sted du selv velger, men må være klar til å rykke ut hvis det trengs — gir deg som hovedregel rett til at…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Får jeg betalt for pålagt hjemmevakt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hjemmevakt — at du er hjemme eller et annet sted du selv velger, men må være klar til å rykke ut hvis det trengs — gir deg som hovedregel rett til at minst 1/7 av vakttiden regnes som arbeidstid. Hvordan dette slår ut i lønn, avhenger av arbeidsavtalen og tariffavtalen din. Reglene står i arbeidsmiljøloven § 10-4 tredje ledd (paragrafen om beredskapsvakt utenfor arbeidsstedet).</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-4 og § 10-8</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-4/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-4</div>
+  <div class="related-card-title">Hva er alminnelig arbeidstid?</div>
+</a><a href="../../lover/arbeidsmiljoloven/10-8/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-8</div>
+  <div class="related-card-title">Reglene for daglig og ukentlig hviletid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Hjemmevakt — at du er hjemme eller et annet sted du selv velger, men må være klar til å rykke ut hvis det trengs — gir deg som hovedregel rett til at minst 1/7 av vakttiden regnes som arbeidstid. Hvordan dette slår ut i lønn, avhenger av arbeidsavtalen og tariffavtalen din. Reglene står i arbeidsmiljøloven § 10-4 tredje ledd (paragrafen om beredskapsvakt utenfor arbeidsstedet).</p>
+<h3>Hva er hjemmevakt?</h3>
+<p>Hjemmevakt — i loven kalt <strong>beredskapsvakt utenfor arbeidsstedet</strong> — betyr at du ikke er på jobb og utfører aktivt arbeid, men du må være tilgjengelig og klar til å gripe inn hvis noe skjer. Du kan ofte oppholde deg hjemme, men du er ikke helt fri: du kan ikke drikke alkohol, dra langt av gårde, eller gjøre ting som hindrer deg i å rykke ut raskt.</p>
+<p>Eksempel: Ingrid jobber i en IT-driftsavdeling. Hun har hjemmevakt en helg. Hun kan være hjemme, lage middag og se på TV, men telefonen må være på, og hvis et system går ned, må hun logge seg på og fikse det innen kort tid.</p>
+<h3>Hovedregelen: minst 1/7 regnes som arbeidstid</h3>
+<p>Loven sier at minst en sjuendedel (1/7) av hjemmevakten skal regnes med i den alminnelige arbeidstiden. Tanken er at selv om du ikke jobber aktivt, er du bundet — og den bindingen skal telle litt.</p>
+<p>Eksempel på utregning: Ingrid har hjemmevakt i 14 timer en lørdag. Minst 1/7 av dette skal regnes som arbeidstid:</p>
+<ul>
+<li>14 timer ÷ 7 = 2 timer.</li>
+<li>Altså skal minst 2 timer regnes som arbeidstid for selve beredskapen.</li>
+</ul>
+<p>I tillegg kommer den faktiske tiden hun jobber hvis hun blir kalt ut. Logger hun seg på og jobber aktivt i en time midt på natten, er den timen aktivt arbeid som kommer i tillegg (ofte med utrykningstillegg etter avtale).</p>
+<h3>Brøken kan endres — i begge retninger</h3>
+<p>1/7 er bare en hovedregel. Den kan justeres:</p>
+<ul>
+<li><strong>Mer belastende vakt = større andel.</strong> Hvis vaktordningen er svært belastende (mange utrykninger, kort responstid, lite frihet), kan en større andel enn 1/7 regnes som arbeidstid.</li>
+<li><strong>Avtale med tillitsvalgte.</strong> I bedrifter med tariffavtale kan arbeidsgiver og tillitsvalgte skriftlig avtale en annen brøk enn 1/7.</li>
+<li><strong>Arbeidstilsynet</strong> kan fastsette en annen beregningsmåte hvis 1/7 gir et urimelig resultat.</li>
+</ul>
+<h3>Hva med selve lønna?</h3>
+<p>Her er det viktig å skille to ting:</p>
+<ol>
+<li><strong>Hvor mye av vakten som regnes som arbeidstid</strong> (vernebrøken på 1/7) — dette handler om arbeidstidsreglene.</li>
+<li><strong>Hvor mye du får betalt</strong> for hjemmevakten — dette følger av arbeidsavtalen og tariffavtalen din.</li>
+</ol>
+<p>Selve loven sier ikke nøyaktig hvor mye penger du skal ha for hjemmevakt. Det vanlige er at det avtales en egen <strong>vaktgodtgjøring</strong> eller et <strong>beredskapstillegg</strong> — en sats per time eller per vakt for det å være tilgjengelig. Mange tariffavtaler har egne satser for dette. Blir du faktisk kalt ut og jobber aktivt, får du gjerne ordinær lønn pluss eventuelt utrykningstillegg for den tiden.</p>
+<p>Eksempel: I Ingrids tariffavtale får hun en fast beredskapssats per time hun har hjemmevakt, og full timelønn med tillegg for de timene hun faktisk jobber etter en utrykning.</p>
+<h3>Hva avgjør hvor belastende vakten er?</h3>
+<p>Når man vurderer om 1/7 er nok eller om en høyere andel bør gjelde, ser man blant annet på:</p>
+<ul>
+<li><strong>Responstiden.</strong> Må du være på plass innen 15 minutter, er du langt mer bundet enn om du har en time på deg.</li>
+<li><strong>Hvor ofte du faktisk kalles ut.</strong> Mange utrykninger i løpet av en vakt gjør den mer belastende.</li>
+<li><strong>Hvor mye den begrenser livet ditt.</strong> Kan du dra på butikken, trene eller sove uforstyrret, eller må du sitte klar ved telefonen hele tiden?</li>
+<li><strong>Tidspunktet.</strong> Nattevakter som ødelegger søvnen, regnes ofte som mer belastende enn dagvakter.</li>
+</ul>
+<p>Eksempel: Knut har hjemmevakt for et alarmselskap med krav om utrykning innen 20 minutter og i snitt tre utrykninger per natt. Det er en svært belastende ordning. Her kan en høyere andel enn 1/7 være rimelig, og det bør tas opp med tillitsvalgte.</p>
+<h3>Hviletid og hjemmevakt</h3>
+<p>Et viktig poeng for helsa di: blir du vekket og må jobbe midt på natten under en hjemmevakt, kan det «bryte» den daglige hvilen din. Da har du krav på erstatningshvile etterpå. Hovedregelen om 11 timers sammenhengende hvile i døgnet (§ 10-8) gjelder også når du har vaktordninger.</p>
+<p>Eksempel: Ingrid har hjemmevakt natt til søndag og blir kalt ut klokka 03 for å løse et problem som tar to timer. Hvilen hennes blir dermed brutt. Da skal hun ha tilsvarende erstatningshvile i tiden etterpå, slik at hun ikke møter utslitt på neste vakt. Arbeidsgiver kan ikke bare forvente at hun stiller opp som normalt uten å ta hensyn til den avbrutte natten.</p>
+<h3>Hva med tilgjengelighet uten egentlig vakt?</h3>
+<p>En gråsone mange opplever, er at de «egentlig ikke har vakt», men likevel forventes å være tilgjengelige — for eksempel at sjefen ringer på kvelden og forventer svar, eller at du må sjekke e-post i helgen. Hvis du i praksis er bundet til å være tilgjengelig og klar for arbeidsgiver, kan dette ligne en beredskapsvakt selv om det ikke kalles det. Da bør det settes i system, avtales og kompenseres. Diffus, ubetalt tilgjengelighet «på si» er ikke greit.</p>
+<p>Eksempel: Even får stadig meldinger om at han «bare må være litt tilgjengelig» i helgene, uten at det er satt opp som vakt eller betalt for. Over tid er dette i realiteten en uformell beredskapsordning. Even bør be om at det enten avtales ordentlig med godtgjøring, eller at forventningen om tilgjengelighet fjernes.</p>
+<h3>Sjekklisten din</h3>
+<ol>
+<li><strong>Be om å se vaktordningen skriftlig.</strong> Hvor lang er vakten, hva er responstiden, og hva regnes som arbeidstid?</li>
+<li><strong>Regn ut 1/7</strong> av vakttiden som et utgangspunkt — er det det dere bruker, eller en høyere brøk?</li>
+<li><strong>Finn vaktgodtgjøringen</strong> i arbeidsavtalen eller tariffavtalen. Hva får du per vakttime? Hva får du ved utrykning?</li>
+<li><strong>Vurder belastningen.</strong> Er det mange utrykninger og kort responstid, kan en høyere brøk være riktig.</li>
+<li><strong>Sjekk hvilen.</strong> Får du nok hvile etter en natt med utrykninger?</li>
+<li><strong>Snakk med tillitsvalgt</strong> hvis ordningen virker urimelig — de kan be Arbeidstilsynet vurdere beregningsmåten.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Hjemmevakt (beredskapsvakt utenfor arbeidsstedet, § 10-4 tredje ledd) gir som hovedregel rett til at minst 1/7 av vakten regnes som arbeidstid.</li>
+<li>Brøken kan økes hvis vakten er belastende, eller endres ved avtale med tillitsvalgte eller vedtak fra Arbeidstilsynet.</li>
+<li>Hvor mye penger du får for vakten følger av arbeidsavtalen og tariffavtalen — ofte en egen beredskapssats pluss lønn ved faktisk utrykning.</li>
+<li>Blir hvilen din brutt av utrykning, har du krav på erstatningshvile.</li>
+<li>Få ordningen skriftlig og sjekk satsene med tillitsvalgt.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/arbeidsgiver-vil-ikke-utbetale-lonn/">Arbeidsgiveren vil ikke betale lønn — hva gjør du?</a><a class="sp-relchip" href="../../sporsmal/er-pausen-betalt/">Er pausen betalt?</a><a class="sp-relchip" href="../../sporsmal/far-jeg-lonn-under-permittering/">Får jeg lønn under permittering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

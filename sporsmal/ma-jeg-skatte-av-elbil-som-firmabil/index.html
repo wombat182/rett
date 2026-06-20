@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg skatte av elbil som firmabil? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-elbil-som-firmabil/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg skatte av elbil som firmabil?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-elbil-som-firmabil/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg skatte av elbil som firmabil?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Må jeg skatte av elbil som firmabil?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Har du en elbil som firmabil med mulighet for privat bruk, skatter du av den – og reglene har blitt mindre gunstige enn før. Tidligere hadde el-firmabiler en stor verdsettelsesrabatt, men denne er gradvis trappet ned. For 2026 verdsettes elbil som firmabil til 80 prosent av listeprisen, og deretter brukes de vanlige firmabilsatsene.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Har du en elbil som firmabil med mulighet for privat bruk, skatter du av den – og reglene har blitt mindre gunstige enn før. Tidligere hadde el-firmabiler en stor verdsettelsesrabatt, men denne er gradvis trappet ned. For 2026 verdsettes elbil som firmabil til <strong>80 prosent</strong> av listeprisen, og deretter brukes de vanlige firmabilsatsene.</p>
+<h3>Slik har reglene endret seg</h3>
+<p>I mange år hadde elbiler en kraftig rabatt i firmabilbeskatningen for å stimulere til miljøvennlige valg. Den særskilte rabatten er nå redusert, og elbiler nærmer seg vanlige biler i beskatning. Husk dette hvis du leser eldre artikler på nett: "elbil er nesten skattefri som firmabil" stemmer <strong>ikke</strong> lenger. Reglene på dette området har endret seg flere ganger de siste årene, så det er ekstra viktig å bruke ferske tall.</p>
+<h3>Sjablongen for elbil i 2026</h3>
+<p>Fremgangsmåten for 2026:</p>
+<ol>
+<li>Ta bilens listepris som ny.</li>
+<li>Bruk <strong>80 prosent</strong> av denne som grunnlag (elbilens verdsettelse).</li>
+<li>Regn ut fordelen med de vanlige satsene: 30 prosent opp til knekkpunktet 370 300 kroner, og 20 prosent over.</li>
+</ol>
+<h3>Regneeksempel 1: Elbil til 500 000 kroner</h3>
+<p>Sara har en el-firmabil med listepris 500 000 kroner.</p>
+<ul>
+<li>Grunnlag (80 prosent): 0,80 × 500 000 = 400 000 kroner.</li>
+<li>Opp til knekkpunktet: 30 prosent av 370 300 = 111 090 kroner.</li>
+<li>Over knekkpunktet: 400 000 − 370 300 = 29 700 kroner, og 20 prosent av dette = 5 940 kroner.</li>
+<li>Samlet fordel: 111 090 + 5 940 = <strong>117 030 kroner</strong> i året.</li>
+</ul>
+<p>Dette beløpet legges til Saras lønn og beskattes som personinntekt.</p>
+<h3>Regneeksempel 2: Rimeligere elbil til 350 000 kroner</h3>
+<p>Jonas har en el-firmabil med listepris 350 000 kroner.</p>
+<ul>
+<li>Grunnlag (80 prosent): 0,80 × 350 000 = 280 000 kroner.</li>
+<li>Hele grunnlaget er under knekkpunktet, så fordelen er 30 prosent av 280 000.</li>
+<li>Fordel: 0,30 × 280 000 = <strong>84 000 kroner</strong> i året.</li>
+</ul>
+<p>Til sammenligning ville en fossilbil med samme listepris (350 000) gitt 30 prosent av hele 350 000 = 105 000 kroner. Elbilen er altså fortsatt litt rimeligere i beskatning på grunn av 80-prosentregelen, men forskjellen er mindre enn før.</p>
+<h3>Sammenligning: elbil mot fossilbil</h3>
+<p>La oss sette de to opp mot hverandre med listepris 350 000 kroner:</p>
+<ul>
+<li>Elbil: fordel 84 000 kroner.</li>
+<li>Fossilbil: fordel 105 000 kroner.</li>
+<li>Differanse: 21 000 kroner lavere fordel for elbilen.</li>
+</ul>
+<p>Med en marginalskatt på rundt 40 prosent betyr det cirka 8 400 kroner lavere skatt i året for elbilen sammenlignet med en tilsvarende fossilbil. Det er en reell, men ikke enorm, fordel – langt mindre enn da elbiler nesten var skattefrie som firmabil.</p>
+<h3>Eldre elbil</h3>
+<p>Også for elbiler gjelder regelen om at biler eldre enn tre år ved inntektsårets start verdsettes lavere (75 prosent av listeprisen). Her må du være oppmerksom på hvordan 75-prosentregelen og elbilens egen verdsettelse kombineres – sjekk den konkrete beregningen på skatteetaten.no eller med arbeidsgiver, siden detaljene kan endres fra år til år.</p>
+<h3>Hva med lading og strøm?</h3>
+<p>Får du dekket strøm til lading hjemme av arbeidsgiver, kan det inngå i firmabilordningen eller bli en egen vurdering. Hovedpoenget er at selve firmabilfordelen dekker den private bruken av bilen. Eventuell separat dekning av andre kostnader bør du sjekke med arbeidsgiver, siden reglene her kan variere og endres.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li><strong>Ikke stol på gamle "elbil er gratis"-artikler:</strong> Reglene er strammet inn. Bruk dagens satser.</li>
+<li><strong>Be om listeprisen:</strong> Fordelen regnes av listepris som ny, deretter 80 prosent. Få tallet bekreftet av arbeidsgiver.</li>
+<li><strong>Regn på alternativet:</strong> Med innstrammingen kan det for noen lønne seg å eie elbil privat og få kjøregodtgjørelse. Sett opp begge regnestykkene.</li>
+<li><strong>Kjørebok hvis du vil unngå skatt:</strong> Som for andre firmabiler må du kunne dokumentere at bilen ikke brukes privat, med fullstendig kjørebok, for å slippe beskatning.</li>
+</ul>
+<h3>Regneeksempel: dyr elbil over knekkpunktet</h3>
+<p>Thomas har en stor el-firmabil med listepris 800 000 kroner.</p>
+<ul>
+<li>Grunnlag (80 prosent): 0,80 × 800 000 = 640 000 kroner.</li>
+<li>Opp til knekkpunktet: 30 prosent av 370 300 = 111 090 kroner.</li>
+<li>Over knekkpunktet: 640 000 − 370 300 = 269 700 kroner, og 20 prosent av dette = 53 940 kroner.</li>
+<li>Samlet fordel: 111 090 + 53 940 = <strong>165 030 kroner</strong> i året.</li>
+</ul>
+<p>Med en marginalskatt på rundt 45 prosent betyr det cirka 74 000 kroner i ekstra skatt i året. For en så dyr bil kan det være verdt å regne nøye på om firmabil faktisk lønner seg, eller om Thomas heller bør eie bilen privat. Den gamle "elbil-snarveien" finnes ikke lenger – også dyre elbiler gir høy skatt som firmabil.</p>
+<h3>Hvorfor ble reglene endret?</h3>
+<p>Da elbiler var nye og dyre, ønsket myndighetene å gjøre det attraktivt å velge elektrisk – også som firmabil. Derfor fikk el-firmabiler en kraftig rabatt i verdsettelsen. Etter hvert som elbiler ble vanlige og rimeligere, ble den store rabatten ansett som mindre nødvendig, og den er trappet ned trinn for trinn. Dette er et godt eksempel på hvorfor du aldri bør stole på gamle artikler om skatt: en regel som var sann for noen år siden, kan være helt endret i dag. Sjekk alltid det aktuelle årets regler.</p>
+<h3>Sjekkliste før du takker ja til el-firmabil</h3>
+<ol>
+<li><strong>Be om listeprisen som ny</strong> – det er grunnlaget, deretter 80 prosent (2026).</li>
+<li><strong>Regn ut sjablongfordelen</strong> med 30/20-prosentsatsene og knekkpunktet på 370 300 kroner.</li>
+<li><strong>Anslå skatten</strong> ut fra din marginalskatt (ofte rundt 35–45 prosent).</li>
+<li><strong>Sammenlign med å eie selv</strong> og få kjøregodtgjørelse for jobbkjøringen.</li>
+<li><strong>Vurder bruksmønsteret ditt</strong> – kjører du mye, taler det oftere for firmabil.</li>
+</ol>
+<p>Med denne oversikten kan du ta et informert valg i stedet for å bli overrasket av skatten i ettertid.</p>
+<p>Elbilreglene har endret seg flere ganger og kan endres igjen. Tallene her gjelder 2026 – verifiser alltid for ditt år på <strong>skatteetaten.no</strong>.</p>
+<h3>Kort oppsummert</h3>
+<p>Elbil som firmabil med privat bruk er skattepliktig. Den tidligere store rabatten er trappet ned; i 2026 verdsettes elbilen til 80 prosent av listeprisen, og deretter brukes vanlige satser (30 prosent opp til 370 300 kroner, 20 prosent over). Det gir fortsatt litt lavere skatt enn fossilbil, men forskjellen er mindre enn før. Vil du slippe skatt, kreves fullstendig kjørebok. Sjekk alltid årets regler på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

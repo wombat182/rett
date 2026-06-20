@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvorfor trekkes jeg så mye i skatt? — Rettsregel</title>
+<meta name="description" content="Det vanligste er at skattekortet ditt er beregnet ut fra en høyere inntekt enn du faktisk har, eller at du har flere inntekter som hver for seg trekker…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvorfor-trekkes-jeg-sa-mye-i-skatt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvorfor trekkes jeg så mye i skatt?">
+<meta property="og:description" content="Det vanligste er at skattekortet ditt er beregnet ut fra en høyere inntekt enn du faktisk har, eller at du har flere inntekter som hver for seg trekker…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvorfor-trekkes-jeg-sa-mye-i-skatt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvorfor trekkes jeg så mye i skatt?">
+<meta name="twitter:description" content="Det vanligste er at skattekortet ditt er beregnet ut fra en høyere inntekt enn du faktisk har, eller at du har flere inntekter som hver for seg trekker…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hvorfor trekkes jeg så mye i skatt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det vanligste er at skattekortet ditt er beregnet ut fra en høyere inntekt enn du faktisk har, eller at du har flere inntekter som hver for seg trekker for lite, slik at trekkprosenten settes opp for å gå i null. Noen ganger er trekket faktisk riktig, og det føles bare høyt fordi du tjener mer, har lite fradrag eller har høy lønn enkelte måneder. Den gode nyheten: du kan ofte gjøre noe med det selv.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Først: er trekket egentlig feil?</h3>
+<p>Mange opplever at trekket "ser høyt ut", men det er korrekt. I Norge betaler du mer i skatt jo mer du tjener, fordi skatten er trinnvis (progressiv). Tjener du godt, vil prosenten naturlig være høyere. Det er ikke nødvendigvis en feil.</p>
+<p>Et regneeksempel: Anita tjener 600 000 kroner i året. En gjennomsnittlig skattesats på rundt 25-27 prosent er helt vanlig på et slikt nivå. Det betyr 150 000-160 000 kroner i skatt i året, altså 12 500-13 500 kroner i måneden. Det føles mye, men er ikke unormalt.</p>
+<h3>De vanligste grunnene til at trekket blir for høyt</h3>
+<ol>
+<li>Skattekortet er basert på for høy inntekt. Hadde du et godt år tidligere, kan Skatteetaten ha forhåndsutfylt en høyere forventet inntekt.</li>
+<li>Du har fått fradrag du ikke lenger har med, eller mangler fradrag du har krav på.</li>
+<li>Du har nedbetalt lån, og dermed mistet rentefradraget, men kortet henger igjen.</li>
+<li>Du har flere arbeidsgivere, og prosenten er satt høyt for å være på den sikre siden.</li>
+</ol>
+<h3>Slik sjekker du og fikser det</h3>
+<ul>
+<li>Logg inn på skatteetaten.no og åpne skattekortet.</li>
+<li>Se på "forventet inntekt". Stemmer den med det du faktisk kommer til å tjene?</li>
+<li>Legg inn riktige fradrag, for eksempel renter på lån, pendlerfradrag eller fagforeningskontingent.</li>
+<li>Lagre, så lages et nytt skattekort som arbeidsgiver henter automatisk.</li>
+</ul>
+<p>Eksempel: Ola hadde et skattekort beregnet på 700 000 kroner, men byttet til en jobb der han tjener 550 000 kroner. Han endret forventet inntekt på nett. Trekkprosenten falt fra 30 til 24 prosent, og han fikk flere tusen kroner mer utbetalt i måneden.</p>
+<h3>Pass på flere inntekter samtidig</h3>
+<p>Har du både lønn og pensjon, eller to jobber, må summen av trekkene dekke den samlede skatten. Hvis hver utbetaler trekker som om de var alene, blir det for lite, og da må prosenten et sted settes opp.</p>
+<p>Berit får både uføretrygd og lønn fra en deltidsjobb. NAV bruker tabellkort, jobben bruker prosent. Til sammen blir det riktig, men hvis hun ber jobben også bruke tabell, kan hun ende opp med for lite trekk og baksmell.</p>
+<h3>Når høyt trekk faktisk er smart</h3>
+<p>Noen velger med vilje å trekke litt ekstra, slik at de slipper restskatt og heller får penger igjen. Det er en smakssak. Ulempen er at du gir staten et rentefritt lån; fordelen er forutsigbarhet og en hyggelig overraskelse til våren.</p>
+<h3>Husk desember og feriepenger</h3>
+<p>Mange reagerer på at trekket virker høyt 10-11 måneder i året. Det henger sammen med at du har trekkfrie eller halv-trekk-måneder (feriepenger om sommeren og halv skatt i desember). Den skatten må fordeles på de øvrige månedene, og derfor virker det litt høyere ellers i året. Totalen over året skal likevel gå opp.</p>
+<h3>Steg-for-steg hvis du vil ha mer utbetalt nå</h3>
+<ol>
+<li>Finn riktig årsinntekt (gang månedslønn med 12, legg til feriepenger).</li>
+<li>Logg inn og endre forventet inntekt og fradrag.</li>
+<li>Vurder å bytte fra prosent til tabell på hovedjobben hvis lønnen er jevn.</li>
+<li>Vær ærlig: setter du inntekten kunstig lavt, får du baksmell senere.</li>
+</ol>
+<h3>Konkret: hvor mye mer får du utbetalt?</h3>
+<p>La oss regne på Olas eksempel mer i detalj. Han hadde et skattekort beregnet på 700 000 kroner, men tjener nå 550 000 kroner.</p>
+<ul>
+<li>Gammel trekkprosent: cirka 30 prosent. Av en månedslønn på 45 800 kroner ble det trukket cirka 13 700 kroner, slik at han satt igjen med rundt 32 100 kroner.</li>
+<li>Ny trekkprosent etter endring: cirka 24 prosent. Nå trekkes cirka 11 000 kroner, og han sitter igjen med rundt 34 800 kroner.</li>
+</ul>
+<p>Det er nesten 2 700 kroner mer i hånden hver måned, bare ved å rette opp forventet inntekt. Pengene er ikke "spart skatt"; han betalte rett og slett for mye før, og ville ellers fått det igjen som tilgodebeløp året etter.</p>
+<h3>Når trekket bør være høyere enn du tror</h3>
+<p>Noen ganger er det riktig at trekket er høyt, og å sette det ned vil bare gi deg baksmell senere. Det gjelder for eksempel hvis du:</p>
+<ul>
+<li>har inntekt fra utleie eller salg som det ikke trekkes skatt av løpende,</li>
+<li>har flere jobber,</li>
+<li>mottar skattepliktige ytelser i tillegg til lønn.</li>
+</ul>
+<p>Da er det bedre å la trekket være litt romslig, slik at du unngår restskatt med rentetillegg.</p>
+<h3>Vanlige fradrag mange glemmer</h3>
+<p>Mangler du fradrag på skattekortet, blir trekket høyere enn nødvendig. Sjekk om du har krav på noen av disse:</p>
+<ul>
+<li>Renteutgifter på lån (bolig, billån, forbrukslån, studielån).</li>
+<li>Pendlerfradrag hvis du bor borte fra hjemmet på grunn av jobb.</li>
+<li>Fagforeningskontingent.</li>
+<li>Foreldrefradrag for dokumenterte utgifter til barnepass.</li>
+<li>Fradrag for gaver til godkjente frivillige organisasjoner.</li>
+</ul>
+<p>Fradragsreglene og beløpsgrensene endres årlig, så kontroller hva som gjelder på skatteetaten.no.</p>
+<h3>Trekket føles høyt, men er det egentlig?</h3>
+<p>Det er lett å se på lønnsslippen, sukke over trekket og tenke at det er urettferdig høyt. Men før du konkluderer, er det verdt å sjekke om trekket faktisk stemmer med inntekten din. Mange overvurderer hvor mye de "burde" sitte igjen med, fordi de glemmer at skatten i Norge er trinnvis: de første kronene skattlegges lavt, mens kronene på toppen skattlegges høyere.</p>
+<p>Et eksempel: Anita synes 13 000 kroner i trekk på en månedslønn på 50 000 kroner virker voldsomt. Men en gjennomsnittlig skatt på rundt 26 prosent på en årsinntekt på 600 000 kroner er helt vanlig. Det er altså ikke nødvendigvis noe galt; det er bare slik skattesystemet er bygd opp.</p>
+<h3>Hvordan kontrollere at trekket er riktig</h3>
+<ol>
+<li>Finn den faktiske årsinntekten din (månedslønn ganger 12 pluss feriepenger og eventuelle tillegg).</li>
+<li>Bruk Skatteetatens skattekalkulator på skatteetaten.no for å se hva den samlede skatten bør bli.</li>
+<li>Sammenlign med hva som faktisk trekkes over året.</li>
+<li>Stemmer det dårlig, oppdater skattekortet med riktig inntekt og riktige fradrag.</li>
+</ol>
+<p>Skattekalkulatoren er gratis og oppdateres med årets satser, så den gir et godt bilde av hva som er rimelig trekk for nettopp din situasjon.</p>
+<h3>Et siste, trøstende poeng</h3>
+<p>Selv om du trekkes "for mye" en periode, er ikke pengene tapt. Har du betalt for mye skatt gjennom året, får du det igjen som tilgodebeløp i skatteoppgjøret, ofte med en liten rentegodtgjørelse på toppen. Det beste er likevel å treffe mest mulig riktig underveis, slik at du har pengene tilgjengelig når du trenger dem, i stedet for å vente på oppgjøret.</p>
+<h3>Kort oppsummert</h3>
+<p>Høyt trekk skyldes oftest at skattekortet er bygd på for høy inntekt, manglende fradrag eller flere inntekter som krever ekstra trekk et sted. Sjekk forventet inntekt og fradrag på skatteetaten.no og endre kortet, så justeres trekket fort. Husk at høyt trekk noen måneder også henger sammen med trekkfrie feriepenger og halv skatt i desember. Skattesatser, trinn og fradragsgrenser endres hvert år, så kontroller alltid de gjeldende tallene på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

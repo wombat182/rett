@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når skal arbeidsavtalen være klar? — Rettsregel</title>
+<meta name="description" content="Etter lovendringen 1.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-skal-arbeidsavtalen-vaere-klar/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når skal arbeidsavtalen være klar?">
+<meta property="og:description" content="Etter lovendringen 1.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-skal-arbeidsavtalen-vaere-klar/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når skal arbeidsavtalen være klar?">
+<meta name="twitter:description" content="Etter lovendringen 1.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Når skal arbeidsavtalen være klar?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Etter lovendringen 1. juli 2024 skal arbeidsavtalen være klar mye raskere enn før. Hvis jobben varer mer enn én måned, skal avtalen være signert og klar snarest mulig, og senest sju dager etter at du begynte. For helt korte jobber og ved utleie skal den være klar allerede første arbeidsdag.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 14-5 og § 14-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/14-5/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-5</div>
+  <div class="related-card-title">Du skal ha skriftlig arbeidsavtale</div>
+</a><a href="../../lover/arbeidsmiljoloven/14-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-6</div>
+  <div class="related-card-title">Dette skal stå i arbeidsavtalen</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Etter lovendringen 1. juli 2024 skal arbeidsavtalen være klar mye raskere enn før. Hvis jobben varer mer enn én måned, skal avtalen være signert og klar snarest mulig, og senest sju dager etter at du begynte. For helt korte jobber og ved utleie skal den være klar allerede første arbeidsdag.</p>
+<h3>Hovedregelen: senest sju dager etter oppstart</h3>
+<p>Tidligere hadde arbeidsgiver hele én måned på seg. Etter 1. juli 2024 er fristen kortet kraftig ned. Skal arbeidsforholdet vare mer enn én måned, skal avtalen være klar <strong>snarest mulig, og senest innen sju dager</strong> etter at du begynte i jobben (aml. § 14-5).</p>
+<p>Legg merke til ordene "snarest mulig". Hvis arbeidsgiver kan ha avtalen klar tidligere, skal de gjøre det. Sju dager er en ytterste frist, ikke en hvilepute. Mange seriøse arbeidsgivere har avtalen klar allerede før første arbeidsdag, og det er det beste.</p>
+<p>Tenk på Eline, som begynner som butikkmedarbeider mandag 5. mai. Jobben skal vare i et halvt år. Da skal den skriftlige avtalen hennes senest være klar mandag 12. mai. Får hun ingenting innen den fristen, kan hun trygt minne arbeidsgiver om regelen.</p>
+<h3>Korte jobber og utleie: samme dag</h3>
+<p>For de korteste arbeidsforholdene gjelder en strengere regel. Skal jobben vare kortere enn én måned, skal den skriftlige avtalen foreligge <strong>senest samme dag som du begynner.</strong> Det samme gjelder hvis du leies ut til andre gjennom et bemanningsforetak.</p>
+<p>Tenk på Tobias, som hyres inn for å hjelpe til på et arrangement i ti dager. Han har krav på skriftlig avtale allerede første dag, ikke etter en uke. Grunnen er enkel: I korte forhold rekker man ikke å rydde opp i misforståelser hvis avtalen kommer for sent.</p>
+<h3>Hva med endringer underveis?</h3>
+<p>Får du endringer i arbeidsforholdet senere, for eksempel høyere stillingsprosent, ny tittel eller nye arbeidsoppgaver, skal avtalen oppdateres senest den dagen endringen trer i kraft (aml. § 14-8). Endringene skal altså ikke vente til neste gang noen "kommer på det".</p>
+<p>Tenk på Nora, som går fra 60 til 100 prosent stilling fra 1. september. Da skal hun ha den oppdaterte avtalen senest 1. september.</p>
+<h3>Hva med gamle avtaler fra før 1. juli 2024?</h3>
+<p>De nye, utvidede innholdskravene i § 14-6 gjelder først og fremst avtaler inngått <strong>etter</strong> 1. juli 2024. Men hvis du har en eldre avtale, har du likevel et vern:</p>
+<ul>
+<li>Skjer det en faktisk endring i forholdet (som ny stilling eller høyere prosent), oppdateres avtalen ved endringen.</li>
+<li>Skjer det ingen endring, men du ønsker at avtalen skal oppdateres med de nye opplysningskravene, <strong>kan du be om det.</strong> Arbeidsgiver må da oppdatere avtalen, senest innen <strong>to måneder</strong> etter at de mottok forespørselen din.</li>
+</ul>
+<p>Tenk på Henrik, som har en kortfattet avtale fra 2019. Han ønsker at den skal inneholde de nye punktene om for eksempel kompetanseutvikling og sosiale ytelser. Han sender en skriftlig forespørsel, og arbeidsgiver har da maks to måneder på å oppdatere avtalen.</p>
+<h3>Hva gjør jeg hvis fristen ryker?</h3>
+<p><strong>Slik går du frem hvis du ikke har fått avtalen i tide:</strong></p>
+<ol>
+<li><strong>Vent ikke i stillhet.</strong> Ta kontakt med arbeidsgiver så snart fristen er ute.</li>
+<li><strong>Skriv, ikke bare snakk.</strong> Send en kort, vennlig e-post: "Hei, jeg har nå jobbet i over en uke og har ikke fått den skriftlige arbeidsavtalen ennå. Kan du sende den?" Da dokumenterer du at du har etterspurt den.</li>
+<li><strong>Be om hjelp fra tillitsvalgt eller fagforening</strong> hvis du er organisert.</li>
+<li><strong>Kontakt Arbeidstilsynet</strong> hvis arbeidsgiver fortsatt ikke ordner avtalen. De kan gi pålegg.</li>
+</ol>
+<p>Husk: Selv om avtalen kommer for sent eller mangler helt, har du fulle rettigheter som ansatt fra første arbeidsdag. Du mister ingenting fordi arbeidsgiver er treg.</p>
+<h3>Et eksempel på hvordan fristene virker i praksis</h3>
+<p>La oss følge tre personer som starter i jobb samme uke, for å se hvordan reglene slår ut ulikt.</p>
+<p>Aisha begynner i en fast butikkjobb. Forholdet skal vare lenge, altså mer enn én måned. Hun har dermed krav på avtalen senest sju dager etter første arbeidsdag, men en god arbeidsgiver gir den gjerne før.</p>
+<p>Lars hyres inn for å hjelpe under en to ukers messeperiode. Siden jobben varer under én måned, har han krav på avtale allerede første dag.</p>
+<p>Maja leies ut gjennom et bemanningsforetak til en bedrift. Også hun har krav på skriftlig avtale fra første dag, fordi hun leies ut. I tillegg skal avtalen hennes oppgi hvem hun leies ut til.</p>
+<p>Tre ulike situasjoner, tre litt ulike regler, men felles for alle: ingen skal vente lenge på det svart på hvitt.</p>
+<h3>Hva betyr "snarest mulig"?</h3>
+<p>Mange henger seg opp i sjudagersfristen og glemmer formuleringen "snarest mulig". Den er viktig. Sju dager er ikke en rettighet arbeidsgiver har til å vente, det er en ytre grense. Kan avtalen lages tidligere, skal den lages tidligere. Hvis arbeidsgiver allerede har all informasjon klar før du begynner, er det ingen god grunn til å vente en uke. Du kan derfor høflig spørre om å få avtalen før oppstart, og det er en helt rimelig forespørsel.</p>
+<h3>Hvorfor de raske fristene er en fordel for deg</h3>
+<p>De korte fristene er der for å beskytte deg. Jo raskere avtalen er på plass, jo mindre rom er det for misforståelser om lønn, arbeidstid og stilling. Hvis du står uten avtale i ukevis, er det vanskeligere å vite hva du faktisk har krav på, og lettere for en uærlig arbeidsgiver å endre forutsetningene.</p>
+<p>Tenk på Amir, som begynte i en jobb og fikk beskjed om at "avtalen kommer etter hvert". Det gikk tre uker. I mellomtiden ble han usikker på om han egentlig var fast eller midlertidig ansatt, og hvor mye han skulle ha i timen. Hadde avtalen kommet innen sju dager, slik loven krever, ville han sluppet denne uvissheten. Den raske fristen er nettopp ment å hindre slike situasjoner.</p>
+<h3>Husk at fristen ikke gjør deg "rettighetsløs" i mellomtiden</h3>
+<p>Et viktig poeng å ta med seg: i perioden før du har fått avtalen, er du ikke uten rettigheter. Du har krav på riktig lønn, du opptjener feriepenger, og du har oppsigelsesvern fra første arbeidsdag. Fristen handler om når dokumentet skal foreligge, ikke om når rettighetene dine starter. De starter med en gang du begynner å jobbe. Så selv om arbeidsgiver er sen med papirene, kan du være trygg på at du er omfattet av loven hele veien.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Varer jobben mer enn én måned: avtalen skal være klar snarest mulig, senest sju dager etter oppstart (aml. § 14-5).</li>
+<li>Varer jobben under én måned, eller du leies ut: avtalen skal være klar første arbeidsdag.</li>
+<li>Endringer underveis skal inn i avtalen senest når endringen trer i kraft (aml. § 14-8).</li>
+<li>Har du en eldre avtale, kan du be om at den oppdateres med de nye kravene, og arbeidsgiver har maks to måneder på seg.</li>
+<li>Mangler avtalen, har du fortsatt fulle rettigheter, og du kan kontakte Arbeidstilsynet.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-signere-sluttavtalen-med-en-gang/">Bør jeg signere sluttavtalen med en gang?</a><a class="sp-relchip" href="../../sporsmal/er-en-muntlig-arbeidsavtale-gyldig/">Er en muntlig arbeidsavtale gyldig?</a><a class="sp-relchip" href="../../sporsmal/gjelder-provetid-ved-midlertidig-ansettelse/">Gjelder prøvetid ved midlertidig ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

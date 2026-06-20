@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg skatte av gevinst på spill og lotteri? — Rettsregel</title>
+<meta name="description" content="Det avhenger av hvilket spill du har vunnet på.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-gevinst-pa-spill-og/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg skatte av gevinst på spill og lotteri?">
+<meta property="og:description" content="Det avhenger av hvilket spill du har vunnet på.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-gevinst-pa-spill-og/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg skatte av gevinst på spill og lotteri?">
+<meta name="twitter:description" content="Det avhenger av hvilket spill du har vunnet på.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Må jeg skatte av gevinst på spill og lotteri?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det avhenger av hvilket spill du har vunnet på. Hovedregelen er enkel og gledelig: Gevinster fra lovlige norske spill og spill innenfor EØS – som Norsk Tipping, Norsk Rikstoto og lignende – er skattefrie, uansett hvor mye du vinner. Men vinner du på andre spill, eller på tilfeldige gevinster, kan beløpet være skattepliktig dersom det overstiger en grense.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det avhenger av <em>hvilket</em> spill du har vunnet på. Hovedregelen er enkel og gledelig: Gevinster fra lovlige norske spill og spill innenfor EØS – som Norsk Tipping, Norsk Rikstoto og lignende – er <strong>skattefrie</strong>, uansett hvor mye du vinner. Men vinner du på andre spill, eller på tilfeldige gevinster, kan beløpet være skattepliktig dersom det overstiger en grense.</p>
+<h3>De skattefrie gevinstene</h3>
+<p>Vinner du på spill som drives lovlig i Norge eller i et annet EØS-land, er gevinsten skattefri. Dette omfatter blant annet:</p>
+<ul>
+<li>Norsk Tipping (Lotto, Vikinglotto, Eurojackpot, tipping osv.)</li>
+<li>Norsk Rikstoto (hestespill)</li>
+<li>Pantelotteriet og enkelte andre regulerte lotterier</li>
+<li>Tilsvarende lovlige spill i andre EØS-land</li>
+</ul>
+<p>Vinner Hanna 2 millioner kroner i Lotto, beholder hun hele beløpet skattefritt. Hun trenger heller ikke føre det opp som inntekt. Det er en av grunnene til at norske pengespillgevinster er så gunstige.</p>
+<h3>De skattepliktige gevinstene</h3>
+<p>Skatteplikt kan oppstå i to hovedtilfeller:</p>
+<ol>
+<li><strong>Spill utenfor det regulerte EØS-området.</strong> Vinner du på et utenlandsk spillselskap som ikke omfattes av skattefritaket, kan gevinsten være skattepliktig.</li>
+<li><strong>Tilfeldige gevinster over beløpsgrensen.</strong> Gevinster fra konkurranser, tilfeldige premier og enkelte spill er skattepliktige når verdien overstiger 10 000 kr (2026-grense – sjekk på skatteetaten.no). Er gevinsten over grensen, beskattes den som alminnelig inntekt med 22 prosent.</li>
+</ol>
+<h3>Regneeksempel: Konkurransepremie</h3>
+<p>Mats vinner en fotokonkurranse arrangert av et lokalt firma, med en premie verdt 25 000 kr (et kamera). Dette er en tilfeldig gevinst over grensen på 10 000 kr.</p>
+<ul>
+<li>Premiens verdi: 25 000 kr</li>
+<li>Skattepliktig som alminnelig inntekt: 25 000 kr</li>
+<li>Skatt (22 % i 2026): 5 500 kr</li>
+</ul>
+<p>Mats må altså sette av 5 500 kr til skatt, selv om premien var en gjenstand og ikke penger. Verdien av premien regnes som inntekt.</p>
+<h3>Viktig om beløpsgrensen</h3>
+<p>Grensen på 10 000 kr gjelder per gevinst. Vinner du flere mindre premier som hver er under grensen, er de som hovedregel skattefrie. Men vinner du én premie over grensen, er hele premien skattepliktig – ikke bare det som overstiger 10 000 kr. Det er altså et terskelbeløp, ikke et bunnfradrag.</p>
+<h3>Hvorfor er norske spill skattefrie?</h3>
+<p>Mange undrer seg over hvorfor en Lotto-millionær slipper skatt, mens en konkurransepremie på 25 000 kr beskattes. Forklaringen er at gevinster fra lovlig regulerte spill i Norge og EØS er gjort skattefrie etter eget hjemmel. En del av begrunnelsen er at staten allerede tar sin del gjennom selve spillordningen, og at slike gevinster er tilfeldige og uforutsigbare. For deg som spiller betyr det ganske enkelt at en gevinst hos Norsk Tipping eller Rikstoto er din, helt og fullt – du trenger verken å regne, rapportere eller bekymre deg.</p>
+<h3>Hva med poker, kasino og nettspill?</h3>
+<p>Dette er et område mange lurer på:</p>
+<ul>
+<li><strong>Lovlige EØS-regulerte spill:</strong> Skattefritt etter hovedregelen.</li>
+<li><strong>Spill utenfor EØS / uregulerte nettkasinoer:</strong> Gevinst kan være skattepliktig, og du har selv ansvar for å oppgi den.</li>
+<li><strong>Systematisk og profesjonelt spill:</strong> Hvis noen driver pengespill så systematisk og i et slikt omfang at det regnes som virksomhet, kan gevinstene bli skattepliktig næringsinntekt – med de tyngre skattesatsene det innebærer. Dette er en konkret helhetsvurdering.</li>
+</ul>
+<p>Et eksempel: En pokerspiller som spiller jevnlig, planmessig og lever av det, kan bli ansett for å drive virksomhet, slik at gevinstene skattlegges. En som vinner en enkeltgang på et lovlig EØS-spill gjør det ikke.</p>
+<h3>Hva må jeg gjøre i praksis?</h3>
+<ol>
+<li><strong>Vant på Norsk Tipping eller Rikstoto?</strong> Nyt gevinsten – ingenting å rapportere.</li>
+<li><strong>Vant en premie eller gevinst over 10 000 kr på noe annet?</strong> Oppgi verdien som inntekt i skattemeldingen.</li>
+<li><strong>Vant på et utenlandsk spillselskap?</strong> Sjekk om det er innenfor EØS og regulert. Er du usikker, oppgi gevinsten og kontakt Skatteetaten.</li>
+<li><strong>Spiller du systematisk og i stort omfang?</strong> Vurder om aktiviteten er blitt virksomhet.</li>
+</ol>
+<h3>En vanlig misforståelse</h3>
+<p>Mange tror «alle pengespillgevinster er skattefrie i Norge». Det stemmer kun for lovlige norske og EØS-regulerte spill. Vinner du stort på et nettkasino utenfor EØS, eller får en dyr premie i en konkurranse, kan skatteplikten slå inn. Det er derfor lurt å sjekke hva slags spill eller konkurranse det var, før du regner gevinsten som «fri».</p>
+<h3>Regneeksempel: flere små premier mot én stor</h3>
+<p>For å vise hvordan terskelen virker, ta to ulike år for samme person, Sara:</p>
+<p><strong>År 1:</strong> Hun vinner tre konkurranser med premier på henholdsvis 4 000 kr, 6 000 kr og 8 000 kr. Hver enkelt er under 10 000 kr, og de er som hovedregel skattefrie. Til sammen 18 000 kr uten skatt.</p>
+<p><strong>År 2:</strong> Hun vinner én premie på 18 000 kr. Nå er hele beløpet over terskelen og dermed skattepliktig. Skatten blir 22 prosent av 18 000 = 3 960 kr.</p>
+<p>Samme totalbeløp, men helt ulik skatt – fordi grensen gjelder per gevinst, ikke samlet for året. Dette er greit å være klar over, men husk samtidig at man selvsagt ikke kan «pynte på» virkeligheten; det er den faktiske premien som teller.</p>
+<h3>Hva med premier på jobben eller fra arbeidsgiver?</h3>
+<p>En liten, men nyttig presisering: Premier og gevinster du får fra arbeidsgiveren din, for eksempel i en intern konkurranse, behandles ofte som lønn og beskattes deretter. Det er en annen kategori enn tilfeldige gevinster fra utenforstående.</p>
+<h3>Må jeg gjøre noe selv, eller ordner det seg automatisk?</h3>
+<p>For lovlige norske spill ordner det seg av seg selv – Norsk Tipping og lignende rapporterer ikke skattepliktig gevinst fordi den er skattefri, og du trenger ikke gjøre noe. For skattepliktige tilfeldige gevinster og premier er det derimot ditt eget ansvar å føre verdien opp i skattemeldingen. Arrangøren av en konkurranse har riktignok ofte en rapporteringsplikt, men du bør uansett sjekke at gevinsten er korrekt med i skattemeldingen din, og legge den til selv hvis den mangler.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Gevinster fra lovlige norske og EØS-regulerte spill (Norsk Tipping, Rikstoto m.fl.) er skattefrie, uansett beløp.</li>
+<li>Tilfeldige gevinster og premier er skattepliktige når verdien overstiger 10 000 kr (2026), og beskattes med 22 prosent.</li>
+<li>Beløpsgrensen er et terskelbeløp – overstiger premien grensen, er hele premien skattepliktig.</li>
+<li>Gevinster fra uregulerte spill utenfor EØS kan være skattepliktige.</li>
+<li>Systematisk og profesjonelt spill kan bli skattepliktig virksomhet.</li>
+<li>Premier fra arbeidsgiver behandles ofte som lønn.</li>
+</ul>
+<p>Grensene og reglene endres fra tid til annen – kontroller alltid de gjeldende tallene på skatteetaten.no.</p>
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

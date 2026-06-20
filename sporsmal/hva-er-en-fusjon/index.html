@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en fusjon? — Rettsregel</title>
+<meta name="description" content="En fusjon er ganske enkelt at to eller flere aksjeselskaper smelter sammen til ett.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-fusjon/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en fusjon?">
+<meta property="og:description" content="En fusjon er ganske enkelt at to eller flere aksjeselskaper smelter sammen til ett.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-fusjon/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en fusjon?">
+<meta name="twitter:description" content="En fusjon er ganske enkelt at to eller flere aksjeselskaper smelter sammen til ett.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er en fusjon?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En fusjon er ganske enkelt at to eller flere aksjeselskaper smelter sammen til ett. Det ene selskapet (det «overtakende») sluker det andre (det «overdragende»), og overtar alt: bygninger, kundeavtaler, ansatte, banklån og gjeld. Aksjonærene i selskapet som forsvinner, får som regel aksjer i selskapet som blir igjen, som betaling. Reglene står i aksjeloven kapittel 13.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>En fusjon er ganske enkelt at to eller flere aksjeselskaper smelter sammen til ett. Det ene selskapet (det «overtakende») sluker det andre (det «overdragende»), og overtar alt: bygninger, kundeavtaler, ansatte, banklån og gjeld. Aksjonærene i selskapet som forsvinner, får som regel aksjer i selskapet som blir igjen, som betaling. Reglene står i aksjeloven kapittel 13.</p>
+<h3>Tenk på det som to elver som blir til én</h3>
+<p>Se for deg Kari, som driver «Fjordkaffe AS», og broren Jonas, som driver «Bryggeriet Brygg AS». De vil slå seg sammen for å bli sterkere. I stedet for å avvikle det ene og starte alt på nytt, lar de Fjordkaffe AS overta Bryggeriet Brygg AS. Da renner alt fra Jonas sitt selskap inn i Karis – ansatte, leverandøravtaler, varelager og gjeld – uten at noe må selges eller flyttes formelt stykke for stykke. Selskapet som overtar, trer rett inn i det andres sko. Dette kaller juristene «kontinuitet»: alt fortsetter uavbrutt.</p>
+<p>Til gjengjeld får Jonas, som eide Bryggeriet Brygg AS, nye aksjer i Fjordkaffe AS. Disse aksjene er «vederlaget» – altså betalingen han får for at selskapet hans ble slukt. Hovedregelen er at vederlaget er aksjer i det overtakende selskapet (asl. § 13-2). Det er lov å gi litt penger på toppen, men de kontante tilleggene kan ikke utgjøre mer enn 20 prosent av samlet vederlag.</p>
+<h3>Hvorfor velger folk fusjon?</h3>
+<p>Det finnes mange gode grunner:</p>
+<ul>
+<li><strong>Slå sammen krefter.</strong> To små verksteder blir ett større med bedre forhandlingsmakt mot leverandører.</li>
+<li><strong>Rydde i et konsern.</strong> Har du et morselskap og tre datterselskaper, kan det bli enklere og billigere å drive med bare ett.</li>
+<li><strong>Skattefritt under vilkår.</strong> Fusjon kan gjennomføres uten at det utløser skatt der og da, så lenge man følger reglene om kontinuitet. (Sjekk alltid dette med en regnskapsfører – skattereglene er en egen jungel.)</li>
+<li><strong>Overta en konkurrent eller samarbeidspartner</strong> uten å måtte kjøpe og flytte alt enkeltvis.</li>
+</ul>
+<h3>Hva skiller fusjon fra et vanlig oppkjøp?</h3>
+<p>Hvis Fjordkaffe AS bare kjøpte aksjene i Bryggeriet Brygg AS, ville begge selskapene fortsatt eksistere – ett som datter av det andre. Ved fusjon forsvinner derimot det overdragende selskapet helt. Det slettes i Foretaksregisteret. Det er altså en mer dyptgripende sammensmelting enn et oppkjøp.</p>
+<h3>En forenklet variant for konsern</h3>
+<p>Loven har en lettere prosedyre når et morselskap eier alle aksjene i datterselskapet (asl. § 13-23 – «forenklet fusjon»). Da slipper man en del av papirarbeidet, blant annet kravet om at hvert selskap holder generalforsamling, fordi det ikke skal byttes aksjer mellom uavhengige eiere. Eier Kari for eksempel 100 prosent av et datterselskap hun vil smelte inn i morselskapet, er prosessen merkbart enklere.</p>
+<h3>De viktigste byggesteinene</h3>
+<p>Selv om vi går grundigere inn på framgangsmåten i en egen artikkel, er det greit å kjenne de fire bærebjelkene:</p>
+<ol>
+<li><strong>Fusjonsplan</strong> – et skriftlig dokument styrene blir enige om, som beskriver hvem som overtar hvem, hva vederlaget er, og når sammenslåingen får virkning (asl. § 13-6).</li>
+<li><strong>Generalforsamlingsvedtak</strong> – eierne i begge selskaper må si ja, og det kreves to tredels flertall (samme flertall som ved vedtektsendring, asl. § 13-3).</li>
+<li><strong>Kreditorvarsel</strong> – de man skylder penger, får seks uker på å protestere (asl. § 13-14).</li>
+<li><strong>Registrering</strong> – fusjonen meldes til Foretaksregisteret og trer i kraft når den registreres som gjennomført.</li>
+</ol>
+<h3>Hva betyr egentlig «kontinuitet»?</h3>
+<p>Du vil støte på ordet kontinuitet hver gang du leser om fusjon, så det er verdt å forstå. Det betyr at det overtakende selskapet trer rett inn i alt det overdragende selskapet hadde, uten brudd. En leveranseavtale med en kunde fortsetter å gjelde – den trenger ikke skrives på nytt. En ansatt beholder ansienniteten sin. Et banklån løper videre. For Kari betyr dette at hun slipper å reforhandle alle Jonas sine avtaler én for én; de følger automatisk med over. Det er nettopp dette som gjør fusjon så mye smidigere enn å avvikle ett selskap og bygge opp et nytt. Kontinuiteten gjelder også regnskapsmessig og skattemessig, og det er grunnen til at en riktig gjennomført fusjon ikke utløser skatt der og da.</p>
+<h3>Et lite ordoppslag</h3>
+<p>Fordi fusjonsspråket er fullt av fagord, kan det hjelpe med en liten ordliste:</p>
+<ul>
+<li><strong>Overtakende selskap:</strong> Selskapet som blir igjen og sluker det andre (Fjordkaffe AS i eksemplet).</li>
+<li><strong>Overdragende selskap:</strong> Selskapet som forsvinner inn i det andre (Bryggeriet Brygg AS).</li>
+<li><strong>Vederlag:</strong> Betalingen aksjonærene i det overdragende selskapet får – som regel aksjer.</li>
+<li><strong>Bytteforhold:</strong> Hvor mange aksjer du får i det nye selskapet for hver aksje du hadde i det gamle.</li>
+<li><strong>Fusjonsplan:</strong> Det skriftlige dokumentet som beskriver hele opplegget.</li>
+</ul>
+<p>Når du har disse fem ordene under huden, blir resten av prosessen mye lettere å følge.</p>
+<h3>Et lite varsko</h3>
+<p>Fusjon høres elegant ut, men husk at det overtakende selskapet også arver gjelden og eventuelle tvister. Sluker Fjordkaffe AS et selskap med en skjult skattesak eller en sint leverandør, følger problemene med på lasset. Tenk deg at Bryggeriet Brygg AS hadde en uoppgjort tvist med en utleier om manglende husleie – den regningen lander nå hos Kari. Gjør derfor alltid en grundig gjennomgang («due diligence» – en systematisk sjekk av økonomi, avtaler, ansatte og eventuelle tvister) før dere bestemmer dere. Be om å få se de siste årsregnskapene, en oversikt over all gjeld, alle vesentlige kontrakter og eventuelle pågående konflikter. Det er bedre å oppdage en ubehagelig overraskelse før fusjonen enn å arve den etterpå.</p>
+<h3>Hva med de ansatte?</h3>
+<p>Et punkt mange glemmer: de ansatte følger med over til det overtakende selskapet med sine rettigheter i behold. De har dessuten rett til informasjon og medvirkning i prosessen. Har Jonas tre ansatte i Bryggeriet Brygg AS, blir de Karis ansatte etter fusjonen, med samme ansiennitet og samme arbeidsvilkår. Dette er en trygghet for arbeidstakerne, men det er også noe Kari må planlegge for – lønnskostnadene følger jo med.</p>
+<h3>Kort oppsummert</h3>
+<p>En fusjon er at to eller flere AS smelter sammen til ett, der det overtakende selskapet overtar alt det andre eier og skylder, og aksjonærene i selskapet som forsvinner får aksjer som betaling. Hele poenget er kontinuitet: avtaler, ansatte og forpliktelser fortsetter uavbrutt. Det krever fusjonsplan, ja fra eierne med to tredels flertall, varsel til kreditorene og registrering i Brønnøysund. Det er en kraftfull måte å vokse eller rydde på – men husk at man arver både eiendelene og gjelden, så gjør grundig forarbeid før dere smelter sammen.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

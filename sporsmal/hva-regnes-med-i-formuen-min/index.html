@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva regnes med i formuen min? — Rettsregel</title>
+<meta name="description" content="Nesten alt du eier av økonomisk verdi regnes med i formuen din: bolig, bankinnskudd, kontanter, bil, båt, aksjer, fond, krypto og mer. Hver ting tas med…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-regnes-med-i-formuen-min/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva regnes med i formuen min?">
+<meta property="og:description" content="Nesten alt du eier av økonomisk verdi regnes med i formuen din: bolig, bankinnskudd, kontanter, bil, båt, aksjer, fond, krypto og mer. Hver ting tas med…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-regnes-med-i-formuen-min/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva regnes med i formuen min?">
+<meta name="twitter:description" content="Nesten alt du eier av økonomisk verdi regnes med i formuen din: bolig, bankinnskudd, kontanter, bil, båt, aksjer, fond, krypto og mer. Hver ting tas med…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva regnes med i formuen min?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nesten alt du eier av økonomisk verdi regnes med i formuen din: bolig, bankinnskudd, kontanter, bil, båt, aksjer, fond, krypto og mer. Hver ting tas med til sin "formuesverdi", som ofte er lavere enn markedsverdien. Gjeld trekkes fra. Noen få ting holdes utenfor, som vanlig innbo og løsøre opp til en grense.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Tenk på det som en stor inventarliste</h3>
+<p>Formuen din er rett og slett summen av alt du eier av verdi ved utgangen av året (31. desember). Skatteetaten ønsker et øyeblikksbilde av hva du har akkurat da.</p>
+<p>Det som typisk regnes med:</p>
+<ul>
+<li><strong>Bolig og eiendom</strong> – egen bolig, hytte, utleiebolig, tomter</li>
+<li><strong>Bankinnskudd</strong> – brukskonto, sparekonto, BSU</li>
+<li><strong>Kontanter</strong> – penger du har liggende</li>
+<li><strong>Verdipapirer</strong> – aksjer, aksjefond, rentefond, obligasjoner</li>
+<li><strong>Kjøretøy</strong> – bil, motorsykkel, campingvogn, båt</li>
+<li><strong>Kryptovaluta</strong> – bitcoin og lignende, til verdi ved årsskiftet</li>
+<li><strong>Utestående fordringer</strong> – penger andre skylder deg</li>
+<li><strong>Verdifulle eiendeler</strong> – noen tilfeller, som dyre samlinger</li>
+</ul>
+<h3>Et konkret eksempel på en formuesliste</h3>
+<p>David setter opp listen sin for 2026:</p>
+<table>
+<thead>
+<tr>
+<th>Eiendel</th>
+<th>Formuesverdi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enebolig (primærbolig)</td>
+<td>1 500 000 kr</td>
+</tr>
+<tr>
+<td>Hytte</td>
+<td>600 000 kr</td>
+</tr>
+<tr>
+<td>Bankinnskudd</td>
+<td>350 000 kr</td>
+</tr>
+<tr>
+<td>Aksjefond</td>
+<td>250 000 kr</td>
+</tr>
+<tr>
+<td>Bil</td>
+<td>180 000 kr</td>
+</tr>
+<tr>
+<td>Bitcoin</td>
+<td>90 000 kr</td>
+</tr>
+<tr>
+<td><strong>Sum eiendeler</strong></td>
+<td><strong>2 970 000 kr</strong></td>
+</tr>
+</tbody>
+</table>
+<p>David har boliglån på 1 100 000 kr og billån på 120 000 kr, til sammen 1 220 000 kr gjeld.</p>
+<p>Nettoformue = 2 970 000 − 1 220 000 = 1 750 000 kr.</p>
+<p>Det er denne nettoformuen som måles mot bunnfradraget.</p>
+<h3>Hva regnes IKKE med?</h3>
+<p>Noen ting holdes utenfor formuesskatten:</p>
+<ul>
+<li><strong>Vanlig innbo og løsøre</strong> – møbler, klær, husholdningsting, opp til et fribeløp. Dyrt kunst, antikviteter og samlinger kan likevel telle med over visse grenser.</li>
+<li><strong>Pensjonsrettigheter</strong> – oppsparte pensjoner i folketrygden og vanlige tjenestepensjoner regnes ikke som formue.</li>
+<li><strong>Krav på fremtidig lønn</strong> – penger du skal tjene, er ikke formue ennå.</li>
+</ul>
+<h3>Et poeng mange overser: formuesverdi er ikke markedsverdi</h3>
+<p>Dette er superviktig. Når du eier en bolig til 6 millioner i markedsverdi, betyr ikke det at 6 millioner regnes med. For en primærbolig (der du bor) regnes bare 25 prosent av antatt markedsverdi som formuesverdi i 2026. En bolig verdt 6 millioner bidrar altså med rundt 1,5 millioner i formuen. Aksjer får også en rabatt. Mer om dette i de neste artiklene.</p>
+<h3>Eksempel: Eva blir overrasket</h3>
+<p>Eva er sikker på at hun må betale mye formuesskatt. Hun har en bolig verdt 5 millioner, 500 000 i banken og 400 000 i fond. "Det er nesten 6 millioner!" tenker hun.</p>
+<p>Men:</p>
+<ul>
+<li>Bolig (primærbolig): 5 000 000 × 25 % = 1 250 000 kr formuesverdi</li>
+<li>Bank: 500 000 kr</li>
+<li>Fond (med 20 % aksjerabatt): 400 000 × 80 % = 320 000 kr</li>
+<li>Sum: 2 070 000 kr</li>
+</ul>
+<p>Med et boliglån på 2 000 000 kr blir nettoformuen bare 70 000 kr, langt under bunnfradraget. Eva betaler ingen formuesskatt. Markedsverdien lurte henne.</p>
+<h3>Tidspunktet teller: 31. desember</h3>
+<p>Formuen måles på ett bestemt tidspunkt – ved utgangen av året. Det betyr at situasjonen din akkurat ved årsskiftet er det som gjelder, ikke gjennomsnittet gjennom året. Selger du noe i januar, endrer ikke det fjorårets formue. Kjøper du derimot en dyr bil i november, teller den ved årsskiftet.</p>
+<p>Eksempel: Frank har 600 000 kr på konto 20. desember. Den 28. desember kjøper han en bil til 500 000 kr. Ved årsskiftet har han 100 000 kr på konto, men en bil med en formuesverdi som typisk settes lavere enn kjøpesummen. Slik kan sammensetningen av formuen din ved nyttår faktisk påvirke hvor mye som telles.</p>
+<h3>Utenlandske eiendeler teller også</h3>
+<p>Bor du i Norge, skal du som hovedregel oppgi formue også utenfor Norge: feriebolig i Spania, konto i utlandet, aksjer i utenlandske selskaper, kryptovaluta på utenlandske børser. Dette rapporteres ikke alltid automatisk, så du har selv ansvar for å føre det opp. Å la være regnes som å holde tilbake opplysninger og kan gi tilleggsskatt.</p>
+<h3>Hvor finner du tallene?</h3>
+<p>Det meste står ferdig utfylt i skattemeldingen din:</p>
+<ol>
+<li>Banker, fondsforvaltere og Folkeregisteret rapporterer automatisk til Skatteetaten.</li>
+<li>Boligens formuesverdi beregnes ut fra type bolig, areal, byggeår og område.</li>
+<li>Krypto og utenlandske eiendeler MÅ du ofte føre opp selv.</li>
+</ol>
+<p>Sjekk alltid at de forhåndsutfylte tallene stemmer, og legg til det som mangler. En vanlig tabbe er å stole blindt på de forhåndsutfylte tallene. De er som regel riktige for det banken har rapportert, men de fanger ikke opp alt du eier, særlig ikke verdier i utlandet eller krypto.</p>
+<h3>Hva med BSU, IPS og pensjonssparing?</h3>
+<ul>
+<li><strong>BSU (boligsparing for ungdom):</strong> pengene du har spart på BSU-konto, regnes med i formuen din som vanlig bankinnskudd. Selve skattefradraget du får for å spare, er en annen sak (det reduserer inntektsskatten), men beløpet på kontoen teller i formuen.</li>
+<li><strong>IPS (individuell pensjonssparing):</strong> midler i en IPS-avtale er bundet til pensjon og regnes normalt ikke som formue mens de står bundet.</li>
+<li><strong>Vanlig tjenestepensjon og folketrygd:</strong> regnes ikke som formue.</li>
+</ul>
+<p>Eksempel: Hanne, 26 år, har 180 000 kr på BSU og 60 000 kr i en IPS-avtale. BSU-pengene (180 000 kr) teller i formuen hennes, mens IPS-midlene normalt ikke gjør det. For en ung sparer som Hanne, langt under bunnfradraget, har dette uansett ingen praktisk betydning for formuesskatten, men det er greit å vite forskjellen.</p>
+<h3>Et tips: sjekk innbo-grensen for verdifulle ting</h3>
+<p>Vanlig innbo er fritatt opp til et fribeløp, men eier du svært verdifulle gjenstander – dyr kunst, smykker, en samling – kan verdien over fribeløpet telle med. For de aller fleste er dette uaktuelt, men har du arvet noe verdifullt, er det verdt å være klar over.</p>
+<h3>Kilder, forklart enkelt</h3>
+<p>Hva som er skattepliktig formue, står i skatteloven § 4-1 og utover. Hovedregelen er at "skattepliktig formue fastsettes til omsetningsverdien" av det du eier, men med en rekke rabatter og særregler. Skatteetaten forklarer det praktisk på skatteetaten.no.</p>
+<p>Husk at verdsettelsesregler og fribeløp endres jevnlig. Tallene her gjelder 2026. Kontroller alltid mot skatteetaten.no.</p>
+<h3>Kort oppsummert</h3>
+<p>I formuen din regnes nesten alt du eier av verdi: bolig, bank, bil, aksjer, fond og krypto. Vanlig innbo og pensjonsrettigheter holdes stort sett utenfor. Det avgjørende er at mange eiendeler tas med til en formuesverdi som er lavere enn markedsverdien, og at gjeld trekkes fra. Sett opp din egen liste, men sjekk de ferske reglene på skatteetaten.no, for de endres ofte.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er pålydende verdi på en aksje? — Rettsregel</title>
+<meta name="description" content="Pålydende verdi er den delen av aksjekapitalen som hver enkelt aksje representerer.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-palydende-verdi-pa-en-aksje/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er pålydende verdi på en aksje?">
+<meta property="og:description" content="Pålydende verdi er den delen av aksjekapitalen som hver enkelt aksje representerer.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-palydende-verdi-pa-en-aksje/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er pålydende verdi på en aksje?">
+<meta name="twitter:description" content="Pålydende verdi er den delen av aksjekapitalen som hver enkelt aksje representerer.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er pålydende verdi på en aksje?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Pålydende verdi er den delen av aksjekapitalen som hver enkelt aksje representerer. Du regner den ut ved å dele aksjekapitalen på antall aksjer. Den er et fast «teknisk» tall i selskapet og er ikke det samme som hva aksjen faktisk er verdt i markedet.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Pålydende verdi er den delen av aksjekapitalen som hver enkelt aksje representerer. Du regner den ut ved å dele aksjekapitalen på antall aksjer. Den er et fast «teknisk» tall i selskapet og er ikke det samme som hva aksjen faktisk er verdt i markedet.</p>
+<h3>Det korte svaret med et regnestykke</h3>
+<p>Tenk på aksjekapitalen som en kake, og aksjene som like store kakestykker. Pålydende verdi er størrelsen på hvert stykke.</p>
+<p>Eksempel: «Kafé Smak AS» har en aksjekapital på 100 000 kroner fordelt på 1 000 aksjer.</p>
+<p>Pålydende per aksje = 100 000 / 1 000 = <strong>100 kroner</strong>.</p>
+<p>Hver aksje «representerer» altså 100 kroner av selskapets aksjekapital. Aksjekapitalen er pengene eierne har skutt inn som selskapets grunnkapital ved stiftelsen, og som ikke fritt kan tas ut igjen.</p>
+<h3>Pålydende er IKKE det samme som markedsverdi</h3>
+<p>Dette er den viktigste innsikten. Pålydende verdi sier hva aksjen representerer av den opprinnelige innskutte kapitalen – ikke hva den er verdt i dag.</p>
+<p>Fortsetter vi med «Kafé Smak AS»: kafeen går strålende, og en investor vil kjøpe aksjer. Han er villig til å betale 500 kroner per aksje, selv om pålydende bare er 100 kroner. Hvorfor? Fordi selskapet har bygget opp verdier, kundebase og overskudd. Markedsverdien (500 kr) er langt høyere enn pålydende (100 kr).</p>
+<p>Det kan også gå motsatt vei: går det dårlig, kan markedsverdien falle under pålydende. En aksje med pålydende 100 kr kan i et kriserammet selskap kanskje selges for bare 20 kr – eller være tilnærmet verdiløs. Pålydende endrer seg ikke selv om markedsverdien stuper.</p>
+<h3>Hvorfor finnes pålydende i det hele tatt?</h3>
+<p>Pålydende er nyttig av flere grunner:</p>
+<ol>
+<li><strong>Det knytter aksjen til aksjekapitalen.</strong> Summen av alle aksjenes pålydende skal være lik aksjekapitalen.</li>
+<li><strong>Det brukes ved kapitalendringer.</strong> Skal du utstede flere aksjer eller sette ned kapitalen, regner du i pålydende.</li>
+<li><strong>Det gir et felles utgangspunkt</strong> for hvor mye av grunnkapitalen hver aksje står for.</li>
+</ol>
+<p>Et eksempel: «Verkstedet AS» har 200 aksjer à pålydende 250 kr = aksjekapital på 50 000 kr. Selskapet vil hente 50 000 kr til og utsteder 200 nye aksjer à pålydende 250 kr. Nå er det 400 aksjer og aksjekapitalen er doblet til 100 000 kr. Pålydende per aksje er fortsatt 250 kr – det forble uendret, mens antallet aksjer og samlet aksjekapital økte.</p>
+<h3>Pålydende, kjøpesum og «overkurs»</h3>
+<p>Når noen tegner nye aksjer, betaler de ofte mer enn pålydende fordi selskapet er verdt mer. Det de betaler utover pålydende, kalles «overkurs».</p>
+<p>Eksempel: En investor tegner en ny aksje i «Kafé Smak AS» med pålydende 100 kr, men betaler 500 kr fordi det er det aksjen er verdt. De 100 kronene går til aksjekapitalen, og de 400 kronene i overkurs går inn som annen egenkapital i selskapet. Slik kan selskapet hente mye penger uten å blåse opp aksjekapitalen unødvendig – noe som er praktisk fordi aksjekapitalen er bundet og vanskeligere å ta ut igjen enn fri egenkapital.</p>
+<h3>Hva betyr dette for deg som gründer?</h3>
+<ul>
+<li>Ikke forveksle pålydende med hva selskapet ditt «er verdt» – det er to helt ulike tall.</li>
+<li>Når du forhandler om en investor skal inn, er det markedsverdien (selskapets reelle verdi) som avgjør prisen, ikke pålydende.</li>
+<li>Pålydende er mest et teknisk regnetall du møter ved stiftelse og kapitalendringer.</li>
+</ul>
+<p>En vanlig nybegynnerfeil er å tro at fordi aksjekapitalen er 30 000 kr, så er selskapet «verdt» 30 000 kr. Det er feil. Et selskap med 30 000 kr i aksjekapital kan være verdt millioner – eller ingenting. Pålydende sier ingenting om dagens verdi; det forteller bare hvor stor andel av den innskutte grunnkapitalen hver aksje står for.</p>
+<h3>Tre verdier som lett blandes sammen</h3>
+<p>For å rydde i begrepene kan det hjelpe å skille tydelig mellom tre tall som ofte forveksles:</p>
+<ol>
+<li><strong>Pålydende verdi</strong> – aksjens andel av aksjekapitalen. Et fast tall, regnet ut som aksjekapital delt på antall aksjer.</li>
+<li><strong>Markedsverdi</strong> – hva noen faktisk er villig til å betale for aksjen i dag. Endrer seg med hvordan selskapet går.</li>
+<li><strong>Bokført verdi (egenkapital per aksje)</strong> – selskapets samlede egenkapital delt på antall aksjer. Ligger ofte et sted mellom de to andre.</li>
+</ol>
+<p>Eksempel for «Kafé Smak AS» med 1 000 aksjer: pålydende er 100 kr (aksjekapital 100 000 kr delt på 1 000). Har selskapet i tillegg bygget opp 400 000 kr i opptjent egenkapital, er samlet egenkapital 500 000 kr, altså 500 kr bokført verdi per aksje. Og en ivrig kjøper er kanskje villig til å betale 700 kr per aksje fordi han tror på fremtiden. Tre ulike tall – 100, 500 og 700 kr – for samme aksje. Pålydende er det laveste og mest «statiske» av dem.</p>
+<h3>Hvorfor er det praktisk å ha lav pålydende?</h3>
+<p>Mange velger bevisst en lav pålydende per aksje, for eksempel 1 krone eller 10 kroner, og heller mange aksjer. Hvorfor? Fordi det gjør det enklere å dele opp eierskapet i nøyaktige andeler senere. Skal du gi en ansatt 2,5 % av selskapet, er det mye lettere hvis du har 10 000 aksjer enn hvis du bare har 30.</p>
+<p>Eksempel: «Datasmart AS» stiftes med aksjekapital 30 000 kr. I stedet for 30 aksjer à 1 000 kr, velger gründerne 30 000 aksjer à 1 krone. Nå kan de enkelt tildele akkurat den andelen de vil til nye eiere og ansatte, helt ned til brøkdeler av en prosent, uten å måtte splitte aksjene først. Lav pålydende gir altså fleksibilitet – noe som er verdt å tenke på allerede ved stiftelsen.</p>
+<h3>Hva betyr pålydende for ansvaret ditt?</h3>
+<p>Et trygt og viktig poeng: pålydende henger sammen med et av de største fordelene ved å drive AS – det begrensede ansvaret. Som aksjonær risikerer du i utgangspunktet bare å tape det du har skutt inn, altså verdien av aksjene dine. Du hefter ikke personlig for selskapets gjeld utover dette. Pålydende og aksjekapitalen er en del av denne ordningen: kapitalen er en slags «buffer» som skal stå igjen i selskapet til dekning av kreditorene.</p>
+<p>Et eksempel: Hvis «Kafé Smak AS» går konkurs med stor gjeld, taper eierne aksjene sine, men de blir ikke personlig ansvarlige for kafeens ubetalte regninger (med mindre de har stilt personlig garanti, noe banken iblant krever). Aksjekapitalen er allerede brukt opp i driften, men prinsippet om at eierne kun risikerer innskuddet sitt, står fast. Dette er nettopp derfor reglene rundt aksjekapital og pålydende er strenge – de skal beskytte dem selskapet skylder penger.</p>
+<p>For deg som gründer betyr dette at pålydende ikke bare er et tørt regnetall, men en del av et system som gir deg trygghet: du kan ta forretningsmessig risiko uten å sette hele privatøkonomien på spill. Det er en av hovedgrunnene til at AS er en så populær selskapsform i Norge.</p>
+<h3>Kort oppsummert</h3>
+<p>Pålydende verdi er aksjens andel av aksjekapitalen – aksjekapital delt på antall aksjer. Den er et fast teknisk tall som brukes ved stiftelse og kapitalendringer, og summen av alle aksjenes pålydende skal være lik aksjekapitalen. Viktigst: pålydende er ikke markedsverdien. En aksje kan være verdt langt mer (eller mindre) enn sin pålydende, alt etter hvordan selskapet faktisk går.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

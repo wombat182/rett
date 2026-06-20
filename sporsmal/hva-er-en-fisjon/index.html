@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en fisjon? — Rettsregel</title>
+<meta name="description" content="Kort sagt: en fisjon er det motsatte av en fusjon.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-fisjon/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en fisjon?">
+<meta property="og:description" content="Kort sagt: en fisjon er det motsatte av en fusjon.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-fisjon/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en fisjon?">
+<meta name="twitter:description" content="Kort sagt: en fisjon er det motsatte av en fusjon.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er en fisjon?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: en fisjon er det motsatte av en fusjon. I stedet for at selskaper smelter sammen, deles ett selskap i to eller flere. Eiendeler, gjeld og virksomhet fordeles ut på et eller flere selskaper, og aksjonærene får aksjer i de selskapene som oppstår eller overtar. Reglene står i aksjeloven kapittel 14, og de bygger i stor grad på de samme prinsippene som ved fusjon.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Kort sagt: en fisjon er det motsatte av en fusjon. I stedet for at selskaper smelter sammen, <strong>deles</strong> ett selskap i to eller flere. Eiendeler, gjeld og virksomhet fordeles ut på et eller flere selskaper, og aksjonærene får aksjer i de selskapene som oppstår eller overtar. Reglene står i aksjeloven kapittel 14, og de bygger i stor grad på de samme prinsippene som ved fusjon.</p>
+<h3>Når en bedrift «celledeler» seg</h3>
+<p>Tenk deg «Vestland Eiendom &amp; Bygg AS», eid av Solveig og Petter i fellesskap. Selskapet driver egentlig to ganske ulike ting: det eier et næringsbygg som leies ut, og det driver et entreprenørfirma som setter opp hus. Etter hvert blir de to uenige om veien videre. Solveig vil helst sitte trygt med utleiebygget, mens Petter brenner for byggevirksomheten med all dens risiko.</p>
+<p>Løsningen kan være en fisjon. Selskapet deles i to: «Vestland Eiendom AS» får bygget, og «Vestland Bygg AS» får entreprenørvirksomheten. Etterpå kan eierskapet ordnes slik at Solveig får mest i eiendomsselskapet og Petter mest i byggeselskapet. Slik skiller de lag uten å måtte selge noe og uten at det nødvendigvis utløser skatt.</p>
+<h3>To hovedformer</h3>
+<p>Loven skiller mellom to måter å dele på:</p>
+<ul>
+<li><strong>Oppdeling (full fisjon):</strong> Hele det opprinnelige selskapet deles opp og forsvinner. I eksemplet over kunne «Vestland Eiendom &amp; Bygg AS» bli helt borte, og to nye selskaper står igjen.</li>
+<li><strong>Utfisjonering (delvis fisjon):</strong> Bare en bit skilles ut, mens det opprinnelige selskapet lever videre. For eksempel kan utleiebygget skilles ut i et nytt selskap, mens entreprenørfirmaet fortsetter under det gamle navnet.</li>
+</ul>
+<h3>Hvorfor fisjonere?</h3>
+<p>Det er flere typiske grunner:</p>
+<ul>
+<li><strong>Skille risiko fra verdier.</strong> Mange legger eiendom og maskiner i ett selskap og den «farlige» driften i et annet. Går driftsselskapet konkurs, er bygget trygt unna.</li>
+<li><strong>Forberede et salg.</strong> Skal du selge bare én av virksomhetene, er det enklere når den ligger i et eget selskap.</li>
+<li><strong>Eiere som vil gå hver til sitt</strong>, slik som Solveig og Petter.</li>
+<li><strong>Generasjonsskifte.</strong> Foreldre kan dele opp familiebedriften slik at hvert barn arver sin gren.</li>
+</ul>
+<h3>Mye av framgangsmåten er kjent</h3>
+<p>Fordi fisjon er en speilvending av fusjon, gjelder mange av de samme stegene (asl. § 14-3 og § 14-4 viser i stor grad tilbake til fusjonsreglene):</p>
+<ol>
+<li><strong>Fisjonsplan</strong> i stedet for fusjonsplan – et dokument som beskriver nøyaktig hvilke eiendeler og hvilken gjeld som går hvor, og hvordan aksjene fordeles.</li>
+<li><strong>Generalforsamlingsvedtak med to tredels flertall.</strong></li>
+<li><strong>Kreditorvarsel</strong> med seks ukers frist for innsigelser.</li>
+<li><strong>Registrering</strong> i Foretaksregisteret.</li>
+</ol>
+<p>Det aller vanskeligste, og det du virkelig bør bruke en regnskapsfører eller advokat på, er <strong>fordelingen av gjeld</strong>. Hvem skal hefte for hva etterpå? Loven har en sikkerhetsregel: hvis et krav ikke er fordelt klart, kan kreditoren i utgangspunktet holde alle de involverte selskapene ansvarlige (et såkalt solidaransvar, asl. § 14-11). Det betyr at slurv i planen kan gi ubehagelige overraskelser.</p>
+<h3>Et gjennomgående eksempel på fordeling</h3>
+<p>La oss bli litt mer konkrete med Solveig og Petter. Anta at «Vestland Eiendom &amp; Bygg AS» har disse verdiene:</p>
+<ul>
+<li>Næringsbygget, verdt 5 millioner kroner, med et pantelån på 3 millioner.</li>
+<li>Entreprenørvirksomheten: maskiner, varelager og en kassebeholdning til sammen verdt 2 millioner, med leverandørgjeld på 1 million.</li>
+</ul>
+<p>Ved en oppdeling kan fisjonsplanen si at «Vestland Eiendom AS» får bygget <em>og</em> pantelånet på 3 millioner (netto 2 millioner), mens «Vestland Bygg AS» får maskinene og varelageret <em>og</em> leverandørgjelden på 1 million (netto 1 million). Hele poenget er at både eiendeler og den gjelden som hører til, fordeles sammen og på en balansert måte. Gjør du dette skjevt – legger all gjeld i det ene og alle verdiene i det andre – rammer du kreditorene, og det er ikke lov.</p>
+<h3>En liten advarsel om verdier</h3>
+<p>Når et selskap deles, må verdiene fordeles på en måte som er forsvarlig. Du kan ikke tappe det ene selskapet for alt av verdi og la det andre sitte igjen med gjelden – det rammer både kreditorer og eventuelle medaksjonærer. Tenk rettferdig fordeling, ikke smart triksing. Husk også solidaransvaret: dukker det opp en gjeldspost som ikke var nevnt i planen, kan kreditoren rette kravet mot begge selskapene. Det er derfor planen må være presis ned til hver gjeldspost.</p>
+<h3>Drøm-eksemplet: holdingstruktur</h3>
+<p>En av de aller vanligste grunnene til fisjon blant gründere er å bygge en såkalt holdingstruktur. Tenk deg Camilla, som eier «Camillas Frisørsalong AS» direkte som privatperson. Salongen går bra og bygger opp penger på konto. Camilla vil gjerne ha disse pengene «trygt unna» driftsrisikoen og kanskje investere dem videre. Gjennom en fisjon (ofte kombinert med andre grep) kan overskuddet skilles ut i et eget selskap som hun eier, mens selve driften fortsetter i frisørselskapet. Resultatet er at risiko og oppsparte verdier ikke lenger ligger i samme kurv. Slike omorganiseringer er fullt lovlige, men de er teknisk kompliserte og bør alltid planlegges sammen med en regnskapsfører eller advokat – ikke minst på grunn av skattereglene.</p>
+<h3>Mer om kreditorvarselet og innsigelser</h3>
+<p>Akkurat som ved fusjon kunngjør Foretaksregisteret fisjonen og varsler kreditorene, som får seks uker på å protestere (asl. § 14-7, som viser til fusjonsreglene). En kreditor som mener delingen svekker sikkerheten for kravet hans, kan kreve betaling eller betryggende sikkerhet. For Solveig og Petter betyr dette at de ikke kan fullføre delingen før denne fristen er ute og eventuelle innsigelser er ryddet av veien. Det er en innebygd beskyttelse for alle som har penger til gode i det selskapet som deles.</p>
+<h3>Skatt og fisjon – en kort advarsel</h3>
+<p>Fisjon kan, akkurat som fusjon, gjennomføres skattefritt hvis man følger reglene om kontinuitet. Men skattereglene rundt deling er enda mer kompliserte enn ved sammenslåing, blant annet fordi inngangsverdier og skatteposisjoner skal fordeles mellom selskapene. Dette er ikke et sted å gjette. Bruk en regnskapsfører eller skatterådgiver fra start, slik at du ikke ender med en uventet skatteregning fordi en formalitet ble oversett.</p>
+<h3>Kort oppsummert</h3>
+<p>En fisjon er deling av ett selskap i to eller flere, enten ved at det gamle selskapet forsvinner helt (oppdeling) eller ved at en del skilles ut mens resten lever videre (utfisjonering). Det brukes typisk til å skille risiko fra verdier, forberede salg eller la eiere gå hver til sitt. Framgangsmåten ligner sterkt på fusjon – fisjonsplan, ja fra eierne med to tredels flertall, kreditorvarsel med seks ukers frist og registrering – men den store fellen er fordelingen av gjeld og skatteposisjoner, så her er det lurt å hente hjelp tidlig.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

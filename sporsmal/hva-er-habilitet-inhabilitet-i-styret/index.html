@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er habilitet (inhabilitet) i styret? — Rettsregel</title>
+<meta name="description" content="Habilitet handler om at du kan behandle en sak på en upartisk måte.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-habilitet-inhabilitet-i-styret/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er habilitet (inhabilitet) i styret?">
+<meta property="og:description" content="Habilitet handler om at du kan behandle en sak på en upartisk måte.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-habilitet-inhabilitet-i-styret/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er habilitet (inhabilitet) i styret?">
+<meta name="twitter:description" content="Habilitet handler om at du kan behandle en sak på en upartisk måte.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er habilitet (inhabilitet) i styret?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Habilitet handler om at du kan behandle en sak på en upartisk måte. Du er inhabil når du har en så sterk egeninteresse i en sak at du ikke bør være med å avgjøre den. Da må du holde deg unna behandlingen av nettopp den saken.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Habilitet handler om at du kan behandle en sak på en upartisk måte. Du er <strong>inhabil</strong> når du har en så sterk egeninteresse i en sak at du ikke bør være med å avgjøre den. Da må du holde deg unna behandlingen av nettopp den saken.</p>
+<h3>Hva betyr ordene egentlig?</h3>
+<p>«Habil» betyr at du er i stand til å vurdere en sak nøytralt og objektivt. «Inhabil» (også kalt «ugild») betyr det motsatte – at du har en binding eller interesse som gjør at du ikke bør delta. Loven sier at et styremedlem ikke må delta i behandlingen av en sak der medlemmet selv eller en nærstående har en fremtredende personlig eller økonomisk særinteresse (reglene om inhabilitet i aksjeloven § 6-27). Kort sagt: hvis du tjener spesielt på utfallet, skal du trekke deg ut av nettopp den saken.</p>
+<h3>Når er du inhabil? Tre typiske eksempler</h3>
+<p><strong>Eksempel 1 – egen lommebok.</strong> Hanne sitter i styret i «Byggservice AS». Styret skal bestemme om selskapet skal kjøpe et bygg som Hanne selv eier privat. Her tjener Hanne direkte på avtalen, og jo mer selskapet betaler, jo bedre for henne personlig. Hun er inhabil og må forlate behandlingen av denne saken.</p>
+<p><strong>Eksempel 2 – familie.</strong> Ole sitter i styret i «Logistikk AS». Styret skal velge mellom to leverandører, og den ene driftes av Oles bror. Brorens firma er en «nærstående» interesse. Ole bør erklære seg inhabil i valget av leverandør, slik at ingen kan mistenke at han favoriserer familien.</p>
+<p><strong>Eksempel 3 – egen ansettelse og lønn.</strong> Styret skal fastsette lønnen til daglig leder. Hvis daglig leder også sitter i styret, kan vedkommende ikke være med å bestemme sin egen lønn.</p>
+<p>Legg merke til ordene «fremtredende» og «særinteresse». Det er ikke nok at du har en bitte liten, fjern eller indirekte interesse. Det må være en tydelig og personlig fordel i nettopp denne saken. At du for eksempel er kunde i samme bank som selskapet, gjør deg ikke inhabil.</p>
+<h3>Hva gjør du når du er inhabil?</h3>
+<p>Det er enklere enn mange tror. Slik håndterer du det ryddig:</p>
+<ol>
+<li><strong>Si fra med en gang</strong> – «Jeg tror jeg er inhabil i denne saken fordi …».</li>
+<li><strong>Gå ut av behandlingen</strong> – du deltar verken i diskusjon eller avstemning om den aktuelle saken.</li>
+<li><strong>Protokollfør det</strong> – noter i protokollen at du fratrådte på grunn av inhabilitet. Dette beskytter både deg og selskapet, og viser at reglene ble fulgt.</li>
+<li><strong>Resten av styret avgjør</strong> – de øvrige medlemmene behandler saken uten deg.</li>
+</ol>
+<p>Du trenger ikke forlate hele møtet – bare den ene saken du er inhabil i. Etterpå deltar du som vanlig igjen i de andre sakene.</p>
+<h3>Hva med enmanns-styret?</h3>
+<p>Her oppstår et praktisk problem. Hvis Sara er eneste styremedlem og samtidig skal inngå en avtale mellom seg selv privat og selskapet, kan hun ikke bare «gå ut» – da er det ingen igjen til å behandle saken. I slike avtaler mellom selskapet og eneaksjonæren gjelder det egne forsiktighetsregler i loven, blant annet et krav om at avtalen skal være skriftlig (reglene om avtaler mellom selskapet og aksjeeiere). Hovedpoenget for deg: vær ekstra åpen og dokumenter alt grundig når du «handler med deg selv», så avtalen er etterprøvbar og prisene er reelle.</p>
+<h3>Når er du IKKE inhabil? Tre eksempler</h3>
+<p>Det er like nyttig å vite når du trygt kan delta, så du ikke trekker deg unna i utrengsmål:</p>
+<ul>
+<li><strong>Du er aksjonær i selskapet.</strong> At du eier aksjer og dermed tjener på at selskapet gjør det bra generelt, gjør deg ikke inhabil i vanlige saker. Da ville jo ingen eier kunnet styre.</li>
+<li><strong>Saken angår alle likt.</strong> Skal styret for eksempel vedta nye åpningstider som gjelder hele driften, har du ingen «særinteresse» selv om du også berøres.</li>
+<li><strong>En fjern eller liten kobling.</strong> At du tilfeldigvis kjenner en av leverandørene litt, eller har handlet der som privatperson, er normalt ikke nok. Det må være en <em>fremtredende</em> interesse.</li>
+</ul>
+<p>Husk: poenget er ikke å trekke seg fra alt, men å holde deg unna de få sakene der du har en tydelig, personlig fordel av et bestemt utfall.</p>
+<h3>Hva skjer hvis et inhabilt medlem deltar likevel?</h3>
+<p>Tenk deg at Hanne fra eksempelet over likevel blir med å stemme på kjøpet av sitt eget bygg. Da er beslutningen tatt på feil grunnlag. I verste fall kan vedtaket bli ugyldig, og hvis selskapet eller eierne lider tap, kan det utløse erstatningsansvar. I tillegg svekker det tilliten kraftig dersom det kommer frem at noen presset gjennom en sak de selv tjente på. Det er altså ikke bare en formalitet – å håndtere inhabilitet riktig beskytter både beslutningen og deg selv.</p>
+<h3>Et praktisk grep: ta det som fast punkt</h3>
+<p>Et enkelt tips for styrer som behandler avtaler med nærstående jevnlig: gjør «mulig inhabilitet» til et fast spørsmål før hver sak. «Er noen av oss inhabile her?» Tar dere det som rutine, blir det aldri pinlig, og dere fanger opp problemene før de oppstår.</p>
+<h3>Hvorfor reglene finnes</h3>
+<p>Inhabilitetsreglene skal beskytte selskapet og de andre eierne mot at noen mela sin egen kake på selskapets bekostning. De bygger tillit, både innad og utad. Når du selv sier fra at du er inhabil, viser du at du tar styrevervet på alvor – det styrker omdømmet ditt, det svekker det ikke. Et styre som håndterer inhabilitet ryddig, fremstår som profesjonelt og til å stole på.</p>
+<h3>Habilitet gjelder også daglig leder</h3>
+<p>Et poeng mange overser: inhabilitetsreglene gjelder ikke bare for styremedlemmer. Også daglig leder må holde seg unna saker der han eller hun har en fremtredende personlig eller økonomisk særinteresse. Tenk deg at daglig leder Per i Fjellmat AS skal forhandle frem en avtale med et firma som hans samboer eier. Da bør Per ikke håndtere den avtalen alene – styret bør tre inn og ta beslutningen, eller la noen andre forhandle. Prinsippet er det samme over hele linja: den som har en egeninteresse i utfallet, skal ikke være den som bestemmer. Slik unngår selskapet at private bånd styrer forretningsmessige valg.</p>
+<h3>Kort oppsummert</h3>
+<p>Inhabilitet betyr at du har en så sterk egen- eller familieinteresse i en sak at du ikke bør være med å avgjøre den. Loven sier at du ikke skal delta i behandlingen når du eller en nærstående har en fremtredende personlig eller økonomisk særinteresse. Løsningen er enkel: si fra, gå ut av den aktuelle saken, og protokollfør det. Da behandler resten av styret saken uten deg. I enmanns-AS, der du ikke kan «gå ut», må du i stedet dokumentere ekstra grundig. Slik opptrer du ryddig og tillitsvekkende.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

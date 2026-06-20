@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg føre opp krypto i skattemeldingen? — Rettsregel</title>
+<meta name="description" content="Ja, du må føre opp krypto i skattemeldingen selv. Du skal oppgi både gevinst og tap fra året og formuesverdien per 1. januar. Krypto er sjelden…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-fore-opp-krypto-i-skattemeldingen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg føre opp krypto i skattemeldingen?">
+<meta property="og:description" content="Ja, du må føre opp krypto i skattemeldingen selv. Du skal oppgi både gevinst og tap fra året og formuesverdien per 1. januar. Krypto er sjelden…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-fore-opp-krypto-i-skattemeldingen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg føre opp krypto i skattemeldingen?">
+<meta name="twitter:description" content="Ja, du må føre opp krypto i skattemeldingen selv. Du skal oppgi både gevinst og tap fra året og formuesverdien per 1. januar. Krypto er sjelden…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Må jeg føre opp krypto i skattemeldingen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, du må føre opp krypto i skattemeldingen selv. Du skal oppgi både gevinst og tap fra året og formuesverdien per 1. januar. Krypto er sjelden forhåndsutfylt, så ansvaret ligger på deg. Glemmer du det, regnes det som manglende opplysninger – selv om du ikke gjorde det med vilje.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hvorfor det ikke kommer av seg selv</h3>
+<p>Mange er vant til at lønn, bankrenter og vanlige aksjer på norske kontoer kommer ferdig utfylt i skattemeldingen. Slik er det som regel ikke for krypto. Selv om Skatteetaten får stadig mer informasjon, må du i praksis regne med at du må fylle inn kryptoopplysningene dine manuelt.</p>
+<p>Det betyr at du har ansvaret for at tallene er riktige og fullstendige. Skattemeldingen leveres under et ansvar for at opplysningene stemmer, så det er verdt å bruke litt tid på dette.</p>
+<h3>Hva skal du faktisk føre opp?</h3>
+<p>Det er to ting som skal med:</p>
+<ol>
+<li><strong>Gevinst og tap</strong> fra alle realisasjoner i løpet av året (salg, veksling, bruk som betaling, tap).</li>
+<li><strong>Formuesverdien per 1. januar</strong> – altså hva all kryptoen du eier var verdt på dette tidspunktet.</li>
+</ol>
+<p>Eksempel med Kristin:</p>
+<ul>
+<li>I løpet av året solgte hun med en samlet gevinst på 12 000 kroner.</li>
+<li>Per 1. januar eide hun krypto verdt 95 000 kroner.</li>
+<li>Hun fører opp <strong>12 000 kroner i gevinst</strong> (som gir 12 000 × 22 % = 2 640 kroner i skatt) og <strong>95 000 kroner som formue</strong>.</li>
+</ul>
+<p>Begge delene skal med, selv om hun «bare» hadde solgt litt og resten ligger urørt.</p>
+<h3>Hvor i skattemeldingen?</h3>
+<p>Den moderne skattemeldingen er bygget opp etter temaer i stedet for nummererte poster. Du leter etter temaet for krypto/virtuelle eiendeler og legger inn opplysningene der. Du blir veiledet underveis, og du kan ofte laste opp eller lime inn en oppstilling fra et kryptoskattprogram.</p>
+<h3>Steg for steg</h3>
+<ol>
+<li><strong>Logg inn</strong> på skattemeldingen via skatteetaten.no.</li>
+<li><strong>Finn temaet</strong> for kryptovaluta / virtuelle eiendeler.</li>
+<li><strong>Legg inn gevinst og tap</strong> for året.</li>
+<li><strong>Legg inn formuesverdien</strong> per 1. januar.</li>
+<li><strong>Last opp dokumentasjon</strong> hvis du har en samlet oppstilling.</li>
+<li><strong>Kontroller</strong> at tallene stemmer før du leverer.</li>
+</ol>
+<h3>«Jeg har bare hatt tap – må jeg likevel?»</h3>
+<p>Ja, og det er faktisk i din egen interesse. Et tap du fører opp gir fradrag som reduserer skatten din. Lar du være, går du glipp av fradraget. Selv om du «bare» har tapt penger, skal det med i skattemeldingen.</p>
+<h3>«Jeg solgte ingenting i år – må jeg likevel?»</h3>
+<p>Ja, hvis du eier krypto, skal formuesverdien per 1. januar med, selv om du ikke realiserte noe. Eier du krypto ved årsskiftet, har du noe å oppgi.</p>
+<h3>Hva om jeg glemte det i fjor eller tidligere?</h3>
+<p>Da bør du rette opp så fort som mulig. Det finnes egne ordninger for dette, blant annet det som kalles frivillig retting, som kan hjelpe deg å unngå tilleggsskatt. Dette tar vi for oss i en egen artikkel, men hovedbudskapet er: det er nesten alltid bedre å rydde opp selv enn å håpe at det går i glemmeboken.</p>
+<h3>Hva slags dokumentasjon bør jeg ha?</h3>
+<p>Skatteetaten kan be om at du dokumenterer tallene dine. Da er det greit å ha klart:</p>
+<ul>
+<li><strong>Transaksjonshistorikk</strong> fra hver børs og lommebok du har brukt.</li>
+<li><strong>Oversikt over kjøp og salg</strong> med dato, beløp og kurs.</li>
+<li><strong>Formuesverdi per 1. januar</strong> – gjerne et skjermbilde eller en eksport som viser beholdningen ved årsskiftet.</li>
+<li><strong>En samlet oppstilling</strong>, for eksempel fra et kryptoskattprogram, som binder alt sammen.</li>
+</ul>
+<p>Du trenger ikke sende inn alt automatisk, men du bør kunne fremlegge det hvis du blir spurt. Ta vare på dette i flere år.</p>
+<h3>Et eksempel på en typisk feil</h3>
+<p>Markus førte opp gevinsten sin på 10 000 kroner, men glemte å oppgi formuesverdien på de 50 000 kronene han fortsatt eide ved årsskiftet. Da var skattemeldingen hans ufullstendig, selv om han hadde fått med gevinsten. Begge deler – gevinst/tap <em>og</em> formue – må alltid med. Det er lett å huske den ene og glemme den andre, så bruk gjerne en sjekkliste.</p>
+<h3>Hva om kryptoen ligger i utenlandsk børs?</h3>
+<p>Det spiller ingen rolle om kryptoen din ligger på en norsk eller utenlandsk plattform – som bosatt i Norge skal du oppgi den uansett hvor i verden den befinner seg. At en utenlandsk børs ikke automatisk sender opplysninger til Skatteetaten, fritar deg ikke fra plikten til å føre den opp selv.</p>
+<h3>En enkel sjekkliste før du leverer</h3>
+<p>Bruk gjerne denne lille listen for å være sikker på at du har fått med alt:</p>
+<ul>
+<li>Har jeg ført opp gevinst og tap fra <strong>alle</strong> realisasjoner (salg, veksling, bruk)?</li>
+<li>Har jeg husket formuesverdien per <strong>1. januar</strong>?</li>
+<li>Har jeg regnet i <strong>norske kroner</strong>?</li>
+<li>Har jeg fått med <strong>alle børser og lommebøker</strong> jeg bruker?</li>
+<li>Har jeg <strong>dokumentasjon</strong> lagret i tilfelle jeg blir spurt?</li>
+</ul>
+<p>Får du «ja» på alle disse, er du godt rustet.</p>
+<h3>Et eksempel der det gikk galt – og ble rettet</h3>
+<p>Synne hadde solgt litt krypto med gevinst, men trodde at siden hun ikke fikk noe forhåndsutfylt, så slapp hun å gjøre noe. Året etter oppdaget hun at dette var feil. Hun rettet skattemeldingen for det aktuelle året, førte opp gevinsten og formuen, og betalte den skatten hun skyldte. Fordi hun gjorde det på eget initiativ før Skatteetaten kontaktet henne, slapp hun tilleggsskatt. Historien viser at det å oppdage en feil ikke er en katastrofe – det viktige er å rette opp så snart du blir klar over det.</p>
+<h3>Hvorfor plikten ligger på deg</h3>
+<p>Grunnen til at du selv må føre opp krypto, er at Skatteetaten ofte ikke har fått opplysningene fra børsene på forhånd, slik de har for lønn og norske bankrenter. Systemet bygger på at du som skattyter gir riktige og fullstendige opplysninger. Det kan føles som mye ansvar, men i praksis handler det bare om å være ryddig: samle tallene, regne riktig, og føre dem inn. Gjør du det, har du gjort jobben din – og du kan sove godt.</p>
+<h3>Kilder forklart enkelt</h3>
+<p>Skatteetaten har gjentatte ganger understreket at kryptoeiere selv må føre opp både gevinst/tap og formuesverdi, fordi opplysningene sjelden er forhåndsutfylt. Skattesatsen på gevinst er <strong>22 prosent i 2026</strong>. Detaljer i hvordan skattemeldingen er bygget opp kan endre seg fra år til år, så følg veiledningen på skatteetaten.no når du leverer.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Ja, du må føre opp krypto selv – det er sjelden forhåndsutfylt.</li>
+<li>Oppgi både gevinst/tap fra året og formuesverdien per 1. januar.</li>
+<li>Selv tap og urealisert beholdning skal med (tap gir fradrag!).</li>
+<li>Har du glemt det tidligere, rett opp via frivillig retting. Sjekk alltid skatteetaten.no.</li>
+</ul>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

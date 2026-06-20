@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg skatte av utenlandsk inntekt? — Rettsregel</title>
+<meta name="description" content="Hvis du er skattemessig bosatt i Norge, er du skattepliktig hit for all inntekt – både norsk og utenlandsk. Dette kalles globalinntektsprinsippet. Men du…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-utenlandsk-inntekt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg skatte av utenlandsk inntekt?">
+<meta property="og:description" content="Hvis du er skattemessig bosatt i Norge, er du skattepliktig hit for all inntekt – både norsk og utenlandsk. Dette kalles globalinntektsprinsippet. Men du…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-utenlandsk-inntekt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg skatte av utenlandsk inntekt?">
+<meta name="twitter:description" content="Hvis du er skattemessig bosatt i Norge, er du skattepliktig hit for all inntekt – både norsk og utenlandsk. Dette kalles globalinntektsprinsippet. Men du…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Må jeg skatte av utenlandsk inntekt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis du er skattemessig bosatt i Norge, er du skattepliktig hit for **all inntekt – både norsk og utenlandsk**. Dette kalles globalinntektsprinsippet. Men du skal sjelden ende opp med å betale full skatt to ganger, fordi skatteavtaler og fradragsregler er laget for å hindre dobbeltbeskatning.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr "skattemessig bosatt i Norge"?</h3>
+<p>Bor du fast i Norge, er du skattemessig bosatt her. Da gjelder regelen om at hele verden er ditt skattepliktige grunnlag: lønn fra en jobb i Danmark, leieinntekt fra en leilighet i Spania, renter fra en bankkonto i Sveits og utbytte fra utenlandske aksjer – alt skal som utgangspunkt med i den norske skattemeldingen.</p>
+<p>Mange tror feilaktig at "det jeg tjener ute, angår ikke Norge". Det stemmer ikke så lenge du bor her. Det spiller heller ingen rolle om pengene står på en konto i utlandet og aldri overføres til Norge – det er retten til inntekten som teller, ikke hvor pengene fysisk befinner seg.</p>
+<h3>Konkrete eksempler</h3>
+<p><strong>Eksempel – Sara jobber pendlerukene i Sverige:</strong> Sara bor i Halden og jobber på et lager i Sverige. Selv om svensk arbeidsgiver trekker skatt i Sverige, må Sara også føre opp lønnen i den norske skattemeldingen. Skatteavtalen mellom Norge og Sverige avgjør deretter hvordan dobbeltbeskatning unngås, slik at hun ikke betaler full skatt begge steder.</p>
+<p><strong>Eksempel – Jonas har en utleieleilighet i Alicante:</strong> Jonas leier ut en leilighet i Spania og tjener 90 000 kroner i året på det. Inntekten skal føres i den norske skattemeldingen. Skatt han betaler i Spania, kan han som regel få fradrag for i Norge gjennom kreditfradrag.</p>
+<p><strong>Eksempel – Aisha har utenlandske aksjer:</strong> Aisha eier aksjer i et amerikansk selskap som betaler utbytte. USA trekker kildeskatt på utbyttet. Aisha må likevel oppgi utbyttet i Norge, men får normalt kreditfradrag for kildeskatten USA allerede har tatt, opp til en viss grense.</p>
+<p><strong>Eksempel – Renter fra utenlandsk bank:</strong> Ola har en sparekonto i Tyskland med 8 000 kroner i renter i året. Også dette skal med i den norske skattemeldingen. Norge får i mange tilfeller automatisk beskjed om slike kontoer fra det andre landet, så det å la være å oppgi dem er ikke bare ulovlig, men også risikabelt.</p>
+<h3>Hvordan unngår jeg å betale skatt to ganger?</h3>
+<p>Norge har skatteavtaler med svært mange land. De bruker hovedsakelig to metoder:</p>
+<ul>
+<li><strong>Kreditmetoden:</strong> Du betaler norsk skatt på inntekten, men trekker fra skatten du allerede har betalt i utlandet.</li>
+<li><strong>Unntaksmetoden (fordelingsmetoden):</strong> Inntekten tas med ved beregningen i Norge, men den faktiske norske skatten på akkurat denne inntekten reduseres eller faller bort.</li>
+</ul>
+<p>Hvilken metode som gjelder, avhenger av avtalen med det aktuelle landet og hva slags inntekt det er. Det finnes en egen artikkel som forklarer dette nærmere.</p>
+<h3>Slik melder du utenlandsk inntekt riktig</h3>
+<ul>
+<li><strong>Samle dokumentasjon:</strong> lønnsslipper, årsoppgaver, kvitteringer på skatt betalt i utlandet.</li>
+<li><strong>Før inntekten i skattemeldingen</strong> under riktig post for utenlandsk inntekt.</li>
+<li><strong>Krev kreditfradrag</strong> for skatt betalt ute, og legg ved dokumentasjon på den utenlandske skatten.</li>
+<li><strong>Vær nøyaktig med valuta</strong> – beløp skal omregnes til norske kroner etter riktig kurs.</li>
+<li><strong>Ikke la være å oppgi noe</strong> fordi du tror Norge ikke får vite det. Norge utveksler nå skatteopplysninger automatisk med en lang rekke land.</li>
+</ul>
+<h3>Hva hvis jeg bor i utlandet?</h3>
+<p>Da snur bildet. Bor du fast ute og har opphørt å være skattemessig bosatt i Norge, betaler du normalt bare norsk skatt på det som har spesiell tilknytning til Norge – for eksempel eiendom i Norge eller enkelte norske utbetalinger med kildeskatt (som pensjon). Men husk at det å bli ansett som utflyttet etter de norske reglene har egne, til dels strenge vilkår, blant annet om hvor mange dager du oppholder deg i Norge og om du fortsatt disponerer bolig her.</p>
+<h3>En vanlig fallgruve</h3>
+<p>Den vanligste feilen er rett og slett å glemme den utenlandske inntekten fordi den ikke står ferdig utfylt i skattemeldingen. Den ferdigutfylte meldingen inneholder det norske kilder har rapportert – utenlandske forhold må du ofte legge inn selv. Sjekk derfor nøye at alt er med før du leverer.</p>
+<h3>Hva med formue i utlandet?</h3>
+<p>Det er ikke bare inntekt som skal med – også formue teller. Bor du i Norge, skal du oppgi formue uansett hvor i verden den befinner seg: en feriebolig i Hellas, en leilighet i Thailand, bankinnskudd i utlandet og verdipapirer på utenlandske kontoer. Verdien settes etter norske regler og omregnes til kroner. Også her kan en skatteavtale påvirke hvordan fast eiendom i utlandet behandles, men hovedregelen er at det skal med i den norske oversikten.</p>
+<p><strong>Eksempel – Randi har en leilighet i Spania:</strong> Randi eier en leilighet i Spania verdt rundt 2 millioner kroner. Selv om hun betaler eiendomsskatt i Spania, skal leiligheten føres opp som formue i den norske skattemeldingen. Skatteavtalen avgjør om og hvordan formuesverdien påvirker norsk formuesskatt.</p>
+<h3>Hva hvis inntekten allerede er rapportert i utlandet?</h3>
+<p>At inntekten din er innrapportert og beskattet i utlandet, fritar deg ikke fra plikten til å oppgi den i Norge. Det er nettopp derfor systemet med kreditfradrag finnes: du oppgir inntekten i begge land, men trekker fra den utenlandske skatten i Norge. Ikke tenk at "dette er allerede ordnet ute" – for Norge er det fortsatt din plikt å melde fra.</p>
+<h3>Vanlige typer utenlandsk inntekt for privatpersoner</h3>
+<p>For at det skal bli konkret, her er inntekter mange nordmenn faktisk har, og som skal med:</p>
+<ul>
+<li><strong>Lønn fra arbeid i utlandet</strong>, enten du pendler over grensen eller jobber perioder ute.</li>
+<li><strong>Leieinntekt</strong> fra feriebolig eller leilighet du eier i et annet land.</li>
+<li><strong>Utbytte og gevinst</strong> på utenlandske aksjer og fond.</li>
+<li><strong>Renter</strong> på bankkontoer og spareprodukter i utlandet.</li>
+<li><strong>Pensjon</strong> fra et annet land, for eksempel hvis du har jobbet ute i noen år.</li>
+</ul>
+<p><strong>Eksempel – Tor har jobbet i Danmark:</strong> Tor jobbet noen år i Danmark og får nå en liten dansk pensjon ved siden av den norske. Den danske pensjonen skal med i den norske skattemeldingen, og dansk skatt på den kan han kreve fradrag for gjennom skatteavtalen.</p>
+<h3>Kort oppsummert</h3>
+<p>Som bosatt i Norge skal du skatte hit av all inntekt, også den fra utlandet. Men skatteavtaler og kreditfradrag sørger for at du som regel slipper å betale full skatt to ganger. Oppgi alt, kreve fradrag for skatt betalt ute, og sjekk reglene for ditt land. Tall, satser og avtaler endres – verifiser alltid på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

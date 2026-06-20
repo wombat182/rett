@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er et skattefradrag? — Rettsregel</title>
+<meta name="description" content="I dagligtale sier folk "skattefradrag" om alt som gjør skatten lavere. Men strengt tatt finnes det to typer: et inntektsfradrag som trekker ned inntekten…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-et-skattefradrag/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er et skattefradrag?">
+<meta property="og:description" content="I dagligtale sier folk "skattefradrag" om alt som gjør skatten lavere. Men strengt tatt finnes det to typer: et inntektsfradrag som trekker ned inntekten…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-et-skattefradrag/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er et skattefradrag?">
+<meta name="twitter:description" content="I dagligtale sier folk "skattefradrag" om alt som gjør skatten lavere. Men strengt tatt finnes det to typer: et inntektsfradrag som trekker ned inntekten…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er et skattefradrag?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>I dagligtale sier folk "skattefradrag" om alt som gjør skatten lavere. Men strengt tatt finnes det to typer: et **inntektsfradrag** som trekker ned inntekten du skatter av, og et **skattefradrag** som trekkes direkte fra selve skatten. Begge gir deg lavere skatt – men på helt forskjellig måte, og det andre er kroner-for-kroner mer verdt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Først det enkle: hva betyr "fradrag"?</h3>
+<p>Et fradrag betyr rett og slett at noe trekkes fra. I skattesammenheng handler det om å redusere det du må betale skatt av, eller det du må betale i skatt. Tenk på det som en rabatt – men hvor mye rabatten er verdt, avhenger av <em>hvilken type</em> fradrag det er.</p>
+<h3>Type 1: Inntektsfradrag (det vanligste)</h3>
+<p>Et <strong>inntektsfradrag</strong> trekkes fra inntekten din <em>før</em> skatten regnes ut. Du betaler altså skatt av et lavere beløp.</p>
+<p><strong>Regneeksempel – Ingrid:</strong> Ingrid tjener 500 000 kroner. Hun har et reisefradrag på 10 000 kroner. Det betyr at hun skatter av 490 000 i stedet for 500 000. Skatten på alminnelig inntekt er 22 prosent (sats for 2025). Verdien av fradraget blir dermed:</p>
+<blockquote>
+<p>10 000 kr × 22 % = <strong>2 200 kr spart i skatt</strong></p>
+</blockquote>
+<p>Et inntektsfradrag på 10 000 kroner gir altså <em>ikke</em> 10 000 kroner mindre i skatt – det gir deg skattesatsen av beløpet. De fleste fradrag er av denne typen: renteutgifter, reisefradrag, minstefradrag, fagforeningskontingent, gaver til frivillige organisasjoner.</p>
+<p><strong>Et nyttig bilde:</strong> Tenk på inntekten din som en kake. Et inntektsfradrag skjærer av en bit av kaken <em>før</em> skattekniven får tak i den – så skatten regnes av en mindre kake. Du betaler fortsatt skatt, bare av et mindre beløp. Det er derfor verdien blir skattesatsen (22 prosent) av biten du skar av, ikke hele biten.</p>
+<h3>Type 2: Skattefradrag (trekkes fra selve skatten)</h3>
+<p>Et rent <strong>skattefradrag</strong> trekkes direkte fra skatten du skal betale, krone for krone. Dette er mer verdifullt.</p>
+<p><strong>Regneeksempel – Sondre, 25 år, sparer i BSU:</strong> BSU (Boligsparing for ungdom) gir et skattefradrag på 10 prosent av det du sparer i året. Sparer Sondre 27 500 kroner, blir skattefradraget:</p>
+<blockquote>
+<p>27 500 kr × 10 % = <strong>2 750 kr rett av skatten</strong></p>
+</blockquote>
+<p>Her trekkes hele beløpet direkte fra skatten hans – ikke bare en prosentandel. Det er forskjellen: et skattefradrag på 2 750 kroner senker skatten med nøyaktig 2 750 kroner.</p>
+<h3>Hvorfor er forskjellen viktig?</h3>
+<p>Fordi to fradrag på samme "papirbeløp" kan være ulikt mye verdt:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Beløp</th>
+<th>Verdt i spart skatt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inntektsfradrag</td>
+<td>10 000 kr</td>
+<td>ca. 2 200 kr (22 %)</td>
+</tr>
+<tr>
+<td>Skattefradrag</td>
+<td>10 000 kr</td>
+<td>10 000 kr</td>
+</tr>
+</tbody>
+</table>
+<p>Et skattefradrag er altså full uttelling, mens et inntektsfradrag bare gir deg skattesatsen av beløpet.</p>
+<blockquote>
+<p><strong>Sjekk hva du har:</strong>
+- Renter på lån → inntektsfradrag
+- Reisefradrag (pendling) → inntektsfradrag
+- Fagforeningskontingent → inntektsfradrag
+- Gaver til godkjente organisasjoner → inntektsfradrag
+- BSU-sparing (under 34 år) → ekte skattefradrag
+- Personfradrag → trekkes i alminnelig inntekt (et inntektsfradrag alle får)</p>
+</blockquote>
+<h3>Hvordan vet jeg hvilken type et fradrag er?</h3>
+<p>En enkel huskeregel: hvis fradraget oppgis som et beløp som "trekkes fra inntekten", er det et inntektsfradrag (verdt 22 prosent). Hvis beløpet "trekkes fra skatten", er det et skattefradrag (verdt fullt ut). BSU er det desidert vanligste eksempelet på det siste for privatpersoner. Er du i tvil, viser skattemeldingen tydelig om beløpet inngår i inntekten eller trekkes fra den beregnede skatten.</p>
+<h3>Eksempler på vanlige fradrag</h3>
+<ul>
+<li><strong>Minstefradraget:</strong> Et standardfradrag i lønn og pensjon som alle lønnsmottakere får automatisk.</li>
+<li><strong>Personfradraget:</strong> Et fast beløp som trekkes fra alminnelig inntekt for alle.</li>
+<li><strong>Reisefradrag:</strong> For deg som reiser langt til jobb.</li>
+<li><strong>Rentefradrag:</strong> Renter du betaler på lån.</li>
+<li><strong>Foreldrefradrag:</strong> Utgifter til barnehage og SFO.</li>
+</ul>
+<h3>Et viktig poeng om dokumentasjon</h3>
+<p>Mange fradrag fylles inn automatisk i skattemeldingen (renter, BSU). Andre må du føre opp selv (reise, enkelte kostnader). Fører du opp et fradrag selv, må du kunne dokumentere det hvis Skatteetaten spør. Ta vare på kvitteringer og oversikter.</p>
+<h3>Et tredje begrep: bunnfradrag</h3>
+<p>Du vil også møte ordet "bunnfradrag" eller "nedre grense". Det betyr at noen fradrag bare gjelder for den delen som overstiger et visst beløp. Reisefradraget er det klassiske eksempelet: der får du fradrag bare for det som er over en nedre grense (15 250 kroner i 2025). Bunnfradraget er altså ikke en egen fradragstype, men en <em>terskel</em> du må over før fradraget begynner å telle. Det er greit å kjenne til, slik at du ikke blir skuffet over at små beløp ikke gir noe utslag.</p>
+<h3>Hvor kommer fradragene fra?</h3>
+<p>De fleste fradrag er bestemt i skatteloven og fastsettes nærmere i statsbudsjettet hvert år. Noen er ment å gjenspeile reelle utgifter du har (renter, reise), mens andre er politiske virkemidler for å oppmuntre til en bestemt atferd (BSU for å få unge til å spare, gavefradrag for å støtte frivilligheten). Du trenger ikke kjenne lovparagrafene – poenget er at fradragene har en hensikt, og at du har rett på dem så lenge situasjonen din passer vilkårene.</p>
+<h3>Lønner det seg å lete etter fradrag?</h3>
+<p>Absolutt – men med måte. For folk flest ligger de store fradragene allerede inne automatisk (minstefradrag, personfradrag, renter). Den ekstra gevinsten ligger ofte i å huske på reisefradraget, foreldrefradraget og BSU. Bruk gjerne en kveld i året på å gå gjennom skattemeldingen i ro og mak.</p>
+<p><strong>Eksempel – familien Berg:</strong> De gikk gjennom skattemeldingen sammen og oppdaget at verken reisefradraget eller foreldrefradraget var fylt ut. Da de la dem inn, sank den skattbare inntekten med over 50 000 kroner til sammen – verdt rundt 11 000 kroner i spart skatt. Én kveld godt brukt.</p>
+<h3>Kort oppsummert</h3>
+<p>"Skattefradrag" brukes løst om alt som senker skatten, men det er nyttig å skille mellom inntektsfradrag (reduserer inntekten du skatter av, og er verdt skattesatsen av beløpet) og ekte skattefradrag (trekkes krone for krone fra selve skatten). BSU er et klassisk ekte skattefradrag, mens renter og reise er inntektsfradrag. Satsene – som de 22 prosentene på alminnelig inntekt for 2025 – endres fra år til år, så kontroller alltid gjeldende tall på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

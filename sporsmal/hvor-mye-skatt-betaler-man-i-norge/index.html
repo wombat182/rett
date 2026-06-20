@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor mye skatt betaler man i Norge? — Rettsregel</title>
+<meta name="description" content="For en helt vanlig lønnsmottaker ligger samlet skatt i 2025 typisk på rundt 22–34 prosent av bruttolønnen, avhengig av hvor mye du tjener. Skatten består…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-mye-skatt-betaler-man-i-norge/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor mye skatt betaler man i Norge?">
+<meta property="og:description" content="For en helt vanlig lønnsmottaker ligger samlet skatt i 2025 typisk på rundt 22–34 prosent av bruttolønnen, avhengig av hvor mye du tjener. Skatten består…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-mye-skatt-betaler-man-i-norge/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor mye skatt betaler man i Norge?">
+<meta name="twitter:description" content="For en helt vanlig lønnsmottaker ligger samlet skatt i 2025 typisk på rundt 22–34 prosent av bruttolønnen, avhengig av hvor mye du tjener. Skatten består…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hvor mye skatt betaler man i Norge?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>For en helt vanlig lønnsmottaker ligger samlet skatt i 2025 typisk på rundt 22–34 prosent av bruttolønnen, avhengig av hvor mye du tjener. Skatten består av flere deler: 22 prosent på alminnelig inntekt, trygdeavgift på 7,7 prosent og en trinnskatt som øker for høyere inntekter. (Alle tall gjelder 2025 – sjekk skatteetaten.no for årets satser.)</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Skatten er satt sammen av flere biter</h3>
+<p>Mange tror det finnes «én skatteprosent». Det stemmer ikke. I Norge betaler en lønnstaker tre hovedelementer:</p>
+<ol>
+<li><strong>Skatt på alminnelig inntekt – 22 prosent.</strong> Beregnes etter at fradrag er trukket fra.</li>
+<li><strong>Trygdeavgift – 7,7 prosent på lønn.</strong> Beregnes av brutto personinntekt. (Pensjon: 5,1 prosent. Næring: 10,9 prosent.)</li>
+<li><strong>Trinnskatt.</strong> En trappetrinnsskatt som bare slår inn over visse inntektsgrenser.</li>
+</ol>
+<p>Til sammen utgjør disse den «marginalskatten» og «gjennomsnittsskatten» din. Gjennomsnittsskatten er hvor stor andel av hele inntekten som går til skatt; marginalskatten er hva du betaler på den siste krona.</p>
+<h3>Tre eksempler på ulike inntektsnivåer (2025)</h3>
+<p><strong>Eksempel 1 – Mina, deltidsansatt, 250 000 kroner:</strong>
+- Minstefradrag: 46 % av 250 000 = 115 000, men maks 92 000 → 92 000
+- Alminnelig inntekt: 250 000 − 92 000 = 158 000
+- Minus personfradrag 108 550: grunnlag 49 450 → 22 % = 10 879
+- Trygdeavgift: 7,7 % av 250 000 = 19 250
+- Trinnskatt trinn 1: (250 000 − 217 401) × 1,7 % ≈ 554
+- <strong>Sum skatt ≈ 30 683 kroner</strong>, ca. 12 prosent av brutto</p>
+<p><strong>Eksempel 2 – Ahmed, fagarbeider, 600 000 kroner:</strong>
+- Minstefradrag maks 92 000 → alminnelig inntekt 508 000
+- Minus personfradrag: 508 000 − 108 550 = 399 450 → 22 % = 87 879
+- Trygdeavgift: 7,7 % av 600 000 = 46 200
+- Trinnskatt: trinn 1 ≈ 1 507 + trinn 2 (600 000 − 306 051) × 4 % ≈ 11 758 → sum ≈ 13 265
+- <strong>Sum skatt ≈ 147 344 kroner</strong>, ca. 24,6 prosent av brutto</p>
+<p><strong>Eksempel 3 – Ingrid, avdelingsleder, 900 000 kroner:</strong>
+- Minstefradrag maks 92 000 → alminnelig inntekt 808 000
+- Minus personfradrag: 808 000 − 108 550 = 699 450 → 22 % = 153 879
+- Trygdeavgift: 7,7 % av 900 000 = 69 300
+- Trinnskatt: trinn 1 ≈ 1 507 + trinn 2 (697 150 − 306 051) × 4 % ≈ 15 644 + trinn 3 (900 000 − 697 151) × 13,7 % ≈ 27 790 → sum ≈ 44 941
+- <strong>Sum skatt ≈ 268 120 kroner</strong>, ca. 29,8 prosent av brutto</p>
+<p>Du ser mønsteret: jo mer du tjener, desto høyere <em>andel</em> går til skatt. Det er fordi trinnskatten trappes opp. Men selv på 900 000 kroner er gjennomsnittsskatten under 30 prosent – langt unna «halve lønnen», som mange tror.</p>
+<h3>Hva er marginalskatt?</h3>
+<p>Marginalskatt er hvor mye av <em>den neste hundrelappen</em> du tjener som går til skatt. For Ahmed i eksempel 2 betyr en ekstra tusenlapp i lønn: 22 % (alminnelig inntekt) + 7,7 % (trygdeavgift) + 4 % (trinn 2) = 33,7 prosent i skatt på det ekstra. Det er nyttig å vite før du takker ja til overtid: du beholder rundt to tredeler av en ekstra krone, ikke alt – men du beholder fortsatt mer enn halvparten.</p>
+<p>For Ingrid, som er på trinn 3, er marginalskatten høyere: 22 + 7,7 + 13,7 = 43,4 prosent. Likevel lønner det seg alltid å tjene mer; du sitter aldri igjen med mindre totalt.</p>
+<h3>Hva med pensjonister?</h3>
+<p>Pensjonister betaler lavere trygdeavgift (5,1 prosent i 2025) og kan ha et eget skattefradrag for pensjonsinntekt. Mange minstepensjonister betaler derfor lite eller ingen skatt. Reglene er egne, så pensjonister bør bruke skattekalkulatoren for pensjon på skatteetaten.no for å se sitt eget bilde.</p>
+<h3>Hva med kapitalinntekter?</h3>
+<p>Renter i banken og gevinst ved salg av vanlige eiendeler skattlegges normalt med 22 prosent. Aksjeutbytte og aksjegevinster har en ekstra oppjustering, slik at den effektive satsen blir høyere (rundt 37,8 prosent i 2025). Dette gjelder ikke vanlig lønn, men er greit å kjenne til hvis du sparer i aksjer. Det er også derfor mange bruker aksjesparekonto, som utsetter denne skatten.</p>
+<h3>Hva med formuesskatt?</h3>
+<p>I tillegg til inntektsskatten finnes formuesskatt for dem med høy nettoformue. De aller fleste vanlige lønnstakere betaler lite eller ingen formuesskatt, fordi det er et bunnfradrag før skatten slår inn, og fordi primærbolig verdsettes lavt. Men har du store verdier, kommer dette i tillegg.</p>
+<h3>Hvorfor virker skatten høyere enn den er?</h3>
+<p>Mange opplever at «skatten føles høyere» enn gjennomsnittstallene over. Det skyldes ofte at man husker marginalskatten – det høye trekket på overtid og bonus – og tror at hele lønnen skattlegges slik. I tillegg betaler vi mye indirekte skatt gjennom merverdiavgift (moms) på 25 prosent på de fleste varer, samt avgifter på drivstoff, strøm, alkohol og bil. Disse kommer i tillegg til inntektsskatten, men de er ikke en del av det som trekkes fra lønnen. Når folk sier at «halve lønnen går til skatt», blander de ofte sammen inntektsskatt og alle de indirekte avgiftene vi betaler i butikken.</p>
+<h3>Sammenligning: lav, middels og høy inntekt</h3>
+<p>Det kan være nyttig å se de tre eksemplene side om side. Mina (250 000) betalte rundt 12 prosent, Ahmed (600 000) rundt 24,6 prosent, og Ingrid (900 000) rundt 29,8 prosent. Legg merke til at selv en dobling av inntekten fra Ahmed til nesten Ingrid ikke dobler skatteandelen – den øker bare med noen få prosentpoeng. Systemet er progressivt, men ikke så bratt som mange frykter. For de aller fleste vanlige lønnstakere ligger gjennomsnittsskatten et godt stykke under en tredjedel av inntekten.</p>
+<h3>Steg for steg: anslå din egen skatt</h3>
+<ol>
+<li>Finn bruttolønnen din for året.</li>
+<li>Gå til skatteetaten.no og åpne skattekalkulatoren.</li>
+<li>Legg inn lønn, eventuelle renteutgifter og andre fradrag.</li>
+<li>Kalkulatoren viser samlet skatt og nettolønn.</li>
+<li>Sammenlign med lønnsslippene for å se om skattekortet trekker riktig.</li>
+</ol>
+<h3>Kildehenvisning i klartekst</h3>
+<p>Satsene (22 prosent, trygdeavgift 7,7 prosent, trinnskattens fem trinn) og fradragene er hentet fra Skatteetatens offisielle satssider for 2025. Den oppjusterte satsen for utbytte følger av regler i skatteloven. Husk at alle disse tallene vedtas på nytt hvert år i statsbudsjettet, så kontroller gjeldende satser på skatteetaten.no.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Det finnes ingen enkelt «skatteprosent» – skatten er satt sammen av 22 % på alminnelig inntekt, trygdeavgift og trinnskatt.</li>
+<li>For vanlige lønninger ender gjennomsnittsskatten typisk på 12–30 prosent.</li>
+<li>Marginalskatten (skatt på den neste krona) er høyere, ofte 34–43 prosent.</li>
+<li>Jo mer du tjener, desto større andel går til skatt – men du sitter alltid igjen med mer.</li>
+<li>Pensjonister, kapitalinntekter og formue har egne regler.</li>
+<li>Bruk skattekalkulatoren på skatteetaten.no for ditt eksakte tall.</li>
+</ul>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

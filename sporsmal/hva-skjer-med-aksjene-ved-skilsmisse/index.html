@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer med aksjene ved skilsmisse? — Rettsregel</title>
+<meta name="description" content="Verdien av aksjene dine inngår normalt i det økonomiske oppgjøret når dere skiller dere, men du blir ikke fratatt selve eierskapet automatisk. Som…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-med-aksjene-ved-skilsmisse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer med aksjene ved skilsmisse?">
+<meta property="og:description" content="Verdien av aksjene dine inngår normalt i det økonomiske oppgjøret når dere skiller dere, men du blir ikke fratatt selve eierskapet automatisk. Som…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-med-aksjene-ved-skilsmisse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer med aksjene ved skilsmisse?">
+<meta name="twitter:description" content="Verdien av aksjene dine inngår normalt i det økonomiske oppgjøret når dere skiller dere, men du blir ikke fratatt selve eierskapet automatisk. Som…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva skjer med aksjene ved skilsmisse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Verdien av aksjene dine inngår normalt i det økonomiske oppgjøret når dere skiller dere, men du blir ikke fratatt selve eierskapet automatisk. Som hovedregel beholder du aksjene du eier, mens ektefellen din kan ha krav på en del av *verdien* – ikke på å bli medeier i selskapet ditt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Mange gründere blir skikkelig redde når et samliv ryker. «Mister jeg halve bedriften min nå?» Svaret er som regel nei – men du må skille mellom to helt forskjellige ting: hvem som <em>eier</em> aksjene, og hvor mye av <em>verdien</em> som skal deles.</p>
+<h3>To verdener som ikke må blandes sammen</h3>
+<p>Aksjeloven styrer hvem som er aksjonær, hvem som har stemmerett og hvordan selskapet drives. Ekteskapsloven styrer hvordan dere deler økonomien ved skilsmisse. Disse to lovene snakker ikke direkte med hverandre, og det er nettopp derfor det blir forvirring. Du kan godt være eneeier av et selskap <em>og</em> ende opp med å betale ekstefellen din penger – uten at ekstefellen noen gang får en eneste aksje.</p>
+<p>Tenk deg Kristin, som eier 100 prosent av «Nordlys Design AS». Da hun og Anders skiller seg, er Anders fortsatt ikke aksjonær – han har aldri stått i aksjeeierboken (selskapets offisielle liste over hvem som eier aksjene). Skilsmissen gjør ham ikke automatisk til medeier. Men selve <em>verdien</em> av selskapet kan likevel komme inn i delingen mellom dem.</p>
+<p>Hvorfor er det slik? Fordi eierskap til en aksje er en formuesgjenstand på lik linje med en bil, en hytte eller penger i banken. Når dere skiller dere, skal <em>verdien</em> av det dere eier deles etter ekteskapslovens regler. Men eierskapet i seg selv – den juridiske retten til å være aksjonær – sitter fast hos den som faktisk står i aksjeeierboken. Ekteskapsloven flytter penger, ikke aksjer.</p>
+<h3>Felleseie og skjevdeling – forklart enkelt</h3>
+<p>Når dere ikke har avtalt noe annet, har dere <strong>felleseie</strong>. Det betyr at netto formue deles likt ved skilsmisse. Men her kommer en viktig regel inn: <strong>skjevdeling</strong> (ekteskapsloven § 59 – regelen om at verdier du klart kan spore tilbake til arv eller til det du eide før ekteskapet, kan holdes utenfor delingen).</p>
+<p>La oss si at Kristin startet «Nordlys Design AS» fem år før hun møtte Anders. Verdien selskapet hadde da de giftet seg, kan hun ofte holde <em>utenfor</em> delingen gjennom skjevdeling. Men verdiøkningen som har skjedd <em>under</em> ekteskapet – særlig hvis Kristin har jobbet mye i selskapet og tatt ut lav lønn – kan være vanskeligere å skjevdele. Det er nettopp dette Høyesterett har behandlet i flere saker.</p>
+<p>Et tenkt taleksempel:
+- Selskapet var verdt 800 000 kr da de giftet seg.
+- Ved skilsmissen er det verdt 3 000 000 kr.
+- Den opprinnelige verdien (800 000) kan ofte skjevdeles.
+- Av verdiøkningen på 2 200 000 kr kan deler tilfalle delingen, særlig hvis Kristins egen innsats forklarer veksten.</p>
+<p>Poenget: ingen av dette gir Anders aksjer. Det handler om <em>kroner</em>, ikke om <em>eierandel</em>.</p>
+<p>Det finnes også en motsatt situasjon mange ikke tenker på. Hvis Kristin hadde <em>stiftet</em> selskapet mens hun var gift, og bygget det opp med felles midler og felles innsats, kan mer av verdien havne i delingen. Da kan Anders' pengekrav bli større. Men selv da blir han ikke aksjonær – han får en større andel av <em>verdien</em>, ikke aksjer.</p>
+<h3>Ektefellen blir ikke aksjonær – men kan ha pengekrav</h3>
+<p>Dette er kjernen mange overser: Anders kan ende opp med et krav på, si, 600 000 kr i oppgjøret, men han får ikke stemmerett, ikke plass i selskapet og ikke innsyn som aksjonær. Kristin må eventuelt betale ham ut med andre midler, ta opp lån, eller selskapet kan dele ut utbytte til henne så hun får kontanter.</p>
+<p>Dette skillet er viktig av en grunn til: det beskytter selskapet og eventuelle medeiere. Tenk på hvor kaotisk det ville vært om en eks-ektefelle plutselig fikk stemmerett og innsyn i en bedrift han eller hun aldri har vært involvert i. Loven sørger for at driften kan fortsette uforstyrret, mens det rent økonomiske gjøres opp mellom ektefellene.</p>
+<p>En vanlig fallgruve er likviditet – altså å ha nok kontanter. Kristin kan «på papiret» eie et selskap verdt millioner, men ikke ha penger til å betale Anders ut. Da må hun finne en løsning: nedbetalingsavtale over tid, refinansiering, eller å la selskapet dele ut utbytte til henne. Det lønner seg å tenke gjennom dette tidlig, så ikke selve utbetalingen blir den store konflikten.</p>
+<h3>Hvordan beskytte selskapet på forhånd</h3>
+<p>Vil du sove godt om natten, er det noen grep du kan ta <em>før</em> det smeller:</p>
+<ol>
+<li><strong>Ektepakt</strong> (en formell avtale mellom ektefeller, tinglyst i Ektepaktregisteret) der dere avtaler at aksjene skal være <strong>særeie</strong> (holdes helt utenfor delingen).</li>
+<li><strong>Aksjonæravtale</strong> med eventuelle medeiere som sier at ingen ektefelle kan tre inn som aksjonær.</li>
+<li><strong>Vedtektsbestemmelser</strong> om at selskapet eller de andre aksjonærene har forkjøpsrett hvis aksjer skulle skifte hender.</li>
+<li><strong>Ryddig dokumentasjon</strong> på hva selskapet var verdt da dere giftet dere – det gjør skjevdelingskravet ditt mye lettere å bevise.</li>
+</ol>
+<h3>Når flere eier sammen</h3>
+<p>Har «Nordlys Design AS» tre aksjonærer, og én av dem skal skille seg, blir de andre ofte nervøse: «Kommer eks-ektefellen inn og roter til alt?» Svaret er beroligende – nei. Eks-ektefellen får ikke aksjer bare på grunn av skilsmissen. Men de andre eierne bør likevel ha en aksjonæravtale som tetter alle hull, slik at heller ikke et <em>frivillig</em> salg til en ektefelle kan skje uten deres samtykke.</p>
+<p>Et eksempel: I et byrå med tre likestilte eiere går den ene gjennom en vond skilsmisse og trenger raskt kontanter. Eks-ektefellen tilbyr å «kjøpe» aksjene som en del av oppgjøret. Uten en aksjonæravtale med forkjøpsrett kan dette i prinsippet skje – og plutselig sitter en utenforstående på eiersiden. Med en god avtale har de to andre eierne rett til å overta aksjene først, til en avtalt pris. Slik beholder de kontrollen over hvem som får eie.</p>
+<h3>Praktiske steg hvis skilsmissen er et faktum</h3>
+<ol>
+<li>Skaff oversikt over når selskapet ble stiftet og hva det var verdt ved inngåelsen av ekteskapet.</li>
+<li>Få en nøktern verdivurdering av selskapet i dag (en regnskapsfører eller verdsetter kan hjelpe).</li>
+<li>Avklar hvor mye som kan skjevdeles, og hvor mye som faktisk skal deles.</li>
+<li>Finn ut hvordan et eventuelt pengekrav skal dekkes uten å tappe selskapet for driftskapital.</li>
+<li>Vurder en advokat med familierett <em>og</em> selskapsrett – kombinasjonen er gull verdt her.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Ved skilsmisse beholder du som hovedregel aksjene dine – ektefellen blir ikke aksjonær. Men <em>verdien</em> av aksjene kan inngå i det økonomiske oppgjøret, der felleseie deles og skjevdeling (ekteskapsloven § 59) kan holde deler utenfor. Beskytt deg med ektepakt, aksjonæravtale og god dokumentasjon på selskapets startverdi, så slipper du de største overraskelsene.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

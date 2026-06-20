@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg skatte av en pengegave fra foreldrene mine? — Rettsregel</title>
+<meta name="description" content="Nei. En pengegave fra foreldrene dine er helt skattefri, uansett hvor stor den er. Du skal ikke betale skatt eller avgift, og du skal ikke føre gaven opp…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-en-pengegave-fra-foreldrene/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg skatte av en pengegave fra foreldrene mine?">
+<meta property="og:description" content="Nei. En pengegave fra foreldrene dine er helt skattefri, uansett hvor stor den er. Du skal ikke betale skatt eller avgift, og du skal ikke føre gaven opp…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-en-pengegave-fra-foreldrene/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg skatte av en pengegave fra foreldrene mine?">
+<meta name="twitter:description" content="Nei. En pengegave fra foreldrene dine er helt skattefri, uansett hvor stor den er. Du skal ikke betale skatt eller avgift, og du skal ikke føre gaven opp…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Må jeg skatte av en pengegave fra foreldrene mine?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei. En pengegave fra foreldrene dine er helt skattefri, uansett hvor stor den er. Du skal ikke betale skatt eller avgift, og du skal ikke føre gaven opp som inntekt. Du bør likevel ha litt dokumentasjon klar, særlig hvis gaven er stor eller skal brukes til boligkjøp.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Pengegave fra foreldre = skattefritt</h3>
+<p>Dette er en av de vanligste bekymringene unge voksne har: "Mamma og pappa vil gi meg penger til leiligheten – må jeg skatte av det?" Svaret er et klart nei. Norge har ingen gaveavgift (den ble fjernet i 2014), og det gjelder også gaver mellom foreldre og barn. Foreldrene dine kan gi deg 50 000, 300 000 eller 800 000 kroner – det er like skattefritt.</p>
+<p><strong>Et eksempel:</strong> Sofie skal kjøpe sin første leilighet og trenger egenkapital. Foreldrene gir henne 400 000 kroner. Sofie betaler ingen skatt, fører ikke gaven som inntekt, og pengene teller fullt ut som hennes egenkapital. Foreldrene får heller ingen avgift.</p>
+<h3>Hvorfor er nettopp pengegaver alltid trygge?</h3>
+<p>Penger har ingen "skjult gevinst". Hvis foreldrene i stedet ga deg aksjer eller en hytte, ville du overtatt deres inngangsverdi (kontinuitetsprinsippet), og du kunne måttet skatte når du solgte. Men rene penger bærer ingen slik skatt med seg. Det er derfor en kontant pengegave fra foreldre er den enkleste og tryggeste formen for økonomisk hjelp.</p>
+<h3>Når banken vil ha papirer</h3>
+<p>Den vanligste situasjonen er boligkjøp. Når du søker boliglån, vil banken se at egenkapitalen din er reell. Da er det nyttig å kunne vise et <strong>gavebrev</strong>.</p>
+<p><strong>Slik lager du et enkelt gavebrev:</strong></p>
+<ul>
+<li>Navn på giverne (foreldrene) og mottaker (deg).</li>
+<li>Beløpet.</li>
+<li>Dato.</li>
+<li>En setning: "Dette er en gave til [navn], uten krav om tilbakebetaling."</li>
+<li>Eventuelt: om det er forskudd på arv.</li>
+<li>Signaturer fra både giver og mottaker.</li>
+</ul>
+<p>Be også foreldrene <strong>overføre pengene via bank</strong>, ikke i kontanter, slik at det finnes et tydelig spor. Dette gjør banken og en eventuell senere kontroll mye enklere.</p>
+<h3>Gave eller lån – stor forskjell</h3>
+<p>Pass på å avklare om det er en <strong>gave</strong> eller et <strong>lån</strong>. Det har stor betydning:</p>
+<ul>
+<li><strong>Gave:</strong> Skattefri, ingen tilbakebetaling, teller fullt som egenkapital.</li>
+<li><strong>Lån fra foreldre:</strong> Må føres opp som gjeld, og banken regner det ofte med i din samlede gjeldsbelastning når de vurderer hvor mye du kan låne.</li>
+</ul>
+<p><strong>Regneeksempel – gave kontra lån:</strong>
+Markus får 300 000 kroner av foreldrene.</p>
+<ul>
+<li><strong>Som gave:</strong> Skattefritt, ingen gjeld, hele beløpet er egenkapital.</li>
+<li><strong>Som rentefritt lån:</strong> Markus får 300 000 kroner i gjeld i skattemeldingen, og banken kan regne dette inn når de vurderer hvor mye han tåler å låne.</li>
+</ul>
+<p>Hvis det skal være en gave, sørg for at gavebrevet sier det klart.</p>
+<h3>Hva med forskudd på arv?</h3>
+<p>Foreldre som hjelper ett barn økonomisk, ønsker ofte at det skal "telle" når arven en gang skal fordeles. Da kan gaven kalles <strong>forskudd på arv</strong>. Dette endrer ikke skatten (fortsatt skattefritt), men det gjør arveoppgjøret rettferdig. Det bør stå i gavebrevet og helst i et testament hvis det er flere søsken. Husk at hvis foreldrene har flere barn, har de en plikt til å behandle barna likt på visse områder etter arveloven, så åpenhet om hva hver enkelt har fått, er lurt.</p>
+<h3>Hva om gaven kommer fra utlandet?</h3>
+<p>Bor foreldrene dine i utlandet, eller overfører de penger fra en utenlandsk konto, er gaven fortsatt skattefri for deg i Norge. Men store overføringer fra utlandet kan utløse spørsmål fra banken på grunn av hvitvaskingsreglene. Da er et gavebrev og dokumentasjon på hvor pengene kommer fra ekstra nyttig. Selve skattefriheten er den samme.</p>
+<h3>Indirekte ting å huske på</h3>
+<ul>
+<li><strong>Formue:</strong> Pengene blir en del av din formue når du mottar dem. Står de på konto over nyttår, telles de med i formuesskatten hvis du er over fribeløpet.</li>
+<li><strong>Renter:</strong> Renteinntekter på pengene beskattes hos deg fra du overtar.</li>
+<li><strong>Studielån/stipend:</strong> Store gaver påvirker normalt ikke studiestøtten fra Lånekassen, men sjekk reglene hvis du er usikker.</li>
+</ul>
+<h3>Et lite blikk på det følelsesmessige</h3>
+<p>Til slutt et menneskelig poeng: penger mellom foreldre og barn handler om mer enn skatt. Mange synes det er ubehagelig å snakke om beløp og rettferdighet. Et tydelig gavebrev gjør faktisk samtalen enklere, fordi alt står svart på hvitt – hvem som har fått hva, og om det er forskudd på arv. Det reduserer risikoen for misforståelser og vonde følelser i familien senere. Så selv om papirarbeidet kan virke unødvendig når alle er enige i dag, er det en omtanke for fremtiden. Skattereglene er trygge og enkle her; det er åpenheten i familien som er den virkelige verdien.</p>
+<h3>Påvirker en stor gave studiestøtten min?</h3>
+<p>En vanlig bekymring blant studenter: "Hvis foreldrene gir meg en stor sum, mister jeg da stipendet?" For Lånekassen er det i hovedsak din egen <em>inntekt</em> og <em>formue</em> som vurderes, ikke hvor pengene kom fra. En gave er ikke skattepliktig inntekt, så den teller normalt ikke som inntekt i Lånekassens behovsprøving. Men hvis pengene gjør at din <em>formue</em> blir høy, kan det i noen tilfeller påvirke hvor mye av lånet som blir omgjort til stipend. Reglene er detaljerte og endres, så er du student og får en stor gave, er det lurt å sjekke Lånekassens gjeldende regler direkte.</p>
+<h3>Hva med gave til kjøp av bolig sammen?</h3>
+<p>Stadig flere foreldre hjelper barnet med egenkapital når barnet kjøper bolig sammen med en kjæreste eller venn. Da er det ekstra viktig å dokumentere at gaven går til <em>ditt</em> barn og ikke til medkjøperen, og å avklare hvordan eierandelene i boligen skal fordeles. Et gavebrev som tydelig sier hvem som er mottaker, og en samboeravtale eller eieravtale som regulerer eierbrøken, kan spare familien for store konflikter hvis forholdet senere skulle ta slutt. Skattemessig er gaven uansett fri, men det praktiske rundt eierskap er verdt å rydde i på forhånd.</p>
+<h3>Sjekkliste</h3>
+<ol>
+<li><strong>Avklar at det er en gave</strong>, ikke et lån.</li>
+<li><strong>Få et gavebrev</strong> med signaturer.</li>
+<li><strong>Be om bankoverføring</strong>, ikke kontanter.</li>
+<li><strong>Noter om det er forskudd på arv</strong> hvis det er flere søsken.</li>
+<li><strong>Husk å ta med pengene som formue</strong> i skattemeldingen.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Nei, du skal ikke skatte av en pengegave fra foreldrene dine – den er helt skattefri uansett størrelse, fordi gaveavgiften er borte fra 2014. Pengegaver er trygge fordi det ikke følger noen skjult gevinst med, slik det gjør ved aksjer og eiendom. Skaff et gavebrev og be om bankoverføring, særlig ved boligkjøp og ved overføringer fra utlandet. Avklar om det er gave eller lån, og om det er forskudd på arv. Pengene blir formue hos deg. Beløpsgrenser for formuesskatt endres årlig – sjekk skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

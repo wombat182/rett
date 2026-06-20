@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg bli ansvarlig for selskapets gjeld? — Rettsregel</title>
+<meta name="description" content="Dette er kanskje det viktigste spørsmålet en grunder kan stille, og svaret er beroligende: som hovedregel er du IKKE personlig ansvarlig for selskapets…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-bli-ansvarlig-for-selskapets-gjeld/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg bli ansvarlig for selskapets gjeld?">
+<meta property="og:description" content="Dette er kanskje det viktigste spørsmålet en grunder kan stille, og svaret er beroligende: som hovedregel er du IKKE personlig ansvarlig for selskapets…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-bli-ansvarlig-for-selskapets-gjeld/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg bli ansvarlig for selskapets gjeld?">
+<meta name="twitter:description" content="Dette er kanskje det viktigste spørsmålet en grunder kan stille, og svaret er beroligende: som hovedregel er du IKKE personlig ansvarlig for selskapets…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Kan jeg bli ansvarlig for selskapets gjeld?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Dette er kanskje det viktigste spørsmålet en grunder kan stille, og svaret er beroligende: som hovedregel er du IKKE personlig ansvarlig for selskapets gjeld. Det er hele grunnen til at folk velger aksjeselskap. Men det finnes noen viktige unntak du må kjenne til, så du ikke uforvarende river ned den beskyttelsen AS-formen gir.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Dette er kanskje det viktigste spørsmålet en grunder kan stille, og svaret er beroligende: som hovedregel er du IKKE personlig ansvarlig for selskapets gjeld. Det er hele grunnen til at folk velger aksjeselskap. Men det finnes noen viktige unntak du må kjenne til, så du ikke uforvarende river ned den beskyttelsen AS-formen gir.</p>
+<h3>Hovedregelen: begrenset ansvar</h3>
+<p>Aksjeloven slår fast at aksjonærene ikke hefter overfor kreditorene for selskapets forpliktelser (§ 1-2). Det betyr: hvis «Stødig Snekker AS» går konkurs med 1,5 millioner i gjeld, kan ikke kreditorene kreve deg personlig for pengene. Du taper det du har skutt inn i selskapet – aksjekapitalen – men ikke mer. Huset, bilen og sparepengene dine er i utgangspunktet trygge.</p>
+<p>Dette er en bevisst og verdifull ordning. Den gjør at folk tør å starte bedrifter og ta risiko, fordi de vet at et mislykket forsøk ikke trenger å ruinere dem privat.</p>
+<h3>Men: fire måter ansvaret likevel kan treffe deg</h3>
+<p>Selv om hovedregelen er solid, er det fire situasjoner der du kan ende opp med personlig ansvar – og de forveksles ofte med «ansvar for selskapets gjeld». La oss ta dem en for en.</p>
+<p><strong>1. Erstatningsansvar som styremedlem.</strong> Dette er det viktigste. Du hefter ikke for gjelden <em>som sådan</em>, men hvis du som styremedlem har opptrådt uaktsomt og påført en kreditor et tap (§ 17-1), kan du bli erstatningsansvarlig for nettopp det tapet. Resultatet kan føles som om du betaler «selskapets gjeld», men juridisk er det din egen erstatningsplikt for en feil du gjorde.</p>
+<p><strong>2. Personlig kausjon (garanti).</strong> Svært mange grundere skriver under på personlig garanti når selskapet tar opp banklån. Banken vet at AS-et er nytt og uten sikkerhet, og krever derfor at <em>du</em> personlig garanterer for lånet. Da har du selv frivillig påtatt deg ansvaret, og kausjonen står seg selv om selskapet går konkurs. Dette er den absolutt vanligste grunnen til at grundere ender opp med personlig gjeld – og den er lett å overse i gleden over å få lånet.</p>
+<p><strong>3. Skatt og merverdiavgift.</strong> Som forklart i artikkel 88 kan du som styreleder eller daglig leder bli personlig ansvarlig for ubetalt forskuddstrekk og mva etter skattebetalingsloven. Dette er statens penger, og ansvaret kan følge personen.</p>
+<p><strong>4. Ansvarsgjennombrudd.</strong> En sjelden, ulovfestet «nødutgang» der en aksjonær unntaksvis kan hefte for selskapets gjeld. Den brukes nesten aldri (se artikkel 90).</p>
+<h3>Et eksempel som illustrerer forskjellen</h3>
+<p>Tenk deg Vegard, som eier og leder «Bygg &amp; Bo AS». Selskapet går konkurs med disse postene:</p>
+<ul>
+<li><strong>800 000 i leverandørgjeld:</strong> Vegard hefter ikke for dette (§ 1-2). Leverandørene taper, med mindre han opptrådte uaktsomt overfor dem.</li>
+<li><strong>500 000 i banklån som Vegard kausjonerte for:</strong> Dette MÅ Vegard betale personlig. Han garanterte selv.</li>
+<li><strong>150 000 i ubetalt mva:</strong> Skatteetaten kan kreve Vegard personlig hvis han bevisst lot være å betale.</li>
+<li><strong>300 000 i tap hos en leverandør han villedet til å levere:</strong> Her kan han bli erstatningsansvarlig (§ 17-1).</li>
+</ul>
+<p>Legg merke til mønsteret: den «rene» selskapsgjelden slipper han unna, men kausjon, skatt og egne feil treffer ham personlig.</p>
+<h3>Den vanligste fellen: kausjonen</h3>
+<p>Hvis du skal huske én ting fra denne artikkelen, la det være dette: les nøye hva du signerer når selskapet låner penger. En personlig kausjon kan se ut som en formalitet, men den gjør deg privat ansvarlig for hele lånet. Vurder alltid:</p>
+<ul>
+<li>Hvor stort er beløpet jeg garanterer for?</li>
+<li>Har jeg råd til å betale dette hvis selskapet ikke kan?</li>
+<li>Kan jeg forhandle om en lavere eller tidsbegrenset garanti?</li>
+</ul>
+<h3>Slik beskytter du den begrensede ansvarsbeskyttelsen din</h3>
+<ol>
+<li><strong>Hold orden på selskap og privatøkonomi.</strong> Ikke bland kontoer, ikke betal private utgifter fra selskapet.</li>
+<li><strong>Vær forsiktig med personlige garantier.</strong> Forstå dem fullt ut før du signerer.</li>
+<li><strong>Betal skatt og mva først.</strong> Ikke la statens penger gå til drift.</li>
+<li><strong>Driv forsvarlig.</strong> Unngå å pådra kreditorer tap når selskapet vakler.</li>
+<li><strong>Hold egenkapitalen sunn.</strong> Følg handleplikten (§ 3-5) hvis den svikter.</li>
+</ol>
+<h3>Et nyttig knep: forhandle om kausjonen</h3>
+<p>Mange grundere tror at en personlig garanti fra banken er «take it or leave it». Det stemmer ofte ikke. Banken vil ha sikkerhet, men du kan forsøke å forhandle:</p>
+<ul>
+<li><strong>Be om at garantien trappes ned</strong> etter hvert som lånet nedbetales eller selskapet vokser seg solid.</li>
+<li><strong>Be om en beløpsgrense</strong>, slik at du ikke garanterer for hele lånet, men for eksempel halvparten.</li>
+<li><strong>Be om at garantien faller bort</strong> når selskapet har bygd opp egenkapital eller stilt annen sikkerhet.</li>
+</ul>
+<p>Tenk på Nora, som skulle ta opp 800 000 i lån til sin kafé. Banken ville først ha full personlig garanti. Hun forhandlet det ned til 400 000 og avtalte at garantien skulle reduseres i takt med nedbetalingen. To år senere, da kaféen måtte stenge, var hennes personlige ansvar langt mindre enn det opprinnelig kunne blitt. Det lønner seg å spørre.</p>
+<h3>Et eksempel på hvordan beskyttelsen kan rakne av seg selv</h3>
+<p>Det triste er at noen grundere river ned sin egen beskyttelse uten å skjønne det. Tenk på Thomas, som driver «Thomas Transport AS». Han betaler privatbilens forsikring fra selskapskontoen, tar ut «litt ekstra» til private kjøp uten å bokføre det som lønn eller utbytte, og bruker selskapets kredittkort til familiens ferie. Alt sammen virker harmløst i farten. Men når selskapet får økonomiske problemer, har han skapt et farlig bilde: økonomien hans og selskapets er blandet sammen. Det øker risikoen både for at uttakene anses som ulovlige utdelinger han må betale tilbake, og – i ekstreme tilfeller – for argumenter om at selskapet ikke er reelt selvstendig. Selve den ryddigheten som beskytter deg, undergraves av slik sammenblanding. Hold derfor en knivskarp grense mellom «mitt» og «selskapets».</p>
+<h3>Hva med lønn du har til gode?</h3>
+<p>Et spørsmål mange grundere stiller: hvis selskapet skylder <em>meg</em> lønn når det går konkurs, hva da? Da er du selv en kreditor i boet på lik linje med andre, og lønnskrav har en viss prioritet. Men vær oppmerksom: som eier og styremedlem kan du ikke favorisere deg selv ved å tømme kassen for «egen lønn» rett før konkursen – slikt kan bli omstøtt og bidra til ansvar. Ryddighet beskytter deg også her.</p>
+<h3>Kort oppsummert</h3>
+<p>Hovedregelen er klar og betryggende: du er ikke personlig ansvarlig for selskapets gjeld (§ 1-2). AS-formen beskytter privatøkonomien din. Men fire ting kan likevel ramme deg personlig: erstatningsansvar for egne feil i styret (§ 17-1), personlige kausjoner du selv har signert (den vanligste fellen), ansvar for ubetalt skatt og mva, og det sjeldne ansvarsgjennombruddet. Vær spesielt på vakt mot kausjoner, hold orden mellom selskap og privatøkonomi, og driv forsvarlig – så holder beskyttelsen.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

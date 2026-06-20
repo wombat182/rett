@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på fast og midlertidig ansettelse? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Fast ansettelse er en jobb uten sluttdato og med sterkt stillingsvern, mens midlertidig ansettelse gjelder for en avgrenset periode og krever…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-fast-og-midlertidig-ansettelse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på fast og midlertidig ansettelse?">
+<meta property="og:description" content="Kort sagt: Fast ansettelse er en jobb uten sluttdato og med sterkt stillingsvern, mens midlertidig ansettelse gjelder for en avgrenset periode og krever…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-fast-og-midlertidig-ansettelse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på fast og midlertidig ansettelse?">
+<meta name="twitter:description" content="Kort sagt: Fast ansettelse er en jobb uten sluttdato og med sterkt stillingsvern, mens midlertidig ansettelse gjelder for en avgrenset periode og krever…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er forskjellen på fast og midlertidig ansettelse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Fast ansettelse er en jobb uten sluttdato og med sterkt stillingsvern, mens midlertidig ansettelse gjelder for en avgrenset periode og krever et særskilt lovlig grunnlag. Fast ansettelse er hovedregelen i norsk arbeidsliv.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven §§ 14-9, 14-5, 14-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/14-9/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-9</div>
+  <div class="related-card-title">Retten til fast ansettelse (og strenge regler for vikarer)</div>
+</a><a href="../../lover/arbeidsmiljoloven/14-5/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-5</div>
+  <div class="related-card-title">Du skal ha skriftlig arbeidsavtale</div>
+</a><a href="../../lover/arbeidsmiljoloven/14-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-6</div>
+  <div class="related-card-title">Dette skal stå i arbeidsavtalen</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Kort sagt: Fast ansettelse er en jobb uten sluttdato og med sterkt stillingsvern, mens midlertidig ansettelse gjelder for en avgrenset periode og krever et særskilt lovlig grunnlag. Fast ansettelse er hovedregelen i norsk arbeidsliv.</p>
+<h3>De to grunntypene forklart</h3>
+<p><strong>Fast ansettelse</strong> betyr at du er ansatt løpende og på ubestemt tid. Det er ingen avtalt sluttdato. Jobben varer til den blir sagt opp – enten av deg, eller av arbeidsgiver med saklig grunn og oppsigelsestid. Loven definerer fast ansettelse som løpende og tidsubegrenset, der reglene om opphør gjelder, og der du som arbeidstaker sikres forutsigbarhet for arbeid (arbeidsmiljøloven § 14-9 første ledd).</p>
+<p><strong>Midlertidig ansettelse</strong> betyr at du er ansatt for en bestemt periode eller et bestemt oppdrag. Forholdet avsluttes automatisk når perioden er over eller oppdraget er ferdig – uten at arbeidsgiver trenger å si deg opp. Men, som vi har sett, er midlertidig ansettelse bare lov når det finnes et særskilt grunnlag (§ 14-9 andre ledd), som vikariat eller midlertidig arbeid.</p>
+<h3>Tenk på det slik</h3>
+<ul>
+<li><strong>Fast ansatt Maria</strong> vet at hun har jobb «til videre». Skal hun sies opp, må arbeidsgiver ha en saklig grunn og gi henne oppsigelsestid. Hun har trygghet og forutsigbarhet.</li>
+<li><strong>Midlertidig ansatte Kasper</strong> har en kontrakt frem til 31. august. Når den datoen kommer, slutter forholdet av seg selv – med mindre han får en ny avtale.</li>
+</ul>
+<h3>De viktigste praktiske forskjellene</h3>
+<p><strong>1. Slutten på forholdet.</strong> Fast: krever oppsigelse med saklig grunn. Midlertidig: avsluttes når perioden/oppdraget er over, uten oppsigelse.</p>
+<p><strong>2. Forutsigbarhet.</strong> Fast ansettelse gir stabil inntekt og trygghet over tid. Midlertidig ansettelse gir mindre forutsigbarhet, fordi du vet at det tar slutt.</p>
+<p><strong>3. Krav om grunnlag.</strong> Fast ansettelse trenger ingen særskilt begrunnelse – det er hovedregelen. Midlertidig ansettelse krever et lovlig grunnlag.</p>
+<p><strong>4. Stillingsvern over tid.</strong> Begge har stillingsvern, men midlertidig ansatte kan i tillegg opparbeide seg rett til fast jobb hvis de jobber sammenhengende lenge nok (treårsregelen).</p>
+<p><strong>5. Hvordan jobben kalles, er ikke avgjørende.</strong> Det er det reelle innholdet som teller. En kontrakt som heter «midlertidig», men som i virkeligheten dekker et fast behov, kan i praksis være et fast arbeidsforhold. Motsatt blir ikke en jobb «fast» bare fordi den varer lenge, hvis grunnlaget hele tiden har vært ekte midlertidig. Det er den faktiske situasjonen, ikke etiketten, som domstolene ser på.</p>
+<h3>Hva de har til felles</h3>
+<p>Det er viktig å vite at midlertidig ansatte IKKE er «andrerangs» arbeidstakere. Mens forholdet varer, har du i all hovedsak de samme rettighetene som fast ansatte:</p>
+<ul>
+<li>Rett til lønn etter avtale.</li>
+<li>Rett til skriftlig arbeidsavtale (§ 14-5).</li>
+<li>Rett til ferie og feriepenger.</li>
+<li>Vern mot usaklig oppsigelse i avtaleperioden – skal du sies opp FØR perioden er over, gjelder de vanlige oppsigelsesreglene.</li>
+<li>Et godt og forsvarlig arbeidsmiljø.</li>
+</ul>
+<h3>Eksempel som viser forskjellen i praksis</h3>
+<p><strong>Lars</strong> og <strong>Emma</strong> jobber side om side i samme butikk. Lars er fast ansatt, Emma er ansatt i et seks måneders vikariat. De har samme lønn, samme arbeidsoppgaver og samme arbeidsmiljørettigheter. Forskjellen er at Emmas avtale tar slutt etter seks måneder, mens Lars fortsetter. Hvis butikken vil avslutte Emmas forhold før de seks månedene er gått, må de følge vanlige oppsigelsesregler – akkurat som for Lars.</p>
+<h3>Et viktig poeng om oppsigelse i et midlertidig forhold</h3>
+<p>En vanlig misforståelse er at en midlertidig ansatt «kan sies opp når som helst». Det er feil. Et midlertidig arbeidsforhold avsluttes riktignok automatisk når perioden er over, uten oppsigelse. Men dersom arbeidsgiver vil avslutte forholdet FØR den avtalte sluttdatoen, gjelder de helt vanlige reglene om oppsigelse – med krav om saklig grunn og oppsigelsestid. Du er altså ikke «fritt vilt» i avtaleperioden. Dette gir deg en trygghet mange ikke er klar over.</p>
+<h3>Hvorfor er fast ansettelse hovedregelen?</h3>
+<p>Det er ikke tilfeldig at loven gjør fast ansettelse til utgangspunktet. Forutsigbarhet i jobben henger tett sammen med trygghet i livet ellers: muligheten til å få boliglån, planlegge familieliv, ta ferie og tørre å si fra på jobben uten å frykte at kontrakten ikke fornyes. Fast ansettelse gir et sterkere stillingsvern fordi arbeidstakeren ofte er den svakere parten i forholdet. Midlertidige ordninger har sin berettigede plass når behovet faktisk er forbigående, men de skal ikke bli en hovedform. Nettopp derfor strammet lovgiver inn reglene i 2022 og 2024 – for å vri arbeidslivet tilbake mot tryggere, faste ansettelser.</p>
+<h3>Hvilken type har du? Slik finner du ut av det</h3>
+<ol>
+<li><strong>Les arbeidsavtalen.</strong> Står det en sluttdato eller «til X kommer tilbake»? Da er den midlertidig. Står det ingen sluttdato? Da er den fast.</li>
+<li><strong>Sjekk om midlertidighet er opplyst.</strong> Hvis avtalen ikke sier at forholdet er midlertidig, skal du som hovedregel regnes som fast ansatt (§ 14-6 tredje ledd).</li>
+<li><strong>Vurder grunnlaget.</strong> Er du midlertidig, finnes det en lovlig grunn?</li>
+<li><strong>Tell årene.</strong> Har du vært midlertidig ansatt sammenhengende lenge? Da nærmer du deg kanskje rett til fast jobb.</li>
+</ol>
+<h3>Hva med fortrinnsrett?</h3>
+<p>En forskjell til som er verdt å nevne, gjelder fortrinnsrett til ny stilling. En arbeidstaker som blir sagt opp på grunn av nedbemanning, kan ha fortrinnsrett – det vil si rett til å bli ansatt først hvis arbeidsgiver senere trenger mer arbeidskraft. Denne fortrinnsretten gjelder imidlertid ikke for arbeidstakere i vikariat. Er du fast ansatt og må gå på grunn av nedbemanning, kan du altså stå sterkere i køen til en ny stilling enn en vikar gjør. Dette er en av de mer tekniske forskjellene, men den kan ha stor betydning i praksis.</p>
+<h3>En oppmuntring</h3>
+<p>Det er lett å føle seg mindre verdt som midlertidig ansatt, men husk: Loven verner deg, du har rettigheter mens jobben varer, og veien til fast ansettelse er ofte kortere enn du tror. Mange midlertidige forhold ender opp som faste – enten frivillig eller fordi loven gir deg rett til det. Det viktigste du kan gjøre, er å kjenne hvilken type ansettelse du faktisk har, og hva slags rettigheter som følger med.</p>
+<h3>Kort oppsummert</h3>
+<p>Fast ansettelse er løpende og uten sluttdato, med sterkt stillingsvern, og er hovedregelen. Midlertidig ansettelse gjelder for en avgrenset periode, krever et lovlig grunnlag, og avsluttes når perioden er over. Mens forholdet varer, har midlertidig ansatte stort sett samme rettigheter som faste – og kan opparbeide seg rett til fast jobb over tid.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-signere-sluttavtalen-med-en-gang/">Bør jeg signere sluttavtalen med en gang?</a><a class="sp-relchip" href="../../sporsmal/er-en-muntlig-arbeidsavtale-gyldig/">Er en muntlig arbeidsavtale gyldig?</a><a class="sp-relchip" href="../../sporsmal/gjelder-provetid-ved-midlertidig-ansettelse/">Gjelder prøvetid ved midlertidig ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

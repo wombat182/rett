@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på permittering og oppsigelse? — Rettsregel</title>
+<meta name="description" content="Forskjellen er enkel, men avgjørende: permittering er midlertidig – du beholder jobben, mens oppsigelse er varig – arbeidsforholdet opphører. Ved…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-permittering-og-oppsigelse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på permittering og oppsigelse?">
+<meta property="og:description" content="Forskjellen er enkel, men avgjørende: permittering er midlertidig – du beholder jobben, mens oppsigelse er varig – arbeidsforholdet opphører. Ved…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-permittering-og-oppsigelse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på permittering og oppsigelse?">
+<meta name="twitter:description" content="Forskjellen er enkel, men avgjørende: permittering er midlertidig – du beholder jobben, mens oppsigelse er varig – arbeidsforholdet opphører. Ved…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er forskjellen på permittering og oppsigelse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Forskjellen er enkel, men avgjørende: **permittering er midlertidig – du beholder jobben**, mens **oppsigelse er varig – arbeidsforholdet opphører**. Ved permittering tar du en pause og skal etter planen tilbake. Ved oppsigelse slutter du for godt etter at oppsigelsestiden er ute.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Permittering er ikke regulert i arbeidsmiljøloven (den bygger på tariffavtale, ulovfestet rett og permitteringslønnsloven), mens oppsigelse er grundig regulert i arbeidsmiljøloven.</p>
+<h3>Hovedforskjellen: pause eller punktum</h3>
+<p>Tenk på det slik:</p>
+<ul>
+<li><strong>Permittering = pause.</strong> Du er fortsatt ansatt. Jobben venter på deg. Når bedriften har arbeid igjen, kommer du tilbake.</li>
+<li><strong>Oppsigelse = punktum.</strong> Ansettelsesforholdet avsluttes. Etter oppsigelsestiden er du ikke lenger ansatt der.</li>
+</ul>
+<p>Eksempel: Da byggefirmaet til Knut fikk en stille periode, ble snekkerne permittert i to måneder og kom så tilbake da nytt oppdrag startet. Hadde firmaet i stedet ment at arbeidet var borte for godt, måtte de ha sagt opp folk – og da hadde snekkerne mistet jobben helt.</p>
+<h3>Når brukes hva?</h3>
+<ul>
+<li><strong>Permittering</strong> brukes ved <strong>midlertidig</strong> mangel på arbeid eller oppdrag. Bedriften tror behovet kommer tilbake.</li>
+<li><strong>Oppsigelse</strong> brukes ved <strong>varig</strong> bortfall av arbeid, eller andre saklige grunner. Bedriften ser ikke for seg at akkurat denne jobben kommer tilbake.</li>
+</ul>
+<p>Det er ikke lov å «kamuflere» en nedbemanning som permittering for å slippe oppsigelsesreglene. Er problemet egentlig varig, skal det nedbemannes.</p>
+<h3>Sammenligning på viktige punkter</h3>
+<p><strong>Ansettelsesforholdet:</strong>
+- Permittering: består – du er fortsatt ansatt.
+- Oppsigelse: opphører etter oppsigelsestiden.</p>
+<p><strong>Lønn:</strong>
+- Permittering: lønn i en kort arbeidsgiverperiode (hovedregel 15 arbeidsdager), deretter dagpenger fra NAV.
+- Oppsigelse: full lønn ut hele oppsigelsestiden.</p>
+<p><strong>Varighet:</strong>
+- Permittering: midlertidig, normalt inntil 26 uker uten lønn innenfor 18 måneder.
+- Oppsigelse: varig – arbeidsforholdet tar slutt.</p>
+<p><strong>Komme tilbake:</strong>
+- Permittering: du skal tilbake når arbeidsgiver kaller.
+- Oppsigelse: du har ikke krav på å komme tilbake, men kan ha fortrinnsrett i ett år (se artikkel 101).</p>
+<p><strong>Regelverk:</strong>
+- Permittering: tariffavtale, ulovfestet rett, permitteringslønnsloven.
+- Oppsigelse: arbeidsmiljøloven kapittel 15.</p>
+<h3>Et eksempel som viser forskjellen</h3>
+<p>Tenk deg to kollegaer, Eva og Frank, i samme fabrikk:</p>
+<ul>
+<li><strong>Eva blir permittert</strong> fordi fabrikken venter på råvarer som forventes å komme om noen uker. Eva beholder jobben, får lønn i arbeidsgiverperioden, deretter dagpenger, og kalles tilbake når råvarene kommer.</li>
+<li><strong>Frank blir sagt opp</strong> fordi hans avdeling legges ned permanent. Frank får full lønn ut oppsigelsestiden, men deretter er han ikke lenger ansatt. Han får derimot fortrinnsrett til en eventuell ny passende stilling i ett år.</li>
+</ul>
+<p>Samme bedrift, men to helt ulike situasjoner – fordi den ene er midlertidig og den andre varig.</p>
+<h3>Oppsigelsesfrister er ulike</h3>
+<p>Et viktig praktisk poeng: en <strong>permittert</strong> ansatt kan si opp selv med en kort frist på bare <strong>14 dager</strong>, uavhengig av hva som ellers står i avtalen. Det gjør det lettere å takke ja til en ny jobb mens man er permittert. Ved en vanlig oppsigelse gjelder de ordinære oppsigelsesfristene, som ofte er lengre (for eksempel én til tre måneder).</p>
+<h3>Beskyttelsen er forskjellig</h3>
+<p>Det er også verdt å merke seg at lovens beskyttelse slår inn på ulike måter:</p>
+<ul>
+<li><strong>Oppsigelse</strong> er strengt regulert i arbeidsmiljøloven. Den må være saklig, du har rett til drøftingsmøte, skriftlig oppsigelse med formkrav, og du kan bestride den og kreve å stå i stillingen mens saken behandles.</li>
+<li><strong>Permittering</strong> har ikke de samme lovfestede formkravene, fordi den bygger på avtaleverk og ulovfestet rett. Men også her gjelder krav om saklig grunn og varsel.</li>
+</ul>
+<p>Dette betyr ikke at permittering er «lovløst» – men spillereglene kommer fra et annet sted enn ved oppsigelse.</p>
+<h3>Et bilde som hjelper</h3>
+<p>Tenk på arbeidsforholdet som et abonnement: <strong>permittering</strong> er som å sette abonnementet på pause – det ligger der og venter, klart til å startes igjen. <strong>Oppsigelse</strong> er som å si opp abonnementet helt – da må du tegne et nytt et annet sted hvis du vil ha tjenesten igjen. Pause og oppsigelse er to helt forskjellige handlinger, selv om begge betyr at du ikke bruker tjenesten akkurat nå.</p>
+<h3>Hva betyr forskjellen for deg?</h3>
+<ul>
+<li><strong>Ved permittering:</strong> Du har fortsatt en arbeidsplass å vende tilbake til. Hold kontakten med arbeidsgiver, og hold dagpengene i orden.</li>
+<li><strong>Ved oppsigelse:</strong> Du må regne med å finne ny jobb, men husk fortrinnsretten i ett år hvis oppsigelsen skyldtes bedriftens forhold.</li>
+<li><strong>Sjekk hva som faktisk har skjedd.</strong> Få det skriftlig om du er permittert eller oppsagt – det avgjør hvilke rettigheter du har.</li>
+</ul>
+<h3>Hva om du er i tvil?</h3>
+<p>Hvis det er uklart om du er permittert eller oppsagt – eller du mistenker at en oppsigelse er pakket inn som permittering – be om en skriftlig avklaring. Ta det opp med tillitsvalgt, fagforening eller Arbeidstilsynet. Hvilken «boks» du havner i, har stor betydning for økonomien og rettighetene dine.</p>
+<h3>Kan en permittering gå over i en oppsigelse?</h3>
+<p>Ja, og det er ganske vanlig. En bedrift starter ofte med permittering fordi de håper situasjonen er forbigående. Viser det seg at arbeidet ikke kommer tilbake, kan permitteringen ende i en oppsigelse. Da går du over fra permitteringens regler til oppsigelsens regler – med drøftingsmøte, oppsigelsesfrist og lønn i oppsigelsestiden (mer om dette i artikkel 110).</p>
+<p>Eksempel: Anita blir permittert da bedriften mister et oppdrag. Etter fire måneder uten at noe nytt dukker opp, bestemmer ledelsen at avdelingen må legges ned for godt. Permitteringen hennes går da over i en ordinær oppsigelse, og hun får de rettighetene en oppsigelse gir.</p>
+<h3>Hvilket utfall er best for deg?</h3>
+<p>Det avhenger av situasjonen:</p>
+<ul>
+<li>Tror du jobben kommer tilbake, er <strong>permittering</strong> ofte en fordel – du beholder arbeidsplassen og slipper å starte helt på nytt.</li>
+<li>Er det klart at arbeidet er borte for godt, kan en ryddig <strong>oppsigelse</strong> gi deg full lønn i oppsigelsestiden og fortrinnsrett i ett år – noe du ikke får ved å bli gående permittert i det uendelige.</li>
+</ul>
+<p>Uansett: kjenn forskjellen, så vet du hvilke rettigheter du skal be om.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li><strong>Permittering er midlertidig</strong> – du beholder jobben og skal tilbake.</li>
+<li><strong>Oppsigelse er varig</strong> – arbeidsforholdet opphører etter oppsigelsestiden.</li>
+<li>Permittering brukes ved midlertidig arbeidsmangel; oppsigelse ved varig bortfall.</li>
+<li>Permittert ansatt kan selv si opp med kort frist på <strong>14 dager</strong>; oppsigelse følger arbeidsmiljølovens regler.</li>
+<li>Er du i tvil om hva som gjelder? Be om skriftlig avklaring og søk hjelp.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-en-oppsigelse-uten-formkrav-ugyldig/">Er en oppsigelse uten formkrav ugyldig?</a><a class="sp-relchip" href="../../sporsmal/har-ansiennitet-betydning-for-oppsigelsestiden/">Har ansiennitet betydning for oppsigelsestiden?</a><a class="sp-relchip" href="../../sporsmal/har-jeg-krav-pa-lonn-i-oppsigelsestiden/">Har jeg krav på lønn i oppsigelsestiden?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

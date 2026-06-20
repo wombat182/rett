@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Er gaver fra arbeidsgiver skattefrie? — Rettsregel</title>
+<meta name="description" content="Ja – innenfor visse beløpsgrenser og på visse vilkår.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/er-gaver-fra-arbeidsgiver-skattefrie/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Er gaver fra arbeidsgiver skattefrie?">
+<meta property="og:description" content="Ja – innenfor visse beløpsgrenser og på visse vilkår.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/er-gaver-fra-arbeidsgiver-skattefrie/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Er gaver fra arbeidsgiver skattefrie?">
+<meta name="twitter:description" content="Ja – innenfor visse beløpsgrenser og på visse vilkår.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Er gaver fra arbeidsgiver skattefrie?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja – innenfor visse beløpsgrenser og på visse vilkår. Arbeidsgiveren din kan gi deg gaver skattefritt opp til en årlig grense, men gaven må følge reglene for å holde seg skattefri. Gir arbeidsgiveren mer enn grensen, eller gir kontanter, blir det skattepliktig. Her er det du trenger å vite.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja – innenfor visse beløpsgrenser og på visse vilkår. Arbeidsgiveren din kan gi deg gaver skattefritt opp til en årlig grense, men gaven må følge reglene for å holde seg skattefri. Gir arbeidsgiveren mer enn grensen, eller gir kontanter, blir det skattepliktig. Her er det du trenger å vite.</p>
+<h3>Hovedregelen: gaver er som utgangspunkt lønn</h3>
+<p>Alt du får fra arbeidsgiveren din, er i utgangspunktet en fordel vunnet ved arbeid – altså skattepliktig. Men det finnes et viktig unntak for gaver: en <em>gaveordning</em> i bedriften kan gis skattefritt opp til en beløpsgrense. Dette er en bevisst ordning fra myndighetenes side for at arbeidsgivere skal kunne vise ansatte oppmerksomhet uten at det utløser skatt.</p>
+<h3>Beløpsgrensen for skattefrie gaver</h3>
+<p>For inntektsårene fra og med 2021 er den generelle grensen <strong>5 000 kroner per ansatt per år</strong> (kilde: skatteetaten.no, Skatte-ABC om gaver i arbeidsforhold). Innenfor denne grensen kan du motta gaver skattefritt, og det kreves ikke lenger at gaven gis ved en helt spesiell anledning – den kan gis ved ulike anledninger gjennom året.</p>
+<p>Viktige vilkår for at gaven skal være skattefri:</p>
+<ul>
+<li><strong>Gaven må ikke være kontanter.</strong> Den må gis som en naturalytelse, for eksempel en ting, et opplevelseskort eller et gavekort som ikke kan løses inn i kontanter.</li>
+<li><strong>Det bør gjelde en ordning</strong> i bedriften, ikke en skjult ekstralønn rettet mot én enkelt person.</li>
+<li><strong>Arbeidsgiver må håndtere det riktig</strong> med tanke på fradragsføring (gjelder først og fremst enkelte gavetyper).</li>
+</ul>
+<p>Beløpsgrensene endres fra tid til annen, så sjekk alltid årets grense på skatteetaten.no.</p>
+<h3>Regneeksempel: Omar får julegave og en jubileumsgave</h3>
+<p>Omars arbeidsgiver gir alle ansatte et gavekort (som ikke kan veksles i kontanter) til jul verdt 2 500 kr, og senere på året en gave verdt 2 000 kr da bedriften feiret 25 år. Til sammen 4 500 kr.</p>
+<p>Dette er under 5 000 kr, så hele beløpet er skattefritt for Omar. Han betaler ingenting i skatt.</p>
+<h3>Regneeksempel: Når grensen sprenges</h3>
+<p>Hadde gavene til sammen vært 6 500 kr i løpet av året, ville de overskytende 1 500 kr (det som overstiger 5 000 kr) vært skattepliktig lønn. Med en marginalskatt på 34 % ville Omar betalt cirka 510 kr i skatt på den delen som oversteg grensen. Merk: Det er bare beløpet <em>over</em> grensen som skattlegges – ikke hele gaven.</p>
+<h3>Hva med kontanter og gavekort som kan veksles i penger?</h3>
+<p>Får du kontanter, er det alltid skattepliktig lønn – uansett beløp. Det samme gjelder gavekort som kan løses inn i kontanter. Skattefriheten gjelder bare ekte naturalgaver. Dette er en vanlig felle: et gavekort som kan tas ut i kontanter, mister skattefriheten.</p>
+<h3>Egne regler for visse anledninger</h3>
+<p>I tillegg til den generelle ordningen finnes egne regler for enkelte markeringer:</p>
+<ul>
+<li><strong>Bedriftsarrangementer og tilstelninger</strong> (som julebord eller jubileumsfest), der ansatte kan motta gaver med en lavere verdi (rundt 1 000 kr) skattefritt innenfor egne regler.</li>
+<li><strong>Premier og oppmerksomhetsgaver</strong> av mindre verdi i visse sammenhenger.</li>
+<li><strong>Gaver fra forretningsforbindelser eller andre tredjeparter</strong> har egne beløpsgrenser.</li>
+</ul>
+<p>Disse detaljene endres over tid, så bruk skatteetaten.no som fasit.</p>
+<h3>Praktiske tips</h3>
+<ul>
+<li><strong>Hold oversikt</strong> over samlet gaveverdi gjennom året, slik at du ikke uforvarende sprenger grensen ved å summere flere gaver.</li>
+<li><strong>Be om naturalgave fremfor kontanter</strong> hvis du vil at gaven skal være skattefri.</li>
+<li><strong>Sjekk skattemeldingen:</strong> Eventuell skattepliktig del skal være innrapportert av arbeidsgiver og forhåndsutfylt.</li>
+<li><strong>Spør arbeidsgiver</strong> hvis du er usikker på om en gave er innrapportert som skattepliktig eller ikke.</li>
+</ul>
+<h3>Vanlige spørsmål om gaver</h3>
+<p><strong>"Gjelder grensen per gave eller per år?"</strong> Den gjelder per ansatt per år, samlet. Du kan altså få flere gaver i løpet av året, men summen av dem må holde seg innenfor grensen for at alt skal være skattefritt.</p>
+<p><strong>"Hva med en blomsterbukett eller en oppmerksomhet når jeg er syk?"</strong> Mindre oppmerksomhetsgaver av typen blomster, en bok eller lignende ved spesielle anledninger (sykdom, dødsfall i familien, og lignende) har egne, lempelige regler og regnes normalt ikke inn i den vanlige gavegrensen. Verdien må være beskjeden. Sjekk gjeldende praksis på skatteetaten.no.</p>
+<p><strong>"Teller en personalfest eller julebord som gave?"</strong> Nei, en rimelig personalfest regnes som et velferdstiltak, ikke som en gave til deg personlig, og har egne regler. Det er gaver du tar med deg hjem som telles mot gavegrensen.</p>
+<p><strong>"Kan arbeidsgiver gi meg en stor gave hvis den er skattefri for bedriften?"</strong> Det er din skatteplikt som avgjør om <em>du</em> må skatte. Overstiger gaven grensen, blir det overskytende skattepliktig lønn for deg, uavhengig av hvordan bedriften fører kostnaden.</p>
+<h3>Et lengre eksempel gjennom et år</h3>
+<p>La oss følge Nora gjennom et helt år:</p>
+<ul>
+<li>I mai får hun en gave verdt 1 000 kr da hun har vært ansatt i 10 år (markering av tjenestetid).</li>
+<li>I september får alle ansatte en opplevelsesgave verdt 1 500 kr.</li>
+<li>Til jul får hun et gavekort (ikke innløsbart i kontanter) verdt 2 000 kr.</li>
+</ul>
+<p>Til sammen: 4 500 kr. Alt er under 5 000-grensen, så <strong>hele beløpet er skattefritt</strong>. Hadde arbeidsgiver i tillegg gitt henne 1 000 kr til i en bursdagsgave, ville samlet verdi blitt 5 500 kr, og de øverste 500 kronene ville vært skattepliktig lønn. Med 34 % marginalskatt betaler Nora da 170 kr i skatt – fortsatt en god deal på en gave verdt mange ganger så mye.</p>
+<h3>Hvorfor finnes denne ordningen?</h3>
+<p>Tanken bak de skattefrie gavene er at arbeidsgivere skal kunne vise ansatte oppmerksomhet og takknemlighet uten at det utløser et byråkratisk skatteoppgjør for hver lille gave. Det er en fordel både for deg og for arbeidsgiveren. Men ordningen forutsetter at man holder seg innenfor reglene – derfor er det greit å kjenne dem.</p>
+<h3>Vanlig feil: å glemme gaver fra tidligere i året</h3>
+<blockquote>
+<p><strong>Vanlig feil:</strong> Den klassiske tabben er å bare se på julegaven og glemme at man fikk en gave i mai og en på sommerfesten. Grensen gjelder <em>samlet</em> per ansatt per år, så alle naturalgavene legges sammen. Får du en fin julegave i desember uten å tenke på at du allerede har mottatt gaver tidligere, kan dere uforvarende sprenge grensen – og da blir det overskytende skattepliktig lønn. Det er arbeidsgiver som har ansvaret for å holde tellingen og innrapportere riktig, men det er greit at du selv også har oversikten.</p>
+</blockquote>
+<h3>Steg for steg: slik holder du kontroll på gavegrensen</h3>
+<ol>
+<li><strong>Noter ned hver gave</strong> du får fra arbeidsgiver gjennom året, med dato og omtrentlig verdi.</li>
+<li><strong>Skill ut det som ikke teller:</strong> personalfest/julebord (velferdstiltak), rimelige blomster ved sykdom eller dødsfall, og lignende mindre oppmerksomheter regnes normalt ikke inn i den vanlige gavegrensen.</li>
+<li><strong>Legg sammen resten</strong> av naturalgavene du tar med deg hjem.</li>
+<li><strong>Sammenlign med årets grense</strong> på skatteetaten.no (2026: 5 000 kr per ansatt per år).</li>
+<li><strong>Sjekk skattemeldingen:</strong> hvis noe overstiger grensen, skal den skattepliktige delen være forhåndsutfylt som lønn. Stemmer ikke beløpet, ta kontakt med arbeidsgiver.</li>
+</ol>
+<h3>Regneeksempel: To ansatte, ulikt resultat</h3>
+<p>La oss sammenligne to kolleger i samme bedrift gjennom året:</p>
+<ul>
+<li><strong>Mariam</strong> får julegave på 2 500 kr og en sommergave på 1 500 kr – til sammen 4 000 kr. Hun ligger under grensen, og alt er skattefritt.</li>
+<li><strong>Joakim</strong> får de samme to gavene (4 000 kr), men i tillegg en ekstra jubileumsgave på 2 000 kr fordi han runder et tjenestejubileum samme år. Hans samlede gaveverdi blir 6 000 kr. De øverste 1 000 kronene (det som overstiger 5 000 kr) er skattepliktig lønn. Med en marginalskatt på 34 % betaler Joakim cirka 340 kr i skatt – men bare på den delen som oversteg grensen, ikke på hele beløpet.</li>
+</ul>
+<p>Eksempelet viser at det ikke er noe "farlig" i å passere grensen – du mister bare skattefriheten på det overskytende, og gaven er som regel fortsatt verdt langt mer enn skatten du betaler.</p>
+<h3>Hva med gaver fra kunder og samarbeidspartnere?</h3>
+<p>Får du en gave fra en forretningsforbindelse – altså en tredjepart, ikke din egen arbeidsgiver – gjelder egne beløpsgrenser og regler. Slike gaver kan også være skattepliktige hvis verdien overstiger en viss grense, fordi de regnes som en fordel knyttet til jobben din. Disse grensene er ofte lavere enn den generelle gavegrensen, og de justeres over tid. Er du i tvil om en gave fra en kunde eller leverandør skal beskattes, sjekk gjeldende regler på skatteetaten.no eller spør arbeidsgiveren din.</p>
+<h3>Kort oppsummert</h3>
+<p>Gaver fra arbeidsgiver kan være skattefrie innenfor en årlig generell grense på 5 000 kr (2026-nivå – sjekk alltid på skatteetaten.no), men bare hvis det er en naturalgave og ikke kontanter. Beløp over grensen, og alle kontantgaver, er skattepliktig lønn. Det er bare det overskytende beløpet som skattlegges. Grensene justeres, så bekreft alltid årets tall på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

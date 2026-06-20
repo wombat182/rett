@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan skatter jeg av overtid? — Rettsregel</title>
+<meta name="description" content="Overtidsbetaling er skattepliktig lønn, akkurat som vanlig timelønn.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-skatter-jeg-av-overtid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan skatter jeg av overtid?">
+<meta property="og:description" content="Overtidsbetaling er skattepliktig lønn, akkurat som vanlig timelønn.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-skatter-jeg-av-overtid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan skatter jeg av overtid?">
+<meta name="twitter:description" content="Overtidsbetaling er skattepliktig lønn, akkurat som vanlig timelønn.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hvordan skatter jeg av overtid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Overtidsbetaling er skattepliktig lønn, akkurat som vanlig timelønn. Selve overtidstillegget – for eksempel 40 %, 50 % eller 100 % ekstra – er også lønn og skattlegges fullt ut. Det finnes ingen egen "overtidsskatt", men svært mange opplever at overtid skattlegges hardt. Her er den trygge forklaringen på hva som faktisk skjer.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Overtidsbetaling er skattepliktig lønn, akkurat som vanlig timelønn. Selve overtidstillegget – for eksempel 40 %, 50 % eller 100 % ekstra – er også lønn og skattlegges fullt ut. Det finnes ingen egen "overtidsskatt", men svært mange opplever at overtid skattlegges hardt. Her er den trygge forklaringen på hva som faktisk skjer.</p>
+<h3>Overtid er personinntekt</h3>
+<p>Når du jobber overtid, får du grunnlønn for timene pluss et overtidstillegg. Begge deler er <em>personinntekt</em>: skattepliktig lønnsinntekt som danner grunnlag for trygdeavgift og trinnskatt. Arbeidsgiveren skal innrapportere alt og trekke skatt som av annen lønn. Overtidspengene teller også normalt med i grunnlaget for feriepenger og pensjon.</p>
+<h3>Den store myten: "Overtid skattes 50 %!"</h3>
+<p>Veldig mange tror at staten tar en spesielt stor bit av nettopp overtiden. Det er feil. To mekanismer skaper denne følelsen:</p>
+<p><strong>1. Marginalskatt.</strong> Overtidspengene legges på toppen av den vanlige lønna di. Dermed treffer de din høyeste skattesats (marginalskatten), ikke gjennomsnittsskatten du betaler på hele inntekten. Norge har progressiv trinnskatt, og for inntektsåret 2026 er trinnene (kilde: skatteetaten.no/satser/trinnskatt):</p>
+<table>
+<thead>
+<tr>
+<th>Inntekt</th>
+<th>Trinnskatt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–226 100 kr</td>
+<td>0 %</td>
+</tr>
+<tr>
+<td>226 101–318 300 kr</td>
+<td>1,7 %</td>
+</tr>
+<tr>
+<td>318 301–725 050 kr</td>
+<td>4,0 %</td>
+</tr>
+<tr>
+<td>725 051–980 100 kr</td>
+<td>13,7 %</td>
+</tr>
+<tr>
+<td>980 101–1 467 200 kr</td>
+<td>16,8 %</td>
+</tr>
+<tr>
+<td>fra 1 467 201 kr</td>
+<td>17,8 %</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2. Skattetrekket den måneden du jobber mye.</strong> Hvis du tar mye overtid i én måned, blir lønnsslippen ekstra stor. Trekktabellen trekker da en høyere prosent, fordi systemet regner som om du tjener slik <em>hver</em> måned. Dette jevner seg ut over året, men kan se voldsomt ut på én enkelt lønnsslipp.</p>
+<h3>Regneeksempel: Jonas tar en travel måned</h3>
+<p>Jonas tjener normalt 45 000 kr brutto i måneden (540 000 kr i året). En måned jobber han mye overtid og får utbetalt 65 000 kr brutto.</p>
+<p>På denne ene lønnsslippen kan trekkprosenten hoppe opp – kanskje fra rundt 30 % til 40 % – fordi tabellen regner som om 65 000 kr er den nye månedslønna. Jonas føler at "halve overtiden gikk til skatt". Men over hele året er hans reelle marginalskatt på overtiden cirka 33–34 % (22 % alminnelig inntekt + 7,7 % trygdeavgift + 4,0 % trinnskatt), siden inntekten hans ligger i trinn 2. Når skatteoppgjøret kommer, blir det rettet opp – har han betalt for mye gjennom året, får han igjen på skatten.</p>
+<h3>Regneeksempel: Overtid som dytter deg opp et trinn</h3>
+<p>Mona tjener 710 000 kr fra før. Hun jobber så mye overtid at hun tjener 60 000 kr ekstra og passerer 725 050 kr. De første kronene over 710 000 og opp til 725 050 beskattes i trinn 2 (4,0 %), mens kronene <em>over</em> 725 050 havner i trinn 3 (13,7 %). De øverste overtidskronene får dermed en marginalskatt på rundt 43 %. Det er ikke en straff – det er bare at de siste kronene krysset en grense i tabellen.</p>
+<h3>Overtid tatt ut som avspasering</h3>
+<p>Velger du å ta ut overtid som <em>fri</em> (avspasering) i stedet for penger, betaler du ikke skatt av selve fritiden – du fikk jo ingen utbetaling. Men får du utbetalt overtidstillegget i penger og bare grunntimene som avspasering, skattlegges pengene som lønn. Mange synes avspasering er en grei måte å unngå at en travel periode dytter dem opp i et høyere trinn.</p>
+<h3>Hvorfor lønner overtid seg likevel?</h3>
+<p>Det er en utbredt frustrasjon at "det lønner seg ikke å jobbe overtid". Men regn på det: selv med en marginalskatt på 44 % sitter du igjen med 56 % av hver overtidskrone. Jobber du for 10 000 kr i overtid, beholder du 5 600 kr du ellers ikke ville hatt. Skatten tar en bit, men du ender alltid opp med mer i lomma enn om du ikke hadde jobbet overtid. Følelsen av at "alt går til skatt" er nesten alltid sterkere enn virkeligheten.</p>
+<p>En annen positiv side: overtidsbetaling teller normalt med i grunnlaget for feriepenger og pensjon, akkurat som annen lønn. Så de ekstra timene bygger også opp rettighetene dine litt etter litt.</p>
+<h3>Slik leser du lønnsslippen i en overtidsmåned</h3>
+<p>Mange blir forvirret av lønnsslippen når den inneholder overtid. Her er hva du bør se etter:</p>
+<ul>
+<li><strong>Brutto lønn:</strong> grunnlønn + overtidstimer + overtidstillegg, alt før skatt.</li>
+<li><strong>Forskuddstrekk:</strong> skatten som trekkes. I en stor måned kan prosenten her se uvanlig høy ut – det er normalt.</li>
+<li><strong>Netto utbetalt:</strong> det du faktisk får inn på konto.</li>
+</ul>
+<p>Hvis trekket virker urimelig høyt over flere måneder, kan du sjekke at skattekortet ditt har riktig forventet årsinntekt. Forventer du mye overtid gjennom hele året, kan du legge det inn i skattekortkalkulatoren på skatteetaten.no, slik at trekket fordeles jevnere.</p>
+<h3>Overtid og skattemeldingen</h3>
+<p>Overtidspengene dine inngår i den vanlige lønnsinntekten og skal være ferdig innrapportert av arbeidsgiver i den forhåndsutfylte skattemeldingen. Du trenger normalt ikke føre opp noe selv. Men det er klokt å kontrollere at samlet lønn stemmer med lønnsslippene dine, og å se på skatteoppgjøret: har du betalt for mye gjennom året på grunn av høye trekk i travle måneder, får du pengene tilbake. Har du betalt for lite, får du restskatt. Det er nettopp i dette oppgjøret at den midlertidige skjevheten i trekket rettes opp en gang for alle.</p>
+<h3>Vanlige spørsmål om overtid</h3>
+<p><strong>"Lønner det seg å si nei til overtid på grunn av skatten?"</strong> Nei, ikke ut fra skatt alene. Du beholder alltid flertallet av kronene. Vil du si nei, bør det være av andre grunner – som tid, helse eller familie – ikke fordi "skatten spiser alt".</p>
+<p><strong>"Kan overtid gjøre at jeg mister andre fordeler?"</strong> I noen tilfeller kan høyere inntekt påvirke behovsprøvde ytelser, for eksempel enkelte støtteordninger. Det er sjelden, men hvis du mottar slike ytelser, kan det være verdt å sjekke om mye overtid får betydning.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li><strong>Forvent at en stor overtidsmåned gir høyt trekk</strong> – det er helt normalt og jevnes ut i oppgjøret.</li>
+<li><strong>Ikke bruk opp hele overtidsbeløpet</strong> hvis du er usikker på trekket; sett av rundt en tredjedel som skattebuffer.</li>
+<li><strong>Sjekk om du nærmer deg et nytt trinn.</strong> Mye overtid over tid kan dytte deg inn i et høyere trinn, og da blir marginalskatten på de øverste kronene høyere.</li>
+<li><strong>Bruk skattekalkulatoren</strong> på skatteetaten.no for å se hva du faktisk sitter igjen med før du sier ja til mye overtid.</li>
+<li><strong>Vurder avspasering</strong> hvis du heller vil ha fri enn at pengene treffer et høyt trinn.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Overtid og overtidstillegg er skattepliktig lønn. Det finnes ingen straffeskatt – at overtid føles hardt beskattet skyldes marginalskatten (overtiden ligger på toppen av inntekten) og at trekket en travel måned kan bli midlertidig høyt. Alt jevner seg ut i skatteoppgjøret. Satsene for 2026 finner du på skatteetaten.no, og de endres årlig, så sjekk dem der.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

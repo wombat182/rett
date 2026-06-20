@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er skattemessig bosted? — Rettsregel</title>
+<meta name="description" content="Skattemessig bosted er det landet du etter skattereglene regnes som "hjemmehørende" i – og det avgjør hvor du skal betale skatt av inntekten din. Er du…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-skattemessig-bosted/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er skattemessig bosted?">
+<meta property="og:description" content="Skattemessig bosted er det landet du etter skattereglene regnes som "hjemmehørende" i – og det avgjør hvor du skal betale skatt av inntekten din. Er du…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-skattemessig-bosted/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er skattemessig bosted?">
+<meta name="twitter:description" content="Skattemessig bosted er det landet du etter skattereglene regnes som "hjemmehørende" i – og det avgjør hvor du skal betale skatt av inntekten din. Er du…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er skattemessig bosted?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Skattemessig bosted er det landet du etter skattereglene regnes som "hjemmehørende" i – og det avgjør hvor du skal betale skatt av inntekten din. Er du skattemessig bosatt i Norge, er du som hovedregel skattepliktig hit for hele din globale inntekt og formue. Skattemessig bosted er ikke det samme som hvor du er folkeregistrert eller har statsborgerskap; det avgjøres av egne regler om opphold og tilknytning.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Begrepet forklart</h3>
+<p>"Skattemessig bosted" handler om ett spørsmål: <strong>hvilket land har rett til å skattlegge deg?</strong> Det er et eget skattebegrep og henger ikke nødvendigvis sammen med hvor du er folkeregistrert, hvor du har pass, eller hvor du føler deg hjemme. To personer kan bo i samme leilighet og likevel ha ulikt skattemessig bosted hvis tilknytningen til Norge er forskjellig.</p>
+<p>Hovedpoenget er enkelt: <strong>bor og oppholder du deg i Norge, er du som hovedregel skattemessig bosatt her – og dermed skattepliktig til Norge for all inntekt og formue, både i Norge og i utlandet.</strong></p>
+<h3>Slik blir du skattemessig bosatt i Norge</h3>
+<p>Du blir skattemessig bosatt i Norge hvis du oppholder deg her over visse grenser:</p>
+<ul>
+<li><strong>Mer enn 183 dager</strong> i Norge i løpet av en periode på <strong>tolv måneder</strong>, eller</li>
+<li><strong>Mer enn 270 dager</strong> i Norge i løpet av en periode på <strong>trettiseks måneder</strong>.</li>
+</ul>
+<p>Alle hele og delvise kalenderdager i Norge teller med i opptellingen. En dag du lander om kvelden, teller altså som en hel dag.</p>
+<p><strong>Når starter skatteplikten?</strong></p>
+<ul>
+<li>Oppholder du deg mer enn 183 dager i Norge allerede det første året, blir du skattemessig bosatt fra <strong>første dag</strong>.</li>
+<li>Hvis dagene fordeler seg over to inntektsår, blir du bosatt fra <strong>1. januar i det andre året</strong>.</li>
+</ul>
+<p><strong>Regneeksempel – innflytting:</strong>
+Marco flytter til Norge for å jobbe og er her 200 dager det første kalenderåret. Siden han passerer 183 dager allerede det første året, regnes han som skattemessig bosatt fra den dagen han kom. Da skatter han til Norge av sin globale inntekt fra det tidspunktet.</p>
+<h3>Hva innebærer skattemessig bosted i Norge?</h3>
+<p>Når du er skattemessig bosatt i Norge, gjelder <strong>globalinntektsprinsippet</strong>: du er skattepliktig hit for <strong>all</strong> inntekt og formue, uansett hvor i verden den oppstår. Lønn fra en norsk arbeidsgiver, renter på en utenlandsk konto, en leilighet du leier ut i utlandet – alt skal i utgangspunktet med i den norske skattemeldingen.</p>
+<p>For å unngå at du betaler full skatt to ganger på samme inntekt, finnes det <strong>skatteavtaler</strong> mellom Norge og de fleste andre land. De fordeler beskatningsretten og gir som regel kreditt (fradrag) i Norge for skatt du allerede har betalt i utlandet.</p>
+<h3>Når to land begge mener du er bosatt</h3>
+<p>Det kan oppstå situasjoner der både Norge og et annet land mener du er skattemessig bosatt hos dem. Da brukes <strong>skatteavtalen</strong> for å avgjøre hvilket land som "vinner" – altså hvor du anses bosatt etter avtalen. Avtalene har en rekke kriterier som vurderes i rekkefølge, blant annet:</p>
+<ul>
+<li>Hvor du har <strong>fast bolig</strong> tilgjengelig.</li>
+<li>Hvor du har de sterkeste <strong>personlige og økonomiske båndene</strong> (familie, jobb, interesser) – det som kalles "sentrum for livsinteressene".</li>
+<li>Hvor du <strong>vanligvis oppholder deg</strong>.</li>
+<li>Til slutt <strong>statsborgerskap</strong>, hvis de andre kriteriene ikke gir svar.</li>
+</ul>
+<p><strong>Eksempel:</strong> Ingrid jobber både i Norge og Sverige og har bolig i begge land. Begge land mener hun er bosatt der. Skatteavtalen mellom Norge og Sverige avgjør hvor hun anses bosatt etter avtalen, og dermed hvilket land som har hovedbeskatningsretten.</p>
+<h3>Forskjellen på folkeregistrering og skattemessig bosted</h3>
+<p>Dette er en vanlig kilde til forvirring. Du kan være <strong>folkeregistrert</strong> i Norge uten å være skattemessig bosatt her, og motsatt. Det er skattereglene om opphold og tilknytning som avgjør skattemessig bosted – ikke bare hva som står i Folkeregisteret. Når du flytter, bør du derfor både melde flytting <em>og</em> sette deg inn i hva som gjelder skattemessig.</p>
+<h3>Hvorfor er dette viktig å forstå?</h3>
+<p>Skattemessig bosted avgjør ikke bare hvor mye skatt du betaler, men også hvilke regler som gjelder for deg på en rekke områder: hvilke fradrag du har rett til, om du skal betale formuesskatt til Norge, og hvordan inntekt fra utlandet behandles. For personer som pendler over landegrensene, jobber i utlandet i perioder, eller er i ferd med å flytte ut eller inn, kan akkurat tidspunktet for når bostedet endres ha stor økonomisk betydning. Derfor er det lurt å ha kontroll på dette i god tid, ikke først når skattemeldingen kommer.</p>
+<h3>Begrenset skatteplikt – når du ikke er bosatt, men likevel skatter litt</h3>
+<p>Selv om du ikke er skattemessig bosatt i Norge, kan du ha det som kalles <strong>begrenset skatteplikt</strong>. Det betyr at Norge skattlegger deg bare for visse inntekter med kilde her, ikke for hele din globale inntekt. Eksempler er lønn for arbeid utført i Norge, leieinntekt og gevinst fra fast eiendom i Norge, og enkelte pensjoner fra norske kilder. Tenk på en person som bor i Danmark, men eier en utleieleilighet i Oslo: vedkommende er ikke bosatt i Norge, men skatter likevel av leieinntekten hit. Forskjellen mellom "bosatt" (global skatteplikt) og "begrenset skattepliktig" (bare norske kilder) er altså viktig å holde fra hverandre.</p>
+<h3>Hva skjer med formuesskatten?</h3>
+<p>Skattemessig bosted påvirker også formuesskatten. Er du bosatt i Norge, er hele din formue – også verdier i utlandet – i utgangspunktet med i det norske formuesgrunnlaget. Er du derimot bosatt i utlandet, betaler du normalt bare formuesskatt til Norge av formue som er knyttet hit, for eksempel fast eiendom i Norge. Dette er enda en grunn til at det er så viktig å vite hvilket lands skatteregler du faller inn under. Skatteavtalene kan i tillegg fordele beskatningsretten til formue mellom landene.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Tell oppholdsdagene dine</strong> hvis du pendler mellom land – grensene på 183 og 270 dager er avgjørende.</li>
+<li><strong>Ta vare på dokumentasjon</strong> på hvor du har oppholdt deg (reisebilletter, leiekontrakter, jobbavtaler).</li>
+<li><strong>Sjekk skatteavtalen</strong> mellom Norge og det aktuelle landet.</li>
+<li><strong>Be om en bekreftelse på bosted</strong> fra Skatteetaten hvis du trenger å vise den til myndigheter i et annet land.</li>
+<li><strong>Spør Skatteetaten</strong> ved tvil – bosted kan være komplisert og få store konsekvenser.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Skattemessig bosted er det landet du regnes som hjemmehørende i etter skattereglene, og det avgjør hvor du skatter. Er du skattemessig bosatt i Norge, er du som hovedregel skattepliktig hit for hele din globale inntekt og formue. Du blir bosatt i Norge hvis du oppholder deg her mer enn 183 dager i løpet av tolv måneder eller mer enn 270 dager i løpet av trettiseks måneder. Skatteavtaler hindrer dobbeltbeskatning og avgjør bosted hvis to land er uenige. Skattemessig bosted er ikke det samme som folkeregistrering, og tidspunktet for når det endres kan ha stor betydning. Reglene er detaljerte og kan endres – sjekk skatteetaten.no.</p>
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

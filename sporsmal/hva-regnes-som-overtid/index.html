@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva regnes som overtid? — Rettsregel</title>
+<meta name="description" content="Overtid er arbeid som går ut over lovens grenser for alminnelig arbeidstid – altså mer enn 9 timer i løpet av 24 timer eller mer enn 40 timer i løpet av 7…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-regnes-som-overtid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva regnes som overtid?">
+<meta property="og:description" content="Overtid er arbeid som går ut over lovens grenser for alminnelig arbeidstid – altså mer enn 9 timer i løpet av 24 timer eller mer enn 40 timer i løpet av 7…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-regnes-som-overtid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva regnes som overtid?">
+<meta name="twitter:description" content="Overtid er arbeid som går ut over lovens grenser for alminnelig arbeidstid – altså mer enn 9 timer i løpet av 24 timer eller mer enn 40 timer i løpet av 7…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva regnes som overtid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Overtid er arbeid som går **ut over lovens grenser** for alminnelig arbeidstid – altså mer enn **9 timer i løpet av 24 timer** eller mer enn **40 timer i løpet av 7 dager** (§ 10-6). I tillegg krever overtid at det faktisk finnes et **særlig og tidsavgrenset behov** for ekstra arbeid. Timer du jobber utover din egen avtale (for eksempel over 37,5 timer), men innenfor lovens grenser, kalles ofte **merarbeid** – og er noe litt annet enn overtid etter loven.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-6</div>
+  <div class="related-card-title">Overtid og meirarbeid (når du må jobbe ekstra)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Den viktige forskjellen: lovens grense, ikke avtalens</h3>
+<p>Mange tror at alt de jobber utover sin egen avtalte arbeidstid automatisk er «overtid» med 40 % tillegg etter loven. Det stemmer ikke helt. Loven skiller mellom to ting:</p>
+<ul>
+<li><strong>Merarbeid:</strong> Timer over din <strong>avtalte</strong> arbeidstid, men under lovens grenser. Eksempel: du har avtale om 37,5 timer og jobber 39 – de 1,5 ekstra timene er merarbeid etter loven.</li>
+<li><strong>Overtid:</strong> Timer over <strong>lovens</strong> grenser på 9 timer per dag eller 40 timer per uke.</li>
+</ul>
+<p>Det lovbestemte overtidstillegget på minst 40 % gjelder den ekte overtiden. Men – og dette er viktig – mange <strong>tariffavtaler og arbeidsavtaler</strong> gir overtidstillegg allerede fra den avtalte tida (for eksempel fra 37,5 timer). Så selv om loven ikke krever tillegg for merarbeid, kan avtalen din gjøre det. Sjekk derfor alltid avtalen din.</p>
+<h3>Når blir det overtid? Tre eksempler</h3>
+<p><strong>Eksempel 1 – over dagen:</strong> Tuva har normalt 7,5-timersdag. En dag jobber hun 10 timer.</p>
+<ul>
+<li>De første 9 timene er innenfor lovens dagsgrense.</li>
+<li>Den 10. timen er over lovens 9-timersgrense og regnes som overtid etter loven.</li>
+<li>Timene mellom 7,5 og 9 er merarbeid etter loven – men tariffavtalen hennes kan gi overtidstillegg allerede her.</li>
+</ul>
+<p><strong>Eksempel 2 – over uka:</strong> Markus jobber 8 timer mandag til fredag = 40 timer, og blir så bedt om 5 timer på lørdag.</p>
+<ul>
+<li>De 40 første timene er innenfor lovens ukegrense.</li>
+<li>De 5 timene på lørdag er over lovens 40-timersgrense og er overtid etter loven.</li>
+</ul>
+<p><strong>Eksempel 3 – avtalt kortere uke:</strong> Nora har 37,5 timers uke. Hun jobber 41 timer en uke.</p>
+<ul>
+<li>Timene fra 37,5 til 40 (2,5 timer) er merarbeid etter loven.</li>
+<li>Timene fra 40 til 41 (1 time) er overtid etter loven.</li>
+<li>Igjen: tariffavtalen kan gi henne tillegg for alt over 37,5 – les avtalen.</li>
+</ul>
+<h3>Det må finnes et «særlig og tidsavgrenset behov»</h3>
+<p>Overtid er ikke noe arbeidsgiver kan bruke som en fast ordning. Loven sier at overtid bare er lov når det foreligger et <strong>særlig og tidsavgrenset behov</strong> for det (§ 10-6 første ledd). Med vanlige ord: det må være en konkret, midlertidig grunn – ikke bare en generell underbemanning som varer i det uendelige.</p>
+<p>Lovlige grunner kan for eksempel være:</p>
+<ul>
+<li>Uventet fravær som setter driften eller arbeidet i fare.</li>
+<li>Topper i arbeidsmengden som ikke kunne forutses.</li>
+<li>Uforutsette hendelser, som en maskin som har brutt sammen og må fikses.</li>
+</ul>
+<p>Hvis bedriften har for lite folk år ut og år inn og «løser» det med fast overtid hver uke, er det egentlig ikke lovlig overtid – da burde de heller ansette flere.</p>
+<h3>Pålagt overtid kontra frivillig ekstraarbeid</h3>
+<p>For at noe skal regnes som overtid med rett til tillegg, må arbeidet i utgangspunktet være <strong>pålagt eller godkjent</strong> av arbeidsgiver. Hvis du på eget initiativ blir sittende og jobbe ekstra uten at sjefen har bedt om det eller godtatt det, kan det bli en diskusjon om det egentlig var nødvendig overtid.</p>
+<p>Praktisk råd: avtal alltid overtid på forhånd hvis du kan, og få det skriftlig – for eksempel en kort melding: «Bekrefter at jeg jobber 2 timer overtid i dag etter avtale med deg.» Da er du trygg.</p>
+<h3>Hva med pauser og reisetid?</h3>
+<ul>
+<li><strong>Pauser</strong> som du fritt kan disponere, regnes normalt ikke som arbeidstid og teller ikke som overtid. Men hvis du ikke kan forlate arbeidsstedet, teller pausen som arbeidstid.</li>
+<li><strong>Reisetid</strong> kan i noen tilfeller regnes som arbeidstid, særlig hvis du må reise på oppdrag utenfor vanlig arbeidstid og står til arbeidsgivers disposisjon. Dette er et komplisert område – spør tillitsvalgt hvis du er usikker.</li>
+</ul>
+<h3>Er det overtid å svare på e-post hjemme om kvelden?</h3>
+<p>Mange jobber litt videre hjemmefra – svarer på en melding, gjør ferdig en sak etter middag. Spørsmålet er om dette teller. Hovedregelen er at hvis du <strong>utfører arbeid</strong> etter pålegg eller godkjenning, og det bringer deg over lovens grenser, så er det overtid som skal betales. Men hvis du på eget initiativ pirker litt på jobben uten at noen har bedt om det, kan det bli en diskusjon.</p>
+<p>Eksempel: Sjefen til Yusuf sender en melding klokka 21: «Kan du ordne tilbudet til i morgen tidlig?» Yusuf jobber en time. Dette er pålagt arbeid på kvelden og kan være overtid. Råd: noter tidspunktet og oppgaven, og ta det opp på neste lønnskjøring hvis det ikke kommer med.</p>
+<p>Et nyttig grep er å bli enige med leder om en kjøreregel for kveldsarbeid – for eksempel at det skal avtales på forhånd og loggføres. Da slipper dere uenighet i ettertid.</p>
+<h3>Slik sjekker du om noe er overtid</h3>
+<ol>
+<li><strong>Finn din avtalte arbeidstid.</strong> Står det 37,5 eller 40 timer i avtalen?</li>
+<li><strong>Finn lovens grense.</strong> 9 timer per dag, 40 timer per uke.</li>
+<li><strong>Regn ut timene den aktuelle dagen og uka.</strong> Hvor mye jobbet du faktisk?</li>
+<li><strong>Skill merarbeid fra overtid.</strong> Over avtalen, men under loven = merarbeid. Over loven = overtid.</li>
+<li><strong>Sjekk tariffavtalen.</strong> Den kan gi tillegg også for merarbeid – ofte fra 37,5 timer.</li>
+<li><strong>Bekreft at det var pålagt eller godkjent.</strong> Overtid skal ha en grunn og være avtalt med arbeidsgiver.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Overtid etter loven = arbeid over <strong>9 timer per dag</strong> eller <strong>40 timer per uke</strong> (§ 10-6).</li>
+<li>Timer over din avtale, men under loven, kalles <strong>merarbeid</strong> – men tariffavtalen din kan gi tillegg likevel.</li>
+<li>Overtid krever et <strong>særlig og tidsavgrenset behov</strong> – ikke en fast, varig ordning.</li>
+<li>Overtiden bør være <strong>pålagt eller godkjent</strong> av arbeidsgiver. Få det skriftlig.</li>
+<li>Les alltid arbeidsavtalen og tariffavtalen for å vite fra hvilket timetall du har krav på tillegg.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/arbeidsgiver-vil-ikke-utbetale-lonn/">Arbeidsgiveren vil ikke betale lønn — hva gjør du?</a><a class="sp-relchip" href="../../sporsmal/er-pausen-betalt/">Er pausen betalt?</a><a class="sp-relchip" href="../../sporsmal/far-jeg-betalt-for-palagt-hjemmevakt/">Får jeg betalt for pålagt hjemmevakt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er gjennomsnittsberegning av arbeidstid? — Rettsregel</title>
+<meta name="description" content="Gjennomsnittsberegning betyr at arbeidstiden din får lov til å svinge fra uke til uke, så lenge snittet over en avtalt periode holder seg innenfor lovens…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-gjennomsnittsberegning-av-arbeidstid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er gjennomsnittsberegning av arbeidstid?">
+<meta property="og:description" content="Gjennomsnittsberegning betyr at arbeidstiden din får lov til å svinge fra uke til uke, så lenge snittet over en avtalt periode holder seg innenfor lovens…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-gjennomsnittsberegning-av-arbeidstid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er gjennomsnittsberegning av arbeidstid?">
+<meta name="twitter:description" content="Gjennomsnittsberegning betyr at arbeidstiden din får lov til å svinge fra uke til uke, så lenge snittet over en avtalt periode holder seg innenfor lovens…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er gjennomsnittsberegning av arbeidstid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Gjennomsnittsberegning betyr at arbeidstiden din får lov til å svinge fra uke til uke, så lenge snittet over en avtalt periode holder seg innenfor lovens vanlige grenser. Du kan altså jobbe lange uker i en travel periode, mot kortere uker senere. Reglene står i arbeidsmiljøloven § 10-5 (paragrafen som åpner for å «glatte ut» arbeidstiden over tid).</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven §§ 10-5, 10-6, 10-8, 10-9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-5/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-5</div>
+  <div class="related-card-title">Gjennomsnittsberegning (lovlig turnus og lange vakter)</div>
+</a><a href="../../lover/arbeidsmiljoloven/10-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-6</div>
+  <div class="related-card-title">Overtid og meirarbeid (når du må jobbe ekstra)</div>
+</a><a href="../../lover/arbeidsmiljoloven/10-8/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-8</div>
+  <div class="related-card-title">Reglene for daglig og ukentlig hviletid</div>
+</a><a href="../../lover/arbeidsmiljoloven/10-9/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-9</div>
+  <div class="related-card-title">Reglene for pauser og matpakke</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Gjennomsnittsberegning betyr at arbeidstiden din får lov til å svinge fra uke til uke, så lenge snittet over en avtalt periode holder seg innenfor lovens vanlige grenser. Du kan altså jobbe lange uker i en travel periode, mot kortere uker senere. Reglene står i arbeidsmiljøloven § 10-5 (paragrafen som åpner for å «glatte ut» arbeidstiden over tid).</p>
+<h3>Slik fungerer det i praksis</h3>
+<p>Tenk deg at den vanlige (alminnelige) arbeidstiden din er 40 timer i uka. Med gjennomsnittsberegning kan arbeidsgiver og du avtale at du i noen uker jobber 45 timer, mot at du i andre uker jobber 35 timer. Hvis snittet over hele perioden lander på 40 timer, er kravet oppfylt — uten at det ekstra du jobbet i de travle ukene automatisk blir overtid.</p>
+<p>La oss bruke et eksempel. Sofie jobber i en bedrift som lager utstyr til oppdrettsnæringen. Om våren er det rush, om høsten roligere. Bedriften og Sofie avtaler skriftlig en gjennomsnittsberegning over 12 uker. I de seks travleste ukene jobber hun 46 timer, i de seks roligste 34 timer. Snittet blir 40 timer per uke. Lovlig — fordi det er avtalt på forhånd og snittet holder.</p>
+<h3>Det krever skriftlig avtale</h3>
+<p>Du kan ikke bare bli satt på en svingende arbeidstid uten videre. Gjennomsnittsberegning må avtales skriftlig. Det finnes tre veier:</p>
+<ul>
+<li><strong>Avtale med deg som enkeltperson.</strong> Da kan dere avtale inntil 10 timer i løpet av 24 timer og inntil 48 timer i løpet av sju dager.</li>
+<li><strong>Avtale med tillitsvalgte</strong> i en bedrift som er bundet av tariffavtale. Da kan grensene strekkes noe lenger — inntil 12,5 timer i døgnet og inntil 48 timer per uke (snittet over åtte uker), men aldri mer enn 54 timer i en enkelt uke.</li>
+<li><strong>Tillatelse fra Arbeidstilsynet</strong>, som kan sette egne rammer.</li>
+</ul>
+<p>Beregningsperioden kan være på minst to uker og høyst 52 uker (ett år). Det viktige er at snittet for hele perioden ikke overstiger din alminnelige arbeidstid.</p>
+<h3>Hvorfor brukes gjennomsnittsberegning?</h3>
+<p>Ordningen finnes fordi mange bransjer rett og slett har ujevn arbeidsmengde. Tenk på en regnskapsfører i toppen før selvangivelsesfristen, en altmuligmann på et hotell i turistsesongen, eller en anleggsarbeider som må utnytte de lyse sommermånedene. I stedet for at slike virksomheter må betale dyr overtid hver gang det topper seg, kan de fordele timene over året. For deg som ansatt kan det også være en fordel: du kan «jobbe inn» lengre friperioder, for eksempel en sammenhengende uke fri etter en intens innspurt.</p>
+<p>Eksempel: Thomas jobber på en campingplass. I juli jobber han 48 timer i uka, men i november–februar er plassen nesten stengt, og han jobber bare 30 timer. Med en gjennomsnittsberegning over hele året får han et jevnt snitt og fast månedslønn hele veien, selv om timene svinger kraftig fra måned til måned.</p>
+<h3>Hva gjennomsnittsberegning IKKE er</h3>
+<p>Det er lett å blande dette med overtid. Forskjellen er enkel:</p>
+<ul>
+<li><strong>Gjennomsnittsberegning</strong> er planlagt og avtalt på forhånd. Du vet i god tid at noen uker blir lange og andre korte. De lange ukene utløser ikke automatisk overtidsbetaling, så lenge du holder deg innenfor de avtalte grensene.</li>
+<li><strong>Overtid</strong> er arbeid som kommer i tillegg, ofte på kort varsel, fordi det oppstår et særlig behov. Overtid gir rett til minst 40 prosent tillegg (§ 10-6).</li>
+</ul>
+<p>Eksempel: Markus har avtalt gjennomsnittsberegning og skal jobbe 45 timer denne uka etter planen. Det er ikke overtid. Men hvis sjefen i tillegg ber ham bli to ekstra timer en kveld, ut over det avtalte, da er de to timene overtid med tillegg.</p>
+<h3>Hva med pauser, hvile og pengene dine?</h3>
+<p>Selv om arbeidstiden svinger, gjelder de vanlige vernereglene fullt ut:</p>
+<ul>
+<li>Du har fortsatt krav på minst 11 timer sammenhengende hvile i døgnet og minst 35 timer sammenhengende hvile i uka (§ 10-8).</li>
+<li>Du har fortsatt krav på pause (§ 10-9).</li>
+<li>Lønna di skal som regel være den samme hver måned (fastlønn), selv om timetallet varierer fra uke til uke. Det er nettopp poenget — du «sparer opp» og «bruker av» timer.</li>
+</ul>
+<h3>Sjekklisten din</h3>
+<p>Før du sier ja til gjennomsnittsberegning, gå gjennom dette:</p>
+<ol>
+<li><strong>Få avtalen skriftlig.</strong> Be om å se nøyaktig hvilken periode den gjelder og hva snittet skal være.</li>
+<li><strong>Sjekk maksgrensene.</strong> Hvor mange timer kan du settes til å jobbe i en enkelt uke og et enkelt døgn?</li>
+<li><strong>Be om en oversikt</strong> over hvordan de lange og korte ukene fordeler seg, så du kan planlegge privatlivet ditt.</li>
+<li><strong>Vær oppmerksom på det ekstra.</strong> Blir du bedt om å jobbe ut over det avtalte, skal det behandles som overtid med tillegg.</li>
+<li><strong>Spør tillitsvalgt eller fagforeningen</strong> hvis noe er uklart. De kjenner ofte de lokale avtalene.</li>
+</ol>
+<h3>Kan du si nei?</h3>
+<p>En individuell avtale om gjennomsnittsberegning er nettopp en avtale — den krever ditt samtykke. Du kan derfor i utgangspunktet velge å ikke inngå den. Er bedriften bundet av tariffavtale og avtalen inngås med tillitsvalgte, kan den derimot gjelde for flere ansatte samtidig. Da er det fagforeningen din som forhandler på vegne av gruppa, og det er smart å gi innspill til dem på forhånd.</p>
+<h3>Vanlige fallgruver</h3>
+<p>Det er noen ting du særlig bør se etter, fordi det er her det ofte går galt:</p>
+<ul>
+<li><strong>Avtalen mangler en tydelig sluttdato.</strong> En gjennomsnittsberegning skal gjelde en bestemt periode. Er den «evigvarende» og diffus, er det grunn til å stille spørsmål.</li>
+<li><strong>De korte ukene kommer aldri.</strong> Hvis du jevnlig jobber lange uker, men de avtalte rolige ukene stadig utsettes, holdes ikke snittet — og da er du i praksis i en ulovlig ordning.</li>
+<li><strong>Det avtalte timetallet sprenges.</strong> Blir du satt til flere timer enn maksgrensene i avtalen, er det ikke lenger gjennomsnittsberegning, men overtid.</li>
+</ul>
+<p>Eksempel: Nina har avtalt at høsten skal bli rolig for å veie opp for en travel vår. Men når høsten kommer, fortsetter de lange ukene. Da er snittet i ferd med å sprekke, og Nina bør ta det opp med en gang — ikke vente til årets slutt.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Gjennomsnittsberegning (§ 10-5) lar arbeidstiden svinge fra uke til uke, så lenge snittet over en avtalt periode holder seg innenfor lovens vanlige grenser.</li>
+<li>Det krever skriftlig avtale — med deg, med tillitsvalgte, eller tillatelse fra Arbeidstilsynet.</li>
+<li>Lange uker som er planlagt på forhånd er ikke automatisk overtid, men arbeid ut over det avtalte er det.</li>
+<li>Pauser og hviletid gjelder fullt ut uansett.</li>
+<li>Få alt skriftlig, sjekk maksgrensene, og spør tillitsvalgt om du er usikker.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

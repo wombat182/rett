@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på eierandel og stemmeandel? — Rettsregel</title>
+<meta name="description" content="Eierandel er hvor stor del av selskapets kapital du eier.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-eierandel-og-stemmeandel/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på eierandel og stemmeandel?">
+<meta property="og:description" content="Eierandel er hvor stor del av selskapets kapital du eier.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-eierandel-og-stemmeandel/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på eierandel og stemmeandel?">
+<meta name="twitter:description" content="Eierandel er hvor stor del av selskapets kapital du eier.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er forskjellen på eierandel og stemmeandel?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Eierandel er hvor stor del av selskapets kapital du eier. Stemmeandel er hvor stor del av stemmene du har på generalforsamlingen. I et vanlig selskap er de like, men når det finnes aksjeklasser med ulik stemmevekt, kan de bli forskjellige.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Eierandel er hvor stor del av selskapets kapital du eier. Stemmeandel er hvor stor del av stemmene du har på generalforsamlingen. I et vanlig selskap er de like, men når det finnes aksjeklasser med ulik stemmevekt, kan de bli forskjellige.</p>
+<h3>To tall som ofte – men ikke alltid – er like</h3>
+<p>For folk flest virker dette som samme sak: eier du halvparten, har du vel halve makten? Som regel stemmer det. Men loven skiller mellom de to fordi de kan løsne fra hverandre.</p>
+<ul>
+<li><strong>Eierandel</strong> = dine aksjer delt på alle aksjer. Den styrer hvor mye du får av utbytte og av verdiene hvis selskapet selges.</li>
+<li><strong>Stemmeandel</strong> = dine stemmer delt på alle stemmer. Den styrer hvor mye du har å si i beslutninger.</li>
+</ul>
+<p>Når alle aksjer gir én stemme (hovedregelen i § 5-3), er de to tallene identiske. Det er først med aksjeklasser og ulik stemmevekt at de skiller lag.</p>
+<h3>Et klart talleksempel</h3>
+<p>«Havblikk Reiseliv AS» har 1 000 aksjer. Selskapet har to klasser:</p>
+<ul>
+<li>200 A-aksjer som hver gir 5 stemmer</li>
+<li>800 B-aksjer som hver gir 1 stemme</li>
+</ul>
+<p>Stine eier alle 200 A-aksjene. Da blir regnestykket slik:</p>
+<ul>
+<li><strong>Eierandel</strong>: 200 av 1 000 aksjer = 20 % av kapitalen</li>
+<li><strong>Stemmeandel</strong>: A-aksjene gir 200 × 5 = 1 000 stemmer. B-aksjene gir 800 × 1 = 800 stemmer. Totalt 1 800 stemmer. Stines 1 000 stemmer av 1 800 = cirka 56 % av stemmene</li>
+</ul>
+<p>Stine eier altså bare en femtedel av selskapet, men har flertall av stemmene. Hun får 20 % av utbyttet, men bestemmer over de fleste sakene. Det er en stor forskjell mellom hva hun tjener og hva hun styrer.</p>
+<h3>Hvorfor er forskjellen viktig?</h3>
+<p>Fordi den avgjør hvem som tjener penger og hvem som har makt – og det er ikke alltid samme person.</p>
+<p>Tenk deg at du er investor i «Havblikk» og kjøper alle 800 B-aksjene. Du eier 80 % av kapitalen og får 80 % av utbyttet – flott. Men du har bare 800 av 1 800 stemmer = cirka 44 % av stemmene. Du har lagt mest penger på bordet, men Stine styrer fortsatt. Hvis du ikke forstår denne forskjellen før du kjøper, kan du få deg en kjedelig overraskelse den dagen du er uenig med Stine om noe viktig.</p>
+<h3>Sjekk alltid begge tallene</h3>
+<p>Praktiske råd før du går inn i et selskap eller endrer eierstrukturen:</p>
+<ol>
+<li>Spør om selskapet har flere aksjeklasser. Står det i vedtektene?</li>
+<li>Finn ut stemmevekten per klasse.</li>
+<li>Regn ut din eierandel (kapital) separat fra din stemmeandel (stemmer).</li>
+<li>Vurder hva som er viktigst for deg – penger eller makt.</li>
+<li>Skaff deg gjerne en aksjonæravtale hvis stemmeandelen din blir liten i forhold til pengene du legger inn.</li>
+</ol>
+<h3>Når faller de fra hverandre i praksis?</h3>
+<p>Eierandel og stemmeandel skiller seg bare når selskapet bevisst har laget ulik stemmevekt i vedtektene. I et helt standard AS med én aksjeklasse er de alltid like. Derfor er det lurt å lese vedtektene før du antar noe – ikke bare se på hvor mange aksjer hver eier har. Tallet på aksjer forteller deg eierandelen, men ikke nødvendigvis stemmeandelen.</p>
+<h3>Et eksempel der de er like</h3>
+<p>«Tre Venner AS» har 300 aksjer, én klasse, én stemme per aksje. Ali, Bente og Carl eier 100 hver. Alle har 33,3 % eierandel og 33,3 % stemmeandel. Her er det ingen forskjell – det enkleste og vanligste oppsettet for et lite selskap. For de fleste gründere er det også det beste: enkelt, gjennomsiktig og lett å forstå for alle parter.</p>
+<h3>Et poeng om kjøp og salg</h3>
+<p>Forskjellen mellom eierandel og stemmeandel blir også viktig når noen skal kjøpe seg inn eller ut. Hvis du selger A-aksjer med høy stemmevekt, kan du gi fra deg mye makt selv om du selger få aksjer. Motsatt kan du selge mange B-aksjer uten å miste kontrollen. Tenk derfor alltid gjennom hvilke aksjer du faktisk selger, ikke bare hvor mange.</p>
+<h3>Hva med utbytte – følger det eierandelen eller stemmeandelen?</h3>
+<p>Et naturlig spørsmål er om en eier med høy stemmeandel også får mer utbytte. Svaret er nei – ikke automatisk. Utbytte fordeles som hovedregel etter eierandel (kapital), ikke etter stemmer. Stine fra «Havblikk Reiseliv AS», som eide 20 % av kapitalen men hadde 56 % av stemmene, får altså 20 % av utbyttet. Stemmeretten gir henne makt til å være med å bestemme <em>om</em> det skal deles ut utbytte og hvor mye, men ikke en større andel av det utbyttet som faktisk deles.</p>
+<p>Dette er en viktig presisering: makt og penger henger ikke nødvendigvis sammen. En eier kan ha mye å si uten å tjene tilsvarende mye, og en eier kan tjene mye uten å ha mye å si. Med mindre vedtektene har egne regler om at en aksjeklasse skal ha fortrinnsrett til utbytte, er det eierandelen som styrer pengestrømmen.</p>
+<h3>Et regneeksempel som setter det på spissen</h3>
+<p>La oss ta et ekstremt tilfelle for å gjøre poenget tydelig. «Toppfart AS» har 1 000 aksjer:</p>
+<ul>
+<li>1 A-aksje som gir 1 001 stemmer</li>
+<li>999 B-aksjer som gir 1 stemme hver</li>
+</ul>
+<p>Eieren av den ene A-aksjen, Mikkel, har 1 001 av totalt 2 000 stemmer = drøyt 50 % av stemmene. Med én eneste aksje kontrollerer han selskapet. Men eierandelen hans er 1 av 1 000 = 0,1 % av kapitalen. Han får altså bare en tusendel av utbyttet, men bestemmer alt. De andre eierne sitter med 99,9 % av pengene, men under halvparten av stemmene.</p>
+<p>Et slikt oppsett er neppe lurt i praksis – det skaper enorm avstand mellom makt og penger og kan bli en kilde til konflikt. Men eksempelet viser hvor langt forskjellen mellom eierandel og stemmeandel kan strekkes. Nettopp derfor er det så viktig å forstå begge tallene før du sier ja til en eierstruktur.</p>
+<h3>Kort oppsummert</h3>
+<p>Eierandel handler om kapital og dermed om penger (utbytte og salgsverdi), mens stemmeandel handler om makt på generalforsamlingen. De er like så lenge hver aksje gir én stemme, men aksjeklasser med ulik stemmevekt kan skille dem kraftig (§ 5-3). Regn alltid ut begge før du investerer eller endrer strukturen – det er fullt mulig å eie mye og bestemme lite, eller omvendt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer hvis jeg ikke betaler restskatten? — Rettsregel</title>
+<meta name="description" content="Hvis du ikke betaler restskatten innen fristen, begynner det å løpe forsinkelsesrente, og kravet går etter hvert til innkreving. Skatteetaten har sterke…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-ikke-betaler-restskatten/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer hvis jeg ikke betaler restskatten?">
+<meta property="og:description" content="Hvis du ikke betaler restskatten innen fristen, begynner det å løpe forsinkelsesrente, og kravet går etter hvert til innkreving. Skatteetaten har sterke…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-ikke-betaler-restskatten/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer hvis jeg ikke betaler restskatten?">
+<meta name="twitter:description" content="Hvis du ikke betaler restskatten innen fristen, begynner det å løpe forsinkelsesrente, og kravet går etter hvert til innkreving. Skatteetaten har sterke…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva skjer hvis jeg ikke betaler restskatten?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis du ikke betaler restskatten innen fristen, begynner det å løpe forsinkelsesrente, og kravet går etter hvert til innkreving. Skatteetaten har sterke virkemidler og kan blant annet ta trekk direkte i lønnen din eller ta pant i eiendeler. Det er derfor lurt å betale i tide, eller ta kontakt og avtale noe hvis du ikke klarer det.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Trinn 1: Forsinkelsesrente</h3>
+<p>Med en gang forfallsdatoen passerer uten betaling, begynner forsinkelsesrenten å løpe. Den beregnes på det ubetalte beløpet fra forfall og helt til du betaler. Jo lenger du venter, desto mer koster det.</p>
+<p>Eksempel: Tom hadde 10 000 kroner i restskatt med forfall 20. august. Han betalte ikke, og forsinkelsesrente begynte å løpe fra den datoen. Da han endelig betalte i november, hadde beløpet vokst med renter.</p>
+<p>Forsinkelsesrentesatsen fastsettes av myndighetene og endres, så sjekk gjeldende sats på skatteetaten.no.</p>
+<h3>Trinn 2: Purring og varsel</h3>
+<p>Etter forfall får du som regel en påminnelse eller et varsel om at kravet er ubetalt og hva som skjer videre. Dette er sjansen din til å rydde opp før det blir alvorlig. Ikke ignorer slike brev eller meldinger i innboksen på skatteetaten.no eller i Altinn.</p>
+<h3>Trinn 3: Innkreving</h3>
+<p>Betaler du fortsatt ikke, går kravet til innkreving. Skatteetaten har egne, kraftige virkemidler for å kreve inn skatt, sterkere enn vanlige private kreditorer. De kan blant annet:</p>
+<ul>
+<li>Ta utleggstrekk i lønn eller trygd. Det betyr at en del av lønnen din trekkes direkte hver måned, før du får den utbetalt, til gjelden er nedbetalt.</li>
+<li>Ta utleggspant i eiendeler, for eksempel bil, bankinnskudd eller bolig. Pant betyr at de sikrer kravet i noe du eier.</li>
+<li>Motregne mot penger du har til gode, for eksempel et skattebeløp du skulle fått igjen et annet år.</li>
+</ul>
+<p>Eksempel: Lena lot 20 000 kroner i restskatt stå ubetalt og svarte ikke på varsler. Til slutt ble det opprettet utleggstrekk, og arbeidsgiveren begynte å trekke et fast beløp av lønnen hver måned til gjelden var betalt.</p>
+<h3>Trinn 4: Konsekvenser som henger igjen</h3>
+<ul>
+<li>Et utleggspant eller en betalingsanmerkning kan gjøre det vanskeligere å få lån eller kreditt senere.</li>
+<li>Saken kan oppleves stressende, og renter gjør at totalsummen vokser.</li>
+</ul>
+<p>Derfor lønner det seg nesten alltid å ta tak tidlig.</p>
+<h3>Hva du bør gjøre med en gang</h3>
+<ol>
+<li>Betal det du kan, så raskt du kan. Delbetaling reduserer renten.</li>
+<li>Ta kontakt med Skatteetaten hvis du ikke klarer å betale alt. Be om en betalingsavtale.</li>
+<li>Svar på varsler. Ikke la brev ligge ulest.</li>
+<li>Sjekk at beløpet faktisk er riktig. Mener du oppgjøret er feil, kan du undersøke om du kan klage eller endre.</li>
+</ol>
+<p>Eksempel: Ahmed mistet jobben og kunne ikke betale 18 000 kroner i restskatt. I stedet for å la det skure, ringte han Skatteetaten, forklarte situasjonen og fikk en avtale om å betale 2 000 kroner i måneden. Han slapp dermed utleggstrekk.</p>
+<h3>Kan gjelden bare forsvinne?</h3>
+<p>Nei. Skattegjeld forsvinner ikke av seg selv ved at du lar være å betale. Den blir tvert imot dyrere på grunn av renter, og kan ende med tvangstiltak. I helt spesielle tilfeller kan det finnes ordninger for ettergivelse eller utsettelse, men det er unntak du må søke om og dokumentere, ikke noe du kan regne med.</p>
+<h3>Slik unngår du å havne her</h3>
+<ul>
+<li>Hold skattekortet oppdatert, så blir restskatten mindre.</li>
+<li>Betal tilleggsforskudd innen 31. mai hvis du har betalt for lite, så slipper du også rentetillegg.</li>
+<li>Sett av penger til de to restskattefakturaene når du vet at de kommer.</li>
+<li>Reager raskt hvis du ser at du ikke kommer til å klare fristen.</li>
+</ul>
+<h3>Hva er utleggstrekk, helt konkret?</h3>
+<p>Utleggstrekk er kanskje det virkemiddelet folk merker tydeligst. Det betyr at Skatteetaten pålegger arbeidsgiveren din å trekke et fast beløp av lønnen din hver måned, før du får den utbetalt, og sende det direkte til dekning av skattegjelden. Du har fortsatt krav på å beholde nok til livsopphold, så de kan ikke ta alt, men du mister rådigheten over en del av lønnen til gjelden er betalt.</p>
+<p>Eksempel: Lena fikk utleggstrekk på 2 500 kroner i måneden. Arbeidsgiveren trakk dette automatisk, og Lena så det som en egen linje på lønnsslippen. Trekket fortsatte til hele restskatten med renter var dekket.</p>
+<h3>Hva er utleggspant?</h3>
+<p>Utleggspant betyr at Skatteetaten sikrer kravet i noe du eier, for eksempel bil, bankinnskudd eller bolig. Pantet i seg selv tar ikke pengene med en gang, men det gir Skatteetaten en sikret rett, og kan i ytterste konsekvens føre til tvangssalg av eiendelen. Et utleggspant blir også synlig som en betalingsanmerkning.</p>
+<h3>Betalingsanmerkning, en konsekvens som varer</h3>
+<p>Når det er tatt utlegg, kan du få en betalingsanmerkning. Det kan gjøre det vanskeligere å:</p>
+<ul>
+<li>få boliglån eller billån,</li>
+<li>få mobilabonnement eller andre kredittavtaler,</li>
+<li>i noen tilfeller leie bolig.</li>
+</ul>
+<p>Anmerkningen forsvinner først når gjelden er gjort opp og saken avsluttet. Dette er en god grunn til å rydde opp tidlig.</p>
+<h3>Hva du gjør hvis du virkelig ikke klarer å betale</h3>
+<p>Er økonomien svært vanskelig over tid, finnes det hjelp:</p>
+<ul>
+<li>Ta kontakt med Skatteetaten og forklar situasjonen; en betalingsavtale er ofte mulig.</li>
+<li>Kontakt kommunens økonomiske rådgivningstjeneste (gjeldsrådgiver), som er gratis.</li>
+<li>I helt spesielle tilfeller kan det søkes om utsettelse eller nedsettelse, men dette er unntak som krever dokumentasjon.</li>
+</ul>
+<p>Eksempel: Etter at Ahmed mistet jobben, kontaktet han både Skatteetaten og kommunens gjeldsrådgiver. Sammen la de en realistisk plan, og han unngikk tvangstiltak ved å betale et lavere månedsbeløp.</p>
+<h3>Tidslinjen i korte trekk</h3>
+<p>Slik utvikler en ubetalt restskatt seg typisk, steg for steg:</p>
+<ol>
+<li>Forfall passerer, og forsinkelsesrente begynner å løpe.</li>
+<li>Du får en påminnelse eller et varsel.</li>
+<li>Reagerer du ikke, går kravet til innkreving.</li>
+<li>Det kan tas utleggstrekk i lønn eller utleggspant i eiendeler.</li>
+<li>Du kan få en betalingsanmerkning som påvirker fremtidig lån og kreditt.</li>
+</ol>
+<p>På hvert eneste trinn kan du bremse prosessen ved å ta kontakt og avtale noe. Jo tidligere du gjør det, desto enklere er det å rydde opp.</p>
+<h3>Motregning mot tilgodebeløp</h3>
+<p>Et virkemiddel mange ikke tenker på, er motregning. Har du restskatt ett år og får penger igjen et annet, kan Skatteetaten bruke tilgodebeløpet til å dekke den ubetalte restskatten automatisk. Det betyr at gjelden kan bli gjort opp uten at du selv overfører noe, men også at et tilgodebeløp du gledet deg til, kan bli mindre enn ventet.</p>
+<h3>Det viktigste rådet: ikke gjem deg</h3>
+<p>Den vanligste feilen er å la brev og varsler ligge ulest fordi det føles ubehagelig. Men skattegjeld blir bare dyrere og vanskeligere jo lenger du venter. Skatteetaten er faktisk ofte løsningsorientert hvis du tar kontakt selv og er ærlig om situasjonen. Det er sjelden for sent å snakke med dem, men det er alltid bedre å gjøre det før det går til tvangstiltak.</p>
+<p>Eksempel: Da Lena først hadde fått utleggstrekk, tok hun endelig kontakt. Hun fikk forklart resten av prosessen og en plan for å bli ferdig. I ettertid skulle hun ønske hun hadde ringt da det første varselet kom, før trekket startet.</p>
+<h3>Kort oppsummert</h3>
+<p>Lar du restskatten stå ubetalt, løper det forsinkelsesrente fra forfall, og kravet går til innkreving. Skatteetaten kan ta utleggstrekk i lønn, ta pant i eiendeler og motregne mot tilgodebeløp, og det kan gi betalingsanmerkninger som rammer deg senere. Skattegjeld forsvinner ikke av seg selv. Det beste er å betale i tide eller ta kontakt og avtale en betalingsordning. Rentesatser og regler endres, så sjekk alltid de gjeldende vilkårene og dine muligheter på skatteetaten.no.</p>
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

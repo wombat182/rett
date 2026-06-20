@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en styreprotokoll? — Rettsregel</title>
+<meta name="description" content="En styreprotokoll er en skriftlig nedtegnelse av hva styret behandlet og bestemte.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-styreprotokoll/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en styreprotokoll?">
+<meta property="og:description" content="En styreprotokoll er en skriftlig nedtegnelse av hva styret behandlet og bestemte.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-styreprotokoll/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en styreprotokoll?">
+<meta name="twitter:description" content="En styreprotokoll er en skriftlig nedtegnelse av hva styret behandlet og bestemte.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er en styreprotokoll?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En styreprotokoll er en skriftlig nedtegnelse av hva styret behandlet og bestemte. Den skal føres for all styrebehandling og signeres av deltakerne. Tenk på den som styrets «hukommelse» – og som et viktig bevis hvis noen senere lurer på hva styret faktisk gjorde.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>En styreprotokoll er en skriftlig nedtegnelse av hva styret behandlet og bestemte. Den skal føres for all styrebehandling og signeres av deltakerne. Tenk på den som styrets «hukommelse» – og som et viktig bevis hvis noen senere lurer på hva styret faktisk gjorde.</p>
+<h3>Protokollen er ikke valgfri</h3>
+<p>Det er lett å tenke at protokoll er noe formelt og unødvendig byråkrati i et lite selskap. Men loven sier klart at det skal føres protokoll over styrebehandlingen, og at protokollen skal underskrives (reglene om styreprotokoll i aksjeloven § 6-29). Dette gjelder også når du sitter helt alene i styret. Protokollen trenger slett ikke være lang eller fin – den må bare vise tydelig hva som ble bestemt.</p>
+<h3>Hva skal stå i protokollen?</h3>
+<p>En god styreprotokoll inneholder normalt:</p>
+<ul>
+<li><strong>Tid og sted</strong> – eller en merknad om at saken ble behandlet skriftlig eller på video.</li>
+<li><strong>Hvem som deltok</strong> – styremedlemmene, og eventuelt daglig leder.</li>
+<li><strong>Sakene som ble behandlet</strong> – kort beskrevet.</li>
+<li><strong>Vedtakene</strong> – hva styret faktisk bestemte, formulert tydelig.</li>
+<li><strong>Eventuell uenighet</strong> – et medlem som stemte imot, har rett til å få det notert. Dette kalles å protokollere sin dissens, altså sin uenighet.</li>
+<li><strong>Signaturer</strong> fra dem som deltok.</li>
+</ul>
+<h3>Et eksempel: protokollen i «Bakerhjørnet AS»</h3>
+<p>Styret i Bakerhjørnet AS – Mona, Petter og Yusuf – bestemmer å kjøpe en ny ovn til 200 000 kroner. Protokollen kan se slik ut:</p>
+<blockquote>
+<p><strong>Styreprotokoll – Bakerhjørnet AS</strong>
+Dato: 12. mars 2026. Sted: Videomøte.
+Til stede: Mona (leder), Petter, Yusuf. Daglig leder Ingrid deltok.</p>
+<p><strong>Sak 1 – Kjøp av ny ovn.</strong> Styret drøftet behovet for økt produksjonskapasitet. Vedtak: Styret godkjenner kjøp av ny ovn til inntil 200 000 kr. Enstemmig.</p>
+<p><strong>Sak 2 – Budsjett 2026.</strong> Vedtak: Budsjettet godkjennes. Petter stemte imot og ønsket lavere markedsføringskostnader.</p>
+<p><em>Signaturer:</em> Mona <strong><em>_ Petter </em></strong>_ Yusuf ____</p>
+</blockquote>
+<p>Kort, klart og signert. Det er alt som skal til – ingen trenger juridiske fraser eller lange formuleringer.</p>
+<h3>Hvorfor protokollen er din beste venn</h3>
+<p>Protokollen er først og fremst et <strong>bevis</strong>. Forestill deg at det oppstår uenighet to år senere. Kanskje en investor mener at styret aldri godkjente ovnskjøpet. Kanskje en kreditor i en konkurs mener at styret var passivt da økonomien sviktet. Da er protokollen ditt svar i svart-hvitt. Den viser at styret behandlet saken, hva som ble bestemt, og hvem som var ansvarlige.</p>
+<p>For deg som enkelt styremedlem er protokollen også en personlig beskyttelse. Hvis du var uenig i en risikabel beslutning og fikk protokollført din motstemme, kan det skjerme deg fra ansvar hvis det senere går galt. Da kan du vise at du advarte, men ble nedstemt.</p>
+<h3>Vanlige feil – og hvordan du unngår dem</h3>
+<p>Mange små styrer gjør de samme glippene:</p>
+<ul>
+<li><strong>De skriver ikke protokoll i det hele tatt</strong> fordi «vi er jo bare oss». Feil – også enmanns-AS skal føre protokoll.</li>
+<li><strong>De skriver protokollen lenge etterpå</strong> og husker dårlig. Skriv den med en gang.</li>
+<li><strong>De glemmer signaturen.</strong> En usignert protokoll er svakere som bevis.</li>
+<li><strong>De blander styreprotokoll og generalforsamlingsprotokoll.</strong> Eierbeslutninger (som utbytte) hører hjemme i generalforsamlingsprotokollen, ikke i styreprotokollen.</li>
+</ul>
+<h3>Hvem signerer, og hva med digital signatur?</h3>
+<p>Protokollen skal underskrives. I et lite styre er det vanlig at alle som deltok signerer, men loven åpner også for at styret kan bestemme at protokollen signeres av minst to medlemmer som styret velger til det, dersom styret har flere medlemmer. I praksis er det enklest at alle deltakerne signerer. Digital signatur er fullt ut akseptert – du trenger ikke skrive ut papir og bruke penn. En PDF signert i en e-signaturløsning, eller til og med en e-posttråd der alle bekrefter, kan fungere, så lenge det er klart hvem som har godkjent hva.</p>
+<h3>En enkel protokollmal du kan gjenbruke</h3>
+<p>Det lønner seg å lage én mal og bruke den hver gang. Da blir terskelen for å føre protokoll mye lavere. En grei mal er:</p>
+<blockquote>
+<p><strong>Styreprotokoll – [Selskap] AS</strong>
+Dato / tidspunkt: <strong><em>_</em>_
+Behandlingsform: møte / video / skriftlig
+Deltakere: </strong><strong><em>_
+Forfall / vara: </em></strong>___</p>
+<p><strong>Sak 1 – [tittel]:</strong> [kort om bakgrunn]. Vedtak: <strong><em>_</em>_. (Enstemmig / dissens av </strong><strong><em>_.)
+<strong>Sak 2 – [tittel]:</strong> </em></strong>___</p>
+<p>Signaturer: ______</p>
+</blockquote>
+<p>Lagre malen et sted du lett finner den, så fyller du den bare ut neste gang. Mange opplever at det å ha en ferdig mal er forskjellen mellom å føre protokoll og å la være.</p>
+<h3>Hvor lenge skal du ta vare på protokollene?</h3>
+<p>Styreprotokoller er en del av selskapets dokumentasjon og bør oppbevares trygt i mange år – gjerne så lenge selskapet eksisterer, og i god tid etter at en sak er avsluttet. Du vet aldri når et spørsmål om en gammel beslutning dukker opp, for eksempel ved et salg av selskapet, en tvist eller en kontroll. Et samlet arkiv av alle protokoller er rett og slett god selskapshygiene.</p>
+<h3>Praktiske tips for protokollen</h3>
+<ol>
+<li><strong>Skriv den med en gang</strong> – mens du husker hva som ble sagt og bestemt.</li>
+<li><strong>Hold den enkel</strong> – stikkord og tydelige vedtak holder, ingen roman.</li>
+<li><strong>Få den signert</strong> – fysisk eller digitalt med e-signatur.</li>
+<li><strong>Oppbevar alle protokoller samlet</strong> – gjerne i en egen perm eller digital mappe.</li>
+<li><strong>Husk at også enmanns-AS skal føre protokoll</strong> – ja, selv når du «møter deg selv».</li>
+</ol>
+<h3>Hva protokollen IKKE trenger å være</h3>
+<p>Det er like nyttig å vite hva du <em>ikke</em> trenger å gjøre. Protokollen trenger ikke gjengi hele diskusjonen ord for ord – det holder med saken og vedtaket. Den trenger ikke være skrevet i et tungt juridisk språk; vanlig, klart norsk er helt fint. Og den trenger ikke være lang for å være god – en halv side per møte er ofte mer enn nok i et lite selskap. Mange dropper protokollen fordi de tror den må være omfattende og formell. Det motsatte er sant: en kort, tydelig protokoll som faktisk blir skrevet, er uendelig mye bedre enn en perfekt protokoll som aldri blir til.</p>
+<h3>Kort oppsummert</h3>
+<p>En styreprotokoll er styrets skriftlige nedtegnelse av hva som ble behandlet og bestemt. Loven krever at den føres for all styrebehandling og signeres av deltakerne. Den trenger ikke være lang – tid, deltakere, saker, vedtak og signaturer holder. Protokollen er styrets hukommelse og et viktig bevis hvis noe blir omstridt senere, og den kan til og med beskytte deg personlig hvis du fikk protokollført din uenighet. Skriv den med en gang, hold den enkel, få den signert, og ta vare på den. Det gjelder også deg som sitter alene i styret.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

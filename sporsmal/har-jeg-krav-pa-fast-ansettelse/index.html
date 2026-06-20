@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg krav på fast ansettelse? — Rettsregel</title>
+<meta name="description" content="Ja, i de aller fleste tilfeller har du krav på fast ansettelse.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-krav-pa-fast-ansettelse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg krav på fast ansettelse?">
+<meta property="og:description" content="Ja, i de aller fleste tilfeller har du krav på fast ansettelse.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-krav-pa-fast-ansettelse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg krav på fast ansettelse?">
+<meta name="twitter:description" content="Ja, i de aller fleste tilfeller har du krav på fast ansettelse.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Har jeg krav på fast ansettelse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, i de aller fleste tilfeller har du krav på fast ansettelse. Arbeidsmiljøloven slår fast at fast ansettelse er hovedregelen (§ 14-9 første ledd). Midlertidig ansettelse – altså jobb med en avtalt sluttdato eller knyttet til et bestemt oppdrag – er unntaket, og arbeidsgiver må ha en lovlig grunn for å bruke det. Hvis det ikke finnes en slik grunn, skal du regnes som fast ansatt.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 14-9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/14-9/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-9</div>
+  <div class="related-card-title">Retten til fast ansettelse (og strenge regler for vikarer)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, i de aller fleste tilfeller har du krav på fast ansettelse. Arbeidsmiljøloven slår fast at fast ansettelse er hovedregelen (§ 14-9 første ledd). Midlertidig ansettelse – altså jobb med en avtalt sluttdato eller knyttet til et bestemt oppdrag – er unntaket, og arbeidsgiver må ha en lovlig grunn for å bruke det. Hvis det ikke finnes en slik grunn, skal du regnes som fast ansatt.</p>
+<h3>Hovedregelen er fast jobb</h3>
+<p>Tanken bak loven er enkel: De som jobber, skal i utgangspunktet ha en trygg og forutsigbar jobb. Derfor kan ikke en arbeidsgiver fritt velge å ansette deg «midlertidig» bare fordi det passer bedriften bedre. «Midlertidig ansettelse» betyr at jobben har en avtalt slutt – for eksempel et vikariat eller et tidsbegrenset prosjekt.</p>
+<p>For å ansette deg midlertidig må arbeidsgiveren kunne vise til en av de lovlige grunnene. De vanligste er:</p>
+<ul>
+<li><strong>Vikariat:</strong> Du fyller inn for en annen som er borte, for eksempel i foreldrepermisjon eller ved langtidssykdom. Marit vikarierer for Anne som er i fødselspermisjon – det er lov.</li>
+<li><strong>Arbeid av midlertidig karakter:</strong> Jobben i seg selv er kortvarig, som sesongarbeid på et jordbær­bruk eller en topp før jul i butikk.</li>
+<li><strong>Praksisarbeid, arbeidsmarkedstiltak eller idrettsutøvere/-trenere:</strong> Egne unntak i loven.</li>
+</ul>
+<p>Hvis arbeidsgiveren ikke kan peke på en slik grunn, men likevel kaller deg «midlertidig», er ansettelsen i strid med loven – og da har du i praksis krav på fast ansettelse.</p>
+<h3>Eksempel: Når «midlertidig» egentlig er fast</h3>
+<p>Jonas blir ansatt som «prosjektmedarbeider» med en kontrakt på seks måneder av gangen. Han fornyer kontrakten gang på gang i over to år, og gjør hele tiden de samme ordinære arbeidsoppgavene som de fast ansatte kollegene. Her finnes det ikke noe reelt «prosjekt» som tar slutt – arbeidsgiveren bruker bare midlertidige kontrakter for å slippe å binde seg. Dette er ikke lovlig bruk av midlertidig ansettelse, og Jonas kan ha krav på å bli fast ansatt.</p>
+<h3>Tre- og fireårsregelen – fast jobb over tid</h3>
+<p>Loven har også en sikkerhetsventil for deg som har vært midlertidig ansatt lenge. Hovedregelen er:</p>
+<ul>
+<li>Har du vært <strong>sammenhengende midlertidig ansatt i mer enn tre år</strong>, skal du regnes som fast ansatt.</li>
+<li>For vikariater og «arbeid av midlertidig karakter» gjelder en grense på <strong>mer enn fire år</strong> i visse tilfeller.</li>
+</ul>
+<p>Poenget er at langvarig midlertidighet ikke skal være en måte å omgå retten til fast jobb på. Kortere avbrudd, som en ferie eller noen få dager mellom kontrakter, bryter normalt ikke opp «sammenhengen».</p>
+<h3>Slik går du frem hvis du tror du har krav på fast ansettelse</h3>
+<ol>
+<li><strong>Finn frem arbeidsavtalen din.</strong> Står det en sluttdato? Hva er begrunnelsen for at den er midlertidig? Du har alltid rett til en skriftlig arbeidsavtale.</li>
+<li><strong>Skriv ned historikken din.</strong> Når begynte du, hvilke oppgaver har du hatt, og hvor mange kontrakter har du hatt etter hverandre? Dette er gull verdt senere.</li>
+<li><strong>Sjekk om arbeidet egentlig er varig.</strong> Gjør du de samme oppgavene som fast ansatte, år etter år? Da kan «midlertidig» være feil etikett.</li>
+<li><strong>Ta det opp skriftlig med arbeidsgiver.</strong> Be høflig om en avklaring: «Jeg mener arbeidsforholdet mitt nå er fast etter arbeidsmiljøloven. Kan vi sette opp en fast avtale?» Send det gjerne på e-post, så har du det dokumentert.</li>
+<li><strong>Få hjelp.</strong> Er du fagorganisert, kontakt tillitsvalgt eller fagforeningen din. Du kan også ringe Arbeidstilsynets svartjeneste for veiledning.</li>
+</ol>
+<h3>Et viktig poeng om reell tilknytning</h3>
+<p>Det er den <strong>faktiske situasjonen</strong> som teller, ikke hva avtalen kaller seg. En arbeidsgiver kan ikke skrive «midlertidig» på papiret og dermed slippe unna reglene hvis virkeligheten er at du har en løpende, varig jobb. Domstolene ser på realiteten. Det betyr at du står sterkere enn mange tror – selv om kontrakten din sier noe annet.</p>
+<p>Husk også: At du er i prøvetid, betyr ikke at jobben er midlertidig. Prøvetid er en innledende periode i en helt vanlig fast jobb, der både du og arbeidsgiver kan vurdere om dere passer sammen. Du er altså fast ansatt fra dag én, selv om du er i prøvetid.</p>
+<h3>Vanlige feller arbeidsgivere går i</h3>
+<p>Det kan være nyttig å kjenne igjen de typiske måtene midlertidighet blir misbrukt på, slik at du vet hva du skal se etter:</p>
+<ul>
+<li><strong>«Tilkallingsavtale» som egentlig er en fast turnus.</strong> Hvis du i praksis jobber faste vakter uke etter uke, men kalles «tilkallingsvikar», kan virkeligheten være at du har en løpende tilknytning. Da kan du ha krav på en avtale med reelt stillingsomfang.</li>
+<li><strong>Kjeder av korte kontrakter.</strong> Mange ett- eller tremåneders kontrakter på rad, uten reell begrunnelse, kan til sammen utgjøre et fast forhold.</li>
+<li><strong>«Prosjekt» som aldri tar slutt.</strong> Hvis prosjektet du er «midlertidig» ansatt på fornyes i det uendelige og du gjør ordinære driftsoppgaver, mangler ofte den lovlige begrunnelsen.</li>
+<li><strong>Feil etikett for å unngå stillingsvern.</strong> Noen kaller en stilling «midlertidig» nettopp for å slippe oppsigelsesreglene. Det er ikke etiketten, men realiteten, som teller.</li>
+</ul>
+<h3>Eksempel: Tilkallingsvikaren som ble fast</h3>
+<p>Camilla begynte som «tilkallingsvikar» på et sykehjem. I praksis tok hun faste kveldsvakter hver uke i nesten to år, fylte ordinære turnushull, og ble regnet med på lik linje som de andre. Selv om avtalen kalte henne «tilkalling», speilet ikke dette virkeligheten. Camilla hadde en jevn, forutsigbar og varig tilknytning – og kunne ha grunnlag for å kreve en fast stilling med et reelt stillingsomfang som tilsvarte det hun faktisk jobbet.</p>
+<h3>Hva skjer hvis du får medhold?</h3>
+<p>Hvis det viser seg at du skulle vært fast ansatt, er hovedvirkningen at du har rett til å fortsette i jobben som fast ansatt – med alt det innebærer av stillingsvern, forutsigbarhet og oppsigelsestid. I noen tilfeller kan du også ha krav på erstatning. Dette er noe en fagforening eller advokat kan hjelpe deg med å vurdere konkret.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li><strong>Fast ansettelse er hovedregelen</strong> (§ 14-9 første ledd). Midlertidig ansettelse krever en lovlig grunn.</li>
+<li>Lovlige grunner er blant annet vikariat, arbeid av midlertidig karakter og praksis/tiltak.</li>
+<li>Mangler en slik grunn, kan du ha krav på fast jobb – selv om kontrakten sier «midlertidig».</li>
+<li>Har du vært sammenhengende midlertidig ansatt i <strong>mer enn tre år</strong> (fire år i visse tilfeller), skal du normalt regnes som fast ansatt.</li>
+<li>Det er den <strong>virkelige situasjonen</strong> som avgjør, ikke etiketten på avtalen.</li>
+<li>Ta det opp skriftlig, ta vare på dokumentasjon, og søk hjelp hos tillitsvalgt, fagforening eller Arbeidstilsynet.</li>
+</ul>
+<p>Du har mer å gå på enn du kanskje tror. Tør å spørre – retten til en trygg jobb er noe loven er på din side for å beskytte.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

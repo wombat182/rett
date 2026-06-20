@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan Skatteetaten kontrollere skattemeldingen min? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-skatteetaten-kontrollere-skattemeldingen-min/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan Skatteetaten kontrollere skattemeldingen min?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-skatteetaten-kontrollere-skattemeldingen-min/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan Skatteetaten kontrollere skattemeldingen min?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan Skatteetaten kontrollere skattemeldingen min?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Selv om de aller fleste får skatteoppgjøret uten innsigelser, har Skatteetaten full adgang til å kontrollere og endre fastsettingen din – også flere år tilbake i tid. Hovedregelen er at de kan ta opp en sak til endring i inntil fem år etter inntektsåret (verifiser på skatteetaten.no).</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Selv om de aller fleste får skatteoppgjøret uten innsigelser, har Skatteetaten full adgang til å <strong>kontrollere og endre</strong> fastsettingen din – også flere år tilbake i tid. Hovedregelen er at de kan ta opp en sak til endring i inntil <strong>fem år</strong> etter inntektsåret (verifiser på skatteetaten.no).</p>
+<h3>Hvorfor blir skattemeldinger kontrollert?</h3>
+<p>Mye skjer automatisk. Arbeidsgivere, banker, NAV og Folketrygden rapporterer tall direkte til Skatteetaten, og stadig flere opplysninger om penger i utlandet kommer inn automatisk fra andre land gjennom internasjonal informasjonsutveksling. Når noe ikke stemmer overens, eller når et beløp skiller seg ut fra det som er forventet, kan saken plukkes ut til nærmere kontroll. Noen kontroller er tilfeldige stikkprøver, andre er målrettede.</p>
+<h3>Hvor langt tilbake kan de gå?</h3>
+<ul>
+<li><strong>Hovedregel: fem år.</strong> Skatteetaten kan endre fastsettingen i inntil fem år etter utløpet av inntektsåret.</li>
+<li><strong>Ti år ved grove forhold.</strong> Har du gitt opplysninger som fører til <strong>skjerpet tilleggsskatt</strong>, eller er det snakk om brudd på straffebestemmelser, utvides fristen til ti år.</li>
+</ul>
+<p><strong>Eksempel – Kari og den glemte utleien:</strong> Kari leide ut en hybel i to år uten å oppgi inntekten. Tre år senere oppdager Skatteetaten det gjennom kontroll. Fordi det er innenfor femårsfristen, kan de endre skatteoppgjørene for begge årene og etterberegne skatt med renter.</p>
+<p><strong>Eksempel – Omar med konto i utlandet:</strong> Omar hadde en bankkonto i utlandet han aldri oppga. Norge mottok automatisk informasjon om kontoen fra det andre landet. Skatteetaten tok kontakt og kontrollerte oppgjørene flere år tilbake.</p>
+<h3>Hva skjer i en kontroll?</h3>
+<ul>
+<li><strong>Du får et brev</strong> der Skatteetaten ber om opplysninger eller varsler at de vurderer å endre fastsettingen.</li>
+<li><strong>Du får anledning til å uttale deg</strong> før de fatter vedtak – dette kalles kontradiksjon, altså retten til å forklare din side av saken.</li>
+<li><strong>Skatteetaten fatter et vedtak.</strong> Er du uenig, kan du klage (egen artikkel om klage).</li>
+</ul>
+<h3>Hva ser de etter?</h3>
+<ul>
+<li>Inntekt som ikke er oppgitt – lønn, utleie, utbytte, gevinster ved salg.</li>
+<li>Formue i Norge og utlandet, for eksempel bankinnskudd og eiendom.</li>
+<li>Fradrag som er ført feil eller uten grunnlag.</li>
+<li>Avvik mellom det du har oppgitt og det tredjeparter har rapportert.</li>
+</ul>
+<h3>Slik håndterer du en kontroll trygt</h3>
+<ul>
+<li><strong>Ikke få panikk.</strong> En kontroll betyr ikke automatisk at du har gjort noe galt – ofte er det bare en avklaring.</li>
+<li><strong>Svar innen fristen</strong> i brevet, og be om utsettelse hvis du trenger mer tid.</li>
+<li><strong>Legg fram dokumentasjon</strong> – kvitteringer, kontoutskrifter, kontrakter.</li>
+<li><strong>Vær ærlig og fullstendig.</strong> Å holde tilbake informasjon gjør situasjonen verre, ikke bedre.</li>
+<li><strong>Vurder frivillig retting</strong> hvis du selv vet om feil før kontrollen starter (egen artikkel). Men er kontrollen først i gang, er det normalt for sent for frivillig retting.</li>
+</ul>
+<h3>Et godt råd: ta vare på papirene</h3>
+<p>Fordi kontroll kan skje flere år tilbake, lønner det seg å oppbevare dokumentasjon på inntekt, fradrag, utenlandsforhold og store transaksjoner i minst fem til ti år. Da står du sterkt hvis spørsmålene kommer, og du slipper å lete etter papirer du for lengst har kastet.</p>
+<h3>Hva hvis du oppdager en feil selv under kontrollen?</h3>
+<p>Da bør du si fra med en gang og legge fram det du vet. Det å samarbeide og rette opp kan ha betydning for hvor strengt forholdet vurderes, selv om frivillig retting i streng forstand krever at du var ute før kontrollen begynte.</p>
+<h3>Hva betyr endringsadgangen for utenlandsforhold?</h3>
+<p>For deg som har eller har hatt inntekt eller formue i utlandet, er femårsregelen ekstra viktig å kjenne til. Tidligere kunne det føles som at "det ute ikke angikk Norge", men i dag utveksler Norge skatteopplysninger automatisk med svært mange land. Det betyr at en konto eller en eiendom i utlandet du ikke har oppgitt, kan dukke opp hos Skatteetaten flere år senere – godt innenfor fristen for å endre. Og er forholdet grovt, gjelder tiårsfristen. Dette er en av grunnene til at frivillig retting (egen artikkel) har blitt et viktig tema: det er bedre å rydde opp selv enn å vente på at opplysningene kommer inn automatisk.</p>
+<p><strong>Eksempel – Bjarne og leiligheten i utlandet:</strong> Bjarne kjøpte en leilighet i utlandet for seks år siden og leide den ut uten å oppgi inntekten. Selv om det er noen år siden, kan Skatteetaten fortsatt ta opp de siste fem årene til endring, og lenger tilbake hvis forholdet anses grovt.</p>
+<h3>Plikten din til å bidra</h3>
+<p>Når du blir bedt om opplysninger i en kontroll, har du plikt til å gi dem. Det å nekte eller trenere kan i seg selv gjøre situasjonen verre. Samtidig har du rett til å bli hørt og til å forklare din side før vedtak fattes. Bruk denne retten aktivt: et godt og dokumentert svar kan løse saken raskt og i din favør.</p>
+<h3>Hva er forskjellen på en kontroll og en vanlig endring?</h3>
+<p>Ikke all kontakt fra Skatteetaten handler om mistanke. Ofte er det rett og slett en avklaring fordi et tall ikke stemmer overens med det en tredjepart har rapportert, eller fordi et fradrag virker uvanlig høyt. Da ber de om en forklaring eller dokumentasjon, og når den er på plass, kan saken være løst uten videre. En mer omfattende kontroll, der de går grundig gjennom flere år, er sjeldnere og brukes når det er konkrete holdepunkter. Uansett er rådet det samme: svar ryddig, dokumentert og innen fristen.</p>
+<p><strong>Eksempel – Et enkelt avvik:</strong> Lars får spørsmål fordi banken har rapportert en renteinntekt som ikke kom med i meldingen hans. Han bekrefter beløpet, det rettes opp, og fordi det var en åpenbar forglemmelse av et beløp Skatteetaten allerede hadde, blir det ingen tilleggsskatt.</p>
+<h3>Trenger jeg hjelp av en regnskapsfører eller advokat?</h3>
+<p>For helt vanlige avklaringer klarer de fleste seg godt på egen hånd: les brevet nøye, finn fram dokumentasjonen og svar innen fristen. Men er det snakk om store beløp, kompliserte utenlandsforhold over flere år, eller varsel om skjerpet tilleggsskatt, kan det være klokt å få profesjonell hjelp. En rådgiver kan hjelpe deg å forklare forholdet riktig og passe på rettighetene dine. Vurder kostnaden opp mot hva som står på spill – i en stor sak kan god hjelp være vel anvendte penger.</p>
+<h3>Kort oppsummert</h3>
+<p>Skatteetaten kan kontrollere og endre skattefastsettingen din, normalt inntil fem år tilbake og opptil ti år ved grove forhold. Mange opplysninger sjekkes automatisk, også fra utlandet. Får du brev, svar innen fristen, legg fram dokumentasjon og vær ærlig. Ta vare på papirene dine i flere år. Fristene kan endres – sjekk skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

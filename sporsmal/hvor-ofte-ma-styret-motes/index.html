@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor ofte må styret møtes? — Rettsregel</title>
+<meta name="description" content="Det finnes ikke noe fast lovkrav til hvor mange styremøter du må ha i året.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-ofte-ma-styret-motes/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor ofte må styret møtes?">
+<meta property="og:description" content="Det finnes ikke noe fast lovkrav til hvor mange styremøter du må ha i året.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-ofte-ma-styret-motes/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor ofte må styret møtes?">
+<meta name="twitter:description" content="Det finnes ikke noe fast lovkrav til hvor mange styremøter du må ha i året.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hvor ofte må styret møtes?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det finnes ikke noe fast lovkrav til hvor mange styremøter du må ha i året. Loven sier i stedet at styret skal behandle saker når det er behov for det. Et travelt selskap kan trenge mange møter; et rolig enmanns-AS kan klare seg med svært få.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det finnes ikke noe fast lovkrav til hvor mange styremøter du må ha i året. Loven sier i stedet at styret skal behandle saker når det er behov for det. Et travelt selskap kan trenge mange møter; et rolig enmanns-AS kan klare seg med svært få.</p>
+<h3>Ingen magisk minimumsgrense</h3>
+<p>Mange tror det står et tall i loven – «minst fire møter i året» eller noe lignende. Det gjør det ikke. Aksjeloven legger opp til at styrelederen sørger for at styret behandler aktuelle saker når det trengs (det følger av reglene om styrets saksbehandling i aksjeloven § 6-19, der styrelederen har ansvar for å holde styret i arbeid). Behovet styrer takten, ikke kalenderen. Du blir altså ikke straffet for å ha «for få» møter i seg selv – men du må sørge for at de sakene som faktisk dukker opp, blir behandlet.</p>
+<h3>To selskaper, to helt ulike rytmer</h3>
+<p><strong>Tomas</strong> driver «Tomas Snekker AS» helt alene. Han er eneeier, eneste styremedlem og daglig leder. Han trenger ikke å «innkalle seg selv» til møte hver måned. Men minst én gang i året må han fatte beslutninger knyttet til årsregnskapet, og når noe stort skjer – for eksempel et lån på 500 000 kroner eller kjøp av en dyr maskin – bør han føre et styrevedtak på det.</p>
+<p><strong>«Nordlys Tech AS»</strong> har derimot fem ansatte, eksterne investorer og rask vekst. Her holder styret møte omtrent én gang i måneden, fordi det stadig dukker opp viktige saker: ansettelser, nye kontrakter, budsjettjusteringer, kapitalbehov. Behovet er stort, og da blir møtene hyppige helt naturlig.</p>
+<h3>Når BØR styret samles?</h3>
+<p>Selv uten et fast tall finnes det situasjoner der du nesten alltid bør ha en styrebehandling:</p>
+<ul>
+<li><strong>Årsregnskapet</strong> skal behandles, og styret skal avgi årsberetning der det kreves – minst én gang i året.</li>
+<li><strong>Store investeringer eller lån</strong> som forplikter selskapet tungt.</li>
+<li><strong>Når økonomien skranter</strong> – styret har en plikt til å handle hvis egenkapitalen blir for lav, eller selskapet ikke lenger kan betale regningene sine. Da må styret samles og vurdere tiltak.</li>
+<li><strong>Viktige avtaler</strong> – for eksempel en stor kunde- eller leverandøravtale.</li>
+<li><strong>Ansettelse eller oppsigelse av daglig leder.</strong></li>
+<li><strong>Vesentlige endringer i strategi eller drift.</strong></li>
+</ul>
+<h3>Den lille forskjellen som kan redde deg</h3>
+<p>Her er et viktig poeng for styreansvaret. Hvis selskapet får problemer, vil det ofte bli spurt om styret «var på ballen». Et styre som aldri møttes og aldri skrev noe ned, kan få et alvorlig forklaringsproblem hvis en kreditor eller et konkursbo stiller spørsmål. Et styre som derimot hadde jevnlige beslutninger dokumentert i protokoll, kan vise svart på hvitt at det fulgte med og handlet ansvarlig. Så selv om loven ikke teller møtene dine, kan det å holde – og dokumentere – møter beskytte deg personlig.</p>
+<h3>Hva med skriftlig behandling mellom møtene?</h3>
+<p>Mellom de «store» møtene kan du gjerne ta mindre saker skriftlig. Trenger selskapet å godkjenne en avtale raskt, kan styret behandle den på e-post og protokollføre vedtaket. Dette teller som fullverdig styrebehandling. For et lite selskap er en blanding av noen få ordentlige møter i året og løpende skriftlige beslutninger ofte den mest praktiske modellen.</p>
+<h3>Et eksempel på et «årshjul» for et lite styre</h3>
+<p>Det kan hjelpe å tenke i et enkelt årshjul – en fast rytme gjennom året. Slik kan det se ut for et lite AS med litt aktivitet:</p>
+<ul>
+<li><strong>Tidlig på året:</strong> Møte for å sette budsjett og mål for det nye året.</li>
+<li><strong>Vår (innen seks måneder etter årsslutt):</strong> Møte for å behandle og innstille på årsregnskapet, før det godkjennes på generalforsamlingen.</li>
+<li><strong>Etter sommeren:</strong> Et statusmøte – hvordan ligger vi an mot budsjettet, trenger vi å justere noe?</li>
+<li><strong>Ved behov:</strong> Ekstra møter eller skriftlige beslutninger når noe stort dukker opp.</li>
+</ul>
+<p>Et slikt årshjul er ikke et lovkrav, men en praktisk måte å sikre at styret faktisk følger med jevnt gjennom året, i stedet for å våkne opp først når det brenner.</p>
+<h3>Hva sier dette om passive styrer?</h3>
+<p>En vanlig felle er det helt passive styret som «aldri har noe å gjøre». Problemet er at styret har en løpende plikt til å holde seg orientert om selskapets økonomi og til å gripe inn hvis noe går galt. Hvis styret aldri møtes og aldri ber om tall fra daglig leder, kan det i seg selv være uforsvarlig – ikke fordi antallet møter er for lavt, men fordi styret ikke fyller oppgaven sin. Poenget er altså ikke å telle møter, men å være reelt på ballen. Møtene er bare verktøyet.</p>
+<h3>Praktisk anbefaling</h3>
+<p>For et helt vanlig lite AS er en grei tommelfingerregel:</p>
+<ol>
+<li><strong>Minst ett årlig styremøte</strong> for å behandle årsregnskapet.</li>
+<li><strong>Ekstra møter ved behov</strong> – hver gang noe vesentlig skjer.</li>
+<li><strong>Skriftlig behandling</strong> for mindre saker mellom møtene (e-post holder fint).</li>
+<li><strong>Før alltid protokoll</strong>, uansett hvor liten saken er.</li>
+</ol>
+<p>Mange små selskaper lander på to til fire dokumenterte beslutninger i året – men det er behovet, ikke tallet, som avgjør.</p>
+<h3>Et tegn på at dere bør møtes oftere</h3>
+<p>Hvordan vet du om dagens møtetakt er for lav? Noen tydelige varsellamper: viktige beslutninger blir tatt av daglig leder alene uten at styret er informert; styret oppdager dårlige tall først lenge etter at de oppsto; eller selskapet stadig havner i situasjoner der dere skulle ønske dere hadde grepet inn tidligere. Hvis du kjenner deg igjen, er det et signal om å samles oftere – ikke for formalitetens skyld, men fordi selskapet trenger en mer aktiv ledelse. Motsatt: hvis alt går rolig og forutsigbart, er det helt greit at det går lang tid mellom beslutningene.</p>
+<h3>Kort oppsummert</h3>
+<p>Det finnes ikke noe lovbestemt antall styremøter. Styret skal behandle saker når det trengs, og takten avhenger av hvor mye som skjer i selskapet. Som et minimum bør du ha minst ett møte i året for årsregnskapet, og ekstra møter når noe vesentlig dukker opp – som store lån, økonomiske problemer eller viktige avtaler. Bruk gjerne skriftlig behandling mellom møtene. Dokumenter alle beslutninger i protokoll, så viser du at styret var ansvarlig, uansett hvor mange ganger dere faktisk møttes.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

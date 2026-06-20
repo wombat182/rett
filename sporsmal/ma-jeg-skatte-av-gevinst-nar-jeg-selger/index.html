@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg skatte av gevinst når jeg selger bolig? — Rettsregel</title>
+<meta name="description" content="I de aller fleste tilfeller slipper du å betale skatt når du selger din egen bolig med gevinst. Men det forutsetter at du har eid boligen i mer enn ett år…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-gevinst-nar-jeg-selger/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg skatte av gevinst når jeg selger bolig?">
+<meta property="og:description" content="I de aller fleste tilfeller slipper du å betale skatt når du selger din egen bolig med gevinst. Men det forutsetter at du har eid boligen i mer enn ett år…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-gevinst-nar-jeg-selger/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg skatte av gevinst når jeg selger bolig?">
+<meta name="twitter:description" content="I de aller fleste tilfeller slipper du å betale skatt når du selger din egen bolig med gevinst. Men det forutsetter at du har eid boligen i mer enn ett år…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Må jeg skatte av gevinst når jeg selger bolig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>I de aller fleste tilfeller slipper du å betale skatt når du selger din egen bolig med gevinst. Men det forutsetter at du har eid boligen i mer enn ett år OG bodd der i minst 12 av de siste 24 månedene. Er ikke disse vilkårene oppfylt, må du betale 22 prosent skatt av gevinsten.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hvorfor finnes denne regelen?</h3>
+<p>Tanken bak den gunstige boligbeskatningen er at folk skal kunne flytte, bytte bolig og tilpasse seg livet uten å straffes skattemessig hver gang. Ville staten tatt 22 prosent av all boligprisvekst, ville det blitt dyrt og vanskelig å bytte bolig. Derfor har vi i Norge en romslig ordning som gjør salg av egen bolig skattefritt for de aller fleste – så lenge man faktisk har bodd der.</p>
+<h3>Hovedregelen for vanlig bolig: ofte skattefritt</h3>
+<p>Mange blir lettet når de hører dette: Selger du boligen du selv bor i, og du har bodd der lenge nok, er hele gevinsten skattefri. Det betyr at om du kjøpte for 3 millioner og selger for 4,5 millioner, kan du i mange tilfeller beholde hele gevinsten uten å betale en krone i skatt.</p>
+<p>Regelen står i skatteloven § 9-3. «Gevinst» betyr fortjenesten – altså det du sitter igjen med når du trekker kjøpesummen og kostnadene fra salgssummen.</p>
+<p>For at gevinsten skal være skattefri, må to vilkår være oppfylt samtidig:</p>
+<ul>
+<li><strong>Eiertid:</strong> Du må ha eid boligen i mer enn ett år når salget skjer eller avtales.</li>
+<li><strong>Botid:</strong> Du må ha bodd i boligen i minst 12 av de siste 24 månedene før salget.</li>
+</ul>
+<h3>Eksempel: Ingvild selger med god gevinst</h3>
+<p>Ingvild kjøpte en leilighet på Lillehammer i 2019 for 2 800 000 kroner. I 2026 selger hun den for 3 900 000 kroner. Hun har bodd der hele tiden.</p>
+<ul>
+<li>Salgssum: 3 900 000 kr</li>
+<li>Kjøpesum: 2 800 000 kr</li>
+<li>Gevinst (forenklet): 1 100 000 kr</li>
+</ul>
+<p>Fordi Ingvild har eid leiligheten i over ett år og bodd der mer enn 12 av de siste 24 månedene, er hele gevinsten på 1 100 000 kroner <strong>skattefri</strong>. Hun beholder alt.</p>
+<h3>Når må du faktisk betale?</h3>
+<p>Du må betale skatt på gevinsten dersom du IKKE oppfyller kravene til eier- og botid. Typiske situasjoner:</p>
+<ul>
+<li>Du har eid boligen mindre enn ett år (kjøpte og solgte raskt).</li>
+<li>Du har leid den ut og aldri bodd der selv.</li>
+<li>Du arvet eller kjøpte en bolig som du brukte som utleie, ikke som hjem.</li>
+</ul>
+<p>I disse tilfellene regnes gevinsten som «alminnelig inntekt» og skattlegges med <strong>22 prosent</strong> (sats for inntektsåret 2025).</p>
+<h3>Eksempel: Jonas solgte for raskt</h3>
+<p>Jonas kjøpte en leilighet i mars 2025 for 3 000 000 kroner. Allerede i november 2025 solgte han den for 3 350 000 kroner fordi han fikk jobb i en annen by. Han hadde da eid den under ett år.</p>
+<ul>
+<li>Gevinst: 350 000 kr</li>
+<li>Skatt: 22 % av 350 000 = <strong>77 000 kr</strong></li>
+</ul>
+<p>Hadde Jonas ventet til han passerte ett års eiertid (og fortsatt bodde der), kunne salget vært skattefritt. Her finnes det riktignok unntak for «brukshindring» – fikk han for eksempel jobben uventet og uten å kunne planlegge det ved kjøp, kan den tiden likevel telle som botid.</p>
+<h3>Hva med arv og gave?</h3>
+<p>Får du en bolig i arv eller gave, starter ofte en ny vurdering for deg som ny eier. Du må selv opparbeide eier- og botid for at et fremtidig salg skal bli skattefritt. I noen tilfeller kan du «arve» avdødes inngangsverdi, i andre settes verdien til markedsverdien på overtakelsestidspunktet. Reglene rundt arv kan være kompliserte, og det lønner seg å lese mer på skatteetaten.no eller kontakte Skatteetaten direkte.</p>
+<h3>Hva med flere boliger eller deler av en bolig?</h3>
+<p>Reglene om skattefri gevinst gjelder boligen du selv bor i. Har du flere boliger, kan du normalt bare ha skattefritak knyttet til den du faktisk bruker som hjem. En sekundærbolig du leier ut, regnes ikke som «egen bolig», og en gevinst der vil være skattepliktig.</p>
+<p>Hvis en del av boligen din har vært brukt til utleie, men du selv har bodd i resten, kan hele boligen likevel selges skattefritt så lenge du selv har brukt minst halvparten (etter utleieverdi) som egen bolig i botidsperioden. Det betyr at en typisk enebolig med en utleid hybel som regel kan selges skattefritt – forutsatt at eier- og botidskravene er oppfylt.</p>
+<h3>Brukshindring kan redde skattefritaket</h3>
+<p>Et viktig unntak er kalt <strong>brukshindring</strong>. Dersom du er forhindret fra å bo i boligen på grunn av arbeid, helse eller lignende, og du ikke kjente til hindringen da du kjøpte, kan tiden du var borte likevel telle som botid.</p>
+<p>Eksempel: Du kjøper en bolig og planlegger å bo der, men får uventet en jobb i en annen del av landet. Da kan den tiden du var borte regnes som botid, slik at salget likevel blir skattefritt.</p>
+<h3>Eksempel: Kari fikk skattefritak via brukshindring</h3>
+<p>Kari kjøpte leilighet i Bergen i 2023 og bodde der ett år. I 2024 ble hun tilbudt en stilling i Tromsø og måtte flytte. Hun leide ut leiligheten i Bergen frem til hun solgte i 2026.</p>
+<p>På papiret bodde hun ikke i leiligheten de siste to årene før salg. Men fordi flyttingen skyldtes arbeid som hun ikke kjente til ved kjøp, kan tiden i Tromsø telle som botid. Da blir salget likevel <strong>skattefritt</strong>.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li>Sjekk når du faktisk overtok boligen og hvor lenge du har bodd der.</li>
+<li>Ta vare på kvitteringer for oppussing som øker verdien – de kan redusere en skattepliktig gevinst.</li>
+<li>Er du i tvil, regn ut gevinsten før du selger, så du ikke får en overraskelse.</li>
+<li>Måtte du flytte på grunn av jobb eller helse? Undersøk reglene om brukshindring – de kan gjøre salget skattefritt.</li>
+<li>Tallene over (22 prosent skattesats) gjelder for inntektsåret 2025 og kan endres. Sjekk alltid oppdaterte satser på <strong>skatteetaten.no</strong>.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>For folk flest er boligsalg skattefritt fordi de bor lenge i egen bolig. Hovedreglene er ett års eiertid og botid på minst 12 av de siste 24 månedene. Oppfyller du ikke kravene, betaler du 22 prosent skatt av gevinsten – men brukshindring kan redde fritaket hvis du måtte flytte av jobb- eller helsegrunner. Husk at satser og grenser endres årlig – sjekk skatteetaten.no før du selger.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er minstefradraget? — Rettsregel</title>
+<meta name="description" content="Minstefradraget er et standardfradrag du får automatisk i lønn og pensjon. Det er ment å dekke vanlige utgifter du har i forbindelse med jobben – uten at…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-minstefradraget/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er minstefradraget?">
+<meta property="og:description" content="Minstefradraget er et standardfradrag du får automatisk i lønn og pensjon. Det er ment å dekke vanlige utgifter du har i forbindelse med jobben – uten at…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-minstefradraget/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er minstefradraget?">
+<meta name="twitter:description" content="Minstefradraget er et standardfradrag du får automatisk i lønn og pensjon. Det er ment å dekke vanlige utgifter du har i forbindelse med jobben – uten at…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er minstefradraget?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Minstefradraget er et **standardfradrag** du får automatisk i lønn og pensjon. Det er ment å dekke vanlige utgifter du har i forbindelse med jobben – uten at du trenger å samle kvitteringer. For inntektsåret 2025 utgjør minstefradraget i lønn **46 prosent** av lønnsinntekten, men med et **øvre tak på 92 000 kroner**.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr "standardfradrag"?</h3>
+<p>Et standardfradrag er et fradrag du får uten å måtte bevise noe. Skatteetaten regner det automatisk inn for deg. Minstefradraget er ment å dekke de små, dagligdagse jobbutgiftene de fleste har – arbeidstøy, faglitteratur, utstyr og lignende – uten at hver enkelt skal måtte dokumentere dem. Det er et inntektsfradrag, altså noe som trekkes fra inntekten <em>før</em> skatten regnes ut.</p>
+<h3>Slik regnes minstefradraget ut (2025)</h3>
+<p>Minstefradraget er en prosent av inntekten, men det stopper på et maksbeløp:</p>
+<ul>
+<li><strong>Sats:</strong> 46 prosent av lønnsinntekten</li>
+<li><strong>Maksbeløp:</strong> 92 000 kroner</li>
+</ul>
+<p>Det betyr at jo høyere lønn du har, jo mer minstefradrag får du – helt til du treffer taket på 92 000 kroner. Etter det øker det ikke mer.</p>
+<p><strong>Regneeksempel 1 – Tuva, deltidsansatt, tjener 120 000 kr:</strong></p>
+<blockquote>
+<p>46 % av 120 000 = 55 200 kr
+Dette er under taket, så minstefradraget hennes blir <strong>55 200 kr</strong>.</p>
+</blockquote>
+<p><strong>Regneeksempel 2 – Birger, fulltidsansatt, tjener 550 000 kr:</strong></p>
+<blockquote>
+<p>46 % av 550 000 = 253 000 kr
+Dette er over taket på 92 000 kr, så minstefradraget hans settes til <strong>92 000 kr</strong>.</p>
+</blockquote>
+<p>De aller fleste fulltidsansatte treffer maksbeløpet og får dermed akkurat 92 000 kroner i minstefradrag i 2025.</p>
+<h3>Hva er minstefradraget verdt for deg?</h3>
+<p>Siden minstefradraget er et inntektsfradrag, er det verdt skattesatsen av beløpet. På alminnelig inntekt er satsen 22 prosent (2025):</p>
+<blockquote>
+<p>92 000 kr × 22 % = <strong>20 240 kr spart i skatt</strong></p>
+</blockquote>
+<p>Det er altså et ganske betydelig fradrag – og du får det helt automatisk.</p>
+<h3>Hvorfor har lønn og pensjon ulike satser?</h3>
+<p>Du lurer kanskje på hvorfor pensjon har lavere minstefradrag enn lønn. Tanken er at en yrkesaktiv typisk har flere utgifter knyttet til det å være i arbeid – arbeidstøy, utstyr, faglig oppdatering – enn en pensjonist har. Derfor er minstefradraget for lønn både høyere i prosent (46 mot 40) og har et høyere tak (92 000 mot 73 150 kroner i 2025). Har du både lønn og pensjon i samme år, beregnes minstefradraget etter egne regler for å unngå dobbel uttelling.</p>
+<h3>Du trenger ikke gjøre noe – men sjekk likevel</h3>
+<p>Minstefradraget legges inn automatisk i skattemeldingen. Du trenger ikke søke om det eller fylle ut noe. Likevel er det lurt å sjekke at det stemmer, særlig hvis du har byttet jobb eller hatt flere arbeidsgivere i løpet av året.</p>
+<blockquote>
+<p><strong>Viktig å vite:</strong>
+- Minstefradraget gjelder <strong>lønn og pensjon</strong>, ikke næringsinntekt.
+- Pensjon har en <strong>lavere sats og et lavere tak</strong> enn lønn (40 prosent og 73 150 kroner for 2025).
+- Du kan <strong>ikke</strong> kombinere minstefradraget med å trekke fra de samme småutgiftene én gang til.</p>
+</blockquote>
+<h3>Minstefradrag eller faktiske utgifter?</h3>
+<p>Her er et viktig valg: Du kan velge mellom minstefradraget <em>eller</em> å føre opp faktiske jobbutgifter – men ikke begge for de samme utgiftene. For de aller fleste er minstefradraget klart best, fordi det er høyt og krever ingen dokumentasjon.</p>
+<p><strong>Eksempel:</strong> Synne hadde 5 000 kroner i faktiske jobbutgifter. Minstefradraget hennes ville uansett bli 92 000 kroner. Det er åpenbart bedre å ta minstefradraget enn å føre opp de 5 000 kronene. Bare i sjeldne tilfeller med svært høye, dokumenterbare yrkesutgifter kan det lønne seg å velge faktiske kostnader.</p>
+<h3>Hva med reisefradrag?</h3>
+<p>Et vanlig spørsmål: "Hvis jeg får minstefradrag, kan jeg da også få reisefradrag?" Ja! Reisefradraget kommer i tillegg til minstefradraget. De dekker forskjellige ting – minstefradraget dekker generelle jobbutgifter, mens reisefradraget dekker selve reisen til og fra jobb.</p>
+<h3>Hvorfor er minstefradraget så bra for de fleste?</h3>
+<p>Tenk deg at du måtte samle hver eneste kvittering for arbeidstøy, faglitteratur, en ny veske til PC-en og småutstyr gjennom hele året, for så å føre dem opp enkeltvis. De færreste har utgifter i nærheten av 92 000 kroner til slikt. Minstefradraget gir deg dette beløpet uansett, helt uten papirarbeid. Det er en av grunnene til at de aller fleste lønnsmottakere aldri trenger å tenke på faktiske yrkesutgifter i det hele tatt – minstefradraget er rett og slett mer sjenerøst.</p>
+<h3>Minstefradrag for unge og førstegangsjobbere</h3>
+<p>Får du din første lønn som ung, kan minstefradraget kombineres med andre fordeler. Mange under en viss alder har dessuten et eget frikort som gjør at de første kronene er skattefrie. Minstefradraget kommer i tillegg og sørger for at også de som tjener litt mer enn frikortgrensen, får et standardfradrag i lønnen. For en sommerjobbende student betyr dette ofte at det blir lite eller ingen skatt å betale.</p>
+<h3>Hva med trygd og dagpenger?</h3>
+<p>Minstefradraget gjelder lønn og pensjon. Enkelte ytelser behandles på linje med lønn, mens andre har egne regler. Mottar du for eksempel dagpenger eller sykepenger, regnes disse i mange tilfeller inn på en måte som gir minstefradrag, men det kan variere. Er du usikker på hvordan en bestemt ytelse behandles, sjekk den konkrete posten i skattemeldingen eller slå opp på skatteetaten.no.</p>
+<h3>Flere arbeidsgivere i løpet av året</h3>
+<p>Har du byttet jobb eller hatt flere arbeidsgivere, regnes minstefradraget av den samlede lønnsinntekten din – ikke per arbeidsgiver. Du får altså ikke flere minstefradrag selv om du hadde tre jobber. Skatteetaten summerer all lønnen og regner ut ett minstefradrag på totalen, opp til taket på 92 000 kroner.</p>
+<p><strong>Eksempel – Mari:</strong> Mari jobbet på kafé til sommeren, byttet så til en kontorjobb. Til sammen tjente hun 480 000 kroner. Minstefradraget regnes av hele beløpet og treffer taket, så hun får 92 000 kroner – ikke ett fradrag per jobb.</p>
+<h3>Kort oppsummert</h3>
+<p>Minstefradraget er et standardfradrag i lønn og pensjon som du får automatisk, uten dokumentasjon. For 2025 er det 46 prosent av lønnen, med et tak på 92 000 kroner – noe de fleste fulltidsansatte treffer. Det er verdt rundt 20 000 kroner i spart skatt for de fleste. Pensjon har lavere satser. Husk at reisefradrag kommer i tillegg. Satsene endres hvert år, så sjekk de gjeldende tallene på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

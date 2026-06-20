@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er tvangsutløsning av en aksjonær? — Rettsregel</title>
+<meta name="description" content="Tvangsutløsning betyr at en aksjonær løses ut av selskapet mot sin vilje. Det kan skje når selskapet kaster ut en eier som har mislighold grovt…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-tvangsutlosning-av-en-aksjonaer/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er tvangsutløsning av en aksjonær?">
+<meta property="og:description" content="Tvangsutløsning betyr at en aksjonær løses ut av selskapet mot sin vilje. Det kan skje når selskapet kaster ut en eier som har mislighold grovt…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-tvangsutlosning-av-en-aksjonaer/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er tvangsutløsning av en aksjonær?">
+<meta name="twitter:description" content="Tvangsutløsning betyr at en aksjonær løses ut av selskapet mot sin vilje. Det kan skje når selskapet kaster ut en eier som har mislighold grovt…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er tvangsutløsning av en aksjonær?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Tvangsutløsning betyr at en aksjonær løses ut av selskapet *mot sin vilje*. Det kan skje når selskapet kaster ut en eier som har mislighold grovt (utelukkelse, § 4-25), eller når en storeier over 90 prosent kjøper ut de små (tvangsinnløsning, § 4-26).</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>De fleste tror at den som eier en bit av et AS, sitter trygt så lenge han selv vil. Men loven har to «nødbremser» som lar et selskap eller en storeier løse ut en aksjonær selv om vedkommende protesterer.</p>
+<h3>To former – ikke bland dem sammen</h3>
+<p><strong>1. Utelukkelse (§ 4-25): selskapet kaster ut en problemeier.</strong>
+Her er det selskapet som tar grep mot en aksjonær som ødelegger. Retten kan bestemme at en aksjonær skal løses ut hvis vedkommende:</p>
+<ul>
+<li>har <strong>misligholdt sine plikter</strong> overfor selskapet vesentlig, eller</li>
+<li>har skapt et <strong>alvorlig og varig motsetningsforhold</strong> til de andre eierne, eller på annen måte gjort det urimelig at han fortsatt skal være med.</li>
+</ul>
+<p><strong>2. Tvangsinnløsning (§ 4-26): storeier rydder ut de små.</strong>
+Her handler det ikke om dårlig oppførsel, men om eierkonsentrasjon. Den som eier <strong>mer enn 90 prosent av aksjene og stemmene</strong>, kan løse ut de øvrige – uansett om de vil eller ikke. (Samtidig kan de små kreve seg innløst av storeieren.)</p>
+<h3>Eksempel på utelukkelse (§ 4-25)</h3>
+<p>I «Trelast &amp; Tre AS» eier Geir, Hilde og Sondre en tredjedel hver. Sondre begynner å oppføre seg ødeleggende:</p>
+<ul>
+<li>Han starter et konkurrerende firma og kaprer selskapets kunder.</li>
+<li>Han nekter å godkjenne regnskapet uten grunn.</li>
+<li>Han sprer rykter om selskapet til leverandørene.</li>
+</ul>
+<p>Dette er klart vesentlig mislighold. Geir og Hilde kan gå til sak for å få Sondre utelukket. Vinner de, må Sondre løses ut – han får betalt for aksjene, men han er ute mot sin vilje.</p>
+<p>Hvorfor finnes denne regelen? Fordi et selskap er et samarbeid. Når én eier aktivt jobber <em>mot</em> selskapet, kan han lamme hele virksomheten og skade de andre. Da må det finnes en utvei, slik at de lojale eierne ikke blir holdt som gisler av en illojal partner. Men nettopp fordi det er et inngrep i Sondres eiendomsrett, må misligholdet være alvorlig – ikke bare brysomt.</p>
+<h3>Eksempel på tvangsinnløsning (§ 4-26)</h3>
+<p>I «Logistikk Vest AS» har Anita kjøpt seg opp til 92 prosent av aksjene og stemmene. Igjen sitter tre småaksjonærer med til sammen 8 prosent. Anita kan tvangsinnløse dem alle, slik at hun blir eneeier. De får utbetalt verdien av aksjene sine. Motsatt kan de tre små også <em>kreve</em> at Anita kjøper dem ut hvis de heller vil ut. Logikken er at når én eier sitter på over 90 prosent, har de små ingen reell innflytelse igjen, og loven lar partene få et rent skille.</p>
+<p>Her er det ingen krav om at noen har oppført seg dårlig. Anita trenger ikke bevise mislighold eller konflikt – hun trenger bare å vise at hun faktisk eier over 90 prosent av <em>både</em> aksjene og stemmene. Vær oppmerksom på «både»: noen selskaper har aksjeklasser der enkelte aksjer har flere stemmer enn andre, og da må du sjekke begge tallene nøye. Har du 90 prosent av aksjene, men bare 85 prosent av stemmene, holder det ikke.</p>
+<h3>Hva teller som «vesentlig mislighold»?</h3>
+<p>Mange lurer på hvor grensen går i § 4-25. Det finnes ingen presis liste, men typiske eksempler på vesentlig mislighold er: å drive konkurrerende virksomhet i strid med lojalitetsplikten, å misbruke selskapets midler eller eiendeler til egen fordel, grovt å motarbeide selskapets interesser, eller systematisk å nekte å bidra til at selskapet kan fungere. Et enkeltstående feiltrinn er sjelden nok – det må være alvorlig, og ofte gjentatt eller vedvarende. Tenk på det som forskjellen mellom en enkelt dårlig dag og et mønster av illojalitet. Det er mønsteret, eller en enkelt svært grov handling, som åpner for utelukkelse.</p>
+<h3>Hva får den som tvangsutløses?</h3>
+<p>Selv om utløsningen er tvungen, mister ingen verdiene sine. Den utløste aksjonæren har krav på en <strong>rettferdig pris</strong> – aksjenes virkelige verdi. Er partene uenige om beløpet, fastsetter retten det. Du blir altså «kastet ut» av eierskapet, men du går ikke tomhendt.</p>
+<h3>Forskjellen fra § 4-24</h3>
+<p>Det er lett å rote: I § 4-24 er det <em>aksjonæren selv</em> som vil ut. Ved tvangsutløsning (§ 4-25 og § 4-26) er det <em>de andre</em> som vil ha aksjonæren ut. Retningen er motsatt. En enkel huskeregel: tenk på hvem som «trykker på knappen». Vil <em>du</em> ut, er det § 4-24. Vil <em>de andre</em> ha deg ut på grunn av oppførselen din, er det § 4-25. Vil en storeier rydde ut alle de små, er det § 4-26.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>For deg som vil bli kvitt en problemeier:</strong> Dokumenter misligholdet grundig. Terskelen i § 4-25 er høy – det må være vesentlig, ikke bare irriterende.</li>
+<li><strong>For deg som er storeier:</strong> Sjekk at du faktisk har over 90 prosent av <em>både</em> aksjer og stemmer før du forsøker tvangsinnløsning etter § 4-26.</li>
+<li><strong>For deg som risikerer å bli utløst:</strong> Søk råd raskt. Du kan ofte påvirke prisen mye, selv om du ikke kan stanse selve utløsningen.</li>
+<li><strong>For alle:</strong> En aksjonæravtale med klare regler om utkjøp ved konflikt kan spare dere for en dyr rettssak.</li>
+</ol>
+<h3>Hvorfor 90 prosent akkurat?</h3>
+<p>Mange spør hvorfor grensen i § 4-26 går nettopp ved 90 prosent. Tanken er at en eier som sitter på over ni tideler av selskapet, i praksis bestemmer alt uansett. De resterende småeierne har ingen reell innflytelse – de kan verken stanse vedtak eller påvirke driften. Da blir det å holde dem inne mest en formalitet som gjør selskapsstyringen tyngre enn nødvendig. Loven lar derfor storeieren rydde opp i eierstrukturen, samtidig som de små får full betaling. Det er en balanse mellom storeierens behov for en enkel struktur og de smås rett til en rettferdig pris.</p>
+<p>Et praktisk tips til storeiere: hvis du nærmer deg 90 prosent og ønsker å bli eneeier, kan det lønne seg å kjøpe deg over grensen, slik at § 4-26 blir tilgjengelig. Under 90 prosent har du ikke denne muligheten, og da må de små selv ville selge.</p>
+<h3>En viktig nyanse</h3>
+<p>Tvangsutløsning er et kraftig virkemiddel, og domstolene bruker det ikke lettvint i § 4-25-saker. Det skal være alvorlig. § 4-26 derimot er nærmest mekanisk – passerer du 90 prosent, har du retten. Kjenn forskjellen.</p>
+<h3>Kort oppsummert</h3>
+<p>Tvangsutløsning betyr at en aksjonær løses ut mot sin vilje. Selskapet kan utelukke en eier ved vesentlig mislighold eller varig konflikt (§ 4-25), og en storeier over 90 prosent kan tvangsinnløse de små (§ 4-26). I begge tilfeller får den utløste en rettferdig pris for aksjene sine.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

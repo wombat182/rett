@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en aksjeeierbok? — Rettsregel</title>
+<meta name="description" content="En aksjeeierbok er selskapets offisielle navneliste over hvem som eier aksjene.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-aksjeeierbok/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en aksjeeierbok?">
+<meta property="og:description" content="En aksjeeierbok er selskapets offisielle navneliste over hvem som eier aksjene.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-aksjeeierbok/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en aksjeeierbok?">
+<meta name="twitter:description" content="En aksjeeierbok er selskapets offisielle navneliste over hvem som eier aksjene.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er en aksjeeierbok?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En aksjeeierbok er selskapets offisielle navneliste over hvem som eier aksjene. Den viser hvem aksjonærene er, hvor mange aksjer hver av dem har, og hvilke aksjeklasser aksjene tilhører. Styret har ansvaret for å føre den (aksjeloven § 4-5), og den skal være lett tilgjengelig for alle som ønsker å se den.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>En aksjeeierbok er selskapets offisielle navneliste over hvem som eier aksjene. Den viser hvem aksjonærene er, hvor mange aksjer hver av dem har, og hvilke aksjeklasser aksjene tilhører. Styret har ansvaret for å føre den (aksjeloven § 4-5), og den skal være lett tilgjengelig for alle som ønsker å se den.</p>
+<h3>Tenk på den som selskapets «folkeregister»</h3>
+<p>Akkurat som folkeregisteret holder orden på hvem som bor i landet, holder aksjeeierboken orden på hvem som eier selskapet ditt. Den er ikke bare en formalitet du fyller ut én gang og glemmer – den skal til enhver tid være oppdatert. Hver gang noen kjøper, selger, arver eller får aksjer som gave, skal boken endres. På den måten er den et levende dokument som følger selskapet gjennom hele dets liv.</p>
+<p>Et eksempel: Maria og Jonas starter «Fjellbakeriet AS» med en aksjekapital på 30 000 kroner fordelt på 300 aksjer. Maria skyter inn mest og får 180 aksjer, Jonas får 120. I aksjeeierboken føres de begge opp med fullt navn, fødselsdato, adresse og antall aksjer. Et år senere selger Jonas 60 av aksjene sine til en venn, Petter. Da må boken oppdateres: Jonas hadde 120 aksjer, selger 60, og står igjen med 60. Petter føres inn som ny aksjonær med 60 aksjer. Maria står fortsatt med sine 180. Til sammen er det fremdeles 300 aksjer – det skal alltid stemme.</p>
+<h3>Hva skal stå i boken? (§ 4-5)</h3>
+<p>Loven er ganske konkret om innholdet. Aksjonærene skal føres opp i alfabetisk rekkefølge, og for hver av dem skal det stå:</p>
+<ul>
+<li>Navn eller foretaksnavn (hvis eieren er et annet selskap)</li>
+<li>Fødselsdato (for personer) eller organisasjonsnummer (for selskaper)</li>
+<li>Adresse</li>
+<li>Antall aksjer og aksjenummer (aksjene nummereres, for eksempel 1–180)</li>
+<li>Hvilken aksjeklasse aksjene tilhører, dersom selskapet har flere klasser</li>
+</ul>
+<p>«Aksjeklasse» betyr at aksjene kan være delt i grupper med ulike rettigheter, for eksempel A- og B-aksjer. Mer om det i neste artikkel. «Aksjenummer» betyr at hver aksje får et løpenummer, slik at det er entydig hvilke aksjer som tilhører hvem. I praksis skriver man gjerne at en eier har «aksjene 1–180».</p>
+<h3>Den skal være åpen for innsyn</h3>
+<p>Dette overrasker mange gründere: aksjeeierboken er ikke hemmelig. Enhver kan be om å få se den (§ 4-5). Det betyr at en konkurrent, en journalist eller en potensiell samarbeidspartner kan kreve innsyn i hvem som eier «Fjellbakeriet AS». Du kan altså ikke skjule eierskapet ditt ved å «la være» å vise frem boken.</p>
+<p>Hvis noen ber om innsyn, er du som styre forpliktet til å gi det. I praksis er det sjelden at folk ringer og spør, men retten er der – og den er en bevisst del av åpenheten rundt norske aksjeselskaper. Tanken er at det skal være mulig å finne ut hvem som står bak et selskap man handler med.</p>
+<h3>Slik fører du den i praksis</h3>
+<p>Du trenger ikke en fysisk bok med skinninnbinding. Aksjeeierboken kan føres elektronisk – i et regneark, i et regnskapsprogram eller i en egen aksjeeierbok-tjeneste. Mange velger digitale løsninger fordi de gjør det enkelt å holde alt oppdatert og lagre trygt.</p>
+<p>Steg for steg ved oppstart:</p>
+<ol>
+<li>Lag boken «uten opphold» etter at selskapet er stiftet – styret har plikt til dette.</li>
+<li>Før inn alle stifterne med alle opplysningene over.</li>
+<li>Nummerer aksjene (aksje 1 til og med siste aksje).</li>
+<li>Oppdater hver gang det skjer en endring i eierskapet.</li>
+<li>Oppbevar den trygt, slik at den ikke går tapt.</li>
+</ol>
+<p>En vanlig nybegynnerfeil er å lage boken ved stiftelsen og så aldri røre den igjen. Da blir den raskt utdatert. En annen feil er å blande sammen aksjeeierboken med opplysningene i Brønnøysundregistrene eller hos Skatteetaten. Aksjeeierboken er selskapets egen liste, ført av styret. Den årlige aksjonærregisteroppgaven til Skatteetaten er noe annet (mer om den i artikkel 38), og Brønnøysund viser stort sett bare roller som styre og daglig leder – ikke eierne.</p>
+<h3>Hvorfor er dette viktig for deg?</h3>
+<p>En oppdatert aksjeeierbok er ofte avgjørende ved salg, ved opptak av investorer eller ved en eventuell tvist. Hvis du en dag skal selge selskapet, vil kjøperen ville se boken for å forsikre seg om at eierskapet er klart. Er boken rotete eller mangelfull, kan en handel bli forsinket eller falle i fisk. Det er også et tegn på et seriøst, ryddig selskap – noe som teller når banken, investorer eller samarbeidspartnere skal vurdere deg.</p>
+<p>I tillegg er det aksjeeierboken som avgjør hvem som har rett til å møte og stemme på generalforsamlingen, og hvem som har rett til utbytte. Står du ikke i boken, kan du i praksis få problemer med å bli anerkjent som eier. Derfor er det i din egen interesse å sørge for at den alltid er korrekt.</p>
+<h3>Hva skjer ved arv, skilsmisse eller gave?</h3>
+<p>Eierskap endrer seg ikke bare gjennom kjøp og salg. Livet kommer i veien også. Dør en aksjonær, går aksjene over til arvingene, og aksjeeierboken må oppdateres med de nye eierne. Ved en skilsmisse kan aksjer bli delt mellom ektefeller, og ved en gave kan foreldre overføre aksjer til barna sine.</p>
+<p>Et eksempel: Olav eier 100 aksjer i «Snekkerteamet AS». Han gir 50 av dem i gave til datteren Ida i forbindelse med at hun begynner å jobbe i selskapet. Da skal Ida føres inn i aksjeeierboken med sine 50 aksjer, og Olav reduseres til 50. Glemmer styret å oppdatere boken, oppstår det fort uklarhet om hvem som egentlig eier hva – og det kan bli vanskelig den dagen utbytte skal deles ut eller selskapet skal selges.</p>
+<p>Et godt råd er å gjøre oppdateringen til en fast rutine: så snart en overdragelse er avtalt og gjennomført, føres den inn samme dag. Da slipper du å sitte med et etterslep som må nøstes opp i senere.</p>
+<h3>Hva hvis selskapet har vedtektsfestede begrensninger?</h3>
+<p>Mange små AS har bestemmelser i vedtektene om at styret må godkjenne nye eiere (styresamtykke), eller at de andre aksjonærene har forkjøpsrett. «Forkjøpsrett» betyr at de eksisterende eierne får tilbud om å kjøpe aksjene først, før en utenforstående slipper til. Slike regler henger tett sammen med aksjeeierboken: det er ofte ved innføring i boken at en ny eier formelt blir anerkjent, etter at samtykke er gitt og forkjøpsretten er avklart.</p>
+<p>For deg som gründer betyr dette at aksjeeierboken ikke bare er en passiv liste, men et ledd i en prosess. Når noen vil bli ny eier, sjekker du vedtektene, innhenter eventuelt styresamtykke, avklarer forkjøpsrett – og fører deretter den nye eieren inn i boken. Slik henger formaliteter og virkelighet sammen.</p>
+<h3>Kort oppsummert</h3>
+<p>Aksjeeierboken er styrets navneliste over alle som eier selskapet, med antall aksjer, aksjenummer og aksjeklasse (§ 4-5). Den skal føres «uten opphold» etter stiftelsen, holdes oppdatert ved enhver eierendring, og den er åpen for innsyn for hvem som helst. Den avgjør hvem som har stemmerett og rett til utbytte. Hold den ryddig fra dag én – det sparer deg for hodebry når investorer, kjøpere eller arvinger en gang skal inn.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

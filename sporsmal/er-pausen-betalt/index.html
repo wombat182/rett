@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Er pausen betalt? — Rettsregel</title>
+<meta name="description" content="Det korte svaret: Som hovedregel er pausen ubetalt, fordi du da er fri fra arbeidet og kan gjøre hva du vil.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/er-pausen-betalt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Er pausen betalt?">
+<meta property="og:description" content="Det korte svaret: Som hovedregel er pausen ubetalt, fordi du da er fri fra arbeidet og kan gjøre hva du vil.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/er-pausen-betalt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Er pausen betalt?">
+<meta name="twitter:description" content="Det korte svaret: Som hovedregel er pausen ubetalt, fordi du da er fri fra arbeidet og kan gjøre hva du vil.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Er pausen betalt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det korte svaret: Som hovedregel er pausen ubetalt, fordi du da er fri fra arbeidet og kan gjøre hva du vil. Men hvis du ikke kan forlate arbeidsstedet i pausen, eller det ikke finnes et tilfredsstillende pauserom, skal pausen regnes som arbeidstid — og da er den betalt. Dette følger av arbeidsmiljøloven § 10-9 (om pauser).</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-9/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-9</div>
+  <div class="related-card-title">Reglene for pauser og matpakke</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det korte svaret: Som hovedregel er pausen ubetalt, fordi du da er fri fra arbeidet og kan gjøre hva du vil. Men hvis du ikke kan forlate arbeidsstedet i pausen, eller det ikke finnes et tilfredsstillende pauserom, skal pausen regnes som arbeidstid — og da er den betalt. Dette følger av arbeidsmiljøloven § 10-9 (om pauser).</p>
+<h3>Hovedregelen: ubetalt og fri</h3>
+<p>Tanken bak en vanlig pause er at du faktisk skal få fri et øyeblikk. Når du er helt fri — kan forlate arbeidsstedet, slå av jobbtelefonen, gjøre private ærend — er pausen din egen tid. Da regnes den ikke som arbeidstid, og den er ubetalt.</p>
+<p>Eksempel: Anders jobber på et kontor og tar 30 minutters lunsj. Han går ut, kjøper mat og ringer en venn. Han er helt fri fra jobben. Pausen er ubetalt, og det er helt etter boka.</p>
+<h3>Unntaket: når pausen er betalt</h3>
+<p>Pausen skal regnes som arbeidstid — altså betalt — i disse tilfellene:</p>
+<ul>
+<li><strong>Du kan ikke fritt forlate arbeidsstedet</strong> i pausen.</li>
+<li><strong>Det finnes ikke et tilfredsstillende pauserom</strong> der du kan trekke deg tilbake.</li>
+</ul>
+<p>I begge tilfeller er du i realiteten fortsatt bundet til arbeidet, selv om du «har pause». Da er det rimelig at tiden teller som arbeidstid.</p>
+<p>Eksempel: Sara er resepsjonist og eneste person i skranken. Hun «spiser lunsj» ved pulten, men må svare telefonen og ta imot besøkende hvis noen kommer. Hun kan ikke gå fra. Da står hun til disposisjon, og pausen skal være betalt arbeidstid.</p>
+<p>Eksempel: Et lager har ikke noe eget pauserom, så de ansatte må sitte midt i arbeidslokalet ved siden av maskinene. Mangler det et tilfredsstillende sted å ta pause, kan pausen måtte regnes som arbeidstid.</p>
+<h3>Overtidspausen er alltid betalt</h3>
+<p>Det finnes ett tilfelle der pausen helt klart er betalt: Når du jobber mer enn to timer ut over den vanlige arbeidstiden din, har du krav på minst 30 minutters pause, og denne pausen regnes som arbeidstid.</p>
+<p>Eksempel: Camilla blir bedt om å jobbe overtid fra 16 til 19. Fordi hun jobber mer enn to timer ekstra, har hun krav på en halvtimes pause — og den er betalt.</p>
+<h3>«Står til disposisjon» — nøkkelbegrepet</h3>
+<p>Avgjørende for om pausen er betalt, er om du <strong>står til arbeidsgivers disposisjon</strong>. Spør deg selv:</p>
+<ul>
+<li>Kan jeg fysisk forlate arbeidsstedet?</li>
+<li>Kan jeg la være å svare på henvendelser?</li>
+<li>Er jeg fri til å gjøre helt private ting?</li>
+</ul>
+<p>Er svaret nei på disse, er du i praksis fortsatt på jobb — og pausen bør være betalt.</p>
+<h3>Hva betyr «tilfredsstillende pauserom»?</h3>
+<p>Loven legger vekt på at du skal ha et egnet sted å trekke deg tilbake i pausen. Et tilfredsstillende pauserom betyr i praksis et sted der du faktisk kan koble av — ikke bare en krakk midt i støyen ved produksjonslinjen. Mangler et slikt sted, er det et tegn på at pausen i realiteten ikke gir deg fri, og den kan da måtte regnes som arbeidstid. Dette er også et arbeidsmiljøspørsmål: gode pauseforhold er en del av et forsvarlig arbeidsmiljø.</p>
+<p>Eksempel: De ansatte på et verksted har bare et hjørne ved siden av maskinene å sitte i, uten skjerming fra støy og støv. Her er det grunn til å spørre om pauserommet er tilfredsstillende, og om pausene dermed skal regnes som arbeidstid.</p>
+<h3>Yrker der dette ofte er aktuelt</h3>
+<p>Spørsmålet dukker oftest opp i yrker der man er alene eller må være tilgjengelig:</p>
+<ul>
+<li><strong>Butikk- og kioskansatte</strong> som er alene på vakt.</li>
+<li><strong>Resepsjonister og vektere</strong> som må holde øye med inngangen.</li>
+<li><strong>Helsepersonell</strong> som må kunne tilkalles.</li>
+<li><strong>Sjåfører</strong> som ikke kan forlate kjøretøyet eller lasten.</li>
+</ul>
+<p>I slike yrker er det ekstra viktig å avklare pausereglene, fordi mange «pauser» i praksis er betalt arbeidstid.</p>
+<h3>Hva sier tariffavtalen?</h3>
+<p>Mange tariffavtaler gir bedre vilkår enn loven, for eksempel:</p>
+<ul>
+<li><strong>Betalt spisepause</strong> uavhengig av om du er bundet til arbeidsstedet.</li>
+<li><strong>Lengre pauser</strong> enn lovens minimum.</li>
+</ul>
+<p>Sjekk derfor alltid om det gjelder en tariffavtale på arbeidsplassen din — den kan gi deg betalt lunsj selv om loven ikke krever det.</p>
+<h3>Sjekklisten din</h3>
+<ol>
+<li><strong>Spør deg selv: er jeg fri i pausen?</strong> Kan jeg gå fra, eller må jeg være tilgjengelig?</li>
+<li><strong>Sjekk pauserommet.</strong> Finnes det et tilfredsstillende sted å ta pause?</li>
+<li><strong>Husk overtidspausen.</strong> Mer enn to timer ekstra = betalt halvtimespause.</li>
+<li><strong>Les arbeidsavtalen og tariffavtalen.</strong> Står det noe om betalt pause?</li>
+<li><strong>Ta det opp</strong> hvis du jevnlig «spiser ved pulten» og må jobbe i pausen — da skal tiden trolig være betalt.</li>
+</ol>
+<h3>Hva med korte avbrudd i en betalt pause?</h3>
+<p>Selv når en pause i utgangspunktet er fri og ubetalt, kan virkeligheten være at du stadig blir avbrutt. Hvis du gang på gang må bryte pausen for å svare på spørsmål eller løse en oppgave, får du i realiteten ikke den hvilen pausen skal gi. Da nærmer situasjonen seg å «stå til disposisjon», og du bør ta opp om pausene dine egentlig er fri eller ikke.</p>
+<p>Eksempel: Anders forsøker å spise lunsj, men blir i snitt avbrutt tre–fire ganger hver pause med arbeidshenvendelser. Da er han ikke reelt fri, og det er grunn til å se på om pausene burde regnes som arbeidstid — eller om arbeidet bør organiseres slik at han faktisk får en uforstyrret pause.</p>
+<h3>Et praktisk tips</h3>
+<p>Hvis du opplever at du sjelden får en ekte pause fordi du stadig blir avbrutt eller ikke kan gå fra, noter det ned over en periode: når og hvor ofte du blir forstyrret. En slik logg gjør det mye lettere å ta opp saken med arbeidsgiver eller tillitsvalgt, og kan underbygge at pausene dine i realiteten er arbeidstid.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Hovedregelen er at pausen er ubetalt, fordi du da er fri fra arbeidet.</li>
+<li>Pausen skal være betalt (arbeidstid) hvis du ikke kan forlate arbeidsstedet eller det mangler et tilfredsstillende pauserom (§ 10-9).</li>
+<li>Overtidspausen — etter mer enn to timers ekstra arbeid — er alltid betalt.</li>
+<li>Nøkkelspørsmålet er om du «står til disposisjon» for arbeidsgiver.</li>
+<li>Tariffavtaler gir ofte betalt pause, så sjekk din egen.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/arbeidsgiver-vil-ikke-utbetale-lonn/">Arbeidsgiveren vil ikke betale lønn — hva gjør du?</a><a class="sp-relchip" href="../../sporsmal/far-jeg-betalt-for-palagt-hjemmevakt/">Får jeg betalt for pålagt hjemmevakt?</a><a class="sp-relchip" href="../../sporsmal/far-jeg-lonn-under-permittering/">Får jeg lønn under permittering?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

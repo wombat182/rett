@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teller reisetid som arbeidstid? — Rettsregel</title>
+<meta name="description" content="Noen ganger ja, andre ganger nei — det kommer an på situasjonen.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/teller-reisetid-som-arbeidstid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Teller reisetid som arbeidstid?">
+<meta property="og:description" content="Noen ganger ja, andre ganger nei — det kommer an på situasjonen.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/teller-reisetid-som-arbeidstid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Teller reisetid som arbeidstid?">
+<meta name="twitter:description" content="Noen ganger ja, andre ganger nei — det kommer an på situasjonen.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Teller reisetid som arbeidstid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Noen ganger ja, andre ganger nei — det kommer an på situasjonen. Den vanlige reisen mellom hjemmet og fast arbeidssted regnes som hovedregel ikke som arbeidstid. Men reise du blir pålagt for å utføre oppdrag for arbeidsgiver — særlig reise utenom vanlig arbeidstid til et annet sted enn det faste arbeidsstedet — kan etter en konkret vurdering telle som arbeidstid. Dette er slått fast av Høyesterett</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-8</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-8/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-8</div>
+  <div class="related-card-title">Reglene for daglig og ukentlig hviletid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Noen ganger ja, andre ganger nei — det kommer an på situasjonen. Den vanlige reisen mellom hjemmet og fast arbeidssted regnes som hovedregel ikke som arbeidstid. Men reise du blir pålagt for å utføre oppdrag for arbeidsgiver — særlig reise utenom vanlig arbeidstid til et annet sted enn det faste arbeidsstedet — kan etter en konkret vurdering telle som arbeidstid. Dette er slått fast av Høyesterett, etter veiledning fra EFTA-domstolen.</p>
+<h3>Den vanlige arbeidsreisen teller ikke</h3>
+<p>Reisen din til og fra det faste arbeidsstedet — pendlingen — regnes normalt ikke som arbeidstid. Det gjelder selv om du har lang vei.</p>
+<p>Eksempel: Kari bruker 45 minutter med buss til kontoret hver morgen. Den tiden er ikke arbeidstid, selv om den er en del av hverdagen hennes. Hun «stiller seg til disposisjon» for arbeidsgiver først når hun er på jobb.</p>
+<h3>Når reise KAN telle som arbeidstid</h3>
+<p>Bildet endrer seg når arbeidsgiver pålegger deg å reise et annet sted enn det faste arbeidsstedet, og særlig når reisen skjer utenfor den vanlige arbeidstiden din. Da må det vurderes konkret om du står til arbeidsgivers disposisjon under reisen — om du faktisk «er på jobb». Sentrale spørsmål er:</p>
+<ul>
+<li>Er reisen pålagt av arbeidsgiver?</li>
+<li>Skjer den for å utføre en arbeidsoppgave et annet sted enn det faste arbeidsstedet?</li>
+<li>Står du til arbeidsgivers disposisjon under reisen — det vil si, må du være tilgjengelig og innstilt på arbeid, ikke fri til å gjøre hva du vil?</li>
+</ul>
+<p>Er svaret ja, taler mye for at reisetiden er arbeidstid.</p>
+<p>Eksempel: Jonas er montør med fast oppmøtested på et verksted. En dag blir han sendt til en kunde flere timer unna, og reisen starter klokka 05 om morgenen — lenge før hans vanlige arbeidstid. Han kjører bil pålagt av arbeidsgiver, til et annet sted enn det faste arbeidsstedet. Etter en konkret vurdering kan denne reisetiden regnes som arbeidstid.</p>
+<h3>Arbeidstid er ikke det samme som overtidsbetaling</h3>
+<p>Her er en viktig nyanse mange overser: at reisetid regnes som arbeidstid i lovens forstand, betyr ikke automatisk at du har krav på vanlig lønn eller overtidstillegg for hele reisen. Høyesterett har presisert at «arbeidstid» (vernereglene) og «lønn for reisetid» er to forskjellige spørsmål:</p>
+<ul>
+<li><strong>Arbeidstid</strong> handler om vernet: hvile, grenser for hvor mye du jobber, og lignende.</li>
+<li><strong>Lønn / godtgjøring for reise</strong> følger ofte av arbeidsavtalen eller tariffavtalen, og kan være lavere enn full timelønn.</li>
+</ul>
+<p>Det betyr at reise kan telle som arbeidstid (slik at den «spiser av» grensene og hviletiden din) uten at du nødvendigvis får full lønn for den. Hva du faktisk får betalt, må du finne i avtalen din.</p>
+<h3>Hvorfor er dette viktig for deg?</h3>
+<p>Selv om lønnsspørsmålet kan være et eget tema, har det stor betydning at reisen kan telle som arbeidstid:</p>
+<ul>
+<li><strong>Hviletiden din.</strong> Reiser du sent på kveld eller natt etter pålegg, kan det bety at du har krav på 11 timers sammenhengende hvile før neste arbeidsdag (§ 10-8).</li>
+<li><strong>Grensene for arbeidstid.</strong> Lange reisedager kan føre til at du nærmer deg lovens grenser raskere.</li>
+<li><strong>Sikkerheten din.</strong> Reglene er der for at du ikke skal kjøre eller jobbe utslitt.</li>
+</ul>
+<h3>Hva med yrker som reiser mye?</h3>
+<p>For arbeidstakere uten fast arbeidssted — for eksempel servicemontører som reiser direkte fra hjemmet til ulike kunder — kan reisen fra hjem til første kunde og fra siste kunde hjem etter omstendighetene regnes som arbeidstid, fordi de ikke har et fast oppmøtested. Dette må også vurderes konkret.</p>
+<h3>Tre eksempler som viser nyansene</h3>
+<p>For å gjøre skillet tydeligere, sammenlign disse tre situasjonene:</p>
+<ul>
+<li><strong>Reise nummer 1 — vanlig pendling:</strong> Tor kjører fra hjemmet til det faste kontoret om morgenen. Dette er normalt ikke arbeidstid, selv om kjøringen tar tid.</li>
+<li><strong>Reise nummer 2 — pålagt tjenestereise på dagtid:</strong> Tor blir sendt fra kontoret til et møte i en annen by midt i arbeidstiden. Dette skjer i arbeidstiden og er normalt arbeidstid.</li>
+<li><strong>Reise nummer 3 — pålagt reise utenom arbeidstid:</strong> Tor blir bedt om å reise søndag kveld for å være klar til et oppdrag mandag morgen langt hjemmefra. Reisen er pålagt, til et annet sted enn det faste arbeidsstedet, og utenom vanlig arbeidstid. Etter en konkret vurdering kan denne reisen være arbeidstid.</li>
+</ul>
+<p>Det er altså den tredje typen — pålagt reise utenom vanlig arbeidstid til et annet sted enn det faste arbeidsstedet — som oftest reiser spørsmålet.</p>
+<h3>Hva betyr «konkret vurdering»?</h3>
+<p>Du har kanskje merket at uttrykket «konkret vurdering» går igjen. Det betyr at det ikke finnes én enkel fasit som gjelder alle. Hver situasjon må vurderes for seg, ut fra hvor bundet du faktisk er. Sitter du på et fly og kan sove, lese en bok eller se film helt fritt? Eller må du være tilgjengelig på telefon, forberede oppdraget eller passe på utstyr? Jo mer du er bundet og må stå klar for arbeidsgiver, desto mer taler for at det er arbeidstid.</p>
+<h3>Hvorfor reglene er som de er</h3>
+<p>Bakgrunnen er at Norge gjennom EØS-avtalen er bundet av arbeidstidsdirektivet, og at Høyesterett — etter veiledning fra EFTA-domstolen — har tolket «arbeidstid» i lys av dette. Hele poenget med reglene er vern: at du ikke skal ende opp med å jobbe og reise i ett strekk uten hvile, og deretter møte utslitt på neste oppdrag. Reisetidsreglene handler altså like mye om sikkerheten og helsa di som om penger.</p>
+<p>Eksempel: Hvis Jonas måtte kjøre fire timer hjem etter en lang arbeidsdag og deretter stille uthvilt på jobb tidlig neste morgen, ville han fort blitt farlig sliten. Ved å regne den pålagte reisen som arbeidstid sikrer reglene at han faktisk får den hvilen han trenger mellom øktene.</p>
+<h3>Sjekklisten din</h3>
+<ol>
+<li><strong>Skill mellom pendling og pålagt reise.</strong> Vanlig vei til fast jobb teller normalt ikke; pålagt reise til andre steder kan telle.</li>
+<li><strong>Noter reisene dine.</strong> Skriv ned dato, klokkeslett, hvor du skulle, hvem som påla det og hvor lang tid det tok.</li>
+<li><strong>Sjekk hviletiden.</strong> Får du minst 11 timer fri før neste vakt, også etter sene reiser?</li>
+<li><strong>Les avtalen om reisegodtgjøring.</strong> Lønn for reise følger ofte av arbeidsavtalen eller tariffavtalen.</li>
+<li><strong>Ta det opp</strong> med tillitsvalgt eller fagforening hvis du jevnlig reiser mye utenom arbeidstid — dette er et område med mye praksis og lokale avtaler.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Vanlig reise mellom hjem og fast arbeidssted teller som hovedregel ikke som arbeidstid.</li>
+<li>Pålagt reise til et annet sted enn det faste arbeidsstedet, særlig utenom vanlig arbeidstid, kan telle som arbeidstid etter en konkret vurdering (Høyesterett).</li>
+<li>At reise er «arbeidstid» betyr ikke automatisk full lønn — lønn for reise følger ofte av avtalen.</li>
+<li>Reisetid som arbeidstid påvirker hviletiden og arbeidstidsgrensene dine.</li>
+<li>Før logg over reisene og sjekk avtalen din om reisegodtgjøring.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

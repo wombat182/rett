@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på innleie og ansettelse? — Rettsregel</title>
+<meta name="description" content="Når du er ansatt, har du en arbeidsavtale direkte med bedriften du jobber for, og det er den bedriften som er sjefen din og betaler lønna di. Når du er…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-innleie-og-ansettelse/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på innleie og ansettelse?">
+<meta property="og:description" content="Når du er ansatt, har du en arbeidsavtale direkte med bedriften du jobber for, og det er den bedriften som er sjefen din og betaler lønna di. Når du er…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-innleie-og-ansettelse/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på innleie og ansettelse?">
+<meta name="twitter:description" content="Når du er ansatt, har du en arbeidsavtale direkte med bedriften du jobber for, og det er den bedriften som er sjefen din og betaler lønna di. Når du er…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er forskjellen på innleie og ansettelse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Når du er **ansatt**, har du en arbeidsavtale direkte med bedriften du jobber for, og det er den bedriften som er sjefen din og betaler lønna di. Når du er **innleid**, er du egentlig ansatt et annet sted – som regel i et bemanningsbyrå – men du blir «lånt ut» til en annen bedrift for å jobbe der en periode. Du jobber altså ett sted, men har arbeidsavtale et annet sted.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven §§ 14-9, 14-12, 14-13</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/14-9/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-9</div>
+  <div class="related-card-title">Retten til fast ansettelse (og strenge regler for vikarer)</div>
+</a><a href="../../lover/arbeidsmiljoloven/14-12/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-12</div>
+  <div class="related-card-title">Innleie fra bemanningsforetak</div>
+</a><a href="../../lover/arbeidsmiljoloven/14-13/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 14-13</div>
+  <div class="related-card-title">Innleie fra virksomhet som ikke driver med utleie</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>To ulike forhold – tre parter</h3>
+<p>Tenk deg Sara. Hun er fast ansatt i kommunen som helsefagarbeider. Da har Sara én avtale: arbeidsavtalen med kommunen. Kommunen bestemmer arbeidstida hennes, betaler lønna og har ansvaret for at alt går riktig for seg.</p>
+<p>Så har vi Jonas. Jonas er ansatt i bemanningsbyrået «Folk AS». Men i praksis møter han opp på et lager hos «Nord Logistikk» hver dag, der han plukker varer. Her er det <strong>tre</strong> parter inne i bildet:</p>
+<ul>
+<li><strong>Jonas</strong> – arbeidstakeren.</li>
+<li><strong>Folk AS</strong> – bemanningsbyrået som Jonas er ansatt i, og som betaler lønna hans.</li>
+<li><strong>Nord Logistikk</strong> – «innleier», altså bedriften som låner Jonas og som han faktisk jobber for til daglig.</li>
+</ul>
+<p>Dette kalles innleie fra bemanningsforetak. Folk AS leier ut Jonas, og Nord Logistikk betaler Folk AS for jobben Jonas gjør.</p>
+<h3>Hvem bestemmer over deg?</h3>
+<p>Et fagord du bør kjenne til er <strong>styringsrett</strong>. Det betyr retten arbeidsgiver har til å lede, fordele og kontrollere arbeidet ditt. Når du er innleid, deles denne retten litt opp:</p>
+<ul>
+<li><strong>Bemanningsbyrået</strong> er din formelle arbeidsgiver. De har arbeidsavtalen, betaler lønn, feriepenger og sykepenger.</li>
+<li><strong>Innleiebedriften</strong> styrer det daglige – de sier hva du skal gjøre, når og hvor, mens du er på oppdrag hos dem.</li>
+</ul>
+<p>For Jonas betyr det at Nord Logistikk kan be ham flytte seg fra plukkavdelingen til pakkeavdelingen, men det er Folk AS som må svare hvis lønna uteblir.</p>
+<h3>Hva er hovedregelen i loven?</h3>
+<p>Loven er tydelig: hovedregelen er at <strong>du skal være fast ansatt</strong> i bedriften der du faktisk utfører arbeidet (§ 14-9 om at fast ansettelse er normalen). Innleie og midlertidige løsninger er unntak som bare er lov i bestemte situasjoner. Reglene for innleie fra bemanningsbyrå ble strammet inn 1. april 2023, nettopp for å beskytte arbeidstakere mot å gå i løse, usikre forhold år etter år.</p>
+<p>Innleie fra et bemanningsbyrå er bare lov når (§ 14-12):</p>
+<ul>
+<li>Det gjelder et reelt vikariat – for eksempel at du går inn for noen som er i foreldrepermisjon.</li>
+<li>Bedriften har en skriftlig avtale med tillitsvalgte (gjelder bedrifter bundet av tariffavtale) om tidsbegrenset innleie.</li>
+</ul>
+<p>I tillegg finnes det en egen form for innleie: innleie fra en <strong>produksjonsbedrift</strong> (altså ikke et rent bemanningsbyrå). Dette er for eksempel når en snekkerbedrift låner en snekker fra en annen snekkerbedrift i en travel periode. Reglene her er noe rommeligere, men også her må visse vilkår være oppfylt (§ 14-13).</p>
+<h3>Likebehandling – innleide skal ikke ha dårligere vilkår</h3>
+<p>Et viktig vern: når du er innleid fra et bemanningsbyrå, har du krav på <strong>likebehandling</strong>. Det betyr at du minst skal ha de samme lønns- og arbeidsvilkårene som du ville fått hvis du var ansatt direkte hos innleiebedriften for å gjøre den samme jobben (§ 14-12 a).</p>
+<p>La oss regne på det for Jonas:</p>
+<ul>
+<li>Hvis en fast ansatt lagermedarbeider hos Nord Logistikk tjener 230 kr timen, har et tillegg på 25 kr for kveldsvakt og fri på bevegelige helligdager, så skal Jonas ha det samme.</li>
+<li>Hvis Jonas oppdager at han bare får 205 kr timen og ingen kveldstillegg, har han trolig krav på etterbetaling. Differansen på 25 kr timen + kveldstillegg over flere måneder kan fort bli tusenvis av kroner.</li>
+</ul>
+<p>Dette gjelder lønn, arbeidstid, pauser, ferie og en del andre goder.</p>
+<h3>Slik finner du ut hva du faktisk er</h3>
+<p>Er du usikker på om du er ansatt eller innleid? Gå frem slik:</p>
+<ol>
+<li><strong>Les arbeidsavtalen din.</strong> Hvilket firmanavn står øverst som arbeidsgiver? Det navnet er din formelle arbeidsgiver.</li>
+<li><strong>Se hvem som betaler lønna.</strong> Sjekk lønnsslippen – hvilket firma overfører penger til deg?</li>
+<li><strong>Tenk på hvem du jobber for til daglig.</strong> Er det et annet firma enn det som står på lønnsslippen? Da er du sannsynligvis innleid.</li>
+<li><strong>Spør rett ut.</strong> Du har full rett til å spørre HR eller leder: «Er jeg fast ansatt her, eller er jeg innleid?» Det er et helt legitimt spørsmål.</li>
+<li><strong>Sjekk om bemanningsbyrået er godkjent.</strong> Fra 1. januar 2024 må bemanningsbyrå være offentlig godkjent av Arbeidstilsynet for å kunne leie ut folk. Du kan søke i Arbeidstilsynets register.</li>
+</ol>
+<h3>Innleie er ikke det samme som å være underleverandør eller selvstendig</h3>
+<p>Det er lett å blande sammen ulike måter å være «utenfor» den faste staben på. La oss skille:</p>
+<ul>
+<li><strong>Innleid:</strong> du er ansatt et sted og lånes ut. Du jobber under innleiebedriftens daglige ledelse, men har dine ansattrettigheter i behold gjennom bemanningsbyrået.</li>
+<li><strong>Underleverandør (entreprise):</strong> her kjøper bedriften en <em>tjeneste</em> fra et annet selskap, og det andre selskapet styrer selv hvordan oppdraget løses. De ansatte der jobber under sin egen arbeidsgivers ledelse.</li>
+<li><strong>Selvstendig oppdragstaker (frilanser/enkeltpersonforetak):</strong> du er ikke ansatt i det hele tatt, men driver for egen regning og risiko.</li>
+</ul>
+<p>Skillet er viktig fordi rettighetene dine er helt forskjellige. En arbeidstaker – enten fast ansatt eller innleid – har vern etter arbeidsmiljøloven. En ren selvstendig oppdragstaker har ikke det samme vernet. Noen bedrifter prøver å kalle folk «selvstendige» for å spare penger, selv om personen i praksis jobber akkurat som en ansatt. Da er det realiteten, ikke etiketten, som avgjør.</p>
+<p>Eksempel: Hvis «Kari» kaller seg frilanser, men møter fast på samme kontor hver dag, bruker bedriftens utstyr, får beskjed om når og hvordan hun skal jobbe og bare har én oppdragsgiver – da ligner hun mer på en ansatt enn en selvstendig, og kan ha krav på ansattrettigheter.</p>
+<h3>Hvorfor er forskjellen viktig for deg?</h3>
+<p>Forskjellen handler om trygghet. En fast ansettelse gir deg som regel mer forutsigbar inntekt, et tydelig oppsigelsesvern og en arbeidsgiver som har et langsiktig ansvar for deg. Innleie kan være helt greit i en periode, men det er ment som en kortsiktig løsning – ikke en permanent måte å holde folk i usikkerhet på. Vet du hva slags forhold du står i, vet du også hvilke rettigheter du kan kreve.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li><strong>Ansatt</strong> = du har arbeidsavtale direkte med bedriften du jobber for.</li>
+<li><strong>Innleid</strong> = du er ansatt et sted (ofte et bemanningsbyrå) og «lånes ut» til en annen bedrift.</li>
+<li>Hovedregelen i loven er fast ansettelse i bedriften der du jobber (§ 14-9).</li>
+<li>Innleie er et unntak som bare er lov i bestemte tilfeller (§ 14-12 og § 14-13).</li>
+<li>Innleide fra bemanningsbyrå har krav på <strong>likebehandling</strong> – minst samme lønn og vilkår som direkte ansatte (§ 14-12 a).</li>
+<li>Les arbeidsavtalen og lønnsslippen for å finne ut hva du er – og spør hvis du er i tvil.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

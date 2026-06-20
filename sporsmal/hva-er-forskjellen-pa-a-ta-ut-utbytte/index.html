@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forskjellen på å ta ut utbytte og lønn? — Rettsregel</title>
+<meta name="description" content="Lønn er betaling for jobben du gjør i selskapet, og den gir deg trygderettigheter som sykepenger, pensjon og dagpenger – men selskapet må betale…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-a-ta-ut-utbytte/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forskjellen på å ta ut utbytte og lønn?">
+<meta property="og:description" content="Lønn er betaling for jobben du gjør i selskapet, og den gir deg trygderettigheter som sykepenger, pensjon og dagpenger – men selskapet må betale…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forskjellen-pa-a-ta-ut-utbytte/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forskjellen på å ta ut utbytte og lønn?">
+<meta name="twitter:description" content="Lønn er betaling for jobben du gjør i selskapet, og den gir deg trygderettigheter som sykepenger, pensjon og dagpenger – men selskapet må betale…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er forskjellen på å ta ut utbytte og lønn?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Lønn er betaling for jobben du gjør i selskapet, og den gir deg trygderettigheter som sykepenger, pensjon og dagpenger – men selskapet må betale arbeidsgiveravgift på toppen. Utbytte er din andel av overskuddet som eier, og gir ingen trygderettigheter, men har en annen samlet skattebelastning. For en eier som jobber i sitt eget AS lønner det seg som regel å kombinere begge deler.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>To helt forskjellige «hatter»</h3>
+<p>Når du eier og jobber i ditt eget aksjeselskap, har du egentlig to roller samtidig. Du er <strong>ansatt</strong> (du gjør en jobb), og du er <strong>aksjonær</strong> (du eier selskapet). Disse to rollene gir deg to ulike måter å ta penger ut av selskapet på.</p>
+<p>Tar du ut <strong>lønn</strong>, er du i ansatt-rollen. Tar du ut <strong>utbytte</strong>, er du i eier-rollen. Det er fristende å bare se på «hva sitter jeg igjen med etter skatt», men da glemmer mange den viktigste forskjellen: hva du får igjen i form av rettigheter. En krone i lønn og en krone i utbytte er ikke det samme, selv om begge ender på din private konto.</p>
+<h3>Hva lønn gir deg som ikke utbytte gir</h3>
+<p>Lønn teller med i det som kalles <strong>pensjonsgivende inntekt</strong> og <strong>sykepengegrunnlag</strong>. Det betyr:</p>
+<ul>
+<li><strong>Sykepenger:</strong> Som ansatt i eget AS har du krav på 100 prosent sykepenger basert på lønnen din. De første 16 dagene dekker selskapet ditt (som arbeidsgiver), deretter overtar NAV. Har du ingen lønn, har du heller ikke noe sykepengegrunnlag.</li>
+<li><strong>Pensjon:</strong> Du tjener opp pensjon i folketrygden av lønnen. Selskapet må også ha en obligatorisk tjenestepensjon (OTP) for deg når lønnen passerer et visst nivå.</li>
+<li><strong>Dagpenger:</strong> Lønnen kan gi rett til dagpenger hvis du blir arbeidsledig.</li>
+<li><strong>Foreldrepenger:</strong> Beregnes ut fra lønnsinntekt. Planlegger du familie, kan lav lønn gi lave foreldrepenger.</li>
+</ul>
+<p>Utbytte gir <strong>ingen</strong> av disse rettighetene. Tar du bare ut utbytte og null i lønn, kan du i praksis stå uten sykepenger og uten pensjonsopptjening. Det er en felle mange gründere går i de første årene, der de prøver å spare arbeidsgiveravgift og ender opp ubeskyttet ved sykdom.</p>
+<h3>Hva koster det selskapet?</h3>
+<p>På lønn må selskapet betale <strong>arbeidsgiveravgift</strong>. Satsen varierer etter hvor i landet selskapet hører til (vanligst 14,1 prosent i sentrale strøk, lavere i distriktene, og noen distrikter har 0). Lønnen er samtidig en kostnad som reduserer selskapets skattepliktige overskudd – så selskapet sparer 22 prosent selskapsskatt på lønnskostnaden.</p>
+<p>Utbytte koster ikke arbeidsgiveravgift, men det kan bare deles ut av penger selskapet allerede har betalt 22 prosent selskapsskatt på. Utbytte er altså «etterskatt-penger» i selskapet før det deles ut.</p>
+<h3>Et regneeksempel</h3>
+<p>La oss si at Kari driver «Kari Design AS» og har 200 000 kroner hun vil ta ut.</p>
+<p><strong>Som lønn (forenklet):</strong>
+- Selskapet betaler ca. 14,1 prosent arbeidsgiveravgift = 28 200 kroner i tillegg til lønnen.
+- Kari betaler vanlig inntektsskatt og trygdeavgift på lønnen (satsen avhenger av samlet inntekt).
+- MEN: Kari bygger pensjon, har sykepengerett og dagpengerett. For en gründer i etableringsfasen er dette ofte verdt mer enn noen kroner i skatteforskjell.</p>
+<p><strong>Som utbytte (2026):</strong>
+- Selskapet har allerede betalt 22 prosent selskapsskatt på overskuddet pengene kommer fra.
+- Utbyttet skattlegges hos Kari med en <strong>oppjustering</strong>: beløpet ganges med en faktor på <strong>1,72</strong> (faktor for 2026), og skattlegges deretter med 22 prosent. Det gir en <strong>effektiv skattesats på 37,84 prosent</strong> på utbyttet.
+- 200 000 × 1,72 = 344 000; 344 000 × 22 prosent = 75 680 kroner i skatt. Kari sitter igjen med ca. 124 320 kroner.
+- Kari får ingen trygderettigheter av dette.</p>
+<p>Husk: Kari har et <strong>skjermingsfradrag</strong> som gjør at en liten del av utbyttet kan tas ut tilnærmet skattefritt. Skjermingen beregnes automatisk i skattemeldingen og avhenger av hvor mye hun har skutt inn i selskapet.</p>
+<h3>Litt om «dobbel» skatt på utbytte</h3>
+<p>En grunn til at utbytte kan oppleves dyrt, er at pengene egentlig skattlegges to ganger. Først betaler selskapet 22 prosent selskapsskatt på overskuddet. Deretter betaler du som eier 37,84 prosent (2026) på det som deles ut av det som er igjen. Lønn skattlegges derimot bare én gang – men da betaler selskapet arbeidsgiveravgift, og du betaler trinnskatt og trygdeavgift, som kan bli høyt på toppen av annen inntekt. Det finnes altså ikke en «gratis» vei ut av selskapet; spørsmålet er hvilken kombinasjon som passer din situasjon og samtidig sikrer rettighetene dine.</p>
+<h3>En vanlig nybegynnerfeil</h3>
+<p>Petter starter «Petter Snekker AS» og hører at «utbytte er billigere enn lønn». Det første året tar han alt ut som utbytte og null i lønn. Året etter brekker han armen og kan ikke jobbe på tre måneder. Da oppdager han at han ikke har noe sykepengegrunnlag – fordi sykepenger beregnes av lønn, ikke utbytte. Han står helt uten inntekt i sykmeldingsperioden. Hadde han tatt ut en fornuftig lønn, ville NAV dekket sykepenger fra dag 17 (og selskapet de første 16 dagene). Lærdommen: ikke jakt på den siste skattekronen hvis det betyr at du står ubeskyttet.</p>
+<h3>Den klassiske kombinasjonen</h3>
+<p>Mange rådgivere anbefaler at en eier som jobber i selskapet tar ut <strong>nok lønn til å sikre seg trygderettigheter</strong> – særlig opp til nivåene som gir full opptjening av sykepenger og pensjon i folketrygden – og deretter tar resten som utbytte hvis det er forsvarlig. Hva som er «riktig» avhenger helt av din situasjon, hvor mye selskapet tjener, om du har annen inntekt, og dagens satser. Det finnes ingen fasit som passer alle.</p>
+<h3>Steg for steg når du skal velge</h3>
+<ol>
+<li>Sjekk om du har lønn nok til å sikre sykepenger og pensjon for kommende år.</li>
+<li>Se på hvor mye selskapet faktisk tåler å betale ut – både lønn og utbytte må være forsvarlig.</li>
+<li>Husk at utbytte krever vedtak på generalforsamling og at det finnes <strong>fri egenkapital</strong> å dele ut av.</li>
+<li>Tenk på livssituasjonen: planlegger du barn, sykdom i familien eller usikre tider, veier trygderettighetene tyngre.</li>
+<li>Snakk med regnskapsfører – tallene og satsene endrer seg fra år til år.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Lønn gir trygghet (sykepenger, pensjon, dagpenger) men koster arbeidsgiveravgift. Utbytte gir ingen rettigheter men skattlegges med en effektiv sats på 37,84 prosent (2026, oppjusteringsfaktor 1,72). De fleste eiere kombinerer: nok lønn til å være trygg, resten som utbytte. Dette er ikke konkret skatteråd – satser og regler endres, så sjekk alltid skatteetaten.no for tallene som gjelder det aktuelle året, og bruk regnskapsfører.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

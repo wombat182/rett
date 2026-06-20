@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er stemmerett på aksjer? — Rettsregel</title>
+<meta name="description" content="Stemmerett er retten til å stemme på generalforsamlingen – selskapets «årsmøte» der de viktige beslutningene tas.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-stemmerett-pa-aksjer/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er stemmerett på aksjer?">
+<meta property="og:description" content="Stemmerett er retten til å stemme på generalforsamlingen – selskapets «årsmøte» der de viktige beslutningene tas.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-stemmerett-pa-aksjer/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er stemmerett på aksjer?">
+<meta name="twitter:description" content="Stemmerett er retten til å stemme på generalforsamlingen – selskapets «årsmøte» der de viktige beslutningene tas.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er stemmerett på aksjer?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Stemmerett er retten til å stemme på generalforsamlingen – selskapets «årsmøte» der de viktige beslutningene tas. Hovedregelen er enkel: hver aksje gir én stemme (aksjeloven § 5-3). Har du flere aksjer, har du flere stemmer, og dermed mer å si.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Stemmerett er retten til å stemme på generalforsamlingen – selskapets «årsmøte» der de viktige beslutningene tas. Hovedregelen er enkel: hver aksje gir én stemme (aksjeloven § 5-3). Har du flere aksjer, har du flere stemmer, og dermed mer å si.</p>
+<h3>Hva bruker du stemmeretten til?</h3>
+<p>Generalforsamlingen er der eierne bestemmer over selskapet. Her velges styret, godkjennes årsregnskapet, vedtas utbytte og avgjøres endringer i vedtektene. Stemmeretten er altså din makt som eier. Jo flere stemmer, jo større innflytelse på hvilken vei selskapet skal gå.</p>
+<p>«Generalforsamling» betyr rett og slett møtet der aksjonærene fatter beslutninger – minst én gang i året (ordinær generalforsamling). I tillegg kan det holdes ekstraordinære generalforsamlinger når noe viktig dukker opp underveis, for eksempel et tilbud om å selge selskapet eller behov for å hente inn ny kapital.</p>
+<h3>Regn ut stemmene dine</h3>
+<p>Et eksempel: «Solsikke Kafé AS» har 1 000 aksjer fordelt på tre eiere:</p>
+<ul>
+<li>Anne: 550 aksjer = 550 stemmer (55 %)</li>
+<li>Tomas: 300 aksjer = 300 stemmer (30 %)</li>
+<li>Vera: 150 aksjer = 150 stemmer (15 %)</li>
+</ul>
+<p>Når noe skal vedtas med vanlig flertall, trenger du mer enn halvparten av de avgitte stemmene. Anne har alene 55 % og kan derfor i praksis bestemme de fleste vanlige sakene på egen hånd. Tomas og Vera kan til sammen (45 %) ikke overstyre henne i vanlige saker. Selv om de er to mot én, vinner Anne så lenge stemmene følger aksjene.</p>
+<h3>Ulike flertallskrav</h3>
+<p>Ikke alt avgjøres med simpelt flertall:</p>
+<ol>
+<li><strong>Vanlige saker</strong> – mer enn halvparten av stemmene (alminnelig flertall). Eksempel: godkjenne regnskapet eller velge styre.</li>
+<li><strong>Vedtektsendringer</strong> – minst to tredjedeler av både stemmene og kapitalen som er representert på møtet. Eksempel: endre selskapets formål eller lage aksjeklasser.</li>
+<li><strong>Enkelte tunge beslutninger</strong> – krever enda mer, noen ganger tilslutning fra alle berørte aksjonærer.</li>
+</ol>
+<p>Dette betyr at en eier med over 50 % styrer hverdagen, men trenger over to tredjedeler (over 66,7 %) for å endre selve spillereglene. Det er en bevisst innebygd beskyttelse: én eier skal ikke kunne snu opp ned på selskapets grunnregler uten bred oppslutning.</p>
+<h3>Hovedregelen kan fravikes</h3>
+<p>§ 5-3 sier at hver aksje gir én stemme «når noe annet ikke følger av loven eller vedtektene». Det er den lille setningen som åpner for unntak. Vedtektene kan bestemme:</p>
+<ul>
+<li>At aksjer i én klasse har flere stemmer enn andre (stemmevektsforskjell)</li>
+<li>At noen aksjer ikke gir stemmerett i det hele tatt</li>
+<li>Personlige stemmerettsbegrensninger, for eksempel at ingen kan stemme for mer enn en viss andel uansett hvor mange aksjer de eier</li>
+</ul>
+<p>Har du ikke skrevet noe slikt i vedtektene, gjelder hovedregelen automatisk: én aksje, én stemme. Du må altså aktivt velge å fravike den; den «slår på» av seg selv hvis du ikke gjør noe.</p>
+<h3>Egne aksjer teller ikke</h3>
+<p>Et viktig poeng: hvis selskapet eier egne aksjer, kan det ikke stemme for dem. De regnes ikke med når flertallet beregnes. Det samme gjelder aksjer der eieren av andre grunner er avskåret fra å stemme, for eksempel ved en interessekonflikt i en konkret sak. Dette hindrer at noen «jukser» til seg flertall ved hjelp av selskapets egne aksjer.</p>
+<h3>Praktisk råd for små selskaper</h3>
+<p>For de fleste små AS er det ryddigst å holde seg til standarden: én aksje, én stemme. Da vet alle hvor de står, og eierandel og stemmeandel følger hverandre. Først når du har en konkret grunn – som å hente investor uten å gi fra deg kontroll – bør du vurdere å skru på stemmevekt. Og da: skriv det tydelig inn i vedtektene og meld det til Brønnøysund.</p>
+<p>Det er også lurt å snakke åpent med medeierne om hvordan beslutninger skal tas, gjerne i en aksjonæravtale ved siden av vedtektene. Da unngår du overraskelser når en viktig sak først kommer på bordet.</p>
+<h3>Hvordan stemmer man i praksis?</h3>
+<p>På selve generalforsamlingen avgis stemmene som regel ved håndsopprekning eller ved navneopprop, og det skrives en protokoll som viser hva som ble vedtatt. I små selskaper der alle eierne kjenner hverandre, går dette ofte raskt og uformelt. Men protokollen er viktig: den er beviset på hva som faktisk ble besluttet, og hvem som stemte for og mot.</p>
+<p>Et eksempel: I «Tindefoto AS» med tre eiere skal det vedtas et utbytte på 200 000 kroner. To eiere stemmer for, én imot. Forslaget er vedtatt fordi de to til sammen har over halvparten av stemmene. I protokollen står det hvem som var til stede, hvor mange stemmer de representerte, og utfallet. Skulle det senere oppstå uenighet, er protokollen det man slår opp i.</p>
+<h3>Du kan la andre stemme for deg</h3>
+<p>Du trenger ikke nødvendigvis møte selv. En aksjonær kan møte ved fullmektig – altså la en annen person stemme på sine vegne med en skriftlig fullmakt. «Fullmakt» betyr at du gir noen lov til å handle for deg. Dette er praktisk hvis du er bortreist eller forhindret. Mange små selskaper opplever at en eier gir fullmakt til en medeier eller til styrelederen for en konkret generalforsamling.</p>
+<p>Et eksempel: Kari eier 40 % av «Fjellguide AS», men er på reise når generalforsamlingen holdes. Hun gir skriftlig fullmakt til broren Per, som møter og stemmer med hennes 40 % i tillegg til sine egne aksjer. Slik mister ikke Kari innflytelsen sin selv om hun ikke kan være fysisk til stede. Det viktige er at fullmakten er klar og skriftlig, så det ikke oppstår tvil om hva Per hadde lov til å gjøre.</p>
+<h3>Stemmerett og rett til å møte er to ulike ting</h3>
+<p>Et poeng som ofte forvirrer nye eiere: retten til å møte på generalforsamlingen og retten til å stemme er ikke helt det samme. Selv en eier med stemmerettsløse aksjer har som regel rett til å møte, til å si sin mening og til å få informasjon – han mangler bare selve stemmen. Du kan altså være til stede og bli hørt uten å kunne avgjøre utfallet.</p>
+<p>For deg som driver et lite selskap er dette en nyttig nyanse. Hvis du tar inn en medeier med begrenset eller ingen stemmerett, betyr ikke det at vedkommende skal holdes utenfor. Tvert imot er det ofte klokt å la alle eiere delta og uttale seg, selv om bare noen av dem stemmer. Det skaper tillit og en følelse av å bli tatt på alvor, og det reduserer risikoen for konflikt senere.</p>
+<p>En enkel huskeregel: stemmeretten avgjør hvem som <em>bestemmer</em>, mens møteretten avgjør hvem som får <em>være med og påvirke samtalen</em>. De henger sammen, men de er ikke identiske – og i et godt drevet selskap bruker man begge bevisst.</p>
+<h3>Kort oppsummert</h3>
+<p>Stemmerett er din makt som eier til å påvirke beslutninger på generalforsamlingen. Hovedregelen er én stemme per aksje (§ 5-3), men vedtektene kan lage unntak med stemmevekt eller stemmerettsløse aksjer. Over 50 % av stemmene gir kontroll på vanlige saker, mens vedtektsendringer krever to tredjedeler. Hold det enkelt med mindre du har en god grunn til noe annet.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

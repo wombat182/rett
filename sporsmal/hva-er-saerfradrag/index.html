@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er særfradrag? — Rettsregel</title>
+<meta name="description" content="Særfradrag er ekstra fradrag som gis i helt spesielle situasjoner i livet – ikke til alle, men til dem som er i en bestemt livssituasjon der lovgiveren…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-saerfradrag/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er særfradrag?">
+<meta property="og:description" content="Særfradrag er ekstra fradrag som gis i helt spesielle situasjoner i livet – ikke til alle, men til dem som er i en bestemt livssituasjon der lovgiveren…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-saerfradrag/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er særfradrag?">
+<meta name="twitter:description" content="Særfradrag er ekstra fradrag som gis i helt spesielle situasjoner i livet – ikke til alle, men til dem som er i en bestemt livssituasjon der lovgiveren…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er særfradrag?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Særfradrag er ekstra fradrag som gis i helt spesielle situasjoner i livet – ikke til alle, men til dem som er i en bestemt livssituasjon der lovgiveren har bestemt at man skal få litt lettelse i skatten. De vanligste handler om sykdom og nedsatt arbeidsevne. Her forklarer vi hva som finnes, og hvem som kan ha krav på det.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Særfradrag er ekstra fradrag som gis i helt spesielle situasjoner i livet – ikke til alle, men til dem som er i en bestemt livssituasjon der lovgiveren har bestemt at man skal få litt lettelse i skatten. De vanligste handler om sykdom og nedsatt arbeidsevne. Her forklarer vi hva som finnes, og hvem som kan ha krav på det.</p>
+<h3>Hva betyr "særfradrag"?</h3>
+<p>Ordet "sær" betyr her "spesiell". Mens vanlige fradrag (som rentefradrag eller foreldrefradrag) er noe mange har, er særfradrag forbeholdt enkelte grupper. Som med andre fradrag i alminnelig inntekt er verdien 22 prosent av beløpet.</p>
+<h3>De viktigste særfradragene i dag</h3>
+<p><strong>1. Særfradrag for store sykdomsutgifter</strong>
+Dette er en ordning under utfasing, men noen kan fortsatt ha rett til den. For å få fradrag må du oppfylle strenge vilkår:</p>
+<ul>
+<li>Utgiftene må gjelde din egen eller en forsørget persons sykdom eller varig svakhet.</li>
+<li>Det må gjelde <strong>samme sykdom</strong> som ga rett til fradrag både i 2010 og 2011 (ordningen ble "frosset" for nye tilfeller).</li>
+<li>Utgiftene må være på minst <strong>9 180 kroner</strong> i året (2025).</li>
+<li>Du får fradrag for <strong>67 prosent</strong> av de godkjente utgiftene.</li>
+</ul>
+<p>Tannbehandling, transport og bolig faller utenfor ordningen. Dette er altså et fradrag for en avgrenset gruppe som har hatt sykdomsutgifter sammenhengende siden 2010/2011.</p>
+<p><strong>Eksempel – Astrid:</strong>
+Astrid oppfyller vilkårene og har 20 000 kroner i godkjente sykdomsutgifter.</p>
+<ul>
+<li>Fradragsgrunnlag: 20 000 × 67 % = 13 400 kroner</li>
+<li>Skattereduksjon: 13 400 × 22 % = <strong>2 948 kroner</strong></li>
+</ul>
+<p><strong>2. Særfradrag for lettere nedsatt ervervsevne</strong>
+Har du fått arbeidsevnen din varig, men bare lett, redusert – uten at du får uføretrygd eller andre ytelser som kompenserer fullt – kan du etter en skjønnsmessig vurdering få et særfradrag på inntil <strong>9 180 kroner</strong> (2025).</p>
+<p><strong>Eksempel – Tom:</strong>
+Tom får innvilget fullt særfradrag for lettere nedsatt ervervsevne på 9 180 kroner.</p>
+<ul>
+<li>Skattereduksjon: 9 180 × 22 % = <strong>2 020 kroner</strong></li>
+</ul>
+<h3>Hva med enslige forsørgere?</h3>
+<blockquote>
+<p><strong>Viktig endring du bør kjenne til:</strong>
+Det gamle særfradraget for enslige forsørgere ble <strong>avviklet fra 1. mars 2023</strong>. Det er erstattet av et tillegg i barnetrygden – såkalt "utvidet barnetrygd" – som utbetales fra NAV i stedet for å gå via skatten. Er du enslig forsørger, skal du derfor ikke lete etter dette i skattemeldingen lenger, men sørge for at du får utvidet barnetrygd fra NAV.</p>
+</blockquote>
+<p>Dette er et godt eksempel på at skatteregler endres, og at gamle råd kan være utdaterte.</p>
+<h3>Hvem kan ha krav på særfradrag?</h3>
+<blockquote>
+<p><strong>Sjekk om dette kan gjelde deg:</strong>
+- [ ] Har du hatt store sykdomsutgifter for samme sykdom helt siden 2010/2011?
+- [ ] Har du fått arbeidsevnen varig, men lett, redusert uten full kompensasjon?</p>
+<p>Kjenner du deg igjen, bør du undersøke nærmere – men vær forberedt på at vilkårene er strenge og krever dokumentasjon.</p>
+</blockquote>
+<h3>En kort historie om hvorfor reglene er som de er</h3>
+<p>Tidligere fantes flere ulike særfradrag, blant annet for alder og for enslige forsørgere. Mange av disse er over tid blitt avviklet eller erstattet av andre ordninger – som regel fordi politikerne har ment at det er mer treffsikkert å gi hjelp gjennom for eksempel trygd eller barnetrygd enn gjennom fradrag i skatten. Det er nettopp derfor det er så viktig å sjekke de gjeldende reglene: et særfradrag som fantes for noen år siden, finnes ikke nødvendigvis i dag. Akkurat dette området har endret seg mye.</p>
+<h3>Forskjellen på særfradrag og vanlige fradrag</h3>
+<p>Det er lett å blande sammen begrepene. Her er en enkel oversikt:</p>
+<ul>
+<li><strong>Vanlige fradrag</strong> (renter, foreldrefradrag, fagforening, gaver, pendler): trekkes fra inntekten og er noe mange har.</li>
+<li><strong>Særfradrag</strong>: trekkes også fra inntekten, men er forbeholdt spesielle livssituasjoner og krever at du oppfyller bestemte vilkår.</li>
+<li><strong>Fradrag i skatt</strong> (som BSU): trekkes direkte fra selve skatten, ikke fra inntekten.</li>
+</ul>
+<p>Alle reduserer skatten din, men på litt ulike måter og for ulike grupper.</p>
+<h3>Hva med minstefradraget – er det et særfradrag?</h3>
+<p>Nei. Minstefradraget er et standardfradrag nesten alle lønnsmottakere og pensjonister får automatisk, beregnet som en prosent av inntekten opp til et tak. Det er ikke et særfradrag, og du trenger ikke gjøre noe for å få det – det kommer av seg selv. Det nevnes her fordi mange tror alt som heter "fradrag" henger sammen, men minstefradraget er en helt egen, automatisk ordning.</p>
+<h3>Et praktisk tips hvis du tror du har rett til særfradrag</h3>
+<blockquote>
+<p><strong>Steg for steg:</strong>
+1. Les vilkårene nøye på skatteetaten.no for det aktuelle særfradraget.
+2. Samle dokumentasjon (legeerklæring, kvitteringer, tidligere skattemeldinger som viser sammenheng tilbake til 2010/2011 for sykdomsutgifter).
+3. Før kravet i riktig post i skattemeldingen.
+4. Legg ved en kort forklaring.
+5. Vær forberedt på at Skatteetaten kan be om mer.</p>
+</blockquote>
+<p>Fordi dette er et område med strenge og litt kompliserte regler, er det helt greit å ringe Skatteetaten og spørre før du leverer. De hjelper deg å vurdere om du er innenfor.</p>
+<h3>Slik dokumenterer og krever du særfradrag</h3>
+<p>Særfradrag er som regel <strong>ikke forhåndsutfylt</strong>. Du må selv:</p>
+<ol>
+<li>Vurdere om du oppfyller de strenge vilkårene</li>
+<li>Føre kravet i skattemeldingen</li>
+<li>Samle og ta vare på dokumentasjon (legeerklæringer, kvitteringer, tidligere års skattemeldinger)</li>
+<li>Være forberedt på at Skatteetaten kan be om mer dokumentasjon</li>
+</ol>
+<p>Fordi vilkårene er kompliserte, kan det være lurt å kontakte Skatteetaten eller en regnskapsfører hvis du er usikker på om du har krav på særfradrag.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Særfradrag er ekstra fradrag for spesielle livssituasjoner, mest knyttet til sykdom og nedsatt arbeidsevne.</li>
+<li>Særfradrag for store sykdomsutgifter krever sammenhengende utgifter siden 2010/2011; gir 67 prosent fradrag av utgifter over 9 180 kroner (2025).</li>
+<li>Særfradrag for lettere nedsatt ervervsevne kan gi inntil 9 180 kroner (2025).</li>
+<li>Særfradraget for enslige forsørgere er avviklet fra 2023 og erstattet av utvidet barnetrygd fra NAV.</li>
+<li>Særfradrag er sjelden forhåndsutfylt – du må kreve og dokumentere det selv.</li>
+</ul>
+<p>Reglene og beløpene endres med jevne mellomrom. Sjekk alltid de gjeldende reglene på <strong>skatteetaten.no</strong>, eller ta kontakt med Skatteetaten hvis du er usikker.</p>
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en arbeidstidsordning? — Rettsregel</title>
+<meta name="description" content="En arbeidstidsordning er rett og slett hele systemet for når og hvor mye du jobber: hvilke dager, hvilke klokkeslett, hvor lange dagene er, hvordan…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-arbeidstidsordning/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en arbeidstidsordning?">
+<meta property="og:description" content="En arbeidstidsordning er rett og slett hele systemet for når og hvor mye du jobber: hvilke dager, hvilke klokkeslett, hvor lange dagene er, hvordan…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-arbeidstidsordning/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en arbeidstidsordning?">
+<meta name="twitter:description" content="En arbeidstidsordning er rett og slett hele systemet for når og hvor mye du jobber: hvilke dager, hvilke klokkeslett, hvor lange dagene er, hvordan…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er en arbeidstidsordning?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En arbeidstidsordning er rett og slett hele systemet for når og hvor mye du jobber: hvilke dager, hvilke klokkeslett, hvor lange dagene er, hvordan vaktene roterer, og hvilke regler som gjelder for pauser, hvile og fri. Det er «kjørereglene» for arbeidstiden din. Loven (arbeidsmiljøloven kapittel 10) setter ytre rammer, mens den konkrete ordningen avtales på arbeidsplassen din.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven §§ 10-4, 10-8, 10-9, 10-10, 10-11</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-4/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-4</div>
+  <div class="related-card-title">Hva er alminnelig arbeidstid?</div>
+</a><a href="../../lover/arbeidsmiljoloven/10-8/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-8</div>
+  <div class="related-card-title">Reglene for daglig og ukentlig hviletid</div>
+</a><a href="../../lover/arbeidsmiljoloven/10-9/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-9</div>
+  <div class="related-card-title">Reglene for pauser og matpakke</div>
+</a><a href="../../lover/arbeidsmiljoloven/10-10/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-10</div>
+  <div class="related-card-title">Reglene for søndagsarbeid</div>
+</a><a href="../../lover/arbeidsmiljoloven/10-11/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-11</div>
+  <div class="related-card-title">Reglene for nattarbeid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>En arbeidstidsordning er rett og slett hele systemet for når og hvor mye du jobber: hvilke dager, hvilke klokkeslett, hvor lange dagene er, hvordan vaktene roterer, og hvilke regler som gjelder for pauser, hvile og fri. Det er «kjørereglene» for arbeidstiden din. Loven (arbeidsmiljøloven kapittel 10) setter ytre rammer, mens den konkrete ordningen avtales på arbeidsplassen din.</p>
+<h3>Mange former for arbeidstidsordninger</h3>
+<p>Folk jobber svært ulikt, og derfor finnes det mange typer ordninger. Her er de vanligste, med eksempler:</p>
+<ul>
+<li><strong>Fast dagtid.</strong> Petter på regnskapskontoret jobber 08–16 mandag til fredag. Forutsigbart og likt hver dag.</li>
+<li><strong>Skiftarbeid / turnus.</strong> Aisha er sykepleier og jobber etter en turnusplan med dag-, kveld- og nattevakter som roterer. «Turnus» er ordet som ofte brukes i helse og omsorg; «skift» brukes ofte i industrien.</li>
+<li><strong>Fleksitid.</strong> Lena kan møte mellom 07 og 09 og gå tilsvarende, så lenge hun er på jobb i kjernetiden midt på dagen og fyller timetallet sitt over tid.</li>
+<li><strong>Gjennomsnittsberegnet tid.</strong> Arbeidstiden svinger fra uke til uke etter avtale (se artikkel 41).</li>
+<li><strong>Deltid med varierende vakter.</strong> Omar jobber 60 prosent i butikk, med vakter som settes opp i en arbeidsplan.</li>
+</ul>
+<h3>Hva loven krever av en arbeidstidsordning</h3>
+<p>Uansett hvilken form ordningen har, må den holde seg innenfor disse vernereglene:</p>
+<ul>
+<li><strong>Alminnelig arbeidstid:</strong> Som hovedregel høyst 9 timer i løpet av 24 timer og 40 timer i løpet av sju dager (§ 10-4). Mange har 37,5 timer gjennom tariffavtale.</li>
+<li><strong>Daglig hvile:</strong> Minst 11 timer sammenhengende fri i løpet av et døgn (§ 10-8).</li>
+<li><strong>Ukentlig hvile:</strong> Minst 35 timer sammenhengende fri i løpet av en uke (§ 10-8), og denne friperioden skal helst omfatte en søndag.</li>
+<li><strong>Pauser:</strong> Rett til pause når dagen blir lang nok (§ 10-9).</li>
+<li><strong>Natt- og søndagsarbeid:</strong> Er i utgangspunktet begrenset, og bare tillatt når arbeidets art gjør det nødvendig (§ 10-10 og § 10-11). En vanlig kontorjobb kan altså ikke uten videre legge arbeidet til natten.</li>
+</ul>
+<h3>Hva er «ubekvem arbeidstid»?</h3>
+<p>Et begrep du ofte møter, er «ubekvem arbeidstid» — arbeid på tider de fleste har fri, som kveld, natt, helg og helligdager. Loven krever ikke i seg selv at du får ekstra betalt for slik tid, men de aller fleste tariffavtaler gir egne tillegg for det. Det er derfor smart å vite om din arbeidstidsordning legger vakter til ubekvemme tider, og hva tariffavtalen sier om kompensasjon.</p>
+<p>Eksempel: Nora jobber i en døgnbemannet bolig. Hun har en turnus som veksler mellom dag, kveld og natt. For kvelds-, natt- og helgevaktene får hun tillegg etter tariffavtalen, i tillegg til grunnlønna. Den samlede ordningen — turnusen pluss tilleggene — er arbeidstidsordningen hennes.</p>
+<h3>Arbeidsplan når tidene varierer</h3>
+<p>Jobber du til forskjellige tider gjennom døgnet — for eksempel turnus eller varierende vakter — skal arbeidsgiver sette opp en <strong>arbeidsplan</strong> (§ 10-3). Den skal vise hvilke uker, dager og klokkeslett du skal jobbe. Planen skal:</p>
+<ul>
+<li>utarbeides i samarbeid med tillitsvalgte,</li>
+<li>drøftes med tillitsvalgte så tidlig som mulig, og senest <strong>to uker</strong> før den settes i verk (med mindre tariffavtalen sier noe annet),</li>
+<li>være lett tilgjengelig for deg, slik at du faktisk kan se den.</li>
+</ul>
+<p>Eksempel: Aisha får turnusen sin for de neste seks ukene hengt opp og lagt i det digitale planleggingssystemet to uker før den starter. Da har hun tid til å ordne barnepass og fritidsavtaler.</p>
+<h3>Hvem bestemmer arbeidstidsordningen?</h3>
+<p>Her er det et samspill:</p>
+<ul>
+<li><strong>Arbeidsgiver</strong> har styringsrett og kan i stor grad bestemme hvordan arbeidet organiseres — men innenfor lovens og avtalens rammer.</li>
+<li><strong>Loven</strong> setter de absolutte yttergrensene for vern.</li>
+<li><strong>Tariffavtaler</strong> kan gi bedre vilkår enn loven, for eksempel kortere uke (37,5 timer) eller bedre tillegg.</li>
+<li><strong>Din arbeidsavtale</strong> skal opplyse om den daglige og ukentlige arbeidstiden og om eventuelle ordninger som gjelder for deg.</li>
+</ul>
+<h3>Slik leser du din egen ordning</h3>
+<p>Hvis du vil ha oversikt over din egen arbeidstidsordning, gjør slik:</p>
+<ol>
+<li><strong>Finn frem arbeidsavtalen din.</strong> Der står den avtalte arbeidstiden.</li>
+<li><strong>Sjekk om det gjelder en tariffavtale.</strong> Den kan gi deg kortere uke eller ekstra tillegg.</li>
+<li><strong>Se etter en arbeidsplan eller turnus</strong> hvis tidene varierer. Du har krav på å få den tilgjengelig i god tid.</li>
+<li><strong>Regn etter hviletiden.</strong> Har du minst 11 timer fri mellom to vakter? Minst 35 timer fri i uka?</li>
+<li><strong>Spør tillitsvalgt</strong> hvis noe ikke stemmer. Mange feil i turnuser handler nettopp om for kort hvile mellom vaktene.</li>
+</ol>
+<h3>Når noe skurrer</h3>
+<p>Får du for eksempel en kveldsvakt som slutter 23, og deretter en morgenvakt som starter 06 dagen etter, er det bare sju timers hvile imellom. Det bryter med kravet om 11 timers daglig hvile. Da bør du ta det opp — ordningen må endres, eller det må finnes et lovlig grunnlag (som en tariffavtale med tillitsvalgte) for å fravike hovedregelen.</p>
+<h3>Når kan ordningen fravikes?</h3>
+<p>Loven gir litt rom for fleksibilitet, men ikke fritt. Noen av vernereglene kan fravikes ved skriftlig avtale med tillitsvalgte i virksomheter med tariffavtale — for eksempel kan daglig hvile reduseres til ned mot åtte timer i visse turnuser. Arbeidstilsynet kan også gi samtykke til enkelte ordninger. Det viktige for deg å vite er at slike fravik krever et formelt grunnlag. Arbeidsgiver kan ikke bare bestemme på egen hånd at du skal ha kortere hvile fordi det passer driften.</p>
+<p>Eksempel: På sykehjemmet der Aisha jobber, er det avtalt med tillitsvalgte en turnus med noe kortere hvile mellom enkelte vakter, mot at hun får sammenhengende friperioder senere. Fordi dette er avtalt med tillitsvalgte og innenfor lovens rammer, er det lovlig — i motsetning til om sjefen ensidig hadde kuttet hvilen hennes.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>En arbeidstidsordning er hele systemet for når og hvor mye du jobber.</li>
+<li>Den finnes i mange former: fast dagtid, turnus, skift, fleksitid, gjennomsnittsberegning og deltid.</li>
+<li>Loven setter ytre rammer: alminnelig arbeidstid, daglig hvile (11 t), ukentlig hvile (35 t), pauser og begrensninger på natt- og søndagsarbeid.</li>
+<li>Varierer tidene, skal det settes opp en arbeidsplan som drøftes senest to uker før (§ 10-3).</li>
+<li>Les arbeidsavtalen din, sjekk tariffavtalen, og spør tillitsvalgt om noe skurrer.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

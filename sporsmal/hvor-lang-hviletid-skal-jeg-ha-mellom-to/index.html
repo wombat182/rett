@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor lang hviletid skal jeg ha mellom to vakter? — Rettsregel</title>
+<meta name="description" content="Den korte versjonen: Du skal ha minst 11 timer sammenhengende fri mellom to vakter i løpet av et døgn, og minst 35 timer sammenhengende fri i løpet av en…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-lang-hviletid-skal-jeg-ha-mellom-to/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor lang hviletid skal jeg ha mellom to vakter?">
+<meta property="og:description" content="Den korte versjonen: Du skal ha minst 11 timer sammenhengende fri mellom to vakter i løpet av et døgn, og minst 35 timer sammenhengende fri i løpet av en…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-lang-hviletid-skal-jeg-ha-mellom-to/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor lang hviletid skal jeg ha mellom to vakter?">
+<meta name="twitter:description" content="Den korte versjonen: Du skal ha minst 11 timer sammenhengende fri mellom to vakter i løpet av et døgn, og minst 35 timer sammenhengende fri i løpet av en…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hvor lang hviletid skal jeg ha mellom to vakter?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Den korte versjonen: Du skal ha minst 11 timer sammenhengende fri mellom to vakter i løpet av et døgn, og minst 35 timer sammenhengende fri i løpet av en uke (arbeidsmiljøloven § 10-8). Den daglige hvilen handler om døgnet ditt, den ukentlige om at du skal ha en ordentlig lang friperiode hver uke.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-8</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-8/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-8</div>
+  <div class="related-card-title">Reglene for daglig og ukentlig hviletid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Den korte versjonen: Du skal ha minst 11 timer sammenhengende fri mellom to vakter i løpet av et døgn, og minst 35 timer sammenhengende fri i løpet av en uke (arbeidsmiljøloven § 10-8). Den daglige hvilen handler om døgnet ditt, den ukentlige om at du skal ha en ordentlig lang friperiode hver uke.</p>
+<h3>To slags hvile du må kjenne til</h3>
+<p>Mange blander sammen de to hvilereglene. La oss skille dem tydelig:</p>
+<p><strong>Daglig hvile</strong> – minst 11 timer i løpet av 24 timer. Dette er friperioden mellom to arbeidsdager.</p>
+<p><strong>Ukentlig hvile</strong> – minst 35 timer sammenhengende i løpet av 7 dager. Dette skal helst legges til en søndag og inkludere natten før eller etter. Tenk på det som "den lange helgepausen".</p>
+<h3>Et regneeksempel på daglig hvile</h3>
+<p><strong>Petter</strong> kjører buss. Han avslutter en vakt klokka 22.30 på mandag. For å ha 11 timer fri kan han tidligst begynne neste vakt klokka 09.30 tirsdag. Hvis ruteplanen sier at han skal møte klokka 06.00, mangler det 3,5 timer hvile. Da er turnusen i strid med loven, med mindre det finnes en gyldig avtale med tillitsvalgte.</p>
+<h3>Et regneeksempel på ukentlig hvile</h3>
+<p><strong>Linn</strong> jobber i en matbutikk med turnus. I løpet av en uke skal hun ha minst 35 timer sammenhengende fri. Hvis hun jobber til klokka 20.00 lørdag, og 35 timer skal telles fra da, kan hun tidligst møte igjen klokka 07.00 mandag. Slik sikrer loven at hun får en skikkelig lang pause, ikke bare korte hvil mellom vaktene.</p>
+<h3>Kan hvilen være kortere?</h3>
+<p>Ja, men bare innenfor klare rammer:</p>
+<ul>
+<li><strong>Daglig hvile</strong> kan ved skriftlig avtale med tillitsvalgte settes ned til minst 8 timer (§ 10-8 tredje ledd).</li>
+<li><strong>Ukentlig hvile</strong> kan ved skriftlig avtale med tillitsvalgte settes ned til minst 28 timer.</li>
+<li>Reduserer dere hvilen, skal du som hovedregel få <strong>kompenserende hvile</strong> tilsvarende det du mistet.</li>
+</ul>
+<p>Disse avtalene må være skriftlige og inngås med tillitsvalgte i en tariffbundet virksomhet. En enkelt leder kan ikke bestemme dette muntlig over en kaffekopp.</p>
+<h3>Hva med deg som har bakvakt eller beredskap?</h3>
+<p>Hvis du har hjemmevakt og blir ringt inn, kan dette spise av hvilen din. <strong>Ahmed</strong> jobber i en IT-driftsavdeling og har hjemmevakt. Blir han vekket klokka 03.00 for å fikse en feil, brytes den sammenhengende hvilen. Da kan han ha krav på utsatt oppmøte neste dag eller kompenserende hvile. Hvor mye av beredskapen som regnes som arbeidstid, avhenger av hvor bundet han er, så her lønner det seg å sjekke avtalen.</p>
+<h3>Slik passer du på hvilen din</h3>
+<ol>
+<li><strong>Skriv ned start- og sluttider</strong> for vaktene dine en hel uke.</li>
+<li><strong>Regn døgnhvilen:</strong> Er det minst 11 timer mellom hver vakt?</li>
+<li><strong>Regn ukehvilen:</strong> Finnes det en sammenhengende periode på minst 35 timer?</li>
+<li><strong>Spør om avtaler:</strong> Finnes det en skriftlig avtale med tillitsvalgte som åpner for kortere hvile?</li>
+<li><strong>Ta det opp tidlig:</strong> Det er enklere å rette en turnus før den er satt enn å klage etterpå.</li>
+</ol>
+<h3>Hva er "kompenserende hvile"?</h3>
+<p>Dette ordet dukker ofte opp, og det er greit å forstå hva det betyr. Hvis hvilen din lovlig blir kortere enn normalt – for eksempel fordi du ble kalt inn på en hjemmevakt – skal du som hovedregel få igjen den tapte hvilen som en tilsvarende sammenhengende friperiode etterpå. Det er ikke det samme som ekstra fritid "av godhet"; det er en rettighet som skal sikre at kroppen din får hentet seg inn likevel.</p>
+<p><strong>Eksempel:</strong> <strong>Ola</strong> jobber i en turnus der den daglige hvilen ble redusert fra 11 til 9 timer en natt etter en gyldig avtale. De 2 timene han mistet, skal han få igjen som sammenhengende hvile ved en senere anledning. Hvis dette systematisk ikke skjer, er det noe å ta opp.</p>
+<h3>Tenk på helheten, ikke bare én vakt</h3>
+<p>En enkelt natt med litt kort hvile kan i seg selv være lovlig hvis vilkårene er oppfylt. Men hvis det skjer gang på gang, bygger det seg opp en søvngjeld som verken er sunn eller lovlig ment. Loven er laget for at hvile skal være regelen, ikke et unntak du stadig må gi avkall på. Følg derfor med over tid, ikke bare på dagen i dag.</p>
+<h3>Når i uka skal den lange hvilen legges?</h3>
+<p>Den ukentlige hvilen på minst 35 timer skal som hovedregel omfatte en søndag, og den skal henge sammen med den daglige hvilen. I praksis betyr det at den lange friperioden helst skal ligge slik at den dekker en helg eller i det minste et helt døgn med natt rundt. Tanken er at du skal få en ordentlig "nullstilling" hver uke, ikke bare spredte timer. <strong>Kristine</strong> jobber turnus i en barnevernsinstitusjon. Selv om vaktene flytter seg gjennom uka, skal turnusen sikre henne en sammenhengende 35-timersbolk hver uke. Ser du at uka ikke inneholder en slik bolk, er det verdt å regne nøye og ta det opp.</p>
+<h3>Forskjellen på "fri" og "hvile"</h3>
+<p>Det er lett å blande sammen begrepene. "Hviletid" i lovens forstand er den arbeidsfrie tiden mellom vaktene – den du har krav på uansett. "Fritid", "avspasering" og "ferie" er andre ting, som styres av andre regler og avtaler. Når vi snakker om de 11 og 35 timene, snakker vi om selve hvilen mellom arbeidsøkter. Det betyr at selv om du har "fri" på papiret, må arbeidsgiver fortsatt sørge for at hvileperiodene faktisk blir sammenhengende og lange nok. Det ene erstatter ikke det andre.</p>
+<h3>Et praktisk råd: følg med på "vaktbytter"</h3>
+<p>En vanlig kilde til kort hvile er vaktbytter mellom kolleger. Du sier kanskje ja til å bytte deg til en tidlig morgenvakt rett etter en sen kveldsvakt for å hjelpe en kollega. Da kan du selv komme til å bryte din egen hvileperiode. Husk at hvilereglene gjelder også når du frivillig bytter vakter. <strong>Vegard</strong> byttet seg til en morgenvakt for å gjøre en kollega en tjeneste, men oppdaget at det ga ham bare 8 timer mellom vaktene. Det er greit å være hjelpsom, men ikke på bekostning av en hvile du faktisk trenger – og som loven mener du skal ha. Sjekk timene før du sier ja til et bytte.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Daglig hvile: minst 11 timer sammenhengende i døgnet.</li>
+<li>Ukentlig hvile: minst 35 timer sammenhengende i uka, helst rundt en søndag (§ 10-8).</li>
+<li>Hvilen kan kortes ned med skriftlig avtale med tillitsvalgte – ned til 8 timer (daglig) og 28 timer (ukentlig).</li>
+<li>Mister du hvile, har du normalt rett på kompenserende hvile.</li>
+<li>Beredskap og innkalling kan påvirke hvilen din – sjekk avtalen.</li>
+<li>Regn alltid selv på vaktlista, og ta det opp før turnusen settes.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

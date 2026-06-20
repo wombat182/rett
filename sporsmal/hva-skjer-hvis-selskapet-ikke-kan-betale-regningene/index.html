@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer hvis selskapet ikke kan betale regningene sine? — Rettsregel</title>
+<meta name="description" content="Først, ta et dypt åndedrag: at selskapet sliter med å betale regninger nå og da, betyr ikke automatisk at det er kroken på døra.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-hvis-selskapet-ikke-kan-betale-regningene/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer hvis selskapet ikke kan betale regningene sine?">
+<meta property="og:description" content="Først, ta et dypt åndedrag: at selskapet sliter med å betale regninger nå og da, betyr ikke automatisk at det er kroken på døra.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-hvis-selskapet-ikke-kan-betale-regningene/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer hvis selskapet ikke kan betale regningene sine?">
+<meta name="twitter:description" content="Først, ta et dypt åndedrag: at selskapet sliter med å betale regninger nå og da, betyr ikke automatisk at det er kroken på døra.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva skjer hvis selskapet ikke kan betale regningene sine?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Først, ta et dypt åndedrag: at selskapet sliter med å betale regninger nå og da, betyr ikke automatisk at det er kroken på døra. Men det er et alvorlig signal du må ta tak i. Hva som skjer videre, avhenger av om problemet er forbigående eller om selskapet faktisk er på vei mot insolvens. Her er hva du bør vite, og hva du bør gjøre.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Først, ta et dypt åndedrag: at selskapet sliter med å betale regninger nå og da, betyr ikke automatisk at det er kroken på døra. Men det er et alvorlig signal du må ta tak i. Hva som skjer videre, avhenger av om problemet er forbigående eller om selskapet faktisk er på vei mot insolvens. Her er hva du bør vite, og hva du bør gjøre.</p>
+<h3>Skill mellom et blaff og en virkelig krise</h3>
+<p>Det er forskjell på å mangle penger en uke fordi en stor kunde betaler sent, og på å ikke ha noen realistisk mulighet til å gjøre opp gjelden.</p>
+<p>Møt Sander, som driver «Nordic Snacks AS». En måned er kontoen tom fordi en stor kunde betaler en uke for sent, men ordrene ruller inn og pengene kommer. Dette er en <strong>likviditetsklemme</strong> – ubehagelig, men forbigående. Selskapet er ikke insolvent.</p>
+<p>Men hvis Sander oppdager at gjelden vokser måned for måned, kundene svikter, og verdien av alt selskapet eier er mindre enn det det skylder – da er det noe helt annet. Da nærmer selskapet seg <strong>insolvens</strong>, og da har styret plikter som trer inn.</p>
+<h3>Styrets «handleplikt» – du kan ikke bare lukke øynene</h3>
+<p>Aksjeloven pålegger styret å holde øye med selskapets økonomi. Hvis egenkapitalen blir for lav, eller det er grunn til å tro at selskapet ikke kan betale gjelden, har styret en <strong>handleplikt</strong> (asl. § 3-5): de skal straks behandle saken, og om nødvendig kalle inn generalforsamlingen og foreslå tiltak. Å bare håpe at det går over, er ikke et lovlig alternativ.</p>
+<p>Konkret betyr handleplikten at Sander og styret må:</p>
+<ul>
+<li>Skaffe seg en ærlig oversikt over økonomien.</li>
+<li>Vurdere tiltak: kutte kostnader, hente inn ny kapital, reforhandle gjeld, selge eiendeler.</li>
+<li>Kalle inn generalforsamling hvis egenkapitalen er for lav.</li>
+<li>Dokumentere vurderingene i styreprotokoller.</li>
+</ul>
+<h3>Hva er de praktiske veiene videre?</h3>
+<p>Avhengig av hvor alvorlig det er, finnes flere utganger:</p>
+<ol>
+<li><strong>Snu skuta.</strong> Er problemet løsbart, settes det inn tiltak: nye kunder, kostnadskutt, friske penger fra eierne eller en investor.</li>
+<li><strong>Forhandle med kreditorene.</strong> Mange leverandører og banker foretrekker en nedbetalingsavtale framfor å tape alt. En frivillig gjeldsordning kan gi pusterom.</li>
+<li><strong>Rekonstruksjon.</strong> For levedyktige selskaper i krise finnes en formell ordning (rekonstruksjon) der man under rettens beskyttelse forsøker å redde virksomheten ved å forhandle ned gjelden.</li>
+<li><strong>Ordnet avvikling.</strong> Hvis selskapet fortsatt <strong>kan</strong> betale gjelden, men eierne vil legge ned, er ryddig avvikling veien (aksjeloven kapittel 16).</li>
+<li><strong>Konkurs (oppbud).</strong> Hvis selskapet er insolvent og situasjonen er håpløs, har styret plikt til å melde selskapet konkurs. Dette kommer vi tilbake til i neste artikkel.</li>
+</ol>
+<h3>Mer om rekonstruksjon – en mulighet mange ikke kjenner</h3>
+<p>Rekonstruksjon fortjener noen ekstra ord, fordi det er en undervurdert mulighet for selskaper som <em>egentlig</em> er levedyktige, men som har havnet i en akutt pengeklemme. Tenk deg at Sanders selskap har sunne produkter og lojale kunder, men ble dratt ned av én stor, dårlig kontrakt. Da kan en rekonstruksjon under rettens beskyttelse gi pusterom: selskapet får en midlertidig beskyttelse mot at kreditorene tar utlegg eller begjærer konkurs, samtidig som man forhandler om å sette ned eller utsette gjelden. Klarer man å bli enige med kreditorene, kan virksomheten reddes og arbeidsplasser bevares. Det er ikke en mirakelkur, og det krever at det finnes en realistisk kjerne å bygge videre på, men for riktige tilfeller er det et langt bedre utfall enn konkurs. Snakk med en advokat tidlig hvis dette kan være aktuelt – timingen er ofte avgjørende.</p>
+<h3>Et konkret regnestykke: når er det «bare» en klemme?</h3>
+<p>La oss sette tall på Sanders situasjon for å vise forskjellen. I scenario A skylder Nordic Snacks AS 300 000 kroner som forfaller denne måneden, men selskapet eier varelager og utestående kundefordringer verdt 900 000 kroner – det er bare det at pengene ikke har kommet inn ennå. Her er selskapet i en likviditetsklemme, men ikke insolvent: verdiene er der, de er bare ikke flytende akkurat nå. I scenario B skylder selskapet 800 000 kroner, mens alt det eier til sammen er verdt 400 000 og inntektene faller. Da er gjelden større enn verdiene <em>og</em> selskapet kan ikke betale – det er insolvent. Det første kan løses med litt pusterom eller en kassekreditt; det andre krever at styret tar grep umiddelbart.</p>
+<h3>Den store fellen: å drive videre for kreditorenes regning</h3>
+<p>Her er det viktigste varselet. Hvis selskapet er insolvent og du fortsetter å drive – kjøper varer på kreditt, stifter ny gjeld, lar gammel gjeld vokse – mens du vet eller burde vite at det ikke vil gå, da driver du <strong>for kreditorenes regning</strong>. Det er alvorlig.</p>
+<p>Da risikerer du som styremedlem:</p>
+<ul>
+<li><strong>Personlig erstatningsansvar.</strong> Du kan bli dømt til å betale av egen lomme for tapet kreditorer lider fordi du fortsatte for lenge.</li>
+<li><strong>Straffansvar.</strong> I grove tilfeller kan det rammes av straffeloven.</li>
+</ul>
+<p>Det aksjeselskapsformen vanligvis beskytter deg mot – personlig ansvar – kan altså forsvinne hvis du opptrer uforsvarlig når selskapet er kjørt.</p>
+<h3>En enkel handlingsplan når det strammer til</h3>
+<ul>
+<li>[ ] Lag en ærlig, oppdatert oversikt over eiendeler og gjeld</li>
+<li>[ ] Avgjør: er dette forbigående eller varig?</li>
+<li>[ ] Kall inn styret, dokumenter vurderingene i protokoll</li>
+<li>[ ] Snakk med kreditorene tidlig – de fleste vil heller forhandle</li>
+<li>[ ] Vurder rekonstruksjon hvis virksomheten er levedyktig</li>
+<li>[ ] Søk råd hos regnskapsfører eller advokat med én gang</li>
+<li>[ ] Er det håpløst og selskapet insolvent: forbered oppbud i tide</li>
+</ul>
+<h3>Det viktigste rådet</h3>
+<p>Be om hjelp tidlig. De fleste som havner i styreansvar, gjorde ikke noe ondt – de håpet for lenge og handlet for sent. En time hos en advokat eller en samtale med regnskapsføreren når problemene begynner, kan spare deg for både penger og søvnløse netter senere.</p>
+<h3>Kort oppsummert</h3>
+<p>Hvis selskapet ikke kan betale regningene, må du først avgjøre om det er en forbigående klemme eller en reell insolvens. Styret har en handleplikt: skaff oversikt, sett inn tiltak, dokumenter og søk hjelp. Mulige veier er å snu driften, forhandle med kreditorene, rekonstruere, avvikle ordnet (hvis selskapet er solvent) eller melde oppbud (hvis det er insolvent). Den farligste feilen er å drive videre for kreditorenes regning – det kan koste deg personlig ansvar.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

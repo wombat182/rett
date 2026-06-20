@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan arbeidsgiver endre vaktplanen min? — Rettsregel</title>
+<meta name="description" content="Ja, arbeidsgiver kan endre vaktplanen arbeidsplanen din — men ikke fritt og ikke uten videre.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-arbeidsgiver-endre-vaktplanen-min/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan arbeidsgiver endre vaktplanen min?">
+<meta property="og:description" content="Ja, arbeidsgiver kan endre vaktplanen arbeidsplanen din — men ikke fritt og ikke uten videre.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-arbeidsgiver-endre-vaktplanen-min/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan arbeidsgiver endre vaktplanen min?">
+<meta name="twitter:description" content="Ja, arbeidsgiver kan endre vaktplanen arbeidsplanen din — men ikke fritt og ikke uten videre.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan arbeidsgiver endre vaktplanen min?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, arbeidsgiver kan endre vaktplanen (arbeidsplanen) din — men ikke fritt og ikke uten videre. Endringer skal drøftes med tillitsvalgte, og planen skal som hovedregel være klar og tilgjengelig senest to uker før den settes i verk. Kortere varsel ved endringer kan utløse rett til kompensasjon. Reglene står i arbeidsmiljøloven § 10-3 (om arbeidsplan).</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-8</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-8/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-8</div>
+  <div class="related-card-title">Reglene for daglig og ukentlig hviletid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, arbeidsgiver kan endre vaktplanen (arbeidsplanen) din — men ikke fritt og ikke uten videre. Endringer skal drøftes med tillitsvalgte, og planen skal som hovedregel være klar og tilgjengelig senest to uker før den settes i verk. Kortere varsel ved endringer kan utløse rett til kompensasjon. Reglene står i arbeidsmiljøloven § 10-3 (om arbeidsplan).</p>
+<h3>Først: hva er en vaktplan?</h3>
+<p>Hvis du jobber til ulike tider gjennom døgnet — for eksempel turnus i helsevesenet eller skift i industrien — skal arbeidsgiver sette opp en <strong>arbeidsplan</strong> (ofte kalt vaktplan eller turnus). Den viser hvilke uker, dager og klokkeslett du skal jobbe. Planen skal:</p>
+<ul>
+<li>utarbeides i samarbeid med tillitsvalgte,</li>
+<li>drøftes med tillitsvalgte så tidlig som mulig, senest to uker før den settes i verk (med mindre tariffavtalen sier noe annet),</li>
+<li>være lett tilgjengelig for deg.</li>
+</ul>
+<p>Eksempel: Aisha jobber turnus på et sykehjem. Turnusen hennes for de neste seks ukene henges opp og legges i planleggingssystemet to uker før den starter. Dermed kan hun planlegge barnehagehenting, trening og besøk hos foreldrene sine i god tid. Det er nettopp denne forutsigbarheten varselsreglene skal sikre.</p>
+<h3>Arbeidsgiver har styringsrett — men med rammer</h3>
+<p>Arbeidsgiver har det som kalles <strong>styringsrett</strong>: retten til å organisere, lede og fordele arbeidet. Det betyr at arbeidsgiver i utgangspunktet kan endre når du skal jobbe. Men styringsretten er ikke ubegrenset. Den må utøves innenfor:</p>
+<ul>
+<li><strong>Loven</strong> (særlig kravene om drøfting, varsel, hvile og pauser),</li>
+<li><strong>Tariffavtalen</strong> (som ofte har egne, strengere regler om varsel og kompensasjon),</li>
+<li><strong>Arbeidsavtalen din</strong> (det som er konkret avtalt med deg),</li>
+<li><strong>Saklighet</strong> (endringen må ha en fornuftig grunn, ikke være vilkårlig eller sjikanøs).</li>
+</ul>
+<p>Eksempel: Bedriften til Emma får inn en stor ekstraordre og må omfordele vaktene. Det er en saklig grunn til å endre planen. Men de må fortsatt følge reglene om drøfting og varsel, og hver enkelt vakt må holde seg innenfor hviletidskravene.</p>
+<h3>Varsel og kompensasjon ved endringer</h3>
+<p>Hovedregelen er at planen skal være drøftet og klar senest to uker før iverksetting. Kommer endringen på kortere varsel, kan du ha krav på kompensasjon. Etter mange tariffavtaler gjelder for eksempel kompensasjon for «forskjøvet arbeidstid» når vakter endres med kort varsel (typisk mindre enn et visst antall dager). De konkrete satsene og fristene varierer fra avtale til avtale, så sjekk din egen.</p>
+<p>Eksempel: Omar får beskjed dagen før om at kveldsvakten hans flyttes til morgenvakt. Etter tariffavtalen hans utløser så kort varsel et tillegg for forskjøvet arbeidstid. Han bør melde fra om dette og kreve tillegget.</p>
+<p>Merk at «forskjøvet arbeidstid» betyr at en vakt flyttes til et annet tidspunkt enn det som var planlagt — ikke at du jobber mer enn avtalt. Det er nettopp ulempen ved at planen din endres på kort varsel som kompenseres. Hvor kort varsel som utløser tillegg, og hvor stort tillegget er, varierer fra tariffavtale til tariffavtale, så det lønner seg å kjenne reglene som gjelder akkurat hos deg.</p>
+<h3>Hva arbeidsgiver IKKE kan gjøre</h3>
+<p>Selv med styringsrett finnes det klare grenser. Arbeidsgiver kan ikke:</p>
+<ul>
+<li><strong>Bryte hviletiden.</strong> Endringen kan ikke gi deg mindre enn 11 timers daglig hvile eller 35 timers ukentlig hvile (§ 10-8).</li>
+<li><strong>Hoppe over drøftingen.</strong> Endringer i planen skal drøftes med tillitsvalgte.</li>
+<li><strong>Endre grunnleggende vilkår i arbeidsavtalen</strong> uten et gyldig grunnlag. Er for eksempel «kun dagvakt» avtalt i arbeidsavtalen din, kan ikke arbeidsgiver uten videre sette deg på nattevakt — det kan kreve en endringsavtale eller i ytterste fall en formell prosess.</li>
+<li><strong>Endre vilkårlig eller for å straffe deg.</strong> Endringen må være saklig begrunnet.</li>
+</ul>
+<h3>Hva med å bytte vakter med en kollega?</h3>
+<p>Mange vaktplaner åpner for at ansatte selv kan bytte vakter seg imellom, ofte med arbeidsgivers godkjenning. Det er noe annet enn at arbeidsgiver pålegger en endring. Bytter du frivillig med en kollega, er det din egen avgjørelse — men sørg for at byttet er godkjent og registrert, slik at hviletid og grenser fortsatt overholdes.</p>
+<h3>Forskjellen på en fast plan og «ekstravakter»</h3>
+<p>Det er viktig å skille mellom to ting:</p>
+<ul>
+<li><strong>Endring av den oppsatte planen din.</strong> Dette er det reglene om drøfting, varsel og eventuell kompensasjon handler om.</li>
+<li><strong>Å bli spurt om å ta en ekstravakt.</strong> Hvis arbeidsgiver spør om du <em>kan</em> ta en vakt du ikke er satt opp på, er det en forespørsel du i utgangspunktet kan takke nei til (med mindre annet følger av avtalen din eller det er snakk om lovlig pålagt overtid).</li>
+</ul>
+<p>Eksempel: Emma er satt opp fri på lørdag. Sjefen ringer og spør om hun kan ta en vakt fordi en kollega er syk. Dette er en forespørsel, ikke en pålagt planendring. Emma kan svare ja eller nei. Sier hun ja, blir det gjerne ekstravakt med eventuell merarbeids- eller overtidsbetaling, avhengig av timetallet hennes.</p>
+<h3>Hva gjør du hvis du mener endringen er ulovlig?</h3>
+<p>Opplever du en endring du tror bryter reglene, er det en fornuftig framgangsmåte:</p>
+<ol>
+<li><strong>Si fra rolig og skriftlig.</strong> Send en kort melding der du viser til at endringen kom for sent eller gir for lite hvile.</li>
+<li><strong>Be om begrunnelsen.</strong> Hva er den saklige grunnen til endringen?</li>
+<li><strong>Involver tillitsvalgt.</strong> De har rett til å være med i drøftingen og kan ta saken videre.</li>
+<li><strong>Kontakt Arbeidstilsynet</strong> hvis det dreier seg om brudd på hviletid eller andre vernebestemmelser som ikke løser seg lokalt.</li>
+</ol>
+<h3>Sjekklisten din når planen endres</h3>
+<ol>
+<li><strong>Sjekk varselet.</strong> Kom endringen senest to uker før, eller på kortere varsel?</li>
+<li><strong>Mål hviletiden.</strong> Gir den nye planen deg minst 11 timer fri mellom vakter og 35 timer i uka?</li>
+<li><strong>Les tariffavtalen.</strong> Hva sier den om varsel og kompensasjon for forskjøvet arbeidstid?</li>
+<li><strong>Snakk med tillitsvalgt.</strong> De skal være involvert i drøftingen og kjenner de lokale reglene.</li>
+<li><strong>Vurder din egen arbeidsavtale.</strong> Er det avtalt en bestemt vakttype som endringen bryter med?</li>
+<li><strong>Dokumentér.</strong> Ta vare på meldinger og varsler om endringer — det er nyttig hvis du skal kreve kompensasjon.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Arbeidsgiver kan endre vaktplanen din i kraft av styringsretten, men ikke fritt.</li>
+<li>Endringer skal drøftes med tillitsvalgte, og planen skal som hovedregel være klar senest to uker før (§ 10-3).</li>
+<li>Endringer på kort varsel kan gi rett til kompensasjon, ofte for forskjøvet arbeidstid etter tariffavtale.</li>
+<li>Hviletid (11 t / 35 t), saklighet og arbeidsavtalen din setter grenser for hva arbeidsgiver kan gjøre.</li>
+<li>Sjekk varselet, mål hviletiden, les tariffavtalen og snakk med tillitsvalgt.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

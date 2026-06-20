@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor mye overtid er lov? — Rettsregel</title>
+<meta name="description" content="Etter loven kan du jobbe maks 10 timer overtid i løpet av 7 dager, maks 25 timer i løpet av 4 sammenhengende uker, og maks 200 timer i løpet av 52 uker…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-mye-overtid-er-lov/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor mye overtid er lov?">
+<meta property="og:description" content="Etter loven kan du jobbe maks 10 timer overtid i løpet av 7 dager, maks 25 timer i løpet av 4 sammenhengende uker, og maks 200 timer i løpet av 52 uker…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-mye-overtid-er-lov/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor mye overtid er lov?">
+<meta name="twitter:description" content="Etter loven kan du jobbe maks 10 timer overtid i løpet av 7 dager, maks 25 timer i løpet av 4 sammenhengende uker, og maks 200 timer i løpet av 52 uker…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hvor mye overtid er lov?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Etter loven kan du jobbe maks **10 timer overtid i løpet av 7 dager**, maks **25 timer i løpet av 4 sammenhengende uker**, og maks **200 timer i løpet av 52 uker** (ett år) (§ 10-6). I tillegg gjelder alltid taket på **13 timer samlet arbeidstid per døgn** og **48 timer per uke**. Med lokal avtale i tariffbundne bedrifter, eller etter tillatelse fra Arbeidstilsynet, kan grensene heves noe.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-6</div>
+  <div class="related-card-title">Overtid og meirarbeid (når du må jobbe ekstra)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Tre grenser å huske</h3>
+<p>Lovens grenser for overtid kommer i tre nivåer, og alle tre må overholdes samtidig:</p>
+<ul>
+<li><strong>Per uke:</strong> maks 10 timer overtid i løpet av 7 dager.</li>
+<li><strong>Per 4 uker:</strong> maks 25 timer overtid i løpet av 4 sammenhengende uker.</li>
+<li><strong>Per år:</strong> maks 200 timer overtid i løpet av 52 uker.</li>
+</ul>
+<p>Tanken bak de tre nivåene er at du verken skal kunne presses for hardt i én enkelt uke, over en lengre periode, eller gjennom hele året.</p>
+<p>Eksempel: Selv om Trine ikke har brukt opp årskvoten sin, kan hun ikke jobbe 15 timer overtid i én uke – ukegrensen på 10 timer stopper det. Og selv om hun holder seg under 10 timer hver uke, kan hun ikke jobbe 10 + 10 + 10 over tre uker hvis det sprenger 25-timersgrensen for fire uker.</p>
+<h3>Det samlede taket gjelder alltid</h3>
+<p>Uansett overtidsgrensene over, må <strong>samlet arbeidstid</strong> (vanlig arbeid + overtid) aldri overstige (§ 10-6):</p>
+<ul>
+<li><strong>13 timer i løpet av 24 timer</strong>, og</li>
+<li><strong>48 timer i løpet av 7 dager</strong>.</li>
+</ul>
+<p>48-timersgrensen kan snittes over inntil 8 uker ved avtale, men ingen enkelt uke kan da være over <strong>69 timer</strong>. Disse takene gjelder i tillegg til overtidsgrensene – de er en ekstra sikkerhetsventil for helsa di.</p>
+<h3>Kan grensene utvides?</h3>
+<p>Ja, i to trinn:</p>
+<p><strong>1. Lokal avtale i tariffbundet bedrift.</strong> I bedrifter som er bundet av tariffavtale, kan arbeidsgiver og de tillitsvalgte avtale skriftlig høyere overtid (§ 10-6 femte ledd):</p>
+<ul>
+<li>Inntil <strong>20 timer overtid i løpet av 7 dager</strong> (men ikke over 50 timer i fire uker).</li>
+<li>Inntil <strong>50 timer overtid i løpet av 4 sammenhengende uker</strong>.</li>
+<li>Inntil <strong>300 timer overtid i løpet av 52 uker</strong>.</li>
+</ul>
+<p>Her er det et viktig vern: når overtiden bygger på en slik lokal avtale, må <strong>arbeidstakeren si ja i hvert enkelt tilfelle</strong>. Du kan altså ikke pålegges den utvidede overtiden mot din vilje.</p>
+<p><strong>2. Tillatelse fra Arbeidstilsynet.</strong> I særlige tilfeller kan Arbeidstilsynet gi tillatelse til overtid utover dette igjen, opptil enda høyere grenser per uke og år (§ 10-6 sjette ledd). Dette er for spesielle situasjoner og krever søknad. Også her gjelder at arbeidstakeren skal samtykke.</p>
+<h3>Regneeksempel: holder du deg innenfor?</h3>
+<p>La oss følge <strong>Magnus</strong> gjennom en travel måned. Han jobber i en bedrift uten lokal overtidsavtale, så lovens vanlige grenser gjelder.</p>
+<ul>
+<li><strong>Uke 1:</strong> 8 timer overtid. OK (under 10).</li>
+<li><strong>Uke 2:</strong> 9 timer overtid. OK (under 10), og uke 1 + 2 = 17 timer.</li>
+<li><strong>Uke 3:</strong> 6 timer overtid. Sum tre uker = 23 timer.</li>
+<li><strong>Uke 4:</strong> Sjefen vil ha 5 timer til. Men 23 + 5 = 28 timer over fire uker – det sprenger 25-timersgrensen!</li>
+</ul>
+<p>Magnus kan derfor maksimalt ta <strong>2 timer</strong> overtid i uke 4 (23 + 2 = 25). Han kan trygt si: «Vi er nær 25-timersgrensen for fire uker nå, så jeg kan ta to timer, men ikke mer.» Slik viser regnestykket hvordan 4-ukersgrensen kan slå inn før både uke- og årsgrensen.</p>
+<h3>Hvorfor finnes disse grensene?</h3>
+<p>Grensene er der for å beskytte deg mot utmattelse og helseskade. Forskning og erfaring viser at for mye arbeid over tid øker risikoen for sykdom, ulykker og utbrenthet. Derfor er overtidsgrensene ikke bare formaliteter – de er et reelt helsevern. Loven understreker også at all arbeidstid skal være <strong>forsvarlig</strong>: selv om timene formelt er innenfor grensene, kan overtid være ulovlig hvis den går ut over helsa og sikkerheten din.</p>
+<h3>Hva med fritak og betaling?</h3>
+<p>Husk at grensene for hvor mye overtid som er lov, henger sammen med dine øvrige rettigheter:</p>
+<ul>
+<li>Du kan be deg <strong>fritatt</strong> fra overtid ved helsemessige eller vektige sosiale grunner – uavhengig av om grensene er nådd.</li>
+<li>All lovlig overtid gir krav på <strong>minst 40 % tillegg</strong> på toppen av timelønna.</li>
+<li><strong>Avspasering</strong> av timene er mulig etter avtale, men 40 %-tillegget skal alltid <strong>utbetales</strong>.</li>
+</ul>
+<h3>Hva skjer hvis grensene brytes?</h3>
+<p>Hvis arbeidsgiver lar deg jobbe mer overtid enn loven tillater, er det arbeidsgiver som har ansvaret – ikke du. Brudd på arbeidstidsreglene er noe Arbeidstilsynet kan slå ned på, og de kan gi pålegg om å rette opp, tvangsmulkt og i alvorlige tilfeller overtredelsesgebyr. Du som arbeidstaker kan ikke straffes for at arbeidsgiver har brutt grensene.</p>
+<p>Merk samtidig en viktig forskjell: at det jobbes ulovlig mye overtid, fratar deg <strong>ikke</strong> retten til betaling for timene. Du har fortsatt krav på lønn og overtidstillegg for alt arbeid du faktisk har utført – selv om bedriften ikke skulle ha latt deg jobbe så mye. Lovbruddet er deres problem, betalingen er din rett.</p>
+<h3>Et lite varsko om «frivillig» overtid</h3>
+<p>Noen ganger presenteres ekstra overtid som «helt frivillig». Vær likevel oppmerksom: også frivillig overtid teller med i grensene på 10/25/200 timer (eller 20/50/300 ved avtale). Du kan ikke avtale deg bort fra vernegrensene ved å si ja til mer enn loven tillater. Hvis noen ber deg «bare ta noen timer ekstra utenom systemet», bør varsellampene blinke.</p>
+<h3>Slik holder du oversikt</h3>
+<ol>
+<li><strong>Før en overtidslogg.</strong> Noter dato og antall overtidstimer hver gang.</li>
+<li><strong>Summer over tre tidsrom:</strong> denne uka, de siste fire ukene og hittil i år.</li>
+<li><strong>Sammenlign med grensene:</strong> 10 / 25 / 200 timer (eller 20 / 50 / 300 hvis dere har lokal avtale).</li>
+<li><strong>Sjekk samlet arbeidstid:</strong> under 13 timer dette døgnet og 48 timer denne uka?</li>
+<li><strong>Be om å se avtalen</strong> hvis arbeidsgiver mener høyere grenser gjelder – det krever en skriftlig lokal avtale eller tillatelse fra Arbeidstilsynet.</li>
+<li><strong>Si fra når du nærmer deg taket,</strong> og kontakt tillitsvalgt eller Arbeidstilsynet hvis grensene brytes.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Lovens grenser: maks <strong>10 timer overtid per 7 dager</strong>, <strong>25 timer per 4 uker</strong> og <strong>200 timer per 52 uker</strong> (§ 10-6).</li>
+<li>Samlet arbeidstid må aldri overstige <strong>13 timer per døgn</strong> og <strong>48 timer per uke</strong>.</li>
+<li>Med <strong>lokal avtale</strong> i tariffbundet bedrift: opptil <strong>20 / 50 / 300 timer</strong> – men da må du si ja i hvert enkelt tilfelle.</li>
+<li><strong>Arbeidstilsynet</strong> kan tillate enda mer i særlige tilfeller etter søknad.</li>
+<li>Før en overtidslogg, summer per uke, per 4 uker og per år, og si fra når du nærmer deg grensene.</li>
+</ul>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/arbeidsgiver-vil-ikke-utbetale-lonn/">Arbeidsgiveren vil ikke betale lønn — hva gjør du?</a><a class="sp-relchip" href="../../sporsmal/er-pausen-betalt/">Er pausen betalt?</a><a class="sp-relchip" href="../../sporsmal/far-jeg-betalt-for-palagt-hjemmevakt/">Får jeg betalt for pålagt hjemmevakt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

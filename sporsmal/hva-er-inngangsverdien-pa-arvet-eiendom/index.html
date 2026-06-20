@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er inngangsverdien på arvet eiendom? — Rettsregel</title>
+<meta name="description" content="Inngangsverdien er den skattemessige "kjøpsprisen" som brukes når du senere skal regne ut gevinst eller tap ved salg. På arvet eiendom er hovedregelen at…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-inngangsverdien-pa-arvet-eiendom/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er inngangsverdien på arvet eiendom?">
+<meta property="og:description" content="Inngangsverdien er den skattemessige "kjøpsprisen" som brukes når du senere skal regne ut gevinst eller tap ved salg. På arvet eiendom er hovedregelen at…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-inngangsverdien-pa-arvet-eiendom/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er inngangsverdien på arvet eiendom?">
+<meta name="twitter:description" content="Inngangsverdien er den skattemessige "kjøpsprisen" som brukes når du senere skal regne ut gevinst eller tap ved salg. På arvet eiendom er hovedregelen at…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er inngangsverdien på arvet eiendom?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Inngangsverdien er den skattemessige "kjøpsprisen" som brukes når du senere skal regne ut gevinst eller tap ved salg. På arvet eiendom er hovedregelen at du overtar avdødes inngangsverdi (kontinuitet). Men for bolig og fritidsbolig som avdøde kunne solgt skattefritt, settes inngangsverdien opp til markedsverdien på dødsfallsdagen (diskontinuitet) – noe som ofte er en stor fordel for deg.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr "inngangsverdi"?</h3>
+<p>Inngangsverdi er et fagord, men ideen er enkel: det er det beløpet du regnes for å ha "lagt ut" for eiendommen, sett med skattens øyne. Når du en gang selger, finner Skatteetaten gevinsten din slik:</p>
+<p><strong>Gevinst = salgssum − inngangsverdi − salgskostnader</strong></p>
+<p>Jo høyere inngangsverdi, desto lavere gevinst – og dermed lavere skatt. Derfor er inngangsverdien et av de viktigste tallene å ha kontroll på når du arver eiendom. Et godt dokumentert tall her kan spare deg for mye skatt mange år frem i tid.</p>
+<h3>Hovedregel: du overtar avdødes inngangsverdi (kontinuitet)</h3>
+<p>Etter at arveavgiften ble fjernet i 2014, gjelder <strong>kontinuitetsprinsippet</strong>. Det betyr at du som arving normalt overtar avdødes inngangsverdi – altså det avdøde i sin tid betalte, pluss eventuelle påkostninger (oppgraderinger som har økt verdien, ikke vanlig vedlikehold).</p>
+<p><strong>Regneeksempel – arvet utleieleilighet:</strong>
+Onkelen til Maria kjøpte en utleieleilighet for 1 500 000 kroner og brukte 300 000 kroner på å pusse opp badet og kjøkkenet (påkostning). Han bodde aldri der selv. Maria arver leiligheten.</p>
+<ul>
+<li>Marias inngangsverdi = 1 500 000 + 300 000 = 1 800 000 kroner.</li>
+<li>Selger hun for 2 400 000 kroner senere, er gevinsten 600 000 kroner (minus salgskostnader).</li>
+</ul>
+<p>Siden onkelen aldri bodde i leiligheten, kunne han ikke solgt skattefritt, og Maria overtar derfor den opprinnelige inngangsverdien.</p>
+<h3>Unntaket: markedsverdi ved dødsfall (diskontinuitet)</h3>
+<p>For <strong>bolig og fritidsbolig</strong> finnes et viktig unntak. Hvis avdøde på dødsfallstidspunktet <strong>kunne ha solgt eiendommen skattefritt</strong> – fordi vilkårene om botid og eiertid var oppfylt – settes inngangsverdien din opp til <strong>markedsverdien på dødsfallsdagen</strong>.</p>
+<p>Dette kalles diskontinuitet, fordi du <em>ikke</em> fører videre avdødes lave kostpris, men starter på nytt med dagens verdi.</p>
+<p><strong>Regneeksempel – arvet enebolig avdøde bodde i:</strong>
+Bestemoren til Ola kjøpte huset for 400 000 kroner på 1980-tallet og bodde der til hun døde. Markedsverdien ved dødsfallet er 6 000 000 kroner.</p>
+<ul>
+<li>Fordi bestemoren kunne solgt skattefritt, blir Olas inngangsverdi 6 000 000 kroner.</li>
+<li>All verdistigning fra 400 000 til 6 000 000 kroner beskattes aldri.</li>
+</ul>
+<p>Forskjellen fra hovedregelen er enorm: hadde Ola overtatt inngangsverdien på 400 000 kroner, ville en eventuell gevinst blitt langt høyere.</p>
+<h3>Påkostning kontra vedlikehold</h3>
+<p>Et poeng mange snubler i: bare <strong>påkostninger</strong> legges til inngangsverdien, ikke vanlig <strong>vedlikehold</strong>. Forskjellen er at påkostning forbedrer eiendommen til en bedre eller annen standard enn før (for eksempel å bygge på et nytt rom eller bytte til et betydelig bedre kjøkken), mens vedlikehold bare holder eiendommen i samme stand som da den var ny eller relativt ny (male, bytte slitte vinduer til tilsvarende). Skal du øke inngangsverdien med oppussing, må du altså kunne vise at det var en reell forbedring. Ta vare på kvitteringer og fakturaer.</p>
+<h3>Slik dokumenterer du inngangsverdien</h3>
+<p>Dette er kanskje det viktigste praktiske rådet i hele artikkelen. Uten dokumentasjon kan du tape penger på skatten senere.</p>
+<p><strong>Ved kontinuitet (avdødes kostpris):</strong></p>
+<ul>
+<li>Finn kjøpekontrakt eller skjøte fra da avdøde kjøpte.</li>
+<li>Samle kvitteringer for påkostninger.</li>
+<li>Spør medarvinger og let i avdødes papirer og e-poster.</li>
+</ul>
+<p><strong>Ved diskontinuitet (markedsverdi):</strong></p>
+<ul>
+<li>Bestill en <strong>verdivurdering eller takst</strong> så nær dødsfallsdatoen som mulig.</li>
+<li>En eiendomsmegler kan ofte lage en verdivurdering, eller en takstmann lager en formell takst.</li>
+<li>Ta vare på dokumentet – dette er beviset på inngangsverdien din.</li>
+</ul>
+<h3>Vanlig misforståelse: ligningsverdi er ikke inngangsverdi</h3>
+<p>Mange blander sammen <strong>formuesverdi</strong> (tidligere "ligningsverdi") og inngangsverdi. Formuesverdien er et lavt beløp som brukes til formuesskatt, ofte bare en brøkdel av reell verdi. Den har <strong>ingenting</strong> med inngangsverdien å gjøre når du skal regne ut gevinst. Bruk markedsverdi eller takst, ikke formuesverdi.</p>
+<h3>Hva med arvet tomt eller ubebygd areal?</h3>
+<p>En tomt er ikke en bolig, og kan ikke "selges skattefritt" på grunn av botid. Derfor gjelder hovedregelen om kontinuitet for arvet tomt: du overtar avdødes inngangsverdi. Arver du for eksempel en tomt avdøde kjøpte for 50 000 kroner for mange tiår siden, og selger den senere for 1 500 000 kroner, kan nesten hele beløpet bli skattepliktig gevinst. Dette overrasker mange, fordi de tror "bolig-unntaket" også gjelder tomter. Det gjør det altså ikke. Skaff derfor god dokumentasjon på hva avdøde betalte, slik at du i hvert fall får trukket fra den faktiske kostprisen.</p>
+<h3>Et eksempel som binder det sammen</h3>
+<p>La oss se på en familie som arver to ting: foreldrenes enebolig og en aksjepost. Foreldrene bodde i huset til de døde, så her gjelder diskontinuitet – barna får markedsverdien ved dødsfallet (si 5 000 000 kroner) som inngangsverdi, og den gamle verdistigningen forsvinner. Aksjeposten, derimot, følger kontinuitet: barna overtar foreldrenes opprinnelige kjøpskurs. Selger de aksjene med gevinst, skatter de av den. Samme arv, to helt ulike regler – nettopp fordi bolig og verdipapirer behandles forskjellig. Å forstå dette skillet er nøkkelen til å unngå overraskelser.</p>
+<h3>Steg for steg</h3>
+<ol>
+<li><strong>Avgjør hvilken regel som gjelder:</strong> Kunne avdøde solgt eiendommen skattefritt? Hvis ja → markedsverdi. Hvis nei → avdødes inngangsverdi.</li>
+<li><strong>Skaff dokumentasjon</strong> (gammel kjøpekontrakt eller fersk takst).</li>
+<li><strong>Legg til påkostninger</strong> der det er aktuelt, og skill dem fra vedlikehold.</li>
+<li><strong>Lagre alt trygt</strong> – du trenger det kanskje først om mange år.</li>
+</ol>
+<h3>Hvorfor god dokumentasjon lønner seg</h3>
+<p>Det kan virke unødvendig å samle papirer for noe du kanskje ikke selger på mange år. Men husk at en uklar eller manglende inngangsverdi alltid slår ut i din disfavør: kan du ikke dokumentere hva eiendommen kostet, risikerer du at gevinsten – og dermed skatten – blir satt høyere enn den egentlig skulle vært. En halvtimes innsats med å finne gammel kjøpekontrakt eller bestille en fersk verdivurdering nær dødsfallsdatoen kan derfor være verdt titusenvis av kroner i spart skatt den dagen du selger. Legg dokumentene et trygt sted, gjerne digitalt, sammen med de andre arvepapirene.</p>
+<h3>Kort oppsummert</h3>
+<p>Inngangsverdien er den skattemessige kostprisen som avgjør hvor stor gevinst du får ved salg. Hovedregelen for arvet eiendom er at du overtar avdødes inngangsverdi (kontinuitet). Unntaket for bolig og fritidsbolig som avdøde kunne solgt skattefritt, er at inngangsverdien settes til markedsverdien på dødsfallsdagen (diskontinuitet) – ofte en stor skattefordel. Bare påkostninger, ikke vedlikehold, legges til. Skaff dokumentasjon: gammel kjøpekontrakt ved kontinuitet, fersk takst ved diskontinuitet. Ikke forveksle formuesverdi med inngangsverdi. Regler kan endres – sjekk skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

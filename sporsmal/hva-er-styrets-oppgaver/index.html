@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er styrets oppgaver? — Rettsregel</title>
+<meta name="description" content="styrets oppgaver kan deles i to bolker – forvaltning av selskapet aksjeloven § 6-12 og tilsyn med driften § 6-13 – men i praksis bryter dette seg ned i en…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-styrets-oppgaver/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er styrets oppgaver?">
+<meta property="og:description" content="styrets oppgaver kan deles i to bolker – forvaltning av selskapet aksjeloven § 6-12 og tilsyn med driften § 6-13 – men i praksis bryter dette seg ned i en…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-styrets-oppgaver/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er styrets oppgaver?">
+<meta name="twitter:description" content="styrets oppgaver kan deles i to bolker – forvaltning av selskapet aksjeloven § 6-12 og tilsyn med driften § 6-13 – men i praksis bryter dette seg ned i en…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er styrets oppgaver?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>styrets oppgaver kan deles i to bolker – forvaltning av selskapet (aksjeloven § 6-12) og tilsyn med driften (§ 6-13) – men i praksis bryter dette seg ned i en rekke konkrete plikter gjennom året. I forrige artikkel så vi på de to hovedrollene; her tar vi det ned på et mer praktisk nivå, som en slags sjekkliste for hva et styre faktisk skal sørge for.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>De lovbestemte hovedoppgavene</h3>
+<p>Loven bygger styrets oppgaver på to grunnpilarer:</p>
+<ul>
+<li><strong>Forvaltning (§ 6-12):</strong> Styret har ansvaret for å lede selskapet. Det skal sørge for forsvarlig organisering av virksomheten, fastsette planer og budsjetter i nødvendig utstrekning, holde seg orientert om selskapets økonomiske stilling, og påse at regnskap og formuesforvaltning er underlagt betryggende kontroll.</li>
+<li><strong>Tilsyn (§ 6-13):</strong> Styret skal føre tilsyn med den daglige ledelsen og virksomheten ellers, og kan fastsette instruks for den daglige ledelsen.</li>
+</ul>
+<h3>En praktisk sjekkliste gjennom året</h3>
+<p>La oss følge styret i "Grønn Hage AS", et lite gartneri med tre eiere, gjennom et typisk år:</p>
+<ol>
+<li><strong>Årsregnskap og årsberetning.</strong> Styret skal behandle og signere årsregnskapet før det legges fram for generalforsamlingen. Dette er kanskje den viktigste faste oppgaven.</li>
+<li><strong>Forberede generalforsamlingen.</strong> Styret innkaller til ordinær generalforsamling, foreslår eventuelt utbytte og legger fram sakene eierne skal stemme over.</li>
+<li><strong>Følge opp budsjett og økonomi.</strong> Styret følger med på om gartneriet tjener penger, og griper inn hvis tallene skranter.</li>
+<li><strong>Vurdere egenkapitalen.</strong> Blir egenkapitalen lavere enn forsvarlig, har styret en handleplikt – det må straks behandle saken og foreslå tiltak overfor generalforsamlingen.</li>
+<li><strong>Ansette og følge opp daglig leder</strong> (hvis selskapet har en), og fastsette eventuell instruks for hva daglig leder kan og ikke kan gjøre alene.</li>
+<li><strong>Ta de store beslutningene:</strong> store investeringer, opptak av lån, kjøp eller salg av eiendom, nyansettelser av betydning.</li>
+</ol>
+<h3>Ansvaret som følger med</h3>
+<p>Det er viktig å forstå at styrevervet ikke bare er en tittel – det er et ansvar. Et styremedlem som forsømmer pliktene sine og påfører selskapet, eierne eller kreditorene tap, kan bli personlig erstatningsansvarlig. Hvis "Grønn Hage AS" for eksempel fortsetter å handle inn varer på kreditt lenge etter at styret burde ha skjønt at selskapet var insolvent, kan styremedlemmene risikere å måtte betale av egen lomme. Derfor er pliktene over ikke noe man kan ta lett på.</p>
+<h3>Oppgaver styret IKKE kan delegere bort</h3>
+<p>Noen ting må styret gjøre selv og kan ikke skyve over på daglig leder:</p>
+<ul>
+<li>Å behandle og signere årsregnskapet.</li>
+<li>Å håndtere lav egenkapital og handleplikten.</li>
+<li>Å føre det overordnede tilsynet med driften.</li>
+<li>Saker av "uvanlig art eller stor betydning" for selskapet.</li>
+</ul>
+<p>Den daglige driften – innkjøp, fakturering, kundeoppfølging – hører derimot under daglig leder. Styret skal ikke detaljstyre denne.</p>
+<h3>Skillet mellom styret og daglig leder i oppgavefordelingen</h3>
+<p>Det er nyttig å tegne en grov grense. Daglig leder står for <strong>den daglige ledelsen</strong> – de løpende avgjørelsene i den vanlige driften: innkjøp, salg, kundeoppfølging, mindre personalsaker. Styret tar seg av alt som er av <strong>uvanlig art eller stor betydning</strong>. Hvor går grensen? Et godt spørsmål å stille er: "Er dette noe vi gjør hele tiden, eller er det en stor, sjelden beslutning?" Å bestille kontorrekvisita er daglig drift. Å kjøpe en eiendom, ansette en nøkkelperson på toppledernivå, ta opp et stort lån eller endre selskapets virksomhet er styresaker. I tvilstilfeller bør daglig leder løfte saken til styret – det er tryggere å spørre én gang for mye enn én gang for lite. I et lite AS uten daglig leder gjør styret begge deler, men det er likevel nyttig å være bevisst hvilken "hatt" man har på.</p>
+<h3>Styreinstruks og rutiner</h3>
+<p>I større selskaper er det krav om en skriftlig styreinstruks, og det kan også være lurt i et lite AS. En slik instruks beskriver hvordan styret skal jobbe: hvor ofte det møtes, hva som skal behandles, og hvordan saker forberedes. Selv et lite styre tjener på faste rutiner, for eksempel et årshjul som viser når regnskapet skal behandles og når generalforsamlingen skal holdes.</p>
+<h3>Handleplikten ved lav egenkapital – litt mer detalj</h3>
+<p>Dette fortjener et eget avsnitt fordi det er den oppgaven flest grundere snubler i. Loven krever at selskapet til enhver tid skal ha en egenkapital og likviditet som er forsvarlig ut fra risikoen ved og omfanget av virksomheten. Hvis egenkapitalen blir for lav, skal styret straks behandle saken og innen rimelig tid innkalle generalforsamlingen, gjøre rede for situasjonen og foreslå tiltak. Tiltak kan være å hente inn ny kapital, kutte kostnader, eller i verste fall å foreslå å oppløse selskapet på en ordnet måte. Poenget er at styret ikke får lov til å bare lukke øynene og håpe – det har en aktiv plikt til å reagere. Et styre som ignorerer en sviktende egenkapital og lar selskapet drive videre på kreditorenes regning, beveger seg rett inn i ansvarssonen.</p>
+<h3>Et eksempel på godt og dårlig styrearbeid</h3>
+<p>To like selskaper, ulik skjebne. I "Nord Café AS" merker styret at egenkapitalen smuldrer. De kaller inn til møte, henter inn ny kapital fra eierne og kutter åpningstidene. Selskapet overlever. I "Sør Café AS" gjør styret ingenting – de håper det snur, fortsetter å bestille varer på kreditt, og når konkursen kommer, sitter leverandørene igjen med store tap. Forskjellen ligger ikke i hvor flink man er til å lage kaffe, men i hvor seriøst styret tar pliktene sine. Det er nettopp dette aksjeloven prøver å sikre med reglene i §§ 6-12 og 6-13.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Lag et enkelt årshjul</strong> med de faste oppgavene, så glemmer dere ikke regnskap og generalforsamling.</li>
+<li><strong>Protokollfør alt.</strong> Skriv ned styrets beslutninger – det beskytter dere hvis ansvar blir et tema senere.</li>
+<li><strong>Hold øye med egenkapitalen.</strong> Dette er den oppgaven som oftest skiller et ansvarlig styre fra et uansvarlig.</li>
+<li><strong>Søk hjelp ved usikkerhet.</strong> En regnskapsfører eller advokat kan hjelpe styret å oppfylle pliktene riktig.</li>
+<li><strong>Avhold minst de møtene som trengs.</strong> Et styre som aldri møtes, kan vanskelig sies å føre tilsyn med driften.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Styrets oppgaver hviler på to lovpilarer: forvaltning (§ 6-12) og tilsyn (§ 6-13). I praksis betyr det å organisere virksomheten forsvarlig, holde kontroll på økonomien, behandle og signere årsregnskapet, forberede generalforsamlingen, følge opp daglig leder og gripe inn ved lav egenkapital. Vervet bærer et reelt ansvar – forsømmelse kan gi personlig erstatningsansvar – så faste rutiner og god protokollføring er gull verdt.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en generalforsamling? — Rettsregel</title>
+<meta name="description" content="En generalforsamling er selskapets øverste myndighet, møtet der aksjonærene utøver makten sin.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-generalforsamling/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en generalforsamling?">
+<meta property="og:description" content="En generalforsamling er selskapets øverste myndighet, møtet der aksjonærene utøver makten sin.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-generalforsamling/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en generalforsamling?">
+<meta name="twitter:description" content="En generalforsamling er selskapets øverste myndighet, møtet der aksjonærene utøver makten sin.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hva er en generalforsamling?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En generalforsamling er selskapets øverste myndighet, møtet der aksjonærene utøver makten sin. Det er her eierne tar de viktigste beslutningene, som å velge styret, godkjenne årsregnskapet og bestemme om det skal betales utbytte (aksjeloven § 5-1).</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>En generalforsamling er selskapets øverste myndighet, møtet der aksjonærene utøver makten sin. Det er her eierne tar de viktigste beslutningene, som å velge styret, godkjenne årsregnskapet og bestemme om det skal betales utbytte (aksjeloven § 5-1).</p>
+<h3>Det øverste organet i selskapet</h3>
+<p>Et AS har flere "lag" av styring. Aller øverst troner generalforsamlingen. Loven sier rett ut at gjennom generalforsamlingen utøver aksjonærene den øverste myndigheten i selskapet (§ 5-1). Det betyr at når aksjonærene er samlet i generalforsamling, kan de bestemme over styret, ikke omvendt.</p>
+<p>Tenk på det som et hierarki:</p>
+<ol>
+<li><strong>Generalforsamlingen</strong> (aksjonærene) – øverst, bestemmer de store linjene.</li>
+<li><strong>Styret</strong> – velges av generalforsamlingen, forvalter selskapet.</li>
+<li><strong>Daglig leder</strong> – ansettes av styret, driver hverdagen.</li>
+</ol>
+<h3>Hvem deltar på generalforsamlingen?</h3>
+<p>Det er aksjonærene, altså eierne, som deltar og stemmer på generalforsamlingen. Hver aksje gir som hovedregel én stemme (med mindre vedtektene sier noe annet). Den som eier flest aksjer, har mest å si.</p>
+<p>Eksempel: "Kystfiske AS" eies av tre personer. Lars eier 60 prosent av aksjene, Mette eier 30 prosent og Ola eier 10 prosent. På generalforsamlingen har Lars 60 stemmer, Mette 30 og Ola 10 (hvis selskapet har 100 aksjer). Lars har dermed mest makt, men han kan ikke nødvendigvis bestemme alt alene, noen beslutninger krever to tredjedels flertall.</p>
+<h3>Hva er forskjellen på generalforsamling og styremøte?</h3>
+<p>Dette er viktig å forstå. Et <strong>styremøte</strong> er der styremedlemmene møtes for å forvalte selskapet løpende. En <strong>generalforsamling</strong> er der eierne (aksjonærene) møtes for å ta de aller største beslutningene.</p>
+<p>I et lite AS kan det godt være de samme personene som sitter begge steder, men det er likevel to ulike "møtearenaer" med ulik rolle. På generalforsamlingen opptrer du som <strong>eier</strong>. I styret opptrer du som <strong>forvalter</strong>.</p>
+<h3>Et eksempel på når man bruker generalforsamling</h3>
+<p>Sara og Petter eier "Grønn Have AS" med 50 prosent hver. De skal:</p>
+<ul>
+<li><strong>Godkjenne fjorårets regnskap</strong> → dette gjøres på generalforsamling.</li>
+<li><strong>Bestemme om de skal ta ut 100 000 kroner i utbytte</strong> → generalforsamling.</li>
+<li><strong>Endre selskapets vedtekter</strong> for å utvide formålet → generalforsamling.</li>
+<li><strong>Kjøpe inn nye redskaper</strong> → dette er drift, og gjøres ikke på generalforsamling, men av daglig leder/styret.</li>
+</ul>
+<h3>Ordinær og ekstraordinær generalforsamling</h3>
+<p>Det finnes to typer:</p>
+<ul>
+<li><strong>Ordinær generalforsamling</strong> er den faste, årlige samlingen som skal holdes hvert år innen seks måneder etter regnskapsårets slutt (§ 5-5). Her godkjennes blant annet årsregnskapet.</li>
+<li><strong>Ekstraordinær generalforsamling</strong> kan holdes når som helst ellers i året, hvis det dukker opp en sak som krever en eierbeslutning, for eksempel hvis man skal endre vedtektene midt i året.</li>
+</ul>
+<h3>Kan man holde generalforsamling uten et fysisk møte?</h3>
+<p>Ja. I små selskaper med få aksjonærer er det vanlig med en "forenklet generalforsamling". Hvis alle aksjonærene er enige, kan beslutningene tas uten et tradisjonelt fysisk møte, for eksempel på e-post eller ved at alle signerer en protokoll. Dette er praktisk når Sara og Petter eier alt selv og er enige, da slipper de å sette opp et formelt møte med innkalling og det hele.</p>
+<h3>Hvorfor er generalforsamlingen viktig for deg som gründer?</h3>
+<p>Selv om du eier alt selv, må du holde generalforsamling. Det er ikke bare en formalitet, det er et lovkrav, og det er her årsregnskapet formelt blir godkjent. Uten en gyldig generalforsamling kan du ikke lovlig ta ut utbytte eller godkjenne regnskapet. Så selv i ditt lille enmanns-AS må du sørge for at dette blir gjort hvert år.</p>
+<h3>Hvem leder generalforsamlingen?</h3>
+<p>På selve møtet velges det en møteleder som styrer ordet og passer på at sakene blir behandlet i riktig rekkefølge. Det er ofte styrelederen, men det trenger ikke å være det, aksjonærene kan velge hvem de vil. Møtelederen sørger også for at det blir ført en protokoll (et referat) over beslutningene. Protokollen er viktig, fordi den er beviset på hva som faktisk ble vedtatt.</p>
+<h3>Hva er en protokoll, og hvorfor trenger dere den?</h3>
+<p>Protokollen er det skriftlige referatet fra generalforsamlingen. Den skal vise hvilke saker som ble behandlet, hva som ble vedtatt, og resultatet av eventuelle avstemninger. Selv i et enmanns-AS skal det føres protokoll. Hvorfor? Fordi du senere kan trenge å dokumentere at regnskapet faktisk er godkjent, for eksempel overfor banken, Skatteetaten eller en eventuell kjøper av selskapet.</p>
+<p>Eksempel: Når Sara og Petter i Grønn Have AS har godkjent regnskapet og vedtatt utbytte, signerer de begge en kort protokoll. Den legger de i selskapets perm. Skulle det noen gang bli spørsmål om utbyttet var lovlig vedtatt, har de papiret klart.</p>
+<h3>Hvor skal generalforsamlingen holdes?</h3>
+<p>Som hovedregel skal generalforsamlingen holdes i den kommunen der selskapet har sitt forretningskontor, med mindre vedtektene sier noe annet, eller alle aksjonærene er enige om noe annet. I praksis, for små selskaper der alle er enige, kan møtet holdes der det passer, til og med digitalt.</p>
+<h3>En liten ordliste</h3>
+<p>Generalforsamling-språket kan virke stivt. Her er noen ord forklart enkelt:</p>
+<ul>
+<li><strong>Aksjonær / aksjeeier:</strong> en som eier aksjer i selskapet, altså en eier.</li>
+<li><strong>Vedtekter:</strong> selskapets grunnregler, en slags "grunnlov".</li>
+<li><strong>Utbytte:</strong> penger selskapet deler ut til eierne av overskuddet.</li>
+<li><strong>Årsregnskap:</strong> den årlige oversikten over selskapets økonomi.</li>
+<li><strong>Protokoll:</strong> referatet fra møtet, der beslutningene står.</li>
+<li><strong>Møteleder:</strong> den som styrer møtet.</li>
+</ul>
+<h3>Hvorfor "øverste myndighet" ikke betyr "diktator"</h3>
+<p>Selv om generalforsamlingen er øverste myndighet, betyr det ikke at den som eier mest kan gjøre nøyaktig som han vil. Loven har regler som beskytter mindre eiere og som krever ekstra flertall for de mest inngripende beslutningene. Så "øverste myndighet" betyr at generalforsamlingen står over styret og daglig leder, ikke at flertallet kan overkjøre mindretallet helt uten grenser.</p>
+<h3>Tre nivåer, ett eksempel som binder det sammen</h3>
+<p>La oss se hele kjeden i "Grønn Have AS": Generalforsamlingen (Sara og Petter som eiere) velger styret. Styret forvalter selskapet og ansetter en daglig leder. Daglig leder driver hagesenteret fra dag til dag. Hvis Sara og Petter er misfornøyde, kan de på neste generalforsamling velge et nytt styre, som igjen kan bytte daglig leder. Slik flyter makten nedover fra eierne, og slik kan eierne også kreve endring. Det er denne strukturen som gjør at et AS er ryddig og forutsigbart å eie og drive.</p>
+<h3>Kort oppsummert</h3>
+<p>Generalforsamlingen er selskapets øverste myndighet, der aksjonærene utøver makten sin (§ 5-1). Det er her de største beslutningene tas: valg av styre, godkjenning av årsregnskap, utbytte og endring av vedtekter. Den ordinære generalforsamlingen holdes én gang i året, men man kan også holde ekstraordinære møter ved behov. Selv om du eier hele selskapet selv, må du gjennomføre generalforsamling, det er et lovkrav, ikke bare et skjema.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor lang kan prøvetiden være? — Rettsregel</title>
+<meta name="description" content="Prøvetiden kan avtales for inntil seks måneder § 15-6.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-lang-kan-provetiden-vaere/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor lang kan prøvetiden være?">
+<meta property="og:description" content="Prøvetiden kan avtales for inntil seks måneder § 15-6.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-lang-kan-provetiden-vaere/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor lang kan prøvetiden være?">
+<meta name="twitter:description" content="Prøvetiden kan avtales for inntil seks måneder § 15-6.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hvor lang kan prøvetiden være?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Prøvetiden kan avtales for inntil seks måneder (§ 15-6). Den må avtales skriftlig for å gjelde, og ved midlertidig ansettelse kan prøvetiden normalt ikke være lengre enn halvparten av ansettelsesforholdets lengde. Uten en skriftlig avtale er det ingen prøvetid – da gjelder de vanlige reglene fra dag én.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 15-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/15-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 15-6</div>
+  <div class="related-card-title">Oppsigelse i prøvetid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Prøvetiden kan avtales for inntil <strong>seks måneder</strong> (§ 15-6). Den må avtales <strong>skriftlig</strong> for å gjelde, og ved midlertidig ansettelse kan prøvetiden normalt ikke være lengre enn halvparten av ansettelsesforholdets lengde. Uten en skriftlig avtale er det ingen prøvetid – da gjelder de vanlige reglene fra dag én.</p>
+<h3>Seks måneder er taket</h3>
+<p>Loven setter en klar grense: Prøvetiden kan ikke avtales lengre enn seks måneder. Arbeidsgiver kan godt avtale <strong>kortere</strong> prøvetid – for eksempel tre eller fire måneder – men ikke lengre enn seks. En avtale om for eksempel «ni måneders prøvetid» er ikke gyldig for den delen som går utover seks måneder.</p>
+<p>Hva er egentlig prøvetid? Det er en innledende periode i en helt vanlig (som regel fast) ansettelse, der arbeidsgiver får anledning til å vurdere om du passer til jobben – din tilpasning til arbeidet, faglige dyktighet og pålitelighet. I prøvetiden har arbeidsgiver en litt lavere terskel for å si deg opp enn ellers, og oppsigelsesfristen er kortere (mer om dette i egne artikler).</p>
+<h3>Skriftlighet er et krav – ikke en formalitet</h3>
+<p>Dette er svært viktig: <strong>Prøvetid må avtales skriftlig</strong> for å gjelde. Er det ikke skrevet ned i arbeidsavtalen eller på annen måte avtalt skriftlig, er det ingen prøvetid – og da gjelder de vanlige, sterkere reglene om oppsigelse fra første dag.</p>
+<h3>Eksempel: Ingen skriftlig avtale, ingen prøvetid</h3>
+<p>Nora begynner i en ny jobb. Sjefen sier muntlig: «Vi har jo en prøvetid på seks måneder, vet du.» Men i den skriftlige arbeidsavtalen står det ingenting om prøvetid. Etter fire måneder vil arbeidsgiver si henne opp med henvisning til «prøvetiden».</p>
+<p>Her er det ingen gyldig prøvetid, fordi den aldri ble avtalt skriftlig. Det betyr at de <strong>vanlige</strong> og strengere oppsigelsesreglene gjelder for Nora – ikke den lavere prøvetidsterskelen. Den muntlige beskjeden er ikke nok.</p>
+<h3>Eksempel: Kortere ansettelse, kortere prøvetid</h3>
+<p>Ved <strong>midlertidig ansettelse</strong> gjelder en tilleggsregel: Prøvetiden kan normalt ikke overstige halvparten av ansettelsens lengde. Hvis Tobias ansettes i et vikariat på fire måneder, kan prøvetiden hans ikke avtales lengre enn to måneder. Tanken er at prøvetiden skal stå i et rimelig forhold til hvor lenge jobben varer.</p>
+<h3>Hva bør stå i prøvetidsavtalen?</h3>
+<p>For at prøvetiden skal være ryddig, bør arbeidsavtalen din si tydelig:</p>
+<ul>
+<li><strong>At det er avtalt prøvetid</strong>, og</li>
+<li><strong>Hvor lang den er</strong> (for eksempel «seks måneder fra ansettelsesdato»).</li>
+<li>Gjerne også <strong>om prøvetiden kan forlenges ved fravær</strong> (mer om dette i neste artikkel).</li>
+</ul>
+<h3>Slik sjekker du prøvetiden din</h3>
+<ol>
+<li><strong>Les arbeidsavtalen.</strong> Står det noe om prøvetid i det hele tatt? Hvis ikke, har du sannsynligvis ingen prøvetid.</li>
+<li><strong>Sjekk lengden.</strong> Er den på seks måneder eller kortere? Lengre enn seks er ikke gyldig.</li>
+<li><strong>Regn på det ved midlertidig jobb.</strong> Er prøvetiden lengre enn halve ansettelsen? Da kan den være for lang.</li>
+<li><strong>Noter startdatoen.</strong> Prøvetiden løper fra du begynte. Når har du «kommet deg gjennom» den? Etter at prøvetiden er over, gjelder fullt stillingsvern.</li>
+<li><strong>Spør hvis noe er uklart.</strong> Be arbeidsgiver bekrefte skriftlig hvor lang prøvetiden er og når den slutter.</li>
+</ol>
+<h3>Hvorfor er dette viktig for deg?</h3>
+<p>Når prøvetiden er over, gjelder det fulle, sterke stillingsvernet ditt. Da kan arbeidsgiver ikke lenger lene seg på den «lavere terskelen» som gjelder i prøvetid. Derfor er det nyttig å vite <strong>nøyaktig</strong> når prøvetiden din tar slutt. Har du for eksempel seks måneders prøvetid fra 1. mars, er den over 1. september – og fra da av står du enda sterkere.</p>
+<p>Husk også: Selv i prøvetiden er du fast ansatt (hvis det er en fast stilling), du har krav på lønn, og en oppsigelse må uansett ha en saklig grunn knyttet til prøvetidens formål. Prøvetid betyr <strong>ikke</strong> at arbeidsgiver kan gjøre hva som helst.</p>
+<h3>Kan arbeidsgiver avtale ny prøvetid hvis jeg bytter stilling internt?</h3>
+<p>Et spørsmål som dukker opp, er om du kan få en helt ny prøvetid hvis du går over i en annen stilling hos samme arbeidsgiver. Utgangspunktet er at prøvetid hører til <strong>starten</strong> av et arbeidsforhold. Har du allerede vært ansatt en god stund og kjenner virksomheten, er det ikke fritt fram å «nullstille» med en ny seksmånedersperiode hver gang du bytter oppgaver. Skifter du derimot til en vesentlig annerledes stilling med helt nye krav, kan det stille seg annerledes. Er du i tvil, be om en konkret begrunnelse og sjekk med tillitsvalgt eller fagforening.</p>
+<h3>Eksempel: Når en ny prøvetid ikke er rimelig</h3>
+<p>Ingrid har vært fast ansatt i en bedrift i tre år og søker en intern stilling med litt andre oppgaver. Arbeidsgiver vil sette henne på en ny seks måneders prøvetid «for sikkerhets skyld». Siden Ingrid allerede er godt kjent i virksomheten og oppgavene ikke er fundamentalt forskjellige, kan en helt ny prøvetid være vanskelig å forsvare. Hun bør be om en forklaring og eventuelt få vurdert om en ny prøvetid i det hele tatt er saklig.</p>
+<h3>Hva betyr det at prøvetiden «utløper»?</h3>
+<p>Når prøvetidens siste dag er passert, faller den lavere oppsigelsesterskelen bort. Fra dagen etter gjelder det ordinære, sterke stillingsvernet. En oppsigelse arbeidsgiver gir <strong>etter</strong> at prøvetiden er ute, kan ikke vurderes etter de mildere prøvetidsreglene – da gjelder de vanlige reglene fullt ut. Derfor er sluttdatoen ikke bare en formalitet; den markerer et skille i hvor sterkt du står.</p>
+<h3>Et praktisk tips om datoer</h3>
+<p>Skriv ned både startdato og beregnet sluttdato for prøvetiden din, og legg en påminnelse i kalenderen. Da vet du nøyaktig når du går over til fullt vern. Det gir trygghet, og det gjør at du raskt oppdager hvis arbeidsgiver skulle prøve å behandle deg etter prøvetidsreglene lenge etter at perioden faktisk er over.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Prøvetiden kan avtales for <strong>inntil seks måneder</strong> (§ 15-6). Kortere er lov, lengre er det ikke.</li>
+<li>Prøvetid må avtales <strong>skriftlig</strong> for å gjelde – ellers er det ingen prøvetid.</li>
+<li>Ved <strong>midlertidig ansettelse</strong> kan prøvetiden normalt ikke overstige <strong>halve</strong> ansettelsesperioden.</li>
+<li>Sjekk arbeidsavtalen din, noter startdato, og finn ut nøyaktig når prøvetiden er over.</li>
+<li>Etter prøvetiden gjelder fullt stillingsvern – og selv i prøvetiden har du lønn og krav på saklig grunn.</li>
+</ul>
+<p>Vit hvor du står. Når du kjenner prøvetidens grenser, er det lettere å føle seg trygg i den nye jobben.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-signere-sluttavtalen-med-en-gang/">Bør jeg signere sluttavtalen med en gang?</a><a class="sp-relchip" href="../../sporsmal/er-en-muntlig-arbeidsavtale-gyldig/">Er en muntlig arbeidsavtale gyldig?</a><a class="sp-relchip" href="../../sporsmal/gjelder-provetid-ved-midlertidig-ansettelse/">Gjelder prøvetid ved midlertidig ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

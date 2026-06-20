@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er en realisasjon skattemessig? — Rettsregel</title>
+<meta name="description" content="«Realisasjon» er det skattemessige ordet for at en eiendel skifter eier eller går tapt – for eksempel ved salg, bytte, innløsning eller at noe blir…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-en-realisasjon-skattemessig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er en realisasjon skattemessig?">
+<meta property="og:description" content="«Realisasjon» er det skattemessige ordet for at en eiendel skifter eier eller går tapt – for eksempel ved salg, bytte, innløsning eller at noe blir…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-en-realisasjon-skattemessig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er en realisasjon skattemessig?">
+<meta name="twitter:description" content="«Realisasjon» er det skattemessige ordet for at en eiendel skifter eier eller går tapt – for eksempel ved salg, bytte, innløsning eller at noe blir…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er en realisasjon skattemessig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>«Realisasjon» er det skattemessige ordet for at en eiendel skifter eier eller går tapt – for eksempel ved salg, bytte, innløsning eller at noe blir ødelagt. Det er først når noe realiseres at en eventuell gevinst skal skattlegges, og at et tap kan gi fradrag. Så lenge du bare sitter på noe som har steget i verdi, skjer det som hovedregel ingenting med skatten.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Realisasjon forklart på vanlig norsk</h3>
+<p>Tenk på ordet «realisasjon» som «å gjøre om til virkelighet». Verdistigningen på noe du eier er bare på papiret helt til du faktisk gjør noe med eiendelen. I det øyeblikket den forlater deg – du selger den, bytter den bort, den blir innløst eller den går tapt – blir verdistigningen «realisert», og skattereglene slår inn.</p>
+<p>Skatteloven bruker dette begrepet i stedet for bare «salg», fordi det finnes mange måter en eiendel kan skifte eier eller forsvinne på. Alle disse regnes som realisasjon:</p>
+<ul>
+<li><strong>Salg:</strong> Du selger aksjer, en hytte, en bil eller bitcoin og får penger.</li>
+<li><strong>Bytte:</strong> Du bytter én eiendel mot en annen, for eksempel ett kryptovaluta mot et annet.</li>
+<li><strong>Innløsning:</strong> Et verdipapir blir innfridd, eller et selskap kjøper tilbake aksjene dine.</li>
+<li><strong>Tap eller ødeleggelse:</strong> Eiendelen går helt tapt, for eksempel hvis en kryptobørs går konkurs og pengene forsvinner.</li>
+<li><strong>Gave i visse tilfeller / overføring:</strong> Noen overføringer regnes også som realisasjon, mens vanlige arv og gaver ofte har egne regler.</li>
+</ul>
+<h3>Det viktige skillet: urealisert vs. realisert</h3>
+<p>Her ligger selve nøkkelen til å forstå norsk gevinstbeskatning.</p>
+<p><strong>Urealisert verdiøkning</strong> er verdistigning du <em>ikke</em> har tatt ut. Den skattlegges som hovedregel ikke. Det eneste store unntaket er formuesskatten, som beregnes ut fra hva du eier per 1. januar – men det er en annen skatt enn gevinstskatten.</p>
+<p><strong>Realisert gevinst</strong> er verdistigning du faktisk har fått ut ved en realisasjon. Den er skattepliktig.</p>
+<p>La oss gjøre dette konkret med Markus:</p>
+<ul>
+<li>Markus kjøpte aksjer for 50 000 kroner i 2022.</li>
+<li>I 2026 er aksjene verdt 90 000 kroner, men han eier dem fortsatt.</li>
+<li>Gevinsten på 40 000 kroner er <strong>urealisert</strong>. Han betaler ingen gevinstskatt på den – ennå.</li>
+<li>Selger han aksjene for 90 000 kroner, blir gevinsten <strong>realisert</strong>, og de 40 000 kronene blir skattepliktige.</li>
+</ul>
+<p>Så lenge Markus bare ser på kursen og smiler, skjer ingenting skattemessig med selve gevinsten.</p>
+<h3>Hvorfor dette skillet betyr noe for deg</h3>
+<p>For en vanlig privatperson har dette flere praktiske følger:</p>
+<ul>
+<li><strong>Du kan vente.</strong> Du bestemmer langt på vei selv når en gevinst skattlegges, fordi du bestemmer når du selger. Det gir mulighet til å planlegge.</li>
+<li><strong>Tap teller også.</strong> På samme måte som gevinst først teller når du realiserer, kan du normalt ikke trekke fra et tap før eiendelen faktisk er realisert. At noe har falt i verdi «på papiret» gir ikke fradrag i seg selv.</li>
+<li><strong>Bytte er ikke skattefritt.</strong> Mange tror at det bare er når man får kontanter at det «teller». Men bytter du én eiendel mot en annen, regnes det som realisasjon av den du ga fra deg – og en eventuell gevinst skattlegges, selv om du aldri så pengene.</li>
+</ul>
+<h3>Et tap er også en realisasjon</h3>
+<p>Et viktig poeng er at realisasjon ikke bare handler om gevinst. Hvis Sara kjøpte et kryptovaluta for 20 000 kroner og solgte alt for 8 000 kroner, har hun realisert et tap på 12 000 kroner. Dette tapet kan hun normalt få fradrag for. Vi forklarer fradrag for tap nærmere i en egen artikkel.</p>
+<h3>Slik tenker du i praksis</h3>
+<ol>
+<li>Spør deg selv: Har eiendelen forlatt meg, eller eier jeg den fortsatt?</li>
+<li>Hvis du fortsatt eier den – ingen gevinstskatt nå (men husk formuesverdi per 1. januar).</li>
+<li>Hvis den har forlatt deg ved salg, bytte, innløsning eller tap – da har du en realisasjon, og du må regne ut gevinst eller tap.</li>
+<li>Før opp gevinst eller tap i skattemeldingen for det året realisasjonen skjedde.</li>
+</ol>
+<h3>Vanlige misforståelser om realisasjon</h3>
+<p>Det er noen feller mange går i. Her er de tre vanligste, med eksempler:</p>
+<ul>
+<li><strong>«Jeg fikk ingen penger, så det teller ikke.»</strong> Feil. Bytter du bort en eiendel, har du realisert den selv om du aldri så kontanter. Kari byttet bort en samleting verdt 30 000 kroner (kjøpt for 18 000 kroner) mot noe annet. Hun har realisert en gevinst på 12 000 kroner.</li>
+<li><strong>«Verdien har steget, så jeg må skatte hvert år.»</strong> Feil. Du skatter først når du realiserer. Frem til da er gevinsten urealisert og som hovedregel skattefri.</li>
+<li><strong>«Tap teller ikke når verdien har falt.»</strong> Delvis feil. Et urealisert tap gir ikke fradrag, men når du faktisk selger med tap, kan du normalt få fradrag.</li>
+</ul>
+<h3>Hva med arv og gaver?</h3>
+<p>Arv og gaver har egne regler og regnes ikke alltid som realisasjon på samme måte som et salg. Mottar du for eksempel aksjer i arv, overtar du ofte giverens eller arvelaterens inngangsverdi (det de en gang betalte). Det betyr at hvis du senere selger, regnes gevinsten fra den opprinnelige kjøpsprisen, ikke fra verdien da du arvet. Dette er et område der det lønner seg å være ekstra nøye med dokumentasjon, så du vet hvilken inngangsverdi du faktisk skal bruke.</p>
+<h3>Et siste eksempel som binder det sammen</h3>
+<p>Tenk på Ola, som over årene har gjort flere ting:</p>
+<ul>
+<li>Han kjøpte aksjer for 60 000 kroner – ingen realisasjon ennå.</li>
+<li>Verdien steg til 100 000 kroner mens han eide dem – urealisert gevinst, ingen skatt.</li>
+<li>Han solgte halvparten for 50 000 kroner – nå realiserte han en del. Gevinsten på denne delen skattlegges.</li>
+<li>Resten beholder han – fortsatt urealisert, ingen skatt på den biten ennå, men verdien teller som formue per 1. januar.</li>
+</ul>
+<p>Dette viser hvordan én og samme beholdning kan være delvis realisert og delvis urealisert samtidig. Det er helt vanlig, og du skatter bare av den delen du faktisk har realisert.</p>
+<h3>Kilder forklart enkelt</h3>
+<p>Skatteetaten omtaler realisasjon som det skattemessige begrepet for at en eiendel skifter eier eller går tapt, og det er knyttet til reglene om gevinst og tap i skatteloven. Selve satsen for skatt på gevinst (alminnelig inntekt) er <strong>22 prosent i 2026</strong>. Husk at satser og regler kan endres fra år til år – sjekk alltid de oppdaterte tallene på skatteetaten.no før du leverer skattemeldingen.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Realisasjon = en eiendel skifter eier eller går tapt (salg, bytte, innløsning, tap).</li>
+<li>Gevinst skattlegges, og tap kan gi fradrag, <em>når</em> eiendelen realiseres – ikke før.</li>
+<li>Urealisert verdiøkning skattlegges som hovedregel ikke (unntak: formuesskatt).</li>
+<li>Skattesatsen på gevinst er 22 prosent i 2026 – sjekk alltid årets tall på skatteetaten.no.</li>
+</ul>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

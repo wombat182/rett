@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor langt må jeg pendle for å få reisefradrag? — Rettsregel</title>
+<meta name="description" content="Det finnes to grenser å passere. For det første må selve reisen være minst 2,5 km hver vei. For det andre må den samlede årlige reisesummen komme over et…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-langt-ma-jeg-pendle-for-a-fa/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor langt må jeg pendle for å få reisefradrag?">
+<meta property="og:description" content="Det finnes to grenser å passere. For det første må selve reisen være minst 2,5 km hver vei. For det andre må den samlede årlige reisesummen komme over et…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-langt-ma-jeg-pendle-for-a-fa/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor langt må jeg pendle for å få reisefradrag?">
+<meta name="twitter:description" content="Det finnes to grenser å passere. For det første må selve reisen være minst 2,5 km hver vei. For det andre må den samlede årlige reisesummen komme over et…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hvor langt må jeg pendle for å få reisefradrag?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det finnes to grenser å passere. For det første må selve reisen være minst **2,5 km hver vei**. For det andre må den samlede årlige reisesummen komme over et **bunnbeløp på 15 250 kroner** (2025) før du får fradrag for det overskytende. Hvor langt *du* må pendle for å nå dit, avhenger av hvor mange dager du reiser.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>To grenser, ikke én</h3>
+<p>Mange tror det holder å reise "langt", men reisefradraget har to terskler:</p>
+<ol>
+<li><strong>Avstandskravet:</strong> Hver vei må være minst 2,5 km. Bor du nærmere jobben enn dette, får du ikke fradrag uansett.</li>
+<li><strong>Bunnbeløpet:</strong> Den årlige summen (kilometer × dager × kilometersats) må overstige 15 250 kroner. Du får fradrag bare for den delen som ligger <em>over</em> dette beløpet.</li>
+</ol>
+<h3>Hvor mange kilometer må til? La oss regne</h3>
+<p>Med kilometersatsen på 1,83 kroner (2025) kan vi regne ut hvor langt du må pendle for å komme over bunnbeløpet, avhengig av hvor mange dager du reiser. Vi bruker et typisk arbeidsår på 230 dager.</p>
+<p><strong>For å akkurat nå bunnbeløpet (15 250 kr) ved 230 dager:</strong></p>
+<blockquote>
+<p>15 250 ÷ 1,83 = 8 333 km i året
+8 333 ÷ 230 dager = cirka 36 km tur-retur per dag
+Det vil si rundt <strong>18 km hver vei</strong></p>
+</blockquote>
+<p>Med andre ord: pendler du under cirka 18 km hver vei (ved et fullt arbeidsår), får du som regel ikke fradrag – fordi du ikke kommer over bunnbeløpet. Først når du er over denne grensen begynner fradraget å gi penger.</p>
+<h3>Konkrete eksempler</h3>
+<p><strong>Eksempel – Eli, 18 km hver vei, 230 dager:</strong></p>
+<blockquote>
+<p>36 km/dag × 230 = 8 280 km
+8 280 × 1,83 = 15 152 kr → så vidt <em>under</em> bunnbeløpet → <strong>omtrent ingenting</strong></p>
+</blockquote>
+<p><strong>Eksempel – Trond, 25 km hver vei, 230 dager:</strong></p>
+<blockquote>
+<p>50 km/dag × 230 = 11 500 km
+11 500 × 1,83 = 21 045 kr
+21 045 − 15 250 = <strong>5 795 kr i reisefradrag</strong></p>
+</blockquote>
+<p><strong>Eksempel – Yusuf, 60 km hver vei, 230 dager:</strong></p>
+<blockquote>
+<p>120 km/dag × 230 = 27 600 km
+27 600 × 1,83 = 50 508 kr
+50 508 − 15 250 = <strong>35 258 kr i reisefradrag</strong></p>
+</blockquote>
+<p>Du ser mønsteret: jo lenger du pendler over grensen, jo større blir fradraget.</p>
+<blockquote>
+<p><strong>Slik finner du ut om du kvalifiserer:</strong>
+- Mål avstanden hjem–jobb. Er den minst 2,5 km hver vei?
+- Gang opp: (km hver vei × 2) × antall reisedager × 1,83 kr.
+- Er summen over 15 250 kr? → Du får fradrag for det som overstiger.
+- Tommelfingerregel ved fullt arbeidsår: cirka 18 km hver vei for å komme i gang.</p>
+</blockquote>
+<h3>Hva med dem som bor rett ved jobben?</h3>
+<p>Bor du like ved arbeidsplassen, får du ikke reisefradrag i det hele tatt – og det er helt etter hensikten. Reisefradraget er ikke en belønning for å gå på jobb, men en kompensasjon for den ekstra byrden det er å reise langt. Bor du så nær at du kan gå eller sykle på noen minutter, har du ingen slik byrde å kompensere for. Det er derfor både avstandskravet på 2,5 km og bunnbeløpet finnes: de filtrerer bort de korte, dagligdagse reisene.</p>
+<h3>Antall reisedager påvirker grensen</h3>
+<p>Færre reisedager (deltid, mye hjemmekontor) betyr at du må pendle lenger per dag for å nå bunnbeløpet. Reiser du for eksempel bare 150 dager, må du ha lengre daglig avstand for å passere de 15 250 kronene.</p>
+<p><strong>Eksempel – Sara, hjemmekontor 2 dager i uka, reiser bare 140 dager, 30 km hver vei:</strong></p>
+<blockquote>
+<p>60 km/dag × 140 = 8 400 km
+8 400 × 1,83 = 15 372 kr
+15 372 − 15 250 = <strong>122 kr</strong> – nesten ingenting, fordi de få reisedagene trekker ned.</p>
+</blockquote>
+<p>Dette viser hvorfor det er viktig å telle dagene riktig.</p>
+<h3>Hva med flere arbeidssteder eller flytting midt i året?</h3>
+<p>Har du byttet jobb eller flyttet, regner du hver periode for seg og legger sammen kilometerne. Bunnbeløpet trekkes fra den samlede årssummen, ikke per arbeidssted.</p>
+<h3>Den vanligste misforståelsen</h3>
+<p>Mange tror at "litt pendling" gir litt fradrag. I praksis gir ikke korte reiser noe som helst, fordi bunnbeløpet spiser opp alt. Reisefradraget er bevisst innrettet mot dem med reell, lang pendling.</p>
+<h3>Hva med dem som virkelig pendler langt?</h3>
+<p>For dem med svært lange daglige reiser kan reisefradraget bli betydelig. Det finnes også en øvre grense for hvor stort fradraget kan bli – for 2025 er den øvre grensen 100 880 kroner. Når den brutto reisesummen blir veldig høy, stopper altså fradraget på dette taket. Det er likevel et tak de færreste treffer; det krever ekstremt lange daglige reiser.</p>
+<p><strong>Eksempel – Anita, 90 km hver vei, 230 dager:</strong></p>
+<blockquote>
+<p>180 km/dag × 230 = 41 400 km
+41 400 × 1,83 = 75 762 kr
+75 762 − 15 250 = <strong>60 512 kr i reisefradrag</strong></p>
+</blockquote>
+<p>Hun er fortsatt godt under det øvre taket, så hun får hele beløpet. Verdt cirka 60 512 × 22 % = drøyt 13 300 kroner i spart skatt – en god grunn til å huske på reisefradraget når man pendler langt.</p>
+<h3>Tips: bruk kalkulatoren</h3>
+<p>Det enkleste er å ikke regne for hånd i det hele tatt. Skatteetatens reisefradragskalkulator på skatteetaten.no spør deg om avstand og antall dager, og forteller deg umiddelbart om du kommer over bunnbeløpet og hvor mye du har krav på. Det tar et par minutter og fjerner all usikkerhet rundt om du faktisk pendler langt nok.</p>
+<blockquote>
+<p><strong>Rask test – pendler jeg langt nok?</strong>
+- Under 2,5 km hver vei → Nei, uansett.
+- Rundt 18 km hver vei ved fullt år → Akkurat på grensen, lite å hente.
+- 25 km eller mer hver vei → Ja, her begynner det å gi penger.
+- Mye hjemmekontor/deltid → Du må ha lengre daglig avstand for å nå grensen.</p>
+</blockquote>
+<h3>Kort oppsummert</h3>
+<p>For å få reisefradrag må reisen være minst 2,5 km hver vei, <em>og</em> den årlige summen må overstige bunnbeløpet på 15 250 kroner (2025). Ved et fullt arbeidsår betyr det grovt regnet at du må pendle rundt 18 km hver vei før fradraget begynner å gi penger – og jo lenger du pendler, jo mer får du. Færre reisedager hever terskelen. Bruk kalkulatoren på skatteetaten.no, og husk at satsen og bunnbeløpet endres hvert år.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Har jeg krav på daglig hvile? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/har-jeg-krav-pa-daglig-hvile/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Har jeg krav på daglig hvile?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/har-jeg-krav-pa-daglig-hvile/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Har jeg krav på daglig hvile?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Har jeg krav på daglig hvile?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Hver dag har du krav på en sammenhengende hvileperiode på minst 11 timer i løpet av 24 timer. Det betyr at det normalt skal gå minst 11 timer fra du går av en vakt til du starter på den neste (arbeidsmiljøloven § 10-8 første ledd). Denne hvilen er ikke en gave fra sjefen din – det er en rettighet loven gir deg fordi kroppen og hodet trenger å hente seg inn igjen.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-8</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-8/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-8</div>
+  <div class="related-card-title">Reglene for daglig og ukentlig hviletid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja. Hver dag har du krav på en sammenhengende hvileperiode på minst 11 timer i løpet av 24 timer. Det betyr at det normalt skal gå minst 11 timer fra du går av en vakt til du starter på den neste (arbeidsmiljøloven § 10-8 første ledd). Denne hvilen er ikke en gave fra sjefen din – det er en rettighet loven gir deg fordi kroppen og hodet trenger å hente seg inn igjen.</p>
+<h3>Hva betyr "daglig hvile" egentlig?</h3>
+<p>Med daglig hvile mener loven den arbeidsfrie tiden mellom to arbeidsdager. Tenk på det som en vegg av fritid på minst 11 timer som skal stå mellom slutten på én vakt og begynnelsen på neste. I disse timene skal du være fri – du skal ikke jobbe, ikke være på beredskap, og ikke kalles inn.</p>
+<p>La oss ta et eksempel. <strong>Fatima</strong> jobber i en barnehage og går av jobb klokka 17.00 på onsdag. Da kan hun tidligst starte neste vakt klokka 04.00 torsdag, fordi det da har gått 11 timer. I praksis møter hun selvsagt mye senere, men regelen setter en absolutt grense for hvor tett arbeidsgiver kan legge vaktene.</p>
+<h3>Hvorfor er denne regelen så viktig?</h3>
+<p>Kort søvn og lite restitusjon over tid gir flere ulykker, dårligere helse og mer utbrenthet. Lovgiveren har derfor bestemt at hvilen skal være lovfestet og ikke noe du må forhandle deg til hver gang. Dette gjelder spesielt i yrker med skiftarbeid, turnus og tilkalling.</p>
+<p>Tenk på <strong>Jonas</strong>, som jobber på lager. En travel uke før jul ber sjefen ham om å ta en kveldsvakt til klokka 23.00 og så møte igjen klokka 06.00 dagen etter. Det blir bare 7 timer mellom vaktene. Det er i utgangspunktet ikke lov. Jonas kan trygt si: "Jeg har krav på 11 timers hvile, så jeg kan tidligst møte klokka 10.00."</p>
+<h3>Finnes det unntak?</h3>
+<p>Ja, men de er ikke ubegrensede. Loven åpner for noe kortere hvile i visse situasjoner:</p>
+<ul>
+<li><strong>Ved skriftlig avtale med tillitsvalgte</strong> i en virksomhet som er bundet av tariffavtale, kan hvilen settes ned, men aldri under 8 timer (§ 10-8 tredje ledd).</li>
+<li><strong>Arbeidstilsynet</strong> kan i enkelte tilfeller gi tillatelse til avvik dersom arbeidet er av en slik art at det ikke kan unngås.</li>
+<li>Den tiden du blir "frastjålet" hvile, skal du som hovedregel få igjen som <strong>kompenserende hvile</strong> senere.</li>
+</ul>
+<p>Det viktige å huske er at sjefen din ikke ensidig kan bestemme at du skal ha mindre enn 11 timer. Det krever enten en avtale med tillitsvalgte eller tillatelse fra myndighetene.</p>
+<h3>Hva gjør jeg hvis hvilen ikke holdes?</h3>
+<ol>
+<li><strong>Sjekk vaktlista di.</strong> Regn ut antall timer mellom slutten på én vakt og starten på neste.</li>
+<li><strong>Snakk med nærmeste leder først.</strong> Mange brudd skyldes rot i turnusen, ikke vond vilje. Si tydelig: "Her er det under 11 timer mellom vaktene mine."</li>
+<li><strong>Be om svar skriftlig.</strong> Spør om det finnes en avtale med tillitsvalgte som åpner for kortere hvile.</li>
+<li><strong>Kontakt verneombud eller tillitsvalgt</strong> hvis problemet gjentar seg.</li>
+<li><strong>Kontakt Arbeidstilsynet</strong> for veiledning dersom arbeidsgiver ikke retter seg.</li>
+</ol>
+<h3>Hva med deltidsansatte og ekstravakter?</h3>
+<p>Regelen om 11 timers hvile gjelder uansett om du er fast ansatt, midlertidig ansatt eller ringevikar. <strong>Sara</strong> er student og tar ekstravakter på et utested. Selv om hun bare jobber av og til, har hun samme rett til 11 timers hvile mellom to vakter som de fast ansatte. Hun trenger ikke godta å bli kalt inn til en morgenvakt rett etter en sen kveldsvakt.</p>
+<h3>Hva med reise, kurs og overtid?</h3>
+<p>Hvilen handler om den arbeidsfrie tiden, og noen situasjoner skaper forvirring. Hvis arbeidsgiver pålegger deg overtid på slutten av en vakt, flyttes jo "sluttstreken" senere – og dermed flyttes også starten på de 11 timene. <strong>Camilla</strong> skulle egentlig vært ferdig klokka 16.00, men ble bedt om å jobbe overtid til klokka 19.00. Da skal de 11 timene telles fra 19.00, ikke fra 16.00. Det betyr at en morgenvakt dagen etter kan måtte utsettes.</p>
+<p>Pålagte kurs og reiser som regnes som arbeidstid, teller på samme måte. Poenget er enkelt: jo lenger arbeidet faktisk varer, jo senere kan neste vakt starte. Arbeidsgiver kan ikke late som at den planlagte sluttiden gjelder hvis du i virkeligheten jobbet lenger.</p>
+<h3>En vanlig misforståelse</h3>
+<p>Mange tror at 11-timersregelen bare gjelder "vanlige" dagjobber. Det stemmer ikke. Den gjelder også turnusarbeid, skiftarbeid og uregelmessige arbeidstider. Tvert imot er det nettopp i slike yrker at regelen er aller viktigst, fordi det er der vaktene fort kan komme tett. Har du en turnus som ser ut til å bryte med hvileretten, er det god grunn til å ta det opp – ikke å tenke at "sånn er det bare i denne bransjen".</p>
+<h3>Hva med pauser i løpet av vakten?</h3>
+<p>Daglig hvile mellom vakter er én ting; pauser midt i arbeidsdagen er noe annet. Hvis den daglige arbeidstiden din er mer enn fem og en halv time, har du rett til minst én pause. Jobber du minst åtte timer, skal pausene til sammen være minst en halv time. Disse pausene er en del av samme tankegang: kroppen og hodet trenger jevnlig hvile, ikke bare mellom vaktene. <strong>Nora</strong> jobber åtte timer i en kantine og har derfor rett til minst en halvtimes pause i løpet av dagen. Om pausen er betalt eller ikke, avhenger blant annet av om hun kan forlate arbeidsstedet – sjekk arbeidsavtalen din for de nærmere reglene.</p>
+<h3>Hvem gjelder ikke disse reglene fullt ut for?</h3>
+<p>De fleste vanlige arbeidstakere er omfattet av hvilereglene. Men noen grupper har egne, friere regler – for eksempel personer i særlig uavhengige stillinger (typisk ledere som styrer sin egen tid fullt ut) eller i ledende stillinger. Hvis arbeidsgiver hevder at du har en slik stilling, og du egentlig har faste vakter og blir styrt av andre, er det god grunn til å stille spørsmål. Det skal mye til før en helt vanlig arbeidstaker faller utenfor vernet om daglig hvile.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du har krav på minst 11 timer sammenhengende hvile i løpet av hver 24-timersperiode (§ 10-8).</li>
+<li>Hvilen er en absolutt hovedregel – sjefen kan ikke fjerne den på egen hånd.</li>
+<li>Unntak krever skriftlig avtale med tillitsvalgte (aldri under 8 timer) eller tillatelse fra Arbeidstilsynet.</li>
+<li>Regelen gjelder alle: faste, midlertidige og ekstravakter.</li>
+<li>Mister du hvile, har du normalt krav på å få den igjen senere.</li>
+<li>Begynn alltid med å regne på vaktlista og ta det opp med leder.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

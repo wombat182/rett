@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når må en hobby registreres som næring? — Rettsregel</title>
+<meta name="description" content="Det fins ingen magisk kronegrense som automatisk gjør hobbyen din til næring.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-ma-en-hobby-registreres-som-naering/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når må en hobby registreres som næring?">
+<meta property="og:description" content="Det fins ingen magisk kronegrense som automatisk gjør hobbyen din til næring.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-ma-en-hobby-registreres-som-naering/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når må en hobby registreres som næring?">
+<meta name="twitter:description" content="Det fins ingen magisk kronegrense som automatisk gjør hobbyen din til næring.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Når må en hobby registreres som næring?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det fins ingen magisk kronegrense som automatisk gjør hobbyen din til næring. Avgjørelsen handler om hva slags aktivitet du driver, ikke bare hvor mye du tjener. Når aktiviteten har et visst omfang og varighet, og er egnet til å gå med overskudd over tid, regnes den som næringsvirksomhet – og da må du som hovedregel registrere foretaket.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det fins ingen magisk kronegrense som automatisk gjør hobbyen din til næring. Avgjørelsen handler om <em>hva slags aktivitet</em> du driver, ikke bare hvor mye du tjener. Når aktiviteten har et visst omfang og varighet, og er egnet til å gå med overskudd over tid, regnes den som næringsvirksomhet – og da må du som hovedregel registrere foretaket.</p>
+<h3>De fire kjennetegnene på næring</h3>
+<p>Skatteetaten ser etter fire egenskaper for å avgjøre om noe er næring:</p>
+<ol>
+<li><strong>Egnet til å gå med overskudd:</strong> Aktiviteten må over tid kunne gi mer inntekter enn kostnader. En aktivitet som år etter år bare koster penger, er gjerne hobby.</li>
+<li><strong>Et visst omfang:</strong> Litt salg en gang i blant er noe annet enn jevn og betydelig aktivitet.</li>
+<li><strong>En viss varighet:</strong> Aktiviteten må strekke seg over tid, ikke være en engangsforeteelse.</li>
+<li><strong>Drevet for egen regning og risiko:</strong> Du tar selv den økonomiske risikoen og høster gevinsten.</li>
+</ol>
+<p>Alle fire vurderes samlet. Det er en helhetsvurdering, ikke en sjekkliste der bare ett punkt avgjør.</p>
+<h3>To historier som viser forskjellen</h3>
+<p><strong>Linnea</strong> strikker gensere og selger noen få til venner og bekjente i løpet av et år. Hun bruker mer på garn enn hun får igjen, og gjør det mest for hyggens skyld. Dette er hobby. Aktiviteten er liten, sporadisk og ikke egnet til overskudd.</p>
+<p><strong>Petter</strong> begynte også med strikking som hobby, men har nå en nettbutikk, deltar på markeder hver måned, kjøper inn garn i bulk, markedsfører aktivt og tjener jevnt penger. Aktiviteten hans har omfang, varighet og går med overskudd. Petter driver næring – og bør registrere et enkeltpersonforetak.</p>
+<h3>Når må du faktisk registrere?</h3>
+<p>Du skal registrere enkeltpersonforetak når aktiviteten din regnes som næring. Et ENK registreres i Enhetsregisteret (og eventuelt Foretaksregisteret) via Altinn/Brønnøysundregistrene. Et veiledende tegn er om virksomheten forventes å vare i mer enn tre måneder og ha et visst omfang.</p>
+<p>Praktiske steg når hobbyen blir næring:</p>
+<ol>
+<li>Vurder aktiviteten opp mot de fire kjennetegnene.</li>
+<li>Registrer enkeltpersonforetak i Brønnøysundregistrene hvis det er næring.</li>
+<li>Sett opp et enkelt regnskap fra dag én.</li>
+<li>Hold oversikt over omsetningen med tanke på momsgrensen (se under).</li>
+<li>Søk om forskuddsskatt hos Skatteetaten.</li>
+</ol>
+<h3>Momsgrensen – et viktig veiskille</h3>
+<p>Selv om det ikke fins en fast kronegrense for <em>når noe blir næring</em>, fins det en klar grense for <strong>merverdiavgift (moms)</strong>. Når omsetningen i avgiftspliktig virksomhet passerer 50 000 kr i løpet av en periode på tolv måneder, må du registrere foretaket i Merverdiavgiftsregisteret (2026-grense – sjekk på skatteetaten.no).</p>
+<p>Etter det skal du legge moms på salget ditt og sende inn momsmeldinger. Merk at de første 50 000 kronene ikke utløser registreringsplikt, men det er den samlede omsetningen over tolv måneder som teller – ikke kalenderåret.</p>
+<h3>Regneeksempel: Petter passerer grensen</h3>
+<p>Petter har følgende omsetning gjennom året:</p>
+<ul>
+<li>Januar–juni: 30 000 kr</li>
+<li>Juli: 12 000 kr</li>
+<li>August: 11 000 kr (samlet nå over 50 000 kr)</li>
+</ul>
+<p>I august passerer Petter momsgrensen. Da må han registrere seg i Merverdiavgiftsregisteret, og fra det øyeblikket skal han beregne moms på salget.</p>
+<h3>Kan jeg drive «hobbyaktig» for å slippe skatt?</h3>
+<p>Nei – du kan ikke selv velge etikett for å unngå skatt. Hvis aktiviteten objektivt sett oppfyller kjennetegnene på næring, <em>er</em> den næring, uansett hva du kaller den. Driver du i realiteten en liten bedrift, skal den behandles som det. Å la være å registrere kan gi tilleggsskatt og renter hvis det oppdages.</p>
+<h3>Hva får du igjen for å registrere?</h3>
+<p>Mange gruer seg til registrering og tror det bare betyr mer byrå og skatt. Men det følger også fordeler med å være registrert næringsdrivende:</p>
+<ul>
+<li>Du kan trekke fra kostnadene dine, slik at du bare skatter av overskuddet.</li>
+<li>Er du momsregistrert, får du tilbake moms på innkjøp til virksomheten.</li>
+<li>Du framstår mer seriøst overfor kunder og samarbeidspartnere.</li>
+<li>Du får ryddige forhold og slipper bekymring for tilleggsskatt senere.</li>
+</ul>
+<p>Petter fra eksempelet over vil for eksempel kunne trekke fra garn, markedsføring, standleie og frakt – noe han ikke fikk lov til mens det var ren hobby.</p>
+<h3>Hva med gråsonen?</h3>
+<p>Mange havner i en gråsone, særlig i en oppstartsfase. Da kan det være lurt å:</p>
+<ul>
+<li>Kontakte Skatteetaten og beskrive aktiviteten din – de gir veiledning.</li>
+<li>Føre et enkelt regnskap selv om du er usikker, så du har oversikt.</li>
+<li>Vurdere på nytt etter hvert år: Vokser dette, eller forblir det en hobby?</li>
+</ul>
+<p>En oppstart som forventes å gå med underskudd de første årene kan likevel være næring, dersom den på sikt er egnet til overskudd. Et typisk eksempel er en håndverker som investerer mye i utstyr det første året: Selv om regnskapet viser røde tall i starten, kan virksomheten klart være næring fordi den på sikt vil gå med overskudd.</p>
+<h3>Plikter som følger med registrering</h3>
+<p>Når du registrerer enkeltpersonforetak, følger det noen plikter du bør kjenne til:</p>
+<ul>
+<li>Du skal føre regnskap og ta vare på bilag (kvitteringer og fakturaer) i minst fem år.</li>
+<li>Du leverer næringsopplysninger sammen med skattemeldingen hvert år.</li>
+<li>Du betaler forskuddsskatt i terminer.</li>
+<li>Er du momsregistrert, sender du inn momsmeldinger til faste frister.</li>
+</ul>
+<p>For mange små foretak er dette overkommelig med et enkelt regnskapsprogram. Det viktigste er å være ryddig fra dag én, slik at du slipper å lete etter gamle kvitteringer når skattemeldingen skal leveres.</p>
+<h3>En liten advarsel om enkeltstående oppdrag</h3>
+<p>Selv om noe ikke er næring, kan en enkeltstående betaling likevel være skattepliktig. Får du for eksempel 8 000 kr for en frilansjobb, kan dette være skattepliktig som «annen inntekt» eller lønn, selv om du ikke driver næring. Skattefriheten gjelder kun ren hobby uten omfang. Er du i tvil, oppgi inntekten i skattemeldingen, så er du trygg.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Det fins ingen fast kronegrense for når hobby blir næring.</li>
+<li>Avgjørelsen er en helhetsvurdering: omfang, varighet, egen risiko og om aktiviteten er egnet til å gå med overskudd.</li>
+<li>Er det næring, skal du registrere enkeltpersonforetak i Brønnøysundregistrene.</li>
+<li>Momsgrensen er klar: registrering i Merverdiavgiftsregisteret ved omsetning over 50 000 kr på tolv måneder (2026).</li>
+<li>Du kan ikke velge «hobby»-etikett for å slippe skatt – realiteten avgjør.</li>
+</ul>
+<p>Grenser og regler kan endres. Kontroller alltid mot skatteetaten.no, og ta gjerne kontakt med dem ved tvil.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

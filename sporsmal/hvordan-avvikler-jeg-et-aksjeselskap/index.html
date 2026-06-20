@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan avvikler jeg et aksjeselskap? — Rettsregel</title>
+<meta name="description" content="Å avvikle et aksjeselskap betyr å legge det ned på en ordnet og frivillig måte.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-avvikler-jeg-et-aksjeselskap/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan avvikler jeg et aksjeselskap?">
+<meta property="og:description" content="Å avvikle et aksjeselskap betyr å legge det ned på en ordnet og frivillig måte.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-avvikler-jeg-et-aksjeselskap/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan avvikler jeg et aksjeselskap?">
+<meta name="twitter:description" content="Å avvikle et aksjeselskap betyr å legge det ned på en ordnet og frivillig måte.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hvordan avvikler jeg et aksjeselskap?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Å avvikle et aksjeselskap betyr å legge det ned på en ordnet og frivillig måte. Du betaler det du skylder, deler ut det som er igjen til eierne, og sletter selskapet i Foretaksregisteret. Reglene står i aksjeloven kapittel 16. Forutsetningen er at selskapet er solvent – altså at det har nok midler til å gjøre opp gjelden. Her er hele løypa.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Å avvikle et aksjeselskap betyr å legge det ned på en ordnet og frivillig måte. Du betaler det du skylder, deler ut det som er igjen til eierne, og sletter selskapet i Foretaksregisteret. Reglene står i aksjeloven kapittel 16. Forutsetningen er at selskapet er <strong>solvent</strong> – altså at det har nok midler til å gjøre opp gjelden. Her er hele løypa.</p>
+<h3>Først: er det egentlig dette du vil?</h3>
+<p>Mange tror de må avvikle fordi driften har stoppet opp. Men avvikling er en prosess som tar tid (minst et par måneder på grunn av kreditorfristen) og koster litt i gebyrer og regnskapshjelp. Hvis selskapet ikke kan betale gjelden sin, er ikke avvikling rett vei i det hele tatt – da snakker vi om konkurs, som er en helt annen sak (mer om det i en egen artikkel). Avvikling er for selskaper som <strong>kan</strong> gjøre opp for seg.</p>
+<p>La oss følge Mona, som har drevet «Solsikke Design AS» i noen år, men nå vil satse på noe nytt. Selskapet har litt penger på konto, ingen ansatte og bare litt gjeld til en leverandør. Perfekt kandidat for ryddig avvikling.</p>
+<h3>Steg 1: Generalforsamlingen vedtar oppløsning</h3>
+<p>Det formelle startskuddet er at generalforsamlingen vedtar å oppløse selskapet. Dette krever <strong>to tredels flertall</strong> (asl. § 16-1). Mona eier alt selv, så her er det bare å sette seg ned, skrive en protokoll og fatte vedtaket.</p>
+<h3>Steg 2: Styret blir avviklingsstyre</h3>
+<p>Når oppløsning er vedtatt, fortsetter det sittende styret normalt som <strong>avviklingsstyre</strong> (asl. § 16-2). Det er de samme personene, men nå er oppgaven en annen: i stedet for å drive selskapet videre, skal de avvikle det ordentlig. Mona, som er eneste styremedlem, blir altså sitt eget avviklingsstyre.</p>
+<h3>Steg 3: Meld oppløsningen og varsle kreditorene</h3>
+<p>Vedtaket meldes til Foretaksregisteret, som kunngjør oppløsningen og <strong>varsler kreditorene</strong>. I kunngjøringen får de som har penger til gode beskjed om å melde kravene sine, og fristen er <strong>to måneder</strong> fra siste kunngjøring (asl. § 16-4). Dette er en viktig pause: selskapet kan ikke bare dele ut penger til eierne med en gang, for kanskje dukker det opp en glemt regning.</p>
+<h3>Steg 4: Gjør opp gjeld og avslutt løse tråder</h3>
+<p>I løpet av avviklingsperioden skal avviklingsstyret:</p>
+<ul>
+<li>Lage en <strong>avviklingsbalanse</strong> – en oversikt over hva selskapet eier og skylder (asl. § 16-6).</li>
+<li>Selge eiendeler som ikke skal deles ut i naturalia.</li>
+<li>Betale all kjent gjeld, eller sette av penger til omtvistede krav (asl. § 16-7).</li>
+<li>Si opp eventuelle avtaler, avslutte abonnementer og levere siste regnskap og skattemelding.</li>
+</ul>
+<p>Mona betaler leverandørgjelden, sier opp regnskapsavtalen fra avviklingsdato og sørger for at alt det skattemessige er i orden.</p>
+<h3>Steg 5: Del ut det som er igjen til eierne</h3>
+<p>Når gjelden er dekket og minst to måneder har gått siden kreditorvarselet, kan det som er igjen deles ut til aksjonærene (asl. § 16-9). Dette kalles <strong>utdeling av likvidasjonsoverskudd</strong>. Hvis Solsikke Design AS har 80 000 kroner igjen etter at alt er betalt, går disse til Mona som eneeier.</p>
+<h3>Steg 6: Endelig oppløsning og sletting</h3>
+<p>Til slutt holder generalforsamlingen et avsluttende møte som godkjenner avviklingsoppgjøret. Deretter meldes det til Foretaksregisteret at selskapet er <strong>endelig oppløst</strong> (asl. § 16-10). Da slettes selskapet, og org.nummeret tas ut av drift. Selskapet finnes ikke lenger.</p>
+<h3>Sjekkliste for avvikling</h3>
+<ul>
+<li>[ ] Vedtak om oppløsning på generalforsamling (to tredels flertall)</li>
+<li>[ ] Avviklingsstyre på plass</li>
+<li>[ ] Oppløsning meldt til Foretaksregisteret</li>
+<li>[ ] Kreditorvarsel kunngjort, to måneders frist</li>
+<li>[ ] Avviklingsbalanse satt opp</li>
+<li>[ ] All gjeld betalt eller sikret</li>
+<li>[ ] Siste regnskap og skattemelding levert</li>
+<li>[ ] Overskudd delt ut til aksjonærene</li>
+<li>[ ] Avsluttende generalforsamling</li>
+<li>[ ] Melding om endelig oppløsning og sletting</li>
+</ul>
+<h3>Et eksempel der det dukker opp en glemt regning</h3>
+<p>La oss si at Mona tror hun har full oversikt: hun betaler leverandørgjelden på 12 000 kroner og er klar til å dele ut resten til seg selv. Men så, i kreditorperioden, kommer det en faktura fra et regnskapssystem hun glemte å si opp, på 4 500 kroner. Fordi hun ventet ut fristen før hun delte ut noe til seg selv, er det fortsatt penger på konto til å dekke den. Dette er nettopp grunnen til at kreditorvarselet finnes – det gir slike glemte krav en sjanse til å komme fram før eierne tar det som er igjen. Hadde Mona forhastet seg og tømt kontoen tidlig, kunne hun selv blitt sittende med regningen.</p>
+<h3>Hvor lang tid tar det egentlig?</h3>
+<p>Mange undervurderer tiden. Den klart lengste perioden er den to måneder lange kreditorfristen, som du ikke kan korte ned. I tillegg kommer tiden det tar å selge eiendeler, betale gjeld, levere siste regnskap og holde to generalforsamlinger (en for å vedta oppløsning og en avsluttende). For et lite, ryddig selskap som Solsikke Design AS er det realistisk å regne med rundt tre til fire måneder fra start til sletting. Har selskapet kompliserte forhold – eiendom som skal selges, omtvistet gjeld eller skattespørsmål som henger igjen – kan det fort ta lengre tid. Planlegg derfor i god tid, og vær særlig oppmerksom på fristene rundt årsskiftet hvis du vil unngå å levere enda et årsregnskap.</p>
+<h3>Hva med skatt på det du tar ut?</h3>
+<p>Når Mona til slutt får utbetalt likvidasjonsoverskuddet på 80 000 kroner, er ikke nødvendigvis alt skattefritt. Det hun i sin tid betalte inn som aksjekapital, kan hun som hovedregel ta ut igjen uten skatt, mens overskuddet utover dette behandles omtrent som en aksjegevinst og kan være skattepliktig. Dette er et typisk punkt å avklare med regnskapsfører før det avsluttende møtet, slik at du vet hva du faktisk sitter igjen med etter skatt.</p>
+<h3>Et nyttig tips</h3>
+<p>Tøm ikke kontoen for tidlig! Hvis du deler ut alt til deg selv før gjelden er betalt og fristen er ute, kan du bli personlig ansvarlig overfor kreditorer som dukker opp etterpå. En kreditor kan faktisk melde et krav i inntil tre år etter at selskapet ble slettet, og fikk du utbetalt penger som egentlig skulle dekket gjeld, kan du måtte betale tilbake. Vær tålmodig og følg rekkefølgen: gjeld først, eiere sist. Det er den enkleste forsikringen mot ubehagelige overraskelser i ettertid.</p>
+<h3>Kort oppsummert</h3>
+<p>For å avvikle et AS vedtar generalforsamlingen oppløsning med to tredels flertall, styret blir avviklingsstyre, kreditorene varsles med to måneders frist, gjelden gjøres opp, og det som er igjen deles ut til eierne før selskapet slettes i Foretaksregisteret. Regn med rundt tre til fire måneder for et enkelt selskap. Hele poenget er at selskapet kan betale for seg – kan det ikke det, er det konkurs som gjelder, ikke avvikling. Følg rekkefølgen gjeld-først-eiere-sist, så går det trygt.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

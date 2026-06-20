@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg skatte av inntekt fra YouTube og influenservirksomhet? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-inntekt-fra-youtube-og/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg skatte av inntekt fra YouTube og influenservirksomhet?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-inntekt-fra-youtube-og/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg skatte av inntekt fra YouTube og influenservirksomhet?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Må jeg skatte av inntekt fra YouTube og influenservirksomhet?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Tjener du penger på YouTube, Instagram, TikTok eller annen influenservirksomhet, er det skattepliktig inntekt. Det gjelder enten du får utbetalt i kroner, dollar, eller i form av gratis produkter og tjenester. Spørsmålet er ikke om du skal skatte, men hvordan – som hobby eller som næring – og det avhenger av omfanget på aktiviteten din.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Tjener du penger på YouTube, Instagram, TikTok eller annen influenservirksomhet, er det skattepliktig inntekt. Det gjelder enten du får utbetalt i kroner, dollar, eller i form av gratis produkter og tjenester. Spørsmålet er ikke <em>om</em> du skal skatte, men <em>hvordan</em> – som hobby eller som næring – og det avhenger av omfanget på aktiviteten din.</p>
+<h3>All inntekt teller – også «gratis» ting</h3>
+<p>Mange tror at bare ren pengeutbetaling er skattepliktig. Det stemmer ikke. Skatteplikten gjelder også:</p>
+<ul>
+<li>Annonseinntekter fra YouTube og andre plattformer</li>
+<li>Betaling for sponsede innlegg og samarbeid</li>
+<li>Affiliate-inntekter (provisjon på salg du henviser til)</li>
+<li><strong>Gratisprodukter og tjenester</strong> du mottar mot omtale – disse verdsettes til markedsverdi og er skattepliktige</li>
+<li>Reiser, opphold og arrangementer du får dekket mot å lage innhold</li>
+</ul>
+<p>Får influenseren Nora en veske verdt 8 000 kr i bytte mot et innlegg, skal de 8 000 kronene med i inntekten hennes – akkurat som om hun hadde fått pengene.</p>
+<h3>Hobby eller næring – det avgjørende skillet</h3>
+<p>Som med all annen aktivitet er spørsmålet om influensingen din er hobby eller næring:</p>
+<ul>
+<li><strong>Hobby:</strong> Liten, sporadisk aktivitet uten særlig inntekt og uten at den er egnet til å gå med overskudd. Inntekt fra ren hobby er som hovedregel skattefri.</li>
+<li><strong>Næring:</strong> Aktiviteten har omfang og varighet, drives systematisk, og er egnet til å gi overskudd. Da er inntekten skattepliktig, og du bør registrere enkeltpersonforetak.</li>
+</ul>
+<p>For mange influensere som jobber jevnlig med innhold, samarbeider med merkevarer og tjener penger på det, vil aktiviteten raskt regnes som næring.</p>
+<h3>Regneeksempel: Fra hobby til næring</h3>
+<p><strong>År 1 – hobby:</strong> Markus legger ut gaming-videoer som hobby. Han får 4 000 kr i annonseinntekter på et helt år, bruker mye tid for moro skyld, og dekker knapt utstyret sitt. Dette ligner hobby.</p>
+<p><strong>År 3 – næring:</strong> Kanalen har vokst. Markus har nå:</p>
+<ul>
+<li>Annonseinntekter: 90 000 kr</li>
+<li>Sponsede videoer: 110 000 kr</li>
+<li>Gratis utstyr mottatt (markedsverdi): 20 000 kr</li>
+<li><strong>Samlet inntekt: 220 000 kr</strong></li>
+</ul>
+<p>Nå er aktiviteten klart næring. Markus skal registrere enkeltpersonforetak og skatte av overskuddet.</p>
+<h3>Du skatter av overskuddet – husk fradragene</h3>
+<p>Den gode nyheten for influensere som driver næring er at du får trekke fra kostnadene dine. Typiske fradrag:</p>
+<ul>
+<li>Kamera, mikrofon, lys og annet opptaksutstyr</li>
+<li>Redigeringsprogramvare og abonnementer</li>
+<li>Datamaskin (avskrives hvis dyr)</li>
+<li>Hjemmestudio/hjemmekontor</li>
+<li>Reiser knyttet til innholdsproduksjon</li>
+<li>Rekvisitter og produkter brukt i innholdet</li>
+</ul>
+<p>Markus' overskudd i eksempelet over blir altså inntektene minus disse kostnadene, og det er overskuddet han beskattes av – som alminnelig inntekt (22 prosent i 2026) og med personinntektsskatter (trygdeavgift 10,8 prosent i 2026 og eventuelt trinnskatt).</p>
+<h3>Hobby-kanalen som tjener litt</h3>
+<p>Mange har en kanal som ligger i gråsonen – den gir litt penger, men er ikke en fulltidsgeskjeft. Tenk på Amalie, som legger ut bakevideoer og får 6 000 kr i annonseinntekter på et år, uten samarbeid eller systematisk satsing. Dette ligner ren hobby, og inntekten er da som hovedregel skattefri. Men begynner hun å ta betalte oppdrag, satse jevnlig og bygge dette opp, tipper det over til næring. Da bør hun registrere foretak og føre opp inntekten. Grensen går ikke ved et bestemt kronebeløp, men ved om aktiviteten har fått omfang, varighet og er egnet til overskudd.</p>
+<h3>Moms for influensere</h3>
+<p>Influensertjenester er i utgangspunktet momspliktige. Når omsetningen passerer 50 000 kr på tolv måneder (2026-grense, sjekk på skatteetaten.no), skal du registrere deg i Merverdiavgiftsregisteret og legge moms på fakturaene til merkevarene du samarbeider med.</p>
+<p>En ekstra ting å være obs på: Samarbeider du med utenlandske selskaper, gjelder egne regler for hvor momsen håndteres. Sjekk dette nøye eller få hjelp av regnskapsfører.</p>
+<h3>Inntekt fra utlandet</h3>
+<p>YouTube betaler ofte ut fra utlandet, og merkevaresamarbeid kan være internasjonale. Husk at du som bosatt i Norge skal skatte til Norge av all inntekt, også den som kommer fra utlandet. Er det trukket skatt i utlandet, kan du eventuelt få kreditfradrag.</p>
+<h3>Praktiske råd for influensere</h3>
+<ol>
+<li><strong>Før regnskap fra start</strong> – også over gratisprodukter du mottar, med anslått verdi.</li>
+<li><strong>Ta vare på alle avtaler og kvitteringer.</strong></li>
+<li><strong>Sett av penger til skatt</strong> løpende, gjerne 30–40 prosent av inntekten.</li>
+<li><strong>Registrer enkeltpersonforetak</strong> når aktiviteten blir næring.</li>
+<li><strong>Følg med på momsgrensen</strong> på 50 000 kr.</li>
+<li><strong>Vurder regnskapsfører</strong> når inntektene og samarbeidene blir mange.</li>
+</ol>
+<h3>Regneeksempel: hva sitter Markus igjen med?</h3>
+<p>La oss regne litt mer konkret på Markus sitt næringsår, slik at tallene blir tydelige. Vi tar utgangspunkt i en samlet inntekt på 220 000 kr og trekker fra kostnader:</p>
+<ul>
+<li>Samlet inntekt (annonser, sponsing, gratisutstyr): 220 000 kr</li>
+<li>Kamera, mikrofon og lys: 30 000 kr</li>
+<li>Programvare og abonnementer: 8 000 kr</li>
+<li>Hjemmestudio og diverse: 12 000 kr</li>
+<li><strong>Overskudd: 170 000 kr</strong></li>
+</ul>
+<p>Av disse 170 000 kronene betaler Markus 22 prosent på alminnelig inntekt (etter personfradrag) og trygdeavgift på 10,8 prosent (2026). Trinnskatt blir lite eller ingenting, siden han er under første trinngrense. Et grovt anslag tilsier at han bør sette av rundt 35 000–40 000 kr til skatt. Hadde han ikke ført fradragene, ville han skattet av hele 220 000 kr – en dyr glipp.</p>
+<h3>Husk: gratisprodukter gir skatt uten kontanter</h3>
+<p>Et særtrekk ved influenseryrket er at du kan få skattepliktig inntekt uten at det kommer penger på konto. Mottar du klær, elektronikk eller reiser til en verdi av flere titusen kroner, regnes verdien som inntekt – men du har ingen kontanter å betale skatten med. Derfor er det lurt å enten avtale en kontantdel i samarbeidene dine, eller bevisst sette av penger fra de betalte oppdragene til å dekke skatten på gratisproduktene.</p>
+<h3>En vanlig fallgruve</h3>
+<p>Den klassiske tabben er å glemme verdien av gratisprodukter og reiser. Skatteetaten ser på dette som inntekt, og en influenser som mottar mye gratis kan få en betydelig skattepliktig inntekt uten at det noensinne har kommet penger inn på konto. Da er det viktig å ha satt av penger til skatten på forhånd.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Inntekt fra YouTube og influenservirksomhet er skattepliktig – også gratisprodukter, reiser og tjenester du mottar.</li>
+<li>Om du beskattes som hobby eller næring avhenger av omfanget; jevnlig, systematisk aktivitet med overskudd er næring.</li>
+<li>Som næring skatter du av overskuddet etter fradrag, som alminnelig inntekt og med personinntektsskatter.</li>
+<li>Momsregistrering inntrer ved omsetning over 50 000 kr på tolv måneder (2026).</li>
+<li>Inntekt fra utlandet skal også skattes til Norge.</li>
+<li>Husk å verdsette og føre opp gratisprodukter.</li>
+</ul>
+<p>Satser og grenser endres årlig – sjekk alltid skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

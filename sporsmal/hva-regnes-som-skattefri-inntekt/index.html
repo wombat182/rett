@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva regnes som skattefri inntekt? — Rettsregel</title>
+<meta name="description" content="De aller fleste inntekter er skattepliktige, men noen typer inntekt er faktisk skattefrie.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-regnes-som-skattefri-inntekt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva regnes som skattefri inntekt?">
+<meta property="og:description" content="De aller fleste inntekter er skattepliktige, men noen typer inntekt er faktisk skattefrie.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-regnes-som-skattefri-inntekt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva regnes som skattefri inntekt?">
+<meta name="twitter:description" content="De aller fleste inntekter er skattepliktige, men noen typer inntekt er faktisk skattefrie.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva regnes som skattefri inntekt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>De aller fleste inntekter er skattepliktige, men noen typer inntekt er faktisk skattefrie. Det handler om bestemte unntak i loven – ikke om at "små beløp aldri telles". Her er en oversikt over hva som typisk er skattefritt for en vanlig privatperson, med eksempler.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>De aller fleste inntekter er skattepliktige, men noen typer inntekt er faktisk skattefrie. Det handler om bestemte unntak i loven – ikke om at "små beløp aldri telles". Her er en oversikt over hva som typisk er skattefritt for en vanlig privatperson, med eksempler.</p>
+<h3>Hovedregelen først</h3>
+<p>Utgangspunktet i skatteloven er at all inntekt er skattepliktig. Skattefrihet er unntak som krever et eget grunnlag i loven. Derfor er det lurt å kjenne de vanligste skattefrie inntektene, så du verken betaler for mye eller for lite – og slipper ubehagelige overraskelser.</p>
+<h3>Vanlige skattefrie inntekter</h3>
+<p><strong>1. Gevinster fra Norsk Tipping og lovlige spill.</strong> Gevinster fra Norsk Tipping AS, og fra tilsvarende lovlige spill og lotterier i Norge eller i et annet EØS-land som er underlagt offentlig tilsyn og kontroll, er skattefrie. Vinner du i Lotto, Vikinglotto, Eurojackpot eller et lovlig EØS-lotteri, slipper du å skatte av gevinsten.</p>
+<blockquote>
+<p>Merk: Tilfeldige gevinster fra <em>andre</em> konkurranser, spill og lotterier er skattepliktige når verdien overstiger 10 000 kr (kilde: skatteetaten.no). Og selv om en gevinst er skattefri, kan du måtte oppgi den i skattemeldingen hvis du har vunnet mer enn 100 000 kr i skattefrie gevinster til sammen.</p>
+</blockquote>
+<p><strong>2. Visse mindre arbeidsinntekter.</strong> Det finnes beløpsgrenser for skattefri lønn for små jobber (kilde: skatteetaten.no, og grensene kan justeres):</p>
+<ul>
+<li><strong>Småjobber i privat hjem/hytte:</strong> Betaling opp til <strong>6 000 kr per år</strong> fra én husholdning til én person for arbeid i hjemmet eller på hytta er skattefritt for mottakeren.</li>
+<li><strong>Andre småjobber:</strong> Lønn opp til <strong>1 000 kr per år</strong> fra én oppdragsgiver kan være skattefri.</li>
+<li><strong>Lønn fra frivillig/veldedig organisasjon:</strong> Opp til <strong>10 000 kr per år</strong> fra en skattefri organisasjon kan være skattefritt.</li>
+</ul>
+<p><strong>3. Salg av egen bolig.</strong> Gevinst ved salg av egen bolig er skattefri hvis du har eid boligen lenge nok og oppfyller kravet til botid: eid i mer enn ett år og bodd der minst ett av de siste to årene før salget. Tilsvarende egne regler gjelder for fritidsbolig (egen bruk og lengre eier- og brukstid).</p>
+<p><strong>4. Visse trygde- og stønadsytelser.</strong> Noen offentlige ytelser, som enkelte former for sosialhjelp og barnetrygd, er skattefrie. Mange andre ytelser (sykepenger, dagpenger, arbeidsavklaringspenger, pensjon) er derimot skattepliktige.</p>
+<p><strong>5. Arv og private gaver.</strong> Arveavgiften er avskaffet, så det å motta en arv eller en privat gave er i seg selv ikke inntektsskattepliktig. Men husk: inntekter du <em>senere</em> får av det du arvet, for eksempel leieinntekt fra en arvet bolig, er skattepliktig.</p>
+<h3>Regneeksempel: Tuva får inn penger fra flere kilder</h3>
+<p>Tuva (19) har et travelt år:</p>
+<ul>
+<li>Vinner 8 000 kr i Lotto → <strong>skattefritt</strong> (Norsk Tipping).</li>
+<li>Får 5 000 kr for å luke hagen og male hytta til en nabo (privat hjem/hytte) → <strong>skattefritt</strong>, under 6 000-grensen.</li>
+<li>Får 9 000 kr i godtgjørelse fra idrettslaget hun trener i → <strong>skattefritt</strong>, under 10 000-grensen for frivillige organisasjoner.</li>
+</ul>
+<p>Tuva betaler ingen skatt av disse. Til sammen har hun fått 22 000 kr skattefritt, fordi hver inntekt faller inn under et eget unntak.</p>
+<h3>Regneeksempel: Når grensen brytes</h3>
+<p>Hadde Tuva fått 12 000 kr fra naboen for hagearbeidet i stedet for 5 000 kr, ville <strong>hele</strong> beløpet (ikke bare det over 6 000) blitt skattepliktig, og naboen måtte ha rapportert det. Det er viktig å forstå: når en slik grense brytes, blir ofte hele beløpet skattepliktig, ikke bare det overskytende. Sjekk derfor reglene før du tar på deg større oppdrag.</p>
+<h3>Hva er IKKE skattefritt, selv om mange tror det?</h3>
+<ul>
+<li><strong>Tips/drikkepenger</strong> – alltid skattepliktig.</li>
+<li><strong>Bonus og overtid</strong> – skattepliktig lønn.</li>
+<li><strong>Inntekt fra hobby som har vokst til næring</strong> – kan bli skattepliktig.</li>
+<li><strong>Gevinster fra utenlandske spillselskaper</strong> utenfor EØS-unntaket – skattepliktige.</li>
+<li><strong>Renteinntekter og aksjegevinster</strong> – skattepliktige.</li>
+</ul>
+<h3>Frikort og frikortgrense – en annen type "skattefritt"</h3>
+<p>Mange ungdommer og deltidsarbeidende har et <em>frikort</em>. Det betyr ikke at lønnen er skattefri inntekt i lovens forstand, men at du kan tjene opp til en viss grense i året uten at det trekkes skatt. Tjener du under denne grensen totalt, betaler du ikke skatt – men passerer du den, skattlegges inntekten på vanlig måte, også beløpet under grensen kan inngå i beregningen. Frikortgrensen justeres år for år, så sjekk årets beløp på skatteetaten.no. Dette er altså en grense for <em>når</em> du betaler skatt, ikke en egen kategori skattefri inntekt.</p>
+<h3>Forskjellen på skattefri og "ikke rapporteringspliktig"</h3>
+<p>Det er lett å blande sammen to ting:</p>
+<ul>
+<li><strong>Skattefri inntekt:</strong> inntekt loven sier du ikke skal betale skatt av.</li>
+<li><strong>Inntekt under en rapporteringsgrense:</strong> beløp som er så små at de ikke må innrapporteres (for eksempel under 1 000 kr for enkelte oppdrag).</li>
+</ul>
+<p>Begge betyr i praksis at du ikke betaler skatt på akkurat det beløpet, men begrunnelsen er ulik. Det praktiske rådet er likevel det samme: hold orden på hva du har fått inn, slik at du kan dokumentere at du er innenfor grensene hvis Skatteetaten spør.</p>
+<h3>Praktiske råd for å holde styr på skattefrie inntekter</h3>
+<ul>
+<li><strong>Noter ned</strong> hva du får inn fra ulike kilder gjennom året, særlig hvis du har flere små inntekter.</li>
+<li><strong>Sjekk grensene før du tar på deg et oppdrag</strong>, slik at du ikke utilsiktet bryter en grense og gjør hele beløpet skattepliktig.</li>
+<li><strong>Husk at en skattefri gevinst likevel kan måtte oppgis</strong> hvis du vinner mer enn 100 000 kr skattefritt til sammen.</li>
+<li><strong>Vær forsiktig med utenlandske spillselskaper.</strong> Bare gevinster fra spill som tilsvarer lovlige norske/EØS-spill under offentlig tilsyn er skattefrie. Gevinster fra andre kan være fullt skattepliktige.</li>
+</ul>
+<h3>Hvorfor er det verdt å kjenne disse reglene?</h3>
+<p>Hvis du kjenner de skattefrie inntektene, slipper du å betale skatt du ikke skal – og du unngår å gå i fellen med å bryte en grense uten å vite det. For mange unge, frivillige og folk med småjobber kan dette utgjøre flere tusen kroner i året. Samtidig gir det trygghet å vite at du gjør ting riktig.</p>
+<h3>Kort oppsummert</h3>
+<p>Skattefri inntekt finnes, men er unntak: gevinster fra Norsk Tipping og lovlige norske/EØS-spill, visse små arbeidsinntekter (6 000 kr i hjemmet, 1 000 kr ellers, 10 000 kr fra frivillige organisasjoner), salg av egen bolig på vilkår, og arv/private gaver. Andre tilfeldige gevinster er skattepliktige over 10 000 kr. Brytes en grense, blir ofte hele beløpet skattepliktig. Grensene endres årlig – sjekk alltid skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

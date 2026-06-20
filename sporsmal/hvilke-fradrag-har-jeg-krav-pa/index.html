@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvilke fradrag har jeg krav på? — Rettsregel</title>
+<meta name="description" content="Det avhenger av livssituasjonen din. Noen fradrag får alle automatisk minstefradrag, personfradrag, mens andre må passe til din situasjon – som…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvilke-fradrag-har-jeg-krav-pa/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvilke fradrag har jeg krav på?">
+<meta property="og:description" content="Det avhenger av livssituasjonen din. Noen fradrag får alle automatisk minstefradrag, personfradrag, mens andre må passe til din situasjon – som…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvilke-fradrag-har-jeg-krav-pa/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvilke fradrag har jeg krav på?">
+<meta name="twitter:description" content="Det avhenger av livssituasjonen din. Noen fradrag får alle automatisk minstefradrag, personfradrag, mens andre må passe til din situasjon – som…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Hvilke fradrag har jeg krav på?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det avhenger av livssituasjonen din. Noen fradrag får alle automatisk (minstefradrag, personfradrag), mens andre må passe til *din* situasjon – som reisefradrag for pendlere, foreldrefradrag for barnefamilier eller rentefradrag for deg med lån. Under følger en oversikt slik at du kan krysse av for hva som gjelder deg.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Fradragene "alle" får automatisk</h3>
+<p>Disse legges inn for deg uten at du gjør noe:</p>
+<ul>
+<li><strong>Minstefradraget</strong> – standardfradrag i lønn/pensjon (46 % av lønn, maks 92 000 kr i 2025).</li>
+<li><strong>Personfradraget</strong> – fast bunnfradrag i alminnelig inntekt (108 550 kr i 2025).</li>
+</ul>
+<p>Du trenger ikke søke om disse, men sjekk gjerne at de står riktig i skattemeldingen.</p>
+<h3>Fradrag knyttet til bolig og lån</h3>
+<ul>
+<li><strong>Rentefradrag:</strong> Renter på alle typer lån (bolig, bil, forbruk, studielån) gir fradrag. Som regel forhåndsutfylt fra banken.</li>
+<li><strong>Tap ved boligsalg:</strong> I noen tilfeller, hvis salget ikke er skattefritt.</li>
+</ul>
+<p><strong>Eksempel – Nora og Jonas:</strong> De betalte 90 000 kroner i renter på boliglånet. Rentefradraget senker den skattbare inntekten med 90 000 kroner, verdt 90 000 × 22 % = 19 800 kroner i spart skatt (2025-sats).</p>
+<h3>Fradrag knyttet til jobb og reise</h3>
+<ul>
+<li><strong>Reisefradrag (pendlerfradrag):</strong> For deg som reiser langt mellom hjem og jobb. Gis etter kilometersats over en nedre grense (se egen artikkel).</li>
+<li><strong>Fagforeningskontingent:</strong> Medlemskap i fagforening gir fradrag opp til en årlig grense.</li>
+<li><strong>Pendlerutgifter:</strong> Bor du borte fra hjemmet på grunn av jobb, kan kost, losji og besøksreiser gi fradrag.</li>
+<li><strong>Hjemmekontor:</strong> I visse tilfeller (se egen artikkel).</li>
+</ul>
+<h3>Fradrag for barnefamilier</h3>
+<ul>
+<li><strong>Foreldrefradrag:</strong> Dokumenterte utgifter til barnehage og SFO/AKS for barn under 12 år (og eldre ved særskilt omsorgsbehov), opp til årlige grenser.</li>
+</ul>
+<p><strong>Eksempel – Mette, alenemor med to barn i barnehage:</strong> Hun betaler barnehage for begge. Foreldrefradraget dekker en stor del av utgiftene og gir henne flere tusen kroner igjen i skatt.</p>
+<h3>Fradrag for sparing og gaver</h3>
+<ul>
+<li><strong>BSU:</strong> Sparing til bolig for deg under 34 år gir et ekte skattefradrag på 10 % av sparebeløpet.</li>
+<li><strong>Gaver til frivillige organisasjoner:</strong> Gaver til godkjente organisasjoner gir fradrag, opp til en årlig grense.</li>
+<li><strong>Innskudd i individuell pensjonssparing (IPS):</strong> Gir fradrag innenfor en årlig grense.</li>
+</ul>
+<h3>Fradrag i spesielle situasjoner</h3>
+<ul>
+<li><strong>Enslig forsørger:</strong> Egne skattefordeler.</li>
+<li><strong>Store sykdomsutgifter / særfradrag:</strong> I visse tilfeller.</li>
+<li><strong>Underholdsbidrag:</strong> Kan gi fradrag i enkelte tilfeller.</li>
+</ul>
+<blockquote>
+<p><strong>Din personlige sjekkliste – kryss av:</strong>
+- [ ] Reiser jeg minst 2,5 km hver vei til jobb? → Reisefradrag
+- [ ] Betaler jeg renter på lån? → Rentefradrag (sjekk at banken har rapportert riktig)
+- [ ] Har jeg barn i barnehage/SFO? → Foreldrefradrag
+- [ ] Er jeg fagorganisert? → Fagforeningsfradrag
+- [ ] Er jeg under 34 og sparer i BSU? → Skattefradrag
+- [ ] Har jeg gitt gaver til godkjente organisasjoner? → Gavefradrag
+- [ ] Pendler jeg og bor borte fra hjemmet? → Pendlerfradrag (kost/losji)
+- [ ] Er jeg enslig forsørger? → Egne fordeler</p>
+</blockquote>
+<h3>Hvor mye kan disse fradragene være verdt til sammen?</h3>
+<p>For en helt vanlig familie kan summen overraske. La oss se på et eksempel:</p>
+<p><strong>Eksempel – familien Haugen:</strong> De har boliglån med 95 000 kroner i renter, to barn i barnehage som gir fullt foreldrefradrag, og den ene pendler 30 km hver vei.</p>
+<blockquote>
+<p>Rentefradrag: 95 000 kr
+Foreldrefradrag: omtrent 40 000 kr (varierer med antall barn og utgifter)
+Reisefradrag: cirka 9 000 kr (etter bunnbeløp)
+Til sammen: rundt 144 000 kr i fradrag
+Verdt i spart skatt: 144 000 × 22 % = cirka <strong>31 680 kr</strong></p>
+</blockquote>
+<p>Dette er penger familien har full rett på – men noe av det (særlig reise) må de huske å føre opp selv. Tallene er forenklede, men viser hvor mye som kan stå på spill.</p>
+<h3>Slik går du frem praktisk</h3>
+<ol>
+<li><strong>Logg inn</strong> på skatteetaten.no og åpne skattemeldingen.</li>
+<li><strong>Gå gjennom punkt for punkt.</strong> Mye er forhåndsutfylt, men ikke alt.</li>
+<li><strong>Legg til det som mangler</strong> – typisk reise og enkelte kostnader.</li>
+<li><strong>Dokumenter.</strong> Ta vare på kvitteringer for det du fører opp selv.</li>
+<li><strong>Husk treårsregelen.</strong> Glemte du et fradrag tidligere, kan du rette inntil tre år tilbake.</li>
+</ol>
+<h3>Et ord om ærlighet</h3>
+<p>Du har krav på de fradragene som faktisk gjelder din situasjon – verken mer eller mindre. Ikke før opp fradrag du ikke har dekning for; det kan gi tilleggsskatt. Men ikke vær for forsiktig heller: mange går glipp av penger de har full rett på, særlig reisefradrag og foreldrefradrag.</p>
+<h3>Fradrag som ofte glemmes</h3>
+<p>Erfaringsmessig er det noen fradrag som flest går glipp av fordi de ikke er forhåndsutfylt:</p>
+<ul>
+<li><strong>Reisefradraget.</strong> Du må regne det ut og føre det opp selv. Den klart vanligste tabben.</li>
+<li><strong>Pendlerutgifter (kost og losji).</strong> Bor du borte fra hjemmet på grunn av jobb, kan dette være verdt mye, men det krever at du fører det opp.</li>
+<li><strong>Gaver til frivillige organisasjoner.</strong> Skal være rapportert av organisasjonen, men sjekk at det stemmer.</li>
+<li><strong>Foreldrefradrag for barn nummer to og tre.</strong> Grensen øker for hvert ekstra barn – sørg for at alle barna er med.</li>
+</ul>
+<blockquote>
+<p><strong>Tre situasjoner der det virkelig lønner seg å sjekke ekstra nøye:</strong>
+- Du har flyttet i løpet av året (ny reiseavstand, kanskje pendling).
+- Du har fått barn eller barnet har begynt i barnehage/SFO.
+- Du har tatt opp nytt lån (høyere renter enn skattekortet la til grunn).</p>
+</blockquote>
+<h3>Hva med automatisk skattemelding?</h3>
+<p>Mange får en "stille aksept"-ordning der skattemeldingen godkjennes automatisk hvis du ikke gjør endringer. Det er praktisk, men husk: hvis det ligger et glemt fradrag der, blir det <em>ikke</em> lagt til av seg selv. Den automatiske godkjenningen bekrefter bare tallene som allerede står der. Derfor lønner det seg alltid å åpne og lese gjennom før fristen.</p>
+<h3>Kort oppsummert</h3>
+<p>Du får minstefradrag og personfradrag automatisk, men resten avhenger av livet ditt: lån gir rentefradrag, pendling gir reisefradrag, barn gir foreldrefradrag, og er du under 34 gir BSU et ekte skattefradrag. Bruk sjekklisten, gå gjennom skattemeldingen nøye, dokumenter det du fører opp selv, og husk at du kan rette tre år tilbake. Alle grenser og satser endres årlig – kontroller dem på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

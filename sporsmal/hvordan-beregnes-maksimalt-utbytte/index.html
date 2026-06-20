@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvordan beregnes maksimalt utbytte? — Rettsregel</title>
+<meta name="description" content="Du starter med selskapets egenkapital fra sist godkjente årsregnskap, trekker fra alt som er «bundet» eller som loven krever at du trekker fra, og det som…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvordan-beregnes-maksimalt-utbytte/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvordan beregnes maksimalt utbytte?">
+<meta property="og:description" content="Du starter med selskapets egenkapital fra sist godkjente årsregnskap, trekker fra alt som er «bundet» eller som loven krever at du trekker fra, og det som…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvordan-beregnes-maksimalt-utbytte/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvordan beregnes maksimalt utbytte?">
+<meta name="twitter:description" content="Du starter med selskapets egenkapital fra sist godkjente årsregnskap, trekker fra alt som er «bundet» eller som loven krever at du trekker fra, og det som…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hvordan beregnes maksimalt utbytte?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du starter med selskapets egenkapital fra sist godkjente årsregnskap, trekker fra alt som er «bundet» eller som loven krever at du trekker fra, og det som står igjen er maksimalt mulig utbytte – så fremt det også er forsvarlig. Her tar vi deg gjennom beregningen steg for steg med et fullstendig eksempel.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Oppskriften i seks trinn</h3>
+<p>Tenk på beregningen som en oppskrift. Du følger trinnene i rekkefølge (§ 8-1):</p>
+<ol>
+<li><strong>Start med årsresultat og annen egenkapital</strong> som kan deles ut etter sist godkjente årsregnskap.</li>
+<li><strong>Trekk fra aksjekapitalen</strong> (den bundne grunnkapitalen).</li>
+<li><strong>Trekk fra annen bunden egenkapital</strong>, for eksempel fond for vurderingsforskjeller eller fond for urealiserte gevinster.</li>
+<li><strong>Trekk fra selskapets egne aksjer</strong> og pant i egne aksjer, hvis det finnes.</li>
+<li><strong>Trekk fra kreditt og sikkerhet</strong> selskapet har gitt til aksjonærer eller deres nærstående, i den grad det ikke allerede er trukket fra.</li>
+<li><strong>Resultatet er fri egenkapital</strong> – det matematiske maksbeløpet for utbytte.</li>
+</ol>
+<p>Til slutt: kontroller at beløpet er forsvarlig (§ 8-1 fjerde ledd, jf. § 3-4), og at 10-prosent-grensen ikke brytes.</p>
+<h3>Fullstendig regneeksempel: «Designstudio Nord AS»</h3>
+<p>Per og Aisha eier designbyrået «Designstudio Nord AS» med 60/40 eierandel. Årsregnskapet per 31.12.2025 viser:</p>
+<ul>
+<li>Aksjekapital: 50 000 kr (bundet)</li>
+<li>Annen innskutt egenkapital (overkurs): 20 000 kr</li>
+<li>Opptjent egenkapital: 480 000 kr</li>
+<li>Sum egenkapital: 550 000 kr</li>
+</ul>
+<p>I tillegg har selskapet gitt Per et privat lån på 60 000 kr, og selskapet eier ingen egne aksjer.</p>
+<p>La oss følge oppskriften:</p>
+<ul>
+<li>Trinn 1 – Sum egenkapital: 550 000 kr</li>
+<li>Trinn 2 – Trekk fra aksjekapital: −50 000 kr → 500 000 kr</li>
+<li>Trinn 3 – Annen bunden egenkapital (overkurs regnes her som fri etter dagens regler, så ingen fratrekk i dette tilfellet): 500 000 kr</li>
+<li>Trinn 4 – Egne aksjer: 0 kr → 500 000 kr</li>
+<li>Trinn 5 – Trekk fra lån til aksjonær Per: −60 000 kr → <strong>440 000 kr</strong></li>
+</ul>
+<p><strong>Maksimalt utbytte (matematisk): 440 000 kr.</strong></p>
+<h3>Kontroller forsvarligheten</h3>
+<p>Per og Aisha må nå spørre: Tåler selskapet å betale ut 440 000 kr? Banksaldoen er 300 000 kr. Da kan de uansett ikke betale ut mer enn det de har i likvide midler uten å havne i betalingsproblemer – med mindre de har sikre, snarlige innbetalinger på vei. Her ser vi at <em>likviditeten</em> (pengene på konto) i praksis setter en lavere grense enn egenkapitalen.</p>
+<p>Et fornuftig nivå kunne være 250 000 kr, slik at selskapet beholder en buffer på 50 000 kr og fortsatt har penger til løpende drift. Da blir fordelingen:</p>
+<ul>
+<li>Per (60 prosent): 150 000 kr</li>
+<li>Aisha (40 prosent): 100 000 kr</li>
+</ul>
+<h3>Hvilke tall bruker jeg – og fra når?</h3>
+<p>Hovedregelen er at du bruker tallene fra <strong>sist godkjente årsregnskap</strong>. Vil du dele ut utbytte basert på nyere tall (for eksempel midt i året fordi selskapet har gått veldig bra siden nyttår), må du lage en <strong>mellombalanse</strong> – en slags «delårsregnskap» som godkjennes etter samme regler som et vanlig årsregnskap. Dette gjelder ekstraordinært utbytte (§ 8-2 a) og forklares nærmere i artikkel 116.</p>
+<h3>Vanlige feil i beregningen</h3>
+<ul>
+<li><strong>Glemme å trekke fra aksjonærlån.</strong> Lån selskapet har gitt deg privat reduserer utbyttegrunnlaget. Mange overser dette.</li>
+<li><strong>Bruke foreløpige tall.</strong> Du må bruke et godkjent regnskap eller en godkjent mellombalanse, ikke bare et utskrift fra regnskapsprogrammet.</li>
+<li><strong>Se bort fra hendelser etter balansedagen.</strong> Har selskapet tapt en stor kunde eller fått et stort tap etter årsslutt, må dette tas med i forsvarlighetsvurderingen.</li>
+<li><strong>Forveksle egenkapital med bankkonto.</strong> Egenkapitalen kan være høy selv om kontoen er nesten tom (pengene kan ligge i varelager, utstyr eller kundefordringer).</li>
+</ul>
+<h3>Husk skatten til slutt</h3>
+<p>Når Per tar ut 150 000 kr, beskattes dette i 2026 med effektiv sats på 37,84 prosent (oppjusteringsfaktor 1,72 × 22 prosent), etter et eventuelt skjermingsfradrag. Uten skjermingsfradrag blir skatten cirka 56 760 kr. Skattereglene endres ofte, så bruk skatteetaten.no for å regne nøyaktig.</p>
+<h3>Et andre eksempel: når regnestykket gir null</h3>
+<p>Det er lærerikt å se et eksempel der svaret blir null. «Oppstart Kafé AS» eies av Vera. Etter et tøft første driftsår viser regnskapet per 31.12.2025:</p>
+<ul>
+<li>Aksjekapital: 30 000 kr</li>
+<li>Opptjent egenkapital: −15 000 kr (samlet underskudd)</li>
+<li>Sum egenkapital: 15 000 kr</li>
+</ul>
+<p>Følger vi oppskriften: Vi starter med 15 000 kr, men skal trekke fra aksjekapitalen på 30 000 kr. Resultatet blir negativt – det er ingen fri egenkapital. Faktisk er en del av aksjekapitalen tapt. Maksimalt utbytte er da <strong>0 kr</strong>. Vera må vente til selskapet igjen har bygget opp positiv opptjent egenkapital før hun kan dele ut noe.</p>
+<h3>Et regneark gjør jobben lettere</h3>
+<p>Du trenger ikke gjøre dette for hånd hver gang. En enkel oppstilling i et regneark, eller hjelp fra regnskapsføreren din, holder fint. Det viktige er at du forstår <em>logikken</em>: sum egenkapital, minus alt som er bundet, minus aksjonærlån og egne aksjer, er lik fri egenkapital. Mange regnskapssystemer kan vise deg «utbyttegrunnlaget» direkte, men kontroller alltid at det er basert på et godkjent regnskap eller en godkjent mellombalanse.</p>
+<h3>Hva med hendelser etter balansedagen?</h3>
+<p>Loven krever at du tar hensyn til tap som har inntruffet etter balansedagen, eller som må forventes å inntreffe (§ 8-1 fjerde ledd). Selv om årsregnskapet per 31.12 viser god fri egenkapital, kan noe ha skjedd siden:</p>
+<ul>
+<li>En stor kunde har gått konkurs og kan ikke betale fakturaen sin.</li>
+<li>En rettssak er tapt.</li>
+<li>Markedet har sviktet og inntektene har stupt.</li>
+</ul>
+<p>Slike forhold må trekkes inn i forsvarlighetsvurderingen og kan redusere hvor mye du faktisk kan dele ut, selv om det matematiske taket er høyt. Det er nettopp her skjønnet kommer inn.</p>
+<h3>Sjekkliste for selve beregningen</h3>
+<p>Når du skal regne ut maksimalt utbytte, kan du gå gjennom denne lista punkt for punkt:</p>
+<ol>
+<li>Har jeg et godkjent årsregnskap eller en godkjent mellombalanse å bygge på?</li>
+<li>Hva er sum egenkapital i dette regnskapet?</li>
+<li>Hvor mye er aksjekapital og annen bunden egenkapital?</li>
+<li>Eier selskapet egne aksjer som skal trekkes fra?</li>
+<li>Har noen aksjonærer lån eller sikkerheter fra selskapet som reduserer grunnlaget?</li>
+<li>Hva blir fri egenkapital etter alle fradrag?</li>
+<li>Bryter en utdeling 10-prosent-grensen for egenkapital mot balansesum?</li>
+<li>Er beløpet forsvarlig ut fra likviditet og fremtidsutsikter?</li>
+<li>Har jeg satt av nok til skatt (37,84 prosent effektivt i 2026 – se skatteetaten.no)?</li>
+</ol>
+<p>Går du gjennom disse ni punktene hver gang, unngår du de aller fleste fellene – og du har samtidig et godt grunnlag for begrunnelsen i styreprotokollen.</p>
+<h3>Kort oppsummert</h3>
+<p>Maksimalt utbytte beregnes ved å starte med egenkapitalen fra sist godkjente årsregnskap og trekke fra aksjekapital, annen bunden egenkapital, egne aksjer og aksjonærlån (§ 8-1). Resultatet er fri egenkapital. Kontroller deretter at beløpet er forsvarlig og at 10-prosent-grensen holdes. Husk at likviditeten ofte setter en lavere grense enn tallene, og at utbyttet beskattes.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

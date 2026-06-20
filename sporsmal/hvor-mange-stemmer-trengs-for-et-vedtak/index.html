@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor mange stemmer trengs for et vedtak? — Rettsregel</title>
+<meta name="description" content="Det korte svaret er: det kommer an på hva slags sak det er. For helt vanlige saker holder det med alminnelig flertall – altså mer enn halvparten av…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-mange-stemmer-trengs-for-et-vedtak/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor mange stemmer trengs for et vedtak?">
+<meta property="og:description" content="Det korte svaret er: det kommer an på hva slags sak det er. For helt vanlige saker holder det med alminnelig flertall – altså mer enn halvparten av…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-mange-stemmer-trengs-for-et-vedtak/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor mange stemmer trengs for et vedtak?">
+<meta name="twitter:description" content="Det korte svaret er: det kommer an på hva slags sak det er. For helt vanlige saker holder det med alminnelig flertall – altså mer enn halvparten av…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hvor mange stemmer trengs for et vedtak?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det korte svaret er: det kommer an på hva slags sak det er. For helt vanlige saker holder det med alminnelig flertall – altså mer enn halvparten av stemmene som faktisk avgis (aksjeloven § 5-17). For tyngre saker, som å endre vedtektene, kreves det mer: minst to tredeler (§ 5-18). Og noen få, spesielt inngripende vedtak krever enda mer.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det korte svaret er: <strong>det kommer an på hva slags sak det er.</strong> For helt vanlige saker holder det med alminnelig flertall – altså mer enn halvparten av stemmene som faktisk avgis (aksjeloven § 5-17). For tyngre saker, som å endre vedtektene, kreves det mer: minst to tredeler (§ 5-18). Og noen få, spesielt inngripende vedtak krever enda mer.</p>
+<h3>Tenk i tre nivåer</h3>
+<p>Den enkleste måten å huske dette på, er å tenke seg en trapp med tre trinn. Jo viktigere og mer inngripende beslutningen er, jo høyere opp i trappen må dere.</p>
+<p><strong>Trinn 1 – Vanlige vedtak: alminnelig flertall.</strong> Dette er hovedregelen og gjelder alt som ikke har en strengere regel. Det betyr <strong>mer enn halvparten av de avgitte stemmene</strong> (§ 5-17). Eksempler: godkjenne årsregnskapet, vedta utbytte innenfor styrets forslag, velge styremedlemmer, fastsette godtgjørelse.</p>
+<p><strong>Trinn 2 – Vedtektsendringer: to tredeler.</strong> Skal dere endre selskapets vedtekter, kreves minst <strong>to tredeler av både stemmene og aksjekapitalen</strong> som er representert på møtet (§ 5-18). Dette gjelder også flere store beslutninger som henger sammen med vedtektene, som kapitalforhøyelse, fusjon og oppløsning.</p>
+<p><strong>Trinn 3 – Ekstra strenge krav.</strong> For enkelte vedtak som rammer aksjonærer særlig hardt, kreves det enda større flertall – helt opp mot enstemmighet i de mest inngripende tilfellene. Dette er sjeldnere, men greit å vite finnes.</p>
+<h3>Et regneeksempel som gjør det konkret</h3>
+<p>"Bryggeriet AS" har fire aksjonærer og 100 aksjer til sammen, én stemme per aksje:</p>
+<ul>
+<li>Kari: 40 aksjer</li>
+<li>Ola: 30 aksjer</li>
+<li>Nina: 20 aksjer</li>
+<li>Per: 10 aksjer</li>
+</ul>
+<p>På generalforsamlingen møter alle fire, så 100 stemmer er representert.</p>
+<p><strong>Sak A – velge nytt styremedlem (vanlig vedtak):</strong> Her trengs alminnelig flertall, altså mer enn 50 av de avgitte stemmene. Hvis Kari og Ola stemmer likt, har de 70 stemmer og vinner klart.</p>
+<p><strong>Sak B – endre vedtektene (selskapets navn):</strong> Nå trengs to tredeler, altså minst 67 av de 100 stemmene <em>og</em> minst to tredeler av kapitalen. Kari (40) og Ola (30) har 70 – det holder. Men hvis bare Kari og Nina stemmer for (40 + 20 = 60), er det ikke nok, selv om de er i flertall blant frammøtte.</p>
+<p>Legg merke til forskjellen: i sak A holdt det med over halvparten. I sak B trengtes betydelig mer.</p>
+<h3>"Avgitte stemmer" – et viktig begrep</h3>
+<p>Ved vanlige vedtak teller man <strong>avgitte</strong> stemmer. Den som er til stede men avstår (blankt), regnes normalt ikke som en avgitt stemme. Det betyr at de som faktisk tar stilling, avgjør saken. Ved likt stemmetall avgjør møtelederens stemme, hvis vedtektene ikke sier noe annet.</p>
+<p>Ved vedtektsendringer regner man derimot mot det som er <strong>representert</strong> på møtet – ikke bare det som er avgitt. Det er en strengere målestokk, og verdt å være obs på.</p>
+<h3>Hvorfor finnes denne trappen?</h3>
+<p>Logikken er beskyttelse. De enkle, daglige beslutningene skal ikke kreve mer enn et vanlig flertall – ellers ville selskapet stoppe opp. Men de store, varige endringene – som å skrive om selskapets grunnregler – skal kreve bred oppslutning, slik at en knapp majoritet ikke kan overkjøre mindretallet i de viktigste spørsmålene.</p>
+<h3>Hva med saker som krever aller mest – nesten enstemmighet?</h3>
+<p>Noen vedtak er så inngripende for den enkelte aksjonær at loven krever helt opp mot full tilslutning. Det gjelder typisk vedtak som:</p>
+<ul>
+<li>pålegger aksjonærene nye, tyngende forpliktelser</li>
+<li>begrenser retten til å selge aksjene (omsetningsbegrensninger)</li>
+<li>på andre måter griper dypt inn i den enkeltes rettigheter</li>
+</ul>
+<p>Tanken er at slike grep ikke skal kunne tres nedover hodet på noen mot deres vilje, selv av et stort flertall. Møter du en sak som ser ut til å ramme enkeltaksjonærer hardt, er det et signal om å sjekke nøye hvilket flertall som egentlig kreves – og gjerne spørre revisor eller advokat.</p>
+<h3>Et fellesfelle: å glemme at vedtektene kan skjerpe</h3>
+<p>Loven angir et <em>minimum</em>. Vedtektene deres kan kreve mer. La oss si at "Fjellheim AS" har en vedtektsbestemmelse om at "valg av styreleder krever to tredelers flertall". Da hjelper det ikke at loven bare krever alminnelig flertall for styrevalg – vedtektene gjelder, og dere må ha to tredeler. Sjekk derfor alltid både loven <em>og</em> vedtektene før dere konkluderer med hvor mange stemmer en sak trenger.</p>
+<h3>Hva skjer ved stemmelikhet?</h3>
+<p>Av og til ender en avstemning likt – like mange for som mot. Ved vanlige vedtak avgjør da <strong>møtelederens stemme</strong>, med mindre vedtektene sier noe annet. Eier møtelederen selv aksjer, har vedkommende altså i praksis en dobbeltrolle: én ordinær stemme pluss den avgjørende stemmen ved likhet. Dette gjelder bare ved alminnelig flertall – ved vedtektsendringer, der det kreves to tredeler, vil stemmelikhet uansett bety at forslaget <em>ikke</em> er vedtatt, fordi det da langt fra når to tredeler.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li><strong>Finn ut hvilket trinn saken ligger på, før møtet.</strong> Er det vanlig, vedtektsendring, eller noe ekstra strengt?</li>
+<li><strong>Tell stemmer, ikke hoder.</strong> Det er aksjene som teller, ikke antall personer (med mindre vedtektene har stemmebegrensninger).</li>
+<li><strong>Skriv stemmetallet i protokollen.</strong> Det gjør vedtaket etterprøvbart.</li>
+<li><strong>Sjekk vedtektene.</strong> De kan ha strengere krav enn loven på enkelte punkter (loven setter et minimum, men vedtektene kan skjerpe).</li>
+<li><strong>Vær nøye med "for", "mot" og "blankt".</strong> Det avgjør om du regner mot avgitte eller representerte stemmer.</li>
+</ul>
+<h3>Hvorfor det lønner seg å vite dette på forhånd</h3>
+<p>Mange uenigheter i små selskaper handler ikke om at folk er onde, men om at ingen sjekket reglene før møtet. La oss si at Bryggeriet AS skulle endre vedtektene, men styret trodde alminnelig flertall holdt. De vedtok endringen med 55 av 100 stemmer og meldte den til registeret. Senere oppdaget Nina at det egentlig krevdes to tredeler – og at endringen dermed kunne være ugyldig (se artikkel 110). Hele saken måtte tas på nytt, med tap av tid og tillit.</p>
+<p>Lærdommen er enkel: bruk to minutter før møtet på å avklare hvilket flertall hver sak krever. Skriv det gjerne ned i innkallingen, for eksempel "Sak 4 krever to tredeler etter § 5-18". Da vet alle hva som skal til, avstemningen blir ryddig, og dere unngår å oppdage en formfeil i etterkant. God forberedelse her er noe av det billigste konfliktforebyggende arbeidet et selskap kan gjøre.</p>
+<h3>Kort oppsummert</h3>
+<p>Antall stemmer som trengs avhenger av sakens art. Vanlige saker krever alminnelig flertall – mer enn halvparten av de avgitte stemmene (§ 5-17). Vedtektsendringer krever minst to tredeler av både stemmer og kapital som er representert (§ 5-18). Noen få vedtak krever enda mer. Tenk på det som en trapp: jo mer inngripende beslutningen er, jo høyere flertall trengs.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

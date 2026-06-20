@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer hvis jeg har gitt feil opplysninger? — Rettsregel</title>
+<meta name="description" content="Har du oppdaget at noe i skattemeldingen din er feil – enten du har glemt en inntekt, ført et fradrag du ikke hadde krav på, eller rett og slett tastet…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-har-gitt-feil-opplysninger/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer hvis jeg har gitt feil opplysninger?">
+<meta property="og:description" content="Har du oppdaget at noe i skattemeldingen din er feil – enten du har glemt en inntekt, ført et fradrag du ikke hadde krav på, eller rett og slett tastet…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-har-gitt-feil-opplysninger/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer hvis jeg har gitt feil opplysninger?">
+<meta name="twitter:description" content="Har du oppdaget at noe i skattemeldingen din er feil – enten du har glemt en inntekt, ført et fradrag du ikke hadde krav på, eller rett og slett tastet…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva skjer hvis jeg har gitt feil opplysninger?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Har du oppdaget at noe i skattemeldingen din er feil – enten du har glemt en inntekt, ført et fradrag du ikke hadde krav på, eller rett og slett tastet feil – er det viktigste budskapet: det er nesten alltid bedre å rette opp enn å la det ligge. Hva som skjer videre, avhenger av om du retter selv, og om feilen var bevisst eller en ærlig glipp.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Har du oppdaget at noe i skattemeldingen din er feil – enten du har glemt en inntekt, ført et fradrag du ikke hadde krav på, eller rett og slett tastet feil – er det viktigste budskapet: <strong>det er nesten alltid bedre å rette opp enn å la det ligge.</strong> Hva som skjer videre, avhenger av om du retter selv, og om feilen var bevisst eller en ærlig glipp.</p>
+<h3>Først: ikke få panikk</h3>
+<p>Feil i skattemeldingen er svært vanlig. Tallene er ferdigutfylte, men ikke alltid komplette, og det er lett å overse en post, særlig når det gjelder utenlandsk inntekt eller formue. Skatteetaten skiller mellom ærlige feil og bevisst juks, og du har gode muligheter til å ordne opp.</p>
+<h3>Hva kan konsekvensene være?</h3>
+<ul>
+<li><strong>Endring av skatteoppgjøret.</strong> Skatteetaten justerer fastsettingen og beregner riktig skatt. Har du betalt for lite, må du betale differansen.</li>
+<li><strong>Renter.</strong> På skatt som etterberegnes, kommer det renter, fordi staten har fått pengene sent.</li>
+<li><strong>Tilleggsskatt.</strong> Ved uriktige eller ufullstendige opplysninger kan det ilegges tilleggsskatt på 20 %, og opptil 40–60 % ved grove forhold.</li>
+</ul>
+<h3>Det avgjørende: hvem oppdager feilen først?</h3>
+<p><strong>Hvis du retter selv – før Skatteetaten oppdager noe:</strong> Da kan du ofte slippe tilleggsskatt helt. Dette kalles frivillig retting (egen artikkel). Du må fortsatt betale riktig skatt pluss renter, men du slipper selve straffen.</p>
+<p><strong>Hvis Skatteetaten oppdager det først:</strong> Da risikerer du tilleggsskatt i tillegg til skatt og renter.</p>
+<p><strong>Eksempel – Tomas oppdager glemt utleie:</strong> Tomas finner ut at han glemte å oppgi 60 000 kroner i leieinntekt for to år siden. Han tar kontakt med Skatteetaten og retter det selv. Fordi han var først ute, slipper han trolig tilleggsskatt og betaler bare skatt og renter.</p>
+<p><strong>Eksempel – Hanna får brev i posten:</strong> Hanna får brev fra Skatteetaten om at de har oppdaget en uoppgitt konto i utlandet. Nå er det Skatteetaten som har funnet feilen, og hun risikerer tilleggsskatt i tillegg til skatt og renter. Hadde hun meldt fra noen måneder tidligere, kunne hun spart seg tilleggsskatten.</p>
+<h3>Slik retter du opp en feil</h3>
+<ul>
+<li><strong>Logg inn på skatteetaten.no</strong> og endre skattemeldingen. Du kan som hovedregel endre opptil tre år tilbake selv.</li>
+<li><strong>For eldre år eller større forhold</strong>, ta kontakt med Skatteetaten og forklar situasjonen.</li>
+<li><strong>Beskriv feilen tydelig</strong> og legg ved dokumentasjon.</li>
+<li><strong>Gjør det på eget initiativ</strong> – ikke vent til en kontroll er i gang, for da regnes det ikke lenger som frivillig retting.</li>
+</ul>
+<h3>Hva hvis feilen var i din favør?</h3>
+<p>Også feil som har gjort at du betalte <strong>for mye</strong> skatt, kan rettes. Da får du penger tilbake. Mange glemmer fradrag de hadde krav på – det er like riktig å rette dette som å rette feil i statens favør. Eksempler er glemte rentefradrag, reisefradrag eller fradrag for gaver til frivillige organisasjoner.</p>
+<p><strong>Eksempel – Eli glemte rentefradraget:</strong> Eli oppdager at et boliglån i en mindre bank ikke kom med, og at hun dermed gikk glipp av rentefradrag i to år. Hun retter skattemeldingen og får tilbake skatt hun hadde betalt for mye.</p>
+<h3>Når feilen var bevisst</h3>
+<p>Har du bevisst gitt gale opplysninger, er konsekvensene strengere – skjerpet tilleggsskatt og i alvorlige tilfeller anmeldelse. Men også her er frivillig retting et alternativ som kan begrense reaksjonen kraftig, så lenge du er ute i tide og legger alle kortene på bordet.</p>
+<h3>Hvor langt tilbake kan feilen rettes – og hentes opp?</h3>
+<p>To frister er nyttige å huske. Du kan selv endre skattemeldingen din i nettløsningen normalt opptil tre år tilbake. Skatteetaten på sin side kan ta opp en sak til endring i inntil fem år, og opptil ti år ved grove forhold. Det betyr at en gammel feil kan dukke opp lenge etter at du gjorde den. Derfor er det lurt å rydde opp så snart du oppdager noe, framfor å håpe at det går i glemmeboken. Med automatisk informasjonsutveksling mellom land er sjansen for at en uoppgitt utenlandsinntekt blir oppdaget, større enn mange tror.</p>
+<p><strong>Eksempel – Sigrid retter tre år selv, ber om hjelp for resten:</strong> Sigrid finner en feil som strekker seg fem år tilbake. De tre siste årene retter hun selv på nett. For de to eldste tar hun kontakt med Skatteetaten og forklarer situasjonen, slik at også de kan rettes.</p>
+<h3>Renter – en grunn til å handle raskt</h3>
+<p>Når skatt etterberegnes, påløper det renter fra det tidspunktet skatten egentlig skulle vært betalt. Jo lenger en feil får ligge, desto mer renter samler det seg opp. Det er enda en grunn til å rette opp tidlig: du sparer ikke bare en eventuell tilleggsskatt, men også rentekostnader som vokser over tid.</p>
+<h3>En enkel sjekkliste når du oppdager en feil</h3>
+<p>Det kan kjennes overveldende å oppdage at noe er galt. Her er en rolig fremgangsmåte:</p>
+<ul>
+<li><strong>Pust ut.</strong> Feil i skattemeldingen er vanlig og lar seg ordne.</li>
+<li><strong>Finn ut hvor mange år</strong> feilen gjelder, og hvor stort beløp det dreier seg om.</li>
+<li><strong>Sjekk om du kan rette selv</strong> på nett (normalt tre år tilbake), eller om du må kontakte Skatteetaten for eldre år.</li>
+<li><strong>Samle dokumentasjon</strong> før du melder fra, så går alt raskere.</li>
+<li><strong>Meld fra på eget initiativ</strong> – det er nøkkelen til å slippe tilleggsskatt.</li>
+</ul>
+<p><strong>Eksempel – Trygg opprydning:</strong> Kari oppdager en glemt utleieinntekt. Hun bruker sjekklisten, finner ut at det gjelder to år, retter det ene selv og melder det andre til Skatteetaten med dokumentasjon. Saken løser seg uten dramatikk.</p>
+<h3>En vanlig bekymring: "Blir jeg straffet bare jeg sier fra?"</h3>
+<p>Mange vegrer seg for å rette opp fordi de er redde for at det å innrømme en feil i seg selv fører til straff. Det er en misforståelse som dessverre gjør at noen lar feil ligge og dermed gjør situasjonen verre. Sannheten er nesten motsatt: melder du fra på eget initiativ før Skatteetaten oppdager noe, slipper du normalt tilleggsskatt helt. Det er nettopp den som ikke sier fra, og som blir oppdaget, som risikerer den strengeste reaksjonen. Å rette opp er altså den trygge veien, ikke den farlige.</p>
+<h3>Kort oppsummert</h3>
+<p>Har du gitt feil opplysninger, kan det føre til endret skatt, renter og eventuelt tilleggsskatt. Det avgjørende er hvem som oppdager feilen først: retter du selv før Skatteetaten finner det, slipper du normalt tilleggsskatt og betaler bare skatt og renter. Rett opp så tidlig som mulig, vær ærlig og legg fram dokumentasjon. Også feil i din favør bør rettes. Regler og satser endres – sjekk skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

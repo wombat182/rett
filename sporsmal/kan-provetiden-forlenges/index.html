@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan prøvetiden forlenges? — Rettsregel</title>
+<meta name="description" content="Ja, men bare under bestemte vilkår.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-provetiden-forlenges/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan prøvetiden forlenges?">
+<meta property="og:description" content="Ja, men bare under bestemte vilkår.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-provetiden-forlenges/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan prøvetiden forlenges?">
+<meta name="twitter:description" content="Ja, men bare under bestemte vilkår.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan prøvetiden forlenges?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, men bare under bestemte vilkår. Prøvetiden kan forlenges hvis du har vært borte fra arbeidet i prøvetiden – men kun dersom muligheten for forlengelse er avtalt skriftlig på forhånd, og arbeidsgiver orienterer deg skriftlig om forlengelsen (§ 15-6). Arbeidsgiver kan altså ikke bare bestemme seg for å forlenge prøvetiden fritt.</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 15-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/15-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 15-6</div>
+  <div class="related-card-title">Oppsigelse i prøvetid</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, men bare under bestemte vilkår. Prøvetiden kan forlenges hvis du har <strong>vært borte fra arbeidet</strong> i prøvetiden – men kun dersom muligheten for forlengelse er <strong>avtalt skriftlig på forhånd</strong>, og arbeidsgiver <strong>orienterer deg skriftlig</strong> om forlengelsen (§ 15-6). Arbeidsgiver kan altså ikke bare bestemme seg for å forlenge prøvetiden fritt.</p>
+<h3>Hvorfor finnes regelen?</h3>
+<p>Tanken bak prøvetid er at arbeidsgiver skal få en reell sjanse til å vurdere hvordan du fungerer i jobben. Hvis du har vært mye borte – for eksempel på grunn av sykdom – har ikke arbeidsgiver fått den vurderingsperioden de skulle hatt. Derfor åpner loven for at prøvetiden kan <strong>forlenges tilsvarende fraværet</strong>, slik at arbeidsgiver får like lang reell prøvetid som opprinnelig avtalt.</p>
+<p>Men fordi forlengelse er til ugunst for deg, har loven satt opp klare vilkår som <strong>alle</strong> må være oppfylt.</p>
+<h3>De tre vilkårene for forlengelse</h3>
+<ol>
+<li><strong>Du har vært borte fra arbeidet i prøvetiden.</strong> Forlengelsen kan bare svare til lengden på fraværet ditt – ikke mer. Er du borte i tre uker, kan prøvetiden forlenges med inntil tre uker.</li>
+<li><strong>Muligheten var avtalt skriftlig ved ansettelsen.</strong> Det må ha stått i arbeidsavtalen (eller vært skriftlig avtalt) <strong>fra start</strong> at prøvetiden kan forlenges ved fravær. Sto det ingenting, kan arbeidsgiver i utgangspunktet ikke forlenge.</li>
+<li><strong>Arbeidsgiver orienterer deg skriftlig om forlengelsen.</strong> Det holder ikke at det stod i avtalen – arbeidsgiver må i tillegg gi deg skriftlig beskjed om at prøvetiden faktisk forlenges, og normalt før den opprinnelige prøvetiden er ute.</li>
+</ol>
+<h3>Eksempel: Lovlig forlengelse</h3>
+<p>Sofie ansettes med seks måneders prøvetid. I arbeidsavtalen står det tydelig at «prøvetiden kan forlenges tilsvarende fravær». Etter to måneder blir Sofie syk i tre uker. Arbeidsgiver sender henne en skriftlig melding: «På grunn av ditt fravær på tre uker forlenges prøvetiden tilsvarende, slik at den nå løper til [ny dato].»</p>
+<p>Her er alle vilkårene oppfylt: Sofie har vært borte, muligheten stod i avtalen, og hun har fått skriftlig beskjed. Forlengelsen er lovlig – og den tilsvarer akkurat fraværet, tre uker.</p>
+<h3>Eksempel: Ulovlig forlengelse</h3>
+<p>Henrik har også seks måneders prøvetid, men i arbeidsavtalen står det <strong>ingenting</strong> om at prøvetiden kan forlenges. Etter at han har vært syk noen dager, sier sjefen muntlig at «prøvetiden din blir nok forlenget litt». Dette er <strong>ikke</strong> gyldig: Muligheten var ikke avtalt skriftlig på forhånd, og beskjeden kom bare muntlig. Henriks prøvetid løper som opprinnelig avtalt.</p>
+<h3>Hva slags fravær teller?</h3>
+<p>Det typiske er fravær på grunn av <strong>egen sykdom</strong>. Det avgjørende er at du faktisk har vært borte fra arbeidet, slik at arbeidsgiver ikke har fått den reelle vurderingsperioden. Vanlig, planlagt ferie regnes normalt ikke på samme måte – men her kan det variere, og det lønner seg å avklare konkret. Fravær som arbeidsgiver selv står bak (for eksempel at de ikke har satt deg i arbeid), kan ikke uten videre brukes mot deg.</p>
+<h3>Slik passer du på rettighetene dine</h3>
+<ol>
+<li><strong>Les arbeidsavtalen før du signerer.</strong> Står det noe om forlengelse av prøvetid ved fravær? Da vet du at muligheten finnes.</li>
+<li><strong>Krev skriftlig beskjed.</strong> Hvis arbeidsgiver vil forlenge, be om det skriftlig med begrunnelse og ny sluttdato. Muntlig er ikke nok.</li>
+<li><strong>Sjekk at forlengelsen ikke er lengre enn fraværet.</strong> Var du borte i to uker, kan ikke prøvetiden forlenges med to måneder.</li>
+<li><strong>Be om at beskjeden kommer i tide.</strong> Forlengelse skal normalt varsles før den opprinnelige prøvetiden er ute.</li>
+<li><strong>Ta opp uklarheter.</strong> Er du usikker på om forlengelsen er gyldig, kontakt tillitsvalgt, fagforening eller Arbeidstilsynet.</li>
+</ol>
+<h3>Hva betyr forlengelsen for deg?</h3>
+<p>Mens prøvetiden løper – også den forlengede delen – gjelder den lavere oppsigelsesterskelen og den kortere oppsigelsesfristen som hører prøvetid til. Derfor er det i din interesse at en forlengelse er <strong>korrekt og ikke lengre enn nødvendig</strong>. Når den (forlengede) prøvetiden er over, går du tilbake til fullt stillingsvern.</p>
+<p>Husk at en forlengelse ikke kan brukes som en bakvei rundt seksmånedersgrensen for vanlig drift – den henger sammen med ditt konkrete fravær.</p>
+<h3>Hva hvis forlengelsen ikke ble gjort riktig?</h3>
+<p>Hvis arbeidsgiver forlenger prøvetiden uten at vilkårene er oppfylt – for eksempel uten at det var avtalt skriftlig på forhånd, eller uten skriftlig orientering – er forlengelsen som hovedregel ikke gyldig. Da løper prøvetiden din ut på det opprinnelige tidspunktet, og en oppsigelse etter dette må vurderes etter de <strong>ordinære</strong> og strengere reglene. Det er altså viktig for deg å vite om en forlengelse faktisk er gjort på riktig måte.</p>
+<h3>Eksempel: Forlengelsen kom for sent</h3>
+<p>Petra har seks måneders prøvetid med en gyldig avtaleklausul om forlengelse ved fravær. Hun var syk i to uker. Men arbeidsgiver gir henne ikke beskjed om forlengelse før <strong>etter</strong> at de opprinnelige seks månedene er gått. Fordi orienteringen kom for sent, kan forlengelsen være ugyldig – og Petra kan ha gått over til fullt stillingsvern. Tidspunktet for beskjeden er altså avgjørende.</p>
+<h3>Snakk om det tidlig</h3>
+<p>Hvis du blir syk eller borte en periode i prøvetiden, kan det være lurt å ta opp spørsmålet om forlengelse med arbeidsgiver tidlig, slik at dere unngår misforståelser. Da vet begge parter hva som gjelder, og du slipper en ubehagelig overraskelse mot slutten av prøvetiden. Åpenhet her er en fordel for begge.</p>
+<h3>Kan jeg motsette meg en forlengelse?</h3>
+<p>Hvis vilkårene faktisk er oppfylt – muligheten var avtalt skriftlig, du har vært borte, og du blir orientert skriftlig i tide – kan arbeidsgiver lovlig forlenge prøvetiden tilsvarende fraværet, og det er da i utgangspunktet ikke noe du kan «nekte». Men du har full rett til å <strong>kontrollere</strong> at alt er gjort riktig: at lengden ikke overstiger fraværet, at beskjeden kom i tide, og at grunnlaget var avtalt på forhånd. Stemmer ikke dette, kan du ta det opp. Det er altså ikke et spørsmål om å si nei, men om å passe på at reglene er fulgt.</p>
+<h3>Eksempel: Riktig lengde teller</h3>
+<p>Sander var borte i nøyaktig ti arbeidsdager på grunn av sykdom. Arbeidsgiver vil forlenge prøvetiden med en hel måned. Her er forlengelsen for lang – den skal tilsvare fraværet, altså rundt ti dager, ikke en måned. Sander kan be om at forlengelsen settes til riktig lengde. Det å kjenne denne grensen gjør at du unngår å bli stående lenger i prøvetid enn loven tillater.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Prøvetiden kan <strong>forlenges ved fravær</strong>, men bare hvis det er <strong>avtalt skriftlig på forhånd</strong> og du blir <strong>orientert skriftlig</strong> om forlengelsen (§ 15-6).</li>
+<li>Forlengelsen kan <strong>maksimalt tilsvare fraværet</strong> ditt – ikke mer.</li>
+<li>Det typiske er fravær på grunn av <strong>egen sykdom</strong>.</li>
+<li>Sto det ingenting i avtalen, kan arbeidsgiver i utgangspunktet <strong>ikke</strong> forlenge.</li>
+<li>Krev alltid skriftlig beskjed, sjekk lengden, og søk hjelp ved tvil.</li>
+</ul>
+<p>Forlengelse er mulig, men loven har bygget inn vern for deg. Kjenn vilkårene, så vet du om en forlengelse er gyldig.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-signere-sluttavtalen-med-en-gang/">Bør jeg signere sluttavtalen med en gang?</a><a class="sp-relchip" href="../../sporsmal/er-en-muntlig-arbeidsavtale-gyldig/">Er en muntlig arbeidsavtale gyldig?</a><a class="sp-relchip" href="../../sporsmal/gjelder-provetid-ved-midlertidig-ansettelse/">Gjelder prøvetid ved midlertidig ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

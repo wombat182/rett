@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg trekke fra renter på lån? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-trekke-fra-renter-pa-lan/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg trekke fra renter på lån?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-trekke-fra-renter-pa-lan/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg trekke fra renter på lån?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg trekke fra renter på lån?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Betaler du renter på et lån, har du som hovedregel rett til rentefradrag. Det betyr at staten gir deg igjen en del av rentene du har betalt, ved at skatten din blir lavere. For inntektsåret 2025 er verdien av fradraget 22 prosent av rentebeløpet. Best av alt: dette ordner seg som regel helt av seg selv.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Betaler du renter på et lån, har du som hovedregel rett til rentefradrag. Det betyr at staten gir deg igjen en del av rentene du har betalt, ved at skatten din blir lavere. For inntektsåret 2025 er verdien av fradraget 22 prosent av rentebeløpet. Best av alt: dette ordner seg som regel helt av seg selv.</p>
+<h3>Hvilke lån gir rentefradrag?</h3>
+<p>Den gode nyheten er at det gjelder nesten alle slags lån du som privatperson tar opp:</p>
+<ul>
+<li><strong>Boliglån</strong> – det vanligste, og ofte det største</li>
+<li><strong>Billån og forbrukslån</strong></li>
+<li><strong>Studielån i Lånekassen</strong></li>
+<li><strong>Kredittkortgjeld</strong> – ja, også renter på kredittkort</li>
+<li><strong>Smålån og kjøp på avbetaling</strong> der det faktisk betales rente</li>
+<li><strong>Lån mellom privatpersoner</strong> (for eksempel et lån fra foreldre), så lenge det er reelt og du betaler rente</li>
+</ul>
+<p>Det er selve <strong>renten</strong> du får fradrag for, ikke avdragene. Avdrag er den delen av terminbeløpet som betaler ned selve gjelden, og den gir ingen skattefordel. Det er bare prisen for å låne penger – renten – som teller.</p>
+<h3>Slik regner du ut hva du faktisk får</h3>
+<p>Mange tror rentefradraget betyr at de "får tilbake hele renten". Det stemmer ikke. Du får tilbake 22 prosent av renten i lavere skatt.</p>
+<p><strong>Eksempel – Jonas med boliglån:</strong>
+Jonas har betalt 90 000 kroner i renter på boliglånet sitt i løpet av året.</p>
+<ul>
+<li>Fradraget reduserer skatten med: 90 000 × 22 % = <strong>19 800 kroner</strong></li>
+</ul>
+<p>Jonas betaler altså nesten 20 000 kroner mindre i skatt enn han ellers ville gjort.</p>
+<p><strong>Eksempel – Mariam med kredittkort og billån:</strong>
+Mariam har til sammen betalt 12 000 kroner i renter (8 000 på billån og 4 000 på kredittkort).</p>
+<ul>
+<li>Skattereduksjon: 12 000 × 22 % = <strong>2 640 kroner</strong></li>
+</ul>
+<h3>Sjekk om du har krav på dette</h3>
+<blockquote>
+<p><strong>Sjekkliste – har du rentefradrag?</strong>
+- [ ] Har du et lån der du betaler renter?
+- [ ] Står du som låntaker (eller medlåntaker)?
+- [ ] Har banken/Lånekassen rapportert renten inn?</p>
+<p>Svarer du ja, har du rentefradrag – og det er nesten alltid allerede med i skattemeldingen.</p>
+</blockquote>
+<h3>Du trenger sjelden å gjøre noe selv</h3>
+<p>Bankene, Lånekassen og de fleste kredittselskaper sender automatisk inn opplysninger om hvor mye rente du har betalt. Derfor er rentene <strong>forhåndsutfylt</strong> i skattemeldingen din. "Forhåndsutfylt" betyr at tallet allerede står der når du logger inn – du trenger ikke fylle inn noe.</p>
+<p>Men du bør likevel <strong>kontrollere</strong> at tallet stemmer. Sammenlign med årsoppgaven du får fra banken i januar/februar.</p>
+<h3>Når må du fylle inn selv?</h3>
+<p>Noen ganger mangler renten:</p>
+<ul>
+<li><strong>Lån fra utlandet</strong> – utenlandske banker rapporterer ikke til norske skattemyndigheter</li>
+<li><strong>Privat lån</strong> mellom familie eller venner</li>
+<li><strong>Nyere lån</strong> der rapporteringen har sviktet</li>
+</ul>
+<p>Da må du føre opp renten selv. Husk å kunne dokumentere den med en låneavtale eller kontoutskrift hvis Skatteetaten spør.</p>
+<h3>Hvem deler fradraget?</h3>
+<p>Har dere felles lån, fordeles renten mellom låntakerne. Ektefeller kan fritt fordele rentefradraget mellom seg, mens samboere som hovedregel deler etter hvem som faktisk er ansvarlig for gjelden og betaler.</p>
+<p><strong>Eksempel – samboerne Eline og Tobias:</strong>
+De har felles boliglån og har betalt 60 000 kroner i renter. Begge er låntakere og deler likt.</p>
+<ul>
+<li>Hver fører 30 000 kroner: 30 000 × 22 % = <strong>6 600 kroner</strong> hver i skattereduksjon.</li>
+</ul>
+<h3>Hva med renter på fritidsbolig og utleiebolig?</h3>
+<p>Mange lurer på om hytta eller en utleiebolig teller. Svaret er ja – renter på lån knyttet til en fritidsbolig gir også rentefradrag på vanlig måte, så lenge du står som låntaker. Har du en sekundærbolig du leier ut, er renten knyttet til den også fradragsberettiget. Selve leieinntekten skattlegges riktignok for seg, men rentene på lånet trekkes fra på vanlig måte.</p>
+<h3>Et lite ord om "rentenes verdi" over tid</h3>
+<p>Rentefradraget følger størrelsen på rentene du faktisk betaler. Når rentenivået i samfunnet stiger, blir både rentekostnaden og fradraget større. Når rentene faller, krymper begge deler. Det betyr at fradraget aldri kan "redde" deg fra høye renter – det gir bare tilbake 22 prosent av regningen. Husk det neste gang noen sier at "renter er gratis fordi du får dem på skatten". Du betaler fortsatt 78 prosent av renten selv.</p>
+<p><strong>Eksempel – hva fradraget IKKE gjør:</strong>
+Frida betaler 50 000 kroner i renter.</p>
+<ul>
+<li>Hun får igjen 50 000 × 22 % = 11 000 kroner på skatten.</li>
+<li>Men hun har fortsatt betalt 39 000 kroner i renter ut av egen lomme.</li>
+</ul>
+<h3>Vanlige feil folk gjør</h3>
+<blockquote>
+<p><strong>Pass på disse fellene:</strong>
+- Å tro at avdrag gir fradrag – det gjør bare renten.
+- Å glemme å føre opp renter på lån fra utlandet eller familie.
+- Å ikke kontrollere det forhåndsutfylte tallet mot årsoppgaven fra banken.
+- Å la et stort fradrag stå hos ektefellen med lav inntekt, slik at det ikke kommer til full nytte.</p>
+</blockquote>
+<h3>Renter på lån i borettslag og sameie</h3>
+<p>Bor du i en borettslagsleilighet, har borettslaget ofte en felles gjeld – kalt fellesgjeld – som du betaler renter på gjennom de månedlige felleskostnadene. Din andel av disse rentene gir også rentefradrag. Det gode er at borettslaget vanligvis rapporterer din andel av både fellesgjeld og renter til Skatteetaten, slik at det blir <strong>forhåndsutfylt</strong> i skattemeldingen din.</p>
+<p><strong>Eksempel – Sander i borettslag:</strong>
+Sander betaler ned på eget boliglån (35 000 kroner i renter) og har i tillegg en andel av borettslagets fellesgjeld der hans del av rentene utgjør 18 000 kroner.</p>
+<ul>
+<li>Til sammen: 35 000 + 18 000 = 53 000 kroner i renter.</li>
+<li>Skattereduksjon: 53 000 × 22 % = <strong>11 660 kroner</strong></li>
+</ul>
+<p>Sjekk at begge delene er kommet med – mange glemmer at andelen av fellesgjelden også teller. Den står gjerne i en egen oppstilling fra borettslaget eller forretningsføreren.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du har rett til rentefradrag på nesten alle lån: bolig, bil, forbruk, studielån og kredittkort.</li>
+<li>Verdien er 22 prosent av rentebeløpet (2025).</li>
+<li>Det er renten, ikke avdraget, som teller.</li>
+<li>Tallene er som regel forhåndsutfylt – men kontroller mot årsoppgaven.</li>
+<li>Utenlandske og private lån må du ofte føre opp selv.</li>
+</ul>
+<p>Satser og regler endres fra år til år. Sjekk alltid de ferskeste tallene på <strong>skatteetaten.no</strong> før du leverer skattemeldingen.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

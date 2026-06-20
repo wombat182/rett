@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor mye utbytte kan jeg ta ut? — Rettsregel</title>
+<meta name="description" content="Det korte svaret: Du kan ta ut så mye som det er fri egenkapital til – og som er forsvarlig.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-mye-utbytte-kan-jeg-ta-ut/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor mye utbytte kan jeg ta ut?">
+<meta property="og:description" content="Det korte svaret: Du kan ta ut så mye som det er fri egenkapital til – og som er forsvarlig.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-mye-utbytte-kan-jeg-ta-ut/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor mye utbytte kan jeg ta ut?">
+<meta name="twitter:description" content="Det korte svaret: Du kan ta ut så mye som det er fri egenkapital til – og som er forsvarlig.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Hvor mye utbytte kan jeg ta ut?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det korte svaret: Du kan ta ut så mye som det er fri egenkapital til – og som er forsvarlig. Den frie egenkapitalen setter den øvre grensen i tallene, mens forsvarlighetskravet kan sette en enda lavere grense i praksis. Her ser vi på hvordan du finner ut hva som faktisk er din «utbyttekapasitet».</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det korte svaret: Du kan ta ut så mye som det er fri egenkapital til – og som er forsvarlig. Den frie egenkapitalen setter den øvre grensen i tallene, mens forsvarlighetskravet kan sette en enda lavere grense i praksis. Her ser vi på hvordan du finner ut hva som faktisk er din «utbyttekapasitet».</p>
+<h3>To tak, ikke ett</h3>
+<p>Mange tror det finnes ett tall som svarer på «hvor mye kan jeg ta ut?». I virkeligheten er det to tak du må forholde deg til, og det laveste gjelder:</p>
+<ul>
+<li><strong>Det matematiske taket:</strong> den frie egenkapitalen etter fradrag (§ 8-1).</li>
+<li><strong>Det skjønnsmessige taket:</strong> det som er forsvarlig ut fra egenkapital og likviditet (§ 8-1 fjerde ledd, jf. § 3-4).</li>
+</ul>
+<p>Du kan aldri ta ut mer enn det laveste av disse to.</p>
+<h3>Slik finner du det matematiske taket</h3>
+<p>Utgangspunktet er årsresultatet og opptjent egenkapital fra sist godkjente årsregnskap, pluss eventuell annen fri egenkapital. Fra dette må du trekke fra blant annet:</p>
+<ul>
+<li>Aksjekapitalen og annen bunden egenkapital.</li>
+<li>Selskapets egne aksjer (hvis selskapet eier noen).</li>
+<li>Visse kreditter og sikkerheter selskapet har gitt til aksjonærer (slike lån «spiser opp» utbyttegrunnlaget).</li>
+</ul>
+<p>Det som da står igjen, er den frie egenkapitalen du kan dele av.</p>
+<h3>Regneeksempel: «Bryggverk AS»</h3>
+<p>Lise eier mikrobryggeriet «Bryggverk AS». Årsregnskapet per 31.12.2025 viser:</p>
+<ul>
+<li>Opptjent egenkapital (overskudd fra i år og tidligere): 520 000 kr</li>
+<li>Aksjekapital (bundet): 100 000 kr</li>
+<li>Annen bunden egenkapital: 0 kr</li>
+<li>Lån selskapet har gitt til Lise privat: 80 000 kr</li>
+</ul>
+<p>Beregning av fri egenkapital:</p>
+<ul>
+<li>Start: egenkapital totalt 620 000 kr (100 000 aksjekapital + 520 000 opptjent)</li>
+<li>Trekk fra aksjekapital: −100 000 kr</li>
+<li>Trekk fra lån til aksjonær: −80 000 kr</li>
+<li><strong>Fri egenkapital = 440 000 kr</strong></li>
+</ul>
+<p>Det matematiske taket er altså 440 000 kr. Legg merke til hvordan lånet på 80 000 kr som Lise har tatt privat fra selskapet, reduserer hvor mye hun kan ta i utbytte.</p>
+<h3>Husk 10-prosent-grensen</h3>
+<p>Loven har en ekstra sikkerhetsventil: Selskapet kan i utgangspunktet ikke dele ut utbytte hvis egenkapitalen etter balansen ville bli mindre enn 10 prosent av balansesummen – med mindre selskapet følger den strengere prosedyren for kapitalnedsettelse (§ 8-1). For de fleste små AS er ikke dette et problem, men har du en stor balanse med mye gjeld, kan denne grensen slå inn.</p>
+<p>Eksempel: Hvis «Bryggverk AS» har en balansesum (sum eiendeler) på 1 000 000 kr, må egenkapitalen etter utdeling være minst 100 000 kr. Det betyr at hvis utdeling av hele 440 000 kr ville presse egenkapitalen under 100 000 kr, må Lise begrense seg.</p>
+<h3>Det skjønnsmessige taket kan være lavere</h3>
+<p>Selv om Lise har 440 000 kr i fri egenkapital, må styret (her: Lise selv) vurdere om det er forsvarlig å ta ut alt. Spørsmål styret må stille:</p>
+<ul>
+<li>Har vi nok penger på konto til å betale lønn, leverandører og skatt de neste månedene?</li>
+<li>Vet vi om store investeringer eller dårligere salg fremover?</li>
+<li>Er mye av egenkapitalen «bundet opp» i varer eller utstyr som ikke lett kan gjøres om til penger?</li>
+</ul>
+<p>Hvis bryggeriet nettopp har bestilt nye tanker for 250 000 kr, vil det være uforsvarlig å ta ut hele 440 000 kr selv om regnestykket tillater det. Da bør Lise kanskje nøye seg med for eksempel 150 000 kr.</p>
+<h3>Husk skatten – nettoen i lomma er lavere</h3>
+<p>Når du planlegger, ikke glem at utbytte beskattes. I 2026 er effektiv utbytteskatt 37,84 prosent (beløpet ganges med oppjusteringsfaktor 1,72 og skattlegges med 22 prosent), etter at et eventuelt skjermingsfradrag er trukket fra. Tar Lise ut 150 000 kr og ser bort fra skjermingsfradrag, blir skatten rundt 56 760 kr, og hun sitter igjen med cirka 93 240 kr. Satsene endres årlig – sjekk alltid skatteetaten.no.</p>
+<h3>Lønn eller utbytte – hvor mye bør jeg ta ut av hver?</h3>
+<p>Et spørsmål som henger tett sammen med «hvor mye utbytte kan jeg ta ut» er «bør jeg ta lønn eller utbytte?». De fleste gründere ender med en kombinasjon. Lønn gir deg pensjonsopptjening, sykepenger og rett til foreldrepenger, men koster selskapet arbeidsgiveravgift og beskattes som vanlig inntekt. Utbytte gir ingen sosiale rettigheter, men har en flat effektiv sats.</p>
+<p>En vanlig tommelfingerregel er å ta nok lønn til å sikre grunnleggende trygderettigheter (mange sikter mot et nivå som gir full opptjening i folketrygden), og ta resten som utbytte hvis selskapet har fri egenkapital. Men dette er en individuell vurdering – snakk med regnskapsfører og se skatteetaten.no, for både satser og innslagspunkter endres.</p>
+<h3>Du trenger ikke ta ut alt på én gang</h3>
+<p>Husk at fri egenkapital ikke «forsvinner» hvis du lar den stå. Tar Lise ut 150 000 kr i år, står de resterende 290 000 kronene fortsatt i selskapet og kan deles ut senere – via tilleggsutbytte i år eller ordinært utbytte neste år. Mange gründere bygger bevisst opp en buffer i selskapet og tar utbytte jevnt over flere år, både av hensyn til selskapets soliditet og for å jevne ut den private inntekten.</p>
+<h3>Vanlige misforståelser om hvor mye du kan ta</h3>
+<ul>
+<li><strong>«Hele banksaldoen er min.»</strong> Nei – mye av saldoen kan tilhøre skyldig skatt, merverdiavgift og leverandører. Den frie egenkapitalen, ikke kontosaldoen, er det som teller.</li>
+<li><strong>«Overskudd i år = det jeg kan ta ut.»</strong> Ikke helt. Du kan også ta ut opptjent overskudd fra tidligere år som ikke er delt ut, men du må trekke fra bunden kapital og eventuelle aksjonærlån.</li>
+<li><strong>«Jeg eier 100 prosent, så reglene gjelder ikke meg.»</strong> Reglene gjelder uansett eierandel. De beskytter kreditorene, ikke bare medeiere.</li>
+</ul>
+<h3>Steg for steg: slik finner du ditt eget tak</h3>
+<p>Du trenger ikke være regnskapsfører for å gjøre et anslag selv. Følg disse trinnene før du eventuelt får tallene bekreftet av en fagperson:</p>
+<ol>
+<li><strong>Finn sist godkjente årsregnskap.</strong> Det er dette regnskapet utbyttet skal bygge på – ikke et foreløpig tall fra inneværende år. Har du ikke godkjent et nytt regnskap, er det fjorårets som gjelder.</li>
+<li><strong>Skriv opp sum egenkapital.</strong> Dette står som én linje nederst i balansen.</li>
+<li><strong>Trekk fra den bundne kapitalen.</strong> Det vil si aksjekapitalen og eventuell annen bunden egenkapital.</li>
+<li><strong>Trekk fra aksjonærlån og sikkerheter.</strong> Har selskapet lånt deg penger privat, eller stilt sikkerhet for deg, reduserer det taket krone for krone.</li>
+<li><strong>Sjekk 10-prosent-grensen og likviditeten.</strong> Til slutt vurderer du om utdelingen er forsvarlig.</li>
+</ol>
+<p>Det tallet du da sitter igjen med, er et godt arbeidsanslag på utbyttekapasiteten din.</p>
+<h3>Nytt regneeksempel: «Kafé Lyng AS»</h3>
+<p>Omar driver kaféen «Kafé Lyng AS» alene og lurer på hvor mye han kan ta ut etter et godt år. Sist godkjente årsregnskap viser:</p>
+<ul>
+<li>Sum egenkapital: 700 000 kr</li>
+<li>Aksjekapital (bundet): 30 000 kr</li>
+<li>Annen bunden egenkapital: 0 kr</li>
+<li>Lån selskapet har gitt Omar privat: 0 kr</li>
+</ul>
+<p>Det matematiske taket blir da 700 000 − 30 000 = <strong>670 000 kr</strong>. Men her slår likviditeten inn: Omar ser at kaféen alltid taper penger i januar og februar, og at han trenger rundt 200 000 kr på konto bare for å komme seg gjennom lavsesongen uten å skvise leverandørene. I tillegg skal kaffemaskinen byttes til våren, anslått 120 000 kr. Det forsvarlige taket blir derfor langt lavere enn 670 000 kr. Omar lander på å ta ut 250 000 kr nå, og la resten stå som buffer. Poenget: det matematiske taket forteller deg hva loven tillater, mens magefølelsen for hva selskapet faktisk tåler – satt i tall – forteller deg hva du bør ta.</p>
+<h3>Vanlig feil: å forveksle utbytte med lønn til seg selv underveis</h3>
+<p>En klassisk tabbe blant ferske gründere er å «ta litt utbytte» løpende gjennom året ved å overføre penger fra selskapskontoen til privatkonto når det passer. Det er ikke utbytte – det er enten lønn eller et ulovlig uttak. Lovlig utbytte krever et formelt vedtak i generalforsamlingen (eller styret ved tilleggsutbytte) basert på et godkjent regnskap. Tar du penger uten et slikt vedtak, regnes det fort som et aksjonærlån eller en ulovlig utdeling, og da kan du både måtte betale pengene tilbake og bli skattlagt hardt. Riktig rekkefølge er alltid: regnskap godkjennes, utbytte vedtas, og deretter overføres pengene.</p>
+<h3>Kort oppsummert</h3>
+<p>Du kan ta ut det laveste av to tak: den frie egenkapitalen (§ 8-1) og det forsvarlige nivået (§ 8-1, jf. § 3-4). Lån du har tatt privat fra selskapet og 10-prosent-grensen kan redusere det matematiske taket. Selv når tallene gir rom, kan styret måtte holde igjen av hensyn til likviditet og fremtidige utgifter. Og husk skatten – det du sitter igjen med er mindre enn bruttobeløpet.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

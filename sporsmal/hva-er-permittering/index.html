@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er permittering? — Rettsregel</title>
+<meta name="description" content="Permittering betyr at arbeidsgiver midlertidig sender deg ut av jobb fordi bedriften en periode ikke har arbeid eller oppdrag til deg. Du beholder jobben…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-permittering/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er permittering?">
+<meta property="og:description" content="Permittering betyr at arbeidsgiver midlertidig sender deg ut av jobb fordi bedriften en periode ikke har arbeid eller oppdrag til deg. Du beholder jobben…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-permittering/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er permittering?">
+<meta name="twitter:description" content="Permittering betyr at arbeidsgiver midlertidig sender deg ut av jobb fordi bedriften en periode ikke har arbeid eller oppdrag til deg. Du beholder jobben…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er permittering?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Permittering betyr at arbeidsgiver **midlertidig** sender deg ut av jobb fordi bedriften en periode ikke har arbeid eller oppdrag til deg. Du beholder jobben din – ansettelsesforholdet består – men du jobber ikke, og du får i utgangspunktet ikke lønn etter en kort arbeidsgiverperiode. Permittering er en pause, ikke en avskjed.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Et viktig poeng: permittering er <strong>ikke regulert i arbeidsmiljøloven</strong>. Reglene bygger i stedet på tariffavtaler (særlig Hovedavtalen mellom LO og NHO), ulovfestet rett og permitteringslønnsloven.</p>
+<h3>Tenk på det som en «pause-knapp»</h3>
+<p>Den enkleste måten å forstå permittering på, er som en pause-knapp på arbeidsforholdet:</p>
+<ul>
+<li><strong>Du har fortsatt jobben.</strong> Du er fortsatt ansatt, og når behovet melder seg, skal du tilbake.</li>
+<li><strong>Du jobber ikke.</strong> I permitteringsperioden møter du ikke på jobb (eller jobber redusert ved delvis permittering).</li>
+<li><strong>Lønn fra arbeidsgiver stopper etter en kort periode.</strong> Arbeidsgiver betaler lønn i en kort arbeidsgiverperiode, deretter overtar gjerne dagpenger fra NAV.</li>
+</ul>
+<p>Sammenlign med oppsigelse, som er en «av-knapp» – da opphører arbeidsforholdet helt.</p>
+<h3>Hvorfor permitterer bedrifter?</h3>
+<p>Permittering brukes når bedriften har et <strong>midlertidig</strong> problem med å gi de ansatte arbeid. Typiske situasjoner:</p>
+<ul>
+<li>En byggebedrift mister et stort oppdrag og har ikke noe nytt å sette folk på akkurat nå.</li>
+<li>En fabrikk får leveringsproblemer på råvarer og må stoppe produksjonen en periode.</li>
+<li>En restaurant rammes av en brann og må holde stengt mens lokalet pusses opp.</li>
+<li>En sesongbedrift har en stille periode mellom høysesongene.</li>
+</ul>
+<p>Felles for alle er at problemet forventes å være forbigående. Tror arbeidsgiver at situasjonen er permanent, skal de bruke oppsigelse, ikke permittering.</p>
+<h3>Et eksempel</h3>
+<p>Snekkerfirmaet til Geir har fem ansatte. De har nettopp fullført et stort byggeprosjekt, og det neste oppdraget starter ikke før om to måneder. Geir har ikke arbeid til de ansatte i mellomtiden, men han forventer mye å gjøre når det nye prosjektet starter. I stedet for å si opp folk – som han ville mistet kompetansen og måtte ansatt på nytt senere – kan han permittere dem midlertidig. Når det nye oppdraget starter, kaller han dem tilbake.</p>
+<p>For de ansatte betyr det at de slipper å miste jobben helt, og kan komme tilbake til en arbeidsplass de kjenner.</p>
+<h3>Et eksempel fra en sesongbedrift</h3>
+<p>Sesongbedrifter bruker ofte permittering. Tenk deg en campingplass som har det travelt om sommeren, men nesten stille om vinteren. I lavsesongen kan flere ansatte permitteres, for så å bli kalt tilbake når sesongen starter igjen. For de ansatte gir dette en forutsigbar rytme: de vet at jobben kommer tilbake, og de slipper å lete etter ny arbeidsgiver hver vår.</p>
+<p>Eksempel: Emma jobber i resepsjonen på campingplassen. Hver høst permitteres hun delvis når gjestene blir få, og hver vår er hun tilbake i full jobb. Fordi hun beholder ansettelsesforholdet, bygger hun ansiennitet og slipper usikkerheten ved å bli sagt opp og måtte søke jobb på nytt hvert år.</p>
+<h3>Hva skjer med deg under permittering?</h3>
+<ul>
+<li><strong>Du beholder ansettelsesforholdet.</strong> Ansienniteten din løper videre.</li>
+<li><strong>Du kan søke dagpenger fra NAV</strong> etter arbeidsgiverperioden, hvis du oppfyller vilkårene.</li>
+<li><strong>Du må være tilgjengelig for å komme tilbake</strong> når arbeidsgiver kaller deg inn.</li>
+<li><strong>Du kan søke og ta annet arbeid</strong> i mellomtiden, men da kan permitteringen påvirkes.</li>
+</ul>
+<h3>Hvorfor er permittering ofte bedre enn oppsigelse – for begge parter?</h3>
+<p>Permittering kan virke skummelt, men har faktisk en god side. For bedriften betyr det at de beholder erfarne folk gjennom en vanskelig periode, slik at de slipper å ansette og lære opp nye når det tar seg opp igjen. For deg betyr det at du har en jobb å vende tilbake til, og at du slipper å starte helt på nytt et annet sted.</p>
+<p>Eksempel: En produksjonsbedrift opplever et brått fall i bestillinger. I stedet for å si opp ti dyktige fagarbeidere – som de risikerer å miste for godt – velger de å permittere dem i noen uker. Når bestillingene tar seg opp igjen, kaller de alle tilbake. Både bedriften og de ansatte er tjent med at kompetansen ble holdt samlet.</p>
+<h3>Hel eller delvis permittering</h3>
+<p>Permittering kan være hel eller delvis:</p>
+<ul>
+<li><strong>Hel permittering:</strong> Du er helt ute av arbeid i perioden.</li>
+<li><strong>Delvis permittering:</strong> Du jobber redusert, for eksempel 50 prosent. Da får du lønn for den delen du jobber, og kan ha rett til dagpenger for den delen du er permittert fra.</li>
+</ul>
+<p>Eksempel: Mona jobber i en bedrift som permitterer alle ansatte til 60 prosent. Hun jobber dermed tre dager i uka og er permittert to dager. For de to dagene kan hun ha rett til dagpenger.</p>
+<h3>Hva må arbeidsgiver gjøre?</h3>
+<p>Selv om permittering ikke står i arbeidsmiljøloven, kan ikke arbeidsgiver gjøre det helt fritt. Det stilles krav:</p>
+<ul>
+<li>Det må være en <strong>saklig grunn</strong> (typisk midlertidig mangel på arbeid eller oppdrag).</li>
+<li>Det skal normalt <strong>drøftes med tillitsvalgte</strong> først i bedrifter med tariffavtale.</li>
+<li>Du skal få <strong>varsel</strong> på forhånd (vanligvis 14 dager – se artikkel 106).</li>
+<li>Permitteringen skal være <strong>midlertidig</strong> og ikke vare lenger enn nødvendig.</li>
+</ul>
+<h3>Vanlige misforståelser om permittering</h3>
+<p>Det er lett å blande sammen permittering med andre ting. Her er noen klargjøringer:</p>
+<ul>
+<li><strong>«Permittering betyr at jeg har mistet jobben.»</strong> Nei – du er fortsatt ansatt. Det er nettopp dette som skiller permittering fra oppsigelse.</li>
+<li><strong>«Jeg får ingenting under permittering.»</strong> Feil. Du får lønn i arbeidsgiverperioden, og deretter kan du få dagpenger fra NAV.</li>
+<li><strong>«Permittering er en straff.»</strong> Nei. Permittering handler om bedriftens behov, ikke om at du har gjort noe galt.</li>
+<li><strong>«Jeg kan ikke gjøre noe annet mens jeg er permittert.»</strong> Jo – du kan søke og ta annet arbeid, men det påvirker dagpengene og må føres på meldekortet.</li>
+</ul>
+<h3>Hva betyr det at permittering bygger på avtaler?</h3>
+<p>Siden permittering ikke står i arbeidsmiljøloven, er det viktig å vite hva som faktisk gjelder på din arbeidsplass. Har bedriften tariffavtale, gjelder ofte Hovedavtalens regler om drøfting, varsel og utvelgelse. Har bedriften ikke tariffavtale, bygger adgangen på ulovfestet rett, men de samme grunnprinsippene – saklig grunn, midlertidighet, varsel – står sterkt også der.</p>
+<p>Eksempel: Frida jobber i en liten bedrift uten tariffavtale. Selv om Hovedavtalen ikke gjelder direkte for henne, kan ikke arbeidsgiver permittere henne uten saklig, midlertidig grunn og rimelig varsel. Grunnprinsippene gjelder.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Permittering er en <strong>midlertidig pause</strong> i arbeidet – du beholder jobben.</li>
+<li>Det brukes når bedriften forbigående mangler arbeid eller oppdrag.</li>
+<li>Permittering er <strong>ikke regulert i arbeidsmiljøloven</strong>, men bygger på tariffavtale (Hovedavtalen), ulovfestet rett og permitteringslønnsloven.</li>
+<li>Arbeidsgiver betaler lønn en kort periode, deretter kan du få dagpenger fra NAV.</li>
+<li>Permittering krever saklig grunn, varsel og at situasjonen er forbigående.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må et aksjeselskap ha et styre? — Rettsregel</title>
+<meta name="description" content="Ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-et-aksjeselskap-ha-et-styre/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må et aksjeselskap ha et styre?">
+<meta property="og:description" content="Ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-et-aksjeselskap-ha-et-styre/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må et aksjeselskap ha et styre?">
+<meta name="twitter:description" content="Ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Må et aksjeselskap ha et styre?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja. Et aksjeselskap skal ha et styre – det er ikke valgfritt. Dette følger av aksjeloven § 6-1, som slår fast at "selskapet skal ha et styre". Det gjelder uansett hvor lite selskapet er. Selv om du er eneste eier og eneste ansatt i ditt lille enkeltmanns-AS, må selskapet ha et styre. Den gode nyheten er at styret kan bestå av bare deg.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja. Et aksjeselskap skal ha et styre – det er ikke valgfritt. Dette følger av aksjeloven § 6-1, som slår fast at "selskapet skal ha et styre". Det gjelder uansett hvor lite selskapet er. Selv om du er eneste eier og eneste ansatt i ditt lille enkeltmanns-AS, må selskapet ha et styre. Den gode nyheten er at styret kan bestå av bare deg.</p>
+<h3>Hvorfor krever loven et styre?</h3>
+<p>Et aksjeselskap er en egen "juridisk person" – det betyr at selskapet er noe annet enn deg som eier. Selskapet kan eie ting, ta opp gjeld og inngå avtaler i eget navn. Men et selskap kan ikke tenke eller handle selv; det trenger mennesker som tar avgjørelser på dets vegne og er ansvarlige for at alt går riktig for seg. Styret er dette organet. Det er styret som har det overordnede ansvaret for at selskapet drives forsvarlig, at regnskapet er i orden, og at selskapet ikke driver videre når det egentlig er konkurs. Derfor godtar ikke loven et AS uten styre.</p>
+<h3>Et lite eksempel</h3>
+<p>Maria starter "Maria Design AS", et enkeltpersonforetak i AS-form der hun lager grafisk design. Hun er eneeier, daglig leder og eneste ansatt. Likevel må hun ha et styre. Løsningen er enkel: Maria er selv selskapets styre, som styrets eneste medlem (og dermed også styreleder). Hun behøver verken styrekollegaer eller eksterne. Styret er altså ikke en stor forsamling i fine dresser – i de minste selskapene er det rett og slett deg.</p>
+<h3>Selskapets tre nivåer – en enkel modell</h3>
+<p>Det hjelper å se for seg et AS som en bygning i tre etasjer. Øverst sitter <strong>generalforsamlingen</strong> – eierne samlet. De bestemmer de aller største tingene: hvem som skal sitte i styret, om vedtektene skal endres, om det skal deles ut utbytte. I midten sitter <strong>styret</strong>, som leder selskapet mellom generalforsamlingene og har det overordnede ansvaret. Nederst sitter <strong>daglig leder</strong>, som driver selskapet fra dag til dag. Loven krever at midtetasjen – styret – alltid er på plass. Øverste etasje (eierne) finnes alltid, for et selskap må ha minst én eier. Nederste etasje (daglig leder) er valgfri for et lite AS. Denne modellen forklarer hvorfor styret er så sentralt: det er bindeleddet mellom dem som eier selskapet og dem som driver det.</p>
+<h3>Styre er ikke det samme som daglig leder</h3>
+<p>Mange grundere blander disse to rollene. La oss rydde:</p>
+<ul>
+<li><strong>Styret</strong> har det overordnede ansvaret: det forvalter selskapet og fører tilsyn (kontroll) med driften. Tenk på styret som "sjefen over sjefen".</li>
+<li><strong>Daglig leder</strong> (også kalt administrerende direktør) tar seg av den daglige driften: kjøper inn, ansetter, betaler regninger, følger opp kunder.</li>
+</ul>
+<p>I små AS er det helt vanlig at samme person er begge deler. Et lite AS er ikke pålagt å ha daglig leder i det hele tatt – men det skal alltid ha et styre. Styret er altså det ene organet du ikke kan velge bort.</p>
+<h3>Hva med generalforsamlingen?</h3>
+<p>Et tredje organ er generalforsamlingen, som er møtet der eierne (aksjonærene) bestemmer. Generalforsamlingen er selskapets øverste myndighet og velger blant annet styret. Men generalforsamling og styre er ikke det samme. Generalforsamlingen er eierne i rollen som eiere; styret er de som faktisk styrer mellom møtene. I et ett-person-AS er Maria både generalforsamling (som eier), styre (som styremedlem) og daglig leder (som ansatt) – tre hatter, én person.</p>
+<h3>Hva må styret faktisk gjøre i et lite AS?</h3>
+<p>Selv et minimalt styre har reelle plikter:</p>
+<ol>
+<li><strong>Avholde minst ett årlig styremøte</strong> og behandle årsregnskapet før det legges fram for generalforsamlingen.</li>
+<li><strong>Føre styreprotokoll</strong> – altså skrive ned hva som ble besluttet. Også et ettpersonsstyre skal protokollere sine vedtak.</li>
+<li><strong>Passe på selskapets økonomi</strong>, og særlig gripe inn hvis egenkapitalen blir for lav.</li>
+<li><strong>Sørge for forsvarlig organisering</strong> av virksomheten, regnskap og formuesforvaltning.</li>
+</ol>
+<p>Dette er ikke bare formaliteter. Hvis selskapet går konkurs og styret har sovet i timen, kan styremedlemmene i verste fall bli personlig erstatningsansvarlige.</p>
+<h3>Hva skjer hvis du ikke har et styre?</h3>
+<p>Et AS uten styre kan rett og slett ikke registreres lovlig i Foretaksregisteret. Styret og styremedlemmene må meldes inn. Faller styret bort – for eksempel fordi eneste styremedlem trekker seg og ingen ny velges – havner selskapet i en ulovlig tilstand som må rettes, og i ytterste konsekvens kan selskapet bli tvangsoppløst.</p>
+<h3>Vanlige misforståelser blant grundere</h3>
+<p>La oss rydde i noen myter:</p>
+<ul>
+<li><strong>"Jeg er bare én person, så jeg trenger ikke styre."</strong> Feil. Loven krever styre uansett, men det kan bestå av deg alene.</li>
+<li><strong>"Styre er noe bare store bedrifter har."</strong> Feil. Også det minste enkeltperson-AS skal ha styre. Forskjellen er at de store ofte har eksterne styremedlemmer med honorar, mens du i et lite AS gjerne er styret selv – uten honorar.</li>
+<li><strong>"Hvis jeg har en regnskapsfører, er styret unødvendig."</strong> Feil. En regnskapsfører fører tallene, men tar ikke det overordnede ansvaret for selskapet. Det gjør styret.</li>
+<li><strong>"Styret er bare en formalitet på papiret."</strong> Feil. Styret har reelle plikter og reelt ansvar, og kan i verste fall bli erstatningsansvarlig.</li>
+</ul>
+<h3>Et eksempel på hvorfor styret betyr noe</h3>
+<p>Tenk deg "Solgløtt Bygg AS", drevet av Geir alene som styre og daglig leder. Selskapet får økonomiske problemer, men Geir fortsetter å bestille materialer på kreditt i håp om at det skal snu. Det gjør det ikke, og leverandørene taper store beløp. Her er det Geir i rollen som styre som hadde plikt til å gripe inn, vurdere om selskapet burde stanset eller meldt oppbud, og handle ansvarlig overfor kreditorene. At han var "bare én person" fritar ham ikke fra styreansvaret. Dette viser at styret ikke er en tom tittel, men en reell ansvarsrolle – også når det er deg selv.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, alle aksjeselskaper må ha et styre – det står svart på hvitt i aksjeloven § 6-1. Det gjelder også det aller minste ett-person-AS, men da kan styret bestå av bare deg. Styret er selskapets overordnede ledelse og det organet du aldri kan velge bort. Daglig leder kan et lite AS klare seg uten, men styre må det alltid ha.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

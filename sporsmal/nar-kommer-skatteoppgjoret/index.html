@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når kommer skatteoppgjøret? — Rettsregel</title>
+<meta name="description" content="Kort sagt: Skatteoppgjøret kommer ikke til alle samtidig – det sendes ut løpende, normalt fra rundt juni og utover høsten.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-kommer-skatteoppgjoret/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når kommer skatteoppgjøret?">
+<meta property="og:description" content="Kort sagt: Skatteoppgjøret kommer ikke til alle samtidig – det sendes ut løpende, normalt fra rundt juni og utover høsten.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-kommer-skatteoppgjoret/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når kommer skatteoppgjøret?">
+<meta name="twitter:description" content="Kort sagt: Skatteoppgjøret kommer ikke til alle samtidig – det sendes ut løpende, normalt fra rundt juni og utover høsten.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Når kommer skatteoppgjøret?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kort sagt: Skatteoppgjøret kommer ikke til alle samtidig – det sendes ut løpende, normalt fra rundt juni og utover høsten. De fleste lønnstakere og pensjonister får det tidlig, mens næringsdrivende og mer kompliserte saker ofte kommer senere. Alle skal ha fått skatteoppgjøret innen 1. desember.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Kort sagt: Skatteoppgjøret kommer ikke til alle samtidig – det sendes ut løpende, normalt fra rundt juni og utover høsten. De fleste lønnstakere og pensjonister får det tidlig, mens næringsdrivende og mer kompliserte saker ofte kommer senere. Alle skal ha fått skatteoppgjøret innen 1. desember.</p>
+<h3>Oppgjøret kommer i puljer</h3>
+<p>Skatteetaten behandler millioner av skattemeldinger, så oppgjørene sendes ut i flere omganger gjennom året. Du får varsel når ditt er klart, og kan se det på skatteetaten.no.</p>
+<p>For inntektsåret 2024 begynte de første skatteoppgjørene å komme allerede tidlig på sommeren 2025, og deretter fortsatte de utover høsten. Den absolutte siste fristen for at alle skal ha fått oppgjøret, er 1. desember.</p>
+<p><strong>Eksempel – Amalie, 33 år:</strong> Amalie er vanlig lønnstaker uten kompliserte forhold. Hun leverte skattemeldingen tidlig og fikk skatteoppgjøret allerede i juni, med penger til gode på konto kort tid etter.</p>
+<h3>Hvem får oppgjøret tidlig?</h3>
+<p>Du har størst sjanse for tidlig oppgjør hvis:</p>
+<ul>
+<li>Du er lønnstaker eller pensjonist.</li>
+<li>Du har enkle, oversiktlige forhold.</li>
+<li>Du leverte tidlig, eller lot den forhåndsutfylte meldingen stå.</li>
+<li>Du ikke har gjort store endringer som krever manuell behandling.</li>
+</ul>
+<p><strong>Eksempel – Ingvild, 32 år:</strong> Ingvild er lønnstaker med fast jobb og ingen kompliserte forhold. Hun sjekket meldingen tidlig, så at alt stemte, og lot den stå. Hun var blant de første som fikk skatteoppgjøret, allerede tidlig på sommeren, og pengene til gode kom på konto kort tid etter.</p>
+<h3>Hvem må vente lenger?</h3>
+<p>Oppgjøret kan komme senere hvis:</p>
+<ul>
+<li>Du driver enkeltpersonforetak eller næringsvirksomhet.</li>
+<li>Du har levert endringer som må behandles manuelt.</li>
+<li>Du har kompliserte forhold, for eksempel utenlandsinntekt eller store transaksjoner.</li>
+<li>Skatteetaten trenger å kontrollere noe i meldingen din.</li>
+</ul>
+<p><strong>Eksempel – Kristoffer, gårdbruker:</strong> Kristoffer driver enkeltpersonforetak og har frist for levering senere enn lønnstakere. Skatteoppgjøret hans kom derfor ikke før utpå høsten. Det er helt normalt for næringsdrivende.</p>
+<h3>Hva betyr det at oppgjørene kommer i "puljer"?</h3>
+<p>En pulje er rett og slett en gruppe skatteoppgjør som sendes ut samtidig. Skatteetaten behandler millioner av meldinger, og kan ikke ferdigstille alle på én dag. Derfor sendes oppgjørene ut i flere omganger gjennom sommeren og høsten. Hvilken pulje du havner i, avhenger blant annet av når du leverte og hvor sammensatt saken din er. Det er ikke noe du kan be om å bli flyttet i.</p>
+<p><strong>Eksempel – Synne, 31 år:</strong> Synne fikk ikke oppgjøret i den første puljen, slik venninnen hennes gjorde. Hun ble litt urolig, men det var ingen grunn til bekymring – hennes melding hadde en liten endring som måtte behandles, og oppgjøret kom i en senere pulje noen uker etter. Alt var helt som det skulle.</p>
+<blockquote>
+<p><strong>Trygt å vite:</strong> At oppgjøret ditt kommer senere enn naboens betyr ikke at noe er galt. Puljene avhenger av når du leverte og hvor sammensatt saken din er. Tålmodighet lønner seg.</p>
+</blockquote>
+<h3>Hva om du leverte etter fristen?</h3>
+<p>Leverte du ikke innen 30. april, eller leverte du på papir, må du regne med å vente lenger. Da kommer oppgjøret tidligst i juni, og ofte senere. Det samme gjelder hvis du har gjort endringer som krever ekstra behandling.</p>
+<p><strong>Eksempel – Bjørnar, 38 år:</strong> Bjørnar leverte skattemeldingen på papir i stedet for elektronisk. Det førte til at oppgjøret hans kom senere enn for de fleste lønnstakere, fordi papirleveringer behandles i en egen, senere pulje. Neste år valgte han den elektroniske løsningen for å få oppgjøret raskere.</p>
+<h3>Får jeg beskjed når oppgjøret er klart?</h3>
+<p>Ja. Du får varsel – for eksempel på e-post eller SMS – når skatteoppgjøret ditt er tilgjengelig, forutsatt at kontaktopplysningene dine er oppdatert. Du kan også når som helst logge inn på skatteetaten.no og sjekke status selv. Du trenger altså ikke sitte og vente i uvisshet; du blir aktivt varslet så snart ditt oppgjør er ferdig.</p>
+<blockquote>
+<p><strong>Trygt å vite:</strong> Det lønner seg å sjekke at e-postadressen og mobilnummeret ditt er riktig registrert hos Skatteetaten. Da går du ikke glipp av varselet når oppgjøret kommer, og du oppdager raskt om du har penger til gode eller restskatt å forholde deg til.</p>
+</blockquote>
+<h3>Slik følger du med på oppgjøret</h3>
+<ol>
+<li>Sørg for at kontaktopplysningene dine er oppdatert på skatteetaten.no, så du får varsel.</li>
+<li>Logg inn på skatteetaten.no og sjekk status under "Skatteoppgjør".</li>
+<li>Sjekk at riktig kontonummer er registrert for utbetaling av penger til gode.</li>
+<li>Når oppgjøret er klart, går du gjennom tallene og sjekker at alt stemmer.</li>
+</ol>
+<p><strong>Eksempel – Fatima, 47 år:</strong> Fatima ventet på penger til gode, men hadde glemt å oppdatere kontonummeret sitt. Utbetalingen ble forsinket. Da hun la inn riktig konto, kom pengene kort tid etter. Et godt eksempel på hvorfor det lønner seg å sjekke kontonummeret.</p>
+<h3>Når kommer pengene?</h3>
+<p>Får du penger til gode, utbetales de normalt kort tid etter at skatteoppgjøret ditt er klart, forutsatt at du har registrert riktig kontonummer. Har du restskatt, får du betalingsinformasjon med forfallsdato – ofte fordelt på terminer hvis beløpet er stort.</p>
+<h3>Kan jeg fremskynde oppgjøret?</h3>
+<p>Du kan ikke styre nøyaktig når oppgjøret kommer, men du kan øke sjansen for et tidlig oppgjør ved å:</p>
+<ul>
+<li>Sjekke og levere skattemeldingen tidlig, gjerne så snart den er tilgjengelig.</li>
+<li>Bruke den elektroniske løsningen i stedet for papir.</li>
+<li>Unngå unødvendige endringer som krever manuell behandling.</li>
+<li>Sørge for at opplysningene dine er ryddige og fullstendige.</li>
+</ul>
+<p><strong>Eksempel – Mathias, 26 år:</strong> Mathias leverte skattemeldingen allerede i mars, helt elektronisk og uten store endringer. Han var blant dem som fikk oppgjøret tidligst, og pengene til gode kom på konto før sommerferien.</p>
+<h3>Hva om oppgjøret ikke har kommet innen 1. desember?</h3>
+<p>Det skal ikke skje – fristen er at alle får oppgjøret innen 1. desember. I de svært sjeldne tilfellene der noe henger igjen, for eksempel fordi en sak er under behandling, bør du ta kontakt med Skatteetaten for å høre hva som er status.</p>
+<blockquote>
+<p><strong>Trygt å vite:</strong> Det er helt vanlig at venner og familie får oppgjøret til ulik tid. Ikke bli urolig om du må vente litt lenger enn andre – det handler om puljer, ikke om at noe er galt med din sak.</p>
+</blockquote>
+<h3>Kort oppsummert</h3>
+<p>Skatteoppgjøret kommer løpende, normalt fra rundt juni og utover høsten, i flere puljer. Vanlige lønnstakere og pensjonister med enkle forhold får det ofte tidlig, mens næringsdrivende og mer sammensatte saker kommer senere. Alle skal ha fått oppgjøret innen 1. desember. Pass på at kontonummeret ditt er riktig, så pengene kommer raskt. Tidspunkter og puljer kan variere fra år til år, så følg med på skatteetaten.no for de gjeldende datoene.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg avspasere overtid? — Rettsregel</title>
+<meta name="description" content="Ja, du kan avspasere overtid — altså ta ut timene som fri i stedet for å få dem utbetalt — men bare timene.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-avspasere-overtid/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg avspasere overtid?">
+<meta property="og:description" content="Ja, du kan avspasere overtid — altså ta ut timene som fri i stedet for å få dem utbetalt — men bare timene.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-avspasere-overtid/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg avspasere overtid?">
+<meta name="twitter:description" content="Ja, du kan avspasere overtid — altså ta ut timene som fri i stedet for å få dem utbetalt — men bare timene.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg avspasere overtid?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, du kan avspasere overtid — altså ta ut timene som fri i stedet for å få dem utbetalt — men bare timene. Selve overtidstillegget (minst 40 prosent) skal alltid betales ut i penger. Og avspasering krever en avtale mellom deg og arbeidsgiver. Dette følger av arbeidsmiljøloven § 10-6 (paragrafen om overtid).</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven § 10-6</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/10-6/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 10-6</div>
+  <div class="related-card-title">Overtid og meirarbeid (når du må jobbe ekstra)</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, du kan avspasere overtid — altså ta ut timene som fri i stedet for å få dem utbetalt — men bare timene. Selve overtidstillegget (minst 40 prosent) skal alltid betales ut i penger. Og avspasering krever en avtale mellom deg og arbeidsgiver. Dette følger av arbeidsmiljøloven § 10-6 (paragrafen om overtid).</p>
+<h3>Slik henger det sammen</h3>
+<p>Overtid består av to deler:</p>
+<ol>
+<li><strong>Selve timene</strong> du jobbet utover vanlig arbeidstid.</li>
+<li><strong>Overtidstillegget</strong> — et lovbestemt påslag på minst 40 prosent av timelønna di.</li>
+</ol>
+<p>Når du avspaserer, bytter du timene mot fritid, time for time. Men tillegget kan du ikke avspasere — det skal alltid komme som penger på lønnsslippen.</p>
+<p>Eksempel: Hassan jobber 4 timer overtid en uke. Timelønna hans er 250 kroner.</p>
+<ul>
+<li><strong>Timene:</strong> 4 timer kan avspaseres (4 timer fri senere) — hvis han og arbeidsgiver avtaler det.</li>
+<li><strong>Tillegget:</strong> 40 prosent av 250 kr = 100 kr per time. For 4 timer blir det 400 kr, som skal utbetales i penger.</li>
+</ul>
+<p>Han får altså 4 timer fri PLUSS 400 kroner i tillegg. Tillegget forsvinner ikke selv om timene tas ut som fri.</p>
+<h3>Det må avtales — du kan ikke tvinges, og du kan ikke kreve</h3>
+<p>Avspasering av overtid forutsetter en avtale. Det betyr to ting:</p>
+<ul>
+<li><strong>Arbeidsgiver kan ikke ensidig bestemme</strong> at overtiden din skal avspaseres i stedet for å betales. Du må være med på det.</li>
+<li><strong>Du kan heller ikke kreve</strong> å få avspasere hvis arbeidsgiver vil betale ut. Det må være enighet.</li>
+</ul>
+<p>I praksis er det smart å avklare dette på forhånd, gjerne i arbeidsavtalen eller en egen rutine på arbeidsplassen, slik at dere slipper diskusjon i etterkant.</p>
+<h3>Hva med tariffavtaler?</h3>
+<p>Mange arbeidsplasser har tariffavtaler eller lokale avtaler som regulerer avspasering nærmere. Noen steder er det helt vanlig at overtid avspaseres, andre steder at den betales. Tariffavtaler kan også gi høyere overtidstillegg enn lovens 40 prosent — for eksempel 50 prosent på kveld og 100 prosent på natt, søndag og helligdager. Sjekk derfor:</p>
+<ul>
+<li>Hva sier arbeidsavtalen din om overtid og avspasering?</li>
+<li>Hva sier en eventuell tariffavtale?</li>
+<li>Finnes det en lokal rutine på arbeidsplassen?</li>
+</ul>
+<h3>Et vanlig misforståelse: «plusstimer» er ikke alltid overtid</h3>
+<p>Mange forveksler overtid med fleksitid eller plusstimer. Det er en viktig forskjell:</p>
+<ul>
+<li><strong>Fleksitid / plusstimer:</strong> Hvis du har en fleksitidsordning og selv velger å jobbe litt ekstra en dag for å gå tidligere en annen dag, er dette vanligvis ikke overtid. Da avspaserer du plusstimer time mot time, helt uten tillegg.</li>
+<li><strong>Overtid:</strong> Dette er arbeid som arbeidsgiver pålegger ut over alminnelig arbeidstid fordi det er et særlig og tidsavgrenset behov. Det gir rett til tillegg.</li>
+</ul>
+<p>Eksempel: Nora har fleksitid og jobber en halvtime ekstra hver dag i en uke for å ta fri en fredag. Det er plusstimer — ingen tillegg. Men da sjefen ber henne bli til klokka 21 en kveld for å bli ferdig med et hastetilbud, er det overtid — med tillegg.</p>
+<h3>Når kan du jobbe overtid i det hele tatt?</h3>
+<p>Overtid er ikke noe arbeidsgiver kan pålegge fritt. Det forutsetter et «særlig og tidsavgrenset behov» (§ 10-6). Det finnes også grenser for hvor mye overtid som er lov, både per uke, per fire uker og per år. Og du har rett til å bli fritatt fra overtid hvis du har helsemessige eller vektige sosiale grunner — for eksempel omsorg for små barn.</p>
+<h3>Et regneeksempel fra A til Å</h3>
+<p>La oss ta hele regnestykket for å gjøre det helt konkret. Lea har en timelønn på 300 kroner. Hun jobber 5 timer overtid en travel uke, og hun og arbeidsgiver har avtalt avspasering.</p>
+<ul>
+<li><strong>Timene:</strong> 5 overtidstimer kan avspaseres time mot time. Hun får altså 5 timer fri til gode, som hun kan ta ut senere etter avtale.</li>
+<li><strong>Tillegget:</strong> Overtidstillegget er minst 40 prosent av 300 kr = 120 kr per time. For 5 timer blir det 600 kr.</li>
+<li><strong>Resultat:</strong> Lea får 5 timer fri PLUSS 600 kroner utbetalt i tillegg.</li>
+</ul>
+<p>Hadde hun i stedet valgt full utbetaling (uten avspasering), ville hun fått 5 × 300 kr = 1500 kr for timene, pluss 600 kr i tillegg = 2100 kr. Forskjellen er altså om selve timene tas ut som penger eller fri — tillegget kommer uansett som penger.</p>
+<h3>Husk å holde oversikt over avspaseringssaldoen</h3>
+<p>Når du avspaserer, bygger du opp en saldo med timer til gode. Det er lurt å følge med på denne saldoen selv, og ikke bare stole på systemet:</p>
+<ul>
+<li>Får du faktisk tatt ut timene, eller hoper de seg opp?</li>
+<li>Hva skjer med oppsparte timer hvis du slutter i jobben? (Som hovedregel skal de da utbetales.)</li>
+<li>Er det en grense for hvor mange timer du kan ha til gode?</li>
+</ul>
+<p>Eksempel: Per har spart opp 40 avspaseringstimer over et halvt år, men får aldri ta dem ut fordi det «aldri passer». Det er et tegn på at ordningen ikke fungerer. Da bør han avtale konkrete avspaseringsdager, eller be om å få timene utbetalt.</p>
+<h3>Når passer avspasering, og når passer utbetaling?</h3>
+<p>Hva som lønner seg, avhenger av situasjonen din:</p>
+<ul>
+<li><strong>Avspasering passer</strong> hvis du verdsetter fritid høyt — for eksempel for å få en lengre helg eller ta igjen tid med familien etter en travel periode.</li>
+<li><strong>Utbetaling passer</strong> hvis du trenger pengene, eller hvis du erfaringsmessig sliter med å få tatt ut avspaseringen i praksis.</li>
+</ul>
+<p>Det fine er at tillegget kommer uansett. Valget mellom fri og penger gjelder bare selve timene, og det skal være en avtale dere blir enige om — ikke noe arbeidsgiver presser igjennom.</p>
+<h3>Sjekklisten din</h3>
+<ol>
+<li><strong>Avklar på forhånd</strong> om overtid hos dere normalt avspaseres eller betales.</li>
+<li><strong>Husk tillegget.</strong> Uansett om du avspaserer timene, skal tillegget på minst 40 prosent betales i penger.</li>
+<li><strong>Skill plusstimer fra overtid.</strong> Fleksitid uten tillegg er ikke det samme som pålagt overtid.</li>
+<li><strong>Før timene dine selv.</strong> Noter når du jobbet overtid, hvor lenge, og hvem som ba deg. Det er gull verdt hvis det blir uenighet.</li>
+<li><strong>Følg med på saldoen.</strong> Får du faktisk tatt ut avspaseringen, eller hoper timene seg opp?</li>
+<li><strong>Sjekk grensene</strong> og din rett til fritak hvis overtiden blir mye.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du kan avspasere selve overtidstimene time mot time — men det krever avtale med arbeidsgiver.</li>
+<li>Overtidstillegget (minst 40 prosent) skal alltid betales i penger, aldri avspaseres.</li>
+<li>Arbeidsgiver kan ikke tvinge deg til å avspasere, og du kan ikke kreve det ensidig.</li>
+<li>Fleksitid og plusstimer er ikke overtid og gir ikke tillegg.</li>
+<li>Før egne timelister, og sjekk arbeidsavtalen og tariffavtalen.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/arbeidsgiver-vil-ikke-utbetale-lonn/">Arbeidsgiveren vil ikke betale lønn — hva gjør du?</a><a class="sp-relchip" href="../../sporsmal/er-pausen-betalt/">Er pausen betalt?</a><a class="sp-relchip" href="../../sporsmal/far-jeg-betalt-for-palagt-hjemmevakt/">Får jeg betalt for pålagt hjemmevakt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

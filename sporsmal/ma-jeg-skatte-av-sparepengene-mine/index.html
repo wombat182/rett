@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Må jeg skatte av sparepengene mine? — Rettsregel</title>
+<meta name="description" content="Nei, selve sparepengene skatter du ikke av – du har jo allerede betalt skatt på pengene da du tjente dem.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-sparepengene-mine/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Må jeg skatte av sparepengene mine?">
+<meta property="og:description" content="Nei, selve sparepengene skatter du ikke av – du har jo allerede betalt skatt på pengene da du tjente dem.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/ma-jeg-skatte-av-sparepengene-mine/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Må jeg skatte av sparepengene mine?">
+<meta name="twitter:description" content="Nei, selve sparepengene skatter du ikke av – du har jo allerede betalt skatt på pengene da du tjente dem.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Må jeg skatte av sparepengene mine?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei, selve sparepengene skatter du ikke av – du har jo allerede betalt skatt på pengene da du tjente dem. Men to ting kan utløse skatt: rentene du får på pengene er skattepliktig inntekt, og beløpet du har stående regnes med i formuen din, som kan gi formuesskatt hvis du har mye. Selve det å ha penger på konto er ikke skattepliktig i seg selv.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Nei, selve sparepengene skatter du ikke av – du har jo allerede betalt skatt på pengene da du tjente dem. Men to ting kan utløse skatt: <strong>rentene</strong> du får på pengene er skattepliktig inntekt, og <strong>beløpet</strong> du har stående regnes med i formuen din, som kan gi formuesskatt hvis du har mye. Selve det å ha penger på konto er ikke skattepliktig i seg selv.</p>
+<h3>Det er rentene, ikke pengene, som skattlegges</h3>
+<p>Mange blir bekymret for at de må "skatte av sparekontoen" hvert år. Det stemmer ikke. Det du eventuelt skatter av, er <strong>renteinntekten</strong> – altså det banken betaler deg for å ha pengene der.</p>
+<p>Renter regnes som <em>kapitalinntekt</em> og skattlegges med 22 prosent (2026). En fin detalj: på renteinntekter betaler du <strong>ikke</strong> trygdeavgift, kun de 22 prosentene. Det gjør at renteinntekt beskattes lempeligere enn lønn av samme størrelse.</p>
+<h3>Regneeksempel: Ingrid med 200 000 på sparekonto</h3>
+<p>Ingrid har 200 000 kroner på en høyrentekonto med 4 prosent rente.</p>
+<ul>
+<li>Renteinntekt på et år: 4 prosent av 200 000 = <strong>8 000 kroner</strong>.</li>
+<li>Skatt på rentene: 22 prosent av 8 000 = <strong>1 760 kroner</strong>.</li>
+</ul>
+<p>Ingrid skatter altså av de 8 000 kronene i renter, ikke av de 200 000 kronene i seg selv. Banken rapporterer rentene automatisk til Skatteetaten, og beløpet dukker opp i skattemeldingen.</p>
+<h3>Regneeksempel: liten konto, lite skatt</h3>
+<p>Markus har 30 000 kroner på en konto med 3 prosent rente. Renteinntekten blir 900 kroner i året, og skatten blir 22 prosent av dette = 198 kroner. Som du ser blir skatten på små sparebeløp ganske beskjeden. Det er ingen grunn til å la være å spare av frykt for skatt – skatten er liten i forhold til verdien av å ha en buffer.</p>
+<h3>Formuesskatt: når beløpet kan gi skatt</h3>
+<p>Sparepengene dine teller som <em>formue</em>. De fleste betaler ingen formuesskatt, fordi du har et fribeløp (bunnfradrag) før formuesskatten begynner. Har du samlet netto formue under fribeløpet, betaler du ingenting i formuesskatt.</p>
+<p>Formuesskatten regnes av det som ligger <strong>over</strong> fribeløpet, og består av en kommunal og en statlig del. Fribeløp og satser justeres årlig, så de eksakte tallene må du sjekke for det aktuelle året på skatteetaten.no. Poenget å huske: det er nettoformuen din (alt du eier minus gjeld) som teller, og bare den delen som overstiger fribeløpet, blir skattlagt.</p>
+<h3>Regneeksempel: Lars og fribeløpet</h3>
+<p>Lars har 300 000 kroner i banken og ingen annen formue av betydning, men har 1,5 millioner i boliglån. Gjelden trekkes fra formuen. Netto formue blir dermed negativ, og Lars betaler <strong>ingen formuesskatt</strong>. For mange vanlige husholdninger med boliglån er det nettopp slik: gjelden gjør at sparepengene ikke utløser formuesskatt.</p>
+<h3>Hva med aksjefond og aksjesparekonto?</h3>
+<p>Det er forskjell på hvor du sparer:</p>
+<ul>
+<li><strong>Vanlig sparekonto:</strong> Renter skattlegges årlig (22 prosent). Beløpet inngår i formuen til full verdi.</li>
+<li><strong>Aksjefond / aksjesparekonto (ASK):</strong> Du skatter først når du tar ut gevinst (på ASK), og aksjegevinster har en egen, litt høyere effektiv sats enn vanlige renter. Verdien teller også med i formuen, men aksjer og fond verdsettes med en rabatt i formuesskatten.</li>
+</ul>
+<p>Det viktige skillet: på sparekonto er det renten som beskattes løpende; i aksjefond utenfor ASK beskattes gevinsten når du selger. ASK gir deg mulighet til å bytte fond uten å utløse skatt underveis.</p>
+<h3>Hva med kontanter, krypto og utenlandske kontoer?</h3>
+<p>Det er ikke bare norsk bankkonto som teller. Har du penger på konto i utlandet, kryptovaluta eller kontanter av betydning, skal også dette med i formuen, og eventuelle gevinster eller renter er skattepliktige. Disse rapporteres ikke alltid automatisk, så her må du selv passe på å føre dem opp i skattemeldingen.</p>
+<h3>Praktiske råd</h3>
+<ul>
+<li><strong>Kontroller skattemeldingen:</strong> Renter og bankinnskudd fylles vanligvis inn automatisk. Sjekk at tallene stemmer med årsoppgaven fra banken.</li>
+<li><strong>Husk barnas konto:</strong> Har barnet ditt egen konto, skattlegges renter og formue normalt hos barnet, men dette kan slå inn på familiens samlede skatt i noen tilfeller – sjekk reglene hvis beløpene er store.</li>
+<li><strong>Ikke "skjul" renter:</strong> Selv små renteinntekter er skattepliktige. Banken rapporterer uansett, så det enkleste er å la systemet gjøre jobben og kontrollere etterpå.</li>
+<li><strong>Før opp det som ikke kommer automatisk:</strong> Utenlandske kontoer og krypto må du selv legge inn.</li>
+</ul>
+<h3>Regneeksempel: sparing over tid og skatt på renter</h3>
+<p>Tenk deg at Hilde sparer 2 000 kroner i måneden på en sparekonto med 3,5 prosent rente. Etter noen år har hun rundt 150 000 kroner stående. Renteinntekten et slikt år blir cirka 5 250 kroner, og skatten 22 prosent av dette = 1 155 kroner. Selve de 150 000 kronene skatter hun ikke av – de har hun allerede betalt skatt på da hun tjente dem. Det er bare avkastningen, altså rentene, som beskattes. Skatten "spiser" altså bare en liten bit av rentene, og resten av avkastningen får hun beholde.</p>
+<h3>Vanlige spørsmål om skatt og sparing</h3>
+<ul>
+<li><strong>Må jeg betale skatt selv om jeg ikke tar pengene ut?</strong> Ja, renter beskattes det året de godskrives kontoen, uavhengig av om du tar dem ut. Banken rapporterer dette automatisk.</li>
+<li><strong>Hva med en sparekonto jeg "glemmer"?</strong> Også her påløper rente som beskattes. Du trenger ikke gjøre noe aktivt – det håndteres via skattemeldingen.</li>
+<li><strong>Teller penger jeg har lånt ut til familie?</strong> Ja, et utlån er en fordring som teller som formue, og eventuelle renter du mottar er skattepliktige.</li>
+</ul>
+<h3>Slik unngår du overraskelser</h3>
+<p>Det enkleste er å la systemet jobbe: bank og fondsforvalter rapporterer det meste automatisk. Din jobb er å kontrollere at tallene i skattemeldingen stemmer med årsoppgavene dine, og å føre opp det som ikke kommer automatisk (utenlandske konti, krypto, private utlån). Da slipper du både restskatt og ubehagelige overraskelser.</p>
+<p>Satser og fribeløp endres hvert år. Tallene her gjelder 2026 – verifiser alltid for ditt år på <strong>skatteetaten.no</strong>.</p>
+<h3>Kort oppsummert</h3>
+<p>Selve sparepengene skatter du ikke av, men rentene er skattepliktig kapitalinntekt på 22 prosent (uten trygdeavgift), og beløpet inngår i formuen din. De fleste betaler ingen formuesskatt fordi nettoformuen ligger under fribeløpet, og boliglån trekkes fra. Renter og innskudd rapporteres automatisk, mens utenlandske kontoer og krypto må du føre selv. Kontroller skattemeldingen, og sjekk årets fribeløp på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

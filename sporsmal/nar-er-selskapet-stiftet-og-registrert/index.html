@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når er selskapet stiftet og registrert? — Rettsregel</title>
+<meta name="description" content="Det er lett å tro at «stiftet» og «registrert» er det samme.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-er-selskapet-stiftet-og-registrert/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når er selskapet stiftet og registrert?">
+<meta property="og:description" content="Det er lett å tro at «stiftet» og «registrert» er det samme.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-er-selskapet-stiftet-og-registrert/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når er selskapet stiftet og registrert?">
+<meta name="twitter:description" content="Det er lett å tro at «stiftet» og «registrert» er det samme.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title">Når er selskapet stiftet og registrert?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det er lett å tro at «stiftet» og «registrert» er det samme. Det er det ikke – og forskjellen har stor praktisk betydning. Kort fortalt: Selskapet er stiftet i det øyeblikket alle stifterne har skrevet under stiftelsesdokumentet. Men det blir et selvstendig rettssubjekt først når det er registrert i Foretaksregisteret. Du har altså to milepæler, ikke én.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Det er lett å tro at «stiftet» og «registrert» er det samme. Det er det ikke – og forskjellen har stor praktisk betydning. Kort fortalt: Selskapet er <strong>stiftet</strong> i det øyeblikket alle stifterne har skrevet under stiftelsesdokumentet. Men det blir et selvstendig <strong>rettssubjekt</strong> først når det er <strong>registrert</strong> i Foretaksregisteret. Du har altså to milepæler, ikke én.</p>
+<h3>Milepæl 1: Stiftelsen – underskriften</h3>
+<p>Et aksjeselskap blir til når stifterne setter opp og signerer et <strong>stiftelsesdokument</strong> (aksjeloven kapittel 2). Dette dokumentet inneholder blant annet vedtektene, hvem som tegner aksjer, hvor mye aksjekapital som skytes inn, og hvem som skal sitte i styret. I det øyeblikket den siste stifteren har skrevet under, er selskapet <strong>stiftet</strong>.</p>
+<p>Men – og dette er viktig – selv om selskapet nå «finnes» på papiret, er det ennå ikke et eget rettssubjekt. Det betyr at det foreløpig ikke fullt ut kan stå ansvarlig for egne avtaler på samme måte som et ferdig registrert AS.</p>
+<h3>Et fagord forklart: «eget rettssubjekt»</h3>
+<p>Et rettssubjekt er noe som kan ha rettigheter og plikter i lovens øyne – eie ting, inngå avtaler, skylde penger, saksøke og bli saksøkt. Et registrert AS er et eget rettssubjekt, atskilt fra deg som eier. Det er nettopp derfor du har <strong>begrenset ansvar</strong>: i utgangspunktet risikerer du bare aksjekapitalen du skjøt inn, ikke huset og bilen din. Denne beskyttelsen blir for alvor virksom når selskapet er registrert. Tenk på registreringen som det som «slår på» skillet mellom deg og selskapet.</p>
+<h3>Milepæl 2: Registreringen – Foretaksregisteret</h3>
+<p>For at selskapet skal bli et fullverdig, eget rettssubjekt, må det meldes til og registreres i <strong>Foretaksregisteret</strong> (i Brønnøysundregistrene). Du sender inn en samordnet registermelding via Altinn, sammen med stiftelsesdokumentet og bekreftelsen på at aksjekapitalen er innbetalt.</p>
+<p>Først når registreringen er på plass, er selskapet ferdig «født». Da får det et organisasjonsnummer – selskapets «personnummer».</p>
+<h3>Den viktige fristen: 3 måneder</h3>
+<p>Du kan ikke vente i det uendelige. Meldingen til Foretaksregisteret må sendes inn <strong>innen tre måneder</strong> etter at stiftelsesdokumentet er undertegnet (aksjeloven kapittel 2). Oversitter du fristen, faller stiftelsen bort – da må du i praksis begynne på nytt, og innbetalt aksjekapital skal tilbakeføres. Dette er en av de vanligste tabbene ferske gründere gjør: de stifter selskapet, blir opptatt med andre ting, og glemmer å melde inn i tide.</p>
+<h3>Eksempel: Tidslinjen til «Bø Snekkeri AS»</h3>
+<ul>
+<li><strong>3. mars:</strong> Anders og Kari signerer stiftelsesdokumentet. Selskapet er nå <em>stiftet</em>.</li>
+<li><strong>4. mars:</strong> De setter inn 30 000 kroner på selskapets konto, og banken bekrefter.</li>
+<li><strong>10. mars:</strong> De sender samordnet registermelding via Altinn og betaler gebyret.</li>
+<li><strong>24. mars:</strong> Foretaksregisteret godkjenner. Selskapet får organisasjonsnummer og er nå <em>registrert</em> – et eget rettssubjekt.</li>
+</ul>
+<p>Mellom 3. og 24. mars <em>fantes</em> selskapet (det var stiftet), men det var ikke ferdig registrert. Hadde de glemt å sende meldingen før 3. juni (tre måneder etter signering), ville hele stiftelsen falt bort, og de måtte begynt på nytt.</p>
+<h3>Hva betyr mellomperioden i praksis?</h3>
+<p>I perioden mellom stiftelse og registrering bør du være forsiktig med å inngå store avtaler i selskapets navn. Inngår du forpliktelser på vegne av et selskap som ennå ikke er registrert, kan du som person bli stående personlig ansvarlig hvis noe skjærer seg. Mange velger derfor å vente med leiekontrakter, store innkjøp og ansettelser til organisasjonsnummeret er på plass.</p>
+<h4>Eksempel på en feil å unngå</h4>
+<p>Tenk deg at Anders i mellomperioden signerer en dyr leiekontrakt for et verksted i selskapets navn, før registreringen er klar. Skjærer det seg, kan han risikere å bli personlig ansvarlig for leien. Hadde han ventet noen uker til organisasjonsnummeret var på plass, ville selskapet – ikke han selv – stått som ansvarlig.</p>
+<h3>Hva trenger du for å bli registrert?</h3>
+<ul>
+<li>Signert stiftelsesdokument med vedtekter</li>
+<li>Bekreftelse på innbetalt aksjekapital (bank/revisor/regnskapsfører/advokat ved penger; revisor ved ting)</li>
+<li>Opplysninger om styre og eventuell daglig leder</li>
+<li>Samordnet registermelding sendt via Altinn</li>
+<li>Betalt registreringsgebyr: 6 825 kroner ved digital registrering for AS/ASA (2026)</li>
+</ul>
+<h3>Saksbehandlingstid</h3>
+<p>Etter at du har sendt inn, tar det normalt litt tid før Foretaksregisteret behandler meldingen. Hvor lang tid varierer gjennom året – sjekk gjeldende saksbehandlingstid på brreg.no. Send derfor inn i god tid, særlig hvis du har en konkret oppstartsdato du sikter mot.</p>
+<h3>Kan jeg drive «litt» før registreringen er ferdig?</h3>
+<p>Dette er et vanlig spørsmål. Strengt tatt bør du vente med å inngå forpliktende avtaler til organisasjonsnummeret er på plass, av grunnene vi har vært inne på. Men noe forberedende arbeid kan du selvsagt gjøre – du kan planlegge, lage budsjetter, snakke med mulige kunder og forberede nettsiden. Det du bør være varsom med, er å <em>forplikte selskapet</em> økonomisk før det er et eget rettssubjekt. Et godt prinsipp: jo større og mer bindende noe er, jo mer bør du vente til registreringen er i orden. Småting kan forberedes; store kontrakter bør vente.</p>
+<h3>Et fagord til: «stiftelsesdokument»</h3>
+<p>Stiftelsesdokumentet er det aller første og viktigste papiret i selskapets liv. Det er her stifterne formelt erklærer at de oppretter selskapet, fastsetter vedtektene, fordeler aksjene og velger styre. Tenk på det som selskapets «fødselsattest». Uten et gyldig stiftelsesdokument finnes ikke selskapet i det hele tatt – verken stiftet eller registrert. Derfor er det viktig at alt står riktig her fra start, for det er dette dokumentet Foretaksregisteret bygger registreringen på.</p>
+<h3>Hva med selskap som «aldri» blir registrert?</h3>
+<p>Noen stifter et selskap, men ombestemmer seg før de melder det inn. Da skjer det rett og slett ingenting i Foretaksregisteret, og etter tre måneder faller stiftelsen bort av seg selv. Den innbetalte aksjekapitalen skal da betales tilbake til stifterne. Det er altså ikke noe farlig i seg selv å la et ferskt, ikke-registrert selskap «dø» – men du må sørge for å tilbakeføre kapitalen ordentlig og ikke bruke et selskap som aldri ble et eget rettssubjekt til å inngå avtaler.</p>
+<h3>Sjekkliste</h3>
+<ol>
+<li>Skriv og signer stiftelsesdokumentet – noter datoen, det er starten på 3-månedersfristen.</li>
+<li>Betal inn aksjekapitalen og få den bekreftet.</li>
+<li>Fyll ut samordnet registermelding i Altinn.</li>
+<li>Send inn i god tid – ikke vent til siste uke.</li>
+<li>Vent på organisasjonsnummeret før du inngår tunge forpliktelser.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Selskapet er <strong>stiftet</strong> når stiftelsesdokumentet signeres, men blir et eget rettssubjekt – med fullt begrenset ansvar – først når det er <strong>registrert</strong> i Foretaksregisteret. Fristen for å melde inn er tre måneder etter signering; bommer du, faller stiftelsen bort. Tenk på det som to fødselsdatoer: én på papiret, og én i registeret. Begge teller – men det er registreringen som gir deg organisasjonsnummer og full beskyttelse.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

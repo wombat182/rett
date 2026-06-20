@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan styret ta alle beslutninger i selskapet? — Rettsregel</title>
+<meta name="description" content="Nei.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-styret-ta-alle-beslutninger-i-selskapet/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan styret ta alle beslutninger i selskapet?">
+<meta property="og:description" content="Nei.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-styret-ta-alle-beslutninger-i-selskapet/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan styret ta alle beslutninger i selskapet?">
+<meta name="twitter:description" content="Nei.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Kan styret ta alle beslutninger i selskapet?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei. Styret har mye makt, men ikke all makt. Styret leder selskapet, men kan ikke avgjøre saker som loven eller vedtektene legger til generalforsamlingen – altså eiermøtet. Noen beslutninger tilhører eierne, ikke styret.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Nei. Styret har mye makt, men ikke all makt. Styret leder selskapet, men kan ikke avgjøre saker som loven eller vedtektene legger til generalforsamlingen – altså eiermøtet. Noen beslutninger tilhører eierne, ikke styret.</p>
+<h3>To beslutningsorganer, hver sin rolle</h3>
+<p>Et AS har to «sjefsnivåer» med hver sin tydelige rolle:</p>
+<ul>
+<li><strong>Generalforsamlingen</strong> er eiernes møte. Det er selskapets øverste organ og bestemmer i de største, mest grunnleggende sakene.</li>
+<li><strong>Styret</strong> er ledelsen. Det driver og leder selskapet, og tar de aller fleste løpende beslutningene innenfor rammene eierne har satt.</li>
+</ul>
+<p>Styret er underordnet generalforsamlingen. Det betyr at eierne har det siste ordet i de viktigste spørsmålene, mens styret tar seg av forvaltningen i det daglige. Denne arbeidsdelingen er en bærebjelke i hele aksjeloven.</p>
+<h3>Hva styret IKKE kan bestemme alene</h3>
+<p>Det finnes en rekke saker styret ikke kan avgjøre på egen hånd – de hører under generalforsamlingen:</p>
+<ul>
+<li><strong>Utdeling av utbytte</strong> – styret kan foreslå, men eierne vedtar.</li>
+<li><strong>Endring av vedtektene</strong> – selskapets interne «grunnlov».</li>
+<li><strong>Valg av styret</strong> – eierne velger styret, ikke omvendt.</li>
+<li><strong>Godkjenning av årsregnskapet.</strong></li>
+<li><strong>Kapitalendringer</strong> – som å utstede nye aksjer (kapitalforhøyelse) eller sette ned aksjekapitalen.</li>
+<li><strong>Fusjon, fisjon og oppløsning</strong> av selskapet.</li>
+</ul>
+<h3>Et eksempel: «Solstrøm AS» vil dele ut overskudd</h3>
+<p>Solstrøm AS har gått strålende, og styret – Eva, Kristian og Nora – vil dele ut 300 000 kroner i utbytte til eierne. Kan styret bare bestemme dette på et styremøte? Nei. Styret kan <strong>foreslå</strong> et utbytte, men det er <strong>generalforsamlingen</strong> (eierne) som må vedta det. Riktig fremgangsmåte er slik:</p>
+<ol>
+<li>Styret regner på hva selskapet forsvarlig kan dele ut uten å svekke driften.</li>
+<li>Styret legger frem et konkret forslag til utbytte.</li>
+<li>Generalforsamlingen behandler forslaget og vedtar det – eventuelt justerer det ned.</li>
+</ol>
+<p>Et viktig poeng: Eierne kan ikke vedta et høyere utbytte enn det styret har foreslått, men de kan vedta et lavere. Slik passer loven på at selskapet ikke tappes for mye penger, og at styrets ansvar for forsvarlig drift respekteres.</p>
+<h3>Hva styret faktisk har ansvar for</h3>
+<p>Innenfor sitt eget område er styret derimot mektig. Styret har ansvar for:</p>
+<ul>
+<li><strong>Forvaltningen av selskapet</strong> – den overordnede ledelsen og strategien.</li>
+<li><strong>Å sette i gang nødvendige planer, budsjetter og retningslinjer.</strong></li>
+<li><strong>Tilsyn med daglig leder</strong> og den daglige driften.</li>
+<li><strong>Å passe på at selskapet har forsvarlig egenkapital og likviditet</strong> – og å handle raskt hvis det skranter.</li>
+<li><strong>Å påse at regnskap og formuesforvaltning er under betryggende kontroll.</strong></li>
+</ul>
+<p>Det er altså svært mye styret bestemmer helt suverent, uten å spørre eierne. Men de store, grunnleggende eierbeslutningene må forbi generalforsamlingen.</p>
+<h3>Et eksempel på en gråsone: en svært stor avtale</h3>
+<p>Noen ganger er det ikke åpenbart hvor grensen går. Tenk deg «Logg AS», der styret vil inngå en avtale som binder selskapet i ti år og utgjør halvparten av all omsetning. Formelt sett er dette en driftsavtale, og driftsavtaler hører til styret. Men når en sak er så stor og inngripende at den i praksis endrer hele selskapets karakter, bør styret være varsomt og minst orientere eierne grundig – kanskje også løfte saken til generalforsamlingen. Et klokt styre spør seg: «Er dette så stort at eierne bør få si sitt?» Det er ofte bedre å involvere eierne en gang for mye enn en gang for lite i virkelig store veivalg.</p>
+<h3>Hva hvis styret går utover sin myndighet?</h3>
+<p>Sett at styret vedtar noe som egentlig tilhører generalforsamlingen – for eksempel deler ut utbytte uten eiernes vedtak. Da er beslutningen i utgangspunktet ikke gyldig, fordi feil organ har bestemt. Hvis selskapet eller eierne lider tap som følge av at styret gikk utover sin myndighet, kan styremedlemmene risikere ansvar. Derfor er det viktig å kjenne grensen: styret skal lede og forvalte, men ikke overta eiernes rolle i de grunnleggende sakene.</p>
+<h3>Daglig leder, styret og generalforsamlingen – tre nivåer</h3>
+<p>Det kan hjelpe å se de tre nivåene som en trapp. Nederst står <strong>daglig leder</strong>, som tar seg av den løpende driften. Over står <strong>styret</strong>, som leder selskapet og fører tilsyn med daglig leder. Øverst står <strong>generalforsamlingen</strong>, eierne, som bestemmer i de største sakene og velger styret. Hvert nivå har sitt ansvarsområde. Daglig leder rapporterer til styret, og styret svarer overfor generalforsamlingen. Forstår du denne trappa, forstår du også hvorfor styret ikke kan ta «alle» beslutninger – det er rett og slett ikke styrets plass i systemet.</p>
+<h3>Kan eierne instruere styret?</h3>
+<p>Et naturlig spørsmål er om eierne, som står over styret, kan gi styret direkte ordrer i enkeltsaker. Generalforsamlingen er det øverste organet og kan i utgangspunktet instruere styret og til og med overprøve styrets beslutninger. Men i praksis bør eierne være forsiktige med å detaljstyre, for styret har et selvstendig ansvar for at selskapet drives forsvarlig – et ansvar de ikke kan «instruere» seg bort fra. Et styre som blir bedt om å gjøre noe ulovlig eller klart uforsvarlig, skal ikke bare adlyde. Den vanlige arbeidsdelingen er derfor at eierne setter de store rammene og velger styret, mens styret leder selskapet innenfor disse rammene og står ansvarlig for det.</p>
+<h3>I et enmanns-AS er det enklere – men ikke borte</h3>
+<p>Hvis du eier alt og sitter alene i styret, er du både styret og generalforsamlingen i én og samme person. Da kan du selvsagt vedta utbytte selv – men du må fortsatt gjøre det i riktig «kappe». Du fatter beslutningen som generalforsamling og fører den i en generalforsamlingsprotokoll, ikke bare i styreprotokollen. Formen betyr noe, også når det er samme person som bestemmer. Dette er ikke pirk: det skiller tydelig mellom din eierbeslutning og din styrebeslutning, og gjør at regnskap og dokumentasjon henger sammen.</p>
+<h3>Kort oppsummert</h3>
+<p>Styret tar de aller fleste beslutningene i selskapet og leder den daglige driften, men det kan ikke ta alle. Saker som loven eller vedtektene legger til generalforsamlingen – som utbytte, vedtektsendringer, valg av styre, godkjenning av årsregnskap, kapitalendringer, fusjon, fisjon og oppløsning – tilhører eierne. Styret kan foreslå, men eierne vedtar. Husk at eierne ikke kan vedta høyere utbytte enn styret foreslår. Og selv i et enmanns-AS må disse beslutningene tas i riktig form, som generalforsamling og ikke som styre.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

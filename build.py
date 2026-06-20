@@ -198,6 +198,21 @@ except ImportError:
     _SP_AVH_V3 = []
 
 try:
+    from sporsmal_arbeidsmiljoloven_v2 import SPORSMAL as _SP_AML_V2
+except ImportError:
+    _SP_AML_V2 = []
+
+try:
+    from sporsmal_skatteloven_v1 import SPORSMAL as _SP_SKATT_V1
+except ImportError:
+    _SP_SKATT_V1 = []
+
+try:
+    from sporsmal_aksjeloven_v1 import SPORSMAL as _SP_AKSJE_V1
+except ImportError:
+    _SP_AKSJE_V1 = []
+
+try:
     from sporsmal_arveloven import SPORSMAL as _SP_ARVE
 except ImportError:
     _SP_ARVE = []
@@ -371,6 +386,9 @@ SPORSMAL = (_tag_lov(_SP_BASE, None)
             + _tag_lov(_SP_EKT_V2, "ekteskapsloven")
             + _tag_lov(_SP_HUS_V1, "husleieloven")
             + _tag_lov(_SP_AVH_V3, "avhendingslova")
+            + _tag_lov(_SP_AML_V2, "arbeidsmiljoloven")
+            + _tag_lov(_SP_SKATT_V1, "skatteloven")
+            + _tag_lov(_SP_AKSJE_V1, "aksjeloven")
             + _tag_lov(_SP_ARVE, "arveloven")
             + _tag_lov(_SP_BARNE, "barnelova")
             + _tag_lov(_SP_STRAFF, None)

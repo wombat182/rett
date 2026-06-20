@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er restskatt? — Rettsregel</title>
+<meta name="description" content="Restskatt er skatt du skylder fordi du har betalt for lite gjennom året. Når skatteoppgjøret er klart, sammenlignes det du faktisk skulle betalt med det…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-restskatt/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er restskatt?">
+<meta property="og:description" content="Restskatt er skatt du skylder fordi du har betalt for lite gjennom året. Når skatteoppgjøret er klart, sammenlignes det du faktisk skulle betalt med det…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-restskatt/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er restskatt?">
+<meta name="twitter:description" content="Restskatt er skatt du skylder fordi du har betalt for lite gjennom året. Når skatteoppgjøret er klart, sammenlignes det du faktisk skulle betalt med det…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva er restskatt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Restskatt er skatt du skylder fordi du har betalt for lite gjennom året. Når skatteoppgjøret er klart, sammenlignes det du faktisk skulle betalt med det som ble trukket eller innbetalt. Har du betalt for lite, får du restskatt; det folk gjerne kaller "baksmell". Har du betalt for mye, får du i stedet penger igjen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hvordan restskatt oppstår</h3>
+<p>Gjennom året betaler du skatt på forskudd, enten ved at arbeidsgiver trekker av lønnen (forskuddstrekk) eller ved at du betaler forskuddsskatt selv. Dette er anslag basert på forventet inntekt og fradrag. Når året er over og skattemeldingen er ferdig behandlet, regner Skatteetaten ut det riktige beløpet. Differansen blir enten restskatt eller penger til gode.</p>
+<p>Et regneeksempel: Lars skulle egentlig betalt 140 000 kroner i skatt for året. Arbeidsgiveren trakk bare 128 000 kroner, fordi skattekortet var basert på for lav inntekt. Differansen, 12 000 kroner, blir restskatt.</p>
+<h3>Hvorfor "for lite" skjer</h3>
+<p>De vanligste grunnene:</p>
+<ul>
+<li>Skattekortet hadde for lav forventet inntekt.</li>
+<li>Du fikk lønnsøkning, bonus eller overtid som ikke var med i beregningen.</li>
+<li>Du hadde fradrag på kortet som du likevel ikke fikk (for eksempel renter på et lån du nedbetalte).</li>
+<li>Du hadde flere inntekter som hver for seg trakk for lite.</li>
+<li>Du hadde inntekt uten trekk, for eksempel utleie eller gevinst, som du ikke betalte forskuddsskatt på.</li>
+</ul>
+<h3>Restskatt er ikke en straff</h3>
+<p>Det er viktig å vite at restskatt i seg selv ikke er noe galt du har gjort. Det betyr bare at forskuddet ditt traff litt for lavt. Du betaler samme totale skatt uansett; spørsmålet er bare om du betalte nok underveis.</p>
+<p>Det legges imidlertid til et rentetillegg på restskatten, fordi du i praksis har "lånt" skattepengene en stund. For inntektsåret 2025 er rentetillegget 3,12 prosent, beregnet fra 1. juli i inntektsåret frem til forfall for første termin. Rentesatsen endres, så sjekk gjeldende sats på skatteetaten.no.</p>
+<h3>Hvordan du ser restskatten</h3>
+<p>Restskatten kommer frem i skatteoppgjøret, som de fleste får på våren eller forsommeren etter inntektsåret. Du finner det ved å logge inn på skatteetaten.no. Der står beløpet, og du får informasjon om forfall og betaling.</p>
+<p>Eksempel: Maria logger inn i juni og ser at oppgjøret viser 8 500 kroner i restskatt. Hun får samtidig vite når og hvordan hun skal betale.</p>
+<h3>Liten og stor restskatt behandles ulikt</h3>
+<p>Beløpets størrelse avgjør hvordan du betaler:</p>
+<ul>
+<li>Liten restskatt betales i ett beløp.</li>
+<li>Større restskatt deles i to fakturaer. Grensen for å dele er en restskatt på mer enn 1 000 kroner (gjeldende regel; bekreft på skatteetaten.no).</li>
+</ul>
+<h3>Kan du unngå restskatt?</h3>
+<p>Ja, ofte:</p>
+<ul>
+<li>Sjekk og oppdater skattekortet når inntekten endrer seg.</li>
+<li>Betal tilleggsforskudd hvis du skjønner at du har betalt for lite. Betaler du innen 31. mai året etter inntektsåret, slipper du rentetillegg på det beløpet.</li>
+<li>Har du næring eller utleie, juster forskuddsskatten underveis.</li>
+</ul>
+<p>Eksempel: Henrik regnet i april ut at han nok hadde betalt cirka 9 000 kroner for lite skatt. Han betalte 9 000 kroner i tilleggsforskudd før 31. mai og slapp dermed rentetillegg.</p>
+<h3>Hva skjer etterpå?</h3>
+<p>Restskatten forfaller til betaling etter skatteoppgjøret, og du får tilsendt informasjon om forfallsdatoene. Betaler du ikke, påløper forsinkelsesrenter, og kravet kan gå til innkreving.</p>
+<h3>Restskatt versus penger til gode</h3>
+<p>Restskatt og tilgodebeløp er to sider av samme sak. Begge oppstår fordi forskuddet ditt ikke traff helt presist:</p>
+<ul>
+<li>Betalte du for lite gjennom året, får du restskatt og et rentetillegg.</li>
+<li>Betalte du for mye, får du penger igjen, gjerne med en rentegodtgjørelse.</li>
+</ul>
+<p>Rentegodtgjørelsen på tilgodebeløp er knyttet til Norges Banks styringsrente per 1. januar, og endres hvert år. Sjekk gjeldende sats på skatteetaten.no.</p>
+<p>Eksempel: Naboen til Lars, Kristin, hadde motsatt situasjon. Hun hadde et fradrag hun ikke regnet med, og endte med å ha betalt 9 000 kroner for mye. Hun fikk pengene tilbake på konto, med en liten rentegodtgjørelse på toppen.</p>
+<h3>Et større regneeksempel</h3>
+<p>Tenk deg at Markus skulle betalt 210 000 kroner i skatt:</p>
+<ul>
+<li>Arbeidsgiver trakk 190 000 kroner.</li>
+<li>Han hadde 50 000 kroner i leieinntekt det ikke ble trukket skatt av, skatt cirka 11 000 kroner.</li>
+</ul>
+<p>Han hadde altså betalt 190 000 kroner, men skulle betalt 221 000 kroner. Restskatten blir 31 000 kroner, pluss rentetillegg. Fordi beløpet er over 1 000 kroner, deles det i to fakturaer på cirka 15 500 kroner hver.</p>
+<h3>Hvorfor rentetillegg?</h3>
+<p>Rentetillegget er ikke en bot. Tanken er at du har hatt skattepengene tilgjengelig lenger enn du skulle, nesten som et rentefritt lån fra fellesskapet. Rentetillegget jevner ut denne fordelen. Det er nettopp derfor du kan slippe rentetillegget helt ved å betale tilleggsforskudd innen 31. mai: da har du i praksis "betalt tilbake lånet" i tide.</p>
+<h3>Slik leser du skatteoppgjøret</h3>
+<p>Når oppgjøret er klart, finner du en oversikt på skatteetaten.no. Der ser du:</p>
+<ul>
+<li>samlet inntekt og formue som er lagt til grunn,</li>
+<li>beregnet skatt for året,</li>
+<li>hvor mye som allerede er trukket eller betalt,</li>
+<li>om resultatet er restskatt eller penger til gode,</li>
+<li>forfallsdatoer og betalingsinformasjon hvis du skylder.</li>
+</ul>
+<p>Ta deg tid til å lese gjennom tallene. Oppdager du noe som ser feil ut, for eksempel en inntekt som er ført dobbelt eller et fradrag som mangler, kan du endre skattemeldingen eller klage.</p>
+<h3>Restskatt er vanligere enn du tror</h3>
+<p>Det er lett å tenke at bare folk som har gjort noe galt får restskatt. Slik er det ikke. Hvert år får mange helt vanlige lønnsmottakere og pensjonister litt restskatt, rett og slett fordi forskuddet ikke kan treffe perfekt for alle. En lønnsøkning, en liten utleieinntekt eller et fradrag som falt bort er nok. Det viktige er ikke å unngå restskatt for enhver pris, men å forstå hvorfor den oppsto og betale den i tide.</p>
+<h3>Tre grep som reduserer restskatten</h3>
+<ol>
+<li>Oppdater forventet inntekt på skattekortet når noe endrer seg.</li>
+<li>Fjern fradrag du ikke lenger har, for eksempel renter på et nedbetalt lån.</li>
+<li>Betal tilleggsforskudd innen 31. mai hvis du aner at du har betalt for lite.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Restskatt er skatt du skylder fordi du betalte for lite gjennom året, og den dukker opp i skatteoppgjøret. Det er ikke en straff, men det legges til et rentetillegg (3,12 prosent for 2025). Du kan ofte unngå den ved å holde skattekortet oppdatert og betale tilleggsforskudd innen 31. mai. Restskatt over 1 000 kroner deles i to fakturaer. Satser, frister og grenser endres årlig, så kontroller alltid de gjeldende tallene på skatteetaten.no.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

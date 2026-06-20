@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er verneombudets rolle? — Rettsregel</title>
+<meta name="description" content="Verneombudet er arbeidstakernes vakthund for arbeidsmiljøet — en person valgt blant de ansatte som skal passe på at jobben er trygg og forsvarlig for alle.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-verneombudets-rolle/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er verneombudets rolle?">
+<meta property="og:description" content="Verneombudet er arbeidstakernes vakthund for arbeidsmiljøet — en person valgt blant de ansatte som skal passe på at jobben er trygg og forsvarlig for alle.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-verneombudets-rolle/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er verneombudets rolle?">
+<meta name="twitter:description" content="Verneombudet er arbeidstakernes vakthund for arbeidsmiljøet — en person valgt blant de ansatte som skal passe på at jobben er trygg og forsvarlig for alle.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Arbeid og lønn</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Arbeid og lønn</div>
+      <h1 class="article-title">Hva er verneombudets rolle?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Verneombudet er arbeidstakernes vakthund for arbeidsmiljøet — en person valgt blant de ansatte som skal passe på at jobben er trygg og forsvarlig for alle. Tenk på verneombudet som din mann eller kvinne på innsiden når det gjelder helse, miljø og sikkerhet (HMS).</p>
+  <p class="sp-kilde">Bygger på Arbeidsmiljøloven §§ 6-1, 6-2, 6-3, 4-1</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/arbeidsmiljoloven/6-1/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 6-1</div>
+  <div class="related-card-title">Plikt til å velge verneombud</div>
+</a><a href="../../lover/arbeidsmiljoloven/6-2/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 6-2</div>
+  <div class="related-card-title">Hva er egentlig verneombudets oppgaver?</div>
+</a><a href="../../lover/arbeidsmiljoloven/6-3/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 6-3</div>
+  <div class="related-card-title">Verneombudets makt til å stanse farlig arbeid</div>
+</a><a href="../../lover/arbeidsmiljoloven/4-1/" class="related-card">
+  <div class="related-card-meta">Arbeidsmiljøloven § 4-1</div>
+  <div class="related-card-title">Generelle krav til et trygt arbeidsmiljø</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Verneombudet er <strong>arbeidstakernes vakthund</strong> for arbeidsmiljøet — en person valgt blant de ansatte som skal passe på at jobben er trygg og forsvarlig for alle. Tenk på verneombudet som din mann eller kvinne på innsiden når det gjelder helse, miljø og sikkerhet (HMS).</p>
+<h3>Hvem er verneombudet?</h3>
+<p>Verneombudet er <strong>en av dere ansatte</strong>, valgt av arbeidstakerne selv. De fleste virksomheter er pålagt å ha verneombud (§ 6-1). Det er ikke en sjef eller en del av ledelsen — det er en kollega som har fått et særlig oppdrag og opplæring i å ivareta arbeidsmiljøet.</p>
+<h3>Hva er verneombudets oppgave?</h3>
+<p>Hovedoppgaven er å <strong>ivareta arbeidstakernes interesser i saker som angår arbeidsmiljøet</strong> (§ 6-2). Konkret skal verneombudet blant annet:</p>
+<ul>
+<li><strong>Påse at arbeidet er trygt</strong> — at maskiner, utstyr og verneinnretninger er i orden, og at folk får nødvendig opplæring.</li>
+<li><strong>Følge med på det psykososiale miljøet</strong> — mobbing, trakassering, stress og belastninger.</li>
+<li><strong>Være med på vernerunder</strong> og kartlegging av risiko.</li>
+<li><strong>Bli tatt med på råd</strong> når arbeidsgiver planlegger endringer som påvirker arbeidsmiljøet.</li>
+<li><strong>Ta opp problemer</strong> med arbeidsgiver og følge med på at de blir løst.</li>
+</ul>
+<p>Et eksempel: Når <strong>Trine</strong> merker at flere kolleger sliter med tunge løft, kan hun ta det opp med verneombudet, som løfter saken til ledelsen og krever tiltak — uten at Trine selv må stå i frontlinjen.</p>
+<h3>Den sterkeste fullmakten: å stanse farlig arbeid</h3>
+<p>Verneombudet har en helt spesiell rett. Hvis verneombudet mener det er <strong>overhengende fare for arbeidstakernes liv eller helse</strong>, og faren ikke kan avverges på annen måte med en gang, kan verneombudet <strong>stanse arbeidet</strong> (§ 6-3). Arbeidet kan stanses til Arbeidstilsynet har tatt stilling til om det kan fortsette.</p>
+<p>Viktige poenger om stansingsretten:</p>
+<ul>
+<li>Arbeidet kan bare stanses i den grad verneombudet mener er <strong>nødvendig</strong> for å avverge faren.</li>
+<li>Stansingen og grunnen til den skal <strong>straks meldes</strong> til arbeidsgiver.</li>
+<li>Verneombudet er <strong>ikke erstatningsansvarlig</strong> for tap virksomheten lider på grunn av en slik lovlig stansing.</li>
+</ul>
+<p>Eksempel: Et stillas vakler farlig på en byggeplass. Verneombudet <strong>Mehmet</strong> ser dette og stanser arbeidet i området umiddelbart, melder fra til arbeidsgiver, og arbeidet ligger nede til stillaset er sikret. Selv om dette koster bedriften tid og penger, kan Mehmet ikke holdes økonomisk ansvarlig.</p>
+<h3>Verneombudet skal også få opplæring og tid</h3>
+<p>For at verneombudet skal kunne gjøre jobben sin, har de rett til nødvendig opplæring i HMS-arbeid, og rett til å bruke arbeidstid på vervet. Arbeidsgiver skal legge til rette for dette. Det betyr at verneombudet ditt ikke skal måtte ta arbeidsmiljøarbeidet "på fritiden" eller uten kunnskap — de skal være rustet til oppgaven. Dette er bra for deg, fordi det betyr at den som skal hjelpe deg, faktisk har verktøyene til det.</p>
+<h3>Hva verneombudet IKKE er</h3>
+<ul>
+<li><strong>Ikke</strong> den som har det juridiske hovedansvaret for arbeidsmiljøet — det er fortsatt arbeidsgiver (§ 4-1).</li>
+<li><strong>Ikke</strong> en som ordner alle problemer alene — de er din støttespiller og pådriver, ikke en mirakelmann.</li>
+<li><strong>Ikke</strong> en del av ledelsen — de representerer dere ansatte.</li>
+<li><strong>Ikke</strong> en som kan "overstyre" alt — stansingsretten gjelder ved overhengende fare, ikke som et generelt veto.</li>
+</ul>
+<h3>Hovedverneombud og flere verneombud</h3>
+<p>På større arbeidsplasser kan det være <strong>flere verneombud</strong>, gjerne ett per avdeling eller verneområde, og et <strong>hovedverneombud</strong> som samordner det hele. Hovedverneombudet har et overordnet ansvar og er ofte den du kan henvende deg til hvis ditt eget verneombud er involvert i saken, eller hvis du ikke vet hvem du skal gå til. På små arbeidsplasser er det gjerne ett verneombud for hele virksomheten. Uansett størrelse er prinsippet det samme: det skal finnes noen som har som oppgave å ivareta arbeidsmiljøet på de ansattes vegne.</p>
+<h3>Hvordan bruker du verneombudet?</h3>
+<ol>
+<li><strong>Finn ut hvem det er.</strong> Det skal være kjent på arbeidsplassen — spør HR eller en kollega om du er usikker.</li>
+<li><strong>Ta kontakt</strong> når du opplever noe utrygt — fysisk fare, mobbing, trakassering eller dårlig arbeidsmiljø.</li>
+<li><strong>Vær konkret.</strong> Fortell hva som skjer, hvor ofte og hvordan det påvirker deg.</li>
+<li><strong>Be om at saken tas videre.</strong> Verneombudet kan ta den opp med ledelsen på dine vegne, ofte med mer tyngde enn du har alene.</li>
+<li><strong>Følg opp.</strong> Spør hva som skjer i saken.</li>
+</ol>
+<h3>Verneombud er beskyttet</h3>
+<p>Et viktig poeng: et verneombud skal kunne gjøre jobben sin uten frykt for represalier. Det betyr at arbeidsgiver ikke lovlig kan straffe eller "ta" et verneombud for å ha tatt opp ubehagelige saker eller stanset farlig arbeid. Dette gir verneombudet trygghet til å stå opp for dere ansatte, også når det er upopulært hos ledelsen.</p>
+<h3>Forskjellen på verneombud og tillitsvalgt</h3>
+<p>Mange blander disse to. Kort forklart:</p>
+<ul>
+<li><strong>Verneombudet</strong> handler om <strong>arbeidsmiljø, helse og sikkerhet (HMS)</strong> — det fysiske og psykiske miljøet.</li>
+<li><strong>Tillitsvalgt</strong> handler om <strong>lønns- og arbeidsvilkår</strong> og representerer fagforeningen i forhandlinger og personalsaker.</li>
+</ul>
+<p>I praksis samarbeider de ofte, og i en mobbe- eller trakasseringssak kan begge være nyttige å ha med. Men det er verneombudet som har det særlige HMS-mandatet — inkludert stansingsretten.</p>
+<h3>Hvis det ikke finnes verneombud</h3>
+<p>Mindre virksomheter kan i noen tilfeller avtale en annen ordning enn verneombud. Men hvis du jobber et sted som skal ha verneombud og ikke har det, er det i seg selv et tegn på at HMS-arbeidet halter — og noe du kan ta opp med arbeidsgiver eller Arbeidstilsynet.</p>
+<h3>Hvorfor er dette bra for deg?</h3>
+<p>Verneombudet gjør at du <strong>ikke trenger å stå alene</strong>. Det er noen med et formelt mandat som kan løfte sakene dine, kreve tiltak — og i ytterste konsekvens stanse farlig arbeid. Det er en trygghet i ryggen. Bli kjent med hvem ditt verneombud er <strong>før</strong> du trenger vedkommende — da er terskelen lavere for å ta kontakt når noe skjer.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Verneombudet er en <strong>valgt kollega</strong> som ivaretar arbeidstakernes interesser i HMS-saker (§ 6-1, § 6-2).</li>
+<li>De følger med på både <strong>fysisk og psykisk</strong> arbeidsmiljø og tar opp problemer med ledelsen.</li>
+<li>Ved <strong>overhengende fare</strong> kan verneombudet <strong>stanse arbeidet</strong> (§ 6-3), uten å bli erstatningsansvarlig.</li>
+<li>De har ikke hovedansvaret — det har arbeidsgiver — men er din viktige støttespiller.</li>
+<li>Bruk dem: ta kontakt, vær konkret, og be om at saken følges opp.</li>
+</ul>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-arbeidstvist/">Dekker forsikringen min advokat i en arbeidstvist?</a><a class="sp-relchip" href="../../sporsmal/er-jeg-beskyttet-mot-gjengjeldelse-hvis-jeg-varsler/">Er jeg beskyttet mot gjengjeldelse hvis jeg varsler?</a><a class="sp-relchip" href="../../sporsmal/har-innleide-krav-pa-fast-ansettelse/">Har innleide krav på fast ansettelse?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

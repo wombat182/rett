@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Er sluttpakke skattepliktig? — Rettsregel</title>
+<meta name="description" content="Ja, en sluttpakke er som hovedregel skattepliktig.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/er-sluttpakke-skattepliktig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Er sluttpakke skattepliktig?">
+<meta property="og:description" content="Ja, en sluttpakke er som hovedregel skattepliktig.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/er-sluttpakke-skattepliktig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Er sluttpakke skattepliktig?">
+<meta name="twitter:description" content="Ja, en sluttpakke er som hovedregel skattepliktig.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Er sluttpakke skattepliktig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, en sluttpakke er som hovedregel skattepliktig. Pengene du får når du slutter i jobben – enten det kalles sluttvederlag, etterlønn eller sluttpakke – regnes vanligvis som lønn og skattlegges deretter. Den gamle ordningen med et skattefritt sluttvederlag finnes ikke lenger, så her er det viktig å være forberedt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja, en sluttpakke er som hovedregel skattepliktig. Pengene du får når du slutter i jobben – enten det kalles sluttvederlag, etterlønn eller sluttpakke – regnes vanligvis som lønn og skattlegges deretter. Den gamle ordningen med et skattefritt sluttvederlag finnes ikke lenger, så her er det viktig å være forberedt.</p>
+<h3>Etterlønn og sluttvederlag = lønn</h3>
+<p>Får du fortsatt utbetalt lønn en periode etter at du har sluttet (etterlønn), eller en engangssum som kompensasjon for at arbeidsforholdet opphører, er dette <em>personinntekt</em>. Det betyr at:</p>
+<ul>
+<li>beløpet skattlegges som vanlig lønn</li>
+<li>det beregnes trygdeavgift og eventuelt trinnskatt</li>
+<li>arbeidsgiver trekker skatt og innrapporterer beløpet</li>
+</ul>
+<p>Tidligere fantes en særregel som gjorde en del av et sluttvederlag skattefritt, men denne skattefritaksordningen er opphevet. I dag må du regne med at hele sluttpakken er skattepliktig. Sjekk alltid de nyeste reglene på skatteetaten.no, siden slike regler kan endres.</p>
+<h3>Hvorfor blir skatten ofte høy på en sluttpakke?</h3>
+<p>En sluttpakke er gjerne et stort engangsbeløp. Når det legges oppå inntekten du allerede har hatt det året, kan deler av det havne i et høyere trinn i trinnskatten. Det er den samme marginalskatt-effekten som rammer bonus og overtid.</p>
+<p>For inntektsåret 2026 er trinnskatten (kilde: skatteetaten.no/satser/trinnskatt):</p>
+<ul>
+<li>0–226 100 kr: 0 %</li>
+<li>226 101–318 300 kr: 1,7 %</li>
+<li>318 301–725 050 kr: 4,0 %</li>
+<li>725 051–980 100 kr: 13,7 %</li>
+<li>980 101–1 467 200 kr: 16,8 %</li>
+<li>fra 1 467 201 kr: 17,8 %</li>
+</ul>
+<h3>Regneeksempel: Petter får seks månedslønner i sluttpakke</h3>
+<p>Petter tjente 600 000 kr i året og sluttet i juli. Frem til da hadde han tjent rundt 300 000 kr. Han får en sluttpakke på 300 000 kr.</p>
+<p>Når sluttpakken legges oppå de 300 000 kr han allerede har tjent, kommer han opp i 600 000 kr samlet for året. Mesteparten av sluttpakken ligger da i trinn 2 (4,0 %), så marginalskatten på den blir rundt 33–34 %. Av 300 000 kr går da cirka 100 000 kr til skatt, og Petter sitter igjen med rundt 200 000 kr.</p>
+<h3>Regneeksempel: Hvorfor det kan lønne seg å fordele utbetalingen</h3>
+<p>Tenk deg at Petter i stedet kunne fått 150 000 kr i desember og 150 000 kr i januar året etter. Da fordeles beløpet på to inntektsår. I begge år ville inntekten hans vært lavere, slik at en mindre del traff de høyeste trinnene. For personer med høy inntekt kan en slik fordeling spare flere tusen kroner i skatt. Dette må avtales med arbeidsgiver og være reelt – du kan ikke flytte inntekt fritt bare for å spare skatt, men en lovlig oppdeling av utbetalingstidspunkt er ofte mulig.</p>
+<h3>Smarte grep ved sluttpakke</h3>
+<ul>
+<li><strong>Be om å få utbetalingen fordelt</strong> over to inntektsår hvis det er mulig og lovlig. Da kan du unngå at alt presses inn i ett år og treffer høye trinn.</li>
+<li><strong>Avklar skattetrekket</strong> med arbeidsgiver, slik at du ikke får en kjedelig restskatt neste år.</li>
+<li><strong>Sett av penger til skatt</strong> med en gang du mottar beløpet, basert på din marginalskatt.</li>
+<li><strong>Husk dagpenger:</strong> Hvis sluttpakken tilsvarer lønn for en periode, kan den påvirke når du har rett til dagpenger fra NAV. Sjekk dette før du signerer avtalen.</li>
+<li><strong>Les avtalen nøye</strong> og be eventuelt om bistand hvis noe er uklart.</li>
+</ul>
+<h3>Hva med dekning av advokat, kurs eller utdanning?</h3>
+<p>Noen sluttpakker inneholder også andre elementer enn rene penger, for eksempel:</p>
+<ul>
+<li>dekning av <strong>advokatbistand</strong> i forbindelse med oppsigelsen</li>
+<li>dekning av <strong>kurs eller utdanning</strong> for å komme videre i arbeidslivet</li>
+<li><strong>fri bruk av telefon, pc eller bil</strong> en periode</li>
+</ul>
+<p>Skattereglene for slike elementer kan variere. Noen kan være skattefrie, andre skattepliktige. Få hvert element spesifisert i avtalen, og sjekk skatteplikten for hvert av dem på skatteetaten.no eller ved å spørre Skatteetaten.</p>
+<h3>Erstatning ved usaklig oppsigelse – en egen vurdering</h3>
+<p>Hvis du får en erstatning fordi oppsigelsen var ulovlig (usaklig), er bildet litt mer sammensatt. En del som skal erstatte tapt lønn, behandles normalt som skattepliktig inntekt. En eventuell del som er ren oppreisning for ikke-økonomisk skade (en slags "plaster på såret" for selve krenkelsen), kan etter omstendighetene behandles annerledes. Dette er teknisk, og grensene kan endres, så her bør du sjekke konkret på skatteetaten.no eller få hjelp til å vurdere din egen avtale. Det viktigste er at avtalen tydelig sier hva hvert beløp gjelder.</p>
+<h3>Vanlige spørsmål om sluttpakke</h3>
+<p><strong>"Får jeg minstefradrag og personfradrag på sluttpakken?"</strong> Ja. Sluttpakken inngår i den vanlige inntekten din, og du får de samme standardfradragene som på annen lønn. Det demper skatten noe sammenlignet med det "rene" tallet.</p>
+<p><strong>"Kan jeg sette sluttpakken inn på BSU eller pensjon for å spare skatt?"</strong> Du kan ikke gjøre selve sluttpakken skattefri ved å spare den, men du kan bruke ordinære fradragsordninger som vanlig. BSU (for deg under aldersgrensen) og enkelte pensjonsspareordninger gir fradrag uavhengig av hvor pengene kommer fra. Sjekk vilkår og grenser på skatteetaten.no.</p>
+<p><strong>"Hva om jeg får ny jobb med en gang?"</strong> Da kan du ende opp med høy samlet inntekt det året: lønn fra gammel jobb + sluttpakke + lønn fra ny jobb. Det kan dytte mer av inntekten opp i høyere trinn. Vær oppmerksom på dette, og juster skattekortet hvis nødvendig.</p>
+<h3>Steg for steg når du får en sluttpakke</h3>
+<ol>
+<li><strong>Les avtalen nøye</strong> og sjekk hva hvert beløp gjelder.</li>
+<li><strong>Avklar utbetalingstidspunkt</strong> – kan noe legges til neste år?</li>
+<li><strong>Regn ut anslått skatt</strong> med din marginalskatt og sett pengene til side.</li>
+<li><strong>Sjekk dagpengerettigheter</strong> hos NAV før du signerer.</li>
+<li><strong>Kontroller skattetrekket</strong> på utbetalingen, og juster skattekortet om nødvendig.</li>
+<li><strong>Kontroller skattemeldingen</strong> når den kommer, slik at beløpet er riktig innrapportert.</li>
+</ol>
+<h3>Vanlig feil: å bruke opp hele sluttpakken før skatten er betalt</h3>
+<blockquote>
+<p><strong>Vanlig feil:</strong> En av de mest kostbare tabbene er å se på sluttpakken som "fri kapital" og bruke den opp før skatten er gjort opp. Hvis arbeidsgiver har trukket for lite skatt på utbetalingen, kan du sitte igjen med en restskatt året etter – og da er pengene kanskje allerede borte. Regn alltid ut hvor stor del av beløpet som faktisk er din, <em>etter</em> skatt, og hold den delen som skal til Skatteetaten unna forbruk.</p>
+</blockquote>
+<p><strong>Eksempel – Linda, 47 år:</strong> Linda fikk en sluttpakke på 250 000 kr og fikk utbetalt 180 000 kr etter skattetrekk. Hun trodde alt var gjort opp og brukte pengene på nedbetaling av lån og en oppussing. Problemet var at arbeidsgiver hadde brukt et for lavt trekk, slik at den reelle skatten ble høyere. Da skatteoppgjøret kom, fikk Linda en restskatt på cirka 18 000 kr. Hadde hun satt av en buffer på 20 prosent av nettobeløpet i påvente av oppgjøret, ville hun sluppet den ubehagelige overraskelsen.</p>
+<h3>Sluttpakke og overgang til ny jobb samme år</h3>
+<p>Mange undervurderer hvor mye den samlede årsinntekten kan stige hvis sluttpakken kommer på toppen av både gammel og ny lønn. Får du for eksempel 300 000 kr i lønn fra gammel jobb, 250 000 kr i sluttpakke og 250 000 kr i lønn fra ny jobb samme år, blir samlet inntekt 800 000 kr. Da treffer en del av inntekten trinn 3 i trinnskatten (2026: 13,7 % over 725 050 kr, kilde: skatteetaten.no/satser/trinnskatt), i tillegg til høyere marginalskatt totalt.</p>
+<p><strong>Steg-for-steg for å unngå skattesmell ved jobbskifte:</strong></p>
+<ol>
+<li>Logg inn på skatteetaten.no og endre skattekortet så snart du vet at du får både sluttpakke og ny lønn samme år.</li>
+<li>Legg inn et realistisk anslag på samlet årsinntekt fra alle kilder.</li>
+<li>Be ny arbeidsgiver bruke det oppdaterte skattekortet, slik at trekket blir riktig fra start.</li>
+<li>Vurder om noe av sluttpakken kan utbetales i januar året etter, slik at inntekten fordeles på to år.</li>
+</ol>
+<h3>Hva hvis du blir selvstendig næringsdrivende etterpå?</h3>
+<p>Bruker du sluttpakken til å starte for deg selv, husk at selve sluttpakken fortsatt beskattes som lønn fra den gamle jobben – den blir ikke næringsinntekt. Utgifter du har i den nye virksomheten, føres for seg i næringen og blandes ikke sammen med lønnsbeskatningen av sluttpakken. Sjekk gjeldende regler på skatteetaten.no, og vurder å spørre om hjelp hvis du både avslutter et arbeidsforhold og starter næring samme år.</p>
+<h3>Kort oppsummert</h3>
+<p>En sluttpakke er normalt skattepliktig som lønn, og den tidligere skattefrie ordningen for sluttvederlag finnes ikke lenger. Fordi det ofte er et stort engangsbeløp, kan deler treffe høyere trinn i trinnskatten. Vurder å fordele utbetalingen over to år, avklar skattetrekket, sett av til skatt, og sjekk de aktuelle reglene og satsene på skatteetaten.no – de oppdateres årlig.</p>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

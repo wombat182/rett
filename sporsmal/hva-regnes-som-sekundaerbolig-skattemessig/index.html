@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva regnes som sekundærbolig skattemessig? — Rettsregel</title>
+<meta name="description" content="En sekundærbolig er en bolig du eier i tillegg til den du selv bor i. Skattemessig er det avgjørende at du ikke har den som ditt hjem. En typisk…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-regnes-som-sekundaerbolig-skattemessig/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva regnes som sekundærbolig skattemessig?">
+<meta property="og:description" content="En sekundærbolig er en bolig du eier i tillegg til den du selv bor i. Skattemessig er det avgjørende at du ikke har den som ditt hjem. En typisk…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-regnes-som-sekundaerbolig-skattemessig/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva regnes som sekundærbolig skattemessig?">
+<meta name="twitter:description" content="En sekundærbolig er en bolig du eier i tillegg til den du selv bor i. Skattemessig er det avgjørende at du ikke har den som ditt hjem. En typisk…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Penger</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Penger</div>
+      <h1 class="article-title">Hva regnes som sekundærbolig skattemessig?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En sekundærbolig er en bolig du eier i tillegg til den du selv bor i. Skattemessig er det avgjørende at du *ikke har den som ditt hjem*. En typisk sekundærbolig er en utleieleilighet eller en arvet bolig du leier ut. Sekundærboliger verdsettes hardere i formuen (100 % av beregnet markedsverdi i 2026) enn primærboligen din.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Primærbolig, sekundærbolig og fritidsbolig – tre kategorier</h3>
+<p>Skattereglene skiller mellom tre typer eiendom, og det er viktig å vite hvilken du har:</p>
+<ul>
+<li><strong>Primærbolig:</strong> Der du faktisk bor og er folkeregistrert. Du kan bare ha én primærbolig.</li>
+<li><strong>Sekundærbolig:</strong> En annen bolig du eier, men ikke bor i – typisk utleie eller investering.</li>
+<li><strong>Fritidsbolig:</strong> Hytte eller feriebolig. Dette er en <em>egen</em> kategori og regnes ikke som sekundærbolig, selv om du ikke bor der fast.</li>
+</ul>
+<p>Skillet betyr mye, fordi formuesverdien beregnes helt forskjellig for hver type.</p>
+<h3>Hva gjør en bolig til sekundærbolig?</h3>
+<p>Det avgjørende er at boligen <em>ikke er ditt hjem</em>, og at den <em>ikke er en fritidsbolig</em>. Eksempler på sekundærbolig:</p>
+<ul>
+<li>En leilighet du kjøpte for å leie ut</li>
+<li>En bolig du har arvet og leier ut i stedet for å flytte inn</li>
+<li>En bolig du eier i en annen by, men ikke bruker som fast bopel</li>
+<li>En tidligere bolig du flyttet fra, men beholdt og nå leier ut</li>
+<li>En bolig du har kjøpt til barna, men som du selv står som eier av</li>
+</ul>
+<h3>Når en pendlerbolig <em>ikke</em> er sekundærbolig</h3>
+<p>Her er et viktig unntak. Hvis du jobber i en annen by enn der familien din bor, og du eier en bolig der du bor i ukedagene, kan denne regnes som <em>pendlerbolig</em>. Pendlerbolig behandles gunstigere enn vanlig sekundærbolig i formuesverdsettingen – ofte som primærbolig (altså ca. 25 %). Reglene er detaljerte, så sjekk dette nøye hvis du pendler, for det kan ha stor betydning for formuesskatten din.</p>
+<h3>Regneeksempel – hvorfor kategorien betyr så mye</h3>
+<p>La oss si Lise eier to like leiligheter, hver med beregnet markedsverdi 3 000 000 kr.</p>
+<p><strong>Som primærbolig (der hun bor):</strong>
+3 000 000 × 25 % = 750 000 kr i formuesverdi</p>
+<p><strong>Som sekundærbolig (den hun leier ut):</strong>
+3 000 000 × 100 % = 3 000 000 kr i formuesverdi</p>
+<p>Samme leilighet teller altså fire ganger så mye i formuen når den er sekundærbolig. Dette kan være forskjellen på om Lise havner over grensen for formuesskatt eller ikke.</p>
+<h3>Et utvidet eksempel med formuesskatt (Lise)</h3>
+<p>La oss bygge videre på Lise. Hun er enslig, eier leiligheten hun bor i (formuesverdi 750 000 kr) og utleieleiligheten (3 000 000 kr), og har 2 000 000 kr i gjeld.</p>
+<ul>
+<li>Sum formuesverdier: 750 000 + 3 000 000 = 3 750 000 kr</li>
+<li>Minus gjeld: 3 750 000 − 2 000 000 = 1 750 000 kr nettoformue</li>
+<li>Bunnfradrag (2026): 1 900 000 kr</li>
+<li>Lise er <em>under</em> bunnfradraget og betaler <strong>0 kr</strong> formuesskatt.</li>
+</ul>
+<p>Men hadde sekundærboligen vært verdt 4 000 000 kr i stedet, ville nettoformuen blitt 2 750 000 kr, og hun ville betalt formuesskatt på det over 1,9 mill. Sekundærboligen er altså den som lettest skyver folk over grensen.</p>
+<h3>Kan du velge hvilken som er primærbolig?</h3>
+<p>I utgangspunktet er primærboligen din den du <em>faktisk bor i</em> og er folkeregistrert på. Du kan ikke fritt velge for å spare skatt. Hvis du eier to boliger og veksler mellom dem, er det din reelle bostedsadresse som avgjør. Flytter du, må folkeregisteradressen følge med.</p>
+<h3>Hvorfor er sekundærbolig "dyrere" skattemessig?</h3>
+<p>Tanken bak de strenge reglene er at sekundærbolig ofte er en investering eller utleievirksomhet, ikke et nødvendig hjem. Politisk har man ønsket at investeringsboliger skal beskattes mer på linje med annen formue, blant annet for å dempe presset i boligmarkedet. Boligen du faktisk bor i, skjermes derimot kraftig.</p>
+<h3>Praktiske konsekvenser av å ha en sekundærbolig</h3>
+<ul>
+<li><strong>Formue:</strong> Teller med 100 % av beregnet markedsverdi – kan utløse formuesskatt.</li>
+<li><strong>Utleie:</strong> Leieinntekt er skattepliktig fra første krone (22 % av overskuddet).</li>
+<li><strong>Salg:</strong> Gevinst ved salg er normalt skattepliktig, fordi du ikke har bodd der selv (i motsetning til primærbolig, der gevinst ofte er skattefri etter botid).</li>
+</ul>
+<h3>Kan en sekundærbolig bli til primærbolig?</h3>
+<p>Ja. Flytter du inn i en bolig du tidligere leide ut, og melder flytting til folkeregisteret, blir den primærboligen din fra det tidspunktet. Da endres formuesverdsettingen fra 100 % til ca. 25 %. Motsatt: flytter du ut av primærboligen og begynner å leie den ut, blir den sekundærbolig. Statusen følger den faktiske bruken og bostedsadressen din, og kan altså endre seg over tid.</p>
+<p>Et nyttig poeng om salg: Skal du selge en bolig du har bodd i, men nettopp har flyttet fra, finnes det botidsregler som kan gi skattefri gevinst hvis du har bodd der minst ett av de siste to årene før salget. Planlegger du å flytte og selge, kan timingen ha mye å si for skatten.</p>
+<h3>Vanlige spørsmål om sekundærbolig</h3>
+<p><strong>Er en utleiehybel i egen bolig en sekundærbolig?</strong>
+Nei. Leier du ut en del av boligen du selv bor i, er det fortsatt din primærbolig. Sekundærbolig er en <em>separat</em> bolig du eier i tillegg.</p>
+<p><strong>Teller en bolig jeg eier sammen med andre?</strong>
+Ja, din eierandel teller. Eier du for eksempel halvparten av en utleieleilighet, regnes halve formuesverdien som din.</p>
+<p><strong>Regneeksempel – delt eierskap (Marte):</strong>
+Marte eier 50 % av en sekundærbolig med beregnet markedsverdi 4 000 000 kr.</p>
+<ul>
+<li>Full formuesverdi: 4 000 000 × 100 % = 4 000 000 kr</li>
+<li>Martes andel: 4 000 000 × 50 % = <strong>2 000 000 kr</strong> i hennes formue</li>
+</ul>
+<h3>Sjekkliste før du kjøper en sekundærbolig</h3>
+<p>Vurderer du å kjøpe en bolig nummer to for å leie ut, er det greit å ha disse punktene i bakhodet:</p>
+<ul>
+<li>Formuesverdien teller 100 % – sjekk om den kan dra deg over bunnfradraget i formuesskatten.</li>
+<li>Leieinntekten er skattepliktig fra første krone (22 % av overskuddet).</li>
+<li>Gevinst ved et senere salg er normalt skattepliktig.</li>
+<li>Bor du selv i den deler av året, blir den likevel ikke automatisk primærbolig – det avgjøres av folkeregistrert adresse.</li>
+<li>Kjøper du sammen med andre, teller bare din eierandel i din formue.</li>
+</ul>
+<p>Med dette på plass unngår du overraskelser når den første skattemeldingen kommer.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Sekundærbolig er en bolig du eier, men ikke bor i, og som ikke er fritidsbolig.</li>
+<li>Folkeregistrert bostedsadresse avgjør hva som er primærbolig.</li>
+<li>Sekundærbolig verdsettes til 100 % av beregnet markedsverdi i formuen.</li>
+<li>Pendlerbolig kan behandles gunstigere – sjekk reglene.</li>
+<li>Gevinst ved salg av sekundærbolig er normalt skattepliktig.</li>
+<li>Regler og satser endres årlig – kontroller på skatteetaten.no.</li>
+</ul>
+<hr />
+<hr />
+<p><em>Dette er generell informasjon om skattereglene, ikke individuelt skatteråd. Skattesatser og beløpsgrenser endres årlig — kontroller alltid mot oppdaterte tall på skatteetaten.no før du baserer deg på dem.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

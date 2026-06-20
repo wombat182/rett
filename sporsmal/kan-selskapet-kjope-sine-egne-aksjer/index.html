@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan selskapet kjøpe sine egne aksjer? — Rettsregel</title>
+<meta name="description" content="Ja, et AS kan kjøpe sine egne aksjer, men bare innenfor visse rammer. Selskapet må holde seg innenfor den frie egenkapitalen, generalforsamlingen må ha…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-selskapet-kjope-sine-egne-aksjer/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan selskapet kjøpe sine egne aksjer?">
+<meta property="og:description" content="Ja, et AS kan kjøpe sine egne aksjer, men bare innenfor visse rammer. Selskapet må holde seg innenfor den frie egenkapitalen, generalforsamlingen må ha…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-selskapet-kjope-sine-egne-aksjer/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan selskapet kjøpe sine egne aksjer?">
+<meta name="twitter:description" content="Ja, et AS kan kjøpe sine egne aksjer, men bare innenfor visse rammer. Selskapet må holde seg innenfor den frie egenkapitalen, generalforsamlingen må ha…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Selskap</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Selskap</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan selskapet kjøpe sine egne aksjer?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, et AS kan kjøpe sine egne aksjer, men bare innenfor visse rammer. Selskapet må holde seg innenfor den frie egenkapitalen, generalforsamlingen må ha gitt styret fullmakt, og den samlede beholdningen av egne aksjer kan som hovedregel ikke overstige ti prosent av aksjekapitalen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr det at selskapet eier sine egne aksjer?</h3>
+<p>Vanligvis eies aksjene i et AS av personer eller andre selskaper. Men aksjeloven åpner for at selskapet selv kan kjøpe tilbake noen av sine egne aksjer — slik at selskapet blir eier i seg selv. Disse aksjene kalles «egne aksjer». Mens selskapet eier dem, gir de verken stemmerett eller rett til utbytte; de ligger i praksis «hvilende».</p>
+<p>Reglene om dette finner du i aksjeloven kapittel 9, og hovedregelen om erverv av egne aksjer står i bestemmelsen om dette (asl. § 9-2 flg.).</p>
+<h3>Hvorfor vil et selskap kjøpe egne aksjer?</h3>
+<p>Det finnes flere gode grunner:</p>
+<ul>
+<li><strong>Kjøpe ut en aksjonær.</strong> En av eierne vil ut, og de andre vil ikke eller kan ikke kjøpe andelen privat. Da kan selskapet kjøpe aksjene tilbake.</li>
+<li><strong>Belønne ansatte.</strong> Selskapet kan kjøpe egne aksjer og senere selge eller gi dem videre til ansatte.</li>
+<li><strong>Justere kapitalstrukturen.</strong> Selskapet kan dele ut overskuddskapital til aksjonærene ved å kjøpe tilbake aksjer.</li>
+</ul>
+<h3>De tre hovedvilkårene</h3>
+<p><strong>1. Det må være dekning i fri egenkapital.</strong> Selskapet kan bare bruke penger det lovlig kunne delt ut som utbytte. Dette kalles fri egenkapital. Tanken er den samme som ved utbytte: bunden kapital som skal beskytte kreditorene, kan ikke brukes til å kjøpe tilbake aksjer. Vederlaget selskapet betaler for aksjene må altså ligge innenfor den frie egenkapitalen (asl. § 9-3, jf. § 8-1).</p>
+<p><strong>2. Styret må ha fullmakt fra generalforsamlingen.</strong> Styret kan ikke på egen hånd bestemme at selskapet skal kjøpe egne aksjer. Generalforsamlingen må gi en fullmakt som angir den høyeste pålydende verdien av aksjene selskapet kan erverve, samt hvilken pris (laveste og høyeste beløp) som kan betales, og hvor lenge fullmakten gjelder (asl. § 9-4). Fullmakten gjelder i en begrenset periode.</p>
+<p><strong>3. Ti-prosent-grensen.</strong> Den samlede pålydende verdien av selskapets beholdning av egne aksjer kan etter ervervet ikke overstige ti prosent av aksjekapitalen (asl. § 9-2). Denne grensen er sentral og får sin egen artikkel.</p>
+<h3>Et eksempel</h3>
+<p>Tenk deg Sunnmøre Snekkeri AS, eid av fire søsken med 25 prosent hver. Aksjekapitalen er 400 000 kroner. Den ene, Geir, vil ut for å satse på noe annet. De tre andre har ikke 100 000 kroner hver til å kjøpe ham ut privat. Løsningen: selskapet kjøper Geirs aksjer tilbake. Forutsetningen er at selskapet har fri egenkapital som dekker kjøpesummen, at generalforsamlingen har gitt fullmakt, og at de tilbakekjøpte aksjene holder seg innenfor ti prosent av aksjekapitalen. Akkurat her kan ti-prosent-grensen by på problemer, siden Geirs andel er 25 prosent — da må selskapet kanskje kombinere tilbakekjøp med en etterfølgende kapitalnedsettelse, eller velge en annen løsning.</p>
+<h3>Armlengdeprinsippet gjelder også her</h3>
+<p>Når selskapet kjøper aksjer fra en aksjonær — som jo er en nærstående — må prisen være forsvarlig og gjenspeile aksjenes reelle verdi. Betaler selskapet for mye, tapper det seg selv til fordel for selgeren, på bekostning av de andre eierne og kreditorene. Betaler det for lite, går det ut over selgeren. Sett en riktig pris, gjerne basert på en uavhengig verdivurdering.</p>
+<h3>Hva skjer med aksjene etterpå?</h3>
+<p>Selskapet kan beholde aksjene som egne aksjer, selge dem videre (for eksempel til en ny eier eller til ansatte), eller slette dem gjennom en kapitalnedsettelse. Velger man å slette dem, reduseres aksjekapitalen tilsvarende.</p>
+<h3>Mens selskapet eier aksjene — hva gjelder?</h3>
+<p>Egne aksjer er litt spesielle så lenge selskapet sitter på dem. De gir ikke stemmerett på generalforsamlingen, og de teller ikke med når man regner ut flertall. De gir heller ikke rett til utbytte — det ville vært å betale utbytte til seg selv. I praksis ligger aksjene «sovende» helt til selskapet enten selger dem videre eller sletter dem. For deg som eier kan dette faktisk være en fordel: når selskapet kjøper tilbake aksjer fra én eier, øker de gjenværende eiernes relative innflytelse, fordi de tilbakekjøpte aksjene ikke lenger stemmer.</p>
+<h3>Måter selskapet kan erverve egne aksjer på</h3>
+<p>Det vanligste er at selskapet rett og slett kjøper aksjene av en aksjonær mot betaling. Men aksjer kan også komme til selskapet på andre måter — for eksempel som oppgjør for et krav selskapet hadde mot en aksjonær som ikke kunne betale på annen måte, eller gjennom arv eller fusjon. Reglene om fri egenkapital og ti-prosent-grensen gjelder uansett hvordan aksjene kom inn, og kommer de inn på en måte som sprenger grensen, må de avhendes eller slettes innen rimelig tid.</p>
+<h3>En vanlig fallgruve: glemte fullmakten</h3>
+<p>En typisk feil i små selskaper er at eierne blir enige om at selskapet skal kjøpe ut en av dem, og bare gjennomfører betalingen — uten at generalforsamlingen formelt har gitt styret fullmakt på forhånd, slik loven krever (asl. § 9-4). Da kan ervervet bli ulovlig, selv om alle var enige. Sørg derfor alltid for at fullmakten er på plass i protokollen før pengene utbetales. Det tar fem minutter på generalforsamlingen, men sparer deg for store problemer senere.</p>
+<h3>Sett en riktig pris — sjekkliste</h3>
+<p>For å være trygg på at tilbakekjøpet både er lovlig og rettferdig, gå gjennom disse punktene: Finnes det dekning i fri egenkapital? Holder beholdningen seg innenfor ti prosent av aksjekapitalen? Har generalforsamlingen gitt fullmakt med riktige rammer for antall og pris? Er prisen til selgeren forsvarlig satt ut fra aksjenes reelle verdi? Er handelen protokollert? Klarer du å svare ja på alle, står du på trygg grunn. Er du i tvil om noen av punktene — særlig verdsettelsen — er det vel anvendte penger å la en regnskapsfører eller revisor se på saken først.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, et AS kan kjøpe sine egne aksjer, men innenfor strenge rammer: det må være dekning i fri egenkapital, generalforsamlingen må ha gitt styret fullmakt, og beholdningen av egne aksjer kan som hovedregel ikke overstige ti prosent av aksjekapitalen (asl. § 9-2 flg.). Husk armlengdeprinsippet: prisen til selgeren må være forsvarlig.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/er-aksjonaerlan-skattepliktig/">Er aksjonærlån skattepliktig?</a><a class="sp-relchip" href="../../sporsmal/er-arv-skattepliktig-i-norge/">Er arv skattepliktig i Norge?</a><a class="sp-relchip" href="../../sporsmal/er-diett-og-reisegodtgjorelse-skattefritt/">Er diett og reisegodtgjørelse skattefritt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
