@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem regnes som nabo etter loven? — Rettsregel</title>
+<meta name="description" content="Etter naboloven forstås "nabo" mye videre enn bare den som bor rett ved siden av deg.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-regnes-som-nabo-etter-loven/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem regnes som nabo etter loven?">
+<meta property="og:description" content="Etter naboloven forstås "nabo" mye videre enn bare den som bor rett ved siden av deg.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-regnes-som-nabo-etter-loven/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem regnes som nabo etter loven?">
+<meta name="twitter:description" content="Etter naboloven forstås "nabo" mye videre enn bare den som bor rett ved siden av deg.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hvem regnes som nabo etter loven?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Etter naboloven forstås "nabo" mye videre enn bare den som bor rett ved siden av deg. Det er ikke et krav at eiendommene grenser inntil hverandre. Alle som blir berørt av det som skjer på en eiendom, kan regnes som naboer i lovens forstand (grannelova § 2). Dette er viktigere enn mange tror.</p>
+  <p class="sp-kilde">Bygger på Naboloven § 2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/2/" class="related-card">
+  <div class="related-card-meta">Naboloven § 2</div>
+  <div class="related-card-title">Grensen for urimelig skade og ulempe</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Etter naboloven forstås "nabo" mye videre enn bare den som bor rett ved siden av deg. Det er ikke et krav at eiendommene grenser inntil hverandre. Alle som blir berørt av det som skjer på en eiendom, kan regnes som naboer i lovens forstand (grannelova § 2). Dette er viktigere enn mange tror.</p>
+<h3>Ikke bare den nærmeste</h3>
+<p>Mange tenker at "nabo" betyr huset på den andre siden av hekken. Men loven har et videre begrep. Hvis du blir rammet av noe, kan du være nabo selv om det er flere hus mellom deg og kilden til plagen.</p>
+<p>Tenk på en bedrift som slipper ut sterk lukt. Lukten kan bæres med vinden flere hundre meter. Da kan også de som bor et godt stykke unna være naboer i lovens forstand, fordi de faktisk blir berørt. Det avgjørende er ikke avstanden, men om eiendommen din påvirkes av det som skjer.</p>
+<h3>Et eksempel som viser bredden</h3>
+<p>Et pukkverk starter opp i en dal. Støyen og støvet sprer seg over et stort område. Marit bor like ved og er åpenbart nabo. Men også Geir, som bor lenger nede i dalen og får støv på bilen og lyd inn på terrassen, kan regnes som nabo. Begge kan i prinsippet bruke naboloven, fordi begge eiendommene blir berørt av virksomheten.</p>
+<h3>Hvem kan bruke loven?</h3>
+<p>Det er som regel den som har en eierinteresse eller bruksinteresse i den berørte eiendommen som kan reise sak. Dette betyr typisk:</p>
+<ul>
+<li><strong>Eieren</strong> av en eiendom som rammes.</li>
+<li><strong>Leietakere og festere</strong> kan etter omstendighetene også ha rettigheter, fordi de faktisk bruker og bor på eiendommen som berøres.</li>
+<li><strong>Sameiere og andelseiere</strong> i borettslag kan ha interesser, ofte gjennom fellesskapet, men også som beboere.</li>
+</ul>
+<p>Det springende punktet er at du har en reell tilknytning til den eiendommen som blir påvirket av plagen.</p>
+<h3>Hvem kan være den "skyldige" naboen?</h3>
+<p>På samme måte er det ikke bare grunneieren ved siden av som kan bli ansvarlig. Den som faktisk har, gjør eller setter i verk det som plager – "har, gjer eller set i verk" som loven sier – kan bli ansvarlig. Det kan være eieren, men også en leietaker eller en virksomhet som driver på eiendommen. Hvis et firma leier en tomt og driver støyende virksomhet der, er det firmaet som står for plagen, og som du må forholde deg til.</p>
+<h3>Hvorfor det vide nabobegrepet er nyttig for deg</h3>
+<p>Dette vide begrepet er godt nytt hvis du blir plaget av noe et stykke unna. Du trenger ikke gi opp bare fordi kilden ikke ligger rett ved gjerdet ditt. Sara plages av en sterk lyssetting fra et idrettsanlegg to kvartaler bortenfor, som lyser inn på soverommet. Selv om anlegget ikke er hennes nærmeste nabo, kan hun likevel ha en sak etter naboloven, fordi eiendommen hennes faktisk blir berørt.</p>
+<h3>Praktisk: slik finner du ut om du er nabo i lovens forstand</h3>
+<ol>
+<li>Blir eiendommen din faktisk berørt av plagen? (Ikke bare deg som person.)</li>
+<li>Har du en eier- eller brukstilknytning til denne eiendommen?</li>
+<li>Kan du peke på hvem som har, gjør eller setter i verk det som plager?</li>
+</ol>
+<p>Svarer du ja på disse, er du sannsynligvis nabo i naboloven sin forstand, uansett avstand.</p>
+<h3>Når flere naboer rammes sammen</h3>
+<p>Ofte er det ikke bare én nabo som plages, men en hel rekke av dem. Et eksempel: en ny travbane eller et utested åpner, og lyd og lys sjenerer mange boliger i nabolaget. Da kan flere naboer i prinsippet ha hver sin sak, og de kan velge å stå sammen. Å gå sammen har flere fordeler. Det blir lettere å dokumentere at plagen er reell og omfattende, kostnadene kan deles, og det veier ofte tyngre at mange uavhengige naboer opplever det samme.</p>
+<p>Tenk på en gate der ti husstander alle merker den samme nattlige støyen fra et nyåpnet verksted. Hver enkelt er nabo i lovens forstand, men når de samler loggene sine, blir bildet av en urimelig ulempe mye tydeligere enn om bare én klaget alene.</p>
+<h3>En vanlig misforståelse om "nabo"</h3>
+<p>Mange tror at man må eie hus for å være nabo etter loven. Det er ikke helt presist. Det avgjørende er tilknytningen til en eiendom som berøres. En leietaker som faktisk bor og lever i en bolig som rammes av plagen, kan etter omstendighetene også ha en interesse å verne. Samtidig er det ofte eieren som formelt fremmer krav om retting eller erstatning, særlig når det gjelder skade på selve eiendommen. Er du leietaker og plages, er et godt første steg å snakke med utleieren din, slik at dere kan vurdere saken sammen.</p>
+<p>Poenget er uansett at "nabo" skal forstås romslig. Loven er laget for å beskytte dem som faktisk berøres – ikke for å stenge folk ute på grunn av en streng tolkning av hvem som er "nær nok".</p>
+<h3>Hva med naboer du deler vegg, gjerde eller mur med?</h3>
+<p>Mange av de vanligste konfliktene oppstår mellom dem som deler noe fysisk: en felles vegg i et rekkehus, et gjerde langs grensa, eller en støttemur mellom to tomter. Her er begge parter naboer i lovens forstand, og begge har et ansvar for ikke å påføre den andre urimelig eller unødvendig ulempe. Hvis Ole borer og banker i den felles veggen til alle døgnets tider, eller lar gjerdet forfalle slik at det blir til skade for naboen, er vi midt i nabolovens kjerneområde.</p>
+<p>Det er greit å vite at det også finnes egne regler om felles gjerder og om vedlikehold av slikt som deles. Men grunntanken er den samme overalt: den som har, gjør eller setter i verk noe som rammer den andre over tålegrensen, kan møtes med krav.</p>
+<h3>Slik finner du ut hvem du skal forholde deg til</h3>
+<p>Når du har en plage, er et praktisk spørsmål: hvem retter jeg kravet mot? Som regel er det den som faktisk står bak plagen og kan gjøre noe med den. Er det eieren som har bygget muren? Er det leietakeren som driver den støyende virksomheten? Er det et firma som er hyret inn? Bruk litt tid på å finne den rette adressaten, for et krav rettet mot feil person kommer sjelden langt. Er du i tvil, kan du ofte starte med grunneieren, som uansett har et ansvar for hva som skjer på eiendommen.</p>
+<h3>Kort oppsummert</h3>
+<p>"Nabo" i naboloven er et vidt begrep. Det er ikke bare den nærmeste eller den som grenser til deg – alle som faktisk blir berørt av plagen, kan være naboer (grannelova § 2). Både eiere, leietakere og festere kan ha rettigheter, og både eier og bruker kan bli ansvarlig for plagen. Det avgjørende er ikke avstand, men om eiendommen din påvirkes av det som skjer.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-mekling-i-nabosaker/">Bør jeg bruke mekling i nabosaker?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ta-nabokonflikten-til-forliksradet/">Bør jeg ta nabokonflikten til forliksrådet?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-nabotvist/">Dekker forsikringen min advokat i en nabotvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

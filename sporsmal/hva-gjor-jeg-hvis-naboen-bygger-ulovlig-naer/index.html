@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva gjør jeg hvis naboen bygger ulovlig nær grensen? — Rettsregel</title>
+<meta name="description" content="Hvis naboen bygger noe ulovlig – uten tillatelse, eller for nær grensen din – kan du varsle kommunen. Kommunen er bygningsmyndighet og kan gi naboen…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-naboen-bygger-ulovlig-naer/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva gjør jeg hvis naboen bygger ulovlig nær grensen?">
+<meta property="og:description" content="Hvis naboen bygger noe ulovlig – uten tillatelse, eller for nær grensen din – kan du varsle kommunen. Kommunen er bygningsmyndighet og kan gi naboen…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-gjor-jeg-hvis-naboen-bygger-ulovlig-naer/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva gjør jeg hvis naboen bygger ulovlig nær grensen?">
+<meta name="twitter:description" content="Hvis naboen bygger noe ulovlig – uten tillatelse, eller for nær grensen din – kan du varsle kommunen. Kommunen er bygningsmyndighet og kan gi naboen…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva gjør jeg hvis naboen bygger ulovlig nær grensen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Hvis naboen bygger noe ulovlig – uten tillatelse, eller for nær grensen din – kan du varsle kommunen. Kommunen er bygningsmyndighet og kan gi naboen pålegg om å rette eller rive det ulovlige. Du trenger ikke ta saken til retten selv først; det offentlige har ansvar for å følge opp ulovlige byggetiltak.</p>
+  <p class="sp-kilde">Bygger på Naboloven § 10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/10/" class="related-card">
+  <div class="related-card-meta">Naboloven § 10</div>
+  <div class="related-card-title">Retten til å få ulovlige ting fjernet eller rettet</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Hva regnes som "ulovlig nær grensen"?</h3>
+<p>Hovedregelen i plan- og bygningsloven § 29-4 er at en bygning skal plasseres minst fire meter fra nabogrensen, med mindre noe annet følger av reguleringsplan, eller kommunen har gitt tillatelse til nærmere plassering. Naboen kan også samtykke skriftlig til at det bygges nærmere. Hvis naboen din setter opp en garasje halvannen meter fra grensen uten verken kommunens tillatelse eller ditt samtykke, kan det være ulovlig.</p>
+<p>To ting kan gjøre et byggetiltak ulovlig:</p>
+<ol>
+<li><strong>Mangel på tillatelse.</strong> Naboen bygde noe søknadspliktig uten å søke kommunen.</li>
+<li><strong>Feil plassering.</strong> Tiltaket står nærmere grensen enn loven eller reguleringsplanen tillater.</li>
+</ol>
+<h3>Steg for steg: slik går du fram</h3>
+<ol>
+<li><strong>Snakk med naboen først.</strong> Det høres kanskje overflødig ut, men mange "ulovligheter" skyldes uvitenhet. Kanskje naboen trodde boden var unntatt søknad. Et eksempel: Lise oppdaget at naboen Terje støpte fundament rett ved grensen. Hun gikk bort og spurte vennlig, og det viste seg at Terje rett og slett hadde målt feil. Han flyttet fundamentet, og saken var løst – uten konflikt og uten kommunen.</li>
+<li><strong>Sjekk fakta.</strong> Be om innsyn i byggesaken hos kommunen. Har naboen fått tillatelse? Hvor går egentlig grensen? Bestill eventuelt en grenseoppgang fra Kartverket eller kommunen hvis grensen er uklar.</li>
+<li><strong>Send skriftlig melding til kommunen.</strong> Hvis det fortsatt ser ulovlig ut, send en melding til byggesaksavdelingen. Beskriv hva som bygges, hvor, og hvorfor du mener det er ulovlig. Legg gjerne ved bilder og kart.</li>
+<li><strong>La kommunen behandle saken.</strong> Kommunen kan be naboen redegjøre, og vurderer om tiltaket er ulovlig. Er det det, kan kommunen gi pålegg om retting eller riving, og i siste instans ilegge tvangsmulkt (en daglig bot) til naboen retter seg.</li>
+</ol>
+<h3>Hva kan kommunen gjøre?</h3>
+<p>Kommunen har flere virkemidler. De kan stanse arbeidet mens saken undersøkes, kreve at naboen søker i ettertid, gi pålegg om retting, og hvis det ulovlige ikke kan godkjennes, kreve at det fjernes. Tvangsmulkt og overtredelsesgebyr er pressmidler kommunen kan bruke.</p>
+<p>Et eksempel: Naboen til Geir bygde en stor levegg tett på grensen uten å søke. Geir varslet kommunen. Kommunen fant at leveggen var søknadspliktig og sto for nær. Naboen fikk pålegg om å søke i ettertid. Søknaden ble avslått fordi leveggen brøt avstandskravet, og naboen måtte rive den.</p>
+<h3>Hva med privatrettslige forhold?</h3>
+<p>Ved siden av plan- og bygningsloven finnes grannelova. Hvis en bygning ulovlig står delvis på din eiendom, gir grannelova § 10 deg som nabo en rett til å kreve retting eller fjerning. Det finnes en sikkerhetsventil: Hvis rettingen ville koste urimelig mye sammenlignet med nytten, og det ikke er noe særlig å bebreide byggeren, kan retting unntaksvis slippes – men da har du krav på erstatning. Dette er en privatrettslig sak mellom deg og naboen, og kan til slutt avgjøres i retten eller ved granneskjønn (en egen rettslig vurdering mellom naboer).</p>
+<h3>Hva bør du IKKE gjøre?</h3>
+<ul>
+<li><strong>Ikke ta saken i egne hender.</strong> Du kan ikke rive naboens byggverk selv, selv om det står på din side. Det kan gjøre deg erstatningsansvarlig.</li>
+<li><strong>Ikke vent for lenge.</strong> Jo tidligere du sier fra, jo lettere er det å stanse eller rette. Når garasjen først står ferdig, blir det dyrere og mer konfliktfylt å få den fjernet.</li>
+</ul>
+<h3>Hvordan finne ut hvor grensen faktisk går</h3>
+<p>Mange nabokrangler om "for nær grensen" bunner i at ingen vet nøyaktig hvor grensen ligger. Gamle gjerder og hekker står ikke alltid på grensen. Før du anklager naboen for å bygge ulovlig, bør du derfor være sikker på hvor grensen faktisk er. Slik finner du ut av det:</p>
+<ol>
+<li><strong>Sjekk eiendomskartet.</strong> På kommunens karttjenester eller hos Kartverket kan du se grensene slik de er registrert.</li>
+<li><strong>Be om grensepåvisning.</strong> Kommunen eller en oppmålingsingeniør kan måle opp og merke grensen i terrenget.</li>
+<li><strong>Se etter grensemerker.</strong> Mange tomter har offisielle grensemerker (bolter eller rør) i bakken.</li>
+</ol>
+<p>Et eksempel: Helene var sikker på at naboen bygde over grensen, men en grensepåvisning viste at grensen faktisk lå en meter lenger inn på det Helene trodde var hennes side. Naboens bygg sto lovlig. Slik unngår man å starte en konflikt på feil grunnlag.</p>
+<h3>Hva koster det deg å varsle kommunen?</h3>
+<p>Det er gratis å melde fra til kommunen om et mulig ulovlig tiltak, og du trenger ikke advokat for å gjøre det. Kommunen har plikt til å følge opp ulovligheter. Det er først hvis du i tillegg vil forfølge et privatrettslig krav etter grannelova – for eksempel om en bygning står delvis på din tomt – at det kan bli aktuelt med juridisk hjelp og eventuelt rettssak eller granneskjønn.</p>
+<h3>Skille mellom offentlig og privat spor</h3>
+<p>Det er nyttig å forstå at du her har to spor å spille på, og at de fungerer parallelt. Det offentlige sporet handler om plan- og bygningsloven: Du melder fra til kommunen, og kommunen bruker sin myndighet til å stoppe eller rette ulovligheter. Det private sporet handler om grannelova: Det dreier seg om ditt forhold til naboen som privatpersoner, der du kan kreve retting eller erstatning direkte. Et eksempel: Naboen til Camilla bygde en garasje delvis inn på Camillas tomt uten tillatelse. Camilla varslet kommunen (offentlig spor), som ga pålegg fordi tiltaket var ulovlig. Samtidig kunne hun, etter grannelova § 10, kreve at den delen som sto på hennes grunn ble fjernet (privat spor). De to sporene utfyller hverandre.</p>
+<h3>Tålmodighet og dokumentasjon vinner</h3>
+<p>I slike saker er ryddig dokumentasjon din beste venn. Ta vare på all korrespondanse med naboen og kommunen, ta daterte bilder underveis, og noter når ting skjedde. Hvis saken til slutt havner hos kommunen eller i en rettslig vurdering, er det den som har orden i papirene som står sterkest. Hold tonen saklig hele veien – sinte meldinger og trusler svekker din egen sak og gjør naboforholdet verre enn det trenger å være.</p>
+<h3>Kort oppsummert</h3>
+<p>Bygger naboen ulovlig eller for nær grensen (avstandskravet i plan- og bygningsloven § 29-4 er normalt fire meter), kan du varsle kommunen, som kan gi pålegg om retting eller riving. Snakk med naboen først, sjekk fakta og grenser, og send skriftlig melding til kommunen hvis det fortsatt er ulovlig. Står en bygning delvis på din tomt, gir grannelova § 10 deg rett til å kreve retting. Ikke riv noe selv.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-er-en-grad-av-utnytting-pa-tomta/">Hva er en grad av utnytting på tomta?</a><a class="sp-relchip" href="../../sporsmal/hva-er-en-grensegjerdeavtale/">Hva er en grensegjerdeavtale?</a><a class="sp-relchip" href="../../sporsmal/hva-er-forskjellen-pa-regulert-og-uregulert-tomt/">Hva er forskjellen på regulert og uregulert tomt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

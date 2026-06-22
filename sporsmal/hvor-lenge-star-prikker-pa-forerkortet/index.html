@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor lenge står prikker på førerkortet? — Rettsregel</title>
+<meta name="description" content="En prikk står i 3 år.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-lenge-star-prikker-pa-forerkortet/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor lenge står prikker på førerkortet?">
+<meta property="og:description" content="En prikk står i 3 år.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-lenge-star-prikker-pa-forerkortet/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor lenge står prikker på førerkortet?">
+<meta name="twitter:description" content="En prikk står i 3 år.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hvor lenge står prikker på førerkortet?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En prikk står i 3 år. Tiden regnes fra datoen for selve overtredelsen, ikke fra datoen du vedtok boten eller fikk dommen. Etter tre år faller prikken bort av seg selv, og den teller ikke lenger med mot grensen på 8 prikker. Sjekk politiet.no for gjeldende regler.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>En prikk står i 3 år. Tiden regnes fra datoen for selve overtredelsen, ikke fra datoen du vedtok boten eller fikk dommen. Etter tre år faller prikken bort av seg selv, og den teller ikke lenger med mot grensen på 8 prikker. Sjekk politiet.no for gjeldende regler.</p>
+<h3>Tre år – men fra når?</h3>
+<p>Mange tror prikken begynner å løpe den dagen de betaler boten. Det er feil, og det er faktisk en fordel for deg. Prikken regnes fra <strong>overtredelsesdatoen</strong> – altså den dagen du faktisk kjørte for fort eller gjorde feilen. Det betyr at tiden begynner å løpe med en gang, selv om saksbehandlingen tar tid.</p>
+<p>Eksempel:</p>
+<ul>
+<li><strong>Thomas</strong> kjørte for fort 10. mars 2026. Selv om forelegget først ble vedtatt i mai 2026, regnes prikkene fra 10. mars 2026. De faller bort 10. mars 2029.</li>
+</ul>
+<h3>Et glidende vindu</h3>
+<p>Prikksystemet fungerer som et glidende vindu på 3 år. Hele tiden teller systemet sammen prikkene du har fått de siste tre årene. Eldre prikker "renner ut" i den ene enden mens nye kan komme inn i den andre.</p>
+<ul>
+<li><strong>Lise</strong> fikk 3 prikker i januar 2024 og 3 prikker i februar 2026. I februar 2026 har hun 6 aktive prikker. Men i januar 2027 faller de tre eldste bort, og hun er nede i 3 igjen.</li>
+</ul>
+<p>Dette betyr i praksis at det skal litt til å nå 8 prikker, fordi du må samle dem innenfor det samme treårsvinduet. To prikker fra for fire år siden teller ikke lenger.</p>
+<h3>Hva med registreringen?</h3>
+<p>Selv om overtredelsesdatoen avgjør når prikken <strong>forsvinner</strong>, blir prikken først <strong>registrert</strong> etter at saken er endelig avgjort (vedtatt forelegg eller dom). Det kan derfor gå litt tid før prikken dukker opp i systemet – men sluttdatoen er likevel knyttet til selve overtredelsen, ikke til når den ble registrert.</p>
+<h3>Hvis du nekter å vedta</h3>
+<p>Nekter du å vedta forelegget og saken faller bort, blir det ingen prikker i det hele tatt. Vinner politiet saken i retten, regnes prikkene fortsatt fra overtredelsesdatoen. Det betyr at en lang rettsprosess ikke "forlenger" prikkene dine – treårsfristen løper uansett fra dagen du kjørte for fort.</p>
+<h3>Etter at en prikk faller bort</h3>
+<p>Når en prikk faller bort, forsvinner den helt fra tellingen. Den kan ikke "vekkes til live" senere. Hvis du for eksempel hadde 7 prikker og to av dem faller bort, er du nede i 5 og har god margin igjen. Du trenger ikke gjøre noe selv for at en prikk skal falle bort – det skjer automatisk når det har gått tre år.</p>
+<h3>Hva med selve boten?</h3>
+<p>Husk at det er prikken som har en treårsgrense. Selve fartsboten har du betalt for lengst, og den kommer ikke tilbake. Det er heller ingen "tilbakebetaling" eller belønning for å holde deg unna nye prikker – fordelen er rett og slett at telleren din synker etter hvert som de gamle prikkene renner ut.</p>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Noter overtredelsesdatoene dine.</strong> Det er disse som avgjør når prikkene forsvinner.</li>
+<li><strong>Regn tre år frem.</strong> Da vet du nøyaktig når en prikk faller bort.</li>
+<li><strong>Vær tålmodig hvis du er nær grensen.</strong> Noen ganger lønner det seg å kjøre ekstra forsiktig en periode til de eldste prikkene renner ut.</li>
+<li><strong>Sjekk din egen status.</strong> Du kan få oversikt over aktive prikker via politiet/Statens vegvesen.</li>
+</ol>
+<h3>Hvorfor regnes det fra overtredelsesdatoen?</h3>
+<p>Det kan virke teknisk, men logikken er enkel og rettferdig: Du skal ikke straffes ekstra fordi politiet eller domstolene bruker lang tid på saksbehandlingen. Hadde prikken begynt å løpe først når saken var avgjort, ville en treg behandling i praksis forlenget straffen din. Ved å knytte treårsfristen til selve handlingen, sikrer systemet at alle behandles likt uansett hvor lang saksgang de havner i.</p>
+<h3>Hva om jeg får flere prikker på ulike datoer?</h3>
+<p>Hver prikk har sin egen "utløpsdato" tre år etter sin overtredelse. Det betyr at prikkene dine ikke faller bort alle på én gang – de forsvinner én etter én etter hvert som tre år er gått fra hver enkelt hendelse.</p>
+<ul>
+<li><strong>Eksempel:</strong> <strong>Yngve</strong> fikk 2 prikker 1. juni 2025 og 3 prikker 1. desember 2025. De to første faller bort 1. juni 2028, og de tre neste 1. desember 2028. Mellom disse datoene synker telleren hans trinnvis.</li>
+</ul>
+<h3>Et godt tankebilde</h3>
+<p>Se for deg prikkene som varer på et transportbånd. Hver prikk legges på når du gjør en overtredelse, og glir sakte mot enden av båndet. Etter nøyaktig tre år faller den av kanten og er borte. Du trenger aldri å løfte den av selv – det skjer automatisk. Det eneste du styrer, er hvor mange du legger på, og hvor tett.</p>
+<h3>Hva med doblede prikker i prøveperioden – hvor lenge står de?</h3>
+<p>Er du fersk fører, registreres prikkene dobbelt, men de står like lenge som vanlige prikker: tre år fra overtredelsesdatoen. Doblingen påvirker altså <em>antallet</em>, ikke <em>varigheten</em>. Får du to prikker som dobles til fire, faller alle fire bort samtidig tre år etter overtredelsen. Når prøveperioden din er over (etter to sammenhengende år med førerkort for bil), slutter nye prikker å dobles – men prikker du allerede har fått doblet, beholder antallet sitt ut treårsperioden.</p>
+<h3>Praktisk: slik regner du ut "frigjøringsdatoen"</h3>
+<ol>
+<li><strong>Finn overtredelsesdatoen</strong> på forelegget eller dommen.</li>
+<li><strong>Legg til tre år.</strong> Det er datoen prikken faller bort.</li>
+<li><strong>Gjenta for hver prikk</strong> du har, siden de har ulike datoer.</li>
+<li><strong>Se hvilken som er først ute.</strong> Da vet du når telleren din begynner å synke.</li>
+</ol>
+<p>Et lite tips: Noter datoene i kalenderen din. Da slipper du å gjette, og du vet nøyaktig når du igjen har god margin.</p>
+<h3>Hvorfor er det greit å vite dette?</h3>
+<p>Fordi kunnskap om treårsregelen gir deg kontroll. I stedet for å gå rundt og være usikker på "hvor ille det står til", kan du regne ut akkurat hvor mange aktive prikker du har til enhver tid, og når de eldste forsvinner. Det gjør det lettere å ta gode valg – for eksempel å kjøre ekstra forsiktig en kort periode til en gammel prikk renner ut, slik at du ikke risikerer å tippe over grensen.</p>
+<h3>Kort oppsummert</h3>
+<p>En prikk står i 3 år, regnet fra datoen for overtredelsen – ikke fra du betalte eller vedtok boten. Systemet er et glidende treårsvindu der eldre prikker faller bort og nye kommer til. Når en prikk forsvinner, er den borte for godt og kan ikke vekkes til live igjen. Sjekk dine egne prikker og bekreft reglene på politiet.no.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

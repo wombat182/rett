@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er de vanligste nabokonfliktene? — Rettsregel</title>
+<meta name="description" content="De fleste nabokonflikter handler om noen få, gjengangere: trær, hekk og sol; støy; gjerder og grenser; parkering; dyr; og vann. Det er ikke tilfeldig –…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-de-vanligste-nabokonfliktene/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er de vanligste nabokonfliktene?">
+<meta property="og:description" content="De fleste nabokonflikter handler om noen få, gjengangere: trær, hekk og sol; støy; gjerder og grenser; parkering; dyr; og vann. Det er ikke tilfeldig –…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-de-vanligste-nabokonfliktene/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er de vanligste nabokonfliktene?">
+<meta name="twitter:description" content="De fleste nabokonflikter handler om noen få, gjengangere: trær, hekk og sol; støy; gjerder og grenser; parkering; dyr; og vann. Det er ikke tilfeldig –…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva er de vanligste nabokonfliktene?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>De fleste nabokonflikter handler om noen få, gjengangere: trær, hekk og sol; støy; gjerder og grenser; parkering; dyr; og vann. Det er ikke tilfeldig – det er nettopp her vi bor tett opp i hverandre og lett tråkker hverandre på tærne. Den gode nyheten er at akkurat fordi de er så vanlige, finnes det velprøvde måter å løse dem på. Her er oversikten, med eksempler og praktiske råd for hver type.</p>
+  <p class="sp-kilde">Bygger på Naboloven § 10 og § 9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/10/" class="related-card">
+  <div class="related-card-meta">Naboloven § 10</div>
+  <div class="related-card-title">Retten til å få ulovlige ting fjernet eller rettet</div>
+</a><a href="../../lover/naboloven/9/" class="related-card">
+  <div class="related-card-meta">Naboloven § 9</div>
+  <div class="related-card-title">Erstatning hvis du skader naboens eiendom</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>De fleste nabokonflikter handler om noen få, gjengangere: <strong>trær, hekk og sol; støy; gjerder og grenser; parkering; dyr; og vann.</strong> Det er ikke tilfeldig – det er nettopp her vi bor tett opp i hverandre og lett tråkker hverandre på tærne. Den gode nyheten er at akkurat fordi de er så vanlige, finnes det velprøvde måter å løse dem på. Her er oversikten, med eksempler og praktiske råd for hver type.</p>
+<h3>1. Trær, hekk og sol</h3>
+<p>Dette er kanskje den aller vanligste kilden til nabokrangel. Trær og hekker som vokser seg høye stenger sola, kaster skygge over uteplassen, slipper løv og kongler inn i nabohagen, eller sender røtter inn under terrassen.</p>
+<p>Eksempel: Grete har en stor bjørk som har vokst seg så høy at naboen Tom mister all ettermiddagssol på terrassen om sommeren. Tom føler seg snytt for sommerkveldene sine.</p>
+<p>Råd: Snakk sammen om beskjæring eller felling, og tilby gjerne å dele kostnaden. Dokumenter solforholdene med bilder over tid. Husk: Du kan ikke bare kappe naboens tre selv – men du kan kreve retting hvis treet er urimelig til ulempe (grannelova § 10). For grener og røtter som vokser inn på din tomt finnes en egen, snever regel om at du kan fjerne dem etter varsel og rimelig frist.</p>
+<h3>2. Støy</h3>
+<p>Bråk er en klassiker: høy musikk, fester til langt på natt, bjeffende hunder, oppussing tidlig om morgenen, eller en durende varmepumpe.</p>
+<p>Eksempel: Familien over Sondre har fest annenhver helg, med dunkende bass til kl. 03. Sondre får ikke sove og er sliten på jobb.</p>
+<p>Råd: Litt støy må alle tåle – men vedvarende, unødvendig støy kan gå over tålegrensen. Før en nabologg med dato og klokkeslett, og gjør gjerne lydopptak fra egen bolig. Bor du i borettslag eller sameie, sjekk husordensreglene – de har ofte regler om ro etter et bestemt klokkeslett. Ta en vennlig prat først; mange vet ikke at de plager andre.</p>
+<h3>3. Gjerder og grenser</h3>
+<p>Hvor går egentlig grensen? Hvem skal vedlikeholde gjerdet? Kan naboen sette opp en to meter høy planke rett mot vinduet ditt? Slike spørsmål skaper mye gnisning.</p>
+<p>Eksempel: Mona setter opp et nytt gjerde som Frank mener står 30 cm inne på hans eiendom. Frank vil ha det flyttet.</p>
+<p>Råd: Finn fram eiendomspapirene og eventuelt et kart fra kommunen (matrikkelen) for å se hvor grensen faktisk går. Er dere uenige om selve grensen, kan en oppmåling være nødvendig. Naboloven har egne regler om gjerdehold, og gjerdeloven (grannegjerdelova) regulerer mye av dette. Snakk sammen før noen setter spaden i jorda – det forebygger mye.</p>
+<h3>4. Parkering</h3>
+<p>Tett bebyggelse og få parkeringsplasser gir mange konflikter: naboen parkerer foran din innkjørsel, på fellesarealet, eller på en plass du mener er din.</p>
+<p>Eksempel: Naboens besøk parkerer stadig slik at Hilde ikke kommer ut av sin egen garasje.</p>
+<p>Råd: Vær tydelig og vennlig: "Hei, det blir vanskelig for meg å komme ut når det står bil her – kan dere parkere litt lenger bort?" Er det snakk om felles parkering i et sameie, ta det opp med styret. Står biler ulovlig på offentlig vei, kan det være kommunen eller politiet som håndhever, ikke naboloven.</p>
+<h3>5. Dyr</h3>
+<p>Hunder som bjeffer eller gjør fra seg i nabohagen, katter som bruker bedet som toalett, eller høner og andre dyr som lager lyd og lukt – dyr skaper sterke følelser.</p>
+<p>Eksempel: Naboens katt graver stadig opp frøbedet til Olav og bruker det som do.</p>
+<p>Råd: Ta det opp rolig – mange dyreeiere ønsker virkelig ikke å være til bry. For hunder gjelder også egne regler (hundeloven) om båndtvang og forsvarlig hold. Vedvarende, urimelig sjenanse fra dyrehold kan gå over tålegrensen i naboloven. Dokumenter, og forsøk dialog før du går videre.</p>
+<h3>6. Vann og fukt</h3>
+<p>Vann som ledes feil vei, en oppfylt tomt som sender regnvann inn til naboen, tett drenering eller en terrasse som skaper oversvømmelse – vannproblemer kan gi reelle skader og dyre reparasjoner.</p>
+<p>Eksempel: Naboen fyller opp tomta si og legger asfalt, slik at alt regnvann nå renner ned i kjelleren til Kari.</p>
+<p>Råd: Dette er ofte saker der <strong>faglig dokumentasjon</strong> er avgjørende. Hent en byggteknisk fagperson som kan vurdere årsaken. Ta bilder under regnvær. Forårsaker naboens tiltak skade hos deg, kan du både kreve retting (§ 10) og erstatning for tapet (§ 9).</p>
+<h3>Det går igjen i alle: dialog, dokumentasjon, mekling</h3>
+<p>Uansett type konflikt er oppskriften ganske lik:</p>
+<ol>
+<li><strong>Snakk med naboen først</strong>, vennlig og saklig. De fleste vil gjerne ha et godt naboforhold.</li>
+<li><strong>Dokumenter</strong> – logg, bilder, video, lydopptak og skriftlig kontakt.</li>
+<li><strong>Send et konkret, skriftlig krav</strong> hvis praten ikke hjelper.</li>
+<li><strong>Bruk konfliktrådets gratis mekling</strong> før du tenker på domstol.</li>
+<li><strong>Hold tonen vennlig</strong> hele veien – du skal fortsatt bo der i morgen.</li>
+</ol>
+<h3>En blandet sak: når flere problemer hoper seg opp</h3>
+<p>I virkeligheten kommer konfliktene ofte i klynger. Det starter kanskje med en bil som sperrer innkjørselen, så irriterer man seg over hekken, og plutselig er hver minste lyd en provokasjon. Når småting får bygge seg opp, blir naboforholdet betent, og da tolker vi alt naboen gjør i verste mening.</p>
+<p>Eksempel: Bjørg og naboen hennes Knut har egentlig bare ett reelt problem – en varmepumpe som durer. Men fordi de aldri tok praten, har irritasjonen smittet over på alt annet: parkeringen, gjerdet, til og med hvordan Knut hilser. Da Bjørg endelig tar opp varmepumpa rolig, viser det seg at det meste av "konflikten" forsvinner når den ene konkrete tingen blir løst.</p>
+<p>Lærdommen: Ta tak i ting tidlig, mens det fortsatt bare er én liten ting. Da slipper du at det vokser til en mur av gjensidig irritasjon.</p>
+<h3>Forebygging: slik unngår du de vanligste konfliktene</h3>
+<ul>
+<li><strong>Bli kjent med naboen.</strong> Det er mye vanskeligere å bli sur på noen du hilser på og kjenner litt.</li>
+<li><strong>Si fra om dine egne planer.</strong> Skal du pusse opp, ha fest, eller felle et tre? Et lite varsel på forhånd skaper goodwill.</li>
+<li><strong>Spør før du antar.</strong> Tror du naboens katt herjer i bedet ditt? Spør vennlig før du blir sint.</li>
+<li><strong>Kjenn husordensreglene</strong> hvis du bor i borettslag eller sameie – mange konflikter er regulert der.</li>
+<li><strong>Vær raus.</strong> Litt sjenanse må alle tåle, og det gjelder begge veier. En romslig holdning gjør hverdagen lettere for alle.</li>
+</ul>
+<h3>Hvorfor det lønner seg å bevare naboforholdet</h3>
+<p>Det er fristende å gå i skyttergraven når man føler seg urettferdig behandlet. Men husk at en nabo du har et levelig forhold til, er verdt mye: dere passer på hverandres hus, låner sukker, og hjelper hverandre i en kli. Selv om du har en god sak, taper du ofte på å vinne hardt. Den klokeste veien er nesten alltid den vennlige.</p>
+<h3>Kort oppsummert</h3>
+<p>De vanligste nabokonfliktene handler om <strong>trær/hekk/sol, støy, gjerder/grenser, parkering, dyr og vann</strong>. For alle gjelder den samme oppskriften: snakk sammen først, dokumenter godt, still et konkret skriftlig krav om nødvendig, og bruk konfliktrådets gratis mekling før domstol. Bryter naboen naboloven, kan du kreve retting (§ 10) og erstatning (§ 9) – men en vennlig tone er fortsatt din beste allierte.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-mekling-i-nabosaker/">Bør jeg bruke mekling i nabosaker?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ta-nabokonflikten-til-forliksradet/">Bør jeg ta nabokonflikten til forliksrådet?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-nabotvist/">Dekker forsikringen min advokat i en nabotvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

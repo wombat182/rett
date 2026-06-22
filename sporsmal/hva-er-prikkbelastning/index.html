@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er prikkbelastning? — Rettsregel</title>
+<meta name="description" content="Prikkbelastning er et system der visse trafikkovertredelser gir deg "prikker" på førerkortet i tillegg til en bot.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-prikkbelastning/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er prikkbelastning?">
+<meta property="og:description" content="Prikkbelastning er et system der visse trafikkovertredelser gir deg "prikker" på førerkortet i tillegg til en bot.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-prikkbelastning/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er prikkbelastning?">
+<meta name="twitter:description" content="Prikkbelastning er et system der visse trafikkovertredelser gir deg "prikker" på førerkortet i tillegg til en bot.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hva er prikkbelastning?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Prikkbelastning er et system der visse trafikkovertredelser gir deg "prikker" på førerkortet i tillegg til en bot. Tanken er at den som gjentatte ganger bryter viktige regler, til slutt mister førerkortet selv om hver enkelt overtredelse ikke er grov nok alene. Du får 2 eller 3 prikker per overtredelse, og 8 prikker innen 3 år gir tap av førerretten i 6 måneder. Sjekk politiet.no for gjeldende reg</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Prikkbelastning er et system der visse trafikkovertredelser gir deg "prikker" på førerkortet i tillegg til en bot. Tanken er at den som gjentatte ganger bryter viktige regler, til slutt mister førerkortet selv om hver enkelt overtredelse ikke er grov nok alene. Du får 2 eller 3 prikker per overtredelse, og 8 prikker innen 3 år gir tap av førerretten i 6 måneder. Sjekk politiet.no for gjeldende regler.</p>
+<h3>Et "samlesystem" for gjentatte feil</h3>
+<p>Tenk på prikker som en slags advarselsteller. En enkelt fartsbot kan føles overkommelig, men hvis du stadig gjør de samme feilene, bygger prikkene seg opp. Systemet er laget for å fange opp førere som tar mange små sjanser – ikke bare den ene gangen noen kjører ekstremt fort. På den måten supplerer prikkene de vanlige bøtene: boten svir på lommeboka her og nå, mens prikkene følger deg over tid.</p>
+<p>Reglene står i "forskrift om prikkbelastning".</p>
+<h3>Hva gir prikker?</h3>
+<p>Det er ikke alle overtredelser som gir prikker, men flere av de vanligste gjør det:</p>
+<ul>
+<li><strong>Fart over grensen</strong> (mer enn 10 km/t over når grensen er 60 km/t eller lavere, og mer enn 15 km/t over når grensen er 70 km/t eller høyere).</li>
+<li><strong>Kjøring mot rødt lys.</strong></li>
+<li><strong>Ulovlig forbikjøring.</strong></li>
+<li><strong>Brudd på vikeplikt.</strong></li>
+<li><strong>For kort avstand til bilen foran.</strong></li>
+<li><strong>Brudd på reglene om bilbelte og sikring av barn.</strong></li>
+</ul>
+<p>Legg merke til at små fartsoverskridelser ikke gir prikker – du må over en viss grense. En liten overskridelse gir bare bot.</p>
+<h3>2 eller 3 prikker – hva avgjør?</h3>
+<p>For fart avhenger antall prikker av hvor mye over du kjørte:</p>
+<ul>
+<li><strong>2 prikker:</strong> Fartsoverskridelse på inntil 15 km/t over når grensen er 60 km/t eller lavere, eller inntil 20 km/t over når grensen er 70 km/t eller høyere.</li>
+<li><strong>3 prikker:</strong> Større overskridelser enn dette (men fortsatt under grensen for å miste lappen).</li>
+</ul>
+<p>Eksempler:</p>
+<ul>
+<li><strong>Silje</strong> kjørte 73 km/t i en 60-sone (13 km/t over). Hun fikk bot <strong>og</strong> 2 prikker.</li>
+<li><strong>Ola</strong> kjørte 78 km/t i en 60-sone (18 km/t over). Han fikk bot <strong>og</strong> 3 prikker.</li>
+<li><strong>Kari</strong> kjørte 102 km/t i en 80-sone (22 km/t over). Hun fikk bot <strong>og</strong> 3 prikker.</li>
+<li><strong>Trond</strong> kjørte 92 km/t i en 80-sone (12 km/t over). Det er under prikkgrensen på 15 km/t for 70-soner og høyere, så Trond fikk bare bot og ingen prikker.</li>
+</ul>
+<h3>Strengere i prøveperioden</h3>
+<p>Har du hatt førerkort for personbil i mindre enn to sammenhengende år, er du i den såkalte <strong>prøveperioden</strong>. Da teller hver prikk <strong>dobbelt</strong>. Det betyr at to overtredelser som hver gir 2 prikker (altså 4 reelle prikker, men doblet til 8) er nok til å miste lappen.</p>
+<ul>
+<li><strong>Emil</strong> fikk nettopp lappen. Han blir tatt for moderat fart to ganger og får 2 + 2 prikker, som dobles til 8. Dermed mister Emil førerretten – mens en mer erfaren fører ville hatt bare 4 prikker for det samme.</li>
+</ul>
+<h3>Når registreres prikkene?</h3>
+<p>Prikkene registreres av politiet <strong>etter at saken er endelig avgjort</strong> – enten fordi du vedtok forelegget, eller fordi du ble dømt. Hvis du nekter å vedta og saken faller bort, blir det ingen prikker. Det betyr også at det kan gå litt tid fra du blir stoppet til prikkene faktisk dukker opp i registeret.</p>
+<h3>Forskjellen på prikker og selve boten</h3>
+<p>Det er lett å blande sammen bot og prikker, men de er to ulike ting som kommer samtidig: Boten er pengene du betaler, mens prikkene er den langsiktige "telleren". Du kan godt få en bot uten prikker (liten overskridelse), men du får aldri prikker uten en underliggende overtredelse.</p>
+<h3>Slik holder du oversikt</h3>
+<ol>
+<li><strong>Tenk over hvilke vaner som gir prikker.</strong> Fart, rødt lys, forbikjøring og vikeplikt er de vanligste.</li>
+<li><strong>Vær ekstra forsiktig i prøveperioden.</strong> Dobbel telling gir lite slingringsmonn.</li>
+<li><strong>Husk at prikker står i 3 år.</strong> En "gammel" prikk forsvinner etter tre år (se egen artikkel).</li>
+<li><strong>Sjekk dine egne prikker.</strong> Du kan få oversikt over status via politiet/Statens vegvesen.</li>
+</ol>
+<h3>Hvorfor ble prikksystemet innført?</h3>
+<p>Prikkbelastning ble laget for å fange opp en bestemt type sjåfør: den som ikke gjør noe enkeltgrovt, men som stadig tar små sjanser. Tidligere kunne en slik fører fortsette nesten i det uendelige, fordi hver enkelt bot var for liten til å gi tap av lappen. Med prikker bygger forseelsene seg opp, og til slutt slår de inn. Det gir et tydelig signal: gjentatte regelbrudd får konsekvenser, selv om hvert enkelt brudd var moderat.</p>
+<h3>Hva gir IKKE prikker?</h3>
+<p>Det er nyttig å vite at flere ting du kanskje tror gir prikker, faktisk ikke gjør det:</p>
+<ul>
+<li><strong>Små fartsoverskridelser</strong> (under prikkgrensen) gir bare bot, ikke prikker.</li>
+<li><strong>Feilparkering</strong> gir gebyr, men ikke prikker.</li>
+<li><strong>Bompenger og piggdekkgebyr</strong> har ingenting med prikker å gjøre.</li>
+</ul>
+<p>Prikker er altså forbeholdt overtredelser som har en tydelig trafikksikkerhetsside, som fart over en viss grense, rødt lys, vikeplikt og forbikjøring.</p>
+<h3>Et eksempel som viser hvordan prikker hoper seg opp</h3>
+<p><strong>Henrik</strong> er en vanlig pendler. I januar kjører han litt for fort og får 2 prikker. I april overser han en vikeplikt i et kryss – 2 prikker til. I september blir han tatt for en ulovlig forbikjøring – 3 prikker. Plutselig har Henrik 7 prikker, og han er bare én moderat overtredelse unna å miste lappen. Ingen av hendelsene var dramatiske hver for seg, men summen er det. Dette er akkurat poenget med systemet: det er helheten som teller.</p>
+<h3>Hva er forskjellen på prikker og selve tapsgrensen for fart?</h3>
+<p>Det er lett å blande sammen to ulike "veier" til å miste lappen. Den ene er at en <strong>enkelt</strong> overtredelse er så grov at den alene gir tap (for eksempel svært høy fart i en 50-sone). Den andre er at du <strong>samler</strong> 8 prikker over tid fra flere mindre overtredelser. En moderat fartsoverskridelse gir altså prikker, men ikke umiddelbart tap – det er først når prikkene hoper seg opp til 8 at lappen ryker. Begge veiene finnes side om side, og en og samme overtredelse kan i prinsippet både gi prikker og, hvis den er grov nok, utløse tap direkte.</p>
+<h3>Et ord om ærlighet og oppgjør</h3>
+<p>Hvis du blir tatt og får et forelegg med prikker, er det fristende å tenke at "dette gikk jo greit". Men husk at prikkene følger deg i tre år og kan slå inn senere, på et tidspunkt du ikke har kontroll over. Mange opplever at det er nettopp den siste, ganske uskyldige overtredelsen som velter lasset – ikke fordi den var grov, men fordi de allerede hadde samlet opp prikker de hadde glemt. Å holde oversikt over egne prikker er derfor en billig forsikring mot ubehagelige overraskelser.</p>
+<h3>Kort oppsummert</h3>
+<p>Prikkbelastning er et tellesystem som legger 2 eller 3 prikker på førerkortet ved visse overtredelser, i tillegg til boten. 8 prikker innen 3 år gir tap av førerretten i 6 måneder. I prøveperioden teller hver prikk dobbelt. Reglene står i forskrift om prikkbelastning – sjekk alltid politiet.no for oppdatert informasjon.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

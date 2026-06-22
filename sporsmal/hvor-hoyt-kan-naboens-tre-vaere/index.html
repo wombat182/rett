@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor høyt kan naboens tre være? — Rettsregel</title>
+<meta name="description" content="Det finnes ingen fast meterhøyde i loven.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-hoyt-kan-naboens-tre-vaere/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor høyt kan naboens tre være?">
+<meta property="og:description" content="Det finnes ingen fast meterhøyde i loven.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-hoyt-kan-naboens-tre-vaere/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor høyt kan naboens tre være?">
+<meta name="twitter:description" content="Det finnes ingen fast meterhøyde i loven.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hvor høyt kan naboens tre være?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det finnes ingen fast meterhøyde i loven. Et tre kan i prinsippet være 5, 12 eller 20 meter høyt – det avgjørende er hvor nær grensen treet står sammenlignet med hvor høyt det er, om det er til skade eller plage for deg, og hvor mye det betyr for naboen å beholde det. Naboloven bruker altså et forhold mellom høyde og avstand, ikke et tak i meter.</p>
+  <p class="sp-kilde">Bygger på Naboloven § 3</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/3/" class="related-card">
+  <div class="related-card-meta">Naboloven § 3</div>
+  <div class="related-card-title">Naboens tre kan ikke være høyere enn avstanden til grensen din</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Det finnes ingen fast meterhøyde i loven. Et tre kan i prinsippet være 5, 12 eller 20 meter høyt – det avgjørende er hvor nær grensen treet står sammenlignet med hvor høyt det er, om det er til skade eller plage for deg, og hvor mye det betyr for naboen å beholde det. Naboloven bruker altså et forhold mellom høyde og avstand, ikke et tak i meter.</p>
+<h3>Det er ikke høyden alene som teller</h3>
+<p>Mange tror at det finnes en regel om at trær ikke får være høyere enn X meter. Det stemmer ikke. En 18 meter høy furu langt inne på naboens tomt kan være helt lovlig, mens et 6 meter høyt tre rett i grensen kan være et problem. Det er samspillet mellom høyde og avstand til din eiendom som er nøkkelen.</p>
+<p>Regelen står i naboloven § 3 (paragrafen som handler om trær nær grensen). Forenklet sier den at et tre ikke skal stå nærmere naboens hus, hage, tun eller dyrkede mark enn en tredjedel av treets høyde – dersom treet samtidig er til skade eller særlig ulempe for naboen, og det ikke betyr noe nevneverdig for eieren eller for naturmangfoldet på stedet å beholde det.</p>
+<h3>Regn ut «den lovlige avstanden»</h3>
+<p>Du kan snu på regelen for å finne ut hvor høyt et tre kan være på et bestemt sted. Mål avstanden fra treet til grensen (eller til huset/hagen din), og gang med tre. Da får du den høyden treet kan ha før det begynner å bryte med tredjedelsregelen.</p>
+<ul>
+<li>Står treet 3 meter fra det aktuelle, kan det være rundt 9 meter høyt (3 x 3).</li>
+<li>Står treet 5 meter unna, snakker vi om cirka 15 meter (5 x 3).</li>
+<li>Står treet bare 1,5 meter fra grensen, er grensen omtrent 4,5 meter (1,5 x 3).</li>
+</ul>
+<p>Eksempel: Naboen til Solveig har en bjørk som står 2 meter fra hekken mellom tomtene. Bjørken er 11 meter høy. Den lovlige høyden på den avstanden er omtrent 6 meter (2 x 3). Bjørken er altså nesten dobbelt så høy som tredjedelsregelen tillater – men det betyr ikke automatisk at den må kappes. De to andre vilkårene må også være oppfylt.</p>
+<h3>De to andre vilkårene må også til</h3>
+<p>Selv om et tre er for høyt i forhold til avstanden, kan ikke du kreve noe med mindre:</p>
+<ol>
+<li>Treet er til skade eller særlig ulempe for deg. Tar det all sola fra terrassen, drysser det enorme mengder kongler ned i takrennene, eller skygger det for hele kjøkkenvinduet? Da kan det være en ulempe loven tar på alvor. Litt løvfall om høsten regnes derimot som noe naboer må tåle.</li>
+<li>Det betyr lite for naboen og for naturmangfoldet å beholde treet. Er treet et helt vanlig hagetre uten spesiell verdi, taler det for at det kan fjernes. Er det et gammelt, hult eiketre der det bor flaggermus, fugler og insekter, kan naturhensynet veie tungt mot felling.</li>
+</ol>
+<p>Alle tre vilkårene må være på plass samtidig. Mangler ett av dem, har du ikke krav på at treet kappes ned eller fjernes.</p>
+<h3>Unntakene: hekk og verneverdige trær</h3>
+<p>Tredjedelsregelen gjelder ikke trær som er en lovlig del av en hekk. En hekk vurderes etter egne regler, blant annet i grannegjerdelova, og kan stå mye tettere på grensen enn et frittstående tre.</p>
+<p>Regelen gjelder heller ikke verneverdige trær – for eksempel store gamle edelløvtrær eller trær som er fredet eller har stor verdi for landskapet og dyrelivet. Her veier samfunnets interesse i å beholde treet tyngre enn naboens ønske om å bli kvitt det.</p>
+<h3>Hva med byggesak og kommunen?</h3>
+<p>Selve naboloven handler om forholdet mellom deg og naboen. Men noen steder finnes det i tillegg lokale regler – for eksempel reguleringsbestemmelser eller verneplaner – som styrer hva som kan felles. Står treet i et område med trevern, må du sjekke med kommunen før noen tar i sag. En privat avtale mellom naboer kan ikke uten videre overstyre et kommunalt vern.</p>
+<h3>Hvordan måler du høyden på et tre?</h3>
+<p>Du trenger ikke klatre opp i treet for å anslå høyden. Et enkelt knep er «pinnemetoden»: hold en blyant eller pinne loddrett i strak arm, gå frem og tilbake til pinnen ser like lang ut som treet fra topp til rot. Legg så pinnen vannrett (uten å flytte deg) og merk deg hvor enden av pinnen peker bortover bakken. Avstanden fra treets rot til det punktet er omtrent lik treets høyde. Et annet alternativ er å sammenligne treet med noe du vet høyden på – for eksempel huset ditt, der en normal etasje er rundt 2,5–3 meter. Er treet dobbelt så høyt som et toetasjes hus på 6 meter, snakker vi cirka 12 meter. For viktige saker kan en arborist (trefagperson) måle nøyaktig med eget utstyr.</p>
+<h3>Et lavt tre i grensen kan også være et problem</h3>
+<p>Det er lett å bare tenke på de store, ruvende trærne. Men husk at tredjedelsregelen rammer like mye et lavt tre som står helt inntil grensen. En tett prydbusk eller et lite tre på 3,5 meter som står bare 50 centimeter fra hekken, er allerede over streken (3,5 delt på 3 gir cirka 1,2 meter som lovlig avstand). Hvis det lille treet samtidig skygger for et lavtsittende kjøkkenvindu eller drysser bær ut over fortauet ditt, kan det utgjøre en like reell ulempe som en høy gran lenger unna. Det er forholdet mellom høyde og avstand som teller – ikke om treet ser stort eller lite ut.</p>
+<h3>Slik går du frem i praksis</h3>
+<ol>
+<li>Mål avstanden fra treet til det det skygger eller plager (hus, hage, tomtegrense).</li>
+<li>Anslå høyden på treet, gjerne ved å sammenligne med noe du vet høyden på.</li>
+<li>Gang avstanden med tre, og se om treet er høyere enn det.</li>
+<li>Tenk gjennom om treet faktisk er til skade eller særlig ulempe – ikke bare litt irriterende.</li>
+<li>Vurder om treet har spesiell verdi for naboen eller naturen.</li>
+<li>Snakk med naboen før du gjør noe annet. De fleste tresaker løses best over hagegjerdet.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Det finnes ingen fast maksimal høyde for naboens tre. Naboloven § 3 bruker en tredjedelsregel: treet skal ikke stå nærmere enn en tredjedel av sin egen høyde, samtidig som det er til skade eller særlig ulempe og lite betyr for eier og natur. Gang avstanden til grensen med tre, så ser du omtrent hvor høyt treet kan være. Hekker og verneverdige trær følger andre regler. Start alltid med en prat med naboen.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-er-forskjellen-pa-naboloven-og-gjerdeloven-for/">Hva er forskjellen på naboloven og gjerdeloven for hekk?</a><a class="sp-relchip" href="../../sporsmal/hva-er-nabovarsel-og-nar-trengs-det/">Hva er nabovarsel, og når trengs det?</a><a class="sp-relchip" href="../../sporsmal/hva-er-treregelen-i-naboloven/">Hva er treregelen i naboloven?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

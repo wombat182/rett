@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor nær et gangfelt kan jeg parkere? — Rettsregel</title>
+<meta name="description" content="Du må holde deg minst 5 meter unna gangfeltet, og du kan verken parkere eller stanse på selve gangfeltet. Femmeterregelen gjelder foran gangfeltet i…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-naer-et-gangfelt-kan-jeg-parkere/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor nær et gangfelt kan jeg parkere?">
+<meta property="og:description" content="Du må holde deg minst 5 meter unna gangfeltet, og du kan verken parkere eller stanse på selve gangfeltet. Femmeterregelen gjelder foran gangfeltet i…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-naer-et-gangfelt-kan-jeg-parkere/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor nær et gangfelt kan jeg parkere?">
+<meta name="twitter:description" content="Du må holde deg minst 5 meter unna gangfeltet, og du kan verken parkere eller stanse på selve gangfeltet. Femmeterregelen gjelder foran gangfeltet i…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hvor nær et gangfelt kan jeg parkere?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du må holde deg minst 5 meter unna gangfeltet, og du kan verken parkere eller stanse på selve gangfeltet. Femmeterregelen gjelder foran gangfeltet i kjøreretningen, og den er absolutt – det hjelper ikke at det «så greit ut». Reglene er der for at både fotgjengere og bilister skal se hverandre.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Femmeterregelen, helt konkret</h3>
+<p>Etter trafikkreglene § 17 er det forbudt å stanse på et gangfelt eller nærmere enn 5 meter foran det. «Foran» betyr i den retningen du kjører. Fem meter tilsvarer omtrent én billengde på en vanlig personbil – så tenk deg at det skal være plass til en ekstra bil mellom deg og de hvite stripene.</p>
+<p>Eksempel: Hanne skal raskt inn på apoteket og ser en luke rett før gangfeltet. Hun måler ikke, men bilen står kanskje to-tre meter fra stripene. Det er for nær, og en parkeringsvakt kan skrive gebyr – selv om ingen fotgjenger ble direkte hindret akkurat da.</p>
+<h3>Hvorfor akkurat foran gangfeltet?</h3>
+<p>Forklaringen er sikkerhet. Hvis en bil står helt inntil gangfeltet, skjuler den utsynet. En bilist som kommer kjørende, ser ikke barnet som er på vei ut i feltet, og barnet ser ikke bilen. De fem meterne gir begge en sjanse til å oppdage hverandre i tide.</p>
+<p>Eksempel: Et lite barn løper ut mellom en parkert bil og gangfeltet. Står bilen lovlig fem meter unna, har en bilist tid til å bremse. Står den helt inntil, kommer barnet «ut av intet». Derfor er regelen så streng.</p>
+<h3>Gjelder det stans også, eller bare parkering?</h3>
+<p>Mange tror femmeterregelen bare gjelder parkering. Men ved gangfelt er det all stans som er forbudt på og nærmere enn 5 meter foran feltet. Det betyr at du heller ikke kan stoppe kort for å slippe av en passasjer rett før et gangfelt. Sikten skal være fri for alle, hele tiden.</p>
+<p>Eksempel: Eli stopper «bare i ti sekunder» rett før et gangfelt for å la datteren hoppe ut. Selv om det gikk fort, sto hun innenfor de fem meterne der all stans er forbudt. Hun bør i stedet slippe av datteren litt før eller etter feltet, der det er lov.</p>
+<h3>Et eksempel med konkrete tall</h3>
+<p>Tenk deg at gangfeltets nærmeste hvite stripe er ved en lyktestolpe. En vanlig personbil er rundt 4,5 meter lang. Hvis du vil være helt trygg, kan du tenke slik: la hele bilen stå minst én billengde – altså godt over fem meter – fra stripen. Da har du litt margin, og du slipper å diskutere centimetere med en parkeringsvakt.</p>
+<p>Eksempel: Sondre måler fra gangfeltet og finner et punkt seks meter unna. Der setter han bakhjulet (den enden som er nærmest gangfeltet). Da er han trygt klar av femmetergrensen, med en liten buffer i tillegg.</p>
+<h3>Hva med bak gangfeltet?</h3>
+<p>Selve lovteksten setter den faste grensen på 5 meter foran gangfeltet. Bak gangfeltet (altså etter at du har kjørt over det) er sikten mot kryssende fotgjengere bedre, men du må uansett ikke hindre eller stå til fare. I praksis bør du også her vise hensyn, særlig hvis gangfeltet ligger i et kryss – da gjelder i tillegg femmeterregelen for kryss.</p>
+<h3>Gangfelt uten oppmerking og opphøyde gangfelt</h3>
+<p>De fleste gangfelt har tydelige hvite striper, men noen er opphøyde (som en bred fartshump) eller markert med skilt. Femmeterregelen gjelder uansett hvordan gangfeltet er utformet. Ser du fotgjengerskiltet (den trekantede varseltrekanten med en gående person, eller det blå firkantede gangfelt-skiltet), vet du at det er et gangfelt der – og at du må holde avstanden.</p>
+<p>Eksempel: Vegard parkerer ved et opphøyd gangfelt og tenker at «det er jo egentlig bare en fartshump». Men det er merket som gangfelt, og femmeterregelen gjelder fullt ut. Han må holde seg klar av det på samme måte som ved et vanlig stripet felt.</p>
+<h3>Mål det riktig</h3>
+<p>Femmeterregelen måles fra kanten av gangfeltet, ikke fra midten. Står du i tvil, gjør det enkelt:</p>
+<ol>
+<li>Finn nærmeste hvite stripe i gangfeltet.</li>
+<li>Tell deg en hel billengde – og litt til – fra den stripen.</li>
+<li>La forhjulene være godt bak dette punktet.</li>
+<li>Er du usikker? Flytt bilen et par meter lenger unna. Det koster ingenting.</li>
+</ol>
+<h3>Gangfelt i kryss – dobbel grunn til å holde avstand</h3>
+<p>Mange gangfelt ligger akkurat ved et veikryss. Da gjelder to femmeterregler samtidig: 5 meter fra krysset og 5 meter fra gangfeltet. I praksis betyr det at du må holde deg enda lenger unna, fordi du skal være klar av begge.</p>
+<p>Eksempel: Ole parkerer i et kryss der det også er gangfelt. Han tror han bare må forholde seg til krysset, men gangfeltet ligger litt før. Han må regne med den grensen som ligger lengst unna stedet han vil stå.</p>
+<h3>Et vanlig misforståelses-eksempel</h3>
+<p>«Det er jo midt på dagen, og ingen går her nå.» Det spiller ingen rolle. Femmeterregelen gjelder hele døgnet, uansett hvor lite folk det er. Den handler om hvordan situasjonen kan bli, ikke om hvordan den er akkurat i det øyeblikket du parkerer.</p>
+<h3>Når det er ekstra fristende å bryte regelen</h3>
+<p>De fristende plassene er ofte rett ved butikker, skoler og kollektivknutepunkt – nettopp der det er mange fotgjengere og gangfelt. Det er ingen tilfeldighet at det er trangt om plassen akkurat der: mange vil stå nær inngangen. Men det er også her risikoen er størst, fordi det krysser mest folk. Tenk på det som et tegn: jo mer fristende den ulovlige plassen er, jo viktigere er det å la den stå.</p>
+<p>Eksempel: Utenfor en barneskole er det alltid fullt om morgenen, og foreldre frister med å stoppe rett ved gangfeltet «bare for å slippe ut ungen». Men det er nettopp her barna krysser. En bil i veien for sikten kan få fatale følger. Bedre å bruke et minutt ekstra på en lovlig plass litt lenger unna.</p>
+<h3>Hvor reglene står</h3>
+<p>Femmeterregelen for gangfelt står i trafikkreglene § 17 (lovdata.no). Statens vegvesen (vegvesen.no) og NAF (naf.no) forklarer regelen med eksempler. Selve regelen er stabil, men gebyrsatser kan endres, så sjekk gjerne offisielle kilder for oppdaterte tall.</p>
+<h3>Kort oppsummert</h3>
+<p>Du må holde minst 5 meter foran gangfeltet, og du kan aldri parkere eller stanse på selve feltet. Fem meter er omtrent én billengde – tenk «en ekstra bil» til de hvite stripene. Regelen gjelder hele døgnet og handler om at fotgjengere og bilister skal se hverandre i tide. Ved gangfelt i kryss gjelder avstanden til begge.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

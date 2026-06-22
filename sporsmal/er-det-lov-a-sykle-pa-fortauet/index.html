@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Er det lov å sykle på fortauet? — Rettsregel</title>
+<meta name="description" content="Ja, det er lov å sykle på fortauet – men bare på visse vilkår. Fortauet er først og fremst for fotgjengere, og du som syklist er på besøk. Du kan bare…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/er-det-lov-a-sykle-pa-fortauet/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Er det lov å sykle på fortauet?">
+<meta property="og:description" content="Ja, det er lov å sykle på fortauet – men bare på visse vilkår. Fortauet er først og fremst for fotgjengere, og du som syklist er på besøk. Du kan bare…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/er-det-lov-a-sykle-pa-fortauet/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Er det lov å sykle på fortauet?">
+<meta name="twitter:description" content="Ja, det er lov å sykle på fortauet – men bare på visse vilkår. Fortauet er først og fremst for fotgjengere, og du som syklist er på besøk. Du kan bare…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Er det lov å sykle på fortauet?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, det er lov å sykle på fortauet – men bare på visse vilkår. Fortauet er først og fremst for fotgjengere, og du som syklist er på besøk. Du kan bare sykle der når det er lite gangtrafikk, du ikke er til fare eller ulempe for de gående, og du holder lav fart. Når du passerer noen som går, skal det skje i god avstand, i tilnærmet gangfart – og uansett ikke fortere enn 6 km/t.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Dette overrasker mange. La oss gå gjennom hva som faktisk gjelder, og hvordan du sykler på fortauet uten å skape farlige situasjoner eller irritasjon.</p>
+<h3>Hovedregelen: fotgjengerne har forrang</h3>
+<p>Reglene står i trafikkreglene (forskrift om kjørende og gående trafikk). Utgangspunktet er at sykling på gangveg, fortau eller i gangfelt <strong>er tillatt</strong> når gangtrafikken er liten og syklingen ikke medfører fare eller er til hinder for gående.</p>
+<p>Tenk på det slik: Du har lov til å være der, men du er gjest på fotgjengerens premisser. De som går har ikke plikt til å flytte seg for deg. Det er du som må tilpasse deg dem – ikke omvendt.</p>
+<h3>De tre vilkårene du må huske</h3>
+<p>For at det skal være greit å sykle på fortauet, må alle disse tingene være på plass samtidig:</p>
+<ol>
+<li><strong>Lite gangtrafikk.</strong> Er fortauet fullt av folk, skal du ikke sykle der. Da må du heller trille sykkelen.</li>
+<li><strong>Ingen fare eller ulempe for fotgjengerne.</strong> Du må ikke tvinge folk til side, skremme noen eller komme i veien.</li>
+<li><strong>Lav fart, særlig ved passering.</strong> Når du sykler forbi noen som går, skal det skje i god avstand og i tilnærmet gangfart – og maks 6 km/t.</li>
+</ol>
+<p>Disse 6 km/t er omtrent rask gange. Det er altså ikke meningen at du skal suse forbi folk; du skal nesten holde følge med dem i tempo når du passerer.</p>
+<h3>Eksempler som gjør reglene tydelige</h3>
+<p><strong>Eksempel 1 – greit:</strong> Ingrid sykler hjem klokka halv syv på morgenen. Fortauet er nesten folketomt. Hun møter en enslig fotgjenger, senker farten til nesten gangfart, gir god klaring og passerer rolig. Dette er helt innenfor reglene.</p>
+<p><strong>Eksempel 2 – ikke greit:</strong> Lørdag formiddag er handlegata stappfull av folk. Petter prøver å sykle gjennom mengden, ringer med bjella for at folk skal flytte seg og presser seg forbi. Her bryter han reglene – gangtrafikken er stor, og han er både til hinder og fare. Han burde gått av og trillet.</p>
+<p><strong>Eksempel 3 – barnet på trehjulssykkel:</strong> Et lite barn som tråkker rundt på fortauet utenfor huset i gangfart er åpenbart innenfor. Her er hele poenget at de minste skal kunne ferdes trygt.</p>
+<h3>Hvorfor er reglene blitt som de er?</h3>
+<p>Bakgrunnen er en avveining. På den ene siden vil man at folk skal kunne sykle der det føles trygt, særlig der det ikke finnes sykkelveg og bilveien oppleves skummel. Barn og usikre syklister har god nytte av å kunne bruke fortauet. På den andre siden skal ikke fotgjengere – som ofte er de mest sårbare, som eldre, barn og folk med nedsatt syn – risikere å bli kjørt ned av syklister i fart.</p>
+<p>Den tydelige fartsgrensen på 6 km/t ved passering ble innført nettopp for å gjøre regelen lettere å forstå og håndheve. Tidligere stod det bare «gangfart», som var litt vagt. Nå har du et konkret tall å forholde deg til.</p>
+<h3>Hva med gangfelt (fotgjengerovergang)?</h3>
+<p>Mange tror de må gå av sykkelen i et gangfelt. Det er lov å sykle over et gangfelt, men da har du som syklist vikeplikt på samme måte som annen kjørende trafikk – bilene har ikke samme plikt til å stoppe for deg som de har for en fotgjenger som går. Vil du ha samme beskyttelse som en fotgjenger i gangfeltet, må du gå av og trille sykkelen over. Da regnes du som gående.</p>
+<h3>Fortau, sykkelveg og gangveg – hva er hva?</h3>
+<p>Det er lett å blande sammen begrepene, men de betyr ulike ting:</p>
+<ul>
+<li><strong>Fortau</strong> ligger langs en bilvei og er ment for fotgjengere. Her kan du sykle på vilkårene over.</li>
+<li><strong>Gangveg</strong> er en egen veg bare for gående, ofte merket med skilt. Her gjelder de samme hensyns-reglene som på fortau.</li>
+<li><strong>Gang- og sykkelveg</strong> er bygget for begge deler. Her har du som syklist mer naturlig plass, men du må fortsatt vise hensyn til de gående og holde til høyre.</li>
+<li><strong>Sykkelveg/sykkelfelt</strong> er beregnet på syklister, og her kan du sykle i normalt tempo.</li>
+</ul>
+<p>Poenget er at jo mer en veg er ment for fotgjengere, desto mer må du dempe deg. Er du i tvil om hva slags veg du er på, så velg den forsiktige tolkningen og senk farten.</p>
+<h3>En liten huskeregel</h3>
+<p>Tenk «gjest, ikke vert» når du er på fortauet. En høflig gjest tar ikke plassen fra verten, dytter ingen til side og bråker ikke. Klarer du å holde den innstillingen, vil du nesten alltid være innenfor reglene – og du gjør samtidig fortauet til et trygt sted for alle.</p>
+<h3>Praktiske råd for trygg fortaussykling</h3>
+<ol>
+<li><strong>Les av folkemengden.</strong> Tomt fortau: du kan sykle rolig. Mye folk: gå av og trill.</li>
+<li><strong>Senk farten i god tid før du passerer noen</strong> – ikke vent til du er like ved.</li>
+<li><strong>Hold god avstand</strong> når du sykler forbi gående, helst med en armlengdes klaring eller mer.</li>
+<li><strong>Bruk bjella vennlig, ikke kommanderende.</strong> Et lite pling i god tid er hyggelig varsel – ikke et signal om at folk skal hoppe til side.</li>
+<li><strong>Vær ekstra varsom rundt barn, eldre og folk med nedsatt syn eller hørsel</strong> – de kan bevege seg uforutsigbart.</li>
+<li><strong>Husk at fortauet ikke er en snarvei i rushtempo.</strong> Skal du fort frem, hører du hjemme i veibanen eller på sykkelvegen.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Ja, du har lov til å sykle på fortauet, men på fotgjengerens premisser. Vilkårene er klare: gangtrafikken må være liten, du må ikke være til fare eller ulempe, og når du passerer noen skal det skje i god avstand, i tilnærmet gangfart og maks 6 km/t. Er det mye folk, går du av og triller. I gangfelt har du vikeplikt hvis du sykler, men regnes som fotgjenger om du triller. Reglene finnes i trafikkreglene (forskrift om kjørende og gående trafikk på lovdata.no), og Statens vegvesen (vegvesen.no) forklarer dem også på en grei måte. Følg hovedregelen – vis hensyn – så går det stort sett av seg selv.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

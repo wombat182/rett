@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er forbikjøringsreglene? — Rettsregel</title>
+<meta name="description" content="Forbikjøring skal som hovedregel skje til venstre. Du må ha god nok sikt og plass til å fullføre forbikjøringen trygt, og du skal legge deg pent tilbake i…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-forbikjoringsreglene/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er forbikjøringsreglene?">
+<meta property="og:description" content="Forbikjøring skal som hovedregel skje til venstre. Du må ha god nok sikt og plass til å fullføre forbikjøringen trygt, og du skal legge deg pent tilbake i…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-forbikjoringsreglene/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er forbikjøringsreglene?">
+<meta name="twitter:description" content="Forbikjøring skal som hovedregel skje til venstre. Du må ha god nok sikt og plass til å fullføre forbikjøringen trygt, og du skal legge deg pent tilbake i…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hva er forbikjøringsreglene?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Forbikjøring skal som hovedregel skje til **venstre**. Du må ha god nok sikt og plass til å fullføre forbikjøringen trygt, og du skal legge deg pent tilbake i ditt eget felt etterpå uten å presse den du kjørte forbi. På flerfeltsvei kjører du forbi i venstre felt og legger deg deretter til høyre igjen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva betyr egentlig «forbikjøring»?</h3>
+<p>Forbikjøring betyr at du tar igjen og passerer et annet kjøretøy som kjører i samme retning som deg. Reglene for dette står i trafikkreglene § 12. Hensikten med reglene er åpenbar: forbikjøring er en av de mest risikofylte tingene du gjør i trafikken, fordi du ofte må bruke motgående kjørefelt eller komme tett innpå andre.</p>
+<h3>Hovedregel: kjør forbi til venstre</h3>
+<p>Du skal kjøre forbi på <strong>venstre side</strong>. Det gjelder enten du er på en vanlig landevei med ett felt i hver retning, eller på en motorvei med flere felt.</p>
+<p><strong>Eksempel – Kristin på landeveien:</strong> Kristin kjører bak en sakte traktor på en landevei. Hun ser langt fremover, det er ingen motgående trafikk og ingen kurver eller bakketopper i veien. Hun blinker til venstre, kjører ut, passerer traktoren raskt og trygt, og legger seg så tilbake i høyre felt – men først når hun ser traktoren i speilet og har god avstand.</p>
+<h3>Forbikjøring på høyre side – som hovedregel forbudt</h3>
+<p>Å kjøre forbi på høyre side er som hovedregel <strong>forbudt</strong>, og særlig strengt på motorvei. Det kan gi store bøter og prikker i førerkortet. Grunnen er at andre sjåfører ikke forventer at noen suser forbi på innsiden – det blir uforutsigbart og farlig.</p>
+<p>Det finnes likevel noen lovlige unntak, blant annet:
+- <strong>Tett kø:</strong> Er trafikken så tett at alle felt er fulle og farten bestemmes av bilen foran, kan ett felt bevege seg forbi et annet på høyre side. Dette er den vanlige «køsituasjonen» på innfartsårer.
+- <strong>Den foran skal svinge til venstre:</strong> Skal bilen foran tydelig svinge av til venstre og har lagt seg til venstre, kan du passere på høyre side.
+- <strong>Kollektivfelt</strong> og enkelte andre særskilte situasjoner.</p>
+<p><strong>Eksempel – Henrik i morgenkøen:</strong> Henrik står i tett kø på vei inn til byen. Hans felt beveger seg litt raskere enn nabofeltet. Da er det lov at hans felt «glir forbi» det andre på høyre side – dette er nettopp unntaket for tett kø. Men han skal ikke aktivt vingle mellom feltene for å presse seg frem.</p>
+<h3>Slik gjør du en trygg forbikjøring</h3>
+<ol>
+<li><strong>Vurder om det er nødvendig.</strong> Sparer du egentlig mye tid, eller er det bare utålmodighet?</li>
+<li><strong>Sjekk sikten.</strong> Du må kunne se langt nok til å fullføre forbikjøringen og komme inn igjen før eventuell motgående trafikk.</li>
+<li><strong>Sjekk speil og blindsone</strong>, og pass på at ingen bak deg allerede er i ferd med å kjøre forbi deg.</li>
+<li><strong>Blink til venstre</strong> i god tid.</li>
+<li><strong>Kjør forbi bestemt og raskt</strong> – en nølende forbikjøring som drar ut i tid, er farlig.</li>
+<li><strong>Ikke press deg inn igjen for tidlig.</strong> Vent til du ser kjøretøyet du passerte i speilet, før du legger deg til høyre.</li>
+<li><strong>Ikke øk farten</strong> når noen kjører forbi deg – tvert imot, gjør det lettere for dem ved å holde jevn fart eller lette litt på gassen.</li>
+</ol>
+<h3>Din plikt når du blir kjørt forbi</h3>
+<p>Det er ikke bare den som kjører forbi, som har plikter. Blir du selv tatt igjen og forbikjørt, skal du holde til høyre og ikke øke farten. Å gasse på når noen prøver å passere deg, er både farlig og i strid med reglene. Best av alt er å lette litt på gassen, slik at den andre raskt kommer forbi og kan legge seg inn igjen med god margin. På den måten hjelper du til med å korte ned den farlige delen av forbikjøringen.</p>
+<p><strong>Eksempel – Bård hjelper til:</strong> Bård merker at en bil bak ham har lagt seg ut for å passere på en landevei. I stedet for å henge på samme fart, letter han litt på gassen. Den andre bilen kommer raskt forbi og legger seg pent inn igjen, lenge før det dukker opp motgående trafikk. En liten gest, men den gjorde forbikjøringen tryggere for begge.</p>
+<h3>Litt om venstrefeltet på motorvei</h3>
+<p>På motorvei og andre veier med flere felt i samme retning er hovedregelen at du skal holde deg i <strong>høyre felt</strong> og bare bruke venstre felt til forbikjøring. Når du har passert, legger du deg pent tilbake til høyre igjen. Å ligge og «sperre» i venstre felt uten å kjøre forbi noen, skaper irritasjon, dårligere flyt og press på andre til å gjøre den forbudte forbikjøringen på høyre side. God feltdisiplin er derfor en del av god forbikjøringskultur.</p>
+<p><strong>Eksempel – Astrid rydder feltet:</strong> Astrid kjører forbi en lastebil i venstre felt på motorveien. Så snart hun ser lastebilen i speilet med god margin, blinker hun til høyre og legger seg tilbake i høyre felt. Da er venstre felt fritt for dem som kommer bak.</p>
+<h3>Vanlige misforståelser</h3>
+<ul>
+<li><strong>«Det er alltid lov å kjøre forbi på høyre i kø.»</strong> Bare når trafikken er så tett at alle felt er fulle og farten styres av bilen foran. Du skal ikke aktivt vingle for å presse deg frem.</li>
+<li><strong>«Når jeg blir forbikjørt, kan jeg holde min fart eller øke litt.»</strong> Du skal holde til høyre og ikke øke farten – helst lette litt på gassen for å hjelpe.</li>
+<li><strong>«Forbikjøring er et tegn på god kjøring.»</strong> Ofte er den unødvendig. Vurder alltid om den lille tidsbesparelsen er verdt risikoen.</li>
+</ul>
+<h3>Et lite forbehold</h3>
+<p>Reglene har flere detaljer og unntak enn det er plass til her, og bøtesatsene for ulovlig forbikjøring kan endres. Vil du være sikker på det konkrete, finner du trafikkreglene § 12 på lovdata.no og oppdaterte satser hos politiet. Hovedbudskapet er likevel klart: forbikjøring krever god sikt, god plass og godt vett.</p>
+<h3>Kort oppsummert</h3>
+<p>Forbikjøring skal skje til venstre, med god sikt og nok plass til å fullføre trygt. Forbikjøring til høyre er som hovedregel forbudt, men er tillatt i noen unntak, blant annet i tett kø og når den foran skal svinge til venstre. Blir du selv forbikjørt, skal du holde til høyre og ikke øke farten. Vurder alltid om forbikjøringen er verdt risikoen – ofte sparer den mindre tid enn du tror.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg kjøre dagen derpå? — Rettsregel</title>
+<meta name="description" content="Kanskje – men ofte ikke, og det er nettopp det som gjør «dagen derpå» så lumsk.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-kjore-dagen-derpa/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg kjøre dagen derpå?">
+<meta property="og:description" content="Kanskje – men ofte ikke, og det er nettopp det som gjør «dagen derpå» så lumsk.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-kjore-dagen-derpa/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg kjøre dagen derpå?">
+<meta name="twitter:description" content="Kanskje – men ofte ikke, og det er nettopp det som gjør «dagen derpå» så lumsk.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Kan jeg kjøre dagen derpå?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Kanskje – men ofte ikke, og det er nettopp det som gjør «dagen derpå» så lumsk. Hvis du drakk en del kvelden før, kan du fortsatt ha promille i blodet neste morgen, selv om du føler deg uthvilt og edru. Kroppen bryter ned alkohol langsomt, og du kan være over grensen på 0,2 lenge etter at festen er slutt. Den trygge regelen er: Er du i tvil, ikke kjør.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Kanskje – men ofte ikke, og det er nettopp det som gjør «dagen derpå» så lumsk. Hvis du drakk en del kvelden før, kan du fortsatt ha promille i blodet neste morgen, selv om du føler deg uthvilt og edru. Kroppen bryter ned alkohol langsomt, og du kan være over grensen på 0,2 lenge etter at festen er slutt. Den trygge regelen er: Er du i tvil, ikke kjør.</p>
+<h3>Hvorfor er «dagen derpå» et problem?</h3>
+<p>Mange tror at en god natts søvn «nullstiller» alkoholen. Det gjør den ikke. Kroppen bryter ned alkohol i et jevnt, langsomt tempo – omtrent <strong>0,1 til 0,15 promille per time</strong>, og dette varierer fra person til person. Søvn gjør deg ikke edru raskere; tiden gjør jobben, ikke hvilen.</p>
+<p>Det betyr at hvis du la deg med høy promille, kan det ta mange timer før du er under 0,2 igjen – godt utover frokosttid.</p>
+<h3>Et regneeksempel (med forbehold)</h3>
+<p>La oss si at Andreas drakk mye og hadde en promille på rundt 1,5 da han la seg klokka to om natta. Hvis kroppen bryter ned omtrent 0,15 promille i timen, tar det rundt ti timer bare å komme ned til 0, og han er fortsatt over 0,2 i flere timer før det. Det betyr at Andreas kan være over grensen til langt utpå formiddagen – kanskje rundt klokka ti eller senere – selv om han føler seg klar i hodet.</p>
+<p>Viktig: Dette er bare et anslag. Brytes alkoholen ned saktere hos Andreas enn antatt, er han over enda lenger. Du kan ikke vite det sikkert.</p>
+<h3>Hvorfor følelsen lurer deg</h3>
+<p>Det skumle med dagen derpå er at du kan føle deg helt fin. Trøttheten er kanskje borte, hodepinen er over, og du føler deg «edru». Men promille handler om tallet i blodet, ikke om hvordan du føler deg. Mange som blir tatt for promillekjøring om morgenen, er overrasket – de trodde oppriktig at de var nyktre.</p>
+<p>Eksempel: Silje våkner uthvilt etter en fest, kjenner seg fin og kjører på jobb. I en kontroll blåser hun 0,4. Hun mente i god tro at hun var edru, men promillen fra kvelden før var ikke forbrent ennå. Straffen blir den samme som om hun hadde drukket om morgenen – loven skiller ikke på når du drakk.</p>
+<h3>Promillekalkulatorer er ikke et frikort</h3>
+<p>Det finnes apper og kalkulatorer som anslår når du er «kjørbar» igjen. De kan være nyttige for å forstå hvor lenge alkohol blir værende, men de gir ikke et sikkert svar. Du kan forbrenne saktere enn kalkulatoren regner med, og da er du fortsatt over selv om appen sier grønt. Ikke bruk en kalkulator som unnskyldning for å sette deg bak rattet.</p>
+<h3>Hvordan unngå dagen derpå-fella</h3>
+<p>Noen enkle vaner gjør at du slipper å gjette:</p>
+<ol>
+<li><strong>Planlegg morgenen kvelden før.</strong> Vet du at du må kjøre tidlig, drikk lite eller ingenting.</li>
+<li><strong>Regn med god margin.</strong> Har du drukket mye, regn med at du kan være kjøreudyktig langt utover neste dag – ikke bare til frokost.</li>
+<li><strong>Ha en plan B.</strong> Ta kollektivt, taxi, eller få noen edru til å kjøre.</li>
+<li><strong>Er du i tvil, la bilen stå.</strong> Det er alltid det billigste valget.</li>
+</ol>
+<p>Eksempel: Markus skal på en tidlig fottballtrening med sønnen lørdag morgen. Fredag kveld holder han seg derfor til ett glass tidlig på kvelden, og drikker vann resten av tiden. Da slipper han å bekymre seg lørdag.</p>
+<h3>Konsekvensen er den samme</h3>
+<p>Det er verdt å understreke: Blir du tatt for promille dagen derpå, gjelder de samme reglene som ellers. Du risikerer bot, tap av førerretten og i alvorlige tilfeller fengsel – akkurat som om du hadde drukket rett før kjøringen. «Jeg drakk jo i går» er ingen unnskyldning i lovens øyne.</p>
+<h3>En enkel huskeregel for kvelden før</h3>
+<p>Det finnes en gammel, grov tommelfingerregel: regn med at det tar omtrent én time per enhet alkohol før den er ute av kroppen, pluss en god sikkerhetsmargin. Drakk du for eksempel seks enheter, kan du fort trenge mange timer – ofte mer enn et helt natts søvn – før du er trygt under grensen. Men husk at dette bare er en grov pekepinn; noen forbrenner saktere, og da må du vente enda lenger.</p>
+<p>Et praktisk triks: Tenk ikke «når våkner jeg?», men «når drakk jeg mitt siste glass, og hvor mye?». Det er siste glass og total mengde som avgjør, ikke når vekkerklokka ringer.</p>
+<h3>Hvorfor rammer dette så mange?</h3>
+<p>«Dagen derpå»-kjøring er en av de vanligste formene for promillekjøring, nettopp fordi folk ikke føler seg fulle. De har sovet, spist frokost og kjenner seg klare. Mange blir oppriktig sjokkert når de blåser over grensen på vei til jobb en lørdag eller søndag. Politiet kjenner godt til dette mønsteret, og det er en grunn til at kontroller også gjennomføres på morgenkvisten i helgene.</p>
+<p>Eksempel: Anders var i et bryllup og drakk jevnt utover natta. Han sovner klokka tre, våkner klokka ni og kjenner seg «helt grei». På vei for å hente bilkameraten blir han stoppet i en morgenkontroll og blåser 0,5. For ham var festen «i går» – men promillen var i høyeste grad fortsatt til stede.</p>
+<h3>Når du virkelig må kjøre tidlig</h3>
+<p>Vet du på forhånd at du må kjøre tidlig neste morgen – kanskje du har en vakt, eller skal kjøre barna et sted – så er det best å ikke drikke kvelden før i det hele tatt, eller å holde deg til svært lite tidlig på kvelden. Da slipper du å stå opp og lure. Trenger du å være helt sikker, finnes det også personlige alkometre til kjøp, men husk at heller ikke de gir en fullstendig garanti.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Du kan fortsatt ha promille neste morgen – kroppen bryter bare ned ca. 0,1–0,15 promille i timen.</li>
+<li>Søvn gjør deg ikke edru raskere; bare tid hjelper.</li>
+<li>Du kan føle deg helt fin og likevel være over 0,2 – følelsen lurer deg.</li>
+<li>Promillekalkulatorer gir anslag, ikke garantier – ikke bruk dem som frikort.</li>
+<li>Straffen er den samme som vanlig promillekjøring. Er du i tvil, la bilen stå.</li>
+</ul>
+<p><em>Forbrenningstall er anslag som varierer mellom personer. Se politiet.no og helsenorge.no for mer informasjon.</em></p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis naboen graver nær grensen min? — Rettsregel</title>
+<meta name="description" content="Naboen har lov til å grave på sin egen tomt, men ikke slik at det skader eiendommen din eller skaper urimelige problemer, for eksempel at grunnen din…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-naboen-graver-naer-grensen-min/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis naboen graver nær grensen min?">
+<meta property="og:description" content="Naboen har lov til å grave på sin egen tomt, men ikke slik at det skader eiendommen din eller skaper urimelige problemer, for eksempel at grunnen din…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-naboen-graver-naer-grensen-min/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis naboen graver nær grensen min?">
+<meta name="twitter:description" content="Naboen har lov til å grave på sin egen tomt, men ikke slik at det skader eiendommen din eller skaper urimelige problemer, for eksempel at grunnen din…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva hvis naboen graver nær grensen min?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Naboen har lov til å grave på sin egen tomt, men ikke slik at det skader eiendommen din eller skaper urimelige problemer, for eksempel at grunnen din siger ut, at vann samler seg, eller at gjerdet ditt rives med.</p>
+  <p class="sp-kilde">Bygger på Naboloven §§ 2, 9, 10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/2/" class="related-card">
+  <div class="related-card-meta">Naboloven § 2</div>
+  <div class="related-card-title">Grensen for urimelig skade og ulempe</div>
+</a><a href="../../lover/naboloven/9/" class="related-card">
+  <div class="related-card-meta">Naboloven § 9</div>
+  <div class="related-card-title">Erstatning hvis du skader naboens eiendom</div>
+</a><a href="../../lover/naboloven/10/" class="related-card">
+  <div class="related-card-meta">Naboloven § 10</div>
+  <div class="related-card-title">Retten til å få ulovlige ting fjernet eller rettet</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Graving nær grensen er litt ekstra ømtålig, fordi konsekvensene ikke alltid viser seg med en gang. En utgraving kan svekke grunnen i flere måneder før det rakner.</p>
+<h3>Hovedregelen gjelder også her</h3>
+<p>Også graving faller inn under hovedregelen i paragraf 2 (§ 2): naboen kan ikke sette i gang noe som er urimelig eller unødvendig til skade eller ulempe for din eiendom. Å grave en grøft eller en pool er i seg selv lov, men ikke hvis resultatet blir at din mur sprekker, din skråning sklir ut eller vannet ditt får en ny vei.</p>
+<h3>Et konkret eksempel</h3>
+<p>Naboen til Aisha graver ut tomten for å lage en kjeller under terrassen. Utgravingen går helt inntil grensen. Et par uker senere oppdager Aisha at støttemuren hennes har begynt å helle, og at det har kommet en sprekk i innkjørselen. Her har gravingen sannsynligvis svekket grunnen under Aishas eiendom. Det taler for at naboen er ansvarlig etter § 2, og må betale for skaden etter paragraf 9 (§ 9).</p>
+<h3>Et annet eksempel: vann og dreneringen</h3>
+<p>Lars graver en dyp grøft langs grensen for å legge nytt vannrør. Etterpå renner overflatevann ned i grøfta og videre mot kjelleren til naboen Mona, som tidligere var helt tørr. Også her er det Lars som har endret de naturlige forholdene ved å grave, og som dermed kan bli ansvarlig for vannet som nå plager Mona.</p>
+<h3>Steg for steg når naboen graver</h3>
+<ol>
+<li>Følg med tidlig. Hvis du ser at naboen skal grave nær grensen, ta en prat før de begynner. Spør hvor dypt og hvor nær grensen de skal, og om de har vurdert hvordan det påvirker din grunn.</li>
+<li>Dokumenter tilstanden FØR gravingen. Ta bilder av muren din, innkjørselen, gjerdet og terrenget. Da har du et «før»-bilde hvis noe skjer.</li>
+<li>Følg med underveis og etterpå. Se etter sprekker, setninger (at grunnen synker), skjevheter i mur og gjerde, og nye vannansamlinger.</li>
+<li>Si fra raskt hvis du ser skade. Jo før naboen vet det, jo lettere er det å stanse videre skade og finne en løsning.</li>
+</ol>
+<h3>Hva kan du kreve?</h3>
+<p>Hvis gravingen har skadet eiendommen din, kan du:</p>
+<ul>
+<li>Kreve erstatning for det økonomiske tapet etter § 9, for eksempel reparasjon av muren eller innkjørselen.</li>
+<li>Kreve retting etter paragraf 10 (§ 10), for eksempel at naboen sikrer skråningen, fyller tilbake eller lager drenering som hindrer videre skade.</li>
+</ul>
+<h3>Hva med selve naborelasjonen?</h3>
+<p>Mange gravearbeider krever tillatelse fra kommunen, og noen krever også at man tar hensyn til naboens grunn av sikkerhetsgrunner. Hvis du er bekymret for et større gravearbeid, kan det være lurt å spørre naboen om de har søkt, og eventuelt si fra til kommunen hvis du tror sikkerheten ikke er ivaretatt.</p>
+<p>Husk samtidig at naboen har full rett til å bruke sin egen tomt. Det er ikke gravingen i seg selv som er problemet, men eventuell skade eller urimelig ulempe den fører til hos deg. En grøft som ikke gir deg noe problem, kan du ikke kreve stoppet bare fordi du synes den er stygg.</p>
+<h3>Hvorfor graving er ekstra risikabelt</h3>
+<p>Det som gjør graving til en spesielt ømtålig sak, er at konsekvensene ofte er skjulte og forsinkede. Når noen fjerner masse helt inntil grensen, fjerner de samtidig noe av det som «holder igjen» grunnen på din side. Det kan ta uker eller måneder før en skråning begynner å skli, en mur begynner å helle eller grunnen under huset ditt setter seg. Derfor er det ikke nok å sjekke en gang rett etter gravingen, du bør følge med en god stund etterpå.</p>
+<p>Et annet poeng: en utgraving endrer også hvordan vannet beveger seg i grunnen. En dyp grøft kan virke som en kanal som samler og leder grunnvann og overflatevann i en ny retning, gjerne rett mot kjelleren din. Vann og graving henger derfor ofte sammen i samme sak.</p>
+<h3>Steg for steg hvis skaden allerede har skjedd</h3>
+<ol>
+<li>Dokumenter skaden grundig: bilder av sprekker, helling, vannansamling og setninger, med datoer.</li>
+<li>Knytt skaden til gravingen i tid: når ble det gravd, og når dukket skaden opp? Jo tettere i tid, jo lettere å vise sammenhengen.</li>
+<li>Varsle naboen skriftlig så raskt som mulig, både for å begrense videre skade og for å ha dokumentasjon.</li>
+<li>Vurder en fagperson: i alvorlige tilfeller kan en byggteknisk sakkyndig vurdere om gravingen er årsaken. Dette styrker både kravet og en eventuell forsikringssak.</li>
+</ol>
+<h3>Et eksempel på en god start</h3>
+<p>Da naboen til Aisha fra eksemplet over varslet at de skulle grave, gjorde Aisha noe lurt: hun gikk en runde med mobilkameraet og tok bilder av støttemuren, innkjørselen og gjerdet sitt, med dato. Da sprekken senere dukket opp, hadde hun klare før-bilder som viste at alt var helt før gravingen begynte. Det gjorde det nesten umulig for naboen å hevde at sprekken hadde vært der hele tiden. Denne lille innsatsen på et kvarter kan spare deg for en lang og vanskelig bevisstrid senere.</p>
+<h3>Hva med støy, støv og rot mens gravingen pågår?</h3>
+<p>Selve anleggsperioden kan også være en plage: gravemaskiner, lastebiler, støv og rot i ukevis. Her må man skille mellom det forbigående og det varige. Midlertidig støy og støv fra et lovlig gravearbeid er noe naboer i stor grad må tåle, så lenge det holder seg innenfor det rimelige og ikke pågår unødvendig lenge eller på upassende tidspunkter. Det er den varige skaden, som en sprukket mur eller en ny vannvei, som gir det sterkeste grunnlaget for et krav. Blir anleggsstøyen helt urimelig, for eksempel tungt arbeid sent på kvelden over lang tid, kan også det vurderes etter § 2, men terskelen for forbigående ulemper er høyere enn for varig skade.</p>
+<h3>Kort oppsummert</h3>
+<p>Naboen kan grave på egen tomt, men ikke slik at din grunn siger ut, muren din sprekker eller vannet ditt får ny retning (§ 2). Skjer det, kan du kreve erstatning (§ 9) og retting (§ 10). Ta bilder av eiendommen din før naboen begynner, følg med på sprekker og setninger i tiden etterpå, og si fra raskt og skriftlig hvis du ser skade.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-er-en-grad-av-utnytting-pa-tomta/">Hva er en grad av utnytting på tomta?</a><a class="sp-relchip" href="../../sporsmal/hva-er-en-grensegjerdeavtale/">Hva er en grensegjerdeavtale?</a><a class="sp-relchip" href="../../sporsmal/hva-er-forskjellen-pa-regulert-og-uregulert-tomt/">Hva er forskjellen på regulert og uregulert tomt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

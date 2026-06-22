@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem har vikeplikt i en rundkjøring? — Rettsregel</title>
+<meta name="description" content="Den som skal inn i rundkjøringen, har vikeplikt for de som allerede kjører inni den. Du venter altså til det er klart, kjører inn, og blinker til høyre…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvem-har-vikeplikt-i-en-rundkjoring/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvem har vikeplikt i en rundkjøring?">
+<meta property="og:description" content="Den som skal inn i rundkjøringen, har vikeplikt for de som allerede kjører inni den. Du venter altså til det er klart, kjører inn, og blinker til høyre…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvem-har-vikeplikt-i-en-rundkjoring/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvem har vikeplikt i en rundkjøring?">
+<meta name="twitter:description" content="Den som skal inn i rundkjøringen, har vikeplikt for de som allerede kjører inni den. Du venter altså til det er klart, kjører inn, og blinker til høyre…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hvem har vikeplikt i en rundkjøring?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Den som skal **inn** i rundkjøringen, har vikeplikt for de som allerede kjører **inni** den. Du venter altså til det er klart, kjører inn, og blinker til høyre når du skal ut igjen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hvorfor rundkjøringen oppleves så forvirrende</h3>
+<p>Det finnes faktisk ikke egne, detaljerte trafikkregler bare for rundkjøringer. I stedet bruker man de vanlige reglene, tilpasset rundkjøringens form. Det er nok derfor mange synes de er litt forvirrende. Men når du har skjønt to ting – vikeplikten inn og blinkingen ut – er det egentlig ganske enkelt.</p>
+<h3>Du har vikeplikt på vei inn</h3>
+<p>Ved innkjøringen til en rundkjøring står det et vikepliktskilt. Det betyr at du som skal <strong>inn</strong>, har vikeplikt for trafikken som allerede er <strong>i</strong> rundkjøringen. Derfor skal alle som nærmer seg en rundkjøring, senke farten, slik at de er klare til å stoppe hvis det kommer noen rundt.</p>
+<p><strong>Eksempel – Lars kjører inn:</strong> Lars nærmer seg en rundkjøring. Inne i sirkelen kommer det en bil rundt. Lars har vikeplikt og venter til bilen har passert, eller til det er stor nok luke. Når det er klart, kjører han inn. Han skal ikke tvinge seg inn foran noen som allerede er der.</p>
+<p>En grei tankeregel: <strong>«De som er på karusellen, har retten. Du som vil hoppe på, må vente på din tur.»</strong></p>
+<h3>Blinking – den delen folk roter mest med</h3>
+<p>Blinklys i rundkjøring følger den vanlige regelen om at du skal gi tegn når du endrer retning vesentlig. I praksis:</p>
+<ul>
+<li><strong>På vei inn:</strong> Skal du av ved første avkjøring (svinge til høyre), blinker du til høyre allerede før du kjører inn. Skal du rett frem eller lenger rundt, blinker du i utgangspunktet ikke når du kjører inn.</li>
+<li><strong>På vei ut:</strong> Du skal <strong>alltid blinke til høyre når du skal ut</strong> av rundkjøringen. Gi tegnet når du har passert avkjøringen rett før din egen, slik at de andre forstår at du er på vei ut.</li>
+</ul>
+<p><strong>Eksempel – Mona skal til tredje avkjøring:</strong> Mona kjører inn uten å blinke (fordi hun ikke skal av med en gang). Hun kjører forbi første og andre avkjøring. Når hun har passert avkjøringen rett før sin egen, blinker hun til høyre for å vise at hun nå skal ut.</p>
+<h3>Hvor plasserer jeg bilen i en stor rundkjøring?</h3>
+<p>I store rundkjøringer med flere felt er en vanlig huskeregel:
+- Skal du <strong>av tidlig</strong> (første avkjøring), legg deg i <strong>høyre felt</strong>.
+- Skal du <strong>rett frem</strong>, kan du ofte bruke høyre felt.
+- Skal du <strong>langt rundt</strong> eller helt tilbake, legg deg gjerne i <strong>venstre felt</strong>, og flytt deg ut i høyre i god tid før du skal ut.</p>
+<p>Her er det også viktig å følge eventuelle kjørefeltpiler og skilt, som kan avvike fra hovedregelen.</p>
+<h3>Hva koster det å gjøre feil?</h3>
+<p>Dette er et område der det faktisk gis bøter. Bryter du vikeplikten på vei inn, eller skifter felt på en farlig måte inne i rundkjøringen, kan det bli en bot på rundt 5 200 kroner og prikker i førerkortet. Lar du være å blinke ut når du skal, kan det bli en bot på rundt 2 000 kroner. (Satser kan endres over tid, så se politiet.no for dagens nivå.)</p>
+<h3>Steg for steg gjennom en rundkjøring</h3>
+<ol>
+<li><strong>Senk farten</strong> på vei inn – du har vikeplikt.</li>
+<li><strong>Se til venstre</strong> etter biler som allerede er i rundkjøringen.</li>
+<li><strong>Vent på en trygg luke</strong>, og kjør inn uten å tvinge deg frem.</li>
+<li><strong>Hold roen inne i sirkelen</strong>, og følg feltet ditt.</li>
+<li><strong>Blink til høyre</strong> når du har passert avkjøringen før din egen.</li>
+<li><strong>Kjør rolig ut</strong>, og pass på fotgjengere og syklister ved utkjøringen.</li>
+</ol>
+<h3>Hva med fotgjengere og syklister?</h3>
+<p>Mange glemmer de myke trafikantene rundt rundkjøringen. Ofte er det gangfelt ved inn- og utkjøringene. Da gjelder de vanlige reglene om vikeplikt for fotgjengere (se artikkel 37): kjører du ut av rundkjøringen og det ligger et gangfelt der, har du vikeplikt for fotgjengere som krysser. Vær spesielt oppmerksom her, fordi du gjerne har fokus på trafikken inne i sirkelen og lett kan overse en fotgjenger ute i kanten.</p>
+<h3>En tankeregel som gjør alt enklere</h3>
+<p>Hvis du blander deg bort i blinkingen, hold deg til dette: <strong>du blinker bare til høyre, og bare når du skal UT.</strong> Det eneste tilfellet der du blinker til høyre allerede på vei inn, er hvis du skal av med en gang ved første avkjøring. Resten av tiden lar du blinklyset være, helt til du nærmer deg din egen utkjøring.</p>
+<h3>Vanlige feil som skaper trøbbel</h3>
+<p>To feil går igjen i rundkjøringer. Den første er å <strong>tvinge seg inn</strong> uten å ha vikeplikt klart for seg – sjåføren ruller ut i sirkelen samtidig som en bil kommer rundt, og begge må bråstoppe. Den andre er å <strong>glemme å blinke ut</strong>, slik at de som står og venter på å kjøre inn, ikke skjønner at du faktisk skal ut akkurat der. Da blir de stående unødvendig, og flyten i hele rundkjøringen blir dårligere. Begge feilene løses med litt ekstra ro: senk farten, se til venstre, vent på luken – og husk høyreblinket før du svinger ut.</p>
+<p><strong>Eksempel – Sondre venter forgjeves:</strong> Sondre står ved innkjøringen og ser en bil komme rundt. Bilen blinker ikke, så Sondre tror den skal videre og fortsetter å vente. Men bilen svinger plutselig ut rett foran ham, fordi sjåføren glemte å blinke. Hadde sjåføren blinket til høyre i tide, kunne Sondre kjørt inn med god margin.</p>
+<h3>Vanlige misforståelser</h3>
+<ul>
+<li><strong>«Jeg som er i rundkjøringen, har vikeplikt for dem som vil inn.»</strong> Helt feil – det er motsatt. De som vil inn, viker for deg som allerede er inne.</li>
+<li><strong>«Man trenger ikke blinke i rundkjøring.»</strong> Jo. Du skal blinke til høyre når du kjører ut, og det kan gi bot å la være.</li>
+<li><strong>«Venstre felt er for dem som har det travelt.»</strong> Nei, feltvalget styres av hvor langt rundt du skal kjøre og av oppmerkingen – ikke av farten.</li>
+</ul>
+<h3>Et lite forbehold</h3>
+<p>Plassering og blinking kan variere litt etter hvordan den enkelte rundkjøringen er skiltet og oppmerket. Følg alltid skilt og piler i bakken – de går foran den generelle huskeregelen. Statens vegvesen og NAF har gode illustrasjoner hvis du vil se det tegnet opp, og reglene bygger på trafikkreglene §§ 7 og 14 om vikeplikt og tegngivning.</p>
+<h3>Kort oppsummert</h3>
+<p>I en rundkjøring har den som skal inn, vikeplikt for de som allerede er inne i sirkelen. Senk farten på vei inn, vent på en trygg luke, og tving deg aldri frem. Husk å blinke til høyre når du skal ut – det er den delen flest glemmer, og det kan faktisk gi bot. Følg skilt og kjørefeltpiler, og vis hensyn til fotgjengere og syklister i utkjøringen.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

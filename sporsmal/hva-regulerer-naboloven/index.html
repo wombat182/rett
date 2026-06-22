@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva regulerer naboloven? — Rettsregel</title>
+<meta name="description" content="Naboloven grannelova regulerer forholdet mellom naboeiendommer – altså hva du har lov til å gjøre på din tomt når det påvirker naboen.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-regulerer-naboloven/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva regulerer naboloven?">
+<meta property="og:description" content="Naboloven grannelova regulerer forholdet mellom naboeiendommer – altså hva du har lov til å gjøre på din tomt når det påvirker naboen.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-regulerer-naboloven/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva regulerer naboloven?">
+<meta name="twitter:description" content="Naboloven grannelova regulerer forholdet mellom naboeiendommer – altså hva du har lov til å gjøre på din tomt når det påvirker naboen.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva regulerer naboloven?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Naboloven (grannelova) regulerer forholdet mellom naboeiendommer – altså hva du har lov til å gjøre på din tomt når det påvirker naboen. Den setter en grense for hvor mye ulempe en nabo må tåle, og gir rettigheter når denne grensen brytes. Loven dekker alt fra trær og gjerder til støy, lukt og bygninger.</p>
+  <p class="sp-kilde">Bygger på Naboloven §§ 2, 3, 10, 9</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/2/" class="related-card">
+  <div class="related-card-meta">Naboloven § 2</div>
+  <div class="related-card-title">Grensen for urimelig skade og ulempe</div>
+</a><a href="../../lover/naboloven/3/" class="related-card">
+  <div class="related-card-meta">Naboloven § 3</div>
+  <div class="related-card-title">Naboens tre kan ikke være høyere enn avstanden til grensen din</div>
+</a><a href="../../lover/naboloven/10/" class="related-card">
+  <div class="related-card-meta">Naboloven § 10</div>
+  <div class="related-card-title">Retten til å få ulovlige ting fjernet eller rettet</div>
+</a><a href="../../lover/naboloven/9/" class="related-card">
+  <div class="related-card-meta">Naboloven § 9</div>
+  <div class="related-card-title">Erstatning hvis du skader naboens eiendom</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Naboloven (grannelova) regulerer forholdet mellom naboeiendommer – altså hva du har lov til å gjøre på din tomt når det påvirker naboen. Den setter en grense for hvor mye ulempe en nabo må tåle, og gir rettigheter når denne grensen brytes. Loven dekker alt fra trær og gjerder til støy, lukt og bygninger.</p>
+<h3>Det handler om eiendommene, ikke personene</h3>
+<p>En vanlig misforståelse er at naboloven handler om uvennskap eller dårlig oppførsel mellom mennesker. Det gjør den ikke. Loven retter seg mot bruken av eiendommen. Spørsmålet er alltid: gjør det som skjer på den ene tomta urimelig eller unødvendig skade eller ulempe på naboeiendommen? (grannelova § 2). Det spiller liten rolle om naboen er hyggelig eller sur – det avgjørende er virkningen over tomtegrensa.</p>
+<h3>Typiske ting loven regulerer</h3>
+<p>Naboloven dekker et bredt spekter av situasjoner. Her er noen av de vanligste:</p>
+<ul>
+<li><strong>Trær og vegetasjon.</strong> Et høyt tre som skygger for sola eller slipper løv ned i naboens takrenne. Loven har til og med en egen regel om trær nær grensa (grannelova § 3), som sier at trær ikke kan stå nærmere enn en tredjedel av høyden fra grensa, dersom det ikke er nevneverdig om å gjøre for eieren å ha dem der, og det er til skade eller ulempe for naboen.</li>
+<li><strong>Støy og lyd.</strong> Vedvarende, kraftig støy fra for eksempel en bedrift, en varmepumpe eller stadig festing.</li>
+<li><strong>Lukt og røyk.</strong> Røyk fra et bål, lukt fra dyrehold eller annen virksomhet.</li>
+<li><strong>Bygninger og konstruksjoner.</strong> En garasje, et uthus eller en mur som tar utsikt, sol eller lys fra naboen.</li>
+<li><strong>Graving og endring av terreng.</strong> Hvis naboen graver slik at vannet renner inn på din tomt, eller undergraver grunnen din.</li>
+</ul>
+<p>Ta for eksempel Solveig, som driver hundepensjonat hjemme. Bjeffingen fra tjue hunder dag og natt går ut over alle naboene rundt. Dette er typisk noe naboloven regulerer – ikke fordi hundehold er forbudt, men fordi mengden og støyen kan bli en ulempe over tålegrensen.</p>
+<h3>Hva loven IKKE regulerer</h3>
+<p>Det er like nyttig å vite hva som faller utenfor. Naboloven regulerer ikke rene personkonflikter, sjikane uten tilknytning til eiendomsbruk, eller forhold som dekkes av helt andre lover. Hvis naboen er truende eller voldelig, er det en sak for politiet, ikke naboloven. Husleieforhold mellom utleier og leietaker reguleres av husleieloven, ikke naboloven.</p>
+<h3>Forholdet til andre regelverk</h3>
+<p>Naboloven gjelder ved siden av plan- og bygningsloven. Den ene handler om hva du får bygge og hvilke tillatelser du trenger; den andre om hvordan bruken påvirker naboen. Tor fikk byggetillatelse til en høy garasje, men naboen Lise mistet all kveldssol. Selv om kommunen sa ja, kan Lise fortsatt vurdere en sak etter naboloven. De to regelsettene utelukker ikke hverandre.</p>
+<h3>Rettigheter når grensen brytes</h3>
+<p>Når noe går over tålegrensen, gir loven deg konkrete verktøy. Du kan kreve at det ulovlige forholdet rettes opp, altså fjernes eller endres (grannelova § 10), og du kan kreve erstatning for økonomisk tap du har lidt (grannelova § 9). Dette gjør loven til mer enn fine ord – den gir reelle muligheter til å få situasjonen endret.</p>
+<h3>Flere hverdagseksempler på hva loven fanger opp</h3>
+<p>For å gjøre det enda mer konkret, her er noen typiske situasjoner som naboloven kan ha noe å si om:</p>
+<ul>
+<li>Naboen setter opp en høy levegg som tar all ettermiddagssol fra din uteplass.</li>
+<li>En varmepumpe på naboens vegg står rett ved soveromsvinduet ditt og brummer hele natta.</li>
+<li>Naboens hageslange og dreneringsrør sender alt overvann inn på tomta di slik at plenen blir en sump.</li>
+<li>En trampoline eller et lekestativ er plassert helt inntil gjerdet, slik at fotballer og barn stadig havner på din side.</li>
+<li>Naboen lagrer skrapbiler, paller og søppel synlig langs grensa over flere år.</li>
+</ul>
+<p>Felles for alle disse er at de handler om hvordan bruken av den ene tomta påvirker den andre. Det er nettopp dette naboloven skal hjelpe oss å vurdere – og om nødvendig rette opp.</p>
+<h3>Et tips om grensesnittet mot kommunen</h3>
+<p>Mange tror at kommunen løser alle nabokonflikter. Det stemmer ikke. Kommunen håndhever plan- og bygningsloven og kan for eksempel reagere hvis naboen bygger ulovlig uten tillatelse. Men kommunen avgjør ikke privatrettslige nabokrav om tålegrense, retting og erstatning. Det gjør i siste instans domstolene, eller dere selv gjennom enighet eller megling. Det er derfor lurt å skille mellom to spor: et byggesaksspor mot kommunen, og et nabolovspor mot naboen direkte.</p>
+<h3>Loven beskytter også mot forberedelser til skade</h3>
+<p>Et poeng som er verdt å kjenne til, er at naboloven ikke bare gjelder skade som allerede har skjedd. Den retter seg også mot det å "ha, gjøre eller sette i verk" noe – altså omfatter den både eksisterende forhold, handlinger som pågår, og tiltak som settes i gang. Det betyr at du i prinsippet ikke nødvendigvis må vente til skaden er et faktum før du reagerer.</p>
+<p>Tenk på Hassan, som ser at naboen er i ferd med å grave dypt langs tomtegrensa på en måte som åpenbart kan undergrave hans egen mur. Han trenger ikke vente til muren faktisk raser. Loven gir grunnlag for å reagere på et tiltak som er i ferd med å skape en urimelig eller unødvendig ulempe. I praksis betyr dette at det ofte lønner seg å være tidlig ute: si fra med en gang du ser at noe er på vei til å gå galt, både fordi det kan stanse skaden og fordi det viser at du har vært aktsom.</p>
+<h3>En oppfordring til å lese loven selv</h3>
+<p>Naboloven er kort og forholdsvis lett tilgjengelig sammenlignet med mange andre lover. Den ligger gratis tilgjengelig på lovdata.no, og selv om språket er nynorsk og litt gammelmodig, er hovedreglene til å forstå. Det kan være en god idé å lese i hvert fall paragraf 2, 9 og 10 dersom du står midt i en konflikt, slik at du kjenner ordlyden selv og ikke bare er avhengig av andres tolkninger.</p>
+<h3>Kort oppsummert</h3>
+<p>Naboloven regulerer bruken av naboeiendommer og virkningene over tomtegrensa: trær, støy, lukt, bygninger og terreng. Den handler om eiendommene, ikke om personene, og setter en tålegrense for hvor mye ulempe naboen må finne seg i. Den dekker ikke rene personkonflikter eller forhold som hører under andre lover, og den gjelder sammen med plan- og bygningsloven. Når grensen brytes, kan du kreve retting og erstatning.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-mekling-i-nabosaker/">Bør jeg bruke mekling i nabosaker?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ta-nabokonflikten-til-forliksradet/">Bør jeg ta nabokonflikten til forliksrådet?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-nabotvist/">Dekker forsikringen min advokat i en nabotvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

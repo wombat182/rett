@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Er det lov å bruke håndfri? — Rettsregel</title>
+<meta name="description" content="Ja, håndfri er lov. Du kan snakke i telefonen mens du kjører så lenge du ikke holder den i hånda – enten via en fastmontert holder ved rattet eller et…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/er-det-lov-a-bruke-handfri/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Er det lov å bruke håndfri?">
+<meta property="og:description" content="Ja, håndfri er lov. Du kan snakke i telefonen mens du kjører så lenge du ikke holder den i hånda – enten via en fastmontert holder ved rattet eller et…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/er-det-lov-a-bruke-handfri/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Er det lov å bruke håndfri?">
+<meta name="twitter:description" content="Ja, håndfri er lov. Du kan snakke i telefonen mens du kjører så lenge du ikke holder den i hånda – enten via en fastmontert holder ved rattet eller et…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Er det lov å bruke håndfri?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, håndfri er lov. Du kan snakke i telefonen mens du kjører så lenge du ikke holder den i hånda – enten via en fastmontert holder ved rattet eller et håndfrisystem. Men "lov" betyr ikke "uten ansvar": Du har fortsatt full plikt til å kjøre aktsomt, og blir du for distrahert, kan du straffes likevel.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Hva er egentlig håndfri?</h3>
+<p>"Håndfri" betyr at du kan bruke telefonen uten å holde den. Det finnes flere varianter:</p>
+<ul>
+<li><strong>Bilens innebygde system:</strong> Mange biler kobler telefonen til via Bluetooth, slik at du kan snakke gjennom bilens høyttalere og styre med knapper på rattet.</li>
+<li><strong>Holder ved rattet:</strong> Telefonen ligger fast i en holder, og du snakker via høyttaleren.</li>
+<li><strong>Øreplugg eller headset:</strong> Du kan bruke en trådløs øreplugg, men vær oppmerksom på at det å fikle med proppen ikke skal ta oppmerksomheten din.</li>
+</ul>
+<p>Det avgjørende er at telefonen ikke holdes i hånda, og at en eventuell holder sitter nær rattet og innenfor ditt vanlige synsfelt.</p>
+<p>En vanlig misforståelse er at "håndfri" bare betyr dyre, innebygde systemer. Det stemmer ikke. Den enkleste lovlige løsningen er en rimelig mobilholder du fester på frontruta eller ved ventilasjonsåpningen, kombinert med høyttaleren på telefonen. Da snakker du fritt mens telefonen blir liggende i ro.</p>
+<h3>Lovlig, men ikke uten grenser</h3>
+<p>Her er en viktig nyanse mange overser: Selv om håndfri er tillatt etter mobilforskriften, gjelder fortsatt den generelle aktsomhetsplikten i veitrafikkloven § 3. Den sier at enhver skal ferdes hensynsfullt og være aktpågivende og varsom, slik at det ikke oppstår fare eller skade.</p>
+<p>Det betyr i praksis: Blir du så oppslukt av en heftig telefonsamtale at du overser et fotgjengerfelt eller kjører over på feil side, kan politiet straffe deg etter den generelle regelen – selv om du brukte håndfri helt etter boka.</p>
+<h3>Eksempel: To samtaler, to utfall</h3>
+<p>Tenk deg Anders som tar et kort, rolig anrop via håndfri for å si at han er fem minutter unna. Han holder blikket på veien og hendene på rattet. Helt greit.</p>
+<p>Sammenlign med Sofie, som via håndfri havner i en opphetet diskusjon, gestikulerer, mister fokus og glemmer å bremse i tide foran en fotgjengerovergang. Selv om hun ikke holdt telefonen, kjørte hun uaktsomt – og det kan koste henne dyrt.</p>
+<p>Forskning viser at hjernen vår faktisk jobber saktere med trafikken når vi er dypt inne i en samtale, selv om hendene er frie. Derfor handler trygg håndfri-bruk ikke bare om å slippe telefonen, men også om å holde samtalen lett og avbryte den hvis trafikken krever full oppmerksomhet.</p>
+<h3>Når bør du la være, selv om det er lov?</h3>
+<p>Det finnes situasjoner der det smarteste er å ikke ta samtalen i det hele tatt, enda håndfri er tillatt:</p>
+<ul>
+<li>I tett bykjøring med mange fotgjengere og kryss.</li>
+<li>Når det er glatt, mørkt eller dårlig sikt.</li>
+<li>Når du nettopp har satt deg i en ukjent bil eller på en ukjent vei.</li>
+<li>Når samtalen sannsynligvis blir følelsesladd eller krevende.</li>
+</ul>
+<p>I slike tilfeller kan du la telefonen ringe ut og heller ringe tilbake når du har parkert. Ingen samtale er verdt en ulykke.</p>
+<h3>Hva med å taste, lese eller styre kart?</h3>
+<p>Her er fellen mange går i. Du kan ha telefonen i en holder og bruke navigasjon, men du skal ikke sitte og taste lange meldinger eller bla i apper underveis. Et raskt trykk for å besvare et anrop eller starte en rute er greit, men aktiv betjening som tar blikket vekk fra veien over tid, er ikke i tråd med aktsomhetskravet. Tommelfingerregel: Hvis du må se på skjermen mer enn et øyeblikk, vent til du står parkert.</p>
+<h3>Eksempel: Den gode rutinen</h3>
+<p>Kristin har gjort det til en vane å koble telefonen til bilen via Bluetooth med en gang hun setter seg inn. Får hun et anrop underveis, trykker hun på rattknappen og snakker via høyttalerne uten å røre telefonen. Skal hun ringe noen, sier hun bare navnet til stemmeassistenten. Hele tiden ligger telefonen trygt i holderen, og hendene er på rattet. Slik bruker hun håndfri både lovlig og trygt – og slipper å tenke på bøter.</p>
+<h3>Praktiske råd for trygg håndfri-bruk</h3>
+<ol>
+<li>Koble telefonen til bilen eller headset før du kjører.</li>
+<li>Hold samtalene korte og rolige – avslutt heller og ring tilbake når du har stoppet.</li>
+<li>Ikke ta vanskelige eller følelsesladde samtaler i tett trafikk.</li>
+<li>La all tasting og søking vente til bilen står parkert.</li>
+<li>Husk at en holder ved rattet både gjør mobilbruken lovlig og kjøringen tryggere.</li>
+</ol>
+<h3>Vanlige spørsmål om håndfri</h3>
+<p><strong>Kan jeg ha telefonen i fanget hvis jeg snakker via høyttaler?</strong> Nei. Selv om du bruker høyttaler, regnes telefonen som håndholdt hvis den ligger løst i fanget eller du må plukke den opp. Den må ligge i en fast holder.</p>
+<p><strong>Er det lov å bruke trådløse øreplugger?</strong> Ja, det er lov å snakke via øreplugger. Men du bør være forsiktig med å fikle med pluggene, og mange anbefaler å la minst ett øre være fritt, slik at du hører trafikken og utrykningskjøretøy rundt deg.</p>
+<p><strong>Kan jeg starte en samtale med stemmestyring?</strong> Ja. Stemmestyring der du sier "ring mamma" uten å røre telefonen, er en fin og trygg løsning, så lenge telefonen ligger i holderen.</p>
+<p><strong>Hva med videosamtaler?</strong> Unngå videosamtaler under kjøring. Selv om lyden går via håndfri, frister bildet deg til å se på skjermen, og det tar oppmerksomheten fra veien.</p>
+<h3>Hva sier kildene?</h3>
+<p>NAF og Statens vegvesen er tydelige: Håndfri er tillatt, men du må fortsatt kjøre forsvarlig. Lovgrunnlaget er mobilforskriften under veitrafikkloven, kombinert med den generelle aktsomhetsplikten i § 3. Reglene kan justeres, så sjekk vegvesen.no eller politiet.no for siste oppdatering. Den korte versjonen er at håndfri er et godt hjelpemiddel, men aldri en grunn til å slappe av på oppmerksomheten.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, du kan bruke håndfri mens du kjører – enten via bilens system, en holder ved rattet eller et headset. Men du skal aldri holde telefonen i hånda, og du har alltid plikt til å kjøre aktsomt. Blir du for distrahert av samtalen, kan du straffes etter den generelle aktsomhetsregelen selv om håndfri i seg selv er lovlig. Hold samtalene korte, og la tasting vente til du har parkert.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

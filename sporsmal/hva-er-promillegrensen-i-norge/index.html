@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er promillegrensen i Norge? — Rettsregel</title>
+<meta name="description" content="Promillegrensen i Norge er 0,2 promille.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-er-promillegrensen-i-norge/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva er promillegrensen i Norge?">
+<meta property="og:description" content="Promillegrensen i Norge er 0,2 promille.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-er-promillegrensen-i-norge/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva er promillegrensen i Norge?">
+<meta name="twitter:description" content="Promillegrensen i Norge er 0,2 promille.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hva er promillegrensen i Norge?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Promillegrensen i Norge er 0,2 promille. Har du mer alkohol i blodet enn det mens du kjører, regnes du som påvirket, og du bryter loven. Dette står i vegtrafikkloven § 22, paragrafen som forbyr å kjøre når du er påvirket av alkohol eller annet berusende eller bedøvende middel. Grensen er lav med vilje – Norge har bevisst en av de strengeste promillegrensene i Europa.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Promillegrensen i Norge er <strong>0,2 promille</strong>. Har du mer alkohol i blodet enn det mens du kjører, regnes du som påvirket, og du bryter loven. Dette står i vegtrafikkloven § 22, paragrafen som forbyr å kjøre når du er påvirket av alkohol eller annet berusende eller bedøvende middel. Grensen er lav med vilje – Norge har bevisst en av de strengeste promillegrensene i Europa.</p>
+<h3>Hva betyr egentlig «0,2 promille»?</h3>
+<p>Promille er et mål på hvor mye alkohol det er i blodet ditt. 0,2 promille betyr at det er 0,2 gram ren alkohol per liter blod. Det høres lite ut, og det er det også – for mange holder det med ganske lite alkohol før de er over.</p>
+<p>Et viktig poeng: Grensen handler ikke om hvor full du føler deg. Du kan føle deg helt fin og likevel være over 0,2. Loven bryr seg ikke om følelsen din, bare om tallet.</p>
+<h3>Hvor lite skal til?</h3>
+<p>Det er stor individuell variasjon, men noen tommelfingerregler hjelper:</p>
+<ul>
+<li>Allerede ett enkelt glass øl eller vin kan bringe en person nær eller over 0,2, særlig hvis du er liten av vekst eller drikker på tom mage.</li>
+<li>Kvinner når ofte grensen raskere enn menn, fordi kroppen vanligvis har mindre væske å fordele alkoholen i.</li>
+<li>Vekt, alder, mat i magen og dagsform spiller alt sammen inn.</li>
+</ul>
+<p>Eksempel: Mona på 60 kilo deler en flaske vin med en venninne over en middag. Selv om hun «bare» drakk et par glass, kan hun fort være langt over 0,2 i timene etterpå. Den eneste trygge regelen er: Skal du kjøre, ikke drikk i det hele tatt.</p>
+<h3>Hvorfor er grensen så lav?</h3>
+<p>Forskning viser at kjøreevnen blir dårligere allerede ved lave promiller. Reaksjonstid, oppmerksomhet og vurderingsevne svekkes før man «kjenner» det selv. Den lave grensen er et trafikksikkerhetstiltak: jo lavere grense, jo tydeligere beskjed om at alkohol og bilkjøring ikke hører sammen.</p>
+<h3>Hva regnes som «å kjøre»?</h3>
+<p>Loven sier at ingen må føre eller forsøke å føre motorvogn i påvirket tilstand. «Føre» er mer enn å trille nedover veien. Også det å forsøke – for eksempel sette deg bak rattet og prøve å starte – kan rammes. Motorvogn omfatter ikke bare bil, men også for eksempel motorsykkel og moped.</p>
+<p>Eksempel: Petter har drukket og bestemmer seg for å «bare flytte bilen litt» på parkeringsplassen. Også det er kjøring i lovens forstand. Det hjelper ikke at det var en kort strekning.</p>
+<h3>Gjelder grensen alle?</h3>
+<p>For noen yrkesgrupper, og i visse situasjoner, er reglene enda strengere – men 0,2 er hovedgrensen for vanlige bilister. Vær oppmerksom på at andre land har andre grenser. Skal du kjøre i utlandet, må du sjekke reglene der du er. At noe er lov i ett land, betyr ikke at det er lov hjemme i Norge.</p>
+<h3>Hva skjer hvis du blir tatt?</h3>
+<p>Politiet kan be deg blåse i et apparat (alkotest) hvis de har grunn til å tro at du har drukket. Viser den utslag, kan de ta deg med til videre prøver – pusteprøve, blodprøve og legeundersøkelse – for å fastslå nivået. Straffen avhenger så av hvor høy promillen var. Selv en lav promille mellom 0,2 og 0,5 gir normalt bot. Høyere nivåer gir strengere straff og tap av førerretten.</p>
+<h3>Den enkleste, tryggeste regelen</h3>
+<p>Fordi det er så vanskelig å beregne nøyaktig hvor mye du tåler, er det beste rådet enkelt: <strong>Skal du kjøre, drikk ingenting.</strong> Da slipper du å gjette, og du slipper risikoen. Skal du ut og drikke, planlegg hjemreisen på forhånd – taxi, kollektivt, en edru sjåfør eller overnatting.</p>
+<h3>Litt historie: hvorfor 0,2?</h3>
+<p>Norge var et av de første landene i verden som innførte en fast promillegrense allerede tidlig på 1900-tallet, og grensen ble senere satt ned til dagens 0,2 promille. Bakgrunnen var et ønske om et tydelig, klart signal: alkohol og bilkjøring hører rett og slett ikke sammen. Mange andre land har høyere grenser, ofte 0,5 eller mer, men Norge har bevisst lagt seg lavt fordi forskning viser at også små mengder alkohol svekker kjøreevnen. Det er altså ikke en tilfeldighet at grensen er streng – det er et bevisst trafikksikkerhetsvalg.</p>
+<h3>Hva med båt, sykkel og elsparkesykkel?</h3>
+<p>Promillegrensen i vegtrafikkloven § 22 handler om motorvogn – altså bil, motorsykkel, moped og lignende. Men vær oppmerksom på at det også finnes egne regler for andre fartøy og kjøretøy:</p>
+<ul>
+<li><strong>Båt:</strong> Det finnes egne promilleregler for fritidsbåter.</li>
+<li><strong>Elsparkesykkel:</strong> Disse har blitt regnet inn under reglene for motorvogn, slik at promillegrense gjelder også her.</li>
+<li><strong>Vanlig sykkel:</strong> Her gjelder ikke den faste 0,2-grensen på samme måte, men du kan likevel rammes av andre regler hvis du er så beruset at du er til fare.</li>
+</ul>
+<p>Poenget er: ikke tro at «det er bare en elsparkesykkel» gjør deg trygg. Reglene favner bredere enn mange tror.</p>
+<p>Eksempel: Jonas tenker at han kan ta elsparkesykkelen hjem fra byen etter noen øl siden han «ikke kjører bil». Men også elsparkesykkel omfattes av promillereglene, og han kan straffes på samme måte.</p>
+<h3>Et vanlig misforståelse</h3>
+<p>Mange tror at «0,2 promille» er en slags slingringsmonn – at man «har lov til» å ha litt alkohol i blodet. Det er en farlig misforståelse. Grensen er en absolutt øvre strek, ikke en anbefaling om hvor mye du kan drikke. Den tryggeste tolkningen er å se på 0,2 som «så godt som null», og handle deretter.</p>
+<h3>Hva med alkoholfritt øl og småretter med alkohol?</h3>
+<p>En vanlig bekymring er om alkoholfritt øl, eller mat tilberedt med litt vin, kan sette deg over grensen. I praksis skal det svært mye til. Alkoholfritt øl inneholder så lite alkohol at det normalt ikke gir målbar promille, og alkohol i matlaging fordamper i stor grad under tilberedning. Du trenger altså ikke å frykte en bot fordi du spiste en saus med et skvett rødvin i. Men er du i tvil, gjelder samme trygge regel: vent litt, eller la bilen stå.</p>
+<p>Eksempel: Berit drikker et alkoholfritt øl til grillmaten før hun kjører hjem. Det er trygt – alkoholinnholdet er for lavt til å gi henne promille. Hadde hun derimot drukket et vanlig øl, ville bildet vært et annet.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Promillegrensen i Norge er 0,2 promille (vegtrafikkloven § 22).</li>
+<li>Det skal lite til – noen ganger ett glass – og du kan være over uten å føle deg påvirket.</li>
+<li>«Å føre» omfatter også å forsøke å kjøre, og gjelder bil, motorsykkel, moped og lignende.</li>
+<li>Selv lav promille gir normalt bot; høyere nivåer gir strengere straff og tap av førerrett.</li>
+<li>Tryggeste regel: skal du kjøre, ikke drikk i det hele tatt.</li>
+</ul>
+<p><em>Promillegrensen og reglene kan endres. Bekreft alltid mot Lovdata (vegtrafikkloven § 22) og politiet.no.</em></p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

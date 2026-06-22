@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor fort kan jeg kjøre før jeg mister førerkortet? — Rettsregel</title>
+<meta name="description" content="Du mister normalt førerkortet hvis du kjører 26 km/t eller mer for fort der fartsgrensen er 60 km/t eller lavere, eller 36 km/t eller mer for fort der…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-fort-kan-jeg-kjore-for-jeg-mister/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor fort kan jeg kjøre før jeg mister førerkortet?">
+<meta property="og:description" content="Du mister normalt førerkortet hvis du kjører 26 km/t eller mer for fort der fartsgrensen er 60 km/t eller lavere, eller 36 km/t eller mer for fort der…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-fort-kan-jeg-kjore-for-jeg-mister/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor fort kan jeg kjøre før jeg mister førerkortet?">
+<meta name="twitter:description" content="Du mister normalt førerkortet hvis du kjører 26 km/t eller mer for fort der fartsgrensen er 60 km/t eller lavere, eller 36 km/t eller mer for fort der…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hvor fort kan jeg kjøre før jeg mister førerkortet?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du mister normalt førerkortet hvis du kjører 26 km/t eller mer for fort der fartsgrensen er 60 km/t eller lavere, eller 36 km/t eller mer for fort der grensen er 70 km/t eller høyere. På motorvei med 90 km/t eller mer går grensen enda høyere, rundt 41 km/t over. Grensene kan endres – sjekk politiet.no.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Du mister normalt førerkortet hvis du kjører 26 km/t eller mer for fort der fartsgrensen er 60 km/t eller lavere, eller 36 km/t eller mer for fort der grensen er 70 km/t eller høyere. På motorvei med 90 km/t eller mer går grensen enda høyere, rundt 41 km/t over. Grensene kan endres – sjekk politiet.no.</p>
+<h3>Hovedregelen forklart enkelt</h3>
+<p>Det handler ikke om hvor mange kilometer i timen du kjørte i seg selv, men om hvor mange km/t <strong>over grensen</strong> du var – og hvilken grense det gjelder. Jo lavere fartsgrense, jo strengere er reglene, fordi det ofte er folk, sykler og barn i nærheten.</p>
+<p>Den enkle tommelfingerregelen:</p>
+<ul>
+<li><strong>30-, 40-, 50- og 60-soner (60 km/t eller lavere):</strong> Du risikerer å miste lappen fra <strong>26 km/t</strong> over grensen.</li>
+<li><strong>70- og 80-veier:</strong> Du risikerer å miste lappen fra <strong>36 km/t</strong> over grensen.</li>
+<li><strong>Motorvei 90, 100, 110 km/t:</strong> Grensen ligger rundt <strong>41 km/t</strong> over.</li>
+</ul>
+<h3>Eksempler du kan kjenne deg igjen i</h3>
+<ul>
+<li><strong>Tom</strong> kjørte 76 km/t i en 50-sone. Det er 26 km/t over. Tom risikerer å miste førerkortet.</li>
+<li><strong>Hanne</strong> kjørte 86 km/t i en 50-sone (36 km/t over). Her er tapet praktisk talt sikkert, og det kan bli langvarig.</li>
+<li><strong>Karl</strong> kjørte 116 km/t i en 80-sone. Det er 36 km/t over. Karl risikerer å miste lappen.</li>
+<li><strong>Mona</strong> kjørte 145 km/t på en motorvei med 110 km/t (35 km/t over). Hun fikk en saftig bot, men var akkurat under tapsgrensen på motorvei – likevel et farlig sjansespill, for marginer kan variere.</li>
+<li><strong>Geir</strong> kjørte 86 km/t i en 60-sone (26 km/t over). Også her er han over grensen for å miste lappen, selv om han følte at 86 ikke var "så fort".</li>
+</ul>
+<h3>Hvorfor er det strengere i 50-sonen?</h3>
+<p>Tenk på et boligområde med skoler og fotgjengerfelt. 76 km/t der er livsfarlig. På en motorvei med eget kjørefelt i hver retning og ingen kryss, er 145 km/t fortsatt for fort, men risikoen for å treffe en fotgjenger er en helt annen. Derfor reagerer loven hardest når du bryter grensen mest i de lave sonene. Det er den samme tankegangen som gjør at både bøtene og tapsgrensene er strengere på lav fartsgrense.</p>
+<h3>Det handler om mer enn boten</h3>
+<p>Når du krysser tapsgrensen, snakker vi ikke lenger bare om et forenklet forelegg. Da:</p>
+<ul>
+<li>får du som regel <strong>beslag</strong> av førerkortet på stedet hvis politiet stopper deg,</li>
+<li>mister du <strong>førerretten</strong> for en periode (måneder, ikke dager – se egen artikkel),</li>
+<li>får du saken behandlet som <strong>vanlig straffesak</strong> ved de groveste overskridelsene, ikke som standardbot.</li>
+</ul>
+<h3>Viktige forbehold</h3>
+<p>Tabellene som brukes forutsetter normale forhold: tørr vei, dagslys, rett strekning uten kryss eller fotgjengerfelt, og ingen skjerpende omstendigheter. Var det glatt, mørkt, eller mange folk i nærheten, kan politiet og domstolen vurdere det <strong>strengere</strong>. Så grensene over er et utgangspunkt, ikke en garanti. Motsatt kan helt spesielle formildende forhold tenkes, men du skal aldri planlegge ut fra det.</p>
+<h3>Slik holder du deg trygg – sjekkliste</h3>
+<ol>
+<li><strong>Kjenn sonen din.</strong> Vet du om du er i 50 eller 80? Det avgjør hvor stor margin du har til tapsgrensen.</li>
+<li><strong>Bruk cruise control der det passer.</strong> På lange strekninger med fast fart reduserer det risikoen for å snike seg over.</li>
+<li><strong>Vær ekstra forsiktig i 50- og 60-soner.</strong> Her er marginen til tap minst – bare 26 km/t over er nok.</li>
+<li><strong>Ikke stol på "alle andre kjører fort".</strong> Du mister lappen på din egen fart, ikke gjennomsnittet i trafikken.</li>
+<li><strong>Vær obs på fartsøkninger.</strong> Det er lett å la farten krype oppover på en fin, åpen vei uten å merke det.</li>
+</ol>
+<h3>En enkel oversikt du kan huske</h3>
+<p>Hvis du vil ha det helt enkelt, kan du tenke slik:</p>
+<ul>
+<li><strong>Lav grense (30–60 km/t):</strong> Du har minst margin. Allerede 26 km/t over setter lappen i fare.</li>
+<li><strong>Middels grense (70–80 km/t):</strong> Litt mer margin. Tapsgrensen ligger på 36 km/t over.</li>
+<li><strong>Høy grense (90–110 km/t, motorvei):</strong> Mest margin i tall, rundt 41 km/t over – men husk at farten da er veldig høy i absolutte tall, og konsekvensene av en ulykke deretter.</li>
+</ul>
+<p>Poenget er ikke å finne ut "hvor mye du kan ta sjansen på", men å forstå at marginen krymper jo lavere grensen er. Den sikreste strategien er rett og slett å holde fartsgrensen.</p>
+<h3>Hva med utenlandske førerkort og turister?</h3>
+<p>Reglene om tap av førerretten gjelder også når du kjører i Norge på et utenlandsk førerkort. Politiet kan da nedlegge et forbud mot å kjøre i Norge i en periode, selv om de ikke kan inndra selve det utenlandske kortet på samme måte. Kjører du i utlandet med norsk førerkort, gjelder vertslandets regler – men en grov overtredelse ute kan også få betydning hjemme. Er du i tvil, er regelen den samme overalt: hold fartsgrensen.</p>
+<h3>Et nyttig tankeeksperiment</h3>
+<p>Spør deg selv: "Hvor mye tjener jeg egentlig på å kjøre 25 km/t for fort?" På en kjøretur på 30 minutter sparer du sjelden mer enn noen få minutter. Samtidig risikerer du tusenvis av kroner i bot, prikker, og i verste fall måneder uten lappen. Når <strong>Vegard</strong> regnet på det, innså han at de "sparte" tre minuttene på vei til hytta ikke var verdt et halvt år uten kjøretillatelse. Den regnestykket går nesten alltid i favør av å senke farten.</p>
+<h3>Hva med store overskridelser langt over tapsgrensen?</h3>
+<p>Tapsgrensene over – 26, 36 og 41 km/t over – er der tapet <em>normalt starter</em>. Men jo lenger over grensen du går, jo lengre blir tapet, og ved virkelig høy fart kommer det andre konsekvenser i tillegg. Kjører du for eksempel mer enn det dobbelte av fartsgrensen, eller svært høyt i absolutte tall, kan du i tillegg til langt tap risikere fengselsstraff og krav om full ny førerprøve. Dette er ikke "fartsbøter" lenger i vanlig forstand – det er alvorlige straffesaker. Poenget er at konsekvensene ikke er en flat sats, men trappes opp jo grovere kjøringen er.</p>
+<h3>Tre situasjoner der du bør være ekstra på vakt</h3>
+<ol>
+<li><strong>Nedoverbakke:</strong> Bilen får lett mer fart enn du tror, og det er lett å snike seg over tapsgrensen uten å merke det. Bruk motorbrems og hold øye med speedometeret.</li>
+<li><strong>Etter en lang strekning med høy grense:</strong> Kommer du fra en 90-sone og inn i en 50-sone, kjennes 70 "tregt" ut. Da er det lett å ligge altfor høyt rett etter overgangen.</li>
+<li><strong>Sent på kvelden med lite trafikk:</strong> Tom vei frister til høy fart, men tapsgrensene gjelder akkurat like fullt – og mørke kan gjøre vurderingen strengere.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Du risikerer å miste førerkortet fra 26 km/t over i 60-soner og lavere, fra 36 km/t over i 70- og 80-soner, og rundt 41 km/t over på motorvei med 90 km/t eller mer. Reglene er strengest på lave fartsgrenser. Glatt vei, mørke og mye folk kan gjøre vurderingen strengere. Sjekk alltid de gjeldende grensene på politiet.no.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

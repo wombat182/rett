@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis naboens tre tar utsikten min? — Rettsregel</title>
+<meta name="description" content="Utsikt er vanskeligere å verne enn sol – men ikke umulig.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-naboens-tre-tar-utsikten-min/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis naboens tre tar utsikten min?">
+<meta property="og:description" content="Utsikt er vanskeligere å verne enn sol – men ikke umulig.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-naboens-tre-tar-utsikten-min/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis naboens tre tar utsikten min?">
+<meta name="twitter:description" content="Utsikt er vanskeligere å verne enn sol – men ikke umulig.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva hvis naboens tre tar utsikten min?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Utsikt er vanskeligere å verne enn sol – men ikke umulig. Hvis naboens tre tar utsikten din, avhenger svaret av om utsikten er noe du har en beskyttet interesse i, hvor nær treet står i forhold til høyden, og hvor stor ulempen er. Naboloven har ikke en egen «utsiktsparagraf», men tap av utsikt kan vurderes både etter tredjedelsregelen i § 3 og etter den generelle tålegrensen i § 2. Som alltid: sta</p>
+  <p class="sp-kilde">Bygger på Naboloven §§ 3, 2, 12</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/3/" class="related-card">
+  <div class="related-card-meta">Naboloven § 3</div>
+  <div class="related-card-title">Naboens tre kan ikke være høyere enn avstanden til grensen din</div>
+</a><a href="../../lover/naboloven/2/" class="related-card">
+  <div class="related-card-meta">Naboloven § 2</div>
+  <div class="related-card-title">Grensen for urimelig skade og ulempe</div>
+</a><a href="../../lover/naboloven/12/" class="related-card">
+  <div class="related-card-meta">Naboloven § 12</div>
+  <div class="related-card-title">Kan du kutte naboens greiner og røtter?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Utsikt er vanskeligere å verne enn sol – men ikke umulig. Hvis naboens tre tar utsikten din, avhenger svaret av om utsikten er noe du har en beskyttet interesse i, hvor nær treet står i forhold til høyden, og hvor stor ulempen er. Naboloven har ikke en egen «utsiktsparagraf», men tap av utsikt kan vurderes både etter tredjedelsregelen i § 3 og etter den generelle tålegrensen i § 2. Som alltid: start med en samtale.</p>
+<h3>Utsikt er ofte svakere beskyttet enn sol</h3>
+<p>Det er viktig å være ærlig om dette: utsikt er en verdi som ofte veier mindre tungt enn sol og lys. Sol påvirker bruken av hagen, helsen og muligheten til å dyrke – mens utsikt mer er en estetisk verdi. Det betyr ikke at utsikt er uten betydning, men terskelen for å nå frem med et krav er gjerne høyere. Du må vise at tapet er en reell og merkbar ulempe, ikke bare at du synes det var finere før.</p>
+<h3>Spor 1: tredjedelsregelen i § 3</h3>
+<p>Hvis treet som sperrer utsikten står for nær i forhold til høyden, kan tredjedelsregelen i naboloven § 3 komme til anvendelse. Da må du som vanlig vise tre ting samtidig: at treet står nærmere enn en tredjedel av høyden, at det er til skade eller særlig ulempe (her: tapt utsikt), og at det betyr lite for naboen og naturen å beholde treet.</p>
+<p>Eksempel: Naboen til Geir har plantet en rekke thuja-trær som nå er blitt 8 meter høye og står 2 meter fra grensa. Lovlig avstand etter regelen er rundt 2,7 meter (8 delt på 3), så de står for nær. Trærne har vokst opp og dekker nå hele fjordutsikten Geir kjøpte huset for. Hvis trærne har liten verdi for naboen og ikke utgjør viktig natur, kan Geir ha et krav. Men er thujaene en lovlig hekk, gjelder tredjedelsregelen ikke – da må saken vurderes etter andre regler.</p>
+<h3>Spor 2: den generelle tålegrensen i § 2</h3>
+<p>Står treet riktig plassert etter tredjedelsregelen, kan utsiktstapet likevel vurderes etter den generelle tålegrensen i naboloven § 2. Den sier forenklet at ingen skal ha noe på eiendommen sin som er urimelig eller unødvendig til skade eller ulempe for naboen. I vurderingen ser man blant annet på:</p>
+<ul>
+<li>Hvor stor og verdifull utsikten var – en vid fjord- eller fjellutsikt veier tyngre enn et glimt mellom hustak.</li>
+<li>Om tapet var påregnelig – i et strøk med mye høy vegetasjon må man tåle mer.</li>
+<li>Om ulempen kunne vært unngått uten stor kostnad for naboen, for eksempel ved enkel beskjæring.</li>
+</ul>
+<p>Dette er en skjønnsmessig vurdering, og utfallet er mindre forutsigbart enn ved sol.</p>
+<h3>Hekk – en vanlig felle i utsiktssaker</h3>
+<p>Mange utsiktssaker handler om hekker og tette tre-rekker som har fått vokse i været. Husk at en lovlig hekk ikke vurderes etter tredjedelsregelen, men etter egne regler – blant annet i grannegjerdelova. Sjekk derfor om det egentlig er en hekk du har med å gjøre, for det endrer hvilke regler som gjelder.</p>
+<h3>Slik bygger du saken din</h3>
+<ol>
+<li>Dokumenter utsikten før og nå – gamle bilder fra da du flyttet inn er gull verdt.</li>
+<li>Beskriv konkret hva som er borte: «hele fjorden mot vest» er sterkere enn «litt av landskapet».</li>
+<li>Mål treets høyde og avstand, og regn ut den lovlige avstanden (høyde delt på tre).</li>
+<li>Sjekk om det er en hekk, et frittstående tre, eller noe verneverdig.</li>
+</ol>
+<h3>Foreslå løsninger og snakk med naboen</h3>
+<ul>
+<li>Toppkapping eller nedklipping kan ofte gi tilbake mye utsikt uten at trærne forsvinner helt.</li>
+<li>Kronetynning kan åpne opp glimt av utsikten.</li>
+<li>En avtalt makshøyde på hekken eller trerekka kan være en god, varig løsning.</li>
+</ul>
+<p>Foreslå dette vennlig, og tilby gjerne å dele kostnaden. Mange utsiktssaker løses best med en avtale om at naboen holder vegetasjonen under en viss høyde fremover.</p>
+<h3>Avtal en makshøyde – den smarteste varige løsningen</h3>
+<p>Utsiktssaker har en tendens til å komme tilbake år etter år, fordi trær og hekker bare fortsetter å vokse. Derfor er den klokeste løsningen ofte ikke en engangsfelling, men en avtale om vedlikehold. Bli enige med naboen om en fast makshøyde – for eksempel «hekken holdes på maks 1,8 meter» eller «trerekka toppes ned til 4 meter hver vår» – og skriv det ned. En slik avtale gir forutsigbarhet for begge: naboen får beholde vegetasjonen, og du slipper å ta kampen på nytt hver gang den vokser seg høy igjen. Avtalen kan også tinglyses, slik at den følger eiendommen videre hvis noen av dere selger.</p>
+<h3>Hvorfor utsikt veier mindre – og når den likevel teller</h3>
+<p>Grunnen til at utsikt ofte taper mot sol i en juridisk vurdering, er at sol påvirker den praktiske bruken av eiendommen – muligheten til å sitte ute, dyrke noe, få lys inn i rommene. Utsikt er først og fremst en opplevelsesverdi. Men det betyr ikke at utsikt aldri teller. Hvis du for eksempel kjøpte boligen nettopp på grunn av en spesiell og verdifull fjord- eller fjellutsikt, og denne nå er blitt fullstendig sperret av et tre som vokste opp etterpå og som står for nær, kan tapet bli tatt på alvor. Jo mer enestående utsikten var, og jo mer fullstendig den er borte, desto sterkere står saken din.</p>
+<h3>Hvis dere ikke blir enige</h3>
+<p>Send en skriftlig henvendelse med henvisning til naboloven § 3 eller § 2, prøv konfliktråd eller forliksråd, og bring eventuelt saken inn for jordskifteretten for en bindende avgjørelse. Vær forberedt på at utsikt kan være vanskeligere å vinne frem med enn sol. Og husk: du kan ikke kappe eller toppe naboens trær selv – kun greiner som faktisk henger inn over din tomt, etter § 12 og etter varsling.</p>
+<h3>Kort oppsummert</h3>
+<p>Naboloven har ingen egen utsiktsparagraf, men tap av utsikt kan vurderes etter tredjedelsregelen i § 3 hvis treet står for nær, og ellers etter den generelle tålegrensen i § 2. Utsikt er gjerne svakere beskyttet enn sol, så terskelen er høyere. Hekker følger egne regler. Dokumenter utsikten før og nå, foreslå toppkapping eller en avtalt makshøyde, og bruk forliksrådet eller jordskifteretten hvis dere ikke blir enige. Klippe naboens trær selv har du ikke lov til.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-er-forskjellen-pa-naboloven-og-gjerdeloven-for/">Hva er forskjellen på naboloven og gjerdeloven for hekk?</a><a class="sp-relchip" href="../../sporsmal/hva-er-nabovarsel-og-nar-trengs-det/">Hva er nabovarsel, og når trengs det?</a><a class="sp-relchip" href="../../sporsmal/hva-er-treregelen-i-naboloven/">Hva er treregelen i naboloven?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

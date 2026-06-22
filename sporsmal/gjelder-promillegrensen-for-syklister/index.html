@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gjelder promillegrensen for syklister? — Rettsregel</title>
+<meta name="description" content="Nei – den faste promillegrensen på 0,2 gjelder ikke for vanlig sykkel. Den grensen er knyttet til «motorvogn», og en tråsykkel er ikke en motorvogn. Men –…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/gjelder-promillegrensen-for-syklister/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Gjelder promillegrensen for syklister?">
+<meta property="og:description" content="Nei – den faste promillegrensen på 0,2 gjelder ikke for vanlig sykkel. Den grensen er knyttet til «motorvogn», og en tråsykkel er ikke en motorvogn. Men –…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/gjelder-promillegrensen-for-syklister/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gjelder promillegrensen for syklister?">
+<meta name="twitter:description" content="Nei – den faste promillegrensen på 0,2 gjelder ikke for vanlig sykkel. Den grensen er knyttet til «motorvogn», og en tråsykkel er ikke en motorvogn. Men –…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8E5DC; color:#93421E;">NEI</span>Gjelder promillegrensen for syklister?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Nei – den faste promillegrensen på 0,2 gjelder ikke for vanlig sykkel. Den grensen er knyttet til «motorvogn», og en tråsykkel er ikke en motorvogn. Men – og dette er viktig – det betyr ikke at det er fritt frem å sykle full. Det er fortsatt forbudt å sykle hvis du er så påvirket at du ikke er i stand til å sykle trygt. Politiet vurderer dette konkret i hver enkelt situasjon.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Dette er et tema der det finnes mange myter, så la oss rydde ordentlig opp.</p>
+<h3>Hvorfor gjelder ikke 0,2-grensen?</h3>
+<p>Den faste promillegrensen står i veitrafikkloven § 22. Der står det at den som har en alkoholkonsentrasjon i blodet på over 0,2 promille, regnes som påvirket. Men denne paragrafen gjelder den som kjører <strong>motorvogn</strong>.</p>
+<p>«Motorvogn» er et fagord som betyr et kjøretøy som drives frem av en motor – altså bil, motorsykkel, moped og lignende. En vanlig sykkel som du tråkker frem med beina, er ikke en motorvogn. Derfor treffer ikke den faste 0,2-grensen deg som tråsyklist. Det finnes med andre ord ingen bestemt tallgrense for hvor mye du kan ha drukket før det blir ulovlig å sykle.</p>
+<h3>Men det er likevel forbudt å sykle i fylla</h3>
+<p>Her er nyansen mange overser. Selv om det ikke finnes en fast promillegrense, finnes det en <strong>generell regel</strong> i veitrafikkloven § 21. Den sier at ingen må kjøre eller forsøke å kjøre et kjøretøy når de er i en slik tilstand at de ikke kan anses skikket til å kjøre på trygg måte – uansett om tilstanden skyldes alkohol, andre rusmidler, sykdom, tretthet eller noe annet.</p>
+<p>Legg merke til at § 21 snakker om «kjøretøy», ikke bare «motorvogn». Og en sykkel <strong>er</strong> et kjøretøy. Derfor gjelder denne regelen også for deg på sykkel.</p>
+<p>Forskjellen er altså slik:</p>
+<ul>
+<li><strong>Bil/moped/MC:</strong> En fast grense (0,2) avgjør automatisk om du er straffbart påvirket. Er du over, er du over – uansett hvor godt du «føler» at du kjører.</li>
+<li><strong>Sykkel:</strong> Ingen fast grense. I stedet gjøres en konkret vurdering av om du er for full til å sykle trygt.</li>
+</ul>
+<h3>Hvordan vurderer politiet dette?</h3>
+<p>Siden det ikke finnes et bestemt tall, må politiet se på helheten. De vurderer om du er så påvirket at det er klart uforsvarlig å sykle. Momenter kan være om du vingler, om du har problemer med balansen, om du virker tydelig beruset, og hvordan du faktisk oppfører deg i trafikken.</p>
+<p>Et eksempel: Ola har drukket to øl på en sommerfest og sykler rolig og kontrollert hjem på en stille vei. Han vingler ikke og holder seg pent på sin side. Det skal mye til at dette regnes som ulovlig.</p>
+<p>Et annet eksempel: Kristian har drukket langt mer, sjangler bort til sykkelen, klarer nesten ikke å holde balansen og slingrer over hele veibanen ut i kjørefeltet. Her kan politiet gripe inn etter § 21, fordi han åpenbart ikke er i stand til å sykle trygt. Forskjellen mellom Ola og Kristian er ikke et tall på et promilleapparat, men hvor påvirket de faktisk er og hvor farlig syklingen blir.</p>
+<h3>Hva kan konsekvensene bli?</h3>
+<p>Blir du vurdert som for påvirket til å sykle etter § 21, kan du bli straffet. Det kan bli en bot, og i alvorlige tilfeller strengere reaksjoner. En vanlig misforståelse er at man kan «miste lappen» av å sykle full. Siden sykkel ikke krever førerkort, er ikke det den typiske reaksjonen for selve syklingen. Men opptrer du svært farlig, kan saken likevel få følger – og husk at hvis du senere skal ta eller beholde et førerkort, ser ikke politiet og myndighetene blidt på rushistorikk.</p>
+<p>Det aller viktigste er likevel ikke straffen, men sikkerheten: En full syklist har dårligere balanse, tregere reaksjon og dårligere dømmekraft – akkurat når trafikken krever det motsatte.</p>
+<h3>Hva med dagen derpå?</h3>
+<p>En ting folk sjelden tenker på, er restalkoholen morgenen etter. Du kan føle deg ganske grei klokka åtte etter en kveld med mye drikke, men kroppen bruker tid på å forbrenne alkohol. Skal du sykle på jobb, er det samme prinsipp som ellers: er du fortsatt tydelig påvirket, gjelder § 21 også da. For en tråsykkel finnes det ingen tallgrense å sjekke mot, så bruk fornuften – kjenner du deg slapp, uvel og uskikket, la sykkelen stå litt lenger. Skal du derimot kjøre moped eller bil dagen derpå, er du i en helt annen båt: der gjelder den faste 0,2-grensen, og restalkohol kan fort sette deg over.</p>
+<h3>Et lite tankekors om ansvar</h3>
+<p>Selv om straffen for å sykle påvirket sjelden er dramatisk, kan konsekvensene av en ulykke være det. Sykler du full og kjører på en fotgjenger, kan du bli holdt erstatningsansvarlig for skaden du forårsaker. Forsikringsspørsmål kan også bli vanskelige hvis du var påvirket. Den fulle syklisten risikerer altså ikke bare en reaksjon fra politiet, men også et økonomisk og moralsk ansvar hvis det går galt. Det er enda en god grunn til å la sykkelen stå.</p>
+<h3>En vanlig felle: el-sykkel og el-sparkesykkel</h3>
+<p>Her må vi være presise, for reglene er ikke like for alt med to hjul:</p>
+<ul>
+<li>En <strong>vanlig el-sykkel</strong> (tråhjelp opp til 25 km/t, motor på maks 250 watt) behandles som en vanlig sykkel. Da gjelder det samme som over: ingen fast 0,2-grense, men forbud mot å sykle for påvirket etter § 21.</li>
+<li>En <strong>el-sparkesykkel</strong> har et eget regelverk, og her er det innført en egen promillegrense. Kjører du el-sparkesykkel, gjelder altså andre og strengere regler enn for tråsykkel. Ikke bland disse sammen.</li>
+</ul>
+<p>Dette er en klassisk felle: Folk hører «det er ingen promillegrense på sykkel» og tror det dekker el-sparkesykkelen også. Det gjør det ikke.</p>
+<h3>Praktiske råd hvis du har drukket</h3>
+<ol>
+<li><strong>Den tryggeste regelen: la sykkelen stå hvis du har drukket mer enn helt minimalt.</strong> Trill den, ta bena fatt eller bestill transport.</li>
+<li><strong>Husk at «ingen fast grense» ikke betyr «lov uansett».</strong> Du kan fortsatt bli stoppet hvis du er tydelig påvirket.</li>
+<li><strong>Ikke stol på følelsen av å være «edru nok».</strong> Alkohol svekker nettopp dømmekraften din om hvor påvirket du er.</li>
+<li><strong>Sjekk reglene før du setter deg på el-sparkesykkel</strong> – der gjelder en egen promillegrense.</li>
+</ol>
+<h3>Kort oppsummert</h3>
+<p>Den faste promillegrensen på 0,2 gjelder ikke for vanlig sykkel, fordi sykkelen ikke er en motorvogn (veitrafikkloven § 22). Det finnes derfor ikke noe bestemt tall som automatisk gjør syklingen ulovlig. Men ikke la deg lure: Den generelle regelen i § 21 forbyr alle å kjøre et kjøretøy – også sykkel – når man er for påvirket til å gjøre det trygt. Politiet vurderer dette konkret. Og pass på: El-sparkesykler har sin egen promillegrense. Det klokeste rådet er enkelt – har du drukket, så la sykkelen stå. Vil du dobbeltsjekke regelverket, finner du § 21 og § 22 på lovdata.no.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

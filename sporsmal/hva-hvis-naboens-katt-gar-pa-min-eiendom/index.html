@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis naboens katt går på min eiendom? — Rettsregel</title>
+<meta name="description" content="En katt som spaserer over hagen din, må du som hovedregel finne deg i. Katter har lang tradisjon for å bevege seg fritt, og loven krever ikke at eieren…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-naboens-katt-gar-pa-min-eiendom/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis naboens katt går på min eiendom?">
+<meta property="og:description" content="En katt som spaserer over hagen din, må du som hovedregel finne deg i. Katter har lang tradisjon for å bevege seg fritt, og loven krever ikke at eieren…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-naboens-katt-gar-pa-min-eiendom/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis naboens katt går på min eiendom?">
+<meta name="twitter:description" content="En katt som spaserer over hagen din, må du som hovedregel finne deg i. Katter har lang tradisjon for å bevege seg fritt, og loven krever ikke at eieren…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva hvis naboens katt går på min eiendom?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En katt som spaserer over hagen din, må du som hovedregel finne deg i. Katter har lang tradisjon for å bevege seg fritt, og loven krever ikke at eieren holder katten innendørs eller på egen tomt. Men hvis katten gjør gjentatt og reell skade, kan det stille seg annerledes – og du har uansett lov til å skremme den vekk på en snill måte.</p>
+  <p class="sp-kilde">Bygger på Naboloven § 2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/2/" class="related-card">
+  <div class="related-card-meta">Naboloven § 2</div>
+  <div class="related-card-title">Grensen for urimelig skade og ulempe</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Katten har en slags «fri ferdsel»</h3>
+<p>Dette overrasker mange, så vi tar det rett på sak: Til forskjell fra hunder, som skal være under kontroll og ofte i bånd, har katter tradisjonelt fri ferdsel i Norge. Det betyr at en katt som streifer inn på naboens eiendom, som hovedregel er noe alle må regne med og tåle. Du kan altså ikke kreve at naboen «holder katten hjemme» på samme måte som du kan kreve at en hund holdes i bånd.</p>
+<p>Dette henger sammen med kattens natur. En katt jakter, klatrer og utforsker over store områder. Det lar seg rett og slett ikke gjøre å holde en utekatt innenfor et bestemt gjerde. Loven tar hensyn til dette.</p>
+<h3>Men – det finnes grenser</h3>
+<p>At du må tåle at katten <em>er</em> der, betyr ikke at du må tåle <em>alt</em> den gjør. Her kommer naboloven (grannelova § 2) inn igjen: ingen får bruke eiendommen sin slik at det blir urimelig eller unødvendig ulempe for naboen. Hvis kattens oppførsel går over i vedvarende, reell skade, kan vurderingen bli en annen.</p>
+<p>Eksempler på det som kan vippe over:</p>
+<ul>
+<li>Katten bruker fast sandkassen til barna dine som do, gang på gang.</li>
+<li>Den ødelegger systematisk plantene eller graver opp bedene dine.</li>
+<li>Den kommer inn gjennom kattedøra di og spiser opp maten til din egen katt, eller markerer inne i huset.</li>
+</ul>
+<p>Det er forskjell på en katt som <strong>av og til</strong> tar en tur over plenen (det må du tåle), og en situasjon der <strong>én bestemt katt</strong> påfører deg gjentatt og merkbar skade over tid (det kan du ta opp).</p>
+<p>Et eksempel: Naboen til Hassan har en katt som hver eneste dag bruker Hassans nyanlagte grønnsaksbed som toalett, slik at avlingen blir ødelagt. Et engangstilfelle hadde vært bagatell. Men det daglige, ødeleggende mønsteret er noe Hassan har god grunn til å ta opp med eieren.</p>
+<h3>Hva du har lov til å gjøre</h3>
+<p><strong>Skremme katten vekk – ja.</strong> Du har full anledning til å jage katten ut av hagen på en forsvarlig og skånsom måte. Klapp i hendene, spray litt vann med en vannflaske, eller bruk lyd. Det viktige ordet er <em>skånsom</em>.</p>
+<p><strong>Skade eller drepe katten – nei.</strong> Du har ikke lov til å skade, fange og fjerne, eller på noen måte volde katten lidelse. Det kan være straffbart etter dyrevelferdsloven. Selv om katten er aldri så irriterende, er vold mot den ulovlig.</p>
+<h3>Praktiske grep som faktisk virker</h3>
+<p>Det fine med katter er at de er lette å «overtale» til å holde seg unna, så lenge du gjør det med metoder som ikke skader dem. Her er en liste med tiltak folk faktisk har god erfaring med:</p>
+<ol>
+<li><strong>Snakk med eieren.</strong> «Hei, katten din er kjempefin, men den bruker grønnsaksbedet mitt som do hver dag. Har du noen ideer til hva vi kan gjøre?»</li>
+<li><strong>Gjør hagen mindre fristende.</strong> Pinjekongler, sitrusskall, kaffegrut eller bevegelsessensorer med vann holder mange katter unna uten å skade dem.</li>
+<li><strong>Dekk til sandkassa</strong> når den ikke er i bruk.</li>
+<li><strong>Sett opp et lite gjerde eller nett</strong> rundt de mest sårbare bedene.</li>
+<li><strong>Dokumenter skaden</strong> hvis det blir alvorlig og gjentakende – bilder og logg.</li>
+</ol>
+<h3>Hva med erstatning?</h3>
+<p>Hvis katten gjør reell skade, kan du i teorien kreve erstatning fra eieren. Men her er listen lagt høyt for katter: man ser blant annet på om eieren kan klandres for noe i forbindelse med skaden. For katter er reglene mildere enn for hunder, nettopp fordi katter ferdes fritt. I praksis er det sjelden enkelt å nå fram med erstatningskrav for litt oppgraving i bedet – det løses som regel best ved dialog og praktiske tiltak.</p>
+<h3>Hva med eierløse og forvillede katter?</h3>
+<p>Noen ganger er katten som plager deg ikke naboens kjæledyr, men en eierløs eller forvillet katt – kanskje en hel koloni som har slått seg ned i nabolaget. Da er det ingen «eier» å snakke med. Her er det dyrevernorganisasjoner og noen kommuner som kan hjelpe med innfanging, kastrering og omplassering på en human måte. Ikke prøv å løse dette med vold eller gift; det er både ulovlig og virker dårlig. Kontakt heller en lokal dyrevernforening, som ofte har erfaring med akkurat slike situasjoner.</p>
+<h3>Katt mot fugler og fuglekasser</h3>
+<p>En egen kilde til kattefrustrasjon er når naboens katt jakter på fuglene ved fôringsplassen eller fuglekassa di. Dette er trist å se på, men det ligger i kattens natur, og det er vanskelig å bygge en sak på det. Det du derimot kan gjøre, er praktisk: heng fuglemater og kasser høyt og fritt, gjerne med en glatt «kattekrage» på stolpen eller en piggring som hindrer klatring, og unngå å plassere mateplassen tett ved buskas der en katt kan ligge på lur. Slik tar du vare på fuglelivet uten å havne i en konflikt du uansett vanskelig vinner.</p>
+<h3>Hvis det er din egen katt som er på «vidvanke»</h3>
+<p>Det kan også være verdt å snu speilet mot deg selv. Eier du selv en utekatt, kan du gjøre nabolaget en tjeneste ved å kastrere/sterilisere den (det reduserer streifing og merkeatferd betydelig), sette på et lite halsbånd med navn, og ta hensyn hvis en nabo gir beskjed om at katten er til plage. Mye nabovennlighet rundt katter handler om gjensidig hensyn snarere enn paragrafer.</p>
+<h3>Kort oppsummert</h3>
+<p>En katt på eiendommen din må du i utgangspunktet tåle, fordi katter tradisjonelt har fri ferdsel. Du kan skremme den vekk på en snill måte, men aldri skade den. Hvis katten gjør gjentatt, reell skade, kan det vurderes etter naboloven (§ 2), men terskelen er høyere enn for hunder. Best resultat får du nesten alltid med en vennlig prat og praktiske tiltak som gjør hagen mindre fristende.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-mekling-i-nabosaker/">Bør jeg bruke mekling i nabosaker?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ta-nabokonflikten-til-forliksradet/">Bør jeg ta nabokonflikten til forliksrådet?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-nabotvist/">Dekker forsikringen min advokat i en nabotvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

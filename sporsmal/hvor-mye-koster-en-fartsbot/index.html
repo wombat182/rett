@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor mye koster en fartsbot? — Rettsregel</title>
+<meta name="description" content="En fartsbot i Norge starter på rundt 1 250 kroner for å kjøre litt over grensen, og stiger raskt til over 16 000 kroner ved store overskridelser.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-mye-koster-en-fartsbot/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor mye koster en fartsbot?">
+<meta property="og:description" content="En fartsbot i Norge starter på rundt 1 250 kroner for å kjøre litt over grensen, og stiger raskt til over 16 000 kroner ved store overskridelser.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-mye-koster-en-fartsbot/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor mye koster en fartsbot?">
+<meta name="twitter:description" content="En fartsbot i Norge starter på rundt 1 250 kroner for å kjøre litt over grensen, og stiger raskt til over 16 000 kroner ved store overskridelser.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hvor mye koster en fartsbot?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>En fartsbot i Norge starter på rundt 1 250 kroner for å kjøre litt over grensen, og stiger raskt til over 16 000 kroner ved store overskridelser. Hvor mye du må betale avhenger av to ting: hvor mange km/t for fort du kjørte, og hvilken fartsgrense det var på stedet. Satsene endres jevnlig – senest ble de justert opp 15. februar 2026 – så sjekk alltid de oppdaterte tallene på politiet.no.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>En fartsbot i Norge starter på rundt 1 250 kroner for å kjøre litt over grensen, og stiger raskt til over 16 000 kroner ved store overskridelser. Hvor mye du må betale avhenger av to ting: hvor mange km/t for fort du kjørte, og hvilken fartsgrense det var på stedet. Satsene endres jevnlig – senest ble de justert opp 15. februar 2026 – så sjekk alltid de oppdaterte tallene på politiet.no.</p>
+<h3>Slik bygges en fartsbot opp</h3>
+<p>De fleste fartsbøter gis som et <strong>forenklet forelegg</strong>. Det er en standardbot med faste satser, og den følger en tabell i "forskrift om forenklet forelegg i vegtrafikksaker". At det er en standardbot betyr at politiet ikke skjønnsvurderer hver enkelt sak – du får samme bot som alle andre som kjørte like fort på samme type vei. Fordelen for deg er at et forenklet forelegg ikke gir noen anmerkning på den ordinære vandelsattesten (politiattesten) ut over eventuelle prikker; det blir altså ikke noe "rulleblad" av en vanlig fartsbot.</p>
+<p>Et viktig poeng: Bøtene er <strong>strengere på lave fartsgrenser</strong>. Det høres rart ut, men tanken er at det er farligere å kjøre 20 km/t for fort der det går myke trafikanter (i 50- og 60-soner) enn på en motorvei med eget kjørefelt i hver retning.</p>
+<h3>Eksempler på bøter (satser fra februar 2026 – verifiser på politiet.no)</h3>
+<p>Her er noen typiske eksempler. <strong>Merk at disse tallene ble justert opp 15. februar 2026, og de kan endres igjen – dette er kun for å gi deg en følelse av nivået:</strong></p>
+<p><strong>Der fartsgrensen er 60 km/t eller lavere (30-, 40-, 50- og 60-soner):</strong></p>
+<ul>
+<li><strong>Lars</strong> kjørte 56 km/t i en 50-sone (6 km/t over). Han fikk en bot på rundt 1 250 kroner.</li>
+<li><strong>Nina</strong> kjørte 60 km/t i en 50-sone (10 km/t over). Boten ble omtrent 3 350 kroner.</li>
+<li><strong>Per</strong> kjørte 65 km/t i en 50-sone (15 km/t over). Da snakker vi rundt 5 950 kroner – pluss prikker.</li>
+<li><strong>Sara</strong> kjørte 70 km/t i en 50-sone (20 km/t over). Boten lå på cirka 8 650 kroner.</li>
+<li><strong>Knut</strong> kjørte 75 km/t i en 50-sone (25 km/t over). Boten kan komme opp mot 13 450 kroner – og han nærmer seg grensen for å miste lappen.</li>
+</ul>
+<p><strong>Der fartsgrensen er 70 km/t eller høyere:</strong></p>
+<ul>
+<li><strong>Erik</strong> kjørte 95 km/t i en 80-sone (15 km/t over). Boten ble lavere enn for Per i 50-sonen over, selv om antall km/t over var det samme – nettopp fordi grensen er høyere.</li>
+<li>Ved store overskridelser på vei med 70 km/t eller mer kan boten komme opp i rundt 16 050 kroner før saken må gå over til vanlig straffesak. På motorvei med 90 km/t eller mer kan satsen for de største overskridelsene som fortsatt løses med forelegg ligge enda litt høyere, rundt 16 700 kroner.</li>
+</ul>
+<h3>Hvor mye for fort kan en bot dekke?</h3>
+<p>Det forenklede forelegget har en øvre grense. Kjører du så fort at du er over denne grensen, kan saken <strong>ikke</strong> løses med et standardisert forelegg. Da blir det vanlig straffesak, og du risikerer både høyere bot, prikker og tap av førerkortet.</p>
+<p>Grovt sagt går grensen for forenklet forelegg ved cirka:
+- 25 km/t over i 60-soner og lavere,
+- 35 km/t over på 70- og 80-veier,
+- 40 km/t over på motorvei med 90 km/t eller mer.</p>
+<p>Over dette er det slutt på "standardboten", og saken behandles individuelt.</p>
+<h3>Hva med flere overtredelser samtidig?</h3>
+<p>Hvis du blir tatt for flere ting på en gang (for eksempel fart og mobilbruk), gjelder en egen regel: Den høyeste enkeltboten gis i sin helhet, mens de andre bøtene reduseres med 50 prosent. Samlet bot har likevel et tak, som per 2026 ligger rundt 29 100 kroner.</p>
+<h3>Forenklet forelegg eller vanlig straffesak?</h3>
+<p>Det er nyttig å vite forskjellen:</p>
+<ul>
+<li><strong>Forenklet forelegg:</strong> Standardisert bot etter tabell. Gir ingen vanlig rulleblad-anmerkning ut over prikker. Du kan godta det (vedta) ved å signere og betale.</li>
+<li><strong>Vanlig forelegg / straffesak:</strong> Brukes ved grove overtredelser eller hvis du nekter å vedta. Her vurderes saken individuelt, og en dom kan gi anmerkning.</li>
+</ul>
+<h3>Praktiske råd</h3>
+<ol>
+<li><strong>Vedta ikke noe du er uenig i.</strong> Du har rett til å nekte å vedta et forenklet forelegg. Da går saken til vanlig behandling.</li>
+<li><strong>Sjekk farten din mot tabellen.</strong> Boten avhenger av nøyaktig hvor mange km/t over du var. Politiet trekker som regel fra en liten sikkerhetsmargin før de regner.</li>
+<li><strong>Husk prikkene.</strong> Bot er én ting, men ved overskridelser over en viss grense kommer det også prikker.</li>
+<li><strong>Sjekk alltid politiet.no for ferske tall.</strong> Bøtesatsene oppdateres jevnlig, og det siste hoppet kom 15. februar 2026.</li>
+</ol>
+<h3>Hva trekker politiet fra før de regner?</h3>
+<p>En detalj som er verdt å vite: Politiet og fotoboksene legger inn en sikkerhetsmargin før de fastsetter farten du "offisielt" kjørte. Det betyr at hvis du blir målt til for eksempel 84 km/t i en 80-sone, kan den fastsatte farten etter fratrekk havne under bøtegrensen. Marginen er der for å være helt sikker på at ingen blir straffet på grunn av en målefeil – ikke for at du skal kunne planlegge å ligge "akkurat over". Den er liten, og du bør aldri basere kjøringen din på den.</p>
+<h3>Hvorfor er norske bøter så høye?</h3>
+<p>Mange reagerer på at norske fartsbøter er blant de høyeste i Europa. Tanken bak er at boten skal merkes – den skal være en reell grunn til å holde farten nede, ikke en symbolsk avgift man bare betaler og glemmer. Derfor er satsene høye, og derfor justeres de jevnlig oppover. For en helt vanlig bilist betyr det at selv en "liten" overskridelse i en 50-sone fort koster mer enn man tror.</p>
+<h3>Et regneeksempel fra hverdagen</h3>
+<p>Tenk deg <strong>Camilla</strong>, som skal rekke et møte og kjører 68 km/t i en 50-sone gjennom et boligfelt. Det er 18 km/t over. Hun risikerer en bot i størrelsesorden flere tusen kroner, pluss prikker, fordi hun er over prikkgrensen på 10 km/t i en 60-sone eller lavere. De fem minuttene hun trodde hun sparte, ble altså svært dyre – og hun kjørte fortere enn forsvarlig nettopp der det går barn. Dette er et godt bilde på hvorfor systemet er bygd som det er: jo lavere grensen er, jo mer koster det å bryte den.</p>
+<h3>Kort oppsummert</h3>
+<p>En fartsbot starter rundt 1 250 kroner og kan passere 16 000 kroner ved store overskridelser. Boten er høyere jo lavere fartsgrensen er, og du betaler mer jo flere km/t over du kjørte. De fleste fartsbøter er standardiserte forenklede forelegg uten rulleblad-virkning ut over prikker. Satsene endres jevnlig – bekreft alltid med politiet.no før du stoler på et bestemt tall.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

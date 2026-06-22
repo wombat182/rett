@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg kappe greiner som henger over til min tomt? — Rettsregel</title>
+<meta name="description" content="Ja, det kan du – men på visse vilkår.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-kappe-greiner-som-henger-over-til/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg kappe greiner som henger over til min tomt?">
+<meta property="og:description" content="Ja, det kan du – men på visse vilkår.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-kappe-greiner-som-henger-over-til/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg kappe greiner som henger over til min tomt?">
+<meta name="twitter:description" content="Ja, det kan du – men på visse vilkår.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg kappe greiner som henger over til min tomt?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, det kan du – men på visse vilkår. Naboloven § 12 gir deg en egen rett til selv å kappe greiner som henger inn over din tomt, langs grenselinjen, når greinene er til påviselig skade eller ulempe for deg. Men før du tar frem sagen, må du varsle naboen og gi en rimelig frist til å ordne det selv. Du skal heller ikke klippe lenger inn enn til grenselinjen, og du må gå frem så skånsomt at treet ikk</p>
+  <p class="sp-kilde">Bygger på Naboloven § 12</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/12/" class="related-card">
+  <div class="related-card-meta">Naboloven § 12</div>
+  <div class="related-card-title">Kan du kutte naboens greiner og røtter?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, det kan du – men på visse vilkår. Naboloven § 12 gir deg en egen rett til selv å kappe greiner som henger inn over din tomt, langs grenselinjen, når greinene er til påviselig skade eller ulempe for deg. Men før du tar frem sagen, må du varsle naboen og gi en rimelig frist til å ordne det selv. Du skal heller ikke klippe lenger inn enn til grenselinjen, og du må gå frem så skånsomt at treet ikke tar unødig skade.</p>
+<h3>Selvhjelpsretten – men ikke en hvilken som helst grein</h3>
+<p>Det er fristende å tro at du fritt kan kappe alt som henger over på din side. Slik er det ikke helt. Regelen i naboloven § 12 stiller noen krav:</p>
+<ol>
+<li>Greinen må faktisk henge inn over din eiendom. Du kan bare kappe den delen som er på din side av grensen.</li>
+<li>Greinen må være til påviselig skade eller ulempe. Den skraper mot taket, sperrer for gangveien, drysser så det tetter takrennene, eller hindrer deg på en konkret måte. En grein som bare henger der uten å plage noen, kan du ikke uten videre kappe.</li>
+<li>Du må varsle naboen først og gi en rimelig frist til å fjerne greinen selv. Først hvis naboen ikke gjør noe innen fristen, kan du kappe.</li>
+</ol>
+<p>Eksempel: En grein fra naboens eple­tre henger to meter inn over Lindas innkjørsel, så lavt at hun ikke får parkert. Greinen er til klar ulempe. Linda sender naboen en vennlig melding der hun ber ham beskjære greinen innen to uker. Når fristen går ut uten at noe skjer, kan Linda selv kappe greinen langs grenselinjen.</p>
+<h3>Hvor langt kan du kappe?</h3>
+<p>Du kan kappe langs grenselinjen – altså fjerne den delen av greinen som befinner seg på din side. Du har ikke lov til å strekke deg inn over naboens tomt og kutte ved stammen, og du kan ikke felle hele treet. Tenk deg en loddrett, usynlig vegg rett opp fra grensen: det som stikker inn på din side av veggen, kan du fjerne; resten skal stå.</p>
+<h3>Gå skånsomt frem</h3>
+<p>Selv om du har rett til å kappe, bør du gjøre det på en måte som ikke skader treet mer enn nødvendig:</p>
+<ul>
+<li>Bruk skarpt, rent verktøy og kapp pent, ikke flerr greinen av.</li>
+<li>Unngå å kappe så mye at treet blir ustabilt eller dør.</li>
+<li>Kapp helst på et naturlig sted, like utenfor greinkragen, hvis du kan.</li>
+</ul>
+<p>Går du for hardt til verks og skader treet unødig, kan du komme i ansvar selv om du i utgangspunktet hadde rett til å kappe det som hang over.</p>
+<h3>Hvem eier greinene – og frukten?</h3>
+<p>Når du har kappet greinene, regnes de som regel som dine. Men vær oppmerksom på frukten: epler, plommer og annen frukt som henger på greiner inn over din tomt, tilhører fortsatt treets eier – altså naboen. Du kan ikke uten videre forsyne deg av frukt som henger på treet, bare fordi greinen er på din side. Nedfallsfrukt – frukt som har falt ned på bakken hos deg – kan derimot stå i en annen stilling, og dette kan reguleres lokalt eller ved avtale. Vil du ha eplene, er den enkleste løsningen å spørre naboen.</p>
+<h3>Steg for steg</h3>
+<ol>
+<li>Sjekk at greinen faktisk henger inn over din tomt og er til reell skade eller ulempe.</li>
+<li>Varsle naboen – helst skriftlig, så du har det dokumentert – og forklar problemet.</li>
+<li>Gi en rimelig frist, for eksempel to til fire uker, til at naboen kan ordne det selv.</li>
+<li>Kapp langs grenselinjen hvis fristen går ut uten at noe skjer. Hold deg på din side.</li>
+<li>Vær skånsom, og rydd opp etter deg. Avklar med naboen hva som skjer med avkappet.</li>
+</ol>
+<h3>Hvorfor varsling først er så viktig</h3>
+<p>Det kan virke unødvendig å varsle naboen om noe du uansett har rett til å gjøre på din egen side. Men varslingskravet i § 12 har en god grunn: naboen eier treet, og bør få sjansen til å ordne det selv – kanskje på en måte som er bedre for treet enn om du kapper. Det handler også om å unngå overraskelser og konflikt. En nabo som plutselig oppdager at greinene på epletreet er sagd av uten et ord, blir lett sint, selv om du var i din fulle rett. En kort, vennlig beskjed på forhånd – gjerne skriftlig så du har den dokumentert – fjerner mye av dette. Skjer det noe uventet, har du dessuten bevis for at du fulgte reglene.</p>
+<h3>Et eksempel på en grei beskjed til naboen</h3>
+<p>Slik kan en enkel varsling se ut: «Hei. Greinene fra epletreet ditt har vokst et godt stykke inn over carporten min, og de skraper mot taket når det blåser. Jeg vil gjerne kappe den delen som henger inn over min side. Si fra innen et par uker hvis du heller vil ordne det selv – ellers tar jeg det forsiktig langs grensa.» Kort, høflig og tydelig. Da har naboen fått sjansen, og du har dokumentert at du har varslet.</p>
+<h3>Når bør du være ekstra forsiktig?</h3>
+<ul>
+<li>Hvis treet er en lovlig hekk, gjelder egne regler – snakk med naboen før du klipper.</li>
+<li>Hvis treet er verneverdig eller fredet, bør du sjekke med kommunen før du gjør noe.</li>
+<li>Hvis du er usikker på hvor grensen går nøyaktig, få den avklart først, så du ikke kapper på naboens side ved et uhell.</li>
+<li>Hvis kapping av greinene vil skade treet alvorlig eller gjøre det ustabilt, bør du være tilbakeholden – retten til å kappe er ikke en rett til å ødelegge treet.</li>
+</ul>
+<h3>Kort oppsummert</h3>
+<p>Ja, du kan kappe greiner som henger inn over din tomt, etter naboloven § 12 – men bare den delen som er på din side, bare når greinene er til påviselig skade eller ulempe, og først etter at du har varslet naboen og gitt en rimelig frist. Gå skånsomt frem så du ikke skader treet unødig. Frukt på greinene tilhører fortsatt naboen. Er det en hekk eller et verneverdig tre, gjelder egne regler. Start alltid med en vennlig beskjed til naboen.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-er-forskjellen-pa-naboloven-og-gjerdeloven-for/">Hva er forskjellen på naboloven og gjerdeloven for hekk?</a><a class="sp-relchip" href="../../sporsmal/hva-er-nabovarsel-og-nar-trengs-det/">Hva er nabovarsel, og når trengs det?</a><a class="sp-relchip" href="../../sporsmal/hva-er-treregelen-i-naboloven/">Hva er treregelen i naboloven?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

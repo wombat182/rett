@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gjelder naboloven for borettslag og sameier? — Rettsregel</title>
+<meta name="description" content="Ja, naboloven grannelova gjelder også i borettslag og sameier.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/gjelder-naboloven-for-borettslag-og-sameier/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Gjelder naboloven for borettslag og sameier?">
+<meta property="og:description" content="Ja, naboloven grannelova gjelder også i borettslag og sameier.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/gjelder-naboloven-for-borettslag-og-sameier/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gjelder naboloven for borettslag og sameier?">
+<meta name="twitter:description" content="Ja, naboloven grannelova gjelder også i borettslag og sameier.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Gjelder naboloven for borettslag og sameier?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, naboloven (grannelova) gjelder også i borettslag og sameier. Men i tillegg kommer egne regler som gjelder mellom beboerne og fellesskapet. I praksis betyr det at du ofte må forholde deg til både naboloven og lagets eller sameiets egne vedtekter og lovverk samtidig.</p>
+  <p class="sp-kilde">Bygger på Naboloven §§ 2, 9, 10</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/2/" class="related-card">
+  <div class="related-card-meta">Naboloven § 2</div>
+  <div class="related-card-title">Grensen for urimelig skade og ulempe</div>
+</a><a href="../../lover/naboloven/9/" class="related-card">
+  <div class="related-card-meta">Naboloven § 9</div>
+  <div class="related-card-title">Erstatning hvis du skader naboens eiendom</div>
+</a><a href="../../lover/naboloven/10/" class="related-card">
+  <div class="related-card-meta">Naboloven § 10</div>
+  <div class="related-card-title">Retten til å få ulovlige ting fjernet eller rettet</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, naboloven (grannelova) gjelder også i borettslag og sameier. Men i tillegg kommer egne regler som gjelder mellom beboerne og fellesskapet. I praksis betyr det at du ofte må forholde deg til både naboloven og lagets eller sameiets egne vedtekter og lovverk samtidig.</p>
+<h3>To regelsett som virker sammen</h3>
+<p>I et borettslag gjelder borettslagsloven, og i et eierseksjonssameie gjelder eierseksjonsloven. Disse lovene har egne bestemmelser om hvordan beboerne skal oppføre seg mot hverandre, og de gir styret myndighet til å gripe inn ved brudd. Naboloven gjelder ved siden av dette, særlig i forholdet mellom eiendommene og mot naboer utenfor laget.</p>
+<p>Tenk på det som to lag med regler oppå hverandre. Det ene laget (borettslags- eller eierseksjonsloven) styrer det indre livet i bygget og fellesskapet. Det andre laget (naboloven) styrer forholdet mellom eiendommer mer generelt. Ofte overlapper de, og da kan du ha flere veier å gå.</p>
+<h3>Eksempel fra et sameie</h3>
+<p>Hanne eier en leilighet i et sameie. Naboen under, Ola, har pusset opp og fjernet gulvbelegg, slik at trinnlyd og musikk nå dundrer opp gjennom etasjeskillet. Her kan Hanne for det første henvende seg til styret, fordi sameiets regler ofte krever at man ikke sjenerer naboene unødig. For det andre kan prinsippene i naboloven om at man ikke skal påføre urimelig eller unødvendig ulempe være relevante. Hanne har altså flere knagger å henge saken på.</p>
+<h3>Når naboloven er ekstra nyttig i borettslag</h3>
+<p>I borettslag og sameier er det vanlig å gå tjenestevei først: ta det opp med naboen, deretter med styret. Styret kan gi advarsler og i grove tilfeller kreve at en beboer flytter. Men noen ganger handler konflikten om selve eiendommene – for eksempel et felles uteareal, en bod, eller forholdet til en nabotomt utenfor laget. Da kommer naboloven inn med full tyngde.</p>
+<h3>Hva med konflikt mot naboer utenfor laget?</h3>
+<p>Hvis hele borettslaget eller sameiet plages av en nabo utenfor – for eksempel en bedrift, et byggeprosjekt eller en privat grunneier ved siden av – er det typisk naboloven som gjelder. Her opptrer ofte laget samlet gjennom styret, fordi det er fellesskapets eiendom som berøres. Et byggefirma som river og bygger like ved et sameie, og påfører rystelser og støv over tålegrensen, kan møtes med krav etter naboloven (grannelova § 2, § 9 og § 10).</p>
+<h3>Praktiske steg i et borettslag eller sameie</h3>
+<ol>
+<li><strong>Snakk med naboen først.</strong> De fleste konflikter løses i god tone over kjøkkenbordet.</li>
+<li><strong>Skriv ned plagen.</strong> Noter dato, klokkeslett, hva som skjedde og hvor lenge.</li>
+<li><strong>Kontakt styret.</strong> Styret har plikt til å håndtere konflikter som angår fellesskapet, og kan vise til vedtekter og husordensregler.</li>
+<li><strong>Vurder naboloven.</strong> Hvis plagen handler om eiendommen og går over tålegrensen, kan naboloven gi grunnlag for retting eller erstatning.</li>
+<li><strong>Søk hjelp ved behov.</strong> Forbrukerrådet og advokat med boligkompetanse kan veilede deg videre.</li>
+</ol>
+<h3>Et viktig forbehold</h3>
+<p>Husk at de interne reglene i laget kan gå langt i å regulere hverdagsadferd, som ro om natten og bruk av fellesarealer. Naboloven er mer overordnet og handler om tålegrensen. Bruk det regelsettet som passer best for din konkrete plage – og ofte kan du støtte deg på begge.</p>
+<h3>Eksempel: konflikt om en balkong og en grill</h3>
+<p>La oss ta en typisk leilighetssituasjon. Familien Nguyen bor i en blokk og plages av at naboen over griller daglig på balkongen sin, slik at røyk og os trekker rett inn i deres åpne vinduer hele sommeren. Først bør familien sjekke husordensreglene – mange sameier og borettslag har egne regler om grilling på balkong. Hjelper ikke det, kan styret kontaktes. Og dersom plagen er vedvarende og kunne vært unngått, for eksempel ved å bruke en elektrisk grill eller grille sjeldnere, er vi inne på naboloven sitt område om unødvendig ulempe. Her ser vi igjen hvordan de ulike regelsettene griper inn i hverandre.</p>
+<h3>Hva styret faktisk kan gjøre</h3>
+<p>Det er nyttig å vite hva du kan forvente av styret. Styret kan ta opp saken med den det gjelder, vise til vedtekter og husordensregler, gi skriftlige advarsler, og i alvorlige og gjentatte tilfeller behandle krav om at en beboer må flytte. Styret er derimot ikke en domstol og kan ikke uten videre dømme noen til å betale erstatning. Krav om erstatning og retting etter naboloven må eventuelt forfølges på vanlig måte, gjennom enighet, megling eller domstol.</p>
+<p>Derfor er det smart å bruke begge sporene bevisst: la styret håndtere det interne ordensspørsmålet, og hold samtidig muligheten åpen for å bruke naboloven dersom plagen handler om eiendommen og ligger over tålegrensen.</p>
+<h3>Konflikter om fellesarealer og uteområder</h3>
+<p>I borettslag og sameier oppstår mange konflikter om felles uteområder: en beboer som beslaglegger en stor del av fellesarealet til egen bruk, setter opp en stor levegg som tar lys fra naboleilighetene, eller planter trær som skygger for mange. Slike saker har ofte både en intern side, som styret behandler etter vedtektene, og en nabolovsside, som handler om tålegrensen mellom enhetene. Et tre som skygger kraftig for flere leiligheter kan for eksempel vurderes opp mot reglene i naboloven på samme måte som mellom to vanlige tomter.</p>
+<p>Tenk på et sameie der en beboer i første etasje har bygget en høy innhegning på fellesarealet, slik at naboene over mister utsikt og lys. Her bør styret involveres, men prinsippene i naboloven om urimelig eller unødvendig ulempe er også relevante i vurderingen.</p>
+<h3>Et råd til deg som bor tett</h3>
+<p>Når man bor tett, vegg i vegg og dør ved dør, er gode naboforhold ekstra verdifulle. Bruk derfor de mykeste virkemidlene først: en vennlig prat, en lapp i postkassa, et innspill på et beboermøte. Spar de formelle grepene til det virkelig trengs. De aller fleste konflikter i borettslag og sameier løses uten verken styrevedtak eller naborettssak – nettopp fordi folk snakker sammen før det låser seg.</p>
+<h3>Kort oppsummert</h3>
+<p>Naboloven gjelder også i borettslag og sameier, men da i tillegg til borettslagsloven eller eierseksjonsloven og lagets egne vedtekter. Internt i bygget løses mye gjennom styret og husordensreglene, mens naboloven er særlig nyttig når konflikten gjelder selve eiendommene eller en nabo utenfor laget. Du har ofte flere regelsett å støtte deg på samtidig.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-mekling-i-nabosaker/">Bør jeg bruke mekling i nabosaker?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ta-nabokonflikten-til-forliksradet/">Bør jeg ta nabokonflikten til forliksrådet?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-nabotvist/">Dekker forsikringen min advokat i en nabotvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

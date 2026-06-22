@@ -223,6 +223,16 @@ except ImportError:
     _SP_BUOFL_V1 = []
 
 try:
+    from sporsmal_naboloven_v1 import SPORSMAL as _SP_NABO_V1
+except ImportError:
+    _SP_NABO_V1 = []
+
+try:
+    from sporsmal_vegtrafikkloven_v1 import SPORSMAL as _SP_VEI_V1
+except ImportError:
+    _SP_VEI_V1 = []
+
+try:
     from sporsmal_arveloven import SPORSMAL as _SP_ARVE
 except ImportError:
     _SP_ARVE = []
@@ -401,6 +411,8 @@ SPORSMAL = (_tag_lov(_SP_BASE, None)
             + _tag_lov(_SP_AKSJE_V1, "aksjeloven")
             + _tag_lov(_SP_HVTJL_V1, "handverkertjenesteloven")
             + _tag_lov(_SP_BUOFL_V1, "bustadoppforingslova")
+            + _tag_lov(_SP_NABO_V1, "naboloven")
+            + _tag_lov(_SP_VEI_V1, "vegtrafikkloven")
             + _tag_lov(_SP_ARVE, "arveloven")
             + _tag_lov(_SP_BARNE, "barnelova")
             + _tag_lov(_SP_STRAFF, None)

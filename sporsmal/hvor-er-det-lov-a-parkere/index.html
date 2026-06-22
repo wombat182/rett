@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvor er det lov å parkere? — Rettsregel</title>
+<meta name="description" content="Du kan parkere langs veien der det ikke står skilt som forbyr det, og der du verken hindrer trafikken eller bryter de faste reglene i trafikkreglene. På…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hvor-er-det-lov-a-parkere/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hvor er det lov å parkere?">
+<meta property="og:description" content="Du kan parkere langs veien der det ikke står skilt som forbyr det, og der du verken hindrer trafikken eller bryter de faste reglene i trafikkreglene. På…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hvor-er-det-lov-a-parkere/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hvor er det lov å parkere?">
+<meta name="twitter:description" content="Du kan parkere langs veien der det ikke står skilt som forbyr det, og der du verken hindrer trafikken eller bryter de faste reglene i trafikkreglene. På…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hvor er det lov å parkere?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Du kan parkere langs veien der det ikke står skilt som forbyr det, og der du verken hindrer trafikken eller bryter de faste reglene i trafikkreglene. På offentlige parkeringsplasser, i parkeringshus og på private plasser gjelder i tillegg det som står på skiltene der du står. Hovedregelen er enkel: Når du er i tvil, er det som regel forbudt.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Tenk «langs veien» som utgangspunkt</h3>
+<p>Med «parkering» mener loven at du hensetter (setter fra deg) bilen lenger enn en helt kort stans. Når du parkerer langs en vanlig kommunal vei eller boliggate, skal bilen stå på høyre side i kjøreretningen, nær veikanten og parallelt med veien. Du må aldri stå slik at du sperrer for andre eller tvinger dem over i motgående felt.</p>
+<p>Et eksempel: Kari skal besøke moren sin i en rolig boliggate uten skilt. Hun setter bilen inntil fortauskanten på høyre side, lar det være god plass forbi for en lastebil, og sjekker at hun ikke står foran et veikryss eller en innkjørsel. Det er helt i orden.</p>
+<h3>Stedene der det alltid er forbudt</h3>
+<p>Selv uten skilt finnes det steder der parkering aldri er tillatt. Etter trafikkreglene § 17 kan du blant annet ikke parkere:</p>
+<ul>
+<li>i veikryss eller nærmere enn 5 meter fra krysset (avstanden måles fra der fortauskanten eller veikanten begynner å runde)</li>
+<li>på eller nærmere enn 5 meter foran et gangfelt (fotgjengerovergang)</li>
+<li>på fortau, gangvei eller sykkelvei</li>
+<li>i tunnel eller på bro der det er for trangt</li>
+<li>foran en innkjørsel, slik at noen ikke kommer ut eller inn</li>
+<li>på en slik måte at du står til hinder eller fare for andre</li>
+</ul>
+<p>Et eksempel: Per finner en «ledig» plass rett ved et fotgjengerfelt utenfor butikken. Han måler ikke, men stoler på følelsen. Bommer han med en meter eller to, kan han få gebyr selv om plassen så fristende ut. Femmeterregelen er ufravikelig – det hjelper ikke at det «så greit ut».</p>
+<h3>Skiltede plasser og soner</h3>
+<p>Mange plasser er regulert med skilt. Et blått «P»-skilt betyr at parkering er tillatt, men les alltid underskiltene. De forteller om tidsbegrensning («2 timer»), om du må bruke parkeringsskive (urskive), om det koster penger, eller om plassen bare gjelder for visse grupper, for eksempel forflytningshemmede med HC-kort.</p>
+<p>Eksempel: Ahmed parkerer på en plass med skiltet «P» og underskilt «2 timer 8–17 (8–14)». Det betyr maks 2 timer på hverdager mellom 8 og 17, og på lørdager mellom 8 og 14. Utenom disse tidene kan han ofte stå lenger – men han stiller likevel parkeringsskiven for sikkerhets skyld.</p>
+<p>I en parkeringssone (skilt med «Sone» og parkeringsbestemmelser) gjelder reglene helt til du ser et skilt om at sonen opphører. Du trenger altså ikke se P-skilt ved hver enkelt plass.</p>
+<h3>På private og kommunale parkeringsplasser</h3>
+<p>På betalingsplasser, kjøpesenter-parkeringer og lignende gjelder vilkårsparkering. Da må du følge vilkårene på automaten eller appen: betale, trekke billett, registrere bilnummeret, eller stille skive. Står du innenfor oppmerkingen og har gyldig billett, er du trygg.</p>
+<p>Eksempel: Ingrid parkerer på kjøpesenteret. De første 3 timene er gratis, men hun må registrere bilnummeret på en skjerm ved inngangen. Glemmer hun det, kan hun få en kontrollsanksjon selv om hun egentlig hadde rett til gratis parkering.</p>
+<h3>Parkering på fortau og «litt oppå» kanten</h3>
+<p>En vanlig misforståelse er at det er greit å sette to hjul oppå fortauet «for å gi bedre plass i veien». Det er det ikke. Fortauet tilhører de gående, og en bil som står delvis oppå kanten kan tvinge en rullestolbruker, en med barnevogn eller en synshemmet ut i veibanen. Selv om du mener du gjorde det av hensyn til trafikken, er parkering på fortau forbudt.</p>
+<p>Eksempel: Bjørn bor i en trang gate og setter alltid to hjul opp på fortauet «slik alle andre gjør». En dag kommer en parkeringsvakt og gir gebyr til hele rekken. At naboene gjorde det samme, er ingen unnskyldning – feil blir ikke riktig fordi mange gjør den.</p>
+<h3>Tidsbegrenset parkering og parkeringsskive</h3>
+<p>Mange gratisplasser har tidsbegrensning, for eksempel «2 timer» med krav om parkeringsskive (en liten skive der du stiller inn klokkeslettet du parkerte). Da må du stille skiven riktig og legge den synlig i frontruta. Glemmer du skiven, eller stiller du feil tid, kan du få gebyr selv om du faktisk sto kortere enn tillatt.</p>
+<p>Eksempel: Tone parkerer klokka 10.05 på en plass med «2 timer med ur». Hun stiller skiven på nærmeste halvtime fram, altså 10.30, og legger den i ruta. Det er trygt. Hadde hun glemt skiven helt, kunne hun fått gebyr selv om hun var tilbake etter halvannen time.</p>
+<h3>Praktiske steg før du forlater bilen</h3>
+<ol>
+<li>Se etter skilt – både over og under hovedskiltet.</li>
+<li>Sjekk avstanden til kryss, gangfelt og innkjørsler (5-metersregelen).</li>
+<li>Kontroller at du står innenfor oppmerkede ruter hvis de finnes.</li>
+<li>Betal, registrer eller still skive hvis det kreves.</li>
+<li>Se deg tilbake: Hindrer du noen? Hvis ja, flytt bilen.</li>
+</ol>
+<h3>Et lite knep for tvilstilfeller</h3>
+<p>Hvis du står og lurer, still deg selv tre spørsmål: Står det noe skilt jeg ikke har lest? Kan en buss, lastebil eller utrykningsbil komme forbi der jeg står? Vil noen bli hindret i å komme ut av sin egen innkjørsel? Svarer du «nei» på de to siste og «nei» på det første, er du som regel trygg. Er du usikker på bare ett av dem, er det verdt å bruke et par minutter på å finne et bedre sted.</p>
+<p>Eksempel: Sara skal i selskap og finner en plass i en sving uten skilt. Hun spør seg selv om en lastebil kommer forbi – og innser at den må over i motgående felt. Hun flytter bilen 30 meter, til en rettere strekning. Det tok ett minutt og sparte henne for både gebyr og risiko.</p>
+<h3>Hvor reglene står</h3>
+<p>Reglene om hvor du kan parkere finner du i trafikkreglene § 17 (på lovdata.no, søk «trafikkregler»). For betalingsplasser gjelder parkeringsforskriften. Statens vegvesen (vegvesen.no) har gode oversikter. Husk at satser og enkelte regler kan endres, så sjekk gjerne datoen på siden du leser.</p>
+<h3>Kort oppsummert</h3>
+<p>Du kan parkere langs veien der det ikke er forbudt med skilt, og der du ikke hindrer andre. Hold deg minst 5 meter unna kryss og gangfelt, hold deg unna fortau og innkjørsler, og følg alltid skiltene. På betalingsplasser må du betale eller registrere. Er du i tvil, er regelen som oftest: la være.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

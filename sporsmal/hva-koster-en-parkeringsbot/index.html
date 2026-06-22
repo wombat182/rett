@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva koster en parkeringsbot? — Rettsregel</title>
+<meta name="description" content="Det kommer an på hva slags «bot» det er. På offentlig vei gir kommunen et parkeringsgebyr på 900 kroner for brudd på trafikkreglene eller skilt. På…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-koster-en-parkeringsbot/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva koster en parkeringsbot?">
+<meta property="og:description" content="Det kommer an på hva slags «bot» det er. På offentlig vei gir kommunen et parkeringsgebyr på 900 kroner for brudd på trafikkreglene eller skilt. På…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-koster-en-parkeringsbot/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva koster en parkeringsbot?">
+<meta name="twitter:description" content="Det kommer an på hva slags «bot» det er. På offentlig vei gir kommunen et parkeringsgebyr på 900 kroner for brudd på trafikkreglene eller skilt. På…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#F8ECD6; color:#7A4A0B;">AVHENGER</span>Hva koster en parkeringsbot?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det kommer an på hva slags «bot» det er. På offentlig vei gir kommunen et parkeringsgebyr på 900 kroner for brudd på trafikkreglene eller skilt. På betalingsplasser (vilkårsparkering) gir parkeringsselskapet en kontrollsanksjon på 330, 660 eller 990 kroner avhengig av hvor alvorlig overtredelsen er. Satsene kan endres, så sjekk alltid offisielle kilder.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>To ulike systemer å holde styr på</h3>
+<p>Folk sier «parkeringsbot» om alt, men det finnes egentlig to forskjellige typer:</p>
+<ol>
+<li><strong>Parkeringsgebyr</strong> – fra kommunen, for å stå feil på offentlig vei (brudd på trafikkreglene, vegtrafikkloven eller skilt).</li>
+<li><strong>Kontrollsanksjon</strong> – fra et parkeringsselskap, for å bryte vilkårene på en betalingsplass eller privat plass.</li>
+</ol>
+<p>Det er greit å vite hvilken du har fått, fordi reglene for klage og betaling er litt forskjellige.</p>
+<h3>Parkeringsgebyr fra kommunen: 900 kroner</h3>
+<p>Står du feil langs offentlig vei – for eksempel for nær et kryss, på et gangfelt eller der det er «Parkering forbudt» – kan en kommunal parkeringsvakt gi deg et parkeringsgebyr. Dette er fastsatt i forskrift og er på 900 kroner.</p>
+<p>Eksempel: Petter parkerer fire meter fra et veikryss. En kommunal parkeringsvakt oppdager det og legger en gul lapp under vindusviskeren. Gebyret er på 900 kroner, uavhengig av at det var hans «første gang».</p>
+<h3>Kontrollsanksjon på betalingsplass: tre nivåer</h3>
+<p>På vilkårsparkering (kjøpesenter, P-hus, private plasser med automat eller app) opererer man med tre faste nivåer for kontrollsanksjon:</p>
+<ul>
+<li><strong>330 kroner (lav sats):</strong> Brukes blant annet der parkeringen i utgangspunktet er gratis, men du har glemt å dokumentere den – for eksempel ikke trukket en gratisbillett eller registrert bilnummer.</li>
+<li><strong>660 kroner (normal sats):</strong> Den vanligste. Brukes for eksempel når billetten er gått ut, du ikke har betalt, har stått over makstid, eller står utenfor oppmerkingen.</li>
+<li><strong>990 kroner (høy sats):</strong> For de mest alvorlige bruddene, som å parkere på HC-plass (reservert for forflytningshemmede) uten gyldig kort.</li>
+</ul>
+<p>Eksempel: Nina parkerer på et kjøpesenter der to timer er gratis, men hun må registrere bilnummeret på en skjerm. Hun glemmer det og får 330 kroner – den lave satsen – fordi hun egentlig hadde rett til å stå, men ikke dokumenterte det. Hadde hun stått på en HC-plass uten kort, ville det blitt 990 kroner.</p>
+<h3>Hvorfor disse nivåene finnes</h3>
+<p>Tanken bak de tre nivåene er rettferdighet. Det skal koste mindre å glemme en gratisbillett enn å snike seg inn på en plass som er reservert for forflytningshemmede. Systemet skiller altså mellom en liten forglemmelse og en mer alvorlig overtredelse. Når du forstår logikken, er det lettere å vite hvilket nivå du sannsynligvis havner på – og hvor det er mest å spare på å være nøye.</p>
+<p>Eksempel: To naboer får hver sin sanksjon samme dag. Den ene glemte å trekke gratisbillett (330 kr), den andre parkerte på HC-plass uten kort (990 kr). De gjorde begge en feil, men alvorligheten – og dermed beløpet – er svært forskjellig.</p>
+<h3>Hvorfor er det forskjell på 900 og 990?</h3>
+<p>Det er lett å blande sammen kommunens gebyr (900 kr) og den høye kontrollsanksjonen (990 kr). Forskjellen er hvem som gir den og hvor du står: 900 kroner er kommunens gebyr på offentlig vei, mens 990 kroner er den strengeste satsen et parkeringsselskap kan gi på en betalingsplass.</p>
+<h3>Forsinkelsesrente hvis du betaler for sent</h3>
+<p>Fra 1. januar 2026 kan det legges på forsinkelsesrente hvis du betaler et parkeringsgebyr for sent. Det lønner seg altså å betale i tide – eller å klage innen fristen hvis du mener gebyret er feil.</p>
+<h3>Hva med tilleggsgebyr og inkasso?</h3>
+<p>Hvis du verken betaler eller klager innen fristen, kan kravet vokse. Ubetalte gebyr og sanksjoner kan sendes til inkasso, og da kommer det inkassosalær og eventuelt forsinkelsesrente på toppen. En bot på noen hundrelapper kan dermed bli betydelig dyrere hvis du bare lar den ligge. Det billigste er alltid å enten betale i tide eller klage i tide.</p>
+<p>Eksempel: Markus legger gebyret sitt i en skuff og glemmer det. Etter noen måneder har kravet vokst med purregebyr og inkassosalær, og han betaler langt mer enn de opprinnelige 900 kronene. Hadde han betalt med en gang, eller klaget, ville han spart pengene.</p>
+<h3>Eksempler på vanlige overtredelser og hva de koster</h3>
+<p>For å gjøre det konkret, her er noen typiske situasjoner:</p>
+<ul>
+<li><strong>Glemt å trekke gratisbillett der parkeringen er gratis:</strong> lav sats, 330 kroner.</li>
+<li><strong>Glemt å betale eller registrere bilnummer på betalingsplass:</strong> normal sats, 660 kroner.</li>
+<li><strong>Billetten gått ut mens du var inne i butikken:</strong> normal sats, 660 kroner.</li>
+<li><strong>Stått utenfor oppmerkingen, på «to ruter»:</strong> normal sats, 660 kroner.</li>
+<li><strong>Parkert på HC-plass uten gyldig parkeringskort:</strong> høy sats, 990 kroner.</li>
+<li><strong>Stått feil på offentlig vei (for nær kryss, på gangfelt, «Parkering forbudt»):</strong> kommunalt gebyr, 900 kroner.</li>
+</ul>
+<p>Eksempel: Familien Hansen er på handletur. Far glemmer å registrere bilnummeret på senterets gratis-parkering (330 kr), mens en bekjent samme dag står med utløpt billett på en betalingsplass i sentrum (660 kr). Samme «glipp», men ulik situasjon gir ulikt beløp.</p>
+<h3>Kan beløpet bli høyere enn dette?</h3>
+<p>For selve parkeringsovertredelsen er det disse faste nivåene som gjelder – en parkeringsvakt kan ikke «finne på» et eget beløp. Men hvis du ikke betaler eller klager i tide, kan det altså komme purregebyr, inkassosalær og forsinkelsesrente på toppen, slik at totalsummen blir høyere. Selve grunnboten endres derimot ikke i ettertid.</p>
+<h3>Slik finner du ut hva du faktisk skylder</h3>
+<ol>
+<li>Se på lappen eller fakturaen: Står det «parkeringsgebyr» (kommune) eller «kontrollsanksjon» (selskap)?</li>
+<li>Sjekk beløpet mot satsene over.</li>
+<li>Les begrunnelsen – den forteller hva du angivelig gjorde galt.</li>
+<li>Noter klagefristen (vanligvis 3 uker).</li>
+<li>Vurder om du skal betale eller klage.</li>
+</ol>
+<h3>Hvor satsene står</h3>
+<p>Parkeringsgebyret følger av «Forskrift om offentlig parkeringsgebyr» (lovdata.no). Kontrollsanksjonens satser står i parkeringsforskriften. Statens vegvesen (vegvesen.no) har oversikt. Viktig: satsene kan bli justert, så bekreft alltid de gjeldende beløpene på lovdata.no eller vegvesen.no før du regner på det.</p>
+<h3>Kort oppsummert</h3>
+<p>Kommunalt parkeringsgebyr på offentlig vei er 900 kroner. På betalingsplasser gir parkeringsselskapet en kontrollsanksjon på 330, 660 eller 990 kroner, avhengig av alvorlighet. Fra 2026 kan det komme forsinkelsesrente ved sen betaling. Satsene endres fra tid til annen, så sjekk alltid offisielle kilder.</p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

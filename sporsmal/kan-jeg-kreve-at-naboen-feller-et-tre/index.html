@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg kreve at naboen feller et tre? — Rettsregel</title>
+<meta name="description" content="Ja, det kan du – men bare hvis tre bestemte vilkår er oppfylt samtidig.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-kreve-at-naboen-feller-et-tre/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg kreve at naboen feller et tre?">
+<meta property="og:description" content="Ja, det kan du – men bare hvis tre bestemte vilkår er oppfylt samtidig.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-kreve-at-naboen-feller-et-tre/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg kreve at naboen feller et tre?">
+<meta name="twitter:description" content="Ja, det kan du – men bare hvis tre bestemte vilkår er oppfylt samtidig.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg kreve at naboen feller et tre?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, det kan du – men bare hvis tre bestemte vilkår er oppfylt samtidig. Naboloven § 3 gir deg rett til å kreve at naboen fjerner et tre når det står for nær, er til skade eller særlig ulempe for deg, og det betyr lite for naboen og naturmangfoldet å beholde det. Er ett av vilkårene ikke på plass, har du ikke et krav du kan tvinge gjennom – men du kan fortsatt spørre pent.</p>
+  <p class="sp-kilde">Bygger på Naboloven § 3 og § 12</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/3/" class="related-card">
+  <div class="related-card-meta">Naboloven § 3</div>
+  <div class="related-card-title">Naboens tre kan ikke være høyere enn avstanden til grensen din</div>
+</a><a href="../../lover/naboloven/12/" class="related-card">
+  <div class="related-card-meta">Naboloven § 12</div>
+  <div class="related-card-title">Kan du kutte naboens greiner og røtter?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <p>Ja, det kan du – men bare hvis tre bestemte vilkår er oppfylt samtidig. Naboloven § 3 gir deg rett til å kreve at naboen fjerner et tre når det står for nær, er til skade eller særlig ulempe for deg, og det betyr lite for naboen og naturmangfoldet å beholde det. Er ett av vilkårene ikke på plass, har du ikke et krav du kan tvinge gjennom – men du kan fortsatt spørre pent.</p>
+<h3>De tre vilkårene, forklart enkelt</h3>
+<p>For å kreve felling etter naboloven § 3 må du kunne krysse av på alle tre:</p>
+<ol>
+<li>Treet står for nær. Det står nærmere huset, hagen, tunet eller den dyrkede marka di enn en tredjedel av treets høyde. Tommelfingerregel: treet er høyere enn tre ganger avstanden til deg.</li>
+<li>Treet er til skade eller særlig ulempe. Det skader noe konkret, eller plager deg klart mer enn det naboer flest må tåle.</li>
+<li>Det er lite om å gjøre å beholde det. Verken naboen eller naturen på stedet har en nevneverdig interesse i at treet blir stående.</li>
+</ol>
+<p>Eksempel: Naboen til Henrik har en stor gran 2,5 meter fra grensen. Granen er 15 meter høy, så lovlig avstand ville vært rundt 5 meter (15 delt på 3) – treet står altså klart for nær. Granen tar nesten all ettermiddagssol fra Henriks terrasse fra mai til september, og den drysser så mye nåler at takrenna tetter seg flere ganger i året. Granen er et helt vanlig hagetre uten spesiell natur- eller skjermingsverdi. Her er alle tre vilkårene oppfylt, og Henrik kan kreve at naboen feller den.</p>
+<h3>Hva regnes egentlig som «særlig ulempe»?</h3>
+<p>Dette vilkåret er ofte det som avgjør om du når frem, så det er verdt å forstå godt. Loven krever ikke bare en ulempe, men en særlig ulempe – altså noe som går merkbart ut over det naboer flest må regne med. På den ene siden finner vi ting som klart kan telle: treet tar nesten all sol fra uteplassen i sommerhalvåret, røttene ødelegger drenering eller belegg, eller greinene skader taket. På den andre siden står ting du normalt må tåle: vanlig høstløv, litt pollen, et lite skyggeparti om kvelden, eller bare at du synes treet er for stort. Mellom disse ytterpunktene ligger en gråsone, og her er det helheten som teller – hvor lenge på dagen, hvor stor del av tomta, og hvor mye det påvirker den faktiske bruken av eiendommen din. Jo mer konkret du kan beskrive ulempen, desto sterkere står du.</p>
+<h3>Når har du IKKE et krav?</h3>
+<p>Ofte stopper saken på ett av vilkårene. Du kan vanligvis ikke kreve felling hvis:</p>
+<ul>
+<li>Treet står langt nok unna i forhold til høyden (avstandsdelen er ikke brutt).</li>
+<li>Ulempen er liten – litt skygge, litt løvfall, eller bare at du synes treet er stort.</li>
+<li>Treet har reell verdi for naboen, for eksempel som innsynsskjerming, eller verdi for naturmangfoldet, som et gammelt hult tre med fugleliv.</li>
+<li>Det er en lovlig hekk eller et verneverdig tre.</li>
+<li>Treet står på selve grenselinjen og eies i fellesskap.</li>
+</ul>
+<h3>Start med en samtale – det lønner seg</h3>
+<p>De aller fleste tresaker løses best uten konflikt. Før du snakker om paragrafer, prøv en vennlig prat:</p>
+<ol>
+<li>Ta kontakt rolig og forklar hva som plager deg konkret («Grana tar all sola fra terrassen etter klokka tre»).</li>
+<li>Foreslå en løsning. Kanskje holder det å beskjære treet, ta toppen, eller tynne kronen i stedet for å felle.</li>
+<li>Tilby å dele på kostnaden eller å ordne en arborist (trefagperson) sammen.</li>
+<li>Bli enige skriftlig, gjerne med en kort melding eller e-post, så slipper dere uklarheter senere.</li>
+</ol>
+<h3>Hvis dere ikke blir enige</h3>
+<p>Får dere det ikke til på egen hånd, kan du gå videre:</p>
+<ol>
+<li>Skriftlig henvendelse. Send et høflig, men tydelig brev der du viser til naboloven § 3 og forklarer hvorfor du mener vilkårene er oppfylt. Sett en frist for svar.</li>
+<li>Konfliktrådet eller forliksrådet. Mange kommuner har gratis meklingstilbud, og forliksrådet kan hjelpe med å finne en minnelig løsning.</li>
+<li>Jordskifteretten. Tvister om trær etter naboloven kan bringes inn for jordskifteretten, som kan avgjøre om treet skal fjernes. Dette er det «tunge» sporet, og det kan koste penger, men det gir en bindende avgjørelse.</li>
+</ol>
+<p>Dokumenter underveis: ta bilder gjennom året som viser skyggen, løvfallet eller skadene, mål avstander og høyder, og noter datoer på samtaler. God dokumentasjon styrker saken din betraktelig hvis den havner hos en myndighet.</p>
+<h3>Beskjæring i stedet for felling – ofte den beste utveien</h3>
+<p>Mange naboer som motsetter seg felling, sier ja til en mildere løsning. Det lønner seg derfor å tenke gjennom hva som egentlig løser problemet ditt før du krever full felling:</p>
+<ul>
+<li>Toppkapping fjerner toppen av treet og senker det. Bra mot soltap og utsiktstap, men på enkelte treslag kan toppkapping gi en stygg, busket gjenvekst – spør en arborist.</li>
+<li>Kronetynning fjerner utvalgte greiner inni kronen så mer lys slipper gjennom, uten å endre formen. Bra mot skygge.</li>
+<li>Oppstamming fjerner de nederste greinene. Bra hvis det er undergreinene som plager deg, og gir treet et «pent» uttrykk.</li>
+</ul>
+<p>For naboen er det lettere å si ja til at treet beholdes i en lavere eller tynnere form enn til at det forsvinner helt. Tilbyr du i tillegg å dele regningen, har du ofte en avtale.</p>
+<h3>Du kan ikke felle treet selv</h3>
+<p>Selv om du mener at alle vilkårene er oppfylt, har du ikke lov til å gå inn på naboens tomt og felle treet på egen hånd. Det vil være selvtekt og kan gjøre deg erstatningsansvarlig. Det eneste du kan rydde på egen hånd, er greiner og røtter som har vokst over på din side – og det følger en egen regel (naboloven § 12), ikke § 3.</p>
+<h3>Kort oppsummert</h3>
+<p>Ja, du kan kreve at naboen feller et tre etter naboloven § 3 – men bare når treet står for nær (nærmere enn en tredjedel av høyden), er til skade eller særlig ulempe, og betyr lite for naboen og naturen. Alle tre vilkår må stemme. Start alltid med en vennlig samtale og en mulig kompromissløsning. Blir dere uenige, kan forliksrådet eller jordskifteretten avgjøre. Men felle treet selv har du ikke lov til.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-er-forskjellen-pa-naboloven-og-gjerdeloven-for/">Hva er forskjellen på naboloven og gjerdeloven for hekk?</a><a class="sp-relchip" href="../../sporsmal/hva-er-nabovarsel-og-nar-trengs-det/">Hva er nabovarsel, og når trengs det?</a><a class="sp-relchip" href="../../sporsmal/hva-er-treregelen-i-naboloven/">Hva er treregelen i naboloven?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

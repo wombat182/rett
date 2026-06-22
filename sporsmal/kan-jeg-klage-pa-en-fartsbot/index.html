@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kan jeg klage på en fartsbot? — Rettsregel</title>
+<meta name="description" content="Ja, du kan reagere på en fartsbot – men hvordan du gjør det avhenger av hva slags bot du har fått, og om du er uenig i selve faktum at du faktisk kjørte…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/kan-jeg-klage-pa-en-fartsbot/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Kan jeg klage på en fartsbot?">
+<meta property="og:description" content="Ja, du kan reagere på en fartsbot – men hvordan du gjør det avhenger av hva slags bot du har fått, og om du er uenig i selve faktum at du faktisk kjørte…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/kan-jeg-klage-pa-en-fartsbot/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kan jeg klage på en fartsbot?">
+<meta name="twitter:description" content="Ja, du kan reagere på en fartsbot – men hvordan du gjør det avhenger av hva slags bot du har fått, og om du er uenig i selve faktum at du faktisk kjørte…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title"><span class="sp-verdict" style="background:#DFF0E9; color:#085041;">JA</span>Kan jeg klage på en fartsbot?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Ja, du kan reagere på en fartsbot – men hvordan du gjør det avhenger av hva slags bot du har fått, og om du er uenig i selve faktum (at du faktisk kjørte for fort) eller bare synes reaksjonen er for streng. Det viktigste å vite med en gang: De fleste fartsbøter kommer som et «forenklet forelegg», og det kan du rett og slett la være å skrive under på. Da går saken videre til politiet og eventuelt t</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Ja, du kan reagere på en fartsbot – men hvordan du gjør det avhenger av hva slags bot du har fått, og om du er uenig i selve faktum (at du faktisk kjørte for fort) eller bare synes reaksjonen er for streng. Det viktigste å vite med en gang: De fleste fartsbøter kommer som et «forenklet forelegg», og det kan du rett og slett la være å skrive under på. Da går saken videre til politiet og eventuelt til retten, der du får sagt din mening.</p>
+<h3>Først: hva slags bot har du fått?</h3>
+<p>De fleste vanlige fartsbøter er et forenklet forelegg. Det er en ferdig utfylt blankett med et fast beløp, basert på hvor mange kilometer i timen for fort du kjørte. Den får du gjerne stukket i hånda i en kontroll, eller i posten etter at en fotoboks har blinket.</p>
+<p>Et forenklet forelegg er et tilbud. Du har to valg:</p>
+<ul>
+<li><strong>Vedta</strong> (skrive under / betale). Da er saken ferdig, og det blir ingen rettssak.</li>
+<li><strong>Ikke vedta</strong> (la være å skrive under). Da kan ikke politiet bruke det forenklede forelegget, og de må vurdere om de vil ta saken videre.</li>
+</ul>
+<p>Det finnes ingen egen «klagefrist» på samme måte som på et parkeringsgebyr. Det du gjør, er rett og slett å la være å vedta, og forklare hvorfor.</p>
+<h3>Steg for steg hvis du er uenig</h3>
+<p><strong>1. Les hva som står.</strong> Sjekk målt fart, sted, dato og fartsgrense. Stemmer fartsgrensen med skiltingen der du var? Sto det et skilt du ikke så, eller var det nettopp endret?</p>
+<p><strong>2. Bestem deg for om du bestrider faktum eller bare beløpet.</strong> Mener du at du faktisk ikke kjørte så fort som måleren viser – for eksempel at den målte en annen bil – er det faktum du bestrider. Synes du bare boten er dyr, men vet at du kjørte for fort, har du dårligere kort på hånda.</p>
+<p><strong>3. Ikke skriv under.</strong> Si tydelig til politibetjenten i kontrollen at du ikke vedtar. Du kan godt være høflig og samarbeidsvillig samtidig. Får du forelegget i posten, returnerer du det uten å betale, med en kort skriftlig forklaring.</p>
+<p><strong>4. Skriv en kort, saklig begrunnelse.</strong> Eksempel: «Jeg vedtar ikke dette forelegget. Jeg mener målingen gjelder en annen bil, da jeg lå bak en hvit varebil som passerte målepunktet rett før meg.»</p>
+<p><strong>5. Vent på politiet.</strong> De vurderer nå om de vil sende deg et vanlig forelegg eller ta saken til retten. Ved små overtredelser hender det at saken blir henlagt, fordi politiet må prioritere de alvorligste sakene.</p>
+<h3>Et praktisk eksempel</h3>
+<p>Tenk deg at Lise blir stoppet i en kontroll og får et forenklet forelegg for å ha kjørt 73 km/t i en 60-sone. Lise er sikker på at hun lå rundt 64, og at laseren traff bilen foran. Hun sier rolig fra at hun ikke vedtar, og skriver en kort begrunnelse. Politiet vurderer bevisene. Hvis de mener målingen er sikker, kan saken havne i retten – og taper Lise der, kan det bli dyrere enn det opprinnelige forelegget, fordi hun også kan måtte betale saksomkostninger. Hvis bevisene derimot er usikre, kan saken bli lagt bort.</p>
+<p>Et annet eksempel: Jonas får forelegg i posten etter en fotoboks. Han ser at bildet er av kona Marens bil, men det var faktisk svigerfaren som kjørte den dagen. Da bør Jonas ikke vedta, men opplyse hvem som faktisk kjørte, slik at riktig person får saken.</p>
+<h3>Husk dette om kostnad og risiko</h3>
+<p>Å nekte å vedta er gratis i seg selv. Men hvis saken går til retten og du blir dømt, kan du måtte betale saksomkostninger i tillegg til boten. Det er en reell risiko du bør tenke gjennom. Er du i tvil om du har en god sak, kan det være lurt å snakke med en advokat. Mange gir en kort, gratis førstevurdering.</p>
+<p>Du kan også be om å betale i avdrag hvis selve beløpet er problemet – det er ikke det samme som å klage, men en praktisk løsning. Ta da kontakt med Statens innkrevingssentral.</p>
+<h3>Når «klagen» faktisk er en anke</h3>
+<p>Hvis du allerede har vedtatt forelegget (skrevet under), er saken i utgangspunktet avgjort. Da er det vanskelig å gjøre om. I helt spesielle tilfeller, for eksempel hvis du ble presset eller misforsto hva du skrev under på, kan du be påtalemyndigheten om å oppheve vedtakelsen, men det skal mye til. Derfor er rådet: Ikke skriv under hvis du er uenig. Det er mye lettere å la være å vedta enn å angre etterpå.</p>
+<h3>Et ord om prikker</h3>
+<p>Mange fartsbøter gir også «prikker» i førerkortet. Får du åtte prikker i løpet av tre år, mister du førerkortet i seks måneder. Er du i prøveperioden (ny sjåfør), teller hver prikk dobbelt. Dette kan være en ekstra grunn til å vurdere saken nøye, ikke bare se på kronebeløpet.</p>
+<h3>Vanlige situasjoner der det er verdt å bestride</h3>
+<p>Det er noen typiske tilfeller der mange faktisk har en god grunn til ikke å vedta:</p>
+<ul>
+<li><strong>Feil bil på fotoboksbildet.</strong> Var det noen andre som lånte bilen? Bildet skal vise sjåføren, og er det ikke deg, bør du opplyse om hvem som kjørte.</li>
+<li><strong>Uklar eller endret skilting.</strong> Var fartsgrensen nettopp satt ned, eller sto skiltet skjult bak greiner eller en lastebil? Det kan ha betydning.</li>
+<li><strong>Nødssituasjon.</strong> Kjørte du fort fordi en passasjer var alvorlig syk og du var på vei til legevakt? Dette kan i sjeldne tilfeller være formildende, men du må kunne sannsynliggjøre det.</li>
+<li><strong>Tekniske feil ved målingen.</strong> I noen tilfeller kan det reises tvil om måleutstyret var riktig kalibrert.</li>
+</ul>
+<p>Eksempel: Hassan får forelegg etter en kontroll i en tunnel der det nylig var satt ned fartsgrense på grunn av arbeid. Han mener skiltingen var dårlig og at det gamle skiltet fortsatt sto oppe lenger framme. Da kan det være verdt å ta bilder av stedet og forklare situasjonen i begrunnelsen.</p>
+<h3>Hva med ATK – fotoboksene?</h3>
+<p>ATK står for «automatisk trafikkontroll», altså fotoboksene du ser langs veien. Blir du målt der, kommer forelegget i posten. Du har samme valg som ellers: vedta eller la være. Et tips er å ta vare på all dokumentasjon du måtte ha – for eksempel kvitteringer eller annet som viser hvor du var – hvis du mener bildet gjelder feil kjøretøy eller feil tidspunkt.</p>
+<h3>Slik skriver du en god begrunnelse</h3>
+<p>Når du forklarer hvorfor du ikke vedtar, er det noen grep som hjelper:</p>
+<ol>
+<li><strong>Vær kort og saklig.</strong> Politiet leser mange saker; en presis forklaring er lettere å ta stilling til enn en lang klagestorm.</li>
+<li><strong>Hold deg til fakta.</strong> Beskriv hva som faktisk skjedde, ikke hvor urettferdig du synes systemet er.</li>
+<li><strong>Legg ved bevis</strong> hvis du har det – bilder, vitner, kvitteringer.</li>
+<li><strong>Oppgi kontaktinformasjon</strong> så politiet enkelt når deg.</li>
+</ol>
+<p>Eksempel på en ryddig formulering: «Jeg vedtar ikke dette forelegget. På målestedet sto fartsgrenseskiltet skjult bak et anleggskjøretøy, og jeg oppfattet derfor at grensen fortsatt var 80 km/t. Vedlagt er bilde tatt på stedet samme dag.»</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>En fartsbot er ofte et forenklet forelegg – et tilbud du kan la være å skrive under på.</li>
+<li>Vil du bestride boten, vedtar du den ikke, og gir en kort, saklig begrunnelse. Da vurderer politiet om saken skal videre eller henlegges.</li>
+<li>Bestrider du faktum (feil måling, feil bil, feil fartsgrense) står du sterkere enn om du bare synes beløpet er høyt.</li>
+<li>Risikoen ved å gå til retten og tape er saksomkostninger i tillegg til boten.</li>
+<li>Ikke vedta hvis du er uenig – det er mye lettere enn å angre etter at du har skrevet under.</li>
+</ul>
+<p><em>Satser, prikkregler og rutiner kan endres. Sjekk alltid politiet.no og Lovdata for oppdatert informasjon, eller kontakt en advokat hvis du er i tvil.</em></p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

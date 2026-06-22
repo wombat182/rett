@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mister jeg førerkortet hvis jeg kjører med promille? — Rettsregel</title>
+<meta name="description" content="I de aller fleste tilfeller: ja.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/mister-jeg-forerkortet-hvis-jeg-kjorer-med-promille/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Mister jeg førerkortet hvis jeg kjører med promille?">
+<meta property="og:description" content="I de aller fleste tilfeller: ja.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/mister-jeg-forerkortet-hvis-jeg-kjorer-med-promille/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mister jeg førerkortet hvis jeg kjører med promille?">
+<meta name="twitter:description" content="I de aller fleste tilfeller: ja.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Mister jeg førerkortet hvis jeg kjører med promille?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>I de aller fleste tilfeller: ja. Kjører du med promille, mister du normalt førerretten – altså retten til å kjøre. Hvor lenge avhenger av hvor høy promillen var. Bare ved den aller laveste promillen (rundt 0,2–0,5) er det vanlig å slippe tap av førerretten, og selv da bare hvis det ikke er skjerpende forhold. Ved høyere promille er tap nærmest regelen.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>I de aller fleste tilfeller: ja. Kjører du med promille, mister du normalt førerretten – altså retten til å kjøre. Hvor lenge avhenger av hvor høy promillen var. Bare ved den aller laveste promillen (rundt 0,2–0,5) er det vanlig å slippe tap av førerretten, og selv da bare hvis det ikke er skjerpende forhold. Ved høyere promille er tap nærmest regelen.</p>
+<h3>Forskjellen på «førerkort» og «førerrett»</h3>
+<p>La oss rydde i et fagord først. Folk sier gjerne at de «mister lappen», men loven snakker om to ting:</p>
+<ul>
+<li><strong>Førerkortet</strong> er selve plastkortet.</li>
+<li><strong>Førerretten</strong> er den juridiske retten til å kjøre.</li>
+</ul>
+<p>Når du «mister førerkortet» for promille, er det egentlig førerretten du mister i en periode. Du må levere fra deg kortet, men poenget er at du ikke lenger har lov til å kjøre.</p>
+<h3>Hva skjer rett etter at du er tatt?</h3>
+<p>Tas du for promillekjøring, vil politiet ofte ta førerkortet ditt i <strong>beslag</strong> med en gang, på stedet. Det betyr at du mister retten til å kjøre allerede før saken er endelig avgjort. Hvis du samtykker til beslaget, gjelder det inntil saken er ferdig. Samtykker du ikke, må politiet bringe spørsmålet inn for retten innen en frist, slik at en dommer avgjør om beslaget skal bestå.</p>
+<p>Eksempel: Henrik blir stoppet og blåser klart over grensen. Politiet tar kortet hans der og da. Henrik kjører altså ikke videre hjem den kvelden – og inntil saken er ferdig behandlet, står bilen.</p>
+<h3>Når slipper du å miste førerretten?</h3>
+<p>Det praktiske unntaket er den laveste promillen. Ligger promillen rundt 0,2–0,5, og det ikke er skjerpende forhold, er det normalt at du beholder førerretten og slipper med bot. Men «skjerpende forhold» kan endre dette – for eksempel hvis du kjørte uvørent, var innblandet i en ulykke, eller har gjort det før.</p>
+<p>Eksempel: Ingrid blåser 0,35 i en rutinekontroll, kjørte rolig og pent, og har rent rulleblad. Hun får trolig bot, men beholder førerretten. Hadde hun derimot kjørt i 0,35 og samtidig forårsaket et trafikkuhell, kunne bildet sett annerledes ut.</p>
+<h3>Ved høyere promille: tap er hovedregelen</h3>
+<p>Stiger promillen over rundt 0,5, blir tap av førerretten det vanlige. Jo høyere promille, jo lengre taper du retten. Ved promille over 1,2 mister man normalt førerretten i minst to år. Hvor lang tapstiden blir på de ulike trinnene, er nærmere beskrevet i tapsforskriften – og i den neste artikkelen ser vi nærmere på tidslengdene.</p>
+<h3>Må jeg ta lappen på nytt?</h3>
+<p>Ved kortere tap får du som regel førerretten tilbake automatisk når tapstiden er over. Men ved lengre tap – typisk et halvt år eller mer – kan du måtte ta ny førerprøve for å få den tilbake. Det betyr i praksis å bevise på nytt at du kan kjøre, noen ganger både teori og oppkjøring. Ved svært lange tap kan kravene være enda strengere.</p>
+<h3>Andre konsekvenser å være klar over</h3>
+<ul>
+<li><strong>Jobb:</strong> Er du avhengig av å kjøre, kan tap av førerretten ramme inntekten din direkte.</li>
+<li><strong>Forsikring og økonomi:</strong> En promilledom kan få ringvirkninger utover boten.</li>
+<li><strong>Tid og bryderi:</strong> Å ta lappen på nytt koster både penger og tid.</li>
+</ul>
+<p>Eksempel: Yusuf jobber som varebilsjåfør. Selv et tap på halvannet år rammer ham langt hardere enn boten – fordi han i praksis ikke kan utføre jobben sin uten å kjøre.</p>
+<h3>Hva bør du gjøre?</h3>
+<p>Er førerkortet tatt i beslag, har du rett til å nekte samtykke og få spørsmålet prøvd for retten. Det kan være verdt å snakke med en advokat om, særlig hvis du mener beslaget er feil eller for strengt. En forsvarer kan også hjelpe deg å få fram formildende forhold som kan påvirke tapstiden.</p>
+<h3>Hva betyr det at jeg «samtykker til beslag»?</h3>
+<p>Når politiet tar førerkortet på stedet, blir du spurt om du samtykker til at de beholder det inntil saken er avgjort. Dette er et viktig veivalg:</p>
+<ul>
+<li><strong>Samtykker du:</strong> Politiet beholder kortet uten å gå veien om en dommer. Saken går sin gang, og du får ikke kjøre i mellomtiden.</li>
+<li><strong>Samtykker du ikke:</strong> Politiet kan ikke uten videre beholde kortet over tid. De må da bringe spørsmålet inn for retten innen en kort frist, slik at en dommer vurderer om beslaget skal opprettholdes.</li>
+</ul>
+<p>Å ikke samtykke betyr ikke at du nødvendigvis får kjøre videre – men det gir en domstol mulighet til å overprøve om beslaget er riktig. Er du i tvil, kan du be om å få snakke med advokat før du tar stilling.</p>
+<p>Eksempel: Lena blir tatt med en promille hun mener er målt feil. Hun velger å ikke samtykke til beslaget, og saken bringes inn for retten, der en dommer vurderer grunnlaget. Det gir henne en sjanse til å få prøvd om kortet faktisk skal beslaglegges.</p>
+<h3>Hva med «sperrefristen»?</h3>
+<p>Når du mister førerretten, settes det en periode du ikke får kjøre – ofte kalt tapstid eller sperrefrist. I denne perioden har du ikke lov til å kjøre, og gjør du det likevel, er det et nytt og alvorlig lovbrudd som straffes strengt. Det er altså ikke nok å «ha kortet i lomma» – det er selve retten du har mistet, og den kommer ikke tilbake før perioden er over (og eventuell ny prøve er bestått).</p>
+<h3>Et menneskelig perspektiv</h3>
+<p>Det er lett å se på tap av førerretten som bare en praktisk ulempe. Men for mange er bilen knyttet til jobb, henting av barn, omsorg for eldre slektninger eller det å bo usentralt. Nettopp derfor er det verdt å ta promillereglene på alvor på forhånd – konsekvensene rekker langt inn i hverdagen, og de varer lenge.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Ja – ved promillekjøring mister du normalt førerretten, lengden avhenger av promillenivået.</li>
+<li>«Førerkort» er plastkortet, «førerrett» er retten til å kjøre – det er retten du mister.</li>
+<li>Politiet tar ofte kortet i beslag på stedet, og du mister retten allerede før dom.</li>
+<li>Bare ved lav promille (ca. 0,2–0,5) uten skjerpende forhold er det vanlig å beholde retten.</li>
+<li>Ved lengre tap må du ofte ta ny førerprøve. Vurder å kontakte advokat hvis kortet er beslaglagt.</li>
+</ul>
+<p><em>Regler om beslag og tap kan endres. Sjekk Lovdata (tapsforskriften), politiet.no og domstol.no, og kontakt advokat ved behov.</em></p>
+<hr />
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

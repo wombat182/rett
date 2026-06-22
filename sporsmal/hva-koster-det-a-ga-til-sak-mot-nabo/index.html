@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva koster det å gå til sak mot naboen? — Rettsregel</title>
+<meta name="description" content="Det varierer mye. Forliksrådet koster bare et lite gebyr. En full sak i tingretten kan koste titusenvis av kroner, særlig på grunn av advokat og…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-koster-det-a-ga-til-sak-mot-nabo/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva koster det å gå til sak mot naboen?">
+<meta property="og:description" content="Det varierer mye. Forliksrådet koster bare et lite gebyr. En full sak i tingretten kan koste titusenvis av kroner, særlig på grunn av advokat og…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-koster-det-a-ga-til-sak-mot-nabo/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva koster det å gå til sak mot naboen?">
+<meta name="twitter:description" content="Det varierer mye. Forliksrådet koster bare et lite gebyr. En full sak i tingretten kan koste titusenvis av kroner, særlig på grunn av advokat og…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva koster det å gå til sak mot naboen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det varierer mye. Forliksrådet koster bare et lite gebyr. En full sak i tingretten kan koste titusenvis av kroner, særlig på grunn av advokat og eventuelle sakkyndige. Men innboforsikringen din dekker ofte en stor del.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Frykten for kostnadene er noe av det som holder folk fast i en konflikt de egentlig burde fått løst. Derfor er det viktig å vite hva de ulike trinnene faktisk koster.</p>
+<h3>Trinn for trinn: hva koster hva?</h3>
+<p>Samtale og brev: gratis. Dette er alltid det rimeligste, og det løser flest saker.</p>
+<p>Konfliktråd: gratis. En statlig meklingstjeneste som ikke koster deg noe.</p>
+<p>Forliksrådet: rimelig. Du betaler et rettsgebyr for å sende inn forliksklagen. Det er et beskjedent beløp, og du trenger ikke advokat. For mange nabosaker stopper det her, til en svært lav pris.</p>
+<p>Tingretten: her blir det dyrt. Du må regne med:</p>
+<ul>
+<li>Rettsgebyr (et gebyr for å behandle saken, høyere enn i forliksrådet).</li>
+<li>Advokatutgifter, som ofte er den største posten. Advokattimer koster gjerne flere tusen kroner per time.</li>
+<li>Eventuelle sakkyndige, for eksempel en byggteknisk ekspert som vurderer grunnforhold eller dreneringsskader. Dette kan koste mye i vann- og terrengsaker.</li>
+</ul>
+<p>En full tingrettssak kan derfor fort havne på flere titusen kroner, og i kompliserte saker enda mer.</p>
+<h3>Et viktig poeng: hvem betaler til slutt?</h3>
+<p>Som hovedregel kan den som taper en rettssak, bli pålagt å betale også motpartens saksomkostninger. Det betyr at du risikerer en dobbel regning hvis du taper. Dette er nettopp derfor du bør være rimelig sikker på saken din, og helst forsøke forlik, før du går til tingretten.</p>
+<h3>Et konkret eksempel</h3>
+<p>Mariam vurderer å saksøke naboen for en terrengendring som har gitt henne fuktskader for 60 000 kroner. To veier:</p>
+<ul>
+<li>Vei A: Hun sender forliksklage. Det koster et lite gebyr. Saken løses der med et forlik. Total kostnad: noen hundrelapper og litt tid.</li>
+<li>Vei B: Naboen nekter alt, og saken må til tingretten. Mariam bruker advokat og en byggteknisk sakkyndig. Selv om hun vinner, kan utgiftene komme opp i flere titusen kroner før de eventuelt dekkes av motparten eller forsikringen.</li>
+</ul>
+<p>Forskjellen viser hvorfor de billige trinnene alltid bør prøves først.</p>
+<h3>Slik holder du kostnadene nede</h3>
+<ol>
+<li>Bruk de gratis og billige trinnene først: samtale, brev, konfliktråd og forliksråd.</li>
+<li>Dokumenter godt fra start. God dokumentasjon gjør saken kortere og billigere hvis den må videre.</li>
+<li>Sjekk innboforsikringen din for rettshjelpdekning FØR du engasjerer advokat (se neste artikkel). Dette kan spare deg for det meste av advokatregningen.</li>
+<li>Vurder om kravet ditt står i forhold til kostnaden. Å bruke 40 000 kroner for å vinne en sak verdt 10 000 kroner gir sjelden mening økonomisk.</li>
+<li>Forsøk forlik hele veien. Selv midt i en tingrettssak kan partene bli enige og spare store summer.</li>
+</ol>
+<h3>Hva med å la det ligge?</h3>
+<p>Noen ganger er den klokeste økonomiske beslutningen å ikke gå til sak, men finne en praktisk kompromissløsning, eller å akseptere en mindre ulempe. Det er ingen skam i å velge ro og forutsigbarhet fremfor en dyr og langvarig kamp, særlig når naboen blir boende.</p>
+<h3>Skjulte kostnader folk glemmer</h3>
+<p>Når man regner på en rettssak, tenker de fleste bare på advokatregningen. Men det finnes flere kostnader som er lette å glemme:</p>
+<ul>
+<li>Tid og krefter. En tvist kan stjele mange kvelder, helger og mye nattesøvn over flere måneder, kanskje år.</li>
+<li>Sakkyndige og takster. I vann- og terrengsaker trengs det ofte en fagperson som vurderer årsak og skadeomfang, og slike rapporter koster.</li>
+<li>Risikoen for å tape og dekke motpartens utgifter. Dette kan i verste fall doble regningen.</li>
+<li>Naboforholdet. En hard rettssak kan ødelegge naboforholdet i mange år, noe som har en pris i hverdagen selv om den ikke står på en faktura.</li>
+</ul>
+<p>Disse postene er en viktig del av regnestykket, ikke bare advokattimene.</p>
+<h3>Et regneeksempel som setter ting i perspektiv</h3>
+<p>Si at en tvist gjelder en skade på 25 000 kroner. Du henter advokat og en sakkyndig, og utgiftene ser ut til å bli rundt 70 000 kroner totalt. Med rettshjelpdekning i innboforsikringen kan du kanskje sitte igjen med en egenandel på et sted mellom 15 000 og 20 000 kroner, mens forsikringen tar resten opp til maksgrensen. Da kan saken plutselig lønne seg likevel, fordi du selv bare bærer en brøkdel av kostnaden. Dette er nettopp grunnen til at du alltid bør sjekke forsikringen før du konkluderer med at en sak er for dyr å føre.</p>
+<h3>Slik tar du den økonomiske beslutningen</h3>
+<ol>
+<li>Anslå hva du faktisk kan vinne i kroner.</li>
+<li>Anslå hva saken kan koste, inkludert de skjulte kostnadene.</li>
+<li>Sjekk hvor mye forsikringen din dekker.</li>
+<li>Vei dette opp mot hverandre, og vurder også verdien av ro og et levelig naboforhold.</li>
+</ol>
+<p>Noen ganger sier regnestykket «gå videre», andre ganger «finn et kompromiss». Begge svar kan være riktige, avhengig av tallene og av hvor mye saken betyr for deg. Det viktigste er at du tar beslutningen med åpne øyne, og ikke lar deg drive inn i en dyr prosess bare fordi du er sint i øyeblikket. Sett deg ned, gjerne med en du stoler på, og gå gjennom regnestykket rolig før du bestemmer deg. En klok beslutning her kan spare deg for både penger og mange søvnløse netter.</p>
+<h3>Finnes det fri rettshjelp fra staten?</h3>
+<p>I noen tilfeller kan personer med lav inntekt og formue ha rett til fri rettshjelp fra det offentlige, altså at staten dekker advokatutgiftene. Dette gjelder bestemte sakstyper og er knyttet til inntektsgrenser, og vanlige nabotvister om vann og terreng faller ikke alltid innenfor. For de fleste vil rettshjelpdekningen i innboforsikringen være den viktigste kilden til å få dekket advokat. Men det kan likevel være verdt å sjekke om du oppfyller vilkårene for fri rettshjelp hvis økonomien din er stram, eller å spørre en advokat om saken din kan kvalifisere. Å undersøke dette koster ingenting og kan i beste fall spare deg for hele egenandelen.</p>
+<h3>Kort oppsummert</h3>
+<p>Samtale, brev og konfliktråd er gratis, og forliksrådet koster bare et lite gebyr. Tingretten kan derimot koste titusenvis av kroner, mest på grunn av advokat og sakkyndige, og taperen kan måtte betale motpartens utgifter. Husk også de skjulte kostnadene i tid og naboforhold. Bruk de billige trinnene først, dokumenter godt, og sjekk forsikringens rettshjelpdekning før du henter advokat.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/bor-jeg-bruke-mekling-i-nabosaker/">Bør jeg bruke mekling i nabosaker?</a><a class="sp-relchip" href="../../sporsmal/bor-jeg-ta-nabokonflikten-til-forliksradet/">Bør jeg ta nabokonflikten til forliksrådet?</a><a class="sp-relchip" href="../../sporsmal/dekker-forsikringen-min-advokat-i-en-nabotvist/">Dekker forsikringen min advokat i en nabotvist?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

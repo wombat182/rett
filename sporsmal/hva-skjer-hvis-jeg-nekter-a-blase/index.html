@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva skjer hvis jeg nekter å blåse? — Rettsregel</title>
+<meta name="description" content="Å nekte å blåse hjelper deg ikke – tvert imot.">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-nekter-a-blase/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva skjer hvis jeg nekter å blåse?">
+<meta property="og:description" content="Å nekte å blåse hjelper deg ikke – tvert imot.">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-skjer-hvis-jeg-nekter-a-blase/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva skjer hvis jeg nekter å blåse?">
+<meta name="twitter:description" content="Å nekte å blåse hjelper deg ikke – tvert imot.">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Hva skjer hvis jeg nekter å blåse?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Å nekte å blåse hjelper deg ikke – tvert imot. Selv om du sier nei til alkotesten på stedet, kan politiet ta deg med til videre prøver: pusteprøve, blodprøve og legeundersøkelse. Og selve det å nekte å la seg teste er straffbart i seg selv. Du slipper altså ikke unna ved å holde munnen lukket; du risikerer bare å gjøre situasjonen verre.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <p>Å nekte å blåse hjelper deg ikke – tvert imot. Selv om du sier nei til alkotesten på stedet, kan politiet ta deg med til videre prøver: pusteprøve, blodprøve og legeundersøkelse. Og selve det å nekte å la seg teste er straffbart i seg selv. Du slipper altså ikke unna ved å holde munnen lukket; du risikerer bare å gjøre situasjonen verre.</p>
+<h3>Hva er «å blåse»?</h3>
+<p>Når politiet stopper deg og mistenker at du har drukket, kan de be deg blåse i et lite apparat – en <strong>alkotest</strong> (også kalt foreløpig blåseprøve). Dette er en rask test på stedet for å se om det er grunn til videre undersøkelse. Den kan politiet be om når de har grunn til å tro at du har kjørt påvirket, ved trafikkuhell, eller i en kontroll.</p>
+<h3>Du kan ikke teste deg ut av en test</h3>
+<p>Mange tror at hvis de nekter å blåse, har ikke politiet noe bevis. Det stemmer ikke. Sier du nei til alkotesten, kan politiet i stedet fremstille deg for grundigere undersøkelser:</p>
+<ul>
+<li><strong>Utåndingsprøve</strong> (en mer nøyaktig pusteprøve på stasjonen).</li>
+<li><strong>Blodprøve</strong> (tatt av helsepersonell).</li>
+<li><strong>Klinisk legeundersøkelse</strong> (en lege vurderer tilstanden din).</li>
+</ul>
+<p>Disse kan gjennomføres for å fastslå om og hvor påvirket du var. Å nekte den enkle blåseprøven stopper altså ikke prosessen – den fortsetter bare i en mer omfattende form.</p>
+<p>Eksempel: Fredrik blir stoppet og nekter å blåse, i håp om å slippe unna. Politiet tar ham med til stasjonen, der han fremstilles for utåndingsprøve og blodprøve. Resultatet brukes mot ham – akkurat det han prøvde å unngå, skjer likevel.</p>
+<h3>Selve nektingen er straffbar</h3>
+<p>Dette er det viktigste å forstå: Å nekte å medvirke til prøvene er en egen straffbar handling. Du kan altså straffes for selve nektingen, uavhengig av hva en eventuell test ville vist. Loven er laget slik for at folk ikke skal kunne sabotere kontrollen ved å nekte. Tanken er enkel – det skal ikke lønne seg å holde igjen.</p>
+<p>I praksis ser rettssystemet alvorlig på nekting, fordi det undergraver hele promillekontrollen. Du risikerer derfor en reaksjon som ikke er mildere enn om du hadde samarbeidet – ofte tvert imot.</p>
+<h3>Hva med blodprøve – kan jeg nekte den?</h3>
+<p>Også her er svaret at du ikke slipper unna. Politiet kan sørge for at blodprøve og legeundersøkelse blir gjennomført, og motvilje fra din side endrer ikke at prøvene kan tas. Å sette seg imot gjør bare situasjonen verre for deg selv, både praktisk og når det gjelder hvordan saken vurderes.</p>
+<p>Eksempel: Maria nekter både å blåse og å gi blodprøve. Det fritar henne ikke – prøvene gjennomføres likevel, og nektingen kan i tillegg telle mot henne i saken. Hun sitter igjen med det verste fra to verdener.</p>
+<h3>Hvorfor samarbeid ofte lønner seg</h3>
+<p>Det kan virke fristende å nekte hvis du er redd, men i de aller fleste tilfeller er det klokere å samarbeide rolig:</p>
+<ul>
+<li>Du unngår en egen straffereaksjon for nekting.</li>
+<li>Er du faktisk edru, vil testen vise nettopp det og rydde mistanken av veien.</li>
+<li>Du fremstår som samarbeidsvillig, noe som sjelden skader.</li>
+</ul>
+<p>Eksempel: Jonas har ikke drukket, men blir bedt om å blåse i en rutinekontroll. Han blåser uten innvendinger, testen er ren, og han kjører videre etter et minutt. Hadde han nektet «på prinsipp», kunne en kjapp og udramatisk kontroll blitt til en lang og ubehagelig sak.</p>
+<h3>Dine rettigheter</h3>
+<p>Du har selvsagt rettigheter i møte med politiet. Du har rett til å forklare deg, og ved en straffesak kan du ha rett til forsvarer. Men retten til å forsvare deg er noe annet enn en rett til å nekte å la deg teste – det siste finnes ikke uten konsekvenser. Mener du at kontrollen var feil, er veien å ta det opp i ettertid, ikke å sabotere prøven der og da.</p>
+<h3>Hva bør du gjøre i praksis?</h3>
+<ol>
+<li><strong>Hold deg rolig og høflig</strong>, selv om situasjonen er ubehagelig.</li>
+<li><strong>Blås når du blir bedt om det</strong> – det er den enkleste veien videre.</li>
+<li><strong>Ikke prøv å «vinne»</strong> ved å nekte; det straffer seg.</li>
+<li><strong>Trenger du hjelp i etterkant</strong>, kontakt en advokat for å vurdere saken.</li>
+</ol>
+<h3>Hva er forskjellen på alkotest og utåndingsprøve?</h3>
+<p>Det er greit å forstå at det finnes to «pusteprøver», og at de har ulik rolle:</p>
+<ul>
+<li><strong>Alkotesten</strong> (foreløpig blåseprøve) er den raske testen på stedet. Den gir et foreløpig svar og brukes for å avgjøre om det er grunn til videre undersøkelse. Den brukes vanligvis ikke alene som bevis i en rettssak.</li>
+<li><strong>Utåndingsprøven</strong> er en mer nøyaktig pusteprøve med spesialutstyr, gjerne tatt på politistasjonen. Den kan brukes som bevis for promillenivået.</li>
+</ul>
+<p>Sier du nei til den raske alkotesten, går du altså ikke fri – du blir bare fremstilt for den grundigere utåndingsprøven, eventuelt blodprøve og legeundersøkelse i tillegg.</p>
+<h3>Hvorfor har vi disse reglene?</h3>
+<p>Reglene er laget for at promillekontroll skal fungere i praksis. Hvis det var trygt å nekte, ville enhver beruset sjåfør bare holde munnen lukket og slippe unna. For å hindre nettopp det, har lovgiveren bestemt at man kan fremstilles for prøver, og at nekting i seg selv er straffbart. Slik beskytter systemet alle som ferdes i trafikken.</p>
+<p>Eksempel: Tenk deg at nekting var gratis. Da ville den som hadde drukket mest – og var farligst – ha mest å tjene på å nekte. Reglene snur dette på hodet: den som nekter, får ikke en fordel, men en ulempe.</p>
+<h3>Hva hvis jeg mener kontrollen var urettferdig?</h3>
+<p>Føler du at politiet behandlet deg feil, er den riktige veien å samarbeide der og da, og heller ta opp innvendingene i etterkant – gjerne med hjelp fra advokat. Å sabotere prøven på stedet løser ingenting; det skaper bare en ekstra sak mot deg. Husk at du har rett til å forklare deg, og at en forsvarer kan gå gjennom om alt gikk riktig for seg.</p>
+<h3>Et siste, vennlig råd</h3>
+<p>Det kan være skummelt å bli stoppet i en kontroll, selv om du ikke har drukket. Pust rolig, vær høflig, og blås når du blir bedt om det. Har du rent mel i posen, er kontrollen over på et øyeblikk. Har du drukket, gjør du uansett situasjonen bedre for deg selv ved å samarbeide enn ved å kjempe imot.</p>
+<h3>Kort oppsummert</h3>
+<ul>
+<li>Nekter du å blåse, kan politiet likevel ta deg med til utåndingsprøve, blodprøve og legeundersøkelse.</li>
+<li>Selve nektingen er straffbar i seg selv – du slipper ikke unna ved å si nei.</li>
+<li>Reaksjonen for nekting er ofte ikke mildere enn ved samarbeid, snarere tvert imot.</li>
+<li>Er du edru, viser testen nettopp det – samarbeid lønner seg nesten alltid.</li>
+<li>Du har rett til å forklare deg og til forsvarer, men ikke til å nekte test uten konsekvenser.</li>
+</ul>
+<p><em>Reglene om testing og nekting kan endres. Bekreft mot Lovdata (vegtrafikkloven §§ 22 og 22a) og politiet.no, og kontakt advokat ved behov.</em></p>
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

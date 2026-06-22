@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis vann renner fra naboens tomt til min? — Rettsregel</title>
+<meta name="description" content="Naturlig vann som alltid har rent nedover skråningen mot deg, må du i utgangspunktet leve med – vannet følger terrenget. Men ingen har lov til å lede vann…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-vann-renner-fra-naboens-tomt-til/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis vann renner fra naboens tomt til min?">
+<meta property="og:description" content="Naturlig vann som alltid har rent nedover skråningen mot deg, må du i utgangspunktet leve med – vannet følger terrenget. Men ingen har lov til å lede vann…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-vann-renner-fra-naboens-tomt-til/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis vann renner fra naboens tomt til min?">
+<meta name="twitter:description" content="Naturlig vann som alltid har rent nedover skråningen mot deg, må du i utgangspunktet leve med – vannet følger terrenget. Men ingen har lov til å lede vann…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva hvis vann renner fra naboens tomt til min?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Naturlig vann som alltid har rent nedover skråningen mot deg, må du i utgangspunktet leve med – vannet følger terrenget. Men ingen har lov til å *lede* vann eller *endre* avrenningen slik at det påfører naboeiendommen skade. Hvis naboen har gjort noe som sender mer vann, eller vann på et nytt sted, inn på din tomt og det skader deg, kan det være i strid med naboloven.</p>
+  <p class="sp-kilde">Bygger på Naboloven § 2</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/2/" class="related-card">
+  <div class="related-card-meta">Naboloven § 2</div>
+  <div class="related-card-title">Grensen for urimelig skade og ulempe</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Skille mellom naturlig vann og menneskeskapt avrenning</h3>
+<p>Dette er det aller viktigste skillet i vannsaker, så vi tar det grundig.</p>
+<p><strong>Naturlig avrenning</strong> er vann som renner slik terrenget tilsier – nedover en skråning, fra en høyere tomt til en lavere. Hvis din tomt ligger lavere enn naboens, og regnvann naturlig har rent nedover til deg i alle år, er dette i utgangspunktet noe du må regne med. Vannet gjør bare det vannet alltid gjør: renner nedover.</p>
+<p><strong>Menneskeskapt eller endret avrenning</strong> er noe annet. Naboloven (grannelova § 2) bygger på at ingen får bruke eiendommen sin slik at det blir til urimelig eller unødvendig skade eller ulempe for naboen. Hvis naboen aktivt <em>leder</em> vann mot deg, eller <em>endrer</em> terrenget slik at avrenningen blir verre for deg, er det ikke lenger «naturlig vann» – da er det noe naboen har skapt, og som kan rammes av loven.</p>
+<h3>Typiske situasjoner der naboen kan ha ansvar</h3>
+<ul>
+<li><strong>Naboen har fylt opp eller hevet tomten sin</strong>, slik at vann som før rant en annen vei, nå presses inn på din.</li>
+<li><strong>Naboen har lagt asfalt, betong, brostein eller annet tett dekke</strong> over et stort område, slik at regnvann ikke lenger synker ned i bakken, men renner samlet ned til deg.</li>
+<li><strong>Naboen har lagt et rør, en renne eller en grøft</strong> som leder vann rett mot din tomt eller husvegg.</li>
+<li><strong>Naboen har ført takvann eller drensvann</strong> ut mot grensa di i stedet for inn på eget anlegg.</li>
+<li><strong>Naboen har fjernet noe</strong> – en voll, en mur, en grøft – som før holdt vannet borte fra deg.</li>
+</ul>
+<p>Et eksempel: Naboen til Geir asfalterer hele gårdsplassen sin og lager samtidig et fall som leder alt regnvannet ned mot Geirs kjellermur. Før sank vannet ned i grusen; nå samler det seg og renner i en strøm mot huset til Geir, som begynner å få fukt i kjelleren. Dette er ikke naturlig avrenning – det er en endring naboen har gjort, som påfører Geir skade. Her kan naboloven komme inn.</p>
+<h3>Slik går du fram, steg for steg</h3>
+<p><strong>1. Finn ut hva som faktisk skjer.</strong> Er dette vann som alltid har rent slik (da står du svakere), eller har noe endret seg etter at naboen gjorde noe (da står du sterkere)? Tenk tilbake: når begynte problemet?</p>
+<p><strong>2. Dokumenter grundig.</strong> Vannsaker handler om bevis. Ta bilder og helst video under kraftig regn som viser hvor vannet kommer fra og hvor det renner. Noter datoer. Ta bilder av eventuell skade (fukt, erosjon, oversvømmelse).</p>
+<p><strong>3. Snakk med naboen.</strong> «Hei, etter at du asfalterte gårdsplassen har jeg fått vann i kjelleren. Det ser ut som regnvannet nå renner rett mot muren min. Kan vi se på en løsning sammen?» Ofte er ikke naboen klar over konsekvensen av det han har gjort.</p>
+<p><strong>4. Foreslå praktiske løsninger.</strong> Ofte kan problemet løses med en grøft, en renne, et dreneringsrør eller en liten terrengjustering hos naboen.</p>
+<p><strong>5. Få en fagperson til å vurdere.</strong> En rørlegger, anleggsgartner eller takstmann kan slå fast hvor vannet kommer fra og hva som må til. En slik vurdering er sterk dokumentasjon.</p>
+<p><strong>6. Skriftlig krav og eventuelt Konfliktrådet.</strong> Hjelper ikke praten, send et saklig krav med frist, og bruk Konfliktrådet for mekling.</p>
+<p><strong>7. Erstatning og retting.</strong> Har naboen påført deg skade ved å endre avrenningen, kan du i prinsippet kreve at forholdet rettes, og eventuelt erstatning for skaden. Ved større skader bør du vurdere å koble inn forsikringen din (mange har rettshjelpdekning) eller en advokat.</p>
+<h3>Spesielt om takvann og snø</h3>
+<p>To kilder fortjener egen omtale, fordi de er så vanlige. <strong>Takvann</strong> fra naboens hus skal ledes til naboens eget anlegg eller på en forsvarlig måte – ikke spyles rett mot din grunn eller vegg via en nedløpsrenne som peker mot deg. <strong>Snø og takras</strong> kan også bli et vannproblem når store snømengder dyttes eller skyves over på din side og smelter der, eller når snø fra naboens tak raser ned og samler seg mot din mur. Begge deler kan tas opp på samme måte: dokumenter, vis sammenhengen, og be om at vannet/snøen håndteres på naboens egen side.</p>
+<h3>Et viktig poeng om ansvar</h3>
+<p>Vannsaker kan være kompliserte fordi det ikke alltid er åpenbart hvor vannet egentlig kommer fra, og fordi ansvaret for overvann og drenering også kan involvere kommunen. Det ser vi nærmere på i neste artikkel. Men hovedregelen er enkel å huske: naturlig vann må du tåle – endret eller ledet vann som skader deg, kan naboen være ansvarlig for.</p>
+<h3>Hvorfor det haster å reagere tidlig</h3>
+<p>Vann er lumskt fordi skadene bygger seg opp i det skjulte. Fukt i en kjellermur eller under et hus kan utvikle seg til råte, sopp og store reparasjoner over tid. Derfor er det lurt å ta tak med en gang du merker at noe har endret seg – ikke vente i håp om at det går over. Jo tidligere du dokumenterer og tar opp saken, desto mindre blir skaden, og desto lettere er det å vise sammenhengen mellom det naboen gjorde og problemet du har fått. Vent ikke til neste storregn med å reagere – ta de første bildene allerede ved første tegn.</p>
+<h3>Kort oppsummert</h3>
+<p>Vann som naturlig renner nedover terrenget mot deg, må du i utgangspunktet leve med. Men ingen får lede vann eller endre avrenningen slik at det skader naboeiendommen (grannelova § 2). Har naboen asfaltert, fylt opp tomten, lagt rør eller gjort andre endringer som sender skadelig vann mot deg, kan han være ansvarlig. Dokumenter med bilder under regn, snakk med naboen, få en fagperson til å vurdere, og still krav om retting eller erstatning hvis det trengs.</p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-er-en-grad-av-utnytting-pa-tomta/">Hva er en grad av utnytting på tomta?</a><a class="sp-relchip" href="../../sporsmal/hva-er-en-grensegjerdeavtale/">Hva er en grensegjerdeavtale?</a><a class="sp-relchip" href="../../sporsmal/hva-er-forskjellen-pa-regulert-og-uregulert-tomt/">Hva er forskjellen på regulert og uregulert tomt?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

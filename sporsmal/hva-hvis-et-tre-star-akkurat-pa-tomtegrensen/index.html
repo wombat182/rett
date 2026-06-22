@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva hvis et tre står akkurat på tomtegrensen? — Rettsregel</title>
+<meta name="description" content="Et tre som vokser akkurat på grenselinjen mellom to tomter, eies i fellesskap av begge naboene. Det betyr at ingen av dere kan felle det alene – dere må…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/hva-hvis-et-tre-star-akkurat-pa-tomtegrensen/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Hva hvis et tre står akkurat på tomtegrensen?">
+<meta property="og:description" content="Et tre som vokser akkurat på grenselinjen mellom to tomter, eies i fellesskap av begge naboene. Det betyr at ingen av dere kan felle det alene – dere må…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/hva-hvis-et-tre-star-akkurat-pa-tomtegrensen/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hva hvis et tre står akkurat på tomtegrensen?">
+<meta name="twitter:description" content="Et tre som vokser akkurat på grenselinjen mellom to tomter, eies i fellesskap av begge naboene. Det betyr at ingen av dere kan felle det alene – dere må…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Nabo</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Nabo</div>
+      <h1 class="article-title">Hva hvis et tre står akkurat på tomtegrensen?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Et tre som vokser akkurat på grenselinjen mellom to tomter, eies i **fellesskap** av begge naboene. Det betyr at ingen av dere kan felle det alene – dere må være enige. Den ene kan ikke bare sage ned «sin halvdel» av stammen. Står dere fast, kan en tvist løses gjennom megling eller granneskjønn.</p>
+  <p class="sp-kilde">Bygger på Naboloven § 12</p>
+</div>
+    <div class="related-section">
+  <div class="related-label">Paragrafene bak svaret</div>
+  <div class="related-cards"><a href="../../lover/naboloven/12/" class="related-card">
+  <div class="related-card-meta">Naboloven § 12</div>
+  <div class="related-card-title">Kan du kutte naboens greiner og røtter?</div>
+</a></div>
+</div>
+    <div class="article-body sp-body">
+      <h3>Et tre med to eiere</h3>
+<p>De fleste trær har én tydelig eier: den som eier grunnen der treet har rot. Men noen ganger vokser et tre nøyaktig i grenselinjen, slik at stammen står med en del på hver side. Da oppstår en spesiell situasjon: treet er <strong>sameie</strong> – felles eiendom.</p>
+<p>Tenk deg at Bjørn og Hanne deler en grense, og midt i denne grensen står et stort lønnetre som har stått der i 40 år. Stammen vokser rett oppå grensestreken. Verken Bjørn eller Hanne eier treet alene. De eier det sammen, omtrent som om de skulle eid en bil eller en hytte i fellesskap.</p>
+<h3>Hva betyr fellesskapet i praksis?</h3>
+<p>Det viktigste å forstå er dette: Når noe eies i fellesskap, kan ingen av eierne gjøre store inngrep uten den andres samtykke. Å felle hele treet er et stort inngrep. Derfor:</p>
+<ul>
+<li>Bjørn kan <strong>ikke</strong> felle lønnetreet bare fordi han er lei av løvet om høsten.</li>
+<li>Hanne kan <strong>ikke</strong> sage av den delen av stammen som «vender mot henne» – treet ville dødd eller blitt farlig, og det rammer Bjørn også.</li>
+<li>De kan derimot bli enige om å felle treet sammen, eller om hvordan det skal stelles og beskjæres.</li>
+</ul>
+<p>Tenk på det som et felleseie der begge har vetorett mot å ødelegge det felles gode.</p>
+<h3>Men kan jeg klippe greinene som henger inn over meg?</h3>
+<p>Ja, til en viss grad. Selv om treet er felles, kan hver av dere fjerne greiner som henger godt inn over egen tomt og er til skade eller klar ulempe, etter prinsippet i naboloven § 12 – etter varsel og rimelig frist. Men her må man være ekstra forsiktig: Du kan ikke beskjære så hardt at hele treet tar skade, for det rammer også medeieren din. Lett vedlikeholdsklipp er én ting; å fjerne halve trekrona er noe helt annet og kan gjøre deg erstatningsansvarlig overfor naboen.</p>
+<h3>Hvordan finner jeg ut om treet faktisk står i grensen?</h3>
+<p>Det er ikke alltid lett å se nøyaktig hvor grensen går, og akkurat det avgjør om treet er felles eller ikke. Slik kan du sjekke:</p>
+<ol>
+<li><strong>Se på eiendomskartet</strong> (matrikkelkartet) hos kommunen eller via Kartverkets tjenester på nett.</li>
+<li><strong>Finn grensemerker</strong> i terrenget – ofte små metallbolter, rør eller merkede steiner.</li>
+<li><strong>Bestill grensepåvisning</strong> fra kommunen hvis det er uklart. Da kommer en landmåler og merker grensen nøyaktig.</li>
+</ol>
+<p>Om treet viser seg å stå litt inne på den ene siden, er det ikke felles – da eier den naboen treet alene, og vanlige regler gjelder. Det er altså verdt å bruke litt tid på å fastslå dette før dere begynner å diskutere felling.</p>
+<h3>Hva gjør vi hvis vi er uenige om treet?</h3>
+<ol>
+<li><strong>Snakk sammen i fred og ro.</strong> Mange tvister løses ved at man finner en mellomløsning – for eksempel kraftig beskjæring i stedet for full felling.</li>
+<li><strong>Del på kostnadene.</strong> Hvis dere blir enige om å stelle eller felle treet, er det rimelig å dele utgiftene siden dere eier det sammen.</li>
+<li><strong>Skriv ned avtalen</strong> dere blir enige om, så slipper dere uenighet senere om hvem som sa hva.</li>
+<li><strong>Bruk konfliktrådet</strong> for gratis megling hvis dere ikke kommer videre på egen hånd.</li>
+<li><strong>Granneskjønn</strong> er siste utvei: en rettslig ordning der det kan avgjøres hva som skal skje med treet.</li>
+</ol>
+<h3>Et eksempel på en god løsning</h3>
+<p>Bjørn synes lønnetreet skygger for kjøkkenhagen, mens Hanne elsker treet og vil beholde det. I stedet for å krangle om felling blir de enige om en mellomløsning: de deler kostnaden for en arborist som tynner kronen kraftig, slik at mer lys slipper gjennom til Bjørns grønnsaker, men treet får leve. Begge er fornøyde, og de skriver ned avtalen så de slipper å ta den samme diskusjonen neste år.</p>
+<h3>Et lite varsku</h3>
+<p>Å felle et felles tre uten den andres samtykke kan bli dyrt. Den som sager ned naboens trær eller et felles tre ulovlig, kan bli erstatningsansvarlig – og erstatningen for et stort, gammelt tre kan bli overraskende høy, fordi man ser på hva det koster å erstatte verdien treet hadde. Det lønner seg alltid å bli enige skriftlig først.</p>
+<h3>Hva hvis det felles treet blir en fare?</h3>
+<p>Reglene om sameie betyr ikke at et farlig tre må bli stående bare fordi den ene nekter. Hvis det felles treet er morkent og kan falle og skade hus eller folk, gjelder de samme hensynene som for andre farlige trær: faren går foran. Da kan den ene naboen kreve at noe blir gjort, selv om treet er felles. Men også her må man gå tjenestevei – snakke sammen, dokumentere faren, hente en arborist – og ikke bare felle på egen hånd i nattens mulm og mørke.</p>
+<p>Tenk deg at lønnetreet til Bjørn og Hanne får råte i stammen etter en skade. Hanne vil egentlig beholde treet, men Bjørn er bekymret for at det kan falle på huset hans. Her bør de få en arborist til å vurdere treet. Sier fagpersonen at treet er en reell fare, veier sikkerheten tungt, og det blir vanskelig for Hanne å nekte felling. Sier arboristen derimot at treet kan reddes med beskjæring, er det en bedre løsning for begge. Fagvurderingen blir ofte det som løser fastlåste sameietvister, fordi den flytter diskusjonen fra følelser til fakta.</p>
+<h3>Kort oppsummert</h3>
+<p>Et tre som står akkurat på tomtegrensen, eier dere sammen. Ingen kan felle det alene eller sage av sin del av stammen – det krever enighet. Du kan klippe greiner som henger godt inn over deg etter § 12, men ikke så mye at hele treet tar skade. Er du usikker på hvor grensen går, sjekk eiendomskartet eller bestill grensepåvisning. Og blir dere uenige: snakk sammen, finn en mellomløsning, del kostnadene, og bruk megling før dere går til granneskjønn.</p>
+<hr />
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/hva-er-forskjellen-pa-naboloven-og-gjerdeloven-for/">Hva er forskjellen på naboloven og gjerdeloven for hekk?</a><a class="sp-relchip" href="../../sporsmal/hva-er-nabovarsel-og-nar-trengs-det/">Hva er nabovarsel, og når trengs det?</a><a class="sp-relchip" href="../../sporsmal/hva-er-treregelen-i-naboloven/">Hva er treregelen i naboloven?</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>

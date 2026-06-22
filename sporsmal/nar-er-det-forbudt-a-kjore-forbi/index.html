@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Når er det forbudt å kjøre forbi? — Rettsregel</title>
+<meta name="description" content="Det er forbudt å kjøre forbi når du ikke har klar nok sikt – for eksempel ved bakketopp eller i en kurve – og når det er for liten plass til å gjøre det…">
+<link rel="canonical" href="https://rettsregel.no/sporsmal/nar-er-det-forbudt-a-kjore-forbi/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rettsregel">
+<meta property="og:title" content="Når er det forbudt å kjøre forbi?">
+<meta property="og:description" content="Det er forbudt å kjøre forbi når du ikke har klar nok sikt – for eksempel ved bakketopp eller i en kurve – og når det er for liten plass til å gjøre det…">
+<meta property="og:url" content="https://rettsregel.no/sporsmal/nar-er-det-forbudt-a-kjore-forbi/">
+<meta property="og:image" content="https://rettsregel.no/favicon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Når er det forbudt å kjøre forbi?">
+<meta name="twitter:description" content="Det er forbudt å kjøre forbi når du ikke har klar nok sikt – for eksempel ved bakketopp eller i en kurve – og når det er for liten plass til å gjøre det…">
+<meta name="twitter:image" content="https://rettsregel.no/favicon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+<div class="rr-header">
+  <div class="rr-header-row">
+    <a href="../../" class="rr-logo" aria-label="Rettsregel forside">
+      <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#C84A28"/>
+        <g fill="#FFF6EC">
+          <path d="M33 28 C36 28 38 28 41 28 L41 72 C38 72 36 72 33 72 C34 60 34 40 33 28 Z"/>
+          <path d="M40 28 L53 28 C61.5 28 66.5 33 66.5 40 C66.5 46.5 61.5 50.8 53.5 51 L40 51 L40 46 L51.5 46 C56 46 58.8 43.5 58.8 39.6 C58.8 35.6 56 33 51.5 33 L40 33 Z"/>
+          <path d="M48 49 L55 49 L68 72 L60 72 L48 51 Z"/>
+          <path d="M30 71 L44 71 L44 73.5 L30 73.5 Z"/>
+          <path d="M57 71 L71 71 L71 73.5 L57 73.5 Z"/>
+          <path d="M30 27 L44 27 L44 29 L30 29 Z"/>
+        </g>
+      </svg>
+      <span class="rr-logo-name">Rettsregel</span>
+    </a>
+    <form class="rr-search" role="search" onsubmit="return false;">
+      <input type="search" id="rr-search-input" placeholder="f.eks. «utleier nekter å gi tilbake depositumet»" aria-label="Søk" autocomplete="off">
+      <span class="rr-search-icon" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <div class="rr-search-results" id="rr-search-results" role="listbox"></div>
+    </form>
+    <input type="checkbox" id="rr-burger-toggle" class="rr-burger-toggle" aria-label="Meny">
+    <label for="rr-burger-toggle" class="rr-burger" aria-label="Åpne meny">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="rr-nav" aria-label="Hovedmeny">
+      <a href="../../lover/">Lover</a>
+      <a href="../../sporsmal/">Spørsmål</a>
+      <a href="../../tjenester/">Verktøy/maler</a>
+      <a href="../../om/">Om</a>
+    </nav>
+  </div>
+</div>
+<script>
+(function(){
+  var PREFIX = "../../";
+  var input = document.getElementById('rr-search-input');
+  var box = document.getElementById('rr-search-results');
+  if (!input || !box) return;
+  var index = null, loading = false;
+  function load(){
+    if (index || loading) return;
+    loading = true;
+    fetch(PREFIX + 'paragraphs-index.json').then(function(r){ return r.json(); }).then(function(d){ index = d; render(input.value); }).catch(function(){});
+  }
+  function urlFor(item){
+    if (item.type === 'sporsmal') return PREFIX + 'sporsmal/' + item.slug + '/';
+    return PREFIX + 'lover/' + item.lov + '/' + item.number + '/';
+  }
+  function label(item){
+    if (item.type === 'sporsmal') return item.title;
+    return item.lov_display + ' § ' + item.number + ' — ' + item.title;
+  }
+  function render(q){
+    q = (q || '').trim().toLowerCase();
+    if (!index || q.length < 2){ box.classList.remove('show'); box.innerHTML = ''; return; }
+    var hits = [];
+    for (var i = 0; i < index.length && hits.length < 8; i++){
+      var it = index[i];
+      var hay = (label(it) + ' ' + (it.kort_svar || '')).toLowerCase();
+      if (hay.indexOf(q) !== -1) hits.push(it);
+    }
+    if (!hits.length){ box.innerHTML = '<div class="rr-search-empty">Ingen treff på «' + q + '»</div>'; box.classList.add('show'); return; }
+    box.innerHTML = hits.map(function(it){
+      var tag = it.type === 'sporsmal' ? 'Spørsmål' : 'Paragraf';
+      return '<a class="rr-search-hit" href="' + urlFor(it) + '"><span class="rr-search-tag">' + tag + '</span><span class="rr-search-label">' + label(it) + '</span></a>';
+    }).join('');
+    box.classList.add('show');
+  }
+  input.addEventListener('focus', load);
+  input.addEventListener('input', function(){ render(input.value); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.rr-search')) box.classList.remove('show'); });
+})();
+</script>
+
+<main class="page">
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="../../">Rettsregel</a><span class="sep">›</span>
+    <a href="../../sporsmal/">Spørsmål og svar</a><span class="sep">›</span>
+    <span class="current">Bil</span>
+  </div>
+  <article>
+    <div class="article-header">
+      <div class="article-eyebrow">Bil</div>
+      <h1 class="article-title">Når er det forbudt å kjøre forbi?</h1>
+    </div>
+    <div class="kort-svar">
+  <div class="kort-svar-label">Kort svar</div>
+  <p>Det er forbudt å kjøre forbi når du ikke har klar nok sikt – for eksempel ved bakketopp eller i en kurve – og når det er for liten plass til å gjøre det trygt. I tillegg gjelder forbud der det er skiltet eller oppmerket med heltrukken linje, like før og på gangfelt, i kryss og andre steder der det blir farlig. Er du i tvil: la være.</p>
+  
+</div>
+    
+    <div class="article-body sp-body">
+      <h3>Den grunnleggende tanken</h3>
+<p>Forbudene mot forbikjøring i trafikkreglene § 12 handler om én ting: du skal aldri kjøre forbi i en situasjon der du ikke kan se eller vite at det er trygt. Der utsikten din svikter, eller der det fort kan dukke opp noen, er forbikjøring forbudt. La oss gå gjennom de vanligste forbudene.</p>
+<h3>1. Når sikten er hindret – bakketopp og kurve</h3>
+<p>Det er forbudt å kjøre forbi der sikten er hindret av en bakketopp, en kurve eller på annen måte. Grunnen er enkel: bak en bakketopp eller rundt en sving kan det komme en motgående bil du ikke ser før det er for sent.</p>
+<p><strong>Eksempel – Pål og bakketoppen:</strong> Pål kjører bak en bobil på en svingete landevei. Foran ham stiger veien opp mot en bakketopp, og han ser ikke hva som er på den andre siden. Selv om han er utålmodig, er det forbudt å kjøre forbi her – det kan komme en bil i motsatt retning rett bak toppen. Pål må vente til en strekning der han har fri sikt.</p>
+<p>(Et unntak: dette gjelder ikke der det finnes flere kjørefelt i din retning og motgående trafikk ikke er tillatt – for eksempel på motorvei, der du kan kjøre forbi i venstre felt selv over en bakketopp.)</p>
+<h3>2. Heltrukken linje og forbudsskilt</h3>
+<p>Er det malt en <strong>heltrukken (ubrutt) gul linje</strong> midt i veien, skal du ikke krysse den for å kjøre forbi. En <strong>stiplet linje</strong> betyr derimot at forbikjøring er tillatt hvis det ellers er trygt. Mange steder står det også et eget <strong>skilt om forbud mot forbikjøring</strong> – ofte to biler ved siden av hverandre, der den ene er rød. Når skiltet eller den heltrukne linjen er der, er forbudet absolutt, uansett hvor god sikten føles.</p>
+<h3>3. Ved og rett før gangfelt</h3>
+<p>Når du nærmer deg et gangfelt, skal du ikke kjøre forbi et kjøretøy som sperrer sikten din til feltet. Dette henger sammen med vikeplikten for fotgjengere (artikkel 37).</p>
+<p><strong>Eksempel – Tone ved gangfeltet:</strong> Tone nærmer seg et gangfelt. Foran henne bremser en bil ned. Hun vet ikke om bilen stopper for en fotgjenger hun ikke kan se. Da skal hun ikke kjøre forbi – hun kan i verste fall treffe noen som er på vei over.</p>
+<h3>4. I kryss og ved jernbaneoverganger</h3>
+<p>Forbikjøring i og rett før veikryss er forbudt eller svært risikabelt, blant annet fordi det kan komme biler fra sideveiene, og fordi noen kan stå klare til å svinge. Det samme gjelder ved planoverganger (jernbanekryssinger). Her er reglene strenge nettopp fordi konsekvensene kan bli store.</p>
+<h3>5. Når du ikke har plass til å fullføre trygt</h3>
+<p>Selv uten et konkret forbudsskilt skal du ikke starte en forbikjøring du ikke kan fullføre trygt. Er det for kort vei til neste kurve, eller kommer det motgående trafikk for raskt, så har du ikke plass. Den generelle regelen er at du skal kunne stanse på den strekningen du har oversikt over – og en forbikjøring må alltid kunne gjennomføres innenfor den sikten du faktisk har.</p>
+<h3>Steg for steg: skal jeg kjøre forbi, eller ikke?</h3>
+<ol>
+<li><strong>Ser jeg langt nok?</strong> Er det bakketopp, kurve eller annet som hindrer sikten, så vent.</li>
+<li><strong>Hva sier veimerkingen?</strong> Heltrukken linje eller forbudsskilt betyr nei.</li>
+<li><strong>Er jeg nær et gangfelt, kryss eller jernbane?</strong> Da skal jeg ikke kjøre forbi.</li>
+<li><strong>Har jeg nok plass</strong> til å passere og komme inn igjen med god margin før motgående trafikk?</li>
+<li><strong>Er jeg i tvil om noe av dette?</strong> Da er svaret alltid å vente.</li>
+</ol>
+<h3>6. Når noen allerede kjører forbi deg</h3>
+<p>Du skal heller ikke begynne en forbikjøring hvis kjøretøyet bak deg allerede har begynt å kjøre forbi deg. Sjekk derfor alltid speilet og blindsonen før du svinger ut. Starter to biler forbikjøring samtidig, oppstår det fort en svært farlig situasjon i venstre felt eller i motgående kjørebane.</p>
+<p><strong>Eksempel – Geir sjekker speilet:</strong> Geir er i ferd med å kjøre forbi en sakte bil, men kaster et blikk i speilet og ser at en bil bak ham allerede har lagt seg ut til venstre for å passere ham selv. Geir venter pent til den er forbi, før han selv vurderer forbikjøring. Det avverger et mulig sammenstøt.</p>
+<h3>Vanlige misforståelser</h3>
+<ul>
+<li><strong>«Stiplet linje betyr at jeg alltid kan kjøre forbi.»</strong> Den betyr at forbikjøring er tillatt, men bare hvis sikten og plassen ellers er trygg. Stiplet linje opphever ikke kravet om fri sikt.</li>
+<li><strong>«Bak en bakketopp går det nok bra.»</strong> Det er nettopp her de verste møteulykkene skjer. Vent til du har fri sikt.</li>
+<li><strong>«Når jeg først har begynt, må jeg fullføre.»</strong> Du skal ikke starte en forbikjøring du ikke vet at du kan fullføre trygt – vurderingen tas før du svinger ut, ikke underveis.</li>
+</ul>
+<h3>Hvorfor det lønner seg å være tålmodig</h3>
+<p>Ulovlige og forhastede forbikjøringer er en typisk årsak til de aller alvorligste ulykkene – møteulykker i høy fart. En forbikjøring som «sparer» deg tjue sekunder, er aldri verdt risikoen for et frontalsammenstøt. Tålmodighet på veien er ikke et tegn på dårlig kjøring, men på god kjøring.</p>
+<h3>Et lite forbehold</h3>
+<p>Det finnes flere detaljer og lokale skiltkombinasjoner enn det er plass til her, og bøtesatser for ulovlig forbikjøring kan endres over tid. Vil du lese den eksakte ordlyden, finner du trafikkreglene § 12 på lovdata.no, og oppdaterte satser hos politiet. Hovedregelen er enkel å huske: er du i tvil, kjør ikke forbi.</p>
+<h3>Kort oppsummert</h3>
+<p>Det er forbudt å kjøre forbi når sikten er hindret av bakketopp, kurve eller lignende, der det er heltrukken linje eller forbudsskilt, nær gangfelt, i kryss og ved jernbaneoverganger, og når du ikke har plass til å fullføre trygt. Forbudene finnes fordi forhastede forbikjøringer fører til noen av de verste ulykkene. Den enkleste regelen å leve etter er denne: er du i tvil, så vent til neste trygge sted.</p>
+<hr />
+<p><em>Bøtesatser, prikk- og tapsgrenser endres jevnlig. Tallene er oppgitt med forbehold — kontroller mot politiet.no og vegvesen.no for gjeldende satser.</em></p>
+    </div>
+  </article>
+  <div class="sp-relatert">
+  <div class="related-label">Relatert</div>
+  <div class="sp-relchips"><a class="sp-relchip" href="../../sporsmal/angrerett-bilkjop/">Angrerett ved kjøp av bil – når kan du gå fra avtalen?</a><a class="sp-relchip" href="../../sporsmal/avbestille-bil-for-levering/">Avbestille bil før levering – hva kan forhandleren kreve?</a><a class="sp-relchip" href="../../sporsmal/batterifeil-tesla/">Batterifeil på Tesla – garanti, reklamasjon og heving</a></div>
+</div>
+  <div class="sp-vurder">
+    <span>Usikker på hvordan dette slår ut for deg? Saken din kan være mer spesiell enn et standardsvar.</span>
+    <a href="../../advokatvurdering/">Få saken vurdert gratis &rarr;</a>
+  </div>
+</div>
+</main>
+<div class="innhold-attest">
+  <span class="innhold-attest-body"><strong>Juridisk informasjon, ikke rådgivning.</strong> Innholdet er basert på gjeldende norsk lov og gjennomgått av juridisk fagperson. Ved tvil — kontakt advokat. <a href="../../om/">Mer om Rettsregel →</a></span>
+</div>
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Walrus AS</span>
+  <span class="site-footer-links">
+    <a href="../../om/">Om</a>
+    <a href="../../personvern/">Personvern</a>
+    <a href="mailto:rettsregel@gmail.com">Kontakt</a>
+  </span>
+</footer>
+<!-- Rettsregel advokatvurdering CTA -->
+<a href="/advokatvurdering/" id="av-float-cta" class="av-float-cta" aria-label="Gratis vurdering av din sak">
+  <span>Gratis vurdering av din sak</span>
+</a>
+</body>
+</html>
+</body>
+</html>
